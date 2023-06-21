@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>ComplexToe</title>
+    <script src="https://kit.fontawesome.com/8f7afdedcd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<script module defer src="./script/CellGenerator.js"></script>
+<script module defer src="./script/WinCombinations/10x10.js"></script>
+<script defer src="./script/Game.js"></script>
+
+<body>
+    <!-- Lobby page -->
+    <div class="Lobby">
+        <header class="lobby-header">
+            <div class="ELO-Points-div">
+                <p class="ELO-Points-display">1000</p>
+                <p class="ELO-Points-icon">🔱</p>
+            </div>
+
+            <nav class="header-nav">
+                <i class="header-item fa-solid fa-moon"></i>
+                <i class="header-item fa-solid fa-gear"></i>
+                <i class="header-item fa-solid fa-user"></i>
+            </nav>
+        </header>
+
+        <div class="lobby-main-sec">
+            <div class="gameMode-cards">
+
+                <!-- Card #1 -->
+                <div class="gameMode-card" id="gameMode-KI-card">
+
+                    <div class="card-header">
+                        <div class="card-circle">
+                            <i class="fa-solid fa-robot BotIcon"></i>
+                        </div>
+                    </div>
+
+                    <div class="card-mainSec">
+                        <div class="card-miniBord-mini">
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">O</div>
+                            <div class="miniCellMini">X</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">O</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">X</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">X</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">O</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Card #2 -->
+                <div class="gameMode-card mainCard" id="gameMode-TwoPlayerOnline-card">
+
+                    <div class="card-header">
+                        <div class="card-circle" id="cardHeaderIcon-onlinePlayer">
+                            <i class="fa-solid fa-user-group BotIcon"></i>
+                        </div>
+                    </div>
+
+                    <div class="card-mainSec">
+                        <div class="card-miniBoard">
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell">X</div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell">X</div>
+                            <div class="miniCell">O</div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell">X</div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell">X</div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell">O</div>
+                            <div class="miniCell">O</div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                            <div class="miniCell"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Card #3 -->
+                <div class="gameMode-card" id="gameMode-OneVsOne-car">
+
+                    <div class="card-header">
+                        <div class="card-circle">
+                            <i class="fa-solid fa-computer BotIcon"></i>
+                        </div>
+                    </div>
+
+                    <div class="card-mainSec">
+                        <div class="card-miniBord-mini">
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">X</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">X</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini">O</div>
+                            <div class="miniCellMini">O</div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                            <div class="miniCellMini"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="lobby-footer">
+            <div class="lobby-footer-text">
+                Created by an aesthetic sickkunt
+            </div>
+
+            <div class="lobby-footer-text-right">
+                🔱
+            </div>
+        </div>
+    </div>
+
+    <!-- Game page -->
+    <div class="Game">
+        <h1>Tic Tac Toe</h1>
+        <div id="GameField">
+            <div id="cellGrid">
+                <!-- javascript generates the required amount of cells -->
+            </div>
+
+            <div id="game-status">
+                <h2 id="statusText"></h2>
+                <button id="restart-btn">restart</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
