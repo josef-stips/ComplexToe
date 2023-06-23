@@ -6,6 +6,7 @@ html {
     width: 100%;
     height: 100%;
     margin: 0;
+    overflow: hidden;
     padding: 0;
 }
 
@@ -22,37 +23,124 @@ h6 {
     margin: 0;
 }
 
+li {
+    list-style: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 90deg;
+    inherits: true;
+}
+
+@property --gradX {
+    syntax: '<percentage>';
+    initial-value: 50%;
+    inherits: true;
+}
+
+@property --gradY {
+    syntax: '<percentage>';
+    initial-value: 0%;
+    inherits: true;
+}
+
 :root {
     --hover-item: rgb(24, 78, 158);
+    --d: 2500ms;
+    --angle: 90deg;
+    --gradX: 100%;
+    --gradY: 50%;
+    --c1: rgba(150, 31, 31, 0.795);
+    --c2: rgba(168, 239, 255, 0.1);
 }
 
 .cell {
-    width: 75px;
-    height: 75px;
+    width: 60px;
+    height: 60px;
     border: 2px solid;
     box-shadow: 0 0 0 2px;
-    line-height: 75px;
+    line-height: 60px;
     font-size: 50px;
     cursor: pointer;
 }
 
 #cellGrid {
     display: grid;
-    width: 225px;
+    width: 200px;
     justify-content: center;
 }
 
 #GameField {
-    width: 100%;
+    width: 60%;
     height: 100%;
     flex-direction: column;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
+#statusText {
+    margin: 0.8em 0 0.4em 0;
+}
+
 .Game {
+    width: 95%;
+    height: 95%;
+    border-bottom: 3px solid;
+    border-top: 3px solid;
     display: none;
+}
+
+.lol-game {
+    width: 20%;
+}
+
+#GameTitle {
+    margin-top: 0.55em;
+    margin-bottom: 0.5em;
+    font-size: 40px;
+}
+
+#game-status {
+    margin: 0 0 1.7em 0;
+}
+
+.GameArea {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.side-score {
+    font-size: 30px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 20%;
+    height: 100%;
+}
+
+#leave-game-btn {
+    margin-top: 0.5em;
+    font-size: 24px;
+    transition: all 0.1s ease-out;
+}
+
+#leave-game-btn:hover {
+    cursor: pointer;
+    color: var(--hover-item);
+    transition: all 0.1s ease-in-out;
 }
 
 
@@ -75,12 +163,25 @@ h6 {
 }
 
 .header-nav {
+    width: 10%;
     font-size: 33px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.9em;
     margin: 0.5em 0.55em 0 0;
+}
+
+.AppTitle-div {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#AppTitle {
+    margin: 0.4em 0 0 0;
+    font-size: 37.5px;
 }
 
 .header-item {
@@ -94,6 +195,7 @@ h6 {
 }
 
 .ELO-Points-div {
+    width: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -120,6 +222,7 @@ h6 {
     justify-content: center;
     align-items: center;
     gap: 5em;
+    margin-top: 1em;
 }
 
 .gameMode-card {
@@ -127,11 +230,22 @@ h6 {
     width: 90%;
     height: 40%;
     transition: all 0.1s ease-out;
-    border-radius: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-radius: 30px;
+    position: relative;
+}
+
+.gameMode-card::before {
+    content: "";
+    position: absolute;
+    width: calc(100% + 1px);
+    height: calc(100% + 1px);
+    border: 4px solid transparent;
+    border-radius: 30px;
+    animation: animatedBorder 4s linear infinite;
 }
 
 .gameMode-card:hover {
@@ -181,7 +295,7 @@ h6 {
 
 .card-mainSec {
     width: auto;
-    height: 90%;
+    height: 85%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -232,20 +346,388 @@ h6 {
     grid-template-columns: repeat(5, auto);
 }
 
+.card-footer {
+    height: 5%;
+    width: 100%;
+}
+
+.card-footer h2 {
+    margin-top: 1em;
+}
+
+.GameMode-fields {
+    width: 100%;
+    height: 90%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 2px solid;
+    border-top: 2px solid;
+    margin: 0 3em 0 3em;
+}
+
+.NxN-field-card-main {
+    margin-top: 0;
+}
+
+.GameMode-fields-area {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5em;
+}
+
+.GameMode-fields-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 5%;
+}
+
+.field-card-title {
+    margin-top: 2em;
+}
+
+#fields-area-back-btn {
+    margin: 0 0 0 0.5em;
+    font-size: 20px;
+    transition: all 0.1s ease-out;
+}
+
+#fields-area-back-btn:hover {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    color: var(--hover-item);
+}
+
+.NxN-field {
+    width: 40%;
+    height: 52%;
+    border: 3px solid;
+    border-radius: 20px;
+    transition: all 0.1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.NxN-field:hover::before {
+    content: "";
+    position: absolute;
+    width: calc(100% + 1px);
+    height: calc(100% + 1px);
+    border: 4px solid transparent;
+    border-radius: 30px;
+    animation: animatedBorder 1.25s linear infinite;
+}
+
+.NxN-field:hover {
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+    width: 41%;
+    height: 53%;
+}
+
+.NxN-field-card-header {
+    margin-top: 1em;
+}
+
+.NxN-fieldCard-title {
+    margin-bottom: 0.5em;
+}
+
+.GameMode-display {
+    margin-bottom: 1em;
+}
+
+.ChooseField-display {
+    margin-bottom: 1em;
+}
+
+.field-card-circle {
+    margin-bottom: 0.3em;
+    font-size: 13px;
+    width: 4em;
+    height: 4em;
+    border: 3px solid;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    z-index: 100;
+}
+
+.field-card-header-icon {
+    font-size: 30px;
+}
+
+#TenxTen_MiniBoard {
+    grid-template-columns: repeat(10, auto);
+}
+
+.test {
+    color: rgba(150, 31, 31, 0.795);
+}
+
+#TenxTen_MiniBoard .miniCellMini {
+    width: 22.5px;
+    font-size: 21px;
+    height: 22.5px;
+}
+
+#FivexFive_MiniBoard {
+    grid-template-columns: repeat(5, auto);
+}
+
+#FivexFive_MiniBoard .miniCellMini {
+    width: 49px;
+    font-size: 30px;
+    height: 49px;
+}
+
+#FifTeenxFifTeen_MiniBoard {
+    grid-template-columns: repeat(15, auto);
+}
+
+#FifTeenxFifTeen_MiniBoard .miniCellMini {
+    width: 13.8px;
+    font-size: 12px;
+    font-weight: 500;
+    height: 13.8px;
+}
+
+#TwentyxTwenty_MiniBoard {
+    grid-template-columns: repeat(20, auto);
+}
+
+#TwentyxTwenty_MiniBoard .miniCellMini {
+    width: 9.2px;
+    font-size: 10px;
+    font-weight: 500;
+    height: 9.2px;
+}
+
+#FivexFive_Field {
+    transition: all 0.1s ease-out;
+}
+
+#TenxTen_Field {
+    transition: all 0.1s ease-out;
+}
+
+#FifTeenxFifTeen_Field {
+    transition: all 0.1s ease-out;
+}
+
+#TwentyxTwenty_Field {
+    transition: all 0.1s ease-out;
+}
+
+
+/* cool color effect on hover */
+
+#FivexFive_Field:hover {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+#TenxTen_Field:hover {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+#FifTeenxFifTeen_Field:hover {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+#TwentyxTwenty_Field:hover {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
 
 /* FOOTER */
 
 .lobby-footer {
     height: 10%;
     display: flex;
+    flex-direction: row;
+    align-items: flex-end;
     justify-content: space-between;
-    align-items: end;
+}
+
+.music-bars {
+    height: 100%;
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.music-bars-2 {
+    height: 100%;
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.bar {
+    margin-right: 5px;
+    width: 2%;
+    background-color: black;
 }
 
 .lobby-footer-text {
-    padding: 0 0 0.5em 0.5em;
+    width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
 
-.lobby-footer-text-right {
-    padding: 0 0.5em 0.5em 0;
+
+/* settings window */
+
+.settings-window {
+    width: 80%;
+    height: 70%;
+    border: 3px solid;
+    border-radius: 30px;
+    background-color: azure;
+    z-index: 1000;
+    position: absolute;
+    margin: auto auto auto auto;
+    top: -5%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    display: none;
+}
+
+.settings-header {
+    height: 10%;
+    border-bottom: 2px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settings-main {
+    padding: 0.5em 1em 0 1em;
+    height: 90%;
+    flex-direction: column;
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+}
+
+.general-settings {
+    height: 50%;
+    width: 100%;
+    border-bottom: 2px dashed;
+}
+
+.general-settings ul {
+    text-align: start;
+    margin: 0.5em 0 0 0.5em;
+}
+
+.general-settings ul li {
+    margin: 0 0 0.4em 0;
+    font-size: 20px;
+}
+
+.general-settings ul li:hover {
+    cursor: pointer;
+}
+
+.general-settings h2 {
+    margin: 0 0 0.5em 0;
+    font-size: 28px;
+}
+
+.user-settings {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.user-settings ul {
+    text-align: start;
+    margin: 0.5em 0 0 0.5em;
+}
+
+.user-settings ul li {
+    margin: 0 0 0.4em 0;
+    color: red;
+    font-size: 20px;
+}
+
+.user-settings ul li:hover {
+    cursor: pointer;
+}
+
+.user-settings h2 {
+    font-size: 28px;
+    margin: 0 0 0.5em 0;
+}
+
+#settings-close-btn {
+    font-size: 24px;
+    transition: all 0.1s ease-out;
+    margin: 0.69em 0.57em 1.8em 0;
+}
+
+#settings-close-btn:hover {
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    color: var(--hover-item);
+}
+
+
+/* dark layer */
+
+.dark-layer {
+    display: none;
+    position: absolute;
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+    background-color: rgba(0, 0, 0, 0.570);
+}
+
+
+/* Animations */
+
+@keyframes animatedBorder {
+    0% {
+        border-color: transparent;
+    }
+    50% {
+        border-color: rgba(128, 36, 36, 0.856);
+    }
+    100% {
+        border-color: transparent;
+    }
 }
