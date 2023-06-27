@@ -13,9 +13,13 @@
     <audio id="btn_click_2" src="./assets/btn-click_2.mp3"></audio>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-<script defer src="./script/script.js"></script>
-<script module defer src="./script/Game/CellGenerator.js"></script>
-<script module defer src="./script/WinCombinations/10x10.js"></script>
+<script defer src="./script/App/music.js"></script>
+<script defer src="./script/App/script.js"></script>
+<script defer src="./script/Game/CellGenerator.js"></script>
+<script defer src="./script/WinCombinations/5x5.js"></script>
+<script defer src="./script/WinCombinations/10x10.js"></script>
+<script defer src="./script/WinCombinations/15x15.js"></script>
+<script defer src="./script/WinCombinations/20x20.js"></script>
 <script defer src="./script/Game/Game.js"></script>
 
 <body>
@@ -143,7 +147,7 @@
                 </div>
 
                 <!-- Card #3 -->
-                <div class="gameMode-card btn" id="gameMode-OneVsOne-car">
+                <div class="gameMode-card btn" id="gameMode-OneVsOne-card">
 
                     <div class="card-header">
                         <div class="card-circle">
@@ -209,7 +213,7 @@
 
                 <div class="GameMode-fields-area">
 
-                    <div class="NxN-field" id="FivexFive_Field" field="5x5" title="Quick death">
+                    <div class="NxN-field" id="FivexFive_Field" field="5x5" title="Quick death" index="1">
 
                         <div class="card-header NxN-field-card-header">
                             <div class="field-card-circle">
@@ -255,7 +259,7 @@
 
                     </div>
 
-                    <div class="NxN-field" id="TenxTen_Field" field="10x10" title="March into fire">
+                    <div class="NxN-field" id="TenxTen_Field" field="10x10" title="March into fire" index="2">
 
                         <div class="card-header NxN-field-card-header">
                             <div class="field-card-circle">
@@ -376,7 +380,7 @@
 
                     </div>
 
-                    <div class="NxN-field" id="FifTeenxFifTeen_Field" field="15x15" title="Tunnel of truth">
+                    <div class="NxN-field" id="FifTeenxFifTeen_Field" field="15x15" title="Tunnel of truth" index="3">
 
                         <div class="card-header NxN-field-card-header">
                             <div class="field-card-circle">
@@ -621,7 +625,7 @@
                         <h2 class="field-card-title">Tunnel of truth</h2>
 
                     </div>
-                    <div class="NxN-field" id="TwentyxTwentyField" field="20x20" title="Long funeral">
+                    <div class="NxN-field" id="TwentyxTwentyField" field="20x20" title="Long funeral" index="4">
 
                         <div class="card-header NxN-field-card-header">
                             <div class="field-card-circle">
@@ -1048,21 +1052,57 @@
             <!-- Game page -->
             <div class="Game">
 
+                <div class="game-upper-head">
+                    <div class="card-header NxN-field-card-header">
+                        <div class="field-card-circle">
+                            <i id="Game-Upper-Field-Icon" class="fa-solid fa-skull field-card-header-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="GameArea">
                     <!-- #1 -->
                     <div class="side-score">
                         <i id="leave-game-btn" class="fa-solid fa-arrow-left"></i>
 
-                        <ul>
-                            <li>Josef
-                                <p>3</p>
+                        <div class="lol"></div>
+
+                        <ul id="score-list">
+                            <li>
+                                <p id="name-player1">Josef</p>
+                                <p id="score-player1">0</p>
                             </li>
-                            <li>Basti
-                                <p>4</p>
+                            <li>
+                                <p id="name-player2">Basti</p>
+                                <p id="score-player2">0</p>
                             </li>
                         </ul>
 
-                        <div class="lol"></div>
+                        <div class="GameField-info-corner">
+                            <ul id="GameField-infoCorner-list">
+                                <li>
+                                    <div class="GameField-time-monitor">0.00 </div>
+                                </li>
+                                <li>
+                                    <p>&nbsp; | &nbsp; </p>
+                                </li>
+                                <li>
+                                    <div class="GameField-fieldSize-display"></div>
+                                </li>
+                                <li>
+                                    <p>&nbsp; | &nbsp; </p>
+                                </li>
+                                <li>
+                                    <div class="GameField-BlockAmount-display"></div>
+                                </li>
+                                <li>
+                                    <p>&nbsp; | &nbsp; </p>
+                                </li>
+                                <li>
+                                    <div class="GameField-AveragePlayTime-display"></div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!-- #2 -->

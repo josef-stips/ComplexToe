@@ -1,77 +1,9 @@
-// background music
-window.addEventListener("DOMContentLoaded", event => {
-    const audio = document.querySelector("#bg_audio");
-    audio.volume = 0.05;
-    audio.loop = true;
-    audio.play();
-
-    const audioContext = new(window.AudioContext || window.webkitAudioContext)();
-    const analyser = audioContext.createAnalyser();
-    const source = audioContext.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioContext.destination);
-
-    analyser.fftSize = 256;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const firstDiv = document.querySelector(".music-bars");
-    const secondDiv = document.querySelector(".music-bars-2");
-
-    for (let i = 0; i < bufferLength; i++) {
-        const bar = document.createElement("div");
-        bar.classList.add("bar");
-        firstDiv.appendChild(bar);
-        const bar2 = document.createElement("div");
-        bar2.classList.add("bar");
-        secondDiv.appendChild(bar2);
-    };
-
-    function animateBars() {
-        requestAnimationFrame(animateBars);
-        analyser.getByteFrequencyData(dataArray);
-
-        const bars = document.querySelectorAll(".music-bars .bar");
-        const bars2 = document.querySelectorAll(".music-bars-2 .bar");
-        const numBars = bars.length;
-        const barWidth = firstDiv.offsetWidth / numBars;
-
-        bars.forEach((bar, index) => {
-            const barHeight = (dataArray[index] / 255) * firstDiv.offsetHeight;
-
-            bar.style.width = barWidth + "px";
-            bar.style.height = barHeight + "px";
-        });
-
-        bars2.forEach((bar, index) => {
-            const reversedIndex = numBars - 1 - index; // Umkehren der Indexreihenfolge
-            const barHeight = (dataArray[reversedIndex] / 255) * secondDiv.offsetHeight;
-
-            bar.style.width = barWidth + "px";
-            bar.style.height = barHeight + "px";
-        });
-    };
-
-    animateBars();
-});
-
-function playBtn_Audio() {
-    // audio
-    btn_sound.volume = 0.1;
-    btn_sound.play()
-};
-
-function playBtn_Audio_2() {
-    // audio
-    btn_sound2.volume = 0.1;
-    btn_sound2.play()
-};
-
 // click sound on button click event
 let Allbtns = document.querySelectorAll('.btn');
 let btn_sound = document.querySelector('#btn_click_1');
 let btn_sound2 = document.querySelector('#btn_click_2');
 
+// general elements and buttons
 let gameModeCards_Div = document.querySelector('.gameMode-cards');
 let gameModeFields_Div = document.querySelector('.GameMode-fields');
 let fieldsArea_back_btn = document.querySelector('#fields-area-back-btn');
@@ -90,6 +22,72 @@ let NxN_field = document.querySelectorAll('.NxN-field');
 let GameField = document.querySelector('.Game');
 let GameTitle = document.querySelector('#GameTitle');
 let leaveGame_btn = document.querySelector('#leave-game-btn');
+let Game_Upper_Field_Icon = document.querySelector('#Game-Upper-Field-Icon');
+let GameField_TimeMonitor = document.querySelector('.GameField-time-monitor');
+let GameField_FieldSizeDisplay = document.querySelector('.GameField-fieldSize-display');
+let GameField_BlockAmountDisplay = document.querySelector('.GameField-BlockAmount-display');
+let GameField_AveragePlayTimeDisplay = document.querySelector('.GameField-AveragePlayTime-display')
+
+let scorePlayer1 = document.querySelector('#score-player1');
+let scorePlayer2 = document.querySelector('#score-player2');
+let namePlayer1 = document.querySelector('#name-player1');
+let namePlayer2 = document.querySelector('#name-player2');
+
+// mode buttons 
+let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
+let gameMode_TwoPlayerOnline_card = document.querySelector('#gameMode-TwoPlayerOnline-card');
+let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
+
+// important data
+let GameMode = {
+    1: {
+        "opponent": "KI", // You play against a KI if your offline or you want to get better
+        "icon": "fa-solid fa-robot"
+    },
+    2: {
+        "opponent": "OnlineFriend", // Guy you send a link to so you can play with him together
+        "icon": "fa-solid fa-user-group"
+    },
+    3: {
+        "opponent": "ComputerFriend", // Guy on same computer
+        "icon": "fa-solid fa-computer"
+    },
+};
+
+let Fields = {
+    1: {
+        "name": "Quick death",
+        "size": "5x5",
+        "blocks": "25",
+        "xyCellAmount": "5",
+        "icon": "fa-solid fa-baby",
+        "averagePlayTime": "15 seconds",
+    },
+    2: {
+        "name": "March into fire",
+        "size": "10x10",
+        "blocks": "100",
+        "xyCellAmount": "10",
+        "icon": "fa-solid fa-dragon",
+        "averagePlayTime": "15 minutes",
+    },
+    3: {
+        "name": "Tunnel of truth",
+        "size": "15x15",
+        "blocks": "225",
+        "xyCellAmount": "15",
+        "icon": "fa-solid fa-chess-knight",
+        "averagePlayTime": "90 minutes",
+    },
+    4: {
+        "name": "Long funeral",
+        "size": "20x20",
+        "blocks": "400",
+        "xyCellAmount": "20",
+        "icon": "fa-solid fa-skull",
+        "averagePlayTime": "5+ hours",
+    },
+};
 
 // app initialization
 function AppInit() {
@@ -135,6 +133,19 @@ fieldsArea_back_btn.addEventListener('click', () => {
     // animation
     gameModeCards_Div.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
+});
+
+// Game Mode buttons 
+gameMode_KI_card.addEventListener('click', () => {
+    curr_mode = GameMode[1].opponent;
+});
+
+gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
+    curr_mode = GameMode[2].opponent;
+});
+
+gameMode_OneVsOne_card.addEventListener('click', () => {
+    curr_mode = GameMode[3].opponent;
 });
 
 // field-cards click event
@@ -188,21 +199,20 @@ headerSettBtn.addEventListener('click', () => {
     playBtn_Audio_2();
 });
 
-NxN_field.forEach(field => {
-    field.addEventListener('click', () => {
-        let fieldSize = field.getAttribute('field');
-        let fieldTitle = field.getAttribute('title');
-
-        GameField.style.display = 'block';
-        gameModeFields_Div.style.display = 'none';
-
-        GameTitle.textContent = fieldTitle;
+// Enter Game
+function EnterGame() {
+    NxN_field.forEach(field => {
+        field.addEventListener('click', f => {
+            initializeGame(f.target);
+        });
     });
-});
+};
+EnterGame();
 
+// Leave Game
 leaveGame_btn.addEventListener('click', () => {
     GameField.style.display = 'none';
-    gameModeCards_Div.style.display = 'flex';
+    gameModeFields_Div.style.display = 'flex';
 
     playBtn_Audio();
 });

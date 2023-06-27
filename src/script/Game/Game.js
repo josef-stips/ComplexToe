@@ -4,14 +4,26 @@ const restartBtn = document.querySelector('#restart-btn');
 let currentPlayer = "X";
 let running = false;
 
-initializeGame();
+let curr_mode = "";
+let curr_field = "";
 
-function initializeGame() {
+function initializeGame(field) {
+    let fieldTitle = field.getAttribute('title');
+    let fieldIndex = field.getAttribute('index');
+
+    // set up x and y coordinate
+    xCell_Amount = Fields[fieldIndex].xyCellAmount;
+    yCell_Amount = Fields[fieldIndex].xyCellAmount;
+
+    // set up background data
+    curr_field = Fields[fieldIndex].name;
+
     //Creates TicTacToe field etc.
     CreateField();
-    CreateWinConditions();
+    CreateWinConditions(xCell_Amount);
     CreateOptions();
 
+    // add Event Listener
     const cells = document.querySelectorAll('.cell');
 
     // Adds click event to every single cell and starts game
@@ -20,10 +32,29 @@ function initializeGame() {
     });
     // set up restart button
     restartBtn.addEventListener('click', restartGame);
-
-    // start game
-    statusText.textContent = `${currentPlayer}'s turn`;
     running = true;
+
+    initializeDocument(field, fieldIndex, fieldTitle);
+};
+
+function initializeDocument(field, fieldIndex, fieldTitle) {
+    GameField.style.display = 'flex';
+    gameModeFields_Div.style.display = 'none';
+
+    // Init game title,game icon and game info
+    GameTitle.textContent = fieldTitle;
+    Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
+    GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
+    GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
+    GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
+    // Init Player 
+    scorePlayer1.textContent = "0"
+    scorePlayer2.textContent = "0";
+    // set up statusText
+    statusText.textContent = `${currentPlayer}'s turn`;
+
+    console.log(WinConditions)
+    console.log(options)
 };
 
 function cellCicked() {
@@ -96,5 +127,10 @@ function checkWinner() {
 
 function restartGame() {
     changePlayer();
-    initializeGame();
+
+    NxN_field.forEach(field => {
+        if (field.getAttribute('title') == curr_field) {
+            initializeGame(field);
+        };
+    });
 };
