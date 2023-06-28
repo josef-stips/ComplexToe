@@ -11,6 +11,8 @@ function initializeGame(field) {
     let fieldTitle = field.getAttribute('title');
     let fieldIndex = field.getAttribute('index');
 
+    console.log(fieldIndex, Fields)
+
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
     yCell_Amount = Fields[fieldIndex].xyCellAmount;
@@ -40,6 +42,7 @@ function initializeGame(field) {
 function initializeDocument(field, fieldIndex, fieldTitle) {
     GameField.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
+    // lobbyHeader.style.display = 'none';
 
     // Init game title,game icon and game info
     GameTitle.textContent = fieldTitle;

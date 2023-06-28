@@ -50,6 +50,21 @@ ul {
     inherits: true;
 }
 
+
+/* Animations */
+
+@keyframes borderAnimation {
+    0% {
+        border-width: 6px;
+    }
+    50% {
+        border-width: 9px;
+    }
+    100% {
+        border-width: 6px;
+    }
+}
+
 :root {
     --hover-item: rgb(24, 78, 158);
     --d: 2500ms;
@@ -60,12 +75,20 @@ ul {
     --c2: rgba(168, 239, 255, 0.1);
 }
 
+.Game-Page {
+    display: none;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
 .Game {
     width: 95%;
     height: 95%;
     border-bottom: 3px solid;
     border-top: 3px solid;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -73,36 +96,74 @@ ul {
 
 .GameArea {
     width: 100%;
-    height: 100%;
+    height: 95%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
 
-#game-upper-head {
-    margin: 0 0 0 0;
+.game-upper-head {
+    height: 5%;
+    width: 100%;
 }
 
-.side-score {
+.upper-field-card-circle {
+    font-size: 13px;
+    border-radius: 100px;
+}
+
+#GameArea-FieldIcon {
+    margin: 0 0 30px 0;
+}
+
+#GameArea-FieldCircle {
+    border: solid 6px red;
+    animation: borderAnimation 5s linear infinite;
+}
+
+.GameArea-SideInfo {
     font-size: 30px;
     font-weight: 500;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    width: 20%;
+    width: 30%;
     height: 100%;
 }
 
-#score-list {
-    margin: 0 0 3em 0;
-    height: 20%;
+.GameArea-SideInfo-Header {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.GameArea-SideInfo-Main {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.GameArea-SideInfo-Footer {
+    height: 25%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.lol-game {
+    height: 100%;
+    width: 30%;
 }
 
 #GameField {
-    margin: 0 0 2.7em 0;
-    width: 60%;
+    width: 100%;
     height: 100%;
     flex-direction: column;
     display: flex;
@@ -110,20 +171,41 @@ ul {
     align-items: center;
 }
 
-.lol-game {
-    width: 20%;
+.game-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+    gap: 0.5em;
 }
 
-#game-status {
-    margin: 0 0 1.7em 0;
+.ComplexToe-Field {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#statusText {
-    margin: 0.1em 0 0.4em 0;
+.GameField-Header {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GameSide-headerList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 0.3em;
 }
 
 #GameTitle {
-    margin: 0 0 0.25em 0;
     font-size: 40px;
 }
 
@@ -140,37 +222,30 @@ ul {
     cursor: pointer;
 }
 
-#leave-game-btn {
-    position: absolute;
-    top: 13%;
-    left: 2.7%;
+.GameArea-HeaderNav-Item {
     font-size: 24px;
     transition: all 0.1s ease-out;
 }
 
-#leave-game-btn:hover {
+.GameArea-HeaderNav-Item:hover {
     cursor: pointer;
     color: var(--hover-item);
     transition: all 0.1s ease-in-out;
 }
 
-#restart-btn {
-    outline: none;
-    width: 80%;
-    height: 40%;
-    font-size: 17px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 7px;
-}
+#restart-btn {}
 
 #GameField-infoCorner-list {
     display: flex;
     flex-direction: row;
-    height: 6.5%;
-    margin-bottom: 1.5em;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 0.2em;
+    height: 100%;
+    width: 100%;
     font-size: 16px;
     font-weight: 500;
+    margin: 0 0 4px 0;
 }
 
 .GameField-time-monitor {}
@@ -487,7 +562,6 @@ ul {
 }
 
 .field-card-circle {
-    margin-bottom: 0.3em;
     font-size: 13px;
     width: 4em;
     height: 4em;

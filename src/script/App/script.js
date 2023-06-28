@@ -19,7 +19,7 @@ let settingsWindow = document.querySelector('.settings-window');
 let DarkLayer = document.querySelector('.dark-layer');
 let headerSettBtn = document.querySelector('#header-sett-btn');
 let NxN_field = document.querySelectorAll('.NxN-field');
-let GameField = document.querySelector('.Game');
+let GameField = document.querySelector('.Game-Page');
 let GameTitle = document.querySelector('#GameTitle');
 let leaveGame_btn = document.querySelector('#leave-game-btn');
 let Game_Upper_Field_Icon = document.querySelector('#Game-Upper-Field-Icon');
@@ -27,6 +27,7 @@ let GameField_TimeMonitor = document.querySelector('.GameField-time-monitor');
 let GameField_FieldSizeDisplay = document.querySelector('.GameField-fieldSize-display');
 let GameField_BlockAmountDisplay = document.querySelector('.GameField-BlockAmount-display');
 let GameField_AveragePlayTimeDisplay = document.querySelector('.GameField-AveragePlayTime-display')
+let lobbyHeader = document.querySelector('.lobby-header');
 
 let scorePlayer1 = document.querySelector('#score-player1');
 let scorePlayer2 = document.querySelector('#score-player2');
@@ -212,6 +213,7 @@ EnterGame();
 // Leave Game
 leaveGame_btn.addEventListener('click', () => {
     GameField.style.display = 'none';
+    // lobbyHeader.style.display = 'flex';
     gameModeFields_Div.style.display = 'flex';
 
     playBtn_Audio();
