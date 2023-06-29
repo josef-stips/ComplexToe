@@ -11,6 +11,10 @@
     <audio id="bg_audio" src="./assets/bg_music.m4a"></audio>
     <audio id="btn_click_1" src="./assets/increase_elo.mp3"></audio>
     <audio id="btn_click_2" src="./assets/btn-click_2.mp3"></audio>
+    <audio id="Long_funeral_Theme" src="./assets/Maps/Long_Funeral.mp3"></audio>
+    <audio id="March_into_fire_Theme" src="./assets/Maps/March_into_fire.mp3"></audio>
+    <audio id="Quick_death_Theme" src="./assets/Maps/Quick_Death.mp3"></audio>
+    <audio id="Tunnel_of_truth_Theme" src="./assets/Maps/Tunnel_of_truth.mp3"></audio>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <script defer src="./script/App/music.js"></script>
@@ -25,22 +29,24 @@
 <body>
     <!-- Lobby page -->
     <div class="Lobby">
-        <header class="lobby-header">
-            <div class="ELO-Points-div">
-                <p class="ELO-Points-display">1000</p>
-                <p class="ELO-Points-icon">🔱</p>
-            </div>
+        <div class="header-body">
+            <header class="lobby-header">
+                <div class="ELO-Points-div">
+                    <p class="ELO-Points-display">1000</p>
+                    <p class="ELO-Points-icon">🔱</p>
+                </div>
 
-            <div class="AppTitle-div">
-                <h1 id="AppTitle"></h1>
-            </div>
+                <div class="AppTitle-div">
+                    <h1 id="AppTitle"></h1>
+                </div>
 
-            <nav class="header-nav">
-                <i class="header-item fa-solid fa-moon"></i>
-                <i id="header-sett-btn" class="header-item fa-solid fa-gear"></i>
-                <i class="header-item fa-solid fa-user"></i>
-            </nav>
-        </header>
+                <nav class="header-nav">
+                    <i class="header-item fa-solid fa-moon"></i>
+                    <i id="header-sett-btn" class="header-item fa-solid fa-gear"></i>
+                    <i class="header-item fa-solid fa-user"></i>
+                </nav>
+            </header>
+        </div>
 
         <div class="lobby-main-sec">
             <div class="gameMode-cards">
@@ -1215,6 +1221,35 @@
     <!-- dark layer over the app -->
     <div class="dark-layer">
 
+    </div>
+
+    <div class="SetPlayerNamesPopUp">
+        <div class="SetPlayerNames-Header">
+            <i id="SetPlayerNames-close-btn" class="fa-solid fa-x SetUpPopUp-CloseBtn"></i>
+        </div>
+
+        <div class="SetPlayerNames-InputArea">
+            <input id="Player1_NameInput" class="SetPlayerName-input" placeholder="Player1" type="text">
+            <input id="Player2_NameInput" class="SetPlayerName-input" placeholder="Player2" type="text">
+        </div>
+
+        <div class="SetPlayerNames-footer">
+            <button class="SetPlayerName-ConfirmButton Confirm-Name-btn">Confirm</button>
+        </div>
+    </div>
+
+    <div id="YourNamePopUp_KI_Mode" class="SetPlayerNamesPopUp">
+        <div class="SetPlayerNames-Header">
+            <i id="YourName_KI_Mode-close-btn" class="fa-solid fa-x SetUpPopUp-CloseBtn"></i>
+        </div>
+
+        <div class="SetPlayerNames-InputArea" id="InputArea-KI-Mode">
+            <input id="YourName_Input_KI_mode" class="SetPlayerName-input" placeholder="Your Name" type="text">
+        </div>
+
+        <div class="SetPlayerNames-footer">
+            <button class="SetPlayerName-ConfirmButton_KI_mode Confirm-Name-btn">Confirm</button>
+        </div>
     </div>
 
 </body>

@@ -17,6 +17,8 @@ function horizontale_Linie_for20(n) {
         if (i + 3 >= (xCell_Amount * yCell_Amount - 1)) {
             break;
         };
+
+        i++;
     };
 };
 

@@ -5,10 +5,6 @@ let cellGrid = document.querySelector('#cellGrid');
 let WinConditions = [];
 let options = [];
 
-// Field x and y 
-let yCell_Amount; // numb
-let xCell_Amount; // numb
-
 // Creates the TicTacToe Field
 function CreateField() {
     cellGrid.textContent = null;
@@ -78,5 +74,27 @@ function CreateOptions() {
     // create
     for (i = 0; i < xCell_Amount * yCell_Amount; i++) {
         options.push("");
+    };
+};
+
+// When the Game starts, this "Blocker" blocks some random cells so the gameplay is more enjoyable
+function Start_Blocker() {
+    let Grid = [...cellGrid.children];
+    let numToColor = Math.floor(Grid.length / 4); // Anzahl der Elemente, die schwarz gefärbt werden sollen
+
+    if (Grid.length == 25) {
+        numToColor = Math.floor(Grid.length / 4); // Anzahl der Elemente, die schwarz gefärbt werden sollen
+    };
+
+    console.log(Grid);
+
+    for (let i = 0; i < numToColor; i++) {
+        // Zufälligen Index generieren
+        let randomIndex = Math.floor(Math.random() * Grid.length);
+
+        // Zufälliges Kind-Element auswählen und Hintergrundfarbe auf Schwarz setzen
+        Grid[randomIndex].style.backgroundColor = "black";
+        Grid[randomIndex].classList = "cell death-cell";
+        Grid[randomIndex].removeEventListener('click', cellCicked);
     };
 };

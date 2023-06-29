@@ -2,6 +2,7 @@
 let Allbtns = document.querySelectorAll('.btn');
 let btn_sound = document.querySelector('#btn_click_1');
 let btn_sound2 = document.querySelector('#btn_click_2');
+const audio = document.querySelector("#bg_audio");
 
 // general elements and buttons
 let gameModeCards_Div = document.querySelector('.gameMode-cards');
@@ -29,10 +30,26 @@ let GameField_BlockAmountDisplay = document.querySelector('.GameField-BlockAmoun
 let GameField_AveragePlayTimeDisplay = document.querySelector('.GameField-AveragePlayTime-display')
 let lobbyHeader = document.querySelector('.lobby-header');
 
+let SetPlayerNamesPopUp = document.querySelector('.SetPlayerNamesPopUp');
+let SetPlayerName_ConfirmButton = document.querySelector('.SetPlayerName-ConfirmButton');
+let Player1_NameInput = document.querySelector('#Player1_NameInput');
+let Player2_NameInput = document.querySelector('#Player2_NameInput');
+let YourName_Input_KI_mode = document.querySelector('#YourName_Input_KI_mode');
+let SetPlayerName_confBTN_KIMode = document.querySelector('.SetPlayerName-ConfirmButton_KI_mode');
+let YourNamePopUp_KI_Mode = document.querySelector('#YourNamePopUp_KI_Mode');
+let YourName_KI_ModeCloseBtn = document.querySelector('#YourName_KI_Mode-close-btn');
+let SetPlayerNamesCloseBtn = document.querySelector('#SetPlayerNames-close-btn');
+
 let scorePlayer1 = document.querySelector('#score-player1');
 let scorePlayer2 = document.querySelector('#score-player2');
 let namePlayer1 = document.querySelector('#name-player1');
 let namePlayer2 = document.querySelector('#name-player2');
+
+// Field Theme music
+let Tunnel_of_truth_Theme = document.querySelector('#Tunnel_of_truth_Theme');
+let Quick_death_Theme = document.querySelector('#Quick_death_Theme');
+let March_into_fire_Theme = document.querySelector('#March_into_fire_Theme');
+let Long_funeral_Theme = document.querySelector('#Long_funeral_Theme');
 
 // mode buttons 
 let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
@@ -63,6 +80,8 @@ let Fields = {
         "xyCellAmount": "5",
         "icon": "fa-solid fa-baby",
         "averagePlayTime": "15 seconds",
+        "theme": ".../assets/Maps/Quick_Death.mp3",
+        "theme_name": Quick_death_Theme,
     },
     2: {
         "name": "March into fire",
@@ -71,6 +90,8 @@ let Fields = {
         "xyCellAmount": "10",
         "icon": "fa-solid fa-dragon",
         "averagePlayTime": "15 minutes",
+        "theme": ".../assets/Maps/March_into_fire.mp3",
+        "theme_name": March_into_fire_Theme,
     },
     3: {
         "name": "Tunnel of truth",
@@ -79,6 +100,8 @@ let Fields = {
         "xyCellAmount": "15",
         "icon": "fa-solid fa-chess-knight",
         "averagePlayTime": "90 minutes",
+        "theme": ".../assets/Maps/Tunnel_of_truth.mp3",
+        "theme_name": Tunnel_of_truth_Theme,
     },
     4: {
         "name": "Long funeral",
@@ -87,8 +110,22 @@ let Fields = {
         "xyCellAmount": "20",
         "icon": "fa-solid fa-skull",
         "averagePlayTime": "5+ hours",
+        "theme": ".../assets/Maps/Long_Funeral.mp3",
+        "theme_name": Long_funeral_Theme,
     },
 };
+
+let curr_field_ele; //html element
+let curr_name1 = ""; // from html input field
+let curr_name2 = ""; // from html input field
+
+// Das ausgewählte Level entscheidet, wie schwer die KI sein soll und wie viele Blockaden gesetzt werden sollen 
+let KI_Mode_Levels = {
+    1: "Kindergarten",
+    2: "Fastfood",
+    3: "Death",
+};
+let curr_KI_Level;
 
 // app initialization
 function AppInit() {
@@ -134,37 +171,33 @@ fieldsArea_back_btn.addEventListener('click', () => {
     // animation
     gameModeCards_Div.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
+    lobbyHeader.style.borderBottom = '3px solid';
 });
 
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
     curr_mode = GameMode[1].opponent;
+    lobbyHeader.style.borderBottom = 'none';
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
     curr_mode = GameMode[2].opponent;
+    lobbyHeader.style.borderBottom = 'none';
 });
 
 gameMode_OneVsOne_card.addEventListener('click', () => {
     curr_mode = GameMode[3].opponent;
+    lobbyHeader.style.borderBottom = 'none';
 });
 
 // field-cards click event
-FivexFive_Field.addEventListener('click', () => {
-    playBtn_Audio();
-});
+FivexFive_Field.addEventListener('click', () => { playBtn_Audio(); });
 
-FifTeenxFifTeen_Field.addEventListener('click', () => {
-    playBtn_Audio();
-});
+FifTeenxFifTeen_Field.addEventListener('click', () => { playBtn_Audio(); });
 
-TenxTen_Field.addEventListener('click', () => {
-    playBtn_Audio();
-});
+TenxTen_Field.addEventListener('click', () => { playBtn_Audio(); });
 
-TwentyxTwentyField.addEventListener('click', () => {
-    playBtn_Audio();
-});
+TwentyxTwentyField.addEventListener('click', () => { playBtn_Audio(); });
 
 // settings checkbox events
 checkBox.forEach(box => {
@@ -204,7 +237,28 @@ headerSettBtn.addEventListener('click', () => {
 function EnterGame() {
     NxN_field.forEach(field => {
         field.addEventListener('click', f => {
-            initializeGame(f.target);
+            if (curr_mode == GameMode[3].opponent) {
+
+                SetPlayerNamesPopUp.style.display = 'flex';
+                DarkLayer.style.display = 'block';
+                Player1_NameInput.value = "";
+                Player2_NameInput.value = "";
+
+                curr_name1 = null;
+                curr_name2 = null;
+                curr_field_ele = f.target;
+            };
+
+            if (curr_mode == GameMode[1].opponent) {
+
+                YourNamePopUp_KI_Mode.style.display = 'flex';
+                DarkLayer.style.display = 'block';
+                YourName_Input_KI_mode.value = "";
+
+                curr_name1 = null;
+                curr_name2 = null;
+                curr_field_ele = f.target;
+            };
         });
     });
 };
@@ -217,4 +271,63 @@ leaveGame_btn.addEventListener('click', () => {
     gameModeFields_Div.style.display = 'flex';
 
     playBtn_Audio();
+    PauseMusic();
+    CreateMusicBars(audio);
+});
+
+// set player names
+SetPlayerName_ConfirmButton.addEventListener('click', () => {
+    // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
+    if (Player1_NameInput.value != "" && Player2_NameInput.value != "" && Player1_NameInput.value != Player2_NameInput.value) {
+        // html stuff
+        SetPlayerNamesPopUp.style.display = 'none';
+        DarkLayer.style.display = 'none';
+
+        // initialize game with the right values
+        let fieldIndex = curr_field_ele.getAttribute('index');
+        curr_name1 = Player1_NameInput.value;
+        curr_name2 = Player2_NameInput.value;
+
+        initializeGame(curr_field_ele);
+
+        // play theme music 
+        PauseMusic();
+        CreateMusicBars(Fields[fieldIndex].theme_name);
+
+    } else {
+        return
+    };
+});
+
+//If you play against a bot in the KI Mode
+SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
+
+    if (YourName_Input_KI_mode.value != "") {
+        // html stuff
+        YourNamePopUp_KI_Mode.style.display = 'none';
+        DarkLayer.style.display = 'none';
+
+        // initialize game with the right values
+        let fieldIndex = curr_field_ele.getAttribute('index');
+        curr_name1 = YourName_Input_KI_mode.value;
+        curr_name2 = 'Bot';
+
+        initializeGame(curr_field_ele);
+
+        // play theme music 
+        PauseMusic();
+        CreateMusicBars(Fields[fieldIndex].theme_name);
+    };
+});
+
+// close buttons
+YourName_KI_ModeCloseBtn.addEventListener('click', () => {
+    // html stuff
+    YourNamePopUp_KI_Mode.style.display = 'none';
+    DarkLayer.style.display = 'none';
+});
+
+SetPlayerNamesCloseBtn.addEventListener('click', () => {
+    SetPlayerNamesPopUp.style.display = 'none';
+    DarkLayer.style.display = 'none';
 });

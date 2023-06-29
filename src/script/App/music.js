@@ -1,13 +1,16 @@
 // background music
 window.addEventListener("DOMContentLoaded", event => {
-    const audio = document.querySelector("#bg_audio");
-    audio.volume = 0.05;
-    audio.loop = true;
-    audio.play();
+    CreateMusicBars(audio);
+});
+
+function CreateMusicBars(Audio) {
+    Audio.volume = 0.05;
+    Audio.loop = true;
+    Audio.play();
 
     const audioContext = new(window.AudioContext || window.webkitAudioContext)();
     const analyser = audioContext.createAnalyser();
-    const source = audioContext.createMediaElementSource(audio);
+    const source = audioContext.createMediaElementSource(Audio);
     source.connect(analyser);
     analyser.connect(audioContext.destination);
 
@@ -17,6 +20,9 @@ window.addEventListener("DOMContentLoaded", event => {
 
     const firstDiv = document.querySelector(".music-bars");
     const secondDiv = document.querySelector(".music-bars-2");
+
+    firstDiv.textContent = null;
+    secondDiv.textContent = null;
 
     for (let i = 0; i < bufferLength; i++) {
         const bar = document.createElement("div");
@@ -53,7 +59,7 @@ window.addEventListener("DOMContentLoaded", event => {
     };
 
     animateBars();
-});
+};
 
 function playBtn_Audio() {
     // audio
@@ -65,4 +71,19 @@ function playBtn_Audio_2() {
     // audio
     btn_sound2.volume = 0.1;
     btn_sound2.play()
+};
+
+function PauseMusic() {
+    Quick_death_Theme.pause();
+    March_into_fire_Theme.pause();
+    Tunnel_of_truth_Theme.pause();
+    Long_funeral_Theme.pause();
+
+    Quick_death_Theme.currentTime = 0;
+    March_into_fire_Theme.currentTime = 0;
+    Tunnel_of_truth_Theme.currentTime = 0;
+    Long_funeral_Theme.currentTime = 0;
+
+    audio.pause();
+    audio.currentTime = 0;
 };

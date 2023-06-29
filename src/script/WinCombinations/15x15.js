@@ -1,6 +1,7 @@
 // horizontale linie aus 4 blöcken
 function horizontale_Linie_for15(n) {
-    for (let i = 0; i <= n; i++) {
+    let i = 0;
+    for (let j = 0; j <= n; j++) {
         let subArray = [];
 
         if (i + 3 == 15 || i + 3 == 30 || i + 3 == 45 || i + 3 == 60 || i + 3 == 75 || i + 3 == 90 || i + 3 == 105 || i + 3 == 120 ||
@@ -14,6 +15,8 @@ function horizontale_Linie_for15(n) {
         if (i + 3 >= (xCell_Amount * yCell_Amount - 1)) {
             break;
         };
+
+        i++;
     };
 };
 
