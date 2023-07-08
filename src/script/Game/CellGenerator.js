@@ -43,6 +43,17 @@ function generateCell(index) {
         cell.style.width = "2.34vh";
         cell.style.height = "2.34vh";
         cell.style.fontSize = "24px";
+
+        // KI specified Game Boards
+    } else if (xCell_Amount == 3) {
+        cell.style.width = "12.4vh";
+        cell.style.height = "12.4vh";
+        cell.style.fontSize = "100px";
+
+    } else if (xCell_Amount == 4) {
+        cell.style.width = "12.4vh";
+        cell.style.height = "12.4vh";
+        cell.style.fontSize = "88px";
     };
 
     cellGrid.appendChild(cell);
@@ -63,6 +74,12 @@ function CreateWinConditions(NxN) {
 
     } else if (NxN == 20) {
         Create_20x20_WinCombis(); // use win comb algorithm executer from 20x20.js
+
+    } else if (NxN == 4) {
+        Create_4x4_WinCombis(); // use win comb algorithm executer from 15x15.js
+
+    } else if (NxN == 3) {
+        Create_3x3_WinCombis(); // use win comb algorithm executer from 20x20.js
     };
 };
 
@@ -83,7 +100,11 @@ function Start_Blocker() {
     let numToColor = Math.floor(Grid.length / 4); // Anzahl der Elemente, die schwarz gefärbt werden sollen
 
     if (Grid.length == 25) {
-        numToColor = Math.floor(Grid.length / 4); // Anzahl der Elemente, die schwarz gefärbt werden sollen
+        numToColor = Math.floor(Grid.length / 7); // Anzahl der Elemente, die schwarz gefärbt werden sollen
+    };
+
+    if (Grid.length == 9 || Grid.length == 16) {
+        numToColor = 0;
     };
 
     console.log(Grid);

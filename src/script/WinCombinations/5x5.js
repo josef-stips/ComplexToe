@@ -547,7 +547,6 @@ function W_4_for5(n) {
         i++;
     };
 };
-
 // Execute all algorithms
 function Create_5x5_WinCombis() {
     horizontale_Linie_for5(yCell_Amount * xCell_Amount);

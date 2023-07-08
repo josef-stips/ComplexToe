@@ -24,7 +24,10 @@
 <script defer src="./script/WinCombinations/10x10.js"></script>
 <script defer src="./script/WinCombinations/15x15.js"></script>
 <script defer src="./script/WinCombinations/20x20.js"></script>
+<script defer src="./script/WinCombinations/4x4.js"></script>
+<script defer src="./script/WinCombinations/3x3.js"></script>
 <script defer src="./script/Game/Game.js"></script>
+<script defer src="./script/Game/KI.js"></script>
 
 <body>
     <!-- Lobby page -->
@@ -91,7 +94,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <h2>Play against a KI</h2>
+                        <h2 id="KI_Card_DescriptionDisplay"></h2>
                     </div>
 
                 </div>
@@ -147,7 +150,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <h2>Play online with a friend</h2>
+                        <h2 id="OnlineFriend_Card_DescriptionDisplay"></h2>
                     </div>
 
                 </div>
@@ -192,7 +195,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <h2>Play with a friend</h2>
+                        <h2 id="ComputerFriend_Card_DescriptionDisplay"></h2>
                     </div>
 
                 </div>
@@ -219,7 +222,76 @@
 
                 <div class="GameMode-fields-area">
 
-                    <div class="NxN-field" id="FivexFive_Field" field="5x5" title="Quick death" index="1">
+                    <!-- For KI Games -->
+                    <div class="NxN-field" id="ThreexThree_Field" field="3x3" title="Small Price" index="5">
+
+                        <div class="card-header NxN-field-card-header">
+                            <div class="field-card-circle">
+                                <i class="fa-solid fa-baby field-card-header-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="NxN-field-card-header">
+                            <h2 class="NxN-fieldCard-title">3x3</h2>
+                        </div>
+
+                        <div class="NxN-field-card-main">
+                            <div id="ThreexThree_MiniBoard" class="card-miniBord-mini">
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini">X</div>
+                            </div>
+                        </div>
+
+                        <h2 class="field-card-title">Small Price</h2>
+
+                    </div>
+
+                    <div class="NxN-field" id="ForxFor_Field" field="4x4" title="Thunder Advanture" index="6">
+
+                        <div class="card-header NxN-field-card-header">
+                            <div class="field-card-circle">
+                                <i class="fa-solid fa-baby field-card-header-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="NxN-field-card-header">
+                            <h2 class="NxN-fieldCard-title">4x4</h2>
+                        </div>
+
+                        <div class="NxN-field-card-main">
+                            <div id="ForxFor_MiniBoard" class="card-miniBord-mini">
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                            </div>
+                        </div>
+
+                        <h2 class="field-card-title">Thunder Advanture</h2>
+
+                    </div>
+
+                    <!-- Normal Game -->
+                    <div class="NxN-field" id="FivexFive_Field" field="5x5" title="Quick Death" index="1">
 
                         <div class="card-header NxN-field-card-header">
                             <div class="field-card-circle">
@@ -1083,6 +1155,7 @@
                                     <ul class="GameSide-headerList">
                                         <li class="GameArea-HeaderNav-Item"> <i id="leave-game-btn" class="fa-solid fa-arrow-left"></i> </li>
                                         <li class="GameArea-HeaderNav-Item"> <i id="restart-btn" class="fa-solid fa-arrow-rotate-right"></i> </li>
+                                        <li class="GameArea-HeaderNav-Item"> <i title="info" id="game-info-btn" class="fa-solid fa-question-circle"></i> </li>
                                     </ul>
                                 </nav>
 
@@ -1145,6 +1218,9 @@
                             <div class="ComplexToe-Field">
                                 <div id="cellGrid">
                                     <!-- javascript generates the required amount of cells -->
+                                </div>
+                                <div id="UltimateWinTextArea">
+                                    <h1 id="UltimateWinText"></h1>
                                 </div>
                             </div>
 
@@ -1249,6 +1325,22 @@
 
         <div class="SetPlayerNames-footer">
             <button class="SetPlayerName-ConfirmButton_KI_mode Confirm-Name-btn">Confirm</button>
+        </div>
+    </div>
+
+    <div class="GameInfoPopUp">
+        <div class="GameInfo-Header">
+            <div>
+                <h2 class="GameInfo-HeaderTitle">Game Info</h2>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-x" id="GameInfo-Close-btn"></i>
+            </div>
+        </div>
+
+        <div class="GameInfo-Main">
+
         </div>
     </div>
 

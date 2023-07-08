@@ -9,10 +9,15 @@ let gameModeCards_Div = document.querySelector('.gameMode-cards');
 let gameModeFields_Div = document.querySelector('.GameMode-fields');
 let fieldsArea_back_btn = document.querySelector('#fields-area-back-btn');
 
+// Normal Games
 let FivexFive_Field = document.querySelector('#FivexFive_Field');
 let FifTeenxFifTeen_Field = document.querySelector('#FifTeenxFifTeen_Field');
 let TenxTen_Field = document.querySelector('#TenxTen_Field');
 let TwentyxTwentyField = document.querySelector('#TwentyxTwentyField');
+// KI Games
+let ThreexThree_Field = document.querySelector('#ThreexThree_Field');
+let ForxFor_Field = document.querySelector('#ForxFor_Field');
+// other
 let checkBox = document.querySelectorAll('.checkBox');
 
 let settingsCloseBtn = document.querySelector('#settings-close-btn');
@@ -29,6 +34,7 @@ let GameField_FieldSizeDisplay = document.querySelector('.GameField-fieldSize-di
 let GameField_BlockAmountDisplay = document.querySelector('.GameField-BlockAmount-display');
 let GameField_AveragePlayTimeDisplay = document.querySelector('.GameField-AveragePlayTime-display')
 let lobbyHeader = document.querySelector('.lobby-header');
+let GameModeDisplay = document.querySelector('.GameMode-display');
 
 let SetPlayerNamesPopUp = document.querySelector('.SetPlayerNamesPopUp');
 let SetPlayerName_ConfirmButton = document.querySelector('.SetPlayerName-ConfirmButton');
@@ -39,6 +45,13 @@ let SetPlayerName_confBTN_KIMode = document.querySelector('.SetPlayerName-Confir
 let YourNamePopUp_KI_Mode = document.querySelector('#YourNamePopUp_KI_Mode');
 let YourName_KI_ModeCloseBtn = document.querySelector('#YourName_KI_Mode-close-btn');
 let SetPlayerNamesCloseBtn = document.querySelector('#SetPlayerNames-close-btn');
+let UltimateWinTextArea = document.querySelector('#UltimateWinTextArea');
+let UltimateWinText = document.querySelector('#UltimateWinText');
+let gameInfo_btn = document.querySelector('#game-info-btn');
+
+let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
+let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
+let KI_Card_DescriptionDisplay = document.querySelector('#KI_Card_DescriptionDisplay');
 
 let scorePlayer1 = document.querySelector('#score-player1');
 let scorePlayer2 = document.querySelector('#score-player2');
@@ -60,21 +73,24 @@ let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
 let GameMode = {
     1: {
         "opponent": "KI", // You play against a KI if your offline or you want to get better
-        "icon": "fa-solid fa-robot"
+        "icon": "fa-solid fa-robot",
+        "description": "Play against a KI"
     },
     2: {
         "opponent": "OnlineFriend", // Guy you send a link to so you can play with him together
-        "icon": "fa-solid fa-user-group"
+        "icon": "fa-solid fa-user-group",
+        "description": "Play online with a friend"
     },
     3: {
         "opponent": "ComputerFriend", // Guy on same computer
-        "icon": "fa-solid fa-computer"
+        "icon": "fa-solid fa-computer",
+        "description": "Play with a friend"
     },
 };
 
 let Fields = {
     1: {
-        "name": "Quick death",
+        "name": "Quick Death",
         "size": "5x5",
         "blocks": "25",
         "xyCellAmount": "5",
@@ -113,6 +129,26 @@ let Fields = {
         "theme": ".../assets/Maps/Long_Funeral.mp3",
         "theme_name": Long_funeral_Theme,
     },
+    5: {
+        "name": "Small Price",
+        "size": "3x3",
+        "blocks": "9",
+        "xyCellAmount": "3",
+        "icon": "fa-solid fa-chess-knight",
+        "averagePlayTime": "30 seconds",
+        "theme": ".../assets/Maps/Tunnel_of_truth.mp3",
+        "theme_name": Quick_death_Theme,
+    },
+    6: {
+        "name": "Thunder Advanture",
+        "size": "4x4",
+        "blocks": "16",
+        "xyCellAmount": "4",
+        "icon": "fa-solid fa-skull",
+        "averagePlayTime": "1 minute",
+        "theme": ".../assets/Maps/Long_Funeral.mp3",
+        "theme_name": Long_funeral_Theme,
+    },
 };
 
 let curr_field_ele; //html element
@@ -129,6 +165,10 @@ let curr_KI_Level;
 
 // app initialization
 function AppInit() {
+    KI_Card_DescriptionDisplay.textContent = GameMode[1].description;
+    OnlineFriend_Card_DescriptionDisplay.textContent = GameMode[2].description;
+    ComputerFriend_Card_DescriptionDisplay.textContent = GameMode[3].description;
+
     checkForSettings();
 };
 AppInit();
@@ -178,26 +218,59 @@ fieldsArea_back_btn.addEventListener('click', () => {
 gameMode_KI_card.addEventListener('click', () => {
     curr_mode = GameMode[1].opponent;
     lobbyHeader.style.borderBottom = 'none';
+
+    // visibility for Ki Fields and GameMode fields
+    ThreexThree_Field.style.display = 'flex';
+    ForxFor_Field.style.display = 'flex';
+    FivexFive_Field.style.display = 'none';
+    TenxTen_Field.style.display = 'none';
+    FifTeenxFifTeen_Field.style.display = 'none';
+    TwentyxTwentyField.style.display = 'none';
+    // Display Game Mode Description
+    GameModeDisplay.textContent = GameMode[1].description;
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
     curr_mode = GameMode[2].opponent;
     lobbyHeader.style.borderBottom = 'none';
+
+    // visibility for Ki Fields and GameMode fields
+    ThreexThree_Field.style.display = 'none';
+    ForxFor_Field.style.display = 'none';
+    FivexFive_Field.style.display = 'flex';
+    TenxTen_Field.style.display = 'flex';
+    FifTeenxFifTeen_Field.style.display = 'flex';
+    TwentyxTwentyField.style.display = 'flex';
+    // Display Game Mode Description
+    GameModeDisplay.textContent = GameMode[2].description;
 });
 
 gameMode_OneVsOne_card.addEventListener('click', () => {
     curr_mode = GameMode[3].opponent;
     lobbyHeader.style.borderBottom = 'none';
+
+    // visibility for Ki Fields and GameMode fields
+    ThreexThree_Field.style.display = 'none';
+    ForxFor_Field.style.display = 'none';
+    FivexFive_Field.style.display = 'flex';
+    TenxTen_Field.style.display = 'flex';
+    FifTeenxFifTeen_Field.style.display = 'flex';
+    TwentyxTwentyField.style.display = 'flex';
+    // Display Game Mode Description
+    GameModeDisplay.textContent = GameMode[3].description;
 });
 
 // field-cards click event
+
+// Normal Mode
 FivexFive_Field.addEventListener('click', () => { playBtn_Audio(); });
-
 FifTeenxFifTeen_Field.addEventListener('click', () => { playBtn_Audio(); });
-
 TenxTen_Field.addEventListener('click', () => { playBtn_Audio(); });
-
 TwentyxTwentyField.addEventListener('click', () => { playBtn_Audio(); });
+
+//Ki Mode
+ForxFor_Field.addEventListener('click', () => { playBtn_Audio(); });
+ThreexThree_Field.addEventListener('click', () => { playBtn_Audio(); });
 
 // settings checkbox events
 checkBox.forEach(box => {
@@ -237,7 +310,7 @@ headerSettBtn.addEventListener('click', () => {
 function EnterGame() {
     NxN_field.forEach(field => {
         field.addEventListener('click', f => {
-            if (curr_mode == GameMode[3].opponent) {
+            if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
 
                 SetPlayerNamesPopUp.style.display = 'flex';
                 DarkLayer.style.display = 'block';
@@ -249,7 +322,7 @@ function EnterGame() {
                 curr_field_ele = f.target;
             };
 
-            if (curr_mode == GameMode[1].opponent) {
+            if (curr_mode == GameMode[1].opponent) { // KI Mode
 
                 YourNamePopUp_KI_Mode.style.display = 'flex';
                 DarkLayer.style.display = 'block';

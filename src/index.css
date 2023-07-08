@@ -214,21 +214,46 @@ ul {
     gap: 0.3em;
 }
 
+#statusText {
+    opacity: 1;
+    transition: all 0.5s ease-out;
+}
+
+#statusText.Invisible {
+    opacity: 0;
+}
+
 #GameTitle {
     font-size: 40px;
 }
 
 #cellGrid {
-    display: grid;
+    display: none;
     max-width: 100px;
     justify-content: center;
     margin: 0 auto;
+    opacity: 1;
+    transition: all 0.5s ease-out;
+}
+
+.cellGrid_opacity {
+    animation: opacity_div 1s linear;
+}
+
+#cellGrid.Invisible {
+    opacity: 0;
 }
 
 .cell {
     border: 2px solid;
     box-shadow: 0 0 0 2px;
     cursor: pointer;
+}
+
+.about-to-die-cell {
+    opacity: 1;
+    transition: background-color 1.5s ease-out;
+    background-color: rgba(21, 139, 21, 0.788);
 }
 
 .death-cell {
@@ -594,12 +619,45 @@ ul {
     font-size: 30px;
 }
 
-#TenxTen_MiniBoard {
-    grid-template-columns: repeat(10, auto);
-}
-
 .test {
     color: rgba(150, 31, 31, 0.795);
+}
+
+#UltimateWinTextArea {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#UltimateWinText {
+    font-size: 70px;
+}
+
+#ThreexThree_MiniBoard {
+    grid-template-columns: repeat(3, auto);
+}
+
+#ThreexThree_MiniBoard .miniCellMini {
+    width: 22.5px;
+    font-size: 21px;
+    height: 22.5px;
+}
+
+#ForxFor_MiniBoard {
+    grid-template-columns: repeat(4, auto);
+}
+
+#ForxFor_MiniBoard .miniCellMini {
+    width: 22.5px;
+    font-size: 21px;
+    height: 22.5px;
+}
+
+#TenxTen_MiniBoard {
+    grid-template-columns: repeat(10, auto);
 }
 
 #TenxTen_MiniBoard .miniCellMini {
@@ -638,6 +696,16 @@ ul {
     font-size: 10px;
     font-weight: 500;
     height: 9.2px;
+}
+
+#ThreexThree_Field {
+    transition: all 0.1s ease-out;
+    display: none;
+}
+
+#ForxFor_Field {
+    transition: all 0.1s ease-out;
+    display: none;
 }
 
 #FivexFive_Field {
@@ -938,8 +1006,8 @@ ul {
     justify-content: flex-start;
     align-items: flex-start;
     font-size: 17px;
-    height: 10%;
-    width: 93%;
+    height: 12%;
+    width: 94%;
 }
 
 .SetUpPopUp-CloseBtn {
@@ -954,6 +1022,27 @@ ul {
 }
 
 
+/* Game Info Pop Up */
+
+.GameInfoPopUp {
+    width: 80%;
+    height: 70%;
+    border: 3px solid;
+    border-radius: 30px;
+    background-color: azure;
+    z-index: 1000;
+    position: absolute;
+    margin: auto auto auto auto;
+    top: -5%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    display: none;
+}
+
+
 /* Animations */
 
 @keyframes animatedBorder {
@@ -965,5 +1054,17 @@ ul {
     }
     100% {
         border-color: transparent;
+    }
+}
+
+@keyframes opacity_div {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
     }
 }
