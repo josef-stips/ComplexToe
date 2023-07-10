@@ -226,8 +226,10 @@
                     <div class="NxN-field" id="ThreexThree_Field" field="3x3" title="Small Price" index="5">
 
                         <div class="card-header NxN-field-card-header">
-                            <div class="field-card-circle">
-                                <i class="fa-solid fa-baby field-card-header-icon"></i>
+                            <div class="NxN-field-card-header-innerWrapper">
+                                <div class="field-card-circle">
+                                    <i class="fa-solid fa-baby field-card-header-icon"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -256,8 +258,10 @@
                     <div class="NxN-field" id="ForxFor_Field" field="4x4" title="Thunder Advanture" index="6">
 
                         <div class="card-header NxN-field-card-header">
-                            <div class="field-card-circle">
-                                <i class="fa-solid fa-baby field-card-header-icon"></i>
+                            <div class="NxN-field-card-header-innerWrapper">
+                                <div class="field-card-circle">
+                                    <i class="fa-solid fa-baby field-card-header-icon"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -294,8 +298,10 @@
                     <div class="NxN-field" id="FivexFive_Field" field="5x5" title="Quick Death" index="1">
 
                         <div class="card-header NxN-field-card-header">
-                            <div class="field-card-circle">
-                                <i class="fa-solid fa-baby field-card-header-icon"></i>
+                            <div class="NxN-field-card-header-innerWrapper">
+                                <div class="field-card-circle">
+                                    <i class="fa-solid fa-baby field-card-header-icon"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -340,8 +346,10 @@
                     <div class="NxN-field" id="TenxTen_Field" field="10x10" title="March into fire" index="2">
 
                         <div class="card-header NxN-field-card-header">
-                            <div class="field-card-circle">
-                                <i class="fa-solid fas fa-dragon field-card-header-icon"></i>
+                            <div class="NxN-field-card-header-innerWrapper">
+                                <div class="field-card-circle">
+                                    <i class="fa-solid fas fa-dragon field-card-header-icon"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -461,8 +469,10 @@
                     <div class="NxN-field" id="FifTeenxFifTeen_Field" field="15x15" title="Tunnel of truth" index="3">
 
                         <div class="card-header NxN-field-card-header">
-                            <div class="field-card-circle">
-                                <i class="fa-solid fa-chess-knight field-card-header-icon"></i>
+                            <div class="NxN-field-card-header-innerWrapper">
+                                <div class="field-card-circle">
+                                    <i class="fa-solid fa-chess-knight field-card-header-icon"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -706,8 +716,10 @@
                     <div class="NxN-field" id="TwentyxTwentyField" field="20x20" title="Long funeral" index="4">
 
                         <div class="card-header NxN-field-card-header">
-                            <div class="field-card-circle">
-                                <i class="fa-solid fa-skull field-card-header-icon"></i>
+                            <div class="NxN-field-card-header-innerWrapper">
+                                <div class="field-card-circle">
+                                    <i class="fa-solid fa-skull field-card-header-icon"></i>
+                                </div>
                             </div>
                         </div>
 
@@ -1155,7 +1167,7 @@
                                     <ul class="GameSide-headerList">
                                         <li class="GameArea-HeaderNav-Item"> <i id="leave-game-btn" class="fa-solid fa-arrow-left"></i> </li>
                                         <li class="GameArea-HeaderNav-Item"> <i id="restart-btn" class="fa-solid fa-arrow-rotate-right"></i> </li>
-                                        <li class="GameArea-HeaderNav-Item"> <i title="info" id="game-info-btn" class="fa-solid fa-question-circle"></i> </li>
+                                        <li class="GameArea-HeaderNav-Item"> <i title="info" id="game-info-btn" class="fa-regular fas far fa-question-circle"></i> </li>
                                     </ul>
                                 </nav>
 
@@ -1329,18 +1341,248 @@
     </div>
 
     <div class="GameInfoPopUp">
-        <div class="GameInfo-Header">
-            <div>
-                <h2 class="GameInfo-HeaderTitle">Game Info</h2>
+        <div class="GameInfoPopUp-Wrapper">
+            <div class="GameInfo-Header">
+                <div class="GameInfoHeader-Wrapper">
+                    <div>
+                        <h2 class="GameInfo-HeaderTitle">Field Name - Game Info</h2>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-x" id="GameInfo-Close-btn"></i>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <i class="fa-solid fa-x" id="GameInfo-Close-btn"></i>
+            <div class="GameInfo-Main">
+                <div class="GameInfo-AllowedPatterns">
+                    <h2>Allowed Patterns</h2>
+                    <div class="GameInfo-AllowedPatterns-Div">
+
+                        <div class="KIMode-AllowedPatterns-Div Pattern-Div">
+
+                            <div class="KIMode-Pattern-horizontal PatternGrid-Wrapper">
+                                <!-- 3x3 Field -->
+                                <div class="KIMode-horizontal-Pattern-Grid PatternGrid-Three">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-Three">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-Three">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-Three">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <!-- 4x4 Field -->
+                                <div class="KIMode-horizontal-Pattern-Grid PatternGrid-For">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-For">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-For">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-For">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <!-- 5x5 Field and everything above -->
+                                <div class="KIMode-horizontal-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="GameInfo-Main">
-
         </div>
     </div>
 

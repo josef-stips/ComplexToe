@@ -46,7 +46,6 @@ function KI_Action() {
     let move;
     for (let i = 0; i < cells.length; i++) {
         if (cells[i].classList.length <= 1 && cells[i].textContent == "") {
-
             cells[i].textContent = 'O';
             options[i] = 'O';
             let score = minimax(cells, 0, -Infinity, Infinity, false);

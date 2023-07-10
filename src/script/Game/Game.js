@@ -2,6 +2,7 @@ const statusText = document.querySelector('#statusText');
 const restartBtn = document.querySelector('#restart-btn');
 
 let running = false;
+let stopStatusTextInterval = false;
 let rounds_played = 0;
 
 let curr_mode = "";
@@ -338,8 +339,8 @@ function check_RemainingCells() {
 
 // restart game
 function restartGame() {
+    stopStatusTextInterval = true;
     cellGrid.classList.remove('cellGrid_opacity');
-
     setTimeout(() => {
         changePlayer();
         NxN_field.forEach(field => {
@@ -378,6 +379,7 @@ function Call_UltimateWin(WinCombination) {
 
 // Ultimate Game Win
 function UltimateGameWin(player1_won, player2_won, WinCombination) {
+    stopStatusTextInterval = false;
     cells.forEach(cell => {
         single_CellBlock(cell);
     });
@@ -388,15 +390,17 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
 
         // restart Game counter
         let i = 10;
-        let counter = setInterval(() => {
-            statusText.textContent = `New game in ${i}`;
-            statusText.classList.remove('Invisible');
-            i--;
-
-            if (i == -1) {
-                clearInterval(counter);
-                restartGame();
-            };
+        var counter = setInterval(() => {
+            if (!stopStatusTextInterval) {
+                statusText.textContent = `New game in ${i}`;
+                statusText.classList.remove('Invisible');
+                i--;
+                console.log(stopStatusTextInterval)
+                if (i <= -1) {
+                    clearInterval(counter);
+                    restartGame();
+                };
+            } else clearInterval(counter);
         }, 1000);
     }, 1500);
 

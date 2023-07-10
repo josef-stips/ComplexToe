@@ -48,6 +48,13 @@ let SetPlayerNamesCloseBtn = document.querySelector('#SetPlayerNames-close-btn')
 let UltimateWinTextArea = document.querySelector('#UltimateWinTextArea');
 let UltimateWinText = document.querySelector('#UltimateWinText');
 let gameInfo_btn = document.querySelector('#game-info-btn');
+let GameInfoPopUp = document.querySelector('.GameInfoPopUp');
+let GameInfo_HeaderTitle = document.querySelector('.GameInfo-HeaderTitle');
+let GameInfoClose_btn = document.querySelector('#GameInfo-Close-btn');
+let GameInfoHeader = document.querySelector('.GameInfo-Header');
+let PatternGridThree = document.querySelectorAll('.PatternGrid-Three');
+let PatternGridFor = document.querySelectorAll('.PatternGrid-For');
+let PatternGridFive = document.querySelectorAll('.PatternGrid-Five');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -403,4 +410,32 @@ YourName_KI_ModeCloseBtn.addEventListener('click', () => {
 SetPlayerNamesCloseBtn.addEventListener('click', () => {
     SetPlayerNamesPopUp.style.display = 'none';
     DarkLayer.style.display = 'none';
+});
+
+// Game Info PopUp stuff
+gameInfo_btn.addEventListener('click', () => {
+    DarkLayer.style.display = 'flex';
+    GameInfoPopUp.style.display = 'flex';
+    GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
+
+    if (curr_field == 'Small Price') {
+        PatternGridThree.forEach(pattern => pattern.style.display = 'grid');
+        PatternGridFor.forEach(pattern => pattern.style.display = 'none');
+        PatternGridFive.forEach(pattern => pattern.style.display = 'none');
+
+    } else if (curr_field == 'Thunder Advanture') {
+        PatternGridThree.forEach(pattern => pattern.style.display = 'none');
+        PatternGridFor.forEach(pattern => pattern.style.display = 'grid');
+        PatternGridFive.forEach(pattern => pattern.style.display = 'none');
+
+    } else {
+        PatternGridThree.forEach(pattern => pattern.style.display = 'none');
+        PatternGridFor.forEach(pattern => pattern.style.display = 'none');
+        PatternGridFive.forEach(pattern => pattern.style.display = 'grid');
+    };
+});
+
+GameInfoClose_btn.addEventListener('click', () => {
+    DarkLayer.style.display = 'none';
+    GameInfoPopUp.style.display = 'none';
 });
