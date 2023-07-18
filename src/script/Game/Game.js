@@ -187,8 +187,8 @@ function cellCicked() {
         updateCell(this, cellIndex);
 
         if (curr_mode != GameMode[1].opponent) {
-            SecondPlayerTime.style.color = 'black';
-            FirstPlayerTime.style.color = 'black';
+            SecondPlayerTime.style.color = 'var(--font-color)';
+            FirstPlayerTime.style.color = 'var(--font-color)';
 
             if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
                 // Active Blocker blocks a cell
@@ -227,8 +227,8 @@ function update1() {
     let Seconds = GameData.PlayerClock;
 
     SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
-    SecondPlayerTime.style.color = 'black';
-    FirstPlayerTime.style.color = 'black';
+    SecondPlayerTime.style.color = 'var(--font-color)';
+    FirstPlayerTime.style.color = 'var(--font-color)';
 
     firstClock = setInterval(() => {
         Seconds--;
@@ -253,7 +253,7 @@ function update1() {
 
             setTimeout(() => {
                 cellGrid.classList.remove('cellGrid-alert');
-                FirstPlayerTime.style.color = 'black';
+                FirstPlayerTime.style.color = 'var(--font-color)';
                 cellGrid.style.backgroundColor = "";
                 checkWinner();
                 chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
@@ -266,8 +266,8 @@ function update2() {
     let Seconds = GameData.PlayerClock;
 
     FirstPlayerTime.textContent = `${GameData.PlayerClock}`;
-    SecondPlayerTime.style.color = 'black';
-    FirstPlayerTime.style.color = 'black';
+    SecondPlayerTime.style.color = 'var(--font-color)';
+    FirstPlayerTime.style.color = 'var(--font-color)';
 
     secondClock = setInterval(() => {
         Seconds--;
@@ -292,7 +292,7 @@ function update2() {
 
             setTimeout(() => {
                 cellGrid.classList.remove('cellGrid-alert');
-                SecondPlayerTime.style.color = 'black';
+                SecondPlayerTime.style.color = 'var(--font-color)';
                 cellGrid.style.backgroundColor = "";
                 checkWinner();
                 chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);

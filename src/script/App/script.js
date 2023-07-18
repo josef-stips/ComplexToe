@@ -8,6 +8,8 @@ const audio = document.querySelector("#bg_audio");
 let gameModeCards_Div = document.querySelector('.gameMode-cards');
 let gameModeFields_Div = document.querySelector('.GameMode-fields');
 let fieldsArea_back_btn = document.querySelector('#fields-area-back-btn');
+let switchColorMode_btn = document.querySelector('#switchColorMode-btn');
+let settDarkMode = document.querySelector('#sett-darkMode');
 
 // Normal Games
 let FivexFive_Field = document.querySelector('#FivexFive_Field');
@@ -235,6 +237,8 @@ let curr_KI_Level;
 
 // app initialization
 function AppInit() {
+    ini_LightDark_Mode();
+
     KI_Card_DescriptionDisplay.textContent = GameMode[1].description;
     OnlineFriend_Card_DescriptionDisplay.textContent = GameMode[2].description;
     ComputerFriend_Card_DescriptionDisplay.textContent = GameMode[3].description;
@@ -357,8 +361,16 @@ checkBox.forEach(box => {
 
         // save in storage
         let setting = box.getAttribute('sett'); // which setting
-        let bool = box.getAttribute('marked'); // true ? false
-        localStorage.setItem(setting, bool);
+
+        if (setting != "sett-DarkMode") {
+            let bool = box.getAttribute('marked'); // true ? false
+            localStorage.setItem(setting, bool);
+        };
+
+        // dark/light mode switcher
+        if (setting == "sett-DarkMode") {
+            Set_Light_Dark_Mode();
+        };
     });
 });
 
@@ -708,6 +720,10 @@ Player2_ChooseWinnerDisplay.addEventListener('click', () => {
     DarkLayer.style.display = 'none';
 });
 
+switchColorMode_btn.addEventListener('click', () => {
+    Set_Light_Dark_Mode("moon");
+});
+
 function openChooseWinnerWindow() {
     ChooseWinner_popUp.style.display = 'flex';
     DarkLayer.style.display = 'block';
@@ -743,4 +759,49 @@ const DisableGameModeItems = () => {
     GameModeListItemCheckMark_FreeFight.classList = '';
     GameModeListItem_FreeFight.style.color = 'black';
     GameModeListItem_FreeFight.setAttribute('selected', 'false');
+};
+
+// Set Light/Dark Mode
+function Set_Light_Dark_Mode(from) {
+    if (localStorage.getItem('sett-DarkMode') == "true") { // dark mode is already on, switch to light mode
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('sett-DarkMode', false);
+
+
+        if (from == "moon") {
+            settDarkMode.classList = "fa-regular fa-square checkBox";
+            settDarkMode.setAttribute("marked", "false");
+        };
+
+    } else { // light mode is already on, switch to dark mode
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('sett-DarkMode', true);
+
+        if (from == "moon") {
+            settDarkMode.classList = "fa-regular fa-check-square checkBox";
+            settDarkMode.setAttribute("marked", "true");
+        };
+    };
+};
+
+// set Light/Dark mode in the start of the app on the base of already existing data in localstorage
+function ini_LightDark_Mode() {
+    if (localStorage.getItem('sett-DarkMode') == undefined) {
+        localStorage.setItem('sett-DarkMode', true);
+    }
+
+    if (localStorage.getItem('sett-DarkMode') == "true") { // dark mode is already on, switch to light mode
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('sett-DarkMode', true);
+
+        settDarkMode.classList = "fa-regular fa-check-square checkBox";
+        settDarkMode.setAttribute("marked", "true");
+
+    } else { // light mode is already on, switch to dark mode
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('sett-DarkMode', false);
+
+        settDarkMode.classList = "fa-regular fa-square checkBox";
+        settDarkMode.setAttribute("marked", "false");
+    };
 };

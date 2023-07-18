@@ -113,7 +113,7 @@ function Start_Blocker() {
         let Index = result[i][RIndex]
 
         // Zufälliges Kind-Element auswählen und Hintergrundfarbe auf Schwarz setzen
-        Grid[Index].style.backgroundColor = "black";
+        Grid[Index].style.backgroundColor = "var(--font-color)";
         Grid[Index].classList = "cell death-cell";
         Grid[Index].removeEventListener('click', cellCicked);
     };
@@ -152,7 +152,7 @@ function Activate_InteractiveBlocker() {
 
     if (Grid[RIndex].classList.length <= 1) {
         Grid[RIndex].classList = "cell death-cell";
-        Grid[RIndex].style.backgroundColor = "black";
+        Grid[RIndex].style.backgroundColor = "var(--font-color)";
         Grid[RIndex].removeEventListener('click', cellCicked);
         setTimeout(() => {
             Grid[RIndex].textContent = null;
