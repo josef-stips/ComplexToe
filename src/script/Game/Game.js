@@ -16,26 +16,34 @@ let xCell_Amount; // numb
 let PlayerData = {
     1: {
         'PlayerName': '',
-        'PlayerForm': 'X'
+        'PlayerForm': ''
     },
     2: {
         'PlayerName': '',
-        'PlayerForm': 'O'
+        'PlayerForm': ''
     },
+};
+
+let GameData = {
+    "InnerGameMode": "",
+    "PlayerClock": "",
 };
 
 let currentPlayer = PlayerData[1].PlayerForm; // current player form. X ? O
 let currentName;
 
-let score_Player1_numb = 0;
-let score_Player2_numb = 0;
-
 let cells;
+
+// minimax scores
+let scores = {
+    // 'X': -1,
+    // 'O': 1,
+    // tie: 0,
+};
 
 function initializeGame(field) {
     let fieldTitle = field.getAttribute('title');
     let fieldIndex = field.getAttribute('index');
-
     console.log(fieldIndex, Fields)
 
     // reset score
@@ -67,7 +75,22 @@ function initializeGame(field) {
     restartBtn.addEventListener('click', restartGame);
     running = true;
 
-    Start_Blocker();
+    GameData.InnerGameMode = curr_innerGameMode;
+
+    if (curr_mode != GameMode[1].opponent) {
+        // Inner game Mode
+        if (GameData.InnerGameMode == InnerGameModes[1]) { // Boneyard
+            Start_Blocker();
+
+        } else if (GameData.InnerGameMode == InnerGameModes[2]) { // Blocker Combat
+            // Blocker blocks one single block after every set
+            // Activate_InteractiveBlocker();
+
+        } else if (GameData.InnerGameMode == InnerGameModes[3]) { // Free Fight
+            // no blocker
+        };
+    };
+
     Find_MaxDepth();
     initializeDocument(field, fieldIndex, fieldTitle);
 };
@@ -83,29 +106,73 @@ function initializeDocument(field, fieldIndex, fieldTitle) {
     GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
     GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
     GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
+
+    // cell grid things
     cellGrid.style.display = 'grid';
     cellGrid.classList.remove('Invisible');
+    cellGrid.classList.remove('cellGrid-alert');
     cellGrid.classList.add('cellGrid_opacity');
+
+    // How long the game is - Game Counter
+    let GameSeconds = 0;
+    GameField_TimeMonitor.textContent = '0 s.';
+    clearInterval(gameCounter)
+    gameCounter = setInterval(() => {
+        GameSeconds++;
+        GameField_TimeMonitor.textContent = GameSeconds + ' s.';
+    }, 1000);
+
     // Init Player 
     initializePlayers();
+
+    // choose winner button
+    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
 };
 
 function initializePlayers() {
     scorePlayer1.textContent = score_Player1_numb;
     scorePlayer2.textContent = score_Player2_numb;
 
-    namePlayer1.textContent = curr_name1 + ' (X)';
-    namePlayer2.textContent = curr_name2 + ' (O)';
-
+    // Player Name
     PlayerData[1].PlayerName = curr_name1;
     PlayerData[2].PlayerName = curr_name2;
+    // Player Form
+    PlayerData[1].PlayerForm = curr_form1;
+    PlayerData[2].PlayerForm = curr_form2;
+
+    namePlayer1.textContent = curr_name1 + ` (${PlayerData[1].PlayerForm})`;
+    namePlayer2.textContent = curr_name2 + ` (${PlayerData[2].PlayerForm})`;
 
     currentName = PlayerData[1].PlayerName;
     currentPlayer = PlayerData[1].PlayerForm;
 
+    Player1_ChooseWinnerDisplay.textContent = PlayerData[1].PlayerName;
+    Player2_ChooseWinnerDisplay.textContent = PlayerData[2].PlayerName;
+
+    // player clock set up
+    GameData.PlayerClock = curr_selected_PlayerClock;
+
+    if (curr_mode != GameMode[1].opponent) {
+        GameFieldHeaderUnderBody.style.display = 'flex';
+        SecondPlayerTime.style.display = 'flex';
+        FirstPlayerTime.style.display = 'flex';
+
+        SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
+        FirstPlayerTime.textContent = `${GameData.PlayerClock}`;
+        Activate_PlayerClock(true, false); // first param: first player; second param: second player
+
+    } else {
+        GameFieldHeaderUnderBody.style.display = 'none';
+    };
+
     // set up statusText
     statusText.textContent = `${currentName}'s turn`;
     UltimateWinTextArea.style.display = 'none';
+
+    // Define minimax scores for KI Mode
+    scores[PlayerData[1].PlayerForm] = -1;
+    scores[PlayerData[2].PlayerForm] = 1;
+    scores['tie'] = 0;
 };
 
 function cellCicked() {
@@ -118,10 +185,120 @@ function cellCicked() {
         };
 
         updateCell(this, cellIndex);
-        setTimeout(() => {
+
+        if (curr_mode != GameMode[1].opponent) {
+            SecondPlayerTime.style.color = 'black';
+            FirstPlayerTime.style.color = 'black';
+
+            if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
+                // Active Blocker blocks a cell
+                Activate_InteractiveBlocker();
+
+                // important stuff
+                clearInterval(firstClock);
+                clearInterval(secondClock);
+
+                // check winner after a time
+                setTimeout(() => {
+                    checkWinner();
+                }, 1000);
+
+            } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
+                checkWinner();
+            };
+
+        } else { // if in KI Mode just check the winner 
             checkWinner();
-        }, 100);
+        };
     };
+};
+
+function Activate_PlayerClock(PlayerOne, PlayerTwo) {
+    if (PlayerOne) {
+        update1();
+    };
+
+    if (PlayerTwo) {
+        update2();
+    };
+};
+
+function update1() {
+    let Seconds = GameData.PlayerClock;
+
+    SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
+    SecondPlayerTime.style.color = 'black';
+    FirstPlayerTime.style.color = 'black';
+
+    firstClock = setInterval(() => {
+        Seconds--;
+        FirstPlayerTime.textContent = `${Seconds}`;
+
+        if (Seconds <= 2) {
+            FirstPlayerTime.style.color = 'red';
+        };
+
+        if (Seconds == -1) {
+            chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+
+            FirstPlayerTime.textContent = `${0} `;
+            clearInterval(firstClock);
+
+            cellGrid.classList.remove('cellGrid_opacity');
+            cellGrid.classList.add('cellGrid-alert');
+
+            if (GameData.InnerGameMode == InnerGameModes[2]) {
+                Activate_InteractiveBlocker();
+            };
+
+            setTimeout(() => {
+                cellGrid.classList.remove('cellGrid-alert');
+                FirstPlayerTime.style.color = 'black';
+                cellGrid.style.backgroundColor = "";
+                checkWinner();
+                chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+            }, 1000);
+        };
+    }, 1000);
+};
+
+function update2() {
+    let Seconds = GameData.PlayerClock;
+
+    FirstPlayerTime.textContent = `${GameData.PlayerClock}`;
+    SecondPlayerTime.style.color = 'black';
+    FirstPlayerTime.style.color = 'black';
+
+    secondClock = setInterval(() => {
+        Seconds--;
+        SecondPlayerTime.textContent = `${Seconds}`;
+
+        if (Seconds <= 2) {
+            SecondPlayerTime.style.color = 'red';
+        };
+
+        if (Seconds == -1) {
+            chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+
+            SecondPlayerTime.textContent = `${0}`;
+            clearInterval(secondClock);
+
+            cellGrid.classList.remove('cellGrid_opacity');
+            cellGrid.classList.add('cellGrid-alert');
+
+            if (GameData.InnerGameMode == InnerGameModes[2]) {
+                Activate_InteractiveBlocker();
+            };
+
+            setTimeout(() => {
+                cellGrid.classList.remove('cellGrid-alert');
+                SecondPlayerTime.style.color = 'black';
+                cellGrid.style.backgroundColor = "";
+                checkWinner();
+                chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+            }, 1000);
+        };
+    }, 1000);
 };
 
 function updateCell(cell, index) {
@@ -129,16 +306,33 @@ function updateCell(cell, index) {
     cell.textContent = currentPlayer;
 };
 
-function changePlayer() {
+function changePlayer(from_restart) {
     currentPlayer = (currentPlayer == PlayerData[1].PlayerForm) ? PlayerData[2].PlayerForm : PlayerData[1].PlayerForm;
     currentName = (currentName == PlayerData[1].PlayerName) ? PlayerData[2].PlayerName : PlayerData[1].PlayerName;
 
     // If in KI Mode and it is Ki's turn now
-    if (curr_mode == GameMode[1].opponent && currentPlayer == PlayerData[2].PlayerForm) {
-        statusText.textContent = `Waiting for ${currentName}...`;
+    if (curr_mode == GameMode[1].opponent) {
+        if (currentPlayer == PlayerData[2].PlayerForm) {
+            statusText.textContent = `Waiting for ${currentName}...`;
+        };
 
-    } else {
-        statusText.textContent = `${currentName}'s turn`;
+        if (currentPlayer == PlayerData[1].PlayerForm) {
+            statusText.textContent = `${currentName}'s turn`;
+        };
+
+    } else { // If not in KI Mode
+        if (!from_restart) {
+            statusText.textContent = `${currentName}'s turn`;
+
+            clearInterval(firstClock);
+            clearInterval(secondClock);
+            if (currentPlayer == PlayerData[1].PlayerForm) {
+                Activate_PlayerClock(true, false);
+
+            } else if (currentPlayer == PlayerData[2].PlayerForm) {
+                Activate_PlayerClock(false, true);
+            };
+        };
     };
 };
 
@@ -155,7 +349,7 @@ function checkWinner() {
     cells.forEach(cell => {
         cell.removeEventListener('click', cellCicked);
     });
-    running = false
+    running = false;
 
     for (let i = 0; i < WinConditions.length; i++) {
         const condition = WinConditions[i];
@@ -214,10 +408,10 @@ function checkWinner() {
         };
     };
 
-    if (winner == "X") {
+    if (winner == PlayerData[1].PlayerForm) {
         Player1_won = true;
 
-    } else if (winner == "O") {
+    } else if (winner == PlayerData[2].PlayerForm) {
         Player2_won = true;
     };
 
@@ -229,6 +423,8 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
     let ava_cells = check_RemainingCells();
 
     if (roundWon) {
+        clearInterval(firstClock);
+        clearInterval(secondClock);
         // Choose winner
         chooseSubWinner(Player1_won, Player2_won, WinCombination);
 
@@ -239,7 +435,7 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
                     let grid = [...cellGrid.children];
                     // Make used cells die
                     for (cell of grid) {
-                        if (cell.textContent == "X" || cell.textContent == "O") {
+                        if (cell.textContent == PlayerData[1].PlayerForm || cell.textContent == PlayerData[2].PlayerForm) {
                             single_CellBlock(cell);
                         };
                     };
@@ -256,9 +452,9 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
 
             // Change player things
             setTimeout(() => {
-                if (currentPlayer == "X" && curr_mode == GameMode[1].opponent) {
+                if (currentPlayer == PlayerData[1].PlayerForm && curr_mode == GameMode[1].opponent) {
                     setTimeout(() => {
-                        changePlayer();
+                        changePlayer(false);
                         KI_Action();
                     }, 1000);
 
@@ -270,7 +466,7 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
                             cell.style.cursor = 'pointer';
                         });
                         running = true;
-                        changePlayer();
+                        changePlayer(false);
                     }, 1600);
                 };
             }, 600);
@@ -282,22 +478,21 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
 
     } else {
         running = false;
-        if (currentPlayer == "X" && curr_mode == GameMode[1].opponent) {
-            changePlayer();
+        if (currentPlayer == PlayerData[1].PlayerForm && curr_mode == GameMode[1].opponent) {
+            changePlayer(false);
             setTimeout(() => {
                 running = true;
                 KI_Action();
             }, 1000);
 
         } else {
-            // add access to set X from Player1 
             setTimeout(() => {
                 // add access to set
                 cells.forEach(cell => {
                     cell.addEventListener('click', cellCicked);
                 });
                 running = true;
-                changePlayer();
+                changePlayer(false);
             }, 100);
         };
     };
@@ -308,22 +503,25 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination) {
     WinCombination.forEach(Ele => {
         Ele.classList.add('about-to-die-cell');
     });
-    if (Player1_won == true) {
 
-        score_Player1_numb++;
-        scorePlayer1.textContent = score_Player1_numb;
-        statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
+    setTimeout(() => {
+        if (Player1_won == true) {
 
-        Player1_won = false;
+            score_Player1_numb++;
+            scorePlayer1.textContent = score_Player1_numb;
+            statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
 
-    } else if (Player2_won == true) {
+            Player1_won = false;
 
-        score_Player2_numb++;
-        scorePlayer2.textContent = score_Player2_numb;
-        statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
+        } else if (Player2_won == true) {
 
-        Player2_won = false;
-    };
+            score_Player2_numb++;
+            scorePlayer2.textContent = score_Player2_numb;
+            statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
+
+            Player2_won = false;
+        };
+    }, 2000);
 };
 
 // check remaining white cells
@@ -339,10 +537,12 @@ function check_RemainingCells() {
 
 // restart game
 function restartGame() {
+    clearInterval(firstClock);
+    clearInterval(secondClock);
     stopStatusTextInterval = true;
     cellGrid.classList.remove('cellGrid_opacity');
+    changePlayer(true);
     setTimeout(() => {
-        changePlayer();
         NxN_field.forEach(field => {
             if (field.getAttribute('title') == curr_field) {
                 initializeGame(field);
@@ -365,16 +565,31 @@ function single_CellBlock(cell) {
 
 // call Ultimate Game Win Function
 function Call_UltimateWin(WinCombination) {
-    setTimeout(() => {
-        running = false;
-        if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
-            UltimateGameWin(true, false, WinCombination);
-        } else if (score_Player1_numb < score_Player2_numb) { // Player 2 has won
-            UltimateGameWin(false, true, WinCombination);
-        } else if (score_Player1_numb == score_Player2_numb) { // Tie
-            UltimateGameWin(true, true, WinCombination);
-        };
-    }, 600);
+    chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+
+    if (WinCombination == undefined) {
+        setTimeout(() => {
+            running = false;
+            if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
+                UltimateGameWin(true, false);
+            } else if (score_Player1_numb < score_Player2_numb) { // Player 2 has won
+                UltimateGameWin(false, true);
+            } else if (score_Player1_numb == score_Player2_numb) { // Tie
+                UltimateGameWin(true, true);
+            };
+        }, 600);
+    } else {
+        setTimeout(() => {
+            running = false;
+            if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
+                UltimateGameWin(true, false, WinCombination);
+            } else if (score_Player1_numb < score_Player2_numb) { // Player 2 has won
+                UltimateGameWin(false, true, WinCombination);
+            } else if (score_Player1_numb == score_Player2_numb) { // Tie
+                UltimateGameWin(true, true, WinCombination);
+            };
+        }, 600);
+    };
 };
 
 // Ultimate Game Win
@@ -384,25 +599,35 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
         single_CellBlock(cell);
     });
 
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    clearInterval(gameCounter);
+
+    score_Player1_numb = 0;
+    score_Player2_numb = 0;
+
     setTimeout(() => {
         cellGrid.classList.add('Invisible');
         statusText.classList.add('Invisible');
+        GameFieldHeaderUnderBody.style.display = 'none';
 
         // restart Game counter
-        let i = 10;
+        let i = 5;
         var counter = setInterval(() => {
             if (!stopStatusTextInterval) {
                 statusText.textContent = `New game in ${i}`;
                 statusText.classList.remove('Invisible');
                 i--;
-                console.log(stopStatusTextInterval)
                 if (i <= -1) {
                     clearInterval(counter);
                     restartGame();
                 };
-            } else clearInterval(counter);
+            } else {
+                GameFieldHeaderUnderBody.style.display = 'flex';
+                clearInterval(counter);
+            };
         }, 1000);
-    }, 1500);
+    }, 2000);
 
     setTimeout(() => {
         cellGrid.style.display = 'none';

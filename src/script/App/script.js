@@ -38,8 +38,6 @@ let GameModeDisplay = document.querySelector('.GameMode-display');
 
 let SetPlayerNamesPopUp = document.querySelector('.SetPlayerNamesPopUp');
 let SetPlayerName_ConfirmButton = document.querySelector('.SetPlayerName-ConfirmButton');
-let Player1_NameInput = document.querySelector('#Player1_NameInput');
-let Player2_NameInput = document.querySelector('#Player2_NameInput');
 let YourName_Input_KI_mode = document.querySelector('#YourName_Input_KI_mode');
 let SetPlayerName_confBTN_KIMode = document.querySelector('.SetPlayerName-ConfirmButton_KI_mode');
 let YourNamePopUp_KI_Mode = document.querySelector('#YourNamePopUp_KI_Mode');
@@ -55,6 +53,53 @@ let GameInfoHeader = document.querySelector('.GameInfo-Header');
 let PatternGridThree = document.querySelectorAll('.PatternGrid-Three');
 let PatternGridFor = document.querySelectorAll('.PatternGrid-For');
 let PatternGridFive = document.querySelectorAll('.PatternGrid-Five');
+let Player1_NameInput = document.querySelector('#Player1_NameInput');
+let Player2_NameInput = document.querySelector('#Player2_NameInput');
+let Player2_IconInput = document.querySelector('#Player2_IconInput');
+let Player1_IconInput = document.querySelector('#Player1_IconInput');
+let Player1_ClockInput = document.querySelector('#Player1_ClockInput');
+let Player2_ClockInput = document.querySelector('#Player2_ClockInput');
+let SetGameModeListWrapper = document.querySelector('.SetGameModeList-Wrapper');
+let GameModelistItem_Boneyard = document.querySelector('#GameModelistItem-Boneyard');
+let GameModeListItem_BlockerCombat = document.querySelector('#GameModeListItem-BlockerCombat');
+let GameModeListItem_FreeFight = document.querySelector('#GameModeListItem-FreeFight');
+let GameModeListItemCheckMark_Boneyard = document.querySelector('#GameModeListItem-CheckMark-Boneyard');
+let GameModeListItemCheckMark_BlockerCombat = document.querySelector('#GameModeListItem-CheckMark-BlockerCombat');
+let GameModeListItemCheckMark_FreeFight = document.querySelector('#GameModeListItem-CheckMark-FreeFight');
+let SetClockList = document.querySelector('.SetClockList');
+let SetGameModeList = document.querySelector('.SetGameModeList');
+let SetClockListItem_5sec = document.querySelector('#SetClockListItem-5sec');
+let SetClockListItem_15sec = document.querySelector('#SetClockListItem-15sec');
+let SetClockListItem_30sec = document.querySelector('#SetClockListItem-30sec');
+let SetClockListItem_50sec = document.querySelector('#SetClockListItem-50sec');
+let SetClockListItem_70sec = document.querySelector('#SetClockListItem-70sec');
+let ClockListItemCheckMark_5sec = document.querySelector('#ClockListItemCheckMark-5sec');
+let ClockListItemCheckMark_15sec = document.querySelector('#ClockListItemCheckMark-15sec');
+let ClockListItemCheckMark_30sec = document.querySelector('#ClockListItemCheckMark-30sec');
+let ClockListItemCheckMark_50sec = document.querySelector('#ClockListItemCheckMark-50sec');
+let ClockListItemCheckMark_70sec = document.querySelector('#ClockListItemCheckMark-70sec');
+let FirstPlayerTime = document.querySelector('.FirstPlayer-time');
+let SecondPlayerTime = document.querySelector('.SecondPlayer-time');
+let GameFieldHeaderUnder = document.querySelector('.GameFieldHeader-under');
+let chooseWinnerWindowBtn = document.querySelector('#choose-winner-window-btn');
+let ChooseWinner_popUp = document.querySelector('.ChooseWinner-popUp');
+let Player1_ChooseWinnerDisplay = document.querySelector('#Player1-ChooseWinnerDisplay');
+let Player2_ChooseWinnerDisplay = document.querySelector('#Player2-ChooseWinnerDisplay');
+let ChooseWinnerWindowCloseBtn = document.querySelector('#ChooseWinnerWindow-CloseBtn');
+let GameFieldHeaderUnderBody = document.querySelector('.GameFieldHeader-underBody');
+
+let SetClockList_KI = document.querySelector('.SetClockList_KI');
+let Your_IconInput = document.querySelector('#Your_IconInput');
+let SetClockListItem_5sec_KI = document.querySelector('#SetClockListItem-5sec_KI');
+let SetClockListItem_15sec_KI = document.querySelector('#SetClockListItem-15sec_KI');
+let SetClockListItem_30sec_KI = document.querySelector('#SetClockListItem-30sec_KI');
+let SetClockListItem_50sec_KI = document.querySelector('#SetClockListItem-50sec_KI');
+let SetClockListItem_70sec_KI = document.querySelector('#SetClockListItem-70sec_KI');
+let ClockListItemCheckMark_5sec_KI = document.querySelector('#ClockListItemCheckMark-5sec_KI');
+let ClockListItemCheckMark_15sec_KI = document.querySelector('#ClockListItemCheckMark-15sec_KI');
+let ClockListItemCheckMark_30sec_KI = document.querySelector('#ClockListItemCheckMark-30sec_KI');
+let ClockListItemCheckMark_50sec_KI = document.querySelector('#ClockListItemCheckMark-50sec_KI');
+let ClockListItemCheckMark_70sec_KI = document.querySelector('#ClockListItemCheckMark-70sec_KI');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -102,7 +147,7 @@ let Fields = {
         "blocks": "25",
         "xyCellAmount": "5",
         "icon": "fa-solid fa-baby",
-        "averagePlayTime": "15 seconds",
+        "averagePlayTime": "30 seconds",
         "theme": ".../assets/Maps/Quick_Death.mp3",
         "theme_name": Quick_death_Theme,
     },
@@ -112,7 +157,7 @@ let Fields = {
         "blocks": "100",
         "xyCellAmount": "10",
         "icon": "fa-solid fa-dragon",
-        "averagePlayTime": "15 minutes",
+        "averagePlayTime": "5 minutes",
         "theme": ".../assets/Maps/March_into_fire.mp3",
         "theme_name": March_into_fire_Theme,
     },
@@ -122,7 +167,7 @@ let Fields = {
         "blocks": "225",
         "xyCellAmount": "15",
         "icon": "fa-solid fa-chess-knight",
-        "averagePlayTime": "90 minutes",
+        "averagePlayTime": "10 minutes",
         "theme": ".../assets/Maps/Tunnel_of_truth.mp3",
         "theme_name": Tunnel_of_truth_Theme,
     },
@@ -132,7 +177,7 @@ let Fields = {
         "blocks": "400",
         "xyCellAmount": "20",
         "icon": "fa-solid fa-skull",
-        "averagePlayTime": "5+ hours",
+        "averagePlayTime": "20 minutes",
         "theme": ".../assets/Maps/Long_Funeral.mp3",
         "theme_name": Long_funeral_Theme,
     },
@@ -161,6 +206,24 @@ let Fields = {
 let curr_field_ele; //html element
 let curr_name1 = ""; // from html input field
 let curr_name2 = ""; // from html input field
+let curr_form1 = ""; // player1 form (X, O etc.)
+let curr_form2 = ""; // player2 form (X, O etc.)
+let curr_innerGameMode = ""; // Inner Game Mode: Boneyard, Blocker Combat, Free Fight
+let curr_selected_PlayerClock = ""; // Player selected a game clock for the game initializing ... This time says how much time the player has to set
+let firstClock // First Player's clock
+let secondClock // Second Player's clock
+
+let gameCounter // Game's clock
+
+let score_Player1_numb = 0;
+let score_Player2_numb = 0;
+
+// Inner Game Modes
+let InnerGameModes = {
+    1: "Boneyard",
+    2: "Blocker Combat",
+    3: "Free Fight",
+};
 
 // Das ausgewählte Level entscheidet, wie schwer die KI sein soll und wie viele Blockaden gesetzt werden sollen 
 let KI_Mode_Levels = {
@@ -321,12 +384,18 @@ function EnterGame() {
 
                 SetPlayerNamesPopUp.style.display = 'flex';
                 DarkLayer.style.display = 'block';
-                Player1_NameInput.value = "";
-                Player2_NameInput.value = "";
 
                 curr_name1 = null;
                 curr_name2 = null;
                 curr_field_ele = f.target;
+
+                // Initialize Inputs from pop up
+                DisableGameModeItems();
+                DisablePlayerClockItems();
+                Player1_NameInput.value = "";
+                Player2_NameInput.value = "";
+                Player1_IconInput.value = "X";
+                Player2_IconInput.value = "O";
             };
 
             if (curr_mode == GameMode[1].opponent) { // KI Mode
@@ -334,6 +403,7 @@ function EnterGame() {
                 YourNamePopUp_KI_Mode.style.display = 'flex';
                 DarkLayer.style.display = 'block';
                 YourName_Input_KI_mode.value = "";
+                Your_IconInput.value = "";
 
                 curr_name1 = null;
                 curr_name2 = null;
@@ -350,15 +420,23 @@ leaveGame_btn.addEventListener('click', () => {
     // lobbyHeader.style.display = 'flex';
     gameModeFields_Div.style.display = 'flex';
 
-    playBtn_Audio();
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    clearInterval(gameCounter);
+    stopStatusTextInterval = true;
+
+    // playBtn_Audio();
     PauseMusic();
     CreateMusicBars(audio);
 });
 
-// set player names
+// set player names in normal mode
 SetPlayerName_ConfirmButton.addEventListener('click', () => {
+    let Check = SetGameData_CheckConfirm();
     // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
-    if (Player1_NameInput.value != "" && Player2_NameInput.value != "" && Player1_NameInput.value != Player2_NameInput.value) {
+    if (Player1_NameInput.value != "" && Player2_NameInput.value != "" && Player1_NameInput.value != Player2_NameInput.value &&
+        Player1_IconInput.value != "" && Player2_IconInput.value != "" && Player1_IconInput.value != Player2_IconInput.value &&
+        Check[0] == true && Check[1] == true) {
         // html stuff
         SetPlayerNamesPopUp.style.display = 'none';
         DarkLayer.style.display = 'none';
@@ -367,6 +445,10 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
         let fieldIndex = curr_field_ele.getAttribute('index');
         curr_name1 = Player1_NameInput.value;
         curr_name2 = Player2_NameInput.value;
+        curr_form1 = Player1_IconInput.value;
+        curr_form2 = Player2_IconInput.value;
+        curr_innerGameMode = Check[3]; // Inner Game
+        curr_selected_PlayerClock = Check[2]; // Player Clock
 
         initializeGame(curr_field_ele);
 
@@ -375,14 +457,13 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
         CreateMusicBars(Fields[fieldIndex].theme_name);
 
     } else {
-        return
+        return;
     };
 });
 
 //If you play against a bot in the KI Mode
 SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
-
-    if (YourName_Input_KI_mode.value != "") {
+    if (YourName_Input_KI_mode.value != "" && Your_IconInput.value != "") {
         // html stuff
         YourNamePopUp_KI_Mode.style.display = 'none';
         DarkLayer.style.display = 'none';
@@ -391,6 +472,8 @@ SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
         let fieldIndex = curr_field_ele.getAttribute('index');
         curr_name1 = YourName_Input_KI_mode.value;
         curr_name2 = 'Bot';
+        curr_form1 = Your_IconInput.value;
+        curr_form2 = 'O' // Bot        
 
         initializeGame(curr_field_ele);
 
@@ -399,6 +482,31 @@ SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
         CreateMusicBars(Fields[fieldIndex].theme_name);
     };
 });
+
+// If player clicks confirm button check if he selected the clock and Inner game mode
+const SetGameData_CheckConfirm = () => {
+    let Check1 = false;
+    let Check2 = false;
+    let Clock = "";
+    let InnerGameMode = "";
+
+    Array.from(SetClockList.children).forEach(e => {
+        console.log(e.getAttribute('selected'))
+        if (e.getAttribute('selected') == "true") {
+            Check1 = true;
+            Clock = e.getAttribute('value');
+        };
+    });
+    Array.from(SetGameModeList.children).forEach(e => {
+        console.log(e.getAttribute('selected'))
+        if (e.getAttribute('selected') == "true") {
+            Check2 = true;
+            InnerGameMode = e.children[0].children[0].textContent;
+        };
+    });
+
+    return [Check1, Check2, Clock, InnerGameMode];
+};
 
 // close buttons
 YourName_KI_ModeCloseBtn.addEventListener('click', () => {
@@ -439,3 +547,200 @@ GameInfoClose_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'none';
     GameInfoPopUp.style.display = 'none';
 });
+
+GameModelistItem_Boneyard.addEventListener('click', () => {
+    switch (GameModelistItem_Boneyard.getAttribute('selected')) {
+        case 'false':
+            DisableGameModeItems();
+            GameModeListItemCheckMark_Boneyard.classList = 'fa-solid fa-check';
+            GameModelistItem_Boneyard.style.color = 'white';
+            GameModelistItem_Boneyard.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            GameModeListItemCheckMark_Boneyard.classList = '';
+            GameModelistItem_Boneyard.style.color = 'black';
+            GameModelistItem_Boneyard.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+GameModeListItem_BlockerCombat.addEventListener('click', () => {
+    switch (GameModeListItem_BlockerCombat.getAttribute('selected')) {
+        case 'false':
+            DisableGameModeItems();
+            GameModeListItemCheckMark_BlockerCombat.classList = 'fa-solid fa-check';
+            GameModeListItem_BlockerCombat.style.color = 'white';
+            GameModeListItem_BlockerCombat.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            GameModeListItemCheckMark_BlockerCombat.classList = '';
+            GameModeListItem_BlockerCombat.style.color = 'black';
+            GameModeListItem_BlockerCombat.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+GameModeListItem_FreeFight.addEventListener('click', () => {
+    switch (GameModeListItem_FreeFight.getAttribute('selected')) {
+        case 'false':
+            DisableGameModeItems();
+            GameModeListItemCheckMark_FreeFight.classList = 'fa-solid fa-check';
+            GameModeListItem_FreeFight.style.color = 'white';
+            GameModeListItem_FreeFight.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            GameModeListItemCheckMark_FreeFight.classList = '';
+            GameModeListItem_FreeFight.style.color = 'black';
+            GameModeListItem_FreeFight.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+SetClockListItem_5sec.addEventListener('click', () => {
+    switch (SetClockListItem_5sec.getAttribute('selected')) {
+        case 'false':
+            DisablePlayerClockItems();
+            ClockListItemCheckMark_5sec.classList = 'fa-solid fa-check';
+            SetClockListItem_5sec.style.color = 'white';
+            SetClockListItem_5sec.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            ClockListItemCheckMark_5sec.classList = '';
+            SetClockListItem_5sec.style.color = 'black';
+            SetClockListItem_5sec.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+SetClockListItem_15sec.addEventListener('click', () => {
+    switch (SetClockListItem_15sec.getAttribute('selected')) {
+        case 'false':
+            DisablePlayerClockItems();
+            ClockListItemCheckMark_15sec.classList = 'fa-solid fa-check';
+            SetClockListItem_15sec.style.color = 'white';
+            SetClockListItem_15sec.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            ClockListItemCheckMark_15sec.classList = '';
+            SetClockListItem_15sec.style.color = 'black';
+            SetClockListItem_15sec.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+SetClockListItem_30sec.addEventListener('click', () => {
+    DisablePlayerClockItems();
+    switch (SetClockListItem_30sec.getAttribute('selected')) {
+        case 'false':
+            DisablePlayerClockItems();
+            ClockListItemCheckMark_30sec.classList = 'fa-solid fa-check';
+            SetClockListItem_30sec.style.color = 'white';
+            SetClockListItem_30sec.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            ClockListItemCheckMark_30sec.classList = '';
+            SetClockListItem_30sec.style.color = 'black';
+            SetClockListItem_30sec.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+SetClockListItem_50sec.addEventListener('click', () => {
+    DisablePlayerClockItems();
+    switch (SetClockListItem_50sec.getAttribute('selected')) {
+        case 'false':
+            DisablePlayerClockItems();
+            ClockListItemCheckMark_50sec.classList = 'fa-solid fa-check';
+            SetClockListItem_50sec.style.color = 'white';
+            SetClockListItem_50sec.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            ClockListItemCheckMark_50sec.classList = '';
+            SetClockListItem_50sec.style.color = 'black';
+            SetClockListItem_50sec.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+SetClockListItem_70sec.addEventListener('click', () => {
+    DisablePlayerClockItems();
+    switch (SetClockListItem_70sec.getAttribute('selected')) {
+        case 'false':
+            DisablePlayerClockItems();
+            ClockListItemCheckMark_70sec.classList = 'fa-solid fa-check';
+            SetClockListItem_70sec.style.color = 'white';
+            SetClockListItem_70sec.setAttribute('selected', 'true');
+            break;
+
+        case 'true':
+            ClockListItemCheckMark_70sec.classList = '';
+            SetClockListItem_70sec.style.color = 'black';
+            SetClockListItem_70sec.setAttribute('selected', 'false');
+            break;
+    };
+});
+
+chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+
+ChooseWinnerWindowCloseBtn.addEventListener('click', () => {
+    ChooseWinner_popUp.style.display = 'none';
+    DarkLayer.style.display = 'none';
+});
+
+Player1_ChooseWinnerDisplay.addEventListener('click', () => {
+    score_Player1_numb = Infinity;
+    Call_UltimateWin();
+    ChooseWinner_popUp.style.display = 'none';
+    DarkLayer.style.display = 'none';
+});
+
+Player2_ChooseWinnerDisplay.addEventListener('click', () => {
+    score_Player1_numb = -Infinity;
+    Call_UltimateWin();
+    ChooseWinner_popUp.style.display = 'none';
+    DarkLayer.style.display = 'none';
+});
+
+function openChooseWinnerWindow() {
+    ChooseWinner_popUp.style.display = 'flex';
+    DarkLayer.style.display = 'block';
+};
+
+// Disable all "set player clock" list items
+const DisablePlayerClockItems = () => {
+    ClockListItemCheckMark_5sec.classList = '';
+    SetClockListItem_5sec.style.color = 'black';
+    SetClockListItem_5sec.setAttribute('selected', 'false');
+    ClockListItemCheckMark_15sec.classList = '';
+    SetClockListItem_15sec.style.color = 'black';
+    SetClockListItem_15sec.setAttribute('selected', 'false');
+    ClockListItemCheckMark_30sec.classList = '';
+    SetClockListItem_30sec.style.color = 'black';
+    SetClockListItem_30sec.setAttribute('selected', 'false');
+    ClockListItemCheckMark_50sec.classList = '';
+    SetClockListItem_50sec.style.color = 'black';
+    SetClockListItem_50sec.setAttribute('selected', 'false');
+    ClockListItemCheckMark_70sec.classList = '';
+    SetClockListItem_70sec.style.color = 'black';
+    SetClockListItem_70sec.setAttribute('selected', 'false');
+};
+
+// Disable all "set game modes" list items
+const DisableGameModeItems = () => {
+    GameModeListItemCheckMark_Boneyard.classList = '';
+    GameModelistItem_Boneyard.style.color = 'black';
+    GameModelistItem_Boneyard.setAttribute('selected', 'false');
+    GameModeListItemCheckMark_BlockerCombat.classList = '';
+    GameModeListItem_BlockerCombat.style.color = 'black';
+    GameModeListItem_BlockerCombat.setAttribute('selected', 'false');
+    GameModeListItemCheckMark_FreeFight.classList = '';
+    GameModeListItem_FreeFight.style.color = 'black';
+    GameModeListItem_FreeFight.setAttribute('selected', 'false');
+};

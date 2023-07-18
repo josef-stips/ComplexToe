@@ -409,12 +409,12 @@ function Create_20x20_WinCombis() {
     zweig_links_for20(yCell_Amount * xCell_Amount);
     block_mit_Ast_1_for20(yCell_Amount * xCell_Amount);
     block_mit_Ast_2_for20(yCell_Amount * xCell_Amount);
-    block_mit_Ast_3_for20(yCell_Amount * xCell_Amount);
-    block_mit_Ast_4_for20(yCell_Amount * xCell_Amount);
-    block_mit_Ast_5_for20(yCell_Amount * xCell_Amount);
-    block_mit_Ast_6_for20(yCell_Amount * xCell_Amount);
-    block_mit_Ast_7_for20(yCell_Amount * xCell_Amount);
-    block_mit_Ast_8_for20(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_3_for20(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_4_for20(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_5_for20(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_6_for20(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_7_for20(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_8_for20(yCell_Amount * xCell_Amount);
     L_1_for20(yCell_Amount * xCell_Amount);
     L_2_for20(yCell_Amount * xCell_Amount);
     L_3_for20(yCell_Amount * xCell_Amount);

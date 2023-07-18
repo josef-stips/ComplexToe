@@ -15,6 +15,8 @@
     <audio id="March_into_fire_Theme" src="./assets/Maps/March_into_fire.mp3"></audio>
     <audio id="Quick_death_Theme" src="./assets/Maps/Quick_Death.mp3"></audio>
     <audio id="Tunnel_of_truth_Theme" src="./assets/Maps/Tunnel_of_truth.mp3"></audio>
+
+    <audio id="lolol" src="./assets/btn-click_2.mp3"></audio>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <script defer src="./script/App/music.js"></script>
@@ -1165,9 +1167,10 @@
 
                                 <nav class="GameSide-HeaderNav">
                                     <ul class="GameSide-headerList">
-                                        <li class="GameArea-HeaderNav-Item"> <i id="leave-game-btn" class="fa-solid fa-arrow-left"></i> </li>
-                                        <li class="GameArea-HeaderNav-Item"> <i id="restart-btn" class="fa-solid fa-arrow-rotate-right"></i> </li>
+                                        <li class="GameArea-HeaderNav-Item"> <i title="leave" id="leave-game-btn" class="fa-solid fa-arrow-left"></i> </li>
+                                        <li class="GameArea-HeaderNav-Item"> <i title="reload" id="restart-btn" class="fa-solid fa-arrow-rotate-right"></i> </li>
                                         <li class="GameArea-HeaderNav-Item"> <i title="info" id="game-info-btn" class="fa-regular fas far fa-question-circle"></i> </li>
+                                        <li class="GameArea-HeaderNav-Item"> <i title="choose the winner" id="choose-winner-window-btn" class="fa-solid fa-trophy"></i> </li>
                                     </ul>
                                 </nav>
 
@@ -1193,7 +1196,7 @@
                                 <div class="GameField-info-corner">
                                     <ul id="GameField-infoCorner-list">
                                         <li>
-                                            <div class="GameField-time-monitor">0.00 </div>
+                                            <div class="GameField-time-monitor">0 s.</div>
                                         </li>
                                         <li>
                                             <p>|</p>
@@ -1224,7 +1227,18 @@
                         <div id="GameField">
 
                             <div class="GameField-Header">
-                                <h1 id="GameTitle"></h1>
+                                <div class="GameFieldHeader-upperBody">
+                                    <h1 id="GameTitle"></h1>
+
+                                </div>
+
+                                <div class="GameFieldHeader-underBody">
+                                    <div class="GameFieldHeader-under">
+                                        <p class="FirstPlayer-time">0</p>
+                                        <p>&nbsp;|&nbsp;</p>
+                                        <p class="SecondPlayer-time">0</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="ComplexToe-Field">
@@ -1260,7 +1274,7 @@
             </div>
 
             <div class="lobby-footer-text">
-                Created by an aesthetic sickkunt
+                🔱
             </div>
 
             <div class="music-bars-2">
@@ -1311,35 +1325,153 @@
 
     </div>
 
+    <!-- Set player names pop up for normal modes -->
     <div class="SetPlayerNamesPopUp">
+        <!-- Header -->
         <div class="SetPlayerNames-Header">
             <i id="SetPlayerNames-close-btn" class="fa-solid fa-x SetUpPopUp-CloseBtn"></i>
         </div>
 
-        <div class="SetPlayerNames-InputArea">
-            <input id="Player1_NameInput" class="SetPlayerName-input" placeholder="Player1" type="text">
-            <input id="Player2_NameInput" class="SetPlayerName-input" placeholder="Player2" type="text">
+        <!-- Main -->
+        <div class="SetPlayerNames-Main">
+            <div class="SetPlayerNamesMain-wrapper">
+                <!-- Names -->
+                <div class="SetPlayerNames-InputArea SetPlayerDataContainer">
+                    <label for="Player1_NameInput"><h3>Player Name</h3></label>
+
+                    <div class="Player-NameInputArea IconSetArea">
+                        <input id="Player1_NameInput" class="SetPlayerName-input" placeholder="Player1" type="text">
+                        <input id="Player2_NameInput" class="SetPlayerName-input" placeholder="Player2" type="text">
+                    </div>
+
+                </div>
+
+                <!-- Set Icon -->
+                <div class="SetPlayerNames-IconInput SetPlayerDataContainer">
+
+                    <label for="Player1_IconInput"><h3>Player Icon</h3></label>
+
+                    <div class="Player-IconSet-Area IconSetArea">
+                        <input id="Player1_IconInput" class="SetPlayerName-input" placeholder="Player1 Icon" type="text">
+                        <input id="Player2_IconInput" class="SetPlayerName-input" placeholder="Player2 Icon" type="text">
+                    </div>
+
+                </div>
+
+                <!-- Set Player Clock -->
+                <div class="SetPlayerNames-ClockInput SetPlayerDataContainer">
+                    <label for="Player1_ClockInput"><h3>Set Player Clock</h3></label>
+
+                    <div class="Player-ClockSet-Area">
+                        <ul class="SetClockList">
+
+                            <li class="GameModeListItem" selected="false" id="SetClockListItem-5sec" value="5">
+                                <div class="GameModeListItem-Inner">
+                                    <p>5 seconds</p>
+                                    <i id="ClockListItemCheckMark-5sec"></i>
+                                </div>
+                            </li>
+                            <li class="GameModeListItem" selected="false" id="SetClockListItem-15sec" value="15">
+                                <div class="GameModeListItem-Inner">
+                                    <p>15 seconds</p>
+                                    <i id="ClockListItemCheckMark-15sec"></i>
+                                </div>
+                            </li>
+                            <li class="GameModeListItem" selected="false" id="SetClockListItem-30sec" value="30">
+                                <div class="GameModeListItem-Inner">
+                                    <p>30 seconds</p>
+                                    <i id="ClockListItemCheckMark-30sec"></i>
+                                </div>
+                            </li>
+                            <li class="GameModeListItem" selected="false" id="SetClockListItem-50sec" value="50">
+                                <div class="GameModeListItem-Inner">
+                                    <p>50 seconds</p>
+                                    <i id="ClockListItemCheckMark-50sec"></i>
+                                </div>
+                            </li>
+                            <li class="GameModeListItem" selected="false" id="SetClockListItem-70sec" value="70">
+                                <div class="GameModeListItem-Inner">
+                                    <p>70 seconds</p>
+                                    <i id="ClockListItemCheckMark-70sec"></i>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Set Ingame-mode -->
+                <div class="SetPlayerNames-ModeInput SetPlayerDataContainer">
+                    <label for="Player1_ClockInput"><h3>Set Game Mode</h3></label>
+
+                    <div class="GameModeSet-Area">
+                        <ul class="SetGameModeList">
+
+                            <li class="GameModeListItem" id="GameModelistItem-Boneyard" selected="false">
+                                <div class="GameModeListItem-TextWrapper">
+                                    <p class="GameModeListItem-Text">Boneyard</p>
+                                    <i id="GameModeListItem-CheckMark-Boneyard" class=""></i>
+                                </div>
+                            </li>
+                            <li class="GameModeListItem" id="GameModeListItem-BlockerCombat" selected="false">
+                                <div class="GameModeListItem-TextWrapper">
+                                    <p class="GameModeListItem-Text">Blocker Combat</p>
+                                    <i id="GameModeListItem-CheckMark-BlockerCombat" class=""></i>
+                                </div>
+                            </li>
+                            <li class="GameModeListItem" id="GameModeListItem-FreeFight" selected="false">
+                                <div class="GameModeListItem-TextWrapper">
+                                    <p class="GameModeListItem-Text">Free Fight</p>
+                                    <i id="GameModeListItem-CheckMark-FreeFight" class=""></i>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
+        <!-- footer -->
         <div class="SetPlayerNames-footer">
             <button class="SetPlayerName-ConfirmButton Confirm-Name-btn">Confirm</button>
         </div>
     </div>
 
+    <!-- Set Player Names Pop up for the KI Mode -->
     <div id="YourNamePopUp_KI_Mode" class="SetPlayerNamesPopUp">
-        <div class="SetPlayerNames-Header">
+
+        <!-- Header -->
+        <div class="SetPlayerNames-Header SetPlayerData_Header_KI">
             <i id="YourName_KI_Mode-close-btn" class="fa-solid fa-x SetUpPopUp-CloseBtn"></i>
         </div>
 
-        <div class="SetPlayerNames-InputArea" id="InputArea-KI-Mode">
-            <input id="YourName_Input_KI_mode" class="SetPlayerName-input" placeholder="Your Name" type="text">
+        <!-- Names -->
+        <div class="SetPlayerDataContainer KI_SetPlayerNamesInput">
+            <label for="YourName_Input_KI_mode"><h3>Your Name</h3></label>
+
+            <div class="Player-NameInputArea IconSetArea">
+                <input id="YourName_Input_KI_mode" class="SetPlayerName-input" placeholder="Your Name" type="text">
+            </div>
         </div>
 
+        <!-- Set Icon -->
+        <div class="SetPlayerDataContainer KI_SetPlayerIconsInput">
+            <label for="Your_IconInput"><h3>Your Icon</h3></label>
+
+            <div class="Player-IconSet-Area IconSetArea">
+                <input id="Your_IconInput" class="SetPlayerName-input" placeholder="Your Icon" type="text">
+            </div>
+        </div>
+
+        <!-- footer -->
         <div class="SetPlayerNames-footer">
             <button class="SetPlayerName-ConfirmButton_KI_mode Confirm-Name-btn">Confirm</button>
         </div>
     </div>
 
+    <!-- game info pop up -->
     <div class="GameInfoPopUp">
         <div class="GameInfoPopUp-Wrapper">
             <div class="GameInfo-Header">
@@ -1489,10 +1621,11 @@
                                 </div>
 
                                 <!-- 5x5 Field and everything above -->
-                                <div class="KIMode-horizontal-Pattern-Grid PatternGrid-Five">
+                                <div class="horizontal-Pattern-Grid PatternGrid-Five">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -1505,8 +1638,6 @@
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -1518,24 +1649,23 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-Five">
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
+                                <div class="vertikal-Pattern-Grid PatternGrid-Five">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
-
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -1547,24 +1677,51 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="KIMode-vertikal-Pattern-Grid PatternGrid-Five">
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
+                                <div class="diagonal-Pattern-Grid PatternGrid-Five">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
 
+                                <div class="diagonal2-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -1576,6 +1733,455 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
+                                <div class="Normal-L-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="Mirror-L-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="L3-diagonal-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="L4-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+
+                                <div class="W1-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="W2-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="W3-diagonal-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="W4-diagonal-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="Stern-diagonal-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="diagonales-viereck-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+
+                                <div class="ZweigOben-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="ZweigUnten-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="ZweigLinks-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="ZweigRechts-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="BlockMitZweig-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="BlockMitZweig-Pattern-Grid PatternGrid-Five">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
                             </div>
 
                         </div>
@@ -1584,6 +2190,29 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Choose Winner Pop Up -->
+    <div class="ChooseWinner-popUp">
+        <div class="ChooseWinner-header">
+            <h2 class="ChooseWinner-title">Choose the winner</h2>
+            <i class="fa-solid fa-x" id="ChooseWinnerWindow-CloseBtn"></i>
+        </div>
+
+        <div class="ChooseWinner-SubHeader">
+            <p>When the playing field is full, but not literally full, you can select the winner here. If you are playing online with a friend, only the session administrator can select the winner.</p>
+        </div>
+
+        <div class="ChooseWinner-main">
+            <div class="player-name-wrapper">
+                <h1 class="ChooseWinner-nameDisplay" id="Player1-ChooseWinnerDisplay">Player 1</h1>
+            </div>
+            <div class="player-name-wrapper">
+                <h1 class="ChooseWinner-nameDisplay" id="Player2-ChooseWinnerDisplay">Player 2</h1>
+            </div>
+        </div>
+
+        <div class="lolol"></div>
     </div>
 
 </body>

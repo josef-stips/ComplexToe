@@ -1,10 +1,3 @@
-// minimax scores
-let scores = {
-    X: -1,
-    O: 1,
-    tie: 0,
-};
-
 // ai difficulty levels
 let ai_difficulty = {
     1: {
@@ -28,7 +21,6 @@ let ai_difficulty = {
 let max_depth;
 
 function Find_MaxDepth() {
-    console.log(curr_field)
     if (curr_field == 'Thunder Advanture') { max_depth = 6 };
     if (curr_field == 'Small Price') { max_depth = 100 };
 };
@@ -46,8 +38,8 @@ function KI_Action() {
     let move;
     for (let i = 0; i < cells.length; i++) {
         if (cells[i].classList.length <= 1 && cells[i].textContent == "") {
-            cells[i].textContent = 'O';
-            options[i] = 'O';
+            cells[i].textContent = PlayerData[2].PlayerForm;
+            options[i] = PlayerData[2].PlayerForm;
             let score = minimax(cells, 0, -Infinity, Infinity, false);
             cells[i].textContent = '';
             options[i] = '';
@@ -87,8 +79,8 @@ function minimax(cells, depth, alpha, beta, isMaximazing) {
         for (let i = 0; i < cells.length; i++) {
             if (cells[i].classList.length <= 1 && cells[i].textContent == "") {
                 // check possible game states
-                cells[i].textContent = 'O';
-                options[i] = 'O';
+                cells[i].textContent = PlayerData[2].PlayerForm;
+                options[i] = PlayerData[2].PlayerForm;
                 let score = minimax(cells, depth + 1, alpha, beta, false);
                 cells[i].textContent = '';
                 options[i] = '';
@@ -108,8 +100,8 @@ function minimax(cells, depth, alpha, beta, isMaximazing) {
         for (let i = 0; i < cells.length; i++) {
             if (cells[i].classList.length <= 1 && cells[i].textContent == "") {
                 // check possible game states
-                cells[i].textContent = 'X';
-                options[i] = 'X';
+                cells[i].textContent = PlayerData[1].PlayerForm;
+                options[i] = PlayerData[1].PlayerForm;
                 let score = minimax(cells, depth + 1, alpha, beta, true);
                 cells[i].textContent = '';
                 options[i] = '';

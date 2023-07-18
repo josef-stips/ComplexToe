@@ -1,3 +1,16 @@
+:root {
+    --hover-item: rgb(50, 86, 141);
+    /* --font-color: rgb(0, 0, 0);
+    --bg-app-color: rgb(255, 255, 255); */
+    --font-color: rgba(255, 255, 255, 0.800);
+    --bg-app-color: #191c20;
+}
+
+.dark-mode {
+    --font-color: rgba(255, 255, 255, 0.800);
+    --bg-app-color: #191c20;
+}
+
 body,
 html {
     font-family: 'Rubik', sans-serif;
@@ -8,6 +21,7 @@ html {
     margin: 0;
     overflow: hidden;
     padding: 0;
+    background-color: var(--bg-app-color);
 }
 
 p,
@@ -18,7 +32,8 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+li {
     padding: 0;
     margin: 0;
 }
@@ -32,56 +47,8 @@ ul {
     padding: 0;
 }
 
-@property --angle {
-    syntax: '<angle>';
-    initial-value: 90deg;
-    inherits: true;
-}
-
-@property --gradX {
-    syntax: '<percentage>';
-    initial-value: 50%;
-    inherits: true;
-}
-
-@property --gradY {
-    syntax: '<percentage>';
-    initial-value: 0%;
-    inherits: true;
-}
-
-
-/* Animations */
-
-@keyframes borderAnimation {
-    0% {
-        border-width: 6px;
-    }
-    50% {
-        border-width: 9px;
-    }
-    100% {
-        border-width: 6px;
-    }
-}
-
-@keyframes blackenCell {
-    from {
-        background-color: transparent;
-    }
-    to {
-        background-color: black;
-    }
-}
-
-:root {
-    --hover-item: rgb(24, 78, 158);
-    --d: 2500ms;
-    --angle: 90deg;
-    --gradX: 100%;
-    --gradY: 50%;
-    --c1: rgba(150, 31, 31, 0.795);
-    --c2: rgba(168, 239, 255, 0.1);
+::-webkit-scrollbar {
+    width: 0;
 }
 
 .Game-Page {
@@ -201,9 +168,32 @@ ul {
 .GameField-Header {
     width: 100%;
     height: 20%;
+    flex-direction: column;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.GameFieldHeader-upperBody {
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GameFieldHeader-underBody {
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GameFieldHeader-under {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
 
 .GameSide-headerList {
@@ -229,11 +219,15 @@ ul {
 
 #cellGrid {
     display: none;
-    max-width: 100px;
+    max-width: 100%;
     justify-content: center;
     margin: 0 auto;
     opacity: 1;
     transition: all 0.5s ease-out;
+}
+
+.cellGrid-alert {
+    animation: alert_red 1s linear;
 }
 
 .cellGrid_opacity {
@@ -248,6 +242,9 @@ ul {
     border: 2px solid;
     box-shadow: 0 0 0 2px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .about-to-die-cell {
@@ -257,7 +254,7 @@ ul {
 }
 
 .death-cell {
-    transition: background-color 2s ease-in-out;
+    transition: background-color 1.5s ease-in-out;
 }
 
 .GameArea-HeaderNav-Item {
@@ -304,6 +301,7 @@ ul {
 }
 
 .lobby-header {
+    color: var(--font-color);
     height: 90%;
     width: 97%;
     display: flex;
@@ -357,6 +355,7 @@ ul {
 /* MAIN BODY PART */
 
 .lobby-main-sec {
+    color: var(--font-color);
     display: block;
     height: 80%;
     width: 100%;
@@ -502,7 +501,7 @@ ul {
 }
 
 .card-footer h2 {
-    margin-top: 1em;
+    margin-top: 1.1em;
 }
 
 .GameMode-fields {
@@ -770,11 +769,12 @@ ul {
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
+    position: relative;
 }
 
 .music-bars {
     height: 100%;
-    width: 45%;
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -782,7 +782,7 @@ ul {
 
 .music-bars-2 {
     height: 100%;
-    width: 45%;
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -796,6 +796,8 @@ ul {
 }
 
 .lobby-footer-text {
+    font-size: 20px;
+    margin-bottom: 0.2em;
     width: 10%;
     height: 100%;
     display: flex;
@@ -931,13 +933,13 @@ ul {
     position: absolute;
     margin: auto auto auto auto;
     top: 0;
-    bottom: 10%;
+    bottom: 6.7%;
     right: 0;
     left: 0;
     z-index: 1000;
-    width: 30%;
-    height: 25%;
-    background-image: linear-gradient(to bottom right, rgb(75, 124, 155), rgb(66, 119, 150));
+    width: 50%;
+    height: 65%;
+    background-image: linear-gradient(to bottom right, #373c42, #282d32);
     padding: 0px;
     border: solid 4px;
     border-radius: 35px;
@@ -947,17 +949,6 @@ ul {
     flex-direction: column;
 }
 
-.SetPlayerNames-InputArea {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.25em;
-    width: 100%;
-    height: 70%;
-    margin: 0.1em 0 0 4em;
-}
-
 #InputArea-KI-Mode {
     display: flex;
     justify-content: flex-start;
@@ -965,47 +956,69 @@ ul {
     align-items: flex-start;
 }
 
+.SetPlayerNames-Header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 16px;
+    height: 21%;
+    width: 100%;
+    border-bottom: 2px solid;
+}
+
 .SetPlayerNames-footer {
     width: 100%;
-    height: 30%;
+    height: 50%;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-end;
     flex-direction: row;
 }
 
 .SetPlayerName-input {
-    height: 27.5%;
+    height: 80px;
     width: 30%;
     border-radius: 15px;
-    padding: 0 1em 0 1em;
+    padding: 0.25em 1em 0.25em 1em;
     outline: none;
     border: 2px solid;
-    font-size: 22px;
+    font-size: 15px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #YourName_Input_KI_mode {
-    height: 27.5%;
+    height: 50%;
     width: 30%;
     border-radius: 15px;
-    padding: 0 1em 0 1em;
-    margin: 1em 0 0 0;
+    padding: 0.25em 1em 0.25em 1em;
     outline: none;
     border: 2px solid;
-    font-size: 22px;
+    font-size: 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#Your_IconInput {
+    height: 50%;
+    width: 30%;
+    border-radius: 15px;
+    padding: 0.25em 1em 0.25em 1em;
+    outline: none;
+    border: 2px solid;
+    font-size: 15px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .Confirm-Name-btn {
-    height: 50.5%;
-    width: 27%;
+    height: 45%;
+    width: 15%;
     margin: 0 1em 0 0;
     border-radius: 15px;
     outline: none;
     border: 2px solid;
     font-size: 20px;
     font-weight: 500;
+    margin: 0 0.75em 0.5em 0;
     padding: 10px;
     cursor: pointer;
     display: flex;
@@ -1014,18 +1027,20 @@ ul {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.SetPlayerNames-Header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    font-size: 17px;
-    height: 12%;
-    width: 94%;
+.SetPlayerName-ConfirmButton_KI_mode {
+    height: 15%;
+    width: 20%;
+    border-radius: 15px;
+    padding: 0.25em 1em 0.25em 1em;
+    margin: 0 0.95em 0.5em 0;
+    outline: none;
+    border: 2px solid;
+    font-size: 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .SetUpPopUp-CloseBtn {
-    margin: 0.5em 0 0 0;
+    margin: 0.5em 0 0 1em;
     cursor: pointer;
     transition: color 0.1s ease-out;
 }
@@ -1033,6 +1048,157 @@ ul {
 .SetUpPopUp-CloseBtn:hover {
     color: white;
     transition: color 0.1s ease-out;
+}
+
+.SetPlayerNames-Main {
+    width: 100%;
+    height: 85%;
+}
+
+.SetPlayerNamesMain-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-direction: column;
+    width: auto;
+    height: 90%;
+    padding: 35px 30px 0 30px;
+    gap: 1em;
+}
+
+.SetPlayerDataContainer {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.SetPlayerNames-InputArea {
+    gap: 1em;
+}
+
+.SetPlayerNames-IconInput {
+    gap: 1em;
+}
+
+.SetPlayerNames-ClockInput {
+    margin-bottom: 5em;
+}
+
+.IconSetArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 50%;
+    gap: 0.75em;
+}
+
+.Player-NameInputArea {
+    width: 100%;
+    height: 50%;
+    gap: 0.75em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.SetGameModeList-Wrapper {
+    height: 35vh;
+    width: 25vh;
+}
+
+.SetGameModeList {
+    width: 100%;
+    display: flex;
+    height: min-content;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.SetClockList {
+    width: 100%;
+    display: flex;
+    height: min-content;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.GameModeSet-Area {
+    width: 100%;
+    height: min-content;
+    gap: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.GameModeListItem {
+    cursor: pointer;
+    color: black;
+    padding: 4px;
+    margin: 0;
+    transition: all 0.15s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: 18px;
+    flex-direction: row;
+    width: 100%;
+    height: max-content;
+}
+
+.GameModeListItem-Inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+    align-items: flex-start;
+    gap: 1em;
+}
+
+#GameModeListItem-FreeFight {
+    border-bottom: none;
+}
+
+.GameModeListItem-TextWrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1em;
+}
+
+
+/* KI Mode set user data */
+
+#YourNamePopUp_KI_Mode {
+    width: 45%;
+    height: 50%;
+    justify-content: unset;
+}
+
+.KI_SetPlayerNamesInput {
+    margin-left: 1em;
+    margin-top: 1em;
+}
+
+.KI_SetPlayerIconsInput {
+    margin-left: 1em;
+}
+
+.SetPlayerData_Header_KI {
+    height: 9%;
 }
 
 
@@ -1078,7 +1244,9 @@ ul {
 }
 
 .GameInfo-Main {
-    height: 92.5%;
+    height: 85%;
+    overflow-x: hidden;
+    overflow-y: scroll;
     width: 100%;
     margin: 0.8em 0 0 0;
     display: flex;
@@ -1116,10 +1284,10 @@ ul {
 }
 
 .PatternGrid-Wrapper {
-    display: flex;
+    display: grid;
     gap: 40px;
-    flex-direction: row;
     justify-content: flex-start;
+    grid-template-columns: repeat(4, auto);
     align-items: center;
 }
 
@@ -1136,6 +1304,100 @@ ul {
 .PatternGrid-Five {
     display: none;
     grid-template-columns: repeat(5, auto);
+}
+
+
+/* Choose winner pop up */
+
+.ChooseWinner-popUp {
+    margin: auto auto auto auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 60%;
+    height: 55%;
+    border: 3px solid;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    z-index: 1000;
+    background-color: white;
+}
+
+.ChooseWinner-header {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid;
+}
+
+.ChooseWinner-title {
+    margin: 0 0 0 1em;
+}
+
+#ChooseWinnerWindow-CloseBtn {
+    transition: all 0.15s ease-out;
+    margin: 0 1.2em 0 0;
+    font-size: 22px;
+}
+
+#ChooseWinnerWindow-CloseBtn:hover {
+    transition: all 0.15s ease-in-out;
+    color: var(--hover-item);
+    cursor: pointer;
+}
+
+.ChooseWinner-SubHeader {
+    width: 70%;
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    font-size: 17px;
+}
+
+.ChooseWinner-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 55%;
+    width: 100%;
+}
+
+.player-name-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    width: 50%;
+    height: 100%;
+    transition: all 0.15s ease-out;
+}
+
+.player-name-wrapper:hover {
+    transition: all 0.15s ease-in-out;
+    color: var(--hover-item);
+    cursor: pointer;
+}
+
+.ChooseWinner-main:first-child {
+    border-right: 3px solid;
+}
+
+.lolol {
+    width: 100%;
+    height: 20%;
 }
 
 
@@ -1162,5 +1424,38 @@ ul {
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes borderAnimation {
+    0% {
+        border-width: 6px;
+    }
+    50% {
+        border-width: 9px;
+    }
+    100% {
+        border-width: 6px;
+    }
+}
+
+@keyframes blackenCell {
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: black;
+    }
+}
+
+@keyframes alert_red {
+    0% {
+        background-color: rgba(255, 0, 0, 1);
+    }
+    50% {
+        background-color: rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        background-color: rgba(255, 0, 0, 0);
     }
 }

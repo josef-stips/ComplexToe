@@ -561,12 +561,12 @@ function Create_5x5_WinCombis() {
     zweig_links_for5(yCell_Amount * xCell_Amount);
     block_mit_Ast_1_for5(yCell_Amount * xCell_Amount);
     block_mit_Ast_2_for5(yCell_Amount * xCell_Amount);
-    block_mit_Ast_3_for5(yCell_Amount * xCell_Amount);
-    block_mit_Ast_4_for5(yCell_Amount * xCell_Amount);
-    block_mit_Ast_5_for5(yCell_Amount * xCell_Amount);
-    block_mit_Ast_6_for5(yCell_Amount * xCell_Amount);
-    block_mit_Ast_7_for5(yCell_Amount * xCell_Amount);
-    block_mit_Ast_8_for5(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_3_for5(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_4_for5(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_5_for5(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_6_for5(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_7_for5(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_8_for5(yCell_Amount * xCell_Amount);
     L_1_for5(yCell_Amount * xCell_Amount);
     L_2_for5(yCell_Amount * xCell_Amount);
     L_3_for5(yCell_Amount * xCell_Amount);

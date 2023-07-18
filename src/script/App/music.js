@@ -4,13 +4,18 @@ window.addEventListener("DOMContentLoaded", event => {
 });
 
 function CreateMusicBars(Audio) {
+    console.log(Audio)
+    let source = null;
+    let audioContext = null;
+    let analyser = null;
+
     Audio.volume = 0.05;
     Audio.loop = true;
     Audio.play();
 
-    const audioContext = new(window.AudioContext || window.webkitAudioContext)();
-    const analyser = audioContext.createAnalyser();
-    const source = audioContext.createMediaElementSource(Audio);
+    audioContext = new(window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    source = audioContext.createMediaElementSource(Audio);
     source.connect(analyser);
     analyser.connect(audioContext.destination);
 

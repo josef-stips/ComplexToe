@@ -450,12 +450,12 @@ function Create_10x10_WinCombis() {
     zweig_links(yCell_Amount * xCell_Amount);
     block_mit_Ast_1(yCell_Amount * xCell_Amount);
     block_mit_Ast_2(yCell_Amount * xCell_Amount);
-    block_mit_Ast_3(yCell_Amount * xCell_Amount);
-    block_mit_Ast_4(yCell_Amount * xCell_Amount);
-    block_mit_Ast_5(yCell_Amount * xCell_Amount);
-    block_mit_Ast_6(yCell_Amount * xCell_Amount);
-    block_mit_Ast_7(yCell_Amount * xCell_Amount);
-    block_mit_Ast_8(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_3(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_4(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_5(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_6(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_7(yCell_Amount * xCell_Amount);
+    // block_mit_Ast_8(yCell_Amount * xCell_Amount);
     L_1(yCell_Amount * xCell_Amount);
     L_2(yCell_Amount * xCell_Amount);
     L_3(yCell_Amount * xCell_Amount);
