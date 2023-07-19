@@ -30,6 +30,8 @@
 <script defer src="./script/WinCombinations/3x3.js"></script>
 <script defer src="./script/Game/Game.js"></script>
 <script defer src="./script/Game/KI.js"></script>
+<script defer src="./script/App/MaxTextLength.js"></script>
+<script defer src="./script/App/input.js"></script>
 
 <body>
     <!-- Lobby page -->
@@ -1300,11 +1302,14 @@
                     <li><i id="sett-roundEdges" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-RoundEdges"></i> round edges</li>
                     <li><i id="sett-darkMode" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-DarkMode"></i> dark mode</li>
 
-                    <li> background music
-                        <div class="sett-BGmusic-slider"></div>
+                    <li>
+                        <div class="sett-BGmusic-slider">
+                            background music
+                            <input type="range" name="music volume" id="bgMusic_slider" value="0" step="0.005">
+                        </div>
                     </li>
 
-                    <li><i id="sett-showPing" marked="false" class="fa-regular fa-square checkBox" sett="sett-ShowPing"></i> Show ping</li>
+                    <li style="display: none;"><i id="sett-showPing" marked="false" class="fa-regular fa-square checkBox" sett="sett-ShowPing"></i> Show ping</li>
                     <li><i id="sett-secret" marked="false" class="fa-regular fa-square checkBox" sett="sett-Secret"></i> secret</li>
                 </ul>
             </div>

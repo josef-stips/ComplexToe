@@ -1,8 +1,11 @@
-let input = document.getElementsByClassName('');
+let input2 = document.querySelector('#YourName_Input_KI_mode');
+let icon_input1 = document.querySelector('#Player1_IconInput');
+let icon_input2 = document.querySelector('#Player2_IconInput');
+let icon_input3 = document.querySelector('#Your_IconInput');
 
-export let settings = {
-    maxInputLeng: 10,
-    maxFormInputLeng: 1,
+let settings = {
+    maxInputLeng: 11,
+    maxFormInputLeng: 2,
 };
 
 let keys = {
@@ -40,8 +43,8 @@ utils.navigational[keys['downArrow']] = true;
 utils.navigational[keys['leftArrow']] = true;
 utils.navigational[keys['rightArrow']] = true;
 
-input.addEventListener('keydown', function(event) {
-    let len = event.target.innerText.trim().length;
+Player1_NameInput.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
     let hasSelection = false;
     let selection = window.getSelection();
     let isSpecial = utils.isSpecial(event);
@@ -55,7 +58,113 @@ input.addEventListener('keydown', function(event) {
         return true;
     };
 
-    if (len >= settings.maxCardLen && !hasSelection) {
+    if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+Player2_NameInput.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+input2.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+
+icon_input1.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxFormInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+icon_input2.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxFormInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+icon_input3.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxFormInputLeng && !hasSelection) {
         event.preventDefault();
         return false;
     };

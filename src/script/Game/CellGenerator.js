@@ -116,6 +116,9 @@ function Start_Blocker() {
         Grid[Index].style.backgroundColor = "var(--font-color)";
         Grid[Index].classList = "cell death-cell";
         Grid[Index].removeEventListener('click', cellCicked);
+        setTimeout(() => {
+            Grid[RIndex].textContent = null;
+        }, 100);
     };
 };
 // Just a function from the blocker

@@ -843,6 +843,7 @@ ul {
     display: flex;
     flex-direction: column;
     display: none;
+    color: var(--font-color);
 }
 
 .settings-header {
@@ -926,6 +927,18 @@ ul {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
     color: var(--hover-item);
+}
+
+.sett-BGmusic-slider {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.1em;
+}
+
+#bgMusic_slider::-webkit-slider-thumb {
+    cursor: pointer;
 }
 
 
@@ -1029,6 +1042,7 @@ ul {
 }
 
 .Confirm-Name-btn {
+    z-index: 10000;
     height: 45%;
     width: 15%;
     margin: 0 1em 0 0;
@@ -1186,6 +1200,7 @@ ul {
 
 #GameModeListItem-FreeFight {
     border-bottom: none;
+    z-index: 10000;
 }
 
 .GameModeListItem-TextWrapper {

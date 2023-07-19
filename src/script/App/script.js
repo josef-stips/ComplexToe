@@ -235,6 +235,9 @@ let KI_Mode_Levels = {
 };
 let curr_KI_Level;
 
+// standard bg music volume
+let appVolume = 0.05;
+
 // app initialization
 function AppInit() {
     ini_LightDark_Mode();
