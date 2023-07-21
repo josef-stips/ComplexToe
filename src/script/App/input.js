@@ -1,5 +1,6 @@
 let bgMusic_slider = document.querySelector('#bgMusic_slider');
 
+// bg music slider
 function init_volumeSlider() {
     bgMusic_slider.max = '0.25';
 

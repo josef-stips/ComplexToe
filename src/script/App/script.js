@@ -10,6 +10,8 @@ let gameModeFields_Div = document.querySelector('.GameMode-fields');
 let fieldsArea_back_btn = document.querySelector('#fields-area-back-btn');
 let switchColorMode_btn = document.querySelector('#switchColorMode-btn');
 let settDarkMode = document.querySelector('#sett-darkMode');
+let ELO_Points_display = document.querySelector('.ELO-Points-display');
+let sett_rsetELO_Points_btn = document.querySelector('#sett_rsetELO_Points_btn')
 
 // Normal Games
 let FivexFive_Field = document.querySelector('#FivexFive_Field');
@@ -102,6 +104,16 @@ let ClockListItemCheckMark_15sec_KI = document.querySelector('#ClockListItemChec
 let ClockListItemCheckMark_30sec_KI = document.querySelector('#ClockListItemCheckMark-30sec_KI');
 let ClockListItemCheckMark_50sec_KI = document.querySelector('#ClockListItemCheckMark-50sec_KI');
 let ClockListItemCheckMark_70sec_KI = document.querySelector('#ClockListItemCheckMark-70sec_KI');
+
+let OnlineGame_iniPopUp = document.querySelector('.OnlineGame_iniPopUp');
+let onlineGame_closeBtn = document.querySelector('#onlineGame_closeBtn');
+
+let CreateGame_btn = document.querySelector('#CreateGame-btn');
+let EnterGame_btn = document.querySelector('#EnterGame-btn');
+let OnlineGame_CodeName_PopUp = document.querySelector('.OnlineGame_CodeName_PopUp');
+let OnlineGame_CodeNamePopUp_closeBtn = document.querySelector('#OnlineGame_CodeNamePopUp_closeBtn');
+let EnterGameCode_Input = document.querySelector('.EnterGameCode_Input');
+let EnterCodeName_ConfirmBtn = document.querySelector('.EnterCodeName_ConfirmBtn');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -241,6 +253,7 @@ let appVolume = 0.05;
 // app initialization
 function AppInit() {
     ini_LightDark_Mode();
+    ElO_Points();
 
     KI_Card_DescriptionDisplay.textContent = GameMode[1].description;
     OnlineFriend_Card_DescriptionDisplay.textContent = GameMode[2].description;
@@ -249,6 +262,18 @@ function AppInit() {
     checkForSettings();
 };
 AppInit();
+
+function ElO_Points() {
+    let ELO_storage = localStorage.getItem('ELO');
+
+    if (localStorage.getItem('ELO')) {
+        ELO_Points_display.textContent = ELO_storage;
+
+    } else {
+        localStorage.setItem('ELO', '1000');
+        ELO_Points_display.textContent = localStorage.getItem('ELO');
+    };
+};
 
 function checkForSettings() {
     // check for the settings
@@ -423,6 +448,14 @@ function EnterGame() {
                 curr_name1 = null;
                 curr_name2 = null;
                 curr_field_ele = f.target;
+            };
+
+            if (curr_mode == GameMode[2].opponent) { // Online Game mode
+
+                curr_field_ele = f.target;
+
+                DarkLayer.style.display = 'block';
+                OnlineGame_iniPopUp.style.display = 'flex';
             };
         });
     });
@@ -704,6 +737,23 @@ SetClockListItem_70sec.addEventListener('click', () => {
 
 chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
 
+onlineGame_closeBtn.addEventListener('click', () => {
+    DarkLayer.style.display = 'none';
+    OnlineGame_iniPopUp.style.display = 'none';
+});
+
+EnterGame_btn.addEventListener('click', () => {
+    OnlineGame_iniPopUp.style.display = 'none';
+
+    setUpOnlineGame('enter');
+});
+
+CreateGame_btn.addEventListener('click', () => {
+    OnlineGame_iniPopUp.style.display = 'none';
+
+    setUpOnlineGame('create');
+});
+
 ChooseWinnerWindowCloseBtn.addEventListener('click', () => {
     ChooseWinner_popUp.style.display = 'none';
     DarkLayer.style.display = 'none';
@@ -806,5 +856,51 @@ function ini_LightDark_Mode() {
 
         settDarkMode.classList = "fa-regular fa-square checkBox";
         settDarkMode.setAttribute("marked", "false");
+    };
+};
+
+OnlineGame_CodeNamePopUp_closeBtn.addEventListener('click', () => {
+    OnlineGame_CodeName_PopUp.style.display = 'none';
+    DarkLayer.style.display = 'none';
+});
+
+EnterCodeName_ConfirmBtn.addEventListener('click', () => {
+    if (EnterGameCode_Input.value != null && EnterGameCode_Input.value != '' && EnterGameCode_Input.value != undefined) {
+        console.log(EnterGameCode_Input.value);
+
+        EnterGameCode_Input.value = null;
+
+        DarkLayer.style.display = 'none';
+        OnlineGame_CodeName_PopUp.style.display = 'none';
+
+    } else {
+        return
+    };
+});
+
+sett_rsetELO_Points_btn.addEventListener('click', () => {
+    localStorage.setItem('ELO', '1000');
+    ELO_Points_display.textContent = localStorage.getItem('ELO');
+});
+
+// open set up game data pop up with online game code
+function setUpOnlineGame(from) {
+    if (from == 'create') {
+        SetPlayerNamesPopUp.style.display = 'flex';
+        DarkLayer.style.display = 'block';
+
+        curr_name1 = null;
+        curr_name2 = null;
+
+        // Initialize Inputs from pop up
+        DisableGameModeItems();
+        DisablePlayerClockItems();
+        Player1_NameInput.value = "";
+        Player2_NameInput.value = "";
+        Player1_IconInput.value = "X";
+        Player2_IconInput.value = "O";
+
+    } else if (from == 'enter') {
+        OnlineGame_CodeName_PopUp.style.display = 'flex';
     };
 };

@@ -39,7 +39,7 @@
         <div class="header-body">
             <header class="lobby-header">
                 <div class="ELO-Points-div">
-                    <p class="ELO-Points-display">1000</p>
+                    <p class="ELO-Points-display"></p>
                     <p class="ELO-Points-icon">🔱</p>
                 </div>
 
@@ -1299,27 +1299,27 @@
                 <ul>
                     <h2>General settings</h2>
 
-                    <li><i id="sett-roundEdges" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-RoundEdges"></i> round edges</li>
+                    <li style="display: none;"><i id="sett-roundEdges" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-RoundEdges"></i> round edges</li>
                     <li><i id="sett-darkMode" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-DarkMode"></i> dark mode</li>
+                    <li><i id="sett-secret" marked="false" class="fa-regular fa-square checkBox" sett="sett-Secret"></i> secret</li>
 
                     <li>
                         <div class="sett-BGmusic-slider">
                             background music
-                            <input type="range" name="music volume" id="bgMusic_slider" value="0" step="0.005">
+                            <input type="range" name="music volume" id="bgMusic_slider" value="0" step="0.0005">
                         </div>
                     </li>
 
                     <li style="display: none;"><i id="sett-showPing" marked="false" class="fa-regular fa-square checkBox" sett="sett-ShowPing"></i> Show ping</li>
-                    <li><i id="sett-secret" marked="false" class="fa-regular fa-square checkBox" sett="sett-Secret"></i> secret</li>
                 </ul>
             </div>
 
             <div class="user-settings">
                 <ul>
                     <h2>User settings</h2>
-                    <li>sign out</li>
-                    <li>delete account</li>
-                    <li>reset Skill-Points</li>
+                    <li style="display: none;">sign out</li>
+                    <li style="display: none;">delete account</li>
+                    <li id="sett_rsetELO_Points_btn">reset Skill-Points</li>
                 </ul>
             </div>
         </div>
@@ -2218,6 +2218,58 @@
         </div>
 
         <div class="lolol"></div>
+    </div>
+
+
+    <!-- online game mode pop up -->
+    <div class="OnlineGame_iniPopUp">
+        <div class="ini_onlineGame_header">
+
+            <div class="OnlineGameHeader-right onlineGame-header-cont">
+                <div></div>
+            </div>
+
+            <div class="OnlineGameHeader-center onlineGame-header-cont">
+                <h1>Choose an option</h1>
+            </div>
+
+            <div class="OnlineGameHeader-right onlineGame-header-cont">
+                <i class="fa-solid fa-x" id="onlineGame_closeBtn"></i>
+            </div>
+
+        </div>
+
+        <div class="ini_onlineGame_main">
+            <div id="CreateGame-btn" class="onlineGame_main-btn">
+                <p>Create Game</p>
+            </div>
+
+            <div id="EnterGame-btn" class="onlineGame_main-btn">
+                <p>Enter Game</p>
+            </div>
+        </div>
+
+        <div class="ini_onlineGame_footer">
+
+        </div>
+    </div>
+
+    <!-- code name pop up -->
+    <div class="OnlineGame_CodeName_PopUp">
+        <!-- Header -->
+        <div class="OnlineGame_CodeName_innerCont" id="CodeName_PopUpHeader">
+            <i id="OnlineGame_CodeNamePopUp_closeBtn" class="fa-solid fa-x"></i>
+        </div>
+
+        <!-- Main -->
+        <div class="OnlineGame_CodeName_innerCont" id="CodeName_PopUpMain">
+            <input placeholder="Enter code name here" type="text" class="EnterGameCode_Input">
+        </div>
+
+        <!-- Footer -->
+        <div class="OnlineGame_CodeName_innerCont" id="CodeName_PopUpFooter">
+            <div class="EnterCodeName_ConfirmBtn"><span>Enter</span> </div>
+        </div>
     </div>
 
 </body>

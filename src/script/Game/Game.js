@@ -635,12 +635,35 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
         if (player1_won && !player2_won) {
             UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it! 🏆`;
 
+            if (curr_mode == GameMode[2].opponent) {
+                setNew_SkillPoints(10);
+            };
+            if (curr_mode == GameMode[1].opponent) { // KI 
+                setNew_SkillPoints(1);
+            };
+
         } else if (player2_won && !player1_won) {
             UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it! 🏆`;
+
+            if (curr_mode == GameMode[2].opponent) { // online friend
+                setNew_SkillPoints(10);
+            };
+            if (curr_mode == GameMode[1].opponent) { // KI 
+                setNew_SkillPoints(1);
+            };
 
         } else if (player1_won && player2_won) {
             UltimateWinText.textContent = `GG Well played!`;
         };
 
     }, 2000);
+};
+
+// Update skill points for player after a successful game
+function setNew_SkillPoints(plus) {
+    let old_Elo = parseInt(localStorage.getItem('ELO'));
+
+    // skill points N + additional_N
+    localStorage.setItem('ELO', `${old_Elo + plus}`);
+    ELO_Points_display.textContent = localStorage.getItem('ELO');
 };

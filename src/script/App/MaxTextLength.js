@@ -1,4 +1,5 @@
 let input2 = document.querySelector('#YourName_Input_KI_mode');
+let input3 = document.querySelector('.EnterGameCode_Input');
 let icon_input1 = document.querySelector('#Player1_IconInput');
 let icon_input2 = document.querySelector('#Player2_IconInput');
 let icon_input3 = document.querySelector('#Your_IconInput');
@@ -6,6 +7,7 @@ let icon_input3 = document.querySelector('#Your_IconInput');
 let settings = {
     maxInputLeng: 11,
     maxFormInputLeng: 2,
+    maxInputLeng2: 7
 };
 
 let keys = {
@@ -101,6 +103,27 @@ input2.addEventListener('keydown', function(event) {
     };
 
     if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+input3.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxInputLeng2 && !hasSelection) {
         event.preventDefault();
         return false;
     };

@@ -6,7 +6,6 @@ window.addEventListener("DOMContentLoaded", event => {
 let globalAudio;
 
 function CreateMusicBars(Audio) {
-    console.log(Audio)
     let source = null;
     let audioContext = null;
     let analyser = null;
@@ -71,13 +70,13 @@ function CreateMusicBars(Audio) {
 
 function playBtn_Audio() {
     // audio
-    btn_sound.volume = 0.1;
+    btn_sound.volume = 0.075;
     btn_sound.play()
 };
 
 function playBtn_Audio_2() {
     // audio
-    btn_sound2.volume = 0.1;
+    btn_sound2.volume = 0.075;
     btn_sound2.play()
 };
 
