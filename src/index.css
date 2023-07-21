@@ -363,6 +363,26 @@ ul {
     margin: 0.5em 0 0 0.5em;
 }
 
+.ELO-Points-display {
+    font-size: 31px;
+    transition: all 0.15s ease-out;
+}
+
+.ELO_ani {
+    font-size: 37px;
+    transition: all 0.15s ease-out;
+}
+
+.sett_rsetELO_Points_btn {
+    display: block;
+    opacity: 0;
+    transition: all 0.15s ease-out;
+}
+
+.ELO-Points-AddIcon {
+    transition: opacity 2.15s ease-out;
+}
+
 
 /* MAIN BODY PART */
 
@@ -856,11 +876,16 @@ ul {
 
 .settings-main {
     padding: 0.5em 1em 0 1em;
-    height: 90%;
+    height: 85%;
     flex-direction: column;
     display: flex;
     justify-content: start;
     align-items: flex-start;
+}
+
+.settings-footer {
+    width: 100%;
+    height: 5%;
 }
 
 .general-settings {
@@ -1262,6 +1287,7 @@ label h3 {
     display: flex;
     flex-direction: column;
     display: none;
+    color: var(--font-color);
 }
 
 .GameInfoPopUp-Wrapper {
@@ -1553,8 +1579,8 @@ label h3 {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 25%;
-    height: 25%;
+    width: 27%;
+    height: 27%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -1633,8 +1659,8 @@ label h3 {
     font-size: 20px;
     font-weight: 500;
     margin: 0 0 0 0.5em;
-    width: 50%;
-    height: 25%;
+    width: 55%;
+    height: 20%;
     border: 3px solid;
     border-radius: 20px;
     display: flex;

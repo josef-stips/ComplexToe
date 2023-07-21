@@ -662,8 +662,45 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
 // Update skill points for player after a successful game
 function setNew_SkillPoints(plus) {
     let old_Elo = parseInt(localStorage.getItem('ELO'));
+    let ELO_point = 0;
+
+    // extra animation addition
+    ELO_Points_AddIcon.style.transition = 'none';
+    ELO_Points_AddIcon.style.opacity = '1';
+    ELO_Points_AddIcon.textContent = `+${plus}`;
+    setTimeout(() => {
+        ELO_Points_AddIcon.style.transition = 'all 2.15s ease-out';
+        ELO_Points_AddIcon.style.opacity = '0';
+    }, 700);
 
     // skill points N + additional_N
-    localStorage.setItem('ELO', `${old_Elo + plus}`);
-    ELO_Points_display.textContent = localStorage.getItem('ELO');
+    let i = 0
+    let set = setInterval(() => {
+        i++;
+
+        // animation
+        ELO_Points_display.classList.add('ELO_ani');
+
+        // sound
+        btn_sound2.volume = 0.075;
+        btn_sound2.play();
+
+        // logic
+        ELO_point++;
+        localStorage.setItem('ELO', `${old_Elo + ELO_point}`);
+        ELO_Points_display.textContent = localStorage.getItem('ELO');
+
+        // animation
+        function plusELO() {
+            setTimeout(() => {
+                ELO_Points_display.classList.remove('ELO_ani');
+            }, 150);
+        };
+        plusELO();
+
+        if (i >= plus) {
+            clearInterval(set);
+            i = 0
+        };
+    }, 200);
 };

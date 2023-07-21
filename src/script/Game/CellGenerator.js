@@ -22,6 +22,11 @@ function generateCell(index) {
     cell.classList = "cell";
     cell.setAttribute('cell-index', index);
 
+    cell.addEventListener('click', () => {
+        btn_sound2.volume = 0.075;
+        btn_sound2.play();
+    });
+
     // configure cell size
     if (xCell_Amount == 5) {
         cell.style.width = "10.4vh";

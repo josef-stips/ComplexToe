@@ -11,7 +11,8 @@ let fieldsArea_back_btn = document.querySelector('#fields-area-back-btn');
 let switchColorMode_btn = document.querySelector('#switchColorMode-btn');
 let settDarkMode = document.querySelector('#sett-darkMode');
 let ELO_Points_display = document.querySelector('.ELO-Points-display');
-let sett_rsetELO_Points_btn = document.querySelector('#sett_rsetELO_Points_btn')
+let sett_rsetELO_Points_btn = document.querySelector('#sett_rsetELO_Points_btn');
+let ELO_Points_AddIcon = document.querySelector('.ELO-Points-AddIcon');
 
 // Normal Games
 let FivexFive_Field = document.querySelector('#FivexFive_Field');
@@ -308,7 +309,7 @@ Allbtns.forEach(btn => {
 // Go back from NxN field-cards to GameMode cards
 fieldsArea_back_btn.addEventListener('click', () => {
     // audio
-    playBtn_Audio();
+    playBtn_Audio_2();
 
     // animation
     gameModeCards_Div.style.display = 'flex';
@@ -405,15 +406,11 @@ checkBox.forEach(box => {
 settingsCloseBtn.addEventListener('click', () => {
     settingsWindow.style.display = 'none';
     DarkLayer.style.display = 'none';
-
-    playBtn_Audio_2();
 });
 
 headerSettBtn.addEventListener('click', () => {
     settingsWindow.style.display = 'block';
     DarkLayer.style.display = 'block';
-
-    playBtn_Audio_2();
 });
 
 // Enter Game
@@ -464,6 +461,9 @@ EnterGame();
 
 // Leave Game
 leaveGame_btn.addEventListener('click', () => {
+    // sound
+    playBtn_Audio_2()
+
     GameField.style.display = 'none';
     // lobbyHeader.style.display = 'flex';
     gameModeFields_Div.style.display = 'flex';
