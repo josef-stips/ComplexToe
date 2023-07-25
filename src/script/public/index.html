@@ -5,33 +5,42 @@
     <meta charset="UTF-8" />
     <title>ComplexToe</title>
     <script src="https://kit.fontawesome.com/8f7afdedcd.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="index.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <audio id="bg_audio" src="./assets/bg_music.m4a"></audio>
-    <audio id="btn_click_1" src="./assets/increase_elo.mp3"></audio>
-    <audio id="btn_click_2" src="./assets/btn-click_2.mp3"></audio>
-    <audio id="Long_funeral_Theme" src="./assets/Maps/Long_Funeral.mp3"></audio>
-    <audio id="March_into_fire_Theme" src="./assets/Maps/March_into_fire.mp3"></audio>
-    <audio id="Quick_death_Theme" src="./assets/Maps/Quick_Death.mp3"></audio>
-    <audio id="Tunnel_of_truth_Theme" src="./assets/Maps/Tunnel_of_truth.mp3"></audio>
 
-    <audio id="lolol" src="./assets/btn-click_2.mp3"></audio>
+    <!-- server -->
+    <link rel="stylesheet" href="index.css" />
+    <audio id="bg_audio" src="assets/bg_music.m4a"></audio>
+    <audio id="btn_click_1" src="assets/increase_elo.mp3"></audio>
+    <audio id="btn_click_2" src="assets/btn-click_2.mp3"></audio>
+    <audio id="Long_funeral_Theme" src="assets/Maps/Long_Funeral.mp3"></audio>
+    <audio id="March_into_fire_Theme" src="assets/Maps/March_into_fire.mp3"></audio>
+    <audio id="Quick_death_Theme" src="assets/Maps/Quick_Death.mp3"></audio>
+    <audio id="Tunnel_of_truth_Theme" src="assets/Maps/Tunnel_of_truth.mp3"></audio>
+    <audio id="lolol" src="assets/btn_click_1.mp3"></audio>
+
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-<script defer src="./script/App/music.js"></script>
-<script defer src="./script/App/script.js"></script>
-<script defer src="./script/Game/CellGenerator.js"></script>
-<script defer src="./script/WinCombinations/5x5.js"></script>
-<script defer src="./script/WinCombinations/10x10.js"></script>
-<script defer src="./script/WinCombinations/15x15.js"></script>
-<script defer src="./script/WinCombinations/20x20.js"></script>
-<script defer src="./script/WinCombinations/4x4.js"></script>
-<script defer src="./script/WinCombinations/3x3.js"></script>
-<script defer src="./script/Game/Game.js"></script>
-<script defer src="./script/Game/KI.js"></script>
-<script defer src="./script/App/MaxTextLength.js"></script>
-<script defer src="./script/App/input.js"></script>
+
+<!-- server -->
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+<!-- server -->
+
+<script defer src="App/script.js"></script>
+<script defer src="App/serverHandler.js"></script>
+<script defer src="App/music.js"></script>
+<script defer src="Game/CellGenerator.js"></script>
+<script defer src="WinCombinations/5x5.js"></script>
+<script defer src="WinCombinations/10x10.js"></script>
+<script defer src="WinCombinations/15x15.js"></script>
+<script defer src="WinCombinations/20x20.js"></script>
+<script defer src="WinCombinations/4x4.js"></script>
+<script defer src="WinCombinations/3x3.js"></script>
+<script defer src="Game/Game.js"></script>
+<script defer src="Game/KI.js"></script>
+<script defer src="App/MaxTextLength.js"></script>
+<script defer src="App/input.js"></script>
 
 <body>
     <!-- Lobby page -->
@@ -1370,7 +1379,7 @@
 
                 <!-- Set Player Clock -->
                 <div class="SetPlayerNames-ClockInput SetPlayerDataContainer">
-                    <label for="Player1_ClockInput"><h3>Set Player Clock</h3></label>
+                    <label class="SetGameData_Label" for="Player1_ClockInput"><h3>Set Player Clock</h3></label>
 
                     <div class="Player-ClockSet-Area">
                         <ul class="SetClockList">
@@ -1412,7 +1421,7 @@
 
                 <!-- Set Ingame-mode -->
                 <div class="SetPlayerNames-ModeInput SetPlayerDataContainer">
-                    <label for="Player1_ClockInput"><h3>Set Game Mode</h3></label>
+                    <label class="SetGameData_Label" for="Player1_ClockInput"><h3>Set Game Mode</h3></label>
 
                     <div class="GameModeSet-Area">
                         <ul class="SetGameModeList">
@@ -1445,6 +1454,7 @@
 
         <!-- footer -->
         <div class="SetPlayerNames-footer">
+            <span class="OnlineGame_GameCode_Display">Game Code: 73840</span>
             <button class="SetPlayerName-ConfirmButton Confirm-Name-btn">Confirm</button>
         </div>
     </div>
@@ -2268,15 +2278,32 @@
 
         <!-- Main -->
         <div class="OnlineGame_CodeName_innerCont" id="CodeName_PopUpMain">
-            <input placeholder="Enter code name here" type="text" class="EnterGameCode_Input">
+            <input placeholder="Enter game code here" type="text" class="EnterGameCode_Input">
         </div>
 
         <!-- Footer -->
         <div class="OnlineGame_CodeName_innerCont" id="CodeName_PopUpFooter">
+            <span class="OnlineGameLobby_alertText">There is no room found!</span>
             <div class="EnterCodeName_ConfirmBtn"><span>Enter</span> </div>
         </div>
     </div>
 
+    <!-- OnlineGame: Lobby -->
+    <div class="OnlineGame_Lobby">
+        <div class="Lobby_header">
+            <span class="Lobby_GameCode_display">Game Code: 13123</span>
+            <i class="fa-solid fa-x" id="Lobby_closeBtn"></i>
+        </div>
+
+        <div class="Lobby_main">
+            <span class="Lobby_first_player">Player 1</span>
+            <span class="Lobby_second_player">Player 2</span>
+        </div>
+
+        <div class="Lobby_footer">
+            <button class="Lobby_startGame_btn">start game</button>
+        </div>
+    </div>
 </body>
 
 </html>

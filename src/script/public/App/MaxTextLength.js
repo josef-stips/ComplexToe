@@ -7,7 +7,7 @@ let icon_input3 = document.querySelector('#Your_IconInput');
 let settings = {
     maxInputLeng: 11,
     maxFormInputLeng: 2,
-    maxInputLeng2: 7
+    maxInputLeng2: 6
 };
 
 let keys = {

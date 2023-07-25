@@ -13,6 +13,7 @@ let settDarkMode = document.querySelector('#sett-darkMode');
 let ELO_Points_display = document.querySelector('.ELO-Points-display');
 let sett_rsetELO_Points_btn = document.querySelector('#sett_rsetELO_Points_btn');
 let ELO_Points_AddIcon = document.querySelector('.ELO-Points-AddIcon');
+// let OnlineGame_GameCode_Display = document.querySelector('.OnlineGame_GameCode_Display'); // in the "setupGameData" window, there is already the game id sown, which is not right
 
 // Normal Games
 let FivexFive_Field = document.querySelector('#FivexFive_Field');
@@ -92,6 +93,9 @@ let Player1_ChooseWinnerDisplay = document.querySelector('#Player1-ChooseWinnerD
 let Player2_ChooseWinnerDisplay = document.querySelector('#Player2-ChooseWinnerDisplay');
 let ChooseWinnerWindowCloseBtn = document.querySelector('#ChooseWinnerWindow-CloseBtn');
 let GameFieldHeaderUnderBody = document.querySelector('.GameFieldHeader-underBody');
+let SetGameData_Label = document.querySelectorAll('.SetGameData_Label');
+let SetPlayerNames_Header = document.querySelector('.SetPlayerNames-Header');
+let ConfirmName_Btn = document.querySelector('.Confirm-Name-btn');
 
 let SetClockList_KI = document.querySelector('.SetClockList_KI');
 let Your_IconInput = document.querySelector('#Your_IconInput');
@@ -115,6 +119,13 @@ let OnlineGame_CodeName_PopUp = document.querySelector('.OnlineGame_CodeName_Pop
 let OnlineGame_CodeNamePopUp_closeBtn = document.querySelector('#OnlineGame_CodeNamePopUp_closeBtn');
 let EnterGameCode_Input = document.querySelector('.EnterGameCode_Input');
 let EnterCodeName_ConfirmBtn = document.querySelector('.EnterCodeName_ConfirmBtn');
+let OnlineGame_Lobby = document.querySelector('.OnlineGame_Lobby');
+let Lobby_startGame_btn = document.querySelector('.Lobby_startGame_btn');
+let Lobby_closeBtn = document.querySelector('#Lobby_closeBtn');
+let Lobby_first_player = document.querySelector('.Lobby_first_player');
+let Lobby_second_player = document.querySelector('.Lobby_second_player');
+let OnlineGameLobby_alertText = document.querySelector('.OnlineGameLobby_alertText');
+let Lobby_GameCode_display = document.querySelector('.Lobby_GameCode_display');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -250,6 +261,12 @@ let curr_KI_Level;
 
 // standard bg music volume
 let appVolume = 0.05;
+
+// server thing
+let OnlineGameSetUpData = false;
+let current_gameID; // number
+
+let socket = io();
 
 // app initialization
 function AppInit() {
@@ -417,10 +434,15 @@ headerSettBtn.addEventListener('click', () => {
 function EnterGame() {
     NxN_field.forEach(field => {
         field.addEventListener('click', f => {
+            SetClockList.style.display = 'flex';
+            SetGameModeList.style.display = 'flex';
+
             if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
 
                 SetPlayerNamesPopUp.style.display = 'flex';
                 DarkLayer.style.display = 'block';
+                Player2_NameInput.style.display = 'block';
+                Player2_IconInput.style.display = 'block';
 
                 curr_name1 = null;
                 curr_name2 = null;
@@ -453,6 +475,10 @@ function EnterGame() {
 
                 DarkLayer.style.display = 'block';
                 OnlineGame_iniPopUp.style.display = 'flex';
+                Player2_NameInput.style.display = 'none';
+                Player2_IconInput.style.display = 'none';
+                Player1_NameInput.style.height = '50%';
+                Player1_IconInput.style.height = '50%';
             };
         });
     });
@@ -478,19 +504,26 @@ leaveGame_btn.addEventListener('click', () => {
     CreateMusicBars(audio);
 });
 
-// set player names in normal mode
-SetPlayerName_ConfirmButton.addEventListener('click', () => {
+// From the Confirm Button of the "create game button" in the SetUpGameData Window
+// User set all the game data for the game and his own player data. The confirm button calls this function
+// Room gets created and the creater gets joined in "index.js"
+function UserCreateRoom() {
     let Check = SetGameData_CheckConfirm();
     // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
-    if (Player1_NameInput.value != "" && Player2_NameInput.value != "" && Player1_NameInput.value != Player2_NameInput.value &&
-        Player1_IconInput.value != "" && Player2_IconInput.value != "" && Player1_IconInput.value != Player2_IconInput.value &&
+    if (Player1_NameInput.value != "" &&
+        Player1_IconInput.value != "" &&
         Check[0] == true && Check[1] == true) {
-        // html stuff
+        // server
+        socket.emit('create_room', message => {
+            Lobby_GameCode_display.textContent = `Game Code: ${message}`;
+            current_gameID = message;
+        });
+
+        // general stuff
+        OnlineGame_Lobby.style.display = 'flex';
         SetPlayerNamesPopUp.style.display = 'none';
-        DarkLayer.style.display = 'none';
 
         // initialize game with the right values
-        let fieldIndex = curr_field_ele.getAttribute('index');
         curr_name1 = Player1_NameInput.value;
         curr_name2 = Player2_NameInput.value;
         curr_form1 = Player1_IconInput.value;
@@ -498,14 +531,64 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
         curr_innerGameMode = Check[3]; // Inner Game
         curr_selected_PlayerClock = Check[2]; // Player Clock
 
-        initializeGame(curr_field_ele);
-
-        // play theme music 
-        PauseMusic();
-        CreateMusicBars(Fields[fieldIndex].theme_name);
-
     } else {
         return;
+    };
+};
+
+// set player names in normal mode
+SetPlayerName_ConfirmButton.addEventListener('click', () => {
+    if (curr_mode == GameMode[2].opponent) { // online mode
+
+        // if user wants to enter an online game
+        if (OnlineGameSetUpData) {
+
+            // If user entered his name and which form he wants to use in the game
+            if (Player1_IconInput.value != "" && Player1_NameInput.value != "") {
+                // general stuff
+                OnlineGame_Lobby.style.display = 'flex';
+                SetPlayerNamesPopUp.style.display = 'none';
+
+                // initialize game with the right values
+                curr_name1 = Player1_NameInput.value;
+                curr_form1 = Player1_IconInput.value;
+            };
+
+        } else { // user wants to create an online game
+            UserCreateRoom();
+        };
+
+    } else { // computer mode
+
+        let Check = SetGameData_CheckConfirm();
+
+        // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
+        if (Player1_NameInput.value != "" && Player2_NameInput.value != "" && Player1_NameInput.value != Player2_NameInput.value &&
+            Player1_IconInput.value != "" && Player2_IconInput.value != "" && Player1_IconInput.value != Player2_IconInput.value &&
+            Check[0] == true && Check[1] == true) {
+
+            // general stuff
+            SetPlayerNamesPopUp.style.display = 'none';
+
+            // initialize game with the right values
+            let fieldIndex = curr_field_ele.getAttribute('index');
+            curr_name1 = Player1_NameInput.value;
+            curr_name2 = Player2_NameInput.value;
+            curr_form1 = Player1_IconInput.value;
+            curr_form2 = Player2_IconInput.value;
+            curr_innerGameMode = Check[3]; // Inner Game
+            curr_selected_PlayerClock = Check[2]; // Player Clock
+
+            DarkLayer.style.display = 'none';
+            initializeGame(curr_field_ele);
+
+            // play theme music 
+            PauseMusic();
+            CreateMusicBars(Fields[fieldIndex].theme_name);
+
+        } else {
+            return;
+        };
     };
 });
 
@@ -564,6 +647,7 @@ YourName_KI_ModeCloseBtn.addEventListener('click', () => {
 });
 
 SetPlayerNamesCloseBtn.addEventListener('click', () => {
+    // in computer mode or in online mode but user wants to create a game
     SetPlayerNamesPopUp.style.display = 'none';
     DarkLayer.style.display = 'none';
 });
@@ -864,28 +948,27 @@ OnlineGame_CodeNamePopUp_closeBtn.addEventListener('click', () => {
     DarkLayer.style.display = 'none';
 });
 
-EnterCodeName_ConfirmBtn.addEventListener('click', () => {
-    if (EnterGameCode_Input.value != null && EnterGameCode_Input.value != '' && EnterGameCode_Input.value != undefined) {
-        console.log(EnterGameCode_Input.value);
-
-        EnterGameCode_Input.value = null;
-
-        DarkLayer.style.display = 'none';
-        OnlineGame_CodeName_PopUp.style.display = 'none';
-
-    } else {
-        return
-    };
-});
-
 sett_rsetELO_Points_btn.addEventListener('click', () => {
     localStorage.setItem('ELO', '1000');
     ELO_Points_display.textContent = localStorage.getItem('ELO');
 });
 
+Lobby_startGame_btn.addEventListener('click', () => {
+    OnlineGame_Lobby.style.display = 'none';
+    DarkLayer.style.display = 'none';
+
+    // initialize game
+    let fieldIndex = curr_field_ele.getAttribute('index');
+    initializeGame(curr_field_ele);
+    // play theme music 
+    PauseMusic();
+    CreateMusicBars(Fields[fieldIndex].theme_name);
+});
+
 // open set up game data pop up with online game code
 function setUpOnlineGame(from) {
     if (from == 'create') {
+        // other
         SetPlayerNamesPopUp.style.display = 'flex';
         DarkLayer.style.display = 'block';
 
