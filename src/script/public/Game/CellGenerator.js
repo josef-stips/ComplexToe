@@ -159,11 +159,9 @@ function Activate_InteractiveBlocker() {
     let RIndex = Math.floor(Math.random() * Grid.length);
 
     if (Grid[RIndex].classList.length <= 1) {
+        Grid[RIndex].textContent = null;
         Grid[RIndex].classList = "cell death-cell";
         Grid[RIndex].style.backgroundColor = "var(--font-color)";
         Grid[RIndex].removeEventListener('click', cellCicked);
-        setTimeout(() => {
-            Grid[RIndex].textContent = null;
-        }, 100);
     };
 };
