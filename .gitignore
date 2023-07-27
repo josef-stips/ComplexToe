@@ -90,3 +90,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# personal usage
+.txt
