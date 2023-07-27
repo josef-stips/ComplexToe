@@ -92,4 +92,4 @@ typings/
 out/
 
 # personal usage
-*.txt
+socketAdminPassword.txt*
