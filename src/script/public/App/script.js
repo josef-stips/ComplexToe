@@ -262,13 +262,20 @@ let curr_KI_Level;
 // standard bg music volume
 let appVolume = 0.05;
 
-// server thing
-let OnlineGameSetUpData = false;
-let current_gameID; // number
+// server thing ----------------
+
+// This is for the online game mode
+// This Object checks, if the user is connected to a room and which role he plays "admin" ? "user"
+// It also checks if he wants to enter a game or not
+let personal_GameData = {
+    EnterOnlineGame: false,
+    currGameID: null,
+    role: 'user' // admin ? user
+};
 
 let socket = io();
 
-// app initialization
+// app initialization and code --------------
 function AppInit() {
     ini_LightDark_Mode();
     ElO_Points();
@@ -514,9 +521,14 @@ function UserCreateRoom() {
         Player1_IconInput.value != "" &&
         Check[0] == true && Check[1] == true) {
         // server
-        socket.emit('create_room', message => {
+        // sends player name and icon => requests room id 
+        socket.emit('create_room', [Player1_NameInput.value, Player1_IconInput.value], message => {
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
-            current_gameID = message;
+
+            // set up personal_GameData
+            personal_GameData.currGameID = message;
+            personal_GameData.EnterOnlineGame = false;
+            personal_GameData.role = 'admin';
         });
 
         // general stuff
@@ -541,7 +553,7 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
     if (curr_mode == GameMode[2].opponent) { // online mode
 
         // if user wants to enter an online game
-        if (OnlineGameSetUpData) {
+        if (personal_GameData.EnterOnlineGame) {
 
             // If user entered his name and which form he wants to use in the game
             if (Player1_IconInput.value != "" && Player1_NameInput.value != "") {
@@ -552,6 +564,11 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
                 // initialize game with the right values
                 curr_name1 = Player1_NameInput.value;
                 curr_form1 = Player1_IconInput.value;
+
+                socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim()], (m) => {
+                    Lobby_first_player.textContent = m[1]; // set name of first player for all in the room
+                    Lobby_second_player.textContent = m[0] + ' (You)'; // set name of second player for all in the room
+                });
             };
 
         } else { // user wants to create an online game
@@ -643,12 +660,6 @@ const SetGameData_CheckConfirm = () => {
 YourName_KI_ModeCloseBtn.addEventListener('click', () => {
     // html stuff
     YourNamePopUp_KI_Mode.style.display = 'none';
-    DarkLayer.style.display = 'none';
-});
-
-SetPlayerNamesCloseBtn.addEventListener('click', () => {
-    // in computer mode or in online mode but user wants to create a game
-    SetPlayerNamesPopUp.style.display = 'none';
     DarkLayer.style.display = 'none';
 });
 
