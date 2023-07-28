@@ -125,3 +125,17 @@ socket.on('INFORM_user_left_room', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
 });
+
+// When the ADMIN leaves the game, the other user needs to be informed by that
+socket.on('INFORM_admin_left_room', () => {
+    // server
+    personal_GameData.role = 'user';
+    personal_GameData.currGameID = null;
+    personal_GameData.EnterOnlineGame = false;
+
+    // some things
+    OnlineGame_Lobby.style.display = 'none';
+    SetPlayerNamesPopUp.style.display = 'none';
+    DarkLayer.style.display = 'none';
+    OnlineGameLobby_alertText.style.display = 'none';
+});

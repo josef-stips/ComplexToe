@@ -33,7 +33,6 @@ server.listen(PORT, () => {
 
 App.use(express.static(path.join(__dirname, '/script/public')));
 
-
 // Server data
 // There are two objects for rooms
 // In "Rooms" there are all room ids and in "RoomData" for each room the data 
@@ -64,8 +63,44 @@ io.on('connection', socket => {
     console.log('a user connected to the server ' + socket.id);
 
     // player disconnected from the lobby
-    socket.on('disconnect', () => {
-        console.log('user disconnected from the server');
+    socket.on('disconnect', reason => {
+        console.log('user disconnected from the server ' + socket.id);
+        console.log(ServerData.RoomData);
+        console.log("Single elements:")
+
+        // Loops all rooms and checks if the disconnected client is in a server
+        // It also checks if the client was an admin or user in the room
+        for (const k in ServerData.RoomData) {
+            if (ServerData.RoomData.hasOwnProperty(k)) {
+                let el = ServerData.RoomData[k]; // all room data
+                let room = parseInt(el['id']); // room id
+
+                // This code block checks if the socket that disconnected (for ex. it closed the app or has a poor internet connection)
+                // is in this server by comparing its id with the socket id that is storaged in the room data object 
+                if (socket.id == el['players'][1]['socket']) { // Check if user is admin
+                    // delete the room from the server and inform the other player (user) in the room about it
+                    io.to(room).emit('INFORM_admin_left_room');
+                    delete ServerData.RoomData[k];
+
+                    break;
+
+                } else if (socket.id == el['players'][2]['socket']) { // Check if user is just a user
+                    // inform the admin about the fact the user just left
+                    io.to(room).emit('INFORM_user_left_room');
+
+                    // reset data of user
+                    el['players'][2]['name'] = '';
+                    el['players'][2]['icon'] = '';
+                    el['players'][2]['role'] = 'user';
+                    el['players'][2]['socket'] = '';
+
+                    break;
+
+                } else {
+                    console.log("socket is not in this server")
+                };
+            };
+        };
     });
 
     // create game room (lobby) and its game code
