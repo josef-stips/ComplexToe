@@ -129,7 +129,6 @@ input3.addEventListener('keydown', function(event) {
     };
 });
 
-
 icon_input1.addEventListener('keydown', function(event) {
     let len = event.target.value.trim().length;
     let hasSelection = false;

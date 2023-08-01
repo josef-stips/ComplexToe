@@ -1008,7 +1008,7 @@ ul {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    color: var(--font-color);
+    color: white;
 }
 
 #InputArea-KI-Mode {
@@ -1050,6 +1050,14 @@ ul {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+#Player1_IconInput {
+    text-transform: uppercase;
+}
+
+#Player2_IconInput {
+    text-transform: uppercase;
+}
+
 #YourName_Input_KI_mode {
     height: 50%;
     width: 30%;
@@ -1070,6 +1078,7 @@ ul {
     border: 2px solid;
     font-size: 15px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-transform: uppercase;
 }
 
 .Confirm-Name-btn {
@@ -1244,6 +1253,14 @@ ul {
     gap: 1em;
 }
 
+.OnlineGame_NameWarnText {
+    font-size: 18px;
+    color: red;
+    font-weight: 400;
+    margin: 0.1em 0 0.1em 0.1em;
+    display: none;
+}
+
 
 /* for online game. default display: none */
 
@@ -1270,6 +1287,7 @@ ul {
 
 .KI_SetPlayerIconsInput {
     margin-left: 1em;
+    text-transform: uppercase;
 }
 
 .SetPlayerData_Header_KI {
@@ -1693,8 +1711,8 @@ label h3 {
 /* Online Game Lobby */
 
 .OnlineGame_Lobby {
-    width: 25%;
-    height: 20%;
+    width: 60%;
+    height: 60%;
     top: 0;
     bottom: 0;
     left: 0;
@@ -1714,12 +1732,13 @@ label h3 {
 }
 
 .Lobby_header {
-    width: 91%;
-    height: 15%;
+    width: 97%;
+    height: 8%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 0.25em;
 }
 
 #Lobby_closeBtn {
@@ -1734,24 +1753,25 @@ label h3 {
 }
 
 .Lobby_main {
+    margin-top: 10;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    width: 90%;
-    font-size: 25px;
-    height: 55%;
-    font-weight: 500;
+    width: 96%;
+    font-size: 23px;
+    height: 75%;
+    font-weight: 400;
     border-top: 2px solid;
     border-bottom: 2px solid;
 }
 
 .Lobby_footer {
     width: 100%;
-    height: 30%;
+    height: 15%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -1761,12 +1781,13 @@ label h3 {
     background-color: var(--bg-app-color);
     font-weight: 500;
     font-size: 18px;
-    width: 50%;
-    height: 60%;
+    width: 20%;
+    height: 50%;
     border: 2px solid;
-    border-radius: 20px;
+    border-radius: 30px;
     outline: none;
     transition: all 0.15s ease-out;
+    margin-right: 1em;
 }
 
 .Lobby_startGame_btn:hover {
@@ -1777,6 +1798,33 @@ label h3 {
 .Lobby_GameCode_display {
     font-weight: 500;
     font-size: 18px;
+}
+
+.LobbyPlayerSection {
+    margin: 0.35em 0 0 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
+.LobbyGameDataSection {
+    margin: 0.35em 0 0 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 0.2em;
+}
+
+.LobbySectionTitle {
+    margin: 0 0 0.3em 0;
+    font-weight: 500;
+}
+
+.LobbyUserFooterInfo {
+    margin: 0 1em 0 0;
 }
 
 
@@ -1836,5 +1884,15 @@ label h3 {
     }
     100% {
         background-color: rgba(255, 0, 0, 0);
+    }
+}
+
+
+/* Mediq Querys */
+
+@media screen and (max-width: 1400px) {
+    .SetPlayerNamesPopUp {
+        width: 65%;
+        height: 80%;
     }
 }

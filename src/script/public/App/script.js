@@ -4,6 +4,8 @@ let btn_sound = document.querySelector('#btn_click_1');
 let btn_sound2 = document.querySelector('#btn_click_2');
 const audio = document.querySelector("#bg_audio");
 
+let cellGrid = document.querySelector('#cellGrid');
+
 // general elements and buttons
 let gameModeCards_Div = document.querySelector('.gameMode-cards');
 let gameModeFields_Div = document.querySelector('.GameMode-fields');
@@ -96,6 +98,11 @@ let GameFieldHeaderUnderBody = document.querySelector('.GameFieldHeader-underBod
 let SetGameData_Label = document.querySelectorAll('.SetGameData_Label');
 let SetPlayerNames_Header = document.querySelector('.SetPlayerNames-Header');
 let ConfirmName_Btn = document.querySelector('.Confirm-Name-btn');
+let Lobby_PlayerClock = document.querySelector('.Lobby_PlayerClock');
+let Lobby_InnerGameMode = document.querySelector('.Lobby_InnerGameMode');
+let Lobby_FieldSize = document.querySelector('.Lobby_FieldSize');
+let LobbyUserFooterInfo = document.querySelector('.LobbyUserFooterInfo');
+let OnlineGame_NameWarnText = document.querySelectorAll('.OnlineGame_NameWarnText');
 
 let SetClockList_KI = document.querySelector('.SetClockList_KI');
 let Your_IconInput = document.querySelector('#Your_IconInput');
@@ -243,6 +250,8 @@ let gameCounter // Game's clock
 
 let score_Player1_numb = 0;
 let score_Player2_numb = 0;
+
+let curr_mode = "";
 
 // Inner Game Modes
 let InnerGameModes = {
@@ -444,6 +453,10 @@ function EnterGame() {
             SetClockList.style.display = 'flex';
             SetGameModeList.style.display = 'flex';
 
+            // warn text for online game mode
+            OnlineGame_NameWarnText[0].style.display = 'none';
+            OnlineGame_NameWarnText[0].style.display = 'none';
+
             if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
 
                 SetPlayerNamesPopUp.style.display = 'flex';
@@ -480,6 +493,7 @@ function EnterGame() {
 
                 curr_field_ele = f.target;
 
+                // Initialize Inputs from pop up
                 DarkLayer.style.display = 'block';
                 OnlineGame_iniPopUp.style.display = 'flex';
                 Player2_NameInput.style.display = 'none';
@@ -521,14 +535,23 @@ function UserCreateRoom() {
         Player1_IconInput.value != "" &&
         Check[0] == true && Check[1] == true) {
         // server
-        // sends player name and icon => requests room id 
-        socket.emit('create_room', [Player1_NameInput.value, Player1_IconInput.value], message => {
+        let fieldIndex = curr_field_ele.getAttribute('index');
+        let fieldTitle = curr_field_ele.getAttribute('title');
+
+        let xyCell_Amount = Fields[fieldIndex].xyCellAmount;
+
+        // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
+        socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, Player1_IconInput.value, fieldIndex, fieldTitle], message => {
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
+            Lobby_GameCode_display.style.userSelect = 'text';
 
             // set up personal_GameData
             personal_GameData.currGameID = message;
             personal_GameData.EnterOnlineGame = false;
             personal_GameData.role = 'admin';
+
+            Lobby_startGame_btn.style.display = 'block';
+            LobbyUserFooterInfo.style.display = 'none';
         });
 
         // general stuff
@@ -538,10 +561,15 @@ function UserCreateRoom() {
         // initialize game with the right values
         curr_name1 = Player1_NameInput.value;
         curr_name2 = Player2_NameInput.value;
-        curr_form1 = Player1_IconInput.value;
-        curr_form2 = Player2_IconInput.value;
+        curr_form1 = Player1_IconInput.value.toUpperCase();
+        curr_form2 = Player2_IconInput.value.toUpperCase();
         curr_innerGameMode = Check[3]; // Inner Game
         curr_selected_PlayerClock = Check[2]; // Player Clock
+
+        // initialize lobby display
+        Lobby_InnerGameMode.textContent = `game mode: ${Check[3]}`;
+        Lobby_PlayerClock.textContent = `Player clock: ${Check[2]} seconds`;
+        Lobby_FieldSize.textContent = `Playing field size: ${xyCell_Amount}x${xyCell_Amount}`;
 
     } else {
         return;
@@ -557,17 +585,35 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
 
             // If user entered his name and which form he wants to use in the game
             if (Player1_IconInput.value != "" && Player1_NameInput.value != "") {
-                // general stuff
-                OnlineGame_Lobby.style.display = 'flex';
-                SetPlayerNamesPopUp.style.display = 'none';
-
-                // initialize game with the right values
-                curr_name1 = Player1_NameInput.value;
-                curr_form1 = Player1_IconInput.value;
 
                 socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim()], (m) => {
-                    Lobby_first_player.textContent = m[1]; // set name of first player for all in the room
-                    Lobby_second_player.textContent = m[0] + ' (You)'; // set name of second player for all in the room
+                    // If user name is equal to admins name
+                    if (m == 'Choose a different name!') {
+                        OnlineGame_NameWarnText[1].style.display = 'none';
+                        OnlineGame_NameWarnText[0].style.display = 'block';
+                    };
+
+                    // If user icon is equal to admins icon
+                    if (m == 'Choose a different icon!') {
+                        OnlineGame_NameWarnText[0].style.display = 'none';
+                        OnlineGame_NameWarnText[1].style.display = 'block';
+                    };
+
+                    if (m != 'Choose a different name!' && m != 'Choose a different icon!') {
+                        // initialize game with the right values
+                        curr_name1 = Player1_NameInput.value;
+                        curr_form1 = Player1_IconInput.value.toUpperCase();
+
+                        Lobby_first_player.textContent = `${m[1]} - ${m[2].toUpperCase()}`; // set name of first player for all in the room
+                        Lobby_second_player.textContent = `${m[0]} (You) - ${m[3].toUpperCase()}`; // set name of second player for all in the room
+
+                        OnlineGame_NameWarnText[0].style.display = 'none';
+                        OnlineGame_NameWarnText[0].style.display = 'none';
+
+                        // general stuff
+                        OnlineGame_Lobby.style.display = 'flex';
+                        SetPlayerNamesPopUp.style.display = 'none';
+                    };
                 });
             };
 
@@ -591,8 +637,8 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
             let fieldIndex = curr_field_ele.getAttribute('index');
             curr_name1 = Player1_NameInput.value;
             curr_name2 = Player2_NameInput.value;
-            curr_form1 = Player1_IconInput.value;
-            curr_form2 = Player2_IconInput.value;
+            curr_form1 = Player1_IconInput.value.toUpperCase();
+            curr_form2 = Player2_IconInput.value.toUpperCase();
             curr_innerGameMode = Check[3]; // Inner Game
             curr_selected_PlayerClock = Check[2]; // Player Clock
 
@@ -639,14 +685,12 @@ const SetGameData_CheckConfirm = () => {
     let InnerGameMode = "";
 
     Array.from(SetClockList.children).forEach(e => {
-        console.log(e.getAttribute('selected'))
         if (e.getAttribute('selected') == "true") {
             Check1 = true;
             Clock = e.getAttribute('value');
         };
     });
     Array.from(SetGameModeList.children).forEach(e => {
-        console.log(e.getAttribute('selected'))
         if (e.getAttribute('selected') == "true") {
             Check2 = true;
             InnerGameMode = e.children[0].children[0].textContent;
@@ -964,18 +1008,6 @@ sett_rsetELO_Points_btn.addEventListener('click', () => {
     ELO_Points_display.textContent = localStorage.getItem('ELO');
 });
 
-Lobby_startGame_btn.addEventListener('click', () => {
-    OnlineGame_Lobby.style.display = 'none';
-    DarkLayer.style.display = 'none';
-
-    // initialize game
-    let fieldIndex = curr_field_ele.getAttribute('index');
-    initializeGame(curr_field_ele);
-    // play theme music 
-    PauseMusic();
-    CreateMusicBars(Fields[fieldIndex].theme_name);
-});
-
 // open set up game data pop up with online game code
 function setUpOnlineGame(from) {
     if (from == 'create') {
@@ -993,8 +1025,14 @@ function setUpOnlineGame(from) {
         Player2_NameInput.value = "";
         Player1_IconInput.value = "X";
         Player2_IconInput.value = "O";
+        SetGameData_Label[0].style.display = 'block';
+        SetGameData_Label[1].style.display = 'block';
+        OnlineGame_NameWarnText[0].style.display = 'none';
+        OnlineGame_NameWarnText[0].style.display = 'none';
 
     } else if (from == 'enter') {
         OnlineGame_CodeName_PopUp.style.display = 'flex';
+        // bug fix
+        EnterGameCode_Input.value = null;
     };
 };

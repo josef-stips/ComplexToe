@@ -1359,8 +1359,10 @@
                     <label for="Player1_NameInput"><h3>Player Name</h3></label>
 
                     <div class="Player-NameInputArea IconSetArea">
-                        <input id="Player1_NameInput" class="SetPlayerName-input" placeholder="Player1" type="text">
-                        <input id="Player2_NameInput" class="SetPlayerName-input" placeholder="Player2" type="text">
+                        <input id="Player1_NameInput" class="SetPlayerName-input" placeholder="Player1" type="text" pattern="[a-zA-Z0-9]*">
+                        <input id="Player2_NameInput" class="SetPlayerName-input" placeholder="Player2" type="text" pattern="[a-zA-Z0-9]*">
+
+                        <div class="OnlineGame_NameWarnText">Choose a different name!</div>
                     </div>
 
                 </div>
@@ -1371,8 +1373,10 @@
                     <label for="Player1_IconInput"><h3>Player Icon</h3></label>
 
                     <div class="Player-IconSet-Area IconSetArea">
-                        <input id="Player1_IconInput" class="SetPlayerName-input" placeholder="Player1 Icon" type="text">
-                        <input id="Player2_IconInput" class="SetPlayerName-input" placeholder="Player2 Icon" type="text">
+                        <input id="Player1_IconInput" class="SetPlayerName-input" placeholder="Player1 Icon" type="text" pattern="[a-zA-Z0-9]*">
+                        <input id="Player2_IconInput" class="SetPlayerName-input" placeholder="Player2 Icon" type="text" pattern="[a-zA-Z0-9]*">
+
+                        <div class="OnlineGame_NameWarnText">Choose a different icon!</div>
                     </div>
 
                 </div>
@@ -1472,7 +1476,7 @@
             <label for="YourName_Input_KI_mode"><h3>Your Name</h3></label>
 
             <div class="Player-NameInputArea IconSetArea">
-                <input id="YourName_Input_KI_mode" class="SetPlayerName-input" placeholder="Your Name" type="text">
+                <input id="YourName_Input_KI_mode" class="SetPlayerName-input" placeholder="Your Name" type="text" pattern="[a-zA-Z0-9]*">
             </div>
         </div>
 
@@ -1481,7 +1485,7 @@
             <label for="Your_IconInput"><h3>Your Icon</h3></label>
 
             <div class="Player-IconSet-Area IconSetArea">
-                <input id="Your_IconInput" class="SetPlayerName-input" placeholder="Your Icon" type="text">
+                <input id="Your_IconInput" class="SetPlayerName-input" placeholder="Your Icon" type="text" pattern="[a-zA-Z0-9]*">
             </div>
         </div>
 
@@ -2296,12 +2300,23 @@
         </div>
 
         <div class="Lobby_main">
-            <span class="Lobby_first_player">Player 1</span>
-            <span class="Lobby_second_player">Player 2</span>
+            <div class="LobbyPlayerSection">
+                <h4 class="LobbySectionTitle">Players:</h4>
+                <span class="Lobby_first_player">Player 1 - X</span>
+                <span class="Lobby_second_player">Player 2 - O</span>
+            </div>
+
+            <div class="LobbyGameDataSection">
+                <h4 class="LobbySectionTitle">Game data:</h4>
+                <span class="Lobby_FieldSize">20x20</span>
+                <span class="Lobby_PlayerClock">15 seconds</span>
+                <span class="Lobby_InnerGameMode">Boneyard</span>
+            </div>
         </div>
 
         <div class="Lobby_footer">
             <button class="Lobby_startGame_btn">start game</button>
+            <span class="LobbyUserFooterInfo">Wait for the admin to start the game..</span>
         </div>
     </div>
 </body>

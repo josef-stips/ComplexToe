@@ -5,7 +5,6 @@ let running = false;
 let stopStatusTextInterval = false;
 let rounds_played = 0;
 
-let curr_mode = "";
 let curr_field = "";
 
 // Field x and y 
@@ -41,15 +40,19 @@ let scores = {
     // tie: 0,
 };
 
-function initializeGame(field) {
-    let fieldTitle = field.getAttribute('title');
-    let fieldIndex = field.getAttribute('index');
-    console.log(fieldIndex, Fields)
+// temporar local online game data
+let OnlineGameData;
 
-    // reset score
-    score_Player1_numb = 0;
-    score_Player2_numb = 0;
-    rounds_played = 0;
+// Need to check wether player 1 (admin) or player 2 (user) can set
+// false : player2 can set; true : player1 can set
+let player1_can_set = true; // admin has the right to set first when the game starts
+
+// Initialize Game
+function initializeGame(field, onlineGame, OnlineGameDataArray) {
+    // Define field data for game
+    // If online game set online game data, if not set normal data
+    let fieldIndex = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[0] : field.getAttribute('index');
+    let fieldTitle = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[1] : field.getAttribute('title');
 
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
@@ -58,29 +61,54 @@ function initializeGame(field) {
     // set up background data
     curr_field = Fields[fieldIndex].name;
 
+    // reset score
+    score_Player1_numb = 0;
+    score_Player2_numb = 0;
+    rounds_played = 0;
+
+    // If in online game mode
+    if (onlineGame == 'OnlineMode') {
+        OnlineGameData = OnlineGameDataArray;
+
+        options = OnlineGameDataArray[2]; // global options
+
+        // player data
+        curr_name1 = OnlineGameDataArray[3];
+        curr_name2 = OnlineGameDataArray[4];
+        curr_form1 = OnlineGameDataArray[5];
+        curr_form2 = OnlineGameDataArray[6];
+
+        curr_selected_PlayerClock = OnlineGameDataArray[7];
+
+    } else { // If not in online game mode
+        CreateOptions();
+    };
+
     //Creates TicTacToe field etc.
     CreateField();
     CreateWinConditions(xCell_Amount);
-    CreateOptions();
 
     // add Event Listener
     const el_cells = document.querySelectorAll('.cell');
     cells = el_cells;
 
+    // set up restart button
+    restartBtn.addEventListener('click', restartGame);
+
     // Adds click event to every single cell and starts game
     el_cells.forEach(cell => {
         cell.addEventListener('click', cellCicked);
     });
-    // set up restart button
-    restartBtn.addEventListener('click', restartGame);
+
     running = true;
 
+    // In the online game mode the curr_innerGameMode gets its right value in serverHandler.js
     GameData.InnerGameMode = curr_innerGameMode;
 
-    if (curr_mode != GameMode[1].opponent) {
+    if (curr_mode != GameMode[1].opponent) { // If not in KI Mode
         // Inner game Mode
         if (GameData.InnerGameMode == InnerGameModes[1]) { // Boneyard
-            Start_Blocker();
+            Start_Blocker(onlineGame);
 
         } else if (GameData.InnerGameMode == InnerGameModes[2]) { // Blocker Combat
             // Blocker blocks one single block after every set
@@ -92,10 +120,10 @@ function initializeGame(field) {
     };
 
     Find_MaxDepth();
-    initializeDocument(field, fieldIndex, fieldTitle);
+    initializeDocument(field, fieldIndex, fieldTitle, true);
 };
 
-function initializeDocument(field, fieldIndex, fieldTitle) {
+function initializeDocument(field, fieldIndex, fieldTitle, onlineMode) {
     GameField.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
     // lobbyHeader.style.display = 'none';
@@ -113,14 +141,31 @@ function initializeDocument(field, fieldIndex, fieldTitle) {
     cellGrid.classList.remove('cellGrid-alert');
     cellGrid.classList.add('cellGrid_opacity');
 
-    // How long the game is - Game Counter
-    let GameSeconds = 0;
-    GameField_TimeMonitor.textContent = '0 s.';
-    clearInterval(gameCounter)
-    gameCounter = setInterval(() => {
-        GameSeconds++;
-        GameField_TimeMonitor.textContent = GameSeconds + ' s.';
-    }, 1000);
+    if (!onlineMode) {
+        // How long the game is - Game Counter
+        let GameSeconds = 0;
+        GameField_TimeMonitor.textContent = '0 s.';
+        clearInterval(gameCounter)
+        gameCounter = setInterval(() => {
+            GameSeconds++;
+            GameField_TimeMonitor.textContent = GameSeconds + ' s.';
+        }, 1000);
+
+        restartBtn.style.color = 'var(font-color)';
+
+    } else { // Is in online mode
+        // Make sure that the user is not allowed to reload the game
+
+        // set up restart button for online game
+        if (personal_GameData.role == 'user') {
+            restartBtn.style.color = '#56565659';
+            restartBtn.removeEventListener('click', restartGame);
+
+        } else if (personal_GameData.role == 'admin') {
+            restartBtn.style.color = 'var(--font-color)';
+            restartBtn.addEventListener('click', restartGame);
+        };
+    };
 
     // Init Player 
     initializePlayers();
@@ -137,8 +182,8 @@ function initializePlayers() {
     PlayerData[1].PlayerName = curr_name1;
     PlayerData[2].PlayerName = curr_name2;
     // Player Form
-    PlayerData[1].PlayerForm = curr_form1;
-    PlayerData[2].PlayerForm = curr_form2;
+    PlayerData[1].PlayerForm = curr_form1.toUpperCase();
+    PlayerData[2].PlayerForm = curr_form2.toUpperCase();
 
     namePlayer1.textContent = curr_name1 + ` (${PlayerData[1].PlayerForm})`;
     namePlayer2.textContent = curr_name2 + ` (${PlayerData[2].PlayerForm})`;
@@ -166,7 +211,13 @@ function initializePlayers() {
     };
 
     // set up statusText
-    statusText.textContent = `${currentName}'s turn`;
+    if (curr_mode == GameMode[2].opponent) { // in online mode
+        socket.emit('changePlayer', personal_GameData.currGameID, currentName);
+
+    } else { // other one
+        statusText.textContent = `${currentName}'s turn`;
+    };
+
     UltimateWinTextArea.style.display = 'none';
 
     // Define minimax scores for KI Mode
@@ -175,6 +226,7 @@ function initializePlayers() {
     scores['tie'] = 0;
 };
 
+// user clicked some cell
 function cellCicked() {
     if (this.classList == "cell") { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
@@ -184,43 +236,92 @@ function cellCicked() {
             return;
         };
 
-        updateCell(this, cellIndex);
+        // If in online mode
+        if (curr_mode == GameMode[2].opponent) {
 
-        if (curr_mode != GameMode[1].opponent) {
-            SecondPlayerTime.style.color = 'var(--font-color)';
-            FirstPlayerTime.style.color = 'var(--font-color)';
+            // Check if the first player (admin) can set and the player that clicked it the admin
+            // if not, nothing must happen
+            if (player1_can_set && personal_GameData.role == 'admin') {
+                socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set]);
 
-            if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
-                // Active Blocker blocks a cell
-                Activate_InteractiveBlocker();
+            }; // the second player tries to click, but he must wait for his opponent;
 
-                // important stuff
-                clearInterval(firstClock);
-                clearInterval(secondClock);
+            // Check if the second player (user) can set and the player that clicked it the user
+            // if not, nothing must happen
+            if (!player1_can_set && personal_GameData.role == 'user') {
+                socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set]);
 
-                // check winner after a time
-                setTimeout(() => {
+            }; // the first player tries to click, but he must wait for his opponent
+
+        } else { // some other mode
+            updateCell(cellIndex);
+
+            if (curr_mode != GameMode[1].opponent) { // If not in KI Mode
+
+                SecondPlayerTime.style.color = 'var(--font-color)';
+                FirstPlayerTime.style.color = 'var(--font-color)';
+
+                if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
+                    // Active Blocker blocks a cell
+                    Activate_InteractiveBlocker();
+
+                    // important stuff
+                    clearInterval(firstClock);
+                    clearInterval(secondClock);
+
+                    // check winner after a time
+                    setTimeout(() => {
+                        checkWinner();
+                    }, 1000);
+
+                } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
                     checkWinner();
-                }, 1000);
+                };
 
-            } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
+            } else { // if in KI Mode just check the winner 
                 checkWinner();
             };
-
-        } else { // if in KI Mode just check the winner 
-            checkWinner();
         };
     };
 };
 
-function Activate_PlayerClock(PlayerOne, PlayerTwo) {
-    if (PlayerOne) {
-        update1();
+// A message to all players that a player setted his form on a cell
+// the update options event is in the server, here the options array gets copied
+socket.on('player_clicked', Goptions => {
+    // update which player can set next
+    player1_can_set = Goptions[1];
+
+    // update cell
+    options = Goptions[0];
+
+    let cells = [...cellGrid.children];
+
+    for (let i = 0; i < options.length; i++) {
+        const element = options[i];
+
+        cells[i].textContent = element;
     };
 
-    if (PlayerTwo) {
-        update2();
-    };
+    // check the winner
+    checkWinner();
+});
+
+// normal update cell function when player in offline mode clicks cell
+function updateCell(index) {
+    options[index] = currentPlayer;
+
+    let cells = [...cellGrid.children];
+    cells[index].textContent = currentPlayer;
+};
+
+function Activate_PlayerClock(PlayerOne, PlayerTwo) {
+    // if (PlayerOne) {
+    //     update1();
+    // };
+
+    // if (PlayerTwo) {
+    //     update2();
+    // };
 };
 
 function update1() {
@@ -301,11 +402,6 @@ function update2() {
     }, 1000);
 };
 
-function updateCell(cell, index) {
-    options[index] = currentPlayer;
-    cell.textContent = currentPlayer;
-};
-
 function changePlayer(from_restart) {
     currentPlayer = (currentPlayer == PlayerData[1].PlayerForm) ? PlayerData[2].PlayerForm : PlayerData[1].PlayerForm;
     currentName = (currentName == PlayerData[1].PlayerName) ? PlayerData[2].PlayerName : PlayerData[1].PlayerName;
@@ -322,8 +418,8 @@ function changePlayer(from_restart) {
 
     } else { // If not in KI Mode
         if (!from_restart) {
-            statusText.textContent = `${currentName}'s turn`;
 
+            // basic things
             clearInterval(firstClock);
             clearInterval(secondClock);
             if (currentPlayer == PlayerData[1].PlayerForm) {
@@ -332,9 +428,44 @@ function changePlayer(from_restart) {
             } else if (currentPlayer == PlayerData[2].PlayerForm) {
                 Activate_PlayerClock(false, true);
             };
+
+            // If in Online Mode
+            if (curr_mode == GameMode[2].opponent) {
+                // "Your turn" for player who's turn
+                socket.emit('changePlayer', personal_GameData.currGameID, currentName);
+
+            } else { // if other mode
+                statusText.textContent = `${currentName}'s turn`;
+            };
         };
     };
+
+    const el_cells = document.querySelectorAll('.cell');
+    cells = el_cells;
+
+    el_cells.forEach(cell => {
+        cell.addEventListener('click', cellCicked);
+    });
 };
+
+// additional change player function for online game mode
+// This is from the server to all clients
+socket.on('changePlayerTurnDisplay', (curr_name) => {
+    // Change for all clients
+    if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'admin') { // INFO: admin is always player one
+        statusText.textContent = `Your turn`;
+
+    } else if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'user') {
+        statusText.textContent = `${curr_name}'s turn`;
+    };
+
+    if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'user') { // INFO: user is always player two
+        statusText.textContent = `Your turn`;
+
+    } else if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'admin') {
+        statusText.textContent = `${curr_name}'s turn`;
+    };
+});
 
 function checkWinner() {
     let roundWon = false;
@@ -461,10 +592,6 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
                 } else {
                     // add access to set
                     setTimeout(() => {
-                        cells.forEach(cell => {
-                            cell.addEventListener('click', cellCicked);
-                            cell.style.cursor = 'pointer';
-                        });
                         running = true;
                         changePlayer(false);
                     }, 1600);
@@ -488,9 +615,6 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
         } else {
             setTimeout(() => {
                 // add access to set
-                cells.forEach(cell => {
-                    cell.addEventListener('click', cellCicked);
-                });
                 running = true;
                 changePlayer(false);
             }, 100);
@@ -537,6 +661,44 @@ function check_RemainingCells() {
 
 // restart game
 function restartGame() {
+    // Event
+    if (curr_mode == GameMode[2].opponent) { // if in online mode
+        // Send trigger emit to server so the server sends the "Reload_GlobalGame" emit to all clients
+        socket.emit('Reload_OnlineGame', personal_GameData.currGameID);
+
+    } else { // if other mode
+        clearInterval(firstClock);
+        clearInterval(secondClock);
+        stopStatusTextInterval = true;
+        cellGrid.classList.remove('cellGrid_opacity');
+        changePlayer(true);
+        setTimeout(() => {
+            NxN_field.forEach(field => {
+                if (field.getAttribute('title') == curr_field) {
+                    initializeGame(field);
+                };
+            });
+
+            // bug fix
+            restartTimeout();
+        }, 50);
+    };
+};
+
+// so the user can't spam the reload button
+function restartTimeout() {
+    restartBtn.style.color = '#56565659';
+    restartBtn.removeEventListener('click', restartGame);
+
+    setTimeout(() => {
+        restartBtn.style.color = 'var(--font-color)';
+        restartBtn.addEventListener('click', restartGame);
+    }, 2000);
+};
+
+// Online Game
+// reload game for all clients
+socket.on('Reload_GlobalGame', () => {
     clearInterval(firstClock);
     clearInterval(secondClock);
     stopStatusTextInterval = true;
@@ -545,11 +707,16 @@ function restartGame() {
     setTimeout(() => {
         NxN_field.forEach(field => {
             if (field.getAttribute('title') == curr_field) {
-                initializeGame(field);
+                initializeGame(field, 'OnlineMode', OnlineGameData);
             };
         });
+
+        if (personal_GameData.role == 'admin') {
+            // bug fix
+            restartTimeout();
+        };
     }, 50);
-};
+});
 
 // Block used cells after a win
 function single_CellBlock(cell) {
@@ -559,8 +726,16 @@ function single_CellBlock(cell) {
     setTimeout(() => {
         cell.textContent = null;
     }, 2000);
+
     // Bug Fix
-    CreateOptions();
+    if (curr_mode == GameMode[2].opponent) {
+        socket.emit('resetOptions', personal_GameData.currGameID, xCell_Amount, message => {
+            options = message;
+        });
+
+    } else {
+        CreateOptions(); // local options
+    };
 };
 
 // call Ultimate Game Win Function

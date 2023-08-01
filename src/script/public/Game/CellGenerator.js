@@ -1,5 +1,4 @@
 // This file generates the TicTacToe field 
-let cellGrid = document.querySelector('#cellGrid');
 
 // field winning combinations
 let WinConditions = [];
@@ -101,29 +100,46 @@ function CreateOptions() {
 // Game Mode: Boneyard
 // When the Game starts, this "Blocker" blocks some random cells so the gameplay is more enjoyable
 // The Blocker takes a 3x3 field and sets n blocks on a random coordinate 
-function Start_Blocker() {
+function Start_Blocker(onlineGame) {
     let Grid = [...cellGrid.children];
 
-    // X by X field for blocker 
-    let XbyX = [
-        [0, 1, 2, 3, 4, 5],
-        [6, 7, 8, 9, 10],
-    ];
-    let targetNumber = Grid.length - 1; // Hier kannst du die gewünschte Zielzahl angeben
-    let result = continueArray(XbyX, targetNumber);
+    // if in online mode
+    if (onlineGame == 'OnlineMode' && personal_GameData.role == 'admin') {
+        // X by X field for blocker 
+        let XbyX = [
+            [0, 1, 2, 3, 4, 5],
+            [6, 7, 8, 9, 10],
+        ];
+        let targetNumber = Grid.length - 1; // Hier kannst du die gewünschte Zielzahl angeben
+        let result = continueArray(XbyX, targetNumber);
 
-    // Anzahl der Elemente, die schwarz gefärbt werden sollen
-    for (i = 0; i < result.length; i++) {
-        let RIndex = Math.floor(Math.random() * result[i].length);
-        let Index = result[i][RIndex]
+        // random option indexes 
+        socket.emit('Global_Boneyard', [personal_GameData.currGameID, result, options, xCell_Amount]);
 
-        // Zufälliges Kind-Element auswählen und Hintergrundfarbe auf Schwarz setzen
-        Grid[Index].style.backgroundColor = "var(--font-color)";
-        Grid[Index].classList = "cell death-cell";
-        Grid[Index].removeEventListener('click', cellCicked);
-        setTimeout(() => {
-            Grid[RIndex].textContent = null;
-        }, 100);
+        // !! The final part is in serverHandler.js
+
+    } else if (onlineGame != 'OnlineMode') { // if in normal mode
+        // X by X field for blocker 
+        let XbyX = [
+            [0, 1, 2, 3, 4, 5],
+            [6, 7, 8, 9, 10],
+        ];
+        let targetNumber = Grid.length - 1; // Hier kannst du die gewünschte Zielzahl angeben
+        let result = continueArray(XbyX, targetNumber);
+
+        // Anzahl der Elemente, die schwarz gefärbt werden sollen
+        for (i = 0; i < result.length; i++) {
+            let RIndex = Math.floor(Math.random() * result[i].length);
+            let Index = result[i][RIndex]
+
+            // Zufälliges Kind-Element auswählen und Hintergrundfarbe auf Schwarz setzen
+            Grid[Index].style.backgroundColor = "var(--font-color)";
+            Grid[Index].classList = "cell death-cell";
+            Grid[Index].removeEventListener('click', cellCicked);
+            setTimeout(() => {
+                Grid[Index].textContent = null;
+            }, 100);
+        };
     };
 };
 // Just a function from the blocker
