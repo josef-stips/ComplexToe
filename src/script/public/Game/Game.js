@@ -173,11 +173,11 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode) {
         };
     };
 
-    // Init Player 
-    initializePlayers();
-
     // choose winner button
     chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+
+    // Init Player 
+    initializePlayers();
 };
 
 function initializePlayers() {
@@ -225,6 +225,12 @@ function initializePlayers() {
     };
 
     UltimateWinTextArea.style.display = 'none';
+
+    // deprive user of its right to choose the winner
+    if (personal_GameData.role == 'user' && curr_mode == GameMode[2].opponent) {
+        chooseWinnerWindowBtn.style.color = '#56565659';
+        chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+    };
 
     // Define minimax scores for KI Mode
     scores[PlayerData[1].PlayerForm] = -1;
@@ -311,9 +317,6 @@ function cellCicked() {
 // A message to all players that a player setted his form on a cell
 // the update options event is in the server, here the options array gets copied
 socket.on('player_clicked', Goptions => {
-    // update which player can set next
-    player1_can_set = Goptions[1];
-
     // update cell
     options = Goptions[0];
 
@@ -325,8 +328,30 @@ socket.on('player_clicked', Goptions => {
         cells[i].textContent = element;
     };
 
-    // check the winner
-    checkWinner();
+    // Check which inner game mode is activated
+    if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
+        // Active Blocker blocks a cell
+        Activate_InteractiveBlocker();
+
+        // important stuff
+        clearInterval(firstClock);
+        clearInterval(secondClock);
+
+        // check winner after a time
+        setTimeout(() => {
+            // update which player can set next
+            player1_can_set = Goptions[1];
+
+            // check the winner
+            checkWinner();
+        }, 1000);
+
+    } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
+        // update which player can set next
+        player1_can_set = Goptions[1];
+        // check the winner
+        checkWinner();
+    };
 });
 
 // normal update cell function when player in offline mode clicks cell
@@ -796,10 +821,105 @@ function Call_UltimateWin(WinCombination) {
 
 // Ultimate Game Win
 function UltimateGameWin(player1_won, player2_won, WinCombination) {
+    // Online or offline mode
+    if (curr_mode == GameMode[2].opponent) {
+        // send message to server
+        socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won, WinCombination]);
+
+    } else {
+        // basic stuff
+        stopStatusTextInterval = false;
+        cells.forEach(cell => {
+            single_CellBlock(cell);
+        });
+
+        // basic stuff
+        stopStatusTextInterval = false;
+        cells.forEach(cell => {
+            single_CellBlock(cell);
+        });
+
+        clearInterval(firstClock);
+        clearInterval(secondClock);
+        clearInterval(gameCounter);
+
+        score_Player1_numb = 0;
+        score_Player2_numb = 0;
+
+        setTimeout(() => {
+            cellGrid.classList.add('Invisible');
+            statusText.classList.add('Invisible');
+            GameFieldHeaderUnderBody.style.display = 'none';
+
+            // restart Game counter
+            let i = 5;
+            var counter = setInterval(() => {
+                if (!stopStatusTextInterval) {
+                    statusText.textContent = `New game in ${i}`;
+                    statusText.classList.remove('Invisible');
+                    i--;
+                    if (i <= -1) {
+                        clearInterval(counter);
+                        restartGame();
+                    };
+                } else {
+                    GameFieldHeaderUnderBody.style.display = 'flex';
+                    clearInterval(counter);
+                };
+            }, 1000);
+        }, 2000);
+
+        setTimeout(() => {
+            cellGrid.style.display = 'none';
+            UltimateWinTextArea.style.display = 'flex';
+            if (player1_won && !player2_won) { // player 1 won (user)
+
+                // Display win text in the proper way
+                UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it! 🏆`;
+
+                if (curr_mode == GameMode[2].opponent) { // online friend 
+                    setNew_SkillPoints(10);
+                };
+                if (curr_mode == GameMode[1].opponent) { // KI 
+                    setNew_SkillPoints(1);
+                };
+
+            } else if (player2_won && !player1_won) { // player 2 won (admin)
+
+                // Display win text in the proper way
+                UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it! 🏆`;
+
+                if (curr_mode == GameMode[2].opponent) { // online friend
+                    setNew_SkillPoints(10);
+                };
+                if (curr_mode == GameMode[1].opponent) { // KI 
+                    setNew_SkillPoints(1);
+                };
+
+            } else if (player1_won && player2_won) {
+                UltimateWinText.textContent = `GG Well played!`;
+            };
+
+        }, 2000);
+    };
+};
+
+// the admin called the ultimate game win
+// this message recieve all clients
+socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
+    // basic stuff
     stopStatusTextInterval = false;
     cells.forEach(cell => {
         single_CellBlock(cell);
     });
+
+    // so the user can't leave during the win animation
+    leaveGame_btn.removeEventListener('click', UserleavesGame);
+    leaveGame_btn.style.color = '#56565659';
+    setTimeout(() => {
+        leaveGame_btn.addEventListener('click', UserleavesGame);
+        leaveGame_btn.style.color = 'var(--font-color)';
+    }, 3000);
 
     clearInterval(firstClock);
     clearInterval(secondClock);
@@ -834,21 +954,40 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
     setTimeout(() => {
         cellGrid.style.display = 'none';
         UltimateWinTextArea.style.display = 'flex';
-        if (player1_won && !player2_won) {
-            UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it! 🏆`;
+        if (player1_won && !player2_won) { // player 1 won (user)
 
-            if (curr_mode == GameMode[2].opponent) {
-                setNew_SkillPoints(10);
+            // Display win text in the proper way
+            if (personal_GameData.role == 'admin') {
+                UltimateWinText.textContent = `You won it! 🏆`;
+
+            } else {
+                UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it! 🏆`;
+            };
+
+            if (curr_mode == GameMode[2].opponent) { // online friend 
+                // only the user which is the winner in this case, earns skill points
+                if (personal_GameData.role == 'admin') {
+                    setNew_SkillPoints(10);
+                };
             };
             if (curr_mode == GameMode[1].opponent) { // KI 
                 setNew_SkillPoints(1);
             };
 
-        } else if (player2_won && !player1_won) {
-            UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it! 🏆`;
+        } else if (player2_won && !player1_won) { // player 2 won (admin)
+            // Display win text in the proper way
+            if (personal_GameData.role == 'user') {
+                UltimateWinText.textContent = `You won it! 🏆`;
+
+            } else {
+                UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it! 🏆`;
+            };
 
             if (curr_mode == GameMode[2].opponent) { // online friend
-                setNew_SkillPoints(10);
+                // only the user which is the winner in this case, earns skill points
+                if (personal_GameData.role == 'user') {
+                    setNew_SkillPoints(10);
+                };
             };
             if (curr_mode == GameMode[1].opponent) { // KI 
                 setNew_SkillPoints(1);
@@ -859,9 +998,10 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
         };
 
     }, 2000);
-};
+});
 
 // Update skill points for player after a successful game
+// This function is only availible in the online mode and KI mode because it makes only sense there
 function setNew_SkillPoints(plus) {
     let old_Elo = parseInt(localStorage.getItem('ELO'));
     let ELO_point = 0;

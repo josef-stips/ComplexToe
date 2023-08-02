@@ -310,3 +310,30 @@ socket.on('recieveGlobalOptions', message => {
     // game cells by their index
     socket.emit('BoneyardFinalProcess', personal_GameData.currGameID);
 });
+
+// When the blocker combat inner game mode is activated and a player sets his form
+// The global blocker combat function sends the result from server.js to all clients
+socket.on('blockerCombat_action', Goptions => {
+    let Grid = [...cellGrid.children];
+
+    // update old array with modified version
+    options = Goptions;
+
+    for (let i = 0; i < options.length; i++) {
+        let el = options[i];
+
+        // update Grid
+        if (Grid[i].classList.length <= 1 && el == '%%') {
+            Grid[i].textContent = null;
+            Grid[i].classList = "cell death-cell";
+            Grid[i].style.backgroundColor = "var(--font-color)";
+            Grid[i].removeEventListener('click', cellCicked);
+
+            // This just deletes all '%%' from the options array that were used to block the
+            // game cells by their index
+            socket.emit('BlockerCombatFinalProcess', personal_GameData.currGameID, i);
+
+            break;
+        };
+    };
+});

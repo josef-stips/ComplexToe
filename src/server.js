@@ -84,8 +84,6 @@ io.on('connection', socket => {
                 let room = parseInt(el['id']); // room id
                 let isPlaying = el['game']['isPlaying'];
 
-                console.log(el)
-
                 // This code block checks if the socket that disconnected (for ex. it closed the app or has a poor internet connection)
                 // is in this server by comparing its id with the socket id that is storaged in the room data object 
                 if (socket.id == el['players'][1]['socket']) { // Check if user is admin
@@ -250,11 +248,11 @@ io.on('connection', socket => {
             // Check if they were in a game playing tic tac toe or not
             let isPlaying = ServerData.RoomData[parseFloat(roomID)]['game']['isPlaying'];
 
+            // kill global game timer if playing of were playing but it was not killed
+            clearInterval(globalGameTimer);
+
             // If they are in a game
             if (isPlaying) {
-                // kill global game timer
-                clearInterval(globalGameTimer);
-
                 // send message to the admin and especially to all other clients that the game is killed
                 // so they are just in the lobby again
                 // the room is still existing with all clients
@@ -426,6 +424,26 @@ io.on('connection', socket => {
     // It displays "Your turn" for the player who's turn
     socket.on('changePlayer', (id, curr_name) => {
         io.to(parseInt(id)).emit('changePlayerTurnDisplay', curr_name);
+    });
+
+    // for the blocker combat inner game mode in online mode 
+    socket.on('BlockerCombat', (id, options) => {
+        // Random index
+        var RIndex = Math.floor(Math.random() * options.length);
+
+        ServerData.RoomData[parseFloat(id)]['game']['options'][RIndex] = '%%';
+
+        io.to(parseInt(id)).emit('blockerCombat_action', ServerData.RoomData[parseFloat(id)]['game']['options']);
+    });
+
+    // just a major bug fix
+    socket.on('BlockerCombatFinalProcess', (id, index) => {
+        ServerData.RoomData[parseFloat(id)]['game']['options'][index] = '';
+    });
+
+    // admin call ultimate win
+    socket.on('Call_UltimateWin', (id, data) => {
+        io.to(parseInt(id)).emit('global_UltimateWin', data[0], data[1], data[2]);
     });
 });
 

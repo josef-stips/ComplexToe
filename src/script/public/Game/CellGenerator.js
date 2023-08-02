@@ -171,13 +171,25 @@ function Activate_InteractiveBlocker() {
     });
     running = false;
 
+    // blocker functionality ------------
     let Grid = [...cellGrid.children];
-    let RIndex = Math.floor(Math.random() * Grid.length);
 
-    if (Grid[RIndex].classList.length <= 1) {
-        Grid[RIndex].textContent = null;
-        Grid[RIndex].classList = "cell death-cell";
-        Grid[RIndex].style.backgroundColor = "var(--font-color)";
-        Grid[RIndex].removeEventListener('click', cellCicked);
+    // if in online mode
+    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+        // This message get send to server then the server generates a random Index, updates the global options array
+        // and sends the updated options array back to ALL clients so every client has the same result
+        socket.emit('BlockerCombat', personal_GameData.currGameID, options);
+
+    } else if (curr_mode != GameMode[2].opponent) { // some offline mode
+        var RIndex = Math.floor(Math.random() * Grid.length);
+
+        // update Grid
+        if (Grid[RIndex].classList.length <= 1) {
+            Grid[RIndex].textContent = null;
+            Grid[RIndex].classList = "cell death-cell";
+            Grid[RIndex].style.backgroundColor = "var(--font-color)";
+            Grid[RIndex].removeEventListener('click', cellCicked);
+        };
     };
+
 };
