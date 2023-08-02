@@ -200,6 +200,8 @@ socket.on('SecondPlayer_Joined', message => {
 socket.on('INFORM_user_left_room', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
+
+    console.log("simple admin sees and cienf")
 });
 
 // User just left the game but during a match
@@ -207,18 +209,25 @@ socket.on('INFORM_user_left_game', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
 
+    console.log("admin seees")
+
     // for the admin, he is in the lobby again
-    if (personal_GameData.role = 'admin') {
+    if (personal_GameData.role == 'admin') {
+
+        console.log("admin confrims")
+
         gameModeFields_Div.style.display = 'flex';
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
         DarkLayer.style.display = 'block';
         friendLeftGamePopUp.style.display = 'flex';
+        friendLeft_text.textContent = 'Your friend left the game';
         Lobby_GameCode_display.style.userSelect = 'text';
     };
 });
 
 // When the ADMIN leaves the game, the other user needs to be informed by that
+// This message goes only to the other user
 socket.on('INFORM_admin_left_room', () => {
     // server
     personal_GameData.role = 'user';
@@ -227,9 +236,13 @@ socket.on('INFORM_admin_left_room', () => {
 
     // some things
     OnlineGame_Lobby.style.display = 'none';
+    DarkLayer.style.display = 'block';
+    GameField.style.display = 'none';
+    gameModeFields_Div.style.display = 'flex';
     SetPlayerNamesPopUp.style.display = 'none';
-    DarkLayer.style.display = 'none';
     OnlineGameLobby_alertText.style.display = 'none';
+    friendLeftGamePopUp.style.display = 'flex';
+    friendLeft_text.textContent = 'The admin disconnected from the game';
 });
 
 // message to all clients that the game just started

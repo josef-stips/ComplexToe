@@ -106,6 +106,7 @@ let OnlineGame_NameWarnText = document.querySelectorAll('.OnlineGame_NameWarnTex
 let friendLeftGamePopUp = document.querySelector('.friendLeftGamePopUp');
 let friendLeft_OK_btn = document.querySelectorAll('.friendLeft_OK_btn')[0];
 let friendLeft_Aj_btn = document.querySelectorAll('.friendLeft_OK_btn')[1];
+let friendLeft_text = document.querySelector('#friendLeft_text');
 
 let SetClockList_KI = document.querySelector('.SetClockList_KI');
 let Your_IconInput = document.querySelector('#Your_IconInput');
@@ -1025,8 +1026,17 @@ function setUpOnlineGame(from) {
 // Then he can click two buttons to confirm his seeing
 friendLeft_Aj_btn.addEventListener('click', () => {
     friendLeftGamePopUp.style.display = 'none';
+
+    if (friendLeft_text.textContent == 'The admin disconnected from the game') {
+        DarkLayer.style.display = 'none';
+
+    };
 });
 
 friendLeft_OK_btn.addEventListener('click', () => {
     friendLeftGamePopUp.style.display = 'none';
+
+    if (friendLeft_text.textContent == 'The admin disconnected from the game') {
+        DarkLayer.style.display = 'none';
+    };
 });

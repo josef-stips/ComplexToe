@@ -82,21 +82,31 @@ io.on('connection', socket => {
             if (ServerData.RoomData.hasOwnProperty(k)) {
                 let el = ServerData.RoomData[k]; // all room data
                 let room = parseInt(el['id']); // room id
+                let isPlaying = el['game']['isPlaying'];
 
                 console.log(el)
 
                 // This code block checks if the socket that disconnected (for ex. it closed the app or has a poor internet connection)
                 // is in this server by comparing its id with the socket id that is storaged in the room data object 
                 if (socket.id == el['players'][1]['socket']) { // Check if user is admin
+                    delete ServerData.RoomData[room];
+
+                    // if in game
+                    clearInterval(globalGameTimer);
+
                     // delete the room from the server and inform the other player (user) in the room about it
-                    io.to(room).emit('INFORM_admin_left_room');
-                    delete ServerData.RoomData[k];
+                    io.to(el['players'][2]['socket']).emit('INFORM_admin_left_room');
+
+                    // kicks out all player so the room gets deleted from the server
+                    io.socketsLeave(room);
 
                     break;
 
                 } else if (socket.id == el['players'][2]['socket']) { // Check if user is just a user
                     // inform the admin about the fact the user just left
-                    io.to(room).emit('INFORM_user_left_room');
+
+                    // if in game
+                    clearInterval(globalGameTimer);
 
                     // reset data of user in player room object
                     el['players'][2]['name'] = '';
@@ -104,7 +114,20 @@ io.on('connection', socket => {
                     el['players'][2]['role'] = 'user';
                     el['players'][2]['socket'] = '';
 
-                    break;
+                    // if in game
+                    if (!isPlaying) {
+                        console.log("NOT in game")
+                        io.to(el['players'][1]['socket']).emit('INFORM_user_left_room');
+
+                        break;
+
+                    } else if (isPlaying) { // if not in game
+                        console.log("in game")
+                        io.to(el['players'][1]['socket']).emit('INFORM_user_left_game');
+                        isPlaying = false;
+
+                        break;
+                    };
 
                 } else {
                     console.log("socket is not in this server")
