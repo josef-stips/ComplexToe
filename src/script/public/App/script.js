@@ -103,6 +103,9 @@ let Lobby_InnerGameMode = document.querySelector('.Lobby_InnerGameMode');
 let Lobby_FieldSize = document.querySelector('.Lobby_FieldSize');
 let LobbyUserFooterInfo = document.querySelector('.LobbyUserFooterInfo');
 let OnlineGame_NameWarnText = document.querySelectorAll('.OnlineGame_NameWarnText');
+let friendLeftGamePopUp = document.querySelector('.friendLeftGamePopUp');
+let friendLeft_OK_btn = document.querySelectorAll('.friendLeft_OK_btn')[0];
+let friendLeft_Aj_btn = document.querySelectorAll('.friendLeft_OK_btn')[1];
 
 let SetClockList_KI = document.querySelector('.SetClockList_KI');
 let Your_IconInput = document.querySelector('#Your_IconInput');
@@ -505,25 +508,6 @@ function EnterGame() {
     });
 };
 EnterGame();
-
-// Leave Game
-leaveGame_btn.addEventListener('click', () => {
-    // sound
-    playBtn_Audio_2()
-
-    GameField.style.display = 'none';
-    // lobbyHeader.style.display = 'flex';
-    gameModeFields_Div.style.display = 'flex';
-
-    clearInterval(firstClock);
-    clearInterval(secondClock);
-    clearInterval(gameCounter);
-    stopStatusTextInterval = true;
-
-    // playBtn_Audio();
-    PauseMusic();
-    CreateMusicBars(audio);
-});
 
 // From the Confirm Button of the "create game button" in the SetUpGameData Window
 // User set all the game data for the game and his own player data. The confirm button calls this function
@@ -1036,3 +1020,13 @@ function setUpOnlineGame(from) {
         EnterGameCode_Input.value = null;
     };
 };
+
+// When user left the online game during a match, the admin gets informed by that with a pop up
+// Then he can click two buttons to confirm his seeing
+friendLeft_Aj_btn.addEventListener('click', () => {
+    friendLeftGamePopUp.style.display = 'none';
+});
+
+friendLeft_OK_btn.addEventListener('click', () => {
+    friendLeftGamePopUp.style.display = 'none';
+});

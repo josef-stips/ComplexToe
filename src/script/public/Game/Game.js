@@ -101,6 +101,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray) {
     });
 
     running = true;
+    player1_can_set = true;
 
     // In the online game mode the curr_innerGameMode gets its right value in serverHandler.js
     GameData.InnerGameMode = curr_innerGameMode;
@@ -120,7 +121,12 @@ function initializeGame(field, onlineGame, OnlineGameDataArray) {
     };
 
     Find_MaxDepth();
-    initializeDocument(field, fieldIndex, fieldTitle, true);
+
+    if (onlineGame == 'OnlineMode') {
+        initializeDocument(field, fieldIndex, fieldTitle, true);
+    } else {
+        initializeDocument(field, fieldIndex, fieldTitle, false);
+    };
 };
 
 function initializeDocument(field, fieldIndex, fieldTitle, onlineMode) {
@@ -239,6 +245,14 @@ function cellCicked() {
         // If in online mode
         if (curr_mode == GameMode[2].opponent) {
 
+            // so the user can't leave the game directly after he setted 
+            leaveGame_btn.removeEventListener('click', UserleavesGame);
+            leaveGame_btn.style.color = '#56565659';
+            setTimeout(() => {
+                leaveGame_btn.addEventListener('click', UserleavesGame);
+                leaveGame_btn.style.color = 'var(--font-color)';
+            }, 2000);
+
             // Check if the first player (admin) can set and the player that clicked it the admin
             // if not, nothing must happen
             if (player1_can_set && personal_GameData.role == 'admin') {
@@ -254,6 +268,15 @@ function cellCicked() {
             }; // the first player tries to click, but he must wait for his opponent
 
         } else { // some other mode
+
+            // so the user can't leave the game directly after he setted 
+            leaveGame_btn.removeEventListener('click', UserleavesGame);
+            leaveGame_btn.style.color = '#56565659';
+            setTimeout(() => {
+                leaveGame_btn.addEventListener('click', UserleavesGame);
+                leaveGame_btn.style.color = 'var(--font-color)';
+            }, 2000);
+
             updateCell(cellIndex);
 
             if (curr_mode != GameMode[1].opponent) { // If not in KI Mode
@@ -664,7 +687,7 @@ function restartGame() {
     // Event
     if (curr_mode == GameMode[2].opponent) { // if in online mode
         // Send trigger emit to server so the server sends the "Reload_GlobalGame" emit to all clients
-        socket.emit('Reload_OnlineGame', personal_GameData.currGameID);
+        socket.emit('Reload_OnlineGame', personal_GameData.currGameID, xCell_Amount);
 
     } else { // if other mode
         clearInterval(firstClock);
@@ -698,7 +721,11 @@ function restartTimeout() {
 
 // Online Game
 // reload game for all clients
-socket.on('Reload_GlobalGame', () => {
+socket.on('Reload_GlobalGame', (Goptions) => {
+    // update options
+    options = Goptions
+    OnlineGameData[2] = Goptions;
+
     clearInterval(firstClock);
     clearInterval(secondClock);
     stopStatusTextInterval = true;

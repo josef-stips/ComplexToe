@@ -4,6 +4,7 @@
     --bg-app-color: rgb(255, 255, 255);
     --bg-gradient: rgb(255, 255, 255);
     --bg-gradient2: rgb(255, 255, 255);
+    --bg-app-color2: #4b4e52;
 }
 
 .dark-mode {
@@ -11,6 +12,7 @@
     --bg-gradient: #333a41;
     --bg-gradient2: #32383f;
     --bg-app-color: #191c20;
+    --bg-app-color2: #121518;
 }
 
 body,
@@ -1796,6 +1798,7 @@ label h3 {
 }
 
 .Lobby_GameCode_display {
+    padding: 0.1em 0.2em 0.1em 0.2em;
     font-weight: 500;
     font-size: 18px;
 }
@@ -1825,6 +1828,50 @@ label h3 {
 
 .LobbyUserFooterInfo {
     margin: 0 1em 0 0;
+}
+
+
+/* Friend left game pop up */
+
+.friendLeftGamePopUp {
+    display: none;
+    width: 30%;
+    height: 22%;
+    background-color: var(--bg-app-color2);
+    border: 3px solid;
+    border-radius: 40px;
+    color: var(--font-color);
+    flex-direction: column;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    position: absolute;
+    z-index: 10001;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 27px;
+}
+
+.friendLeft_Footer {
+    display: flex;
+    flex-direction: row;
+    gap: 5em;
+}
+
+.friendLeft_OK_btn {
+    padding: 5px 15px 5px 15px;
+    background-color: var(--bg-gradient2);
+    border-radius: 20px;
+    border: 2px solid var(--font-color);
+    cursor: pointer;
+    transition: all 0.1s ease-out;
+}
+
+.friendLeft_OK_btn:hover {
+    border: 2px solid var(--hover-item);
+    transition: all 0.1s ease-in-out;
 }
 
 

@@ -66,6 +66,8 @@ let ServerData = {
     },
 }; // !Important: The id of a room is always a number 
 
+let globalGameTimer;
+
 // Websocket 
 io.on('connection', socket => {
     console.log('a user connected to the server ' + socket.id);
@@ -220,28 +222,74 @@ io.on('connection', socket => {
 
     // user leaves lobby. if admin leaves lobby => room gets killes and all users in there gets kicked out
     socket.on('user_left_lobby', (user, roomID, callback) => {
+        // general things
         if (user == 'admin') {
-            // Room gets deleted from the global room arrays "Rooms" and "RoomData" in the "ServerData" Object
-            kill_room(parseInt(roomID));
+            // Check if they were in a game playing tic tac toe or not
+            let isPlaying = ServerData.RoomData[parseFloat(roomID)]['game']['isPlaying'];
 
-            // send a function to the other person of the room so their html updates properly
-            io.to(roomID).emit('killed_room');
+            // If they are in a game
+            if (isPlaying) {
+                // kill global game timer
+                clearInterval(globalGameTimer);
 
-            // kicks out all player so the room gets deleted from the server
-            io.socketsLeave(roomID);
+                // send message to the admin and especially to all other clients that the game is killed
+                // so they are just in the lobby again
+                // the room is still existing with all clients
+                io.to(roomID).emit('killed_game');
 
-            // callback to frontend
-            callback('You killed the lobby');
+                // They do not play anymore
+                ServerData.RoomData[parseFloat(roomID)]['game']['isPlaying'] = false;
+
+                return;
+            };
+
+            // if they are still in the lobby and the admin leaves
+            if (!isPlaying) {
+                // send a function to the other person of the room so their html updates properly
+                io.to(roomID).emit('killed_room');
+
+                // kicks out all player so the room gets deleted from the server
+                io.socketsLeave(roomID);
+
+                // Room gets deleted from the global room arrays "Rooms" and "RoomData" in the "ServerData" Object
+                kill_room(parseInt(roomID));
+
+                // callback to frontend
+                callback('You killed the lobby');
+            };
 
         } else if (user == 'user') { // user kicks himself from the lobby
-            // user just leaves
-            socket.leave(parseInt(roomID));
+            // Check if they were in a game playing tic tac toe or not
+            let isPlaying = ServerData.RoomData[parseFloat(roomID)]['game']['isPlaying'];
 
-            // inform all other players that you left
-            io.to(parseInt(roomID)).emit('INFORM_user_left_room'); // second parameter => name of admin
+            // If they were playing
+            if (isPlaying) {
+                // user just leaves
+                socket.leave(parseInt(roomID));
 
-            // callback to frontend to update the data of the user who left
-            callback('You just left the game');
+                // Inform admin that user just left
+                io.to(parseInt(roomID)).emit('INFORM_user_left_game');
+
+                // update the value 'isPlaying' to false to say they are not playing
+                ServerData.RoomData[parseFloat(roomID)]['game']['isPlaying'] = false;
+
+                // callback to frontend to update the data of the user who left
+                callback('You just left the game');
+
+                return;
+            };
+
+            // If they were not playing
+            if (!isPlaying) {
+                // user just leaves
+                socket.leave(parseInt(roomID));
+
+                // inform all other players that you left
+                io.to(parseInt(roomID)).emit('INFORM_user_left_room');
+
+                // callback to frontend to update the data of the user who left
+                callback('You just left the game');
+            };
         };
     });
 
@@ -306,8 +354,21 @@ io.on('connection', socket => {
 
     // Only the admin can reload the game
     // When he reloads, a message to all clients gets send
-    socket.on('Reload_OnlineGame', id => {
-        io.to(parseInt(id)).emit('Reload_GlobalGame');
+    socket.on('Reload_OnlineGame', (id, xyCellAmount) => {
+        // restart global timer
+        clearInterval(globalGameTimer);
+        startGlobalGameTimer(parseInt(id));
+
+        // reset options
+        ServerData.RoomData[parseFloat(id)]['game']['options'].length = 0; // reset 
+
+        // create global game options
+        for (i = 0; i < xyCellAmount * xyCellAmount; i++) { // Data[1] = xyCell_Amount , 5, 10, 15, 20 etc.
+            ServerData.RoomData[parseFloat(id)]['game']['options'].push("");
+        };
+
+        // send message to all clients and updated options array
+        io.to(parseInt(id)).emit('Reload_GlobalGame', ServerData.RoomData[parseFloat(id)]['game']['options']);
     });
 
     // Some client clicked on the board
@@ -361,7 +422,6 @@ const kill_room = id => {
     };
 };
 
-let globalGameTimer;
 // starts the global game timer that is displayed in the game for both users
 function startGlobalGameTimer(GameID) {
     let i = 0;

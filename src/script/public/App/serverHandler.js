@@ -113,10 +113,51 @@ Lobby_startGame_btn.addEventListener('click', () => {
     let fieldIndex = curr_field_ele.getAttribute('index');
     let xyAmount = Fields[fieldIndex].xyCellAmount; // 5, 10, 15, 20 ?
 
+    // just a little change for better user experience
+    Lobby_GameCode_display.style.userSelect = 'none';
+
     // First, send an emit to the server to inform it about it
     // The server sends a message to all clients in the lobby 
     socket.emit('request_StartGame', [personal_GameData.currGameID, xyAmount, curr_field_ele]);
 });
+
+// Leave Game button
+leaveGame_btn.addEventListener('click', UserleavesGame);
+
+// User leaves game on leave game btn event
+function UserleavesGame() {
+    // sound
+    playBtn_Audio_2()
+
+    GameField.style.display = 'none';
+    gameModeFields_Div.style.display = 'flex';
+    // lobbyHeader.style.display = 'flex';
+
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    clearInterval(gameCounter);
+    stopStatusTextInterval = true;
+
+    // If in online mode
+    if (curr_mode == GameMode[2].opponent) {
+        // user left the game
+        // Many things are happening in server.js on this emit
+        socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
+            // only if the user that left is not the admin
+            if (personal_GameData.role == 'user') {
+                // Do things after room was killed
+                // The client isn't connected to any server now so the "current id of the room" is null
+                personal_GameData.role = 'user';
+                personal_GameData.currGameID = null;
+                personal_GameData.EnterOnlineGame = false;
+            };
+        });
+    };
+
+    // play music
+    PauseMusic();
+    CreateMusicBars(audio); // error because javascript is as weird as usual   
+};
 
 // This message goes to all users in a room and gets callen when the admin of the room leaves it
 socket.on('killed_room', () => {
@@ -130,6 +171,18 @@ socket.on('killed_room', () => {
     SetPlayerNamesPopUp.style.display = 'none';
     DarkLayer.style.display = 'none';
     OnlineGameLobby_alertText.style.display = 'none';
+});
+
+// if they were in a game in the admin left the game
+// When the admin leaves, he and all other clients are in the lobby again
+socket.on('killed_game', () => {
+    // leave game field
+    GameField.style.display = 'none';
+    // enter lobby
+    OnlineGame_Lobby.style.display = 'flex';
+    gameModeFields_Div.style.display = 'flex';
+    DarkLayer.style.display = 'block';
+    Lobby_GameCode_display.style.userSelect = 'text';
 });
 
 // Admin created the game and now waits for the second player
@@ -147,6 +200,22 @@ socket.on('SecondPlayer_Joined', message => {
 socket.on('INFORM_user_left_room', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
+});
+
+// User just left the game but during a match
+socket.on('INFORM_user_left_game', () => {
+    // The admin sees this after the user left:
+    Lobby_second_player.textContent = 'waiting for second player..';
+
+    // for the admin, he is in the lobby again
+    if (personal_GameData.role = 'admin') {
+        gameModeFields_Div.style.display = 'flex';
+        OnlineGame_Lobby.style.display = 'flex';
+        GameField.style.display = 'none';
+        DarkLayer.style.display = 'block';
+        friendLeftGamePopUp.style.display = 'flex';
+        Lobby_GameCode_display.style.userSelect = 'text';
+    };
 });
 
 // When the ADMIN leaves the game, the other user needs to be informed by that
@@ -184,7 +253,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     let player2_icon = RoomData['0']['players'][2].icon;
 
     // initialize game
-    curr_field_ele = null;
+    // curr_field_ele = null;
     curr_innerGameMode = currInnerGameMode;
 
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon, PlayerTimer]);
