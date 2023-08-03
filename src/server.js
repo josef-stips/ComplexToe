@@ -443,16 +443,27 @@ io.on('connection', socket => {
         ServerData.RoomData[parseFloat(id)]['game']['options'][index] = '';
     });
 
-    // admin call ultimate win
+    // admin calls ultimate win
     socket.on('Call_UltimateWin', (id, data) => {
         io.to(parseInt(id)).emit('global_UltimateWin', data[0], data[1], data[2]);
     });
 
+    // admin calls global game timer which all clients recieve through this emit
     socket.on('globalTimer', id => {
         // set the global timer to default again
         ServerData.RoomData[parseFloat(id)]['game']['globalGameTimer'] = ServerData.RoomData[parseFloat(id)]['game']['globalGameTimer'] + 1;
 
         io.to(parseInt(id)).emit('display_GlobalGameTimer', ServerData.RoomData[parseFloat(id)]['game']['globalGameTimer']);
+    });
+
+    // admin calls player timer 1 which all clients recieve through this emit
+    socket.on('INI_playerTimer1', id => {
+        io.to(parseInt(id)).emit('playerTimer1');
+    });
+
+    // admin calls player timer 2 which all clients recieve through this emit
+    socket.on('INI_playerTimer2', id => {
+        io.to(parseInt(id)).emit('playerTimer2');
     });
 });
 

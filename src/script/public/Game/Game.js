@@ -382,16 +382,141 @@ function updateCell(index) {
 };
 
 function Activate_PlayerClock(PlayerOne, PlayerTwo) {
-    // if (PlayerOne) {
-    //     update1();
-    // };
+    if (PlayerOne) {
+        update1();
+    };
 
-    // if (PlayerTwo) {
-    //     update2();
-    // };
+    if (PlayerTwo) {
+        update2();
+    };
 };
 
 function update1() {
+    // In online mode, the admin sends an emit to the server so the server sends an emit
+    // to all clients
+    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+        socket.emit('INI_playerTimer1', personal_GameData.currGameID);
+
+    } else if (curr_mode != GameMode[2].opponent) {
+        let Seconds = GameData.PlayerClock;
+
+        SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
+        SecondPlayerTime.style.color = 'var(--font-color)';
+        FirstPlayerTime.style.color = 'var(--font-color)';
+
+        firstClock = setInterval(() => {
+            Seconds--;
+            FirstPlayerTime.textContent = `${Seconds}`;
+
+            // time is almost out, dangerous
+            if (Seconds <= 2) {
+                FirstPlayerTime.style.color = 'red';
+            };
+
+            // Time is out. play cool animation and next player's turn
+            if (Seconds == -1) {
+                chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+                restartBtn.removeEventListener('click', restartGame);
+                leaveGame_btn.removeEventListener('click', UserleavesGame);
+
+                leaveGame_btn.style.color = '#56565659';
+                chooseWinnerWindowBtn.style.color = '#56565659';
+                leaveGame_btn.style.color = '#56565659';
+
+                FirstPlayerTime.textContent = `${0} `;
+                clearInterval(firstClock);
+
+                cellGrid.classList.remove('cellGrid_opacity');
+                cellGrid.classList.add('cellGrid-alert');
+
+                if (GameData.InnerGameMode == InnerGameModes[2]) {
+                    Activate_InteractiveBlocker();
+                };
+
+                setTimeout(() => {
+                    cellGrid.classList.remove('cellGrid-alert');
+                    FirstPlayerTime.style.color = 'var(--font-color)';
+                    cellGrid.style.backgroundColor = "";
+                    // now it's player one turn
+                    checkWinner();
+
+                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+                    restartBtn.addEventListener('click', restartGame);
+                    leaveGame_btn.addEventListener('click', UserleavesGame);
+
+                    leaveGame_btn.style.color = 'var(--font-color)';
+                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
+                    restartBtn.style.color = 'var(--font-color)';
+                }, 1000);
+            };
+        }, 1000);
+    };
+};
+
+function update2() {
+    // In online mode, the admin sends an emit to the server so the server sends an emit
+    // to all clients
+    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+        socket.emit('INI_playerTimer2', personal_GameData.currGameID);
+
+    } else if (curr_mode != GameMode[2].opponent) {
+        let Seconds = GameData.PlayerClock;
+
+        FirstPlayerTime.textContent = `${GameData.PlayerClock}`;
+        SecondPlayerTime.style.color = 'var(--font-color)';
+        FirstPlayerTime.style.color = 'var(--font-color)';
+
+        secondClock = setInterval(() => {
+            Seconds--;
+            SecondPlayerTime.textContent = `${Seconds}`;
+
+            // time is almost out, dangerous
+            if (Seconds <= 2) {
+                SecondPlayerTime.style.color = 'red';
+            };
+
+            // Time is out. play cool animation and next player's turn
+            if (Seconds == -1) {
+                chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+                restartBtn.removeEventListener('click', restartGame);
+                leaveGame_btn.removeEventListener('click', UserleavesGame);
+
+                leaveGame_btn.style.color = '#56565659';
+                chooseWinnerWindowBtn.style.color = '#56565659';
+                leaveGame_btn.style.color = '#56565659';
+
+                SecondPlayerTime.textContent = `${0}`;
+                clearInterval(secondClock);
+
+                cellGrid.classList.remove('cellGrid_opacity');
+                cellGrid.classList.add('cellGrid-alert');
+
+                if (GameData.InnerGameMode == InnerGameModes[2]) {
+                    Activate_InteractiveBlocker();
+                };
+
+                setTimeout(() => {
+                    cellGrid.classList.remove('cellGrid-alert');
+                    SecondPlayerTime.style.color = 'var(--font-color)';
+                    cellGrid.style.backgroundColor = "";
+                    // now it's player one turn
+                    checkWinner();
+
+                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+                    restartBtn.addEventListener('click', restartGame);
+                    leaveGame_btn.addEventListener('click', UserleavesGame);
+
+                    leaveGame_btn.style.color = 'var(--font-color)';
+                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
+                    restartBtn.style.color = 'var(--font-color)';
+                }, 1000);
+            };
+        }, 1000);
+    };
+};
+
+// from the server to all clients in online mode
+socket.on('playerTimer1', () => {
     let Seconds = GameData.PlayerClock;
 
     SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
@@ -402,12 +527,22 @@ function update1() {
         Seconds--;
         FirstPlayerTime.textContent = `${Seconds}`;
 
-        if (Seconds <= 2) {
-            FirstPlayerTime.style.color = 'red';
+        // time is almost out, dangerous
+        if (personal_GameData.role == 'admin') {
+            if (Seconds <= 2) {
+                FirstPlayerTime.style.color = 'red';
+            };
         };
 
+        // Time is out. play cool animation and next player's turn
         if (Seconds == -1) {
             chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+            restartBtn.removeEventListener('click', restartGame);
+            leaveGame_btn.removeEventListener('click', UserleavesGame);
+
+            leaveGame_btn.style.color = '#56565659';
+            chooseWinnerWindowBtn.style.color = '#56565659';
+            leaveGame_btn.style.color = '#56565659';
 
             FirstPlayerTime.textContent = `${0} `;
             clearInterval(firstClock);
@@ -423,14 +558,26 @@ function update1() {
                 cellGrid.classList.remove('cellGrid-alert');
                 FirstPlayerTime.style.color = 'var(--font-color)';
                 cellGrid.style.backgroundColor = "";
+                // now it's player two turn
+                player1_can_set = false;
                 checkWinner();
-                chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+
+                leaveGame_btn.addEventListener('click', UserleavesGame);
+                leaveGame_btn.style.color = 'var(--font-color)';
+
+                if (personal_GameData.role == 'admin') {
+                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+                    restartBtn.addEventListener('click', restartGame);
+                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
+                    restartBtn.style.color = 'var(--font-color)';
+                };
             }, 1000);
         };
     }, 1000);
-};
+});
 
-function update2() {
+// from the server to all clients in online mode
+socket.on('playerTimer2', () => {
     let Seconds = GameData.PlayerClock;
 
     FirstPlayerTime.textContent = `${GameData.PlayerClock}`;
@@ -441,12 +588,22 @@ function update2() {
         Seconds--;
         SecondPlayerTime.textContent = `${Seconds}`;
 
-        if (Seconds <= 2) {
-            SecondPlayerTime.style.color = 'red';
+        // time is almost out, dangerous
+        if (personal_GameData.role == 'user') {
+            if (Seconds <= 2) {
+                SecondPlayerTime.style.color = 'red';
+            };
         };
 
+        // Time is out. play cool animation and next player's turn
         if (Seconds == -1) {
             chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+            restartBtn.removeEventListener('click', restartGame);
+            leaveGame_btn.removeEventListener('click', UserleavesGame);
+
+            leaveGame_btn.style.color = '#56565659';
+            chooseWinnerWindowBtn.style.color = '#56565659';
+            leaveGame_btn.style.color = '#56565659';
 
             SecondPlayerTime.textContent = `${0}`;
             clearInterval(secondClock);
@@ -462,12 +619,23 @@ function update2() {
                 cellGrid.classList.remove('cellGrid-alert');
                 SecondPlayerTime.style.color = 'var(--font-color)';
                 cellGrid.style.backgroundColor = "";
+                // now it's player two turn
+                player1_can_set = true;
                 checkWinner();
-                chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+
+                leaveGame_btn.addEventListener('click', UserleavesGame);
+                leaveGame_btn.style.color = 'var(--font-color)';
+
+                if (personal_GameData.role == 'admin') {
+                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+                    restartBtn.addEventListener('click', restartGame);
+                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
+                    restartBtn.style.color = 'var(--font-color)';
+                };
             }, 1000);
         };
     }, 1000);
-};
+});
 
 function changePlayer(from_restart) {
     currentPlayer = (currentPlayer == PlayerData[1].PlayerForm) ? PlayerData[2].PlayerForm : PlayerData[1].PlayerForm;
@@ -762,10 +930,6 @@ function restartGame() {
             // bug fix
             restartTimeout();
         }, 50);
-
-        // play music
-        PauseMusic();
-        CreateMusicBars(audio); // error because javascript is as weird as usual 
     };
 };
 
@@ -863,11 +1027,18 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
         socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won, WinCombination]);
 
     } else {
-        // basic stuff
-        stopStatusTextInterval = false;
-        cells.forEach(cell => {
-            single_CellBlock(cell);
-        });
+
+        // so the user can't leave during the win animation
+        leaveGame_btn.removeEventListener('click', UserleavesGame);
+        restartBtn.removeEventListener('click', restartGame);
+        leaveGame_btn.style.color = '#56565659';
+        restartBtn.style.color = '#56565659';
+        setTimeout(() => {
+            leaveGame_btn.addEventListener('click', UserleavesGame);
+            restartBtn.addEventListener('click', restartGame);
+            leaveGame_btn.style.color = 'var(--font-color)';
+            restartBtn.style.color = 'var(--font-color)';
+        }, 9000);
 
         // basic stuff
         stopStatusTextInterval = false;

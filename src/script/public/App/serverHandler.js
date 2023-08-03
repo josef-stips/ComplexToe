@@ -188,6 +188,12 @@ socket.on('killed_game', () => {
     DarkLayer.style.display = 'block';
     Lobby_GameCode_display.style.userSelect = 'text';
 
+    // clear timer and stuff to prevent bugs
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    clearInterval(gameCounter);
+    stopStatusTextInterval = true;
+
     // play music
     PauseMusic();
     CreateMusicBars(audio); // error because javascript is as weird as usual 
@@ -214,6 +220,12 @@ socket.on('INFORM_user_left_room', () => {
 socket.on('INFORM_user_left_game', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
+
+    // clear timer and stuff to prevent bugs
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    clearInterval(gameCounter);
+    stopStatusTextInterval = true;
 
     // for the admin, he is in the lobby again
     if (personal_GameData.role == 'admin') {
@@ -248,6 +260,12 @@ socket.on('INFORM_admin_left_room', () => {
     OnlineGameLobby_alertText.style.display = 'none';
     friendLeftGamePopUp.style.display = 'flex';
     friendLeft_text.textContent = 'The admin disconnected from the game';
+
+    // clear timer and stuff to prevent bugs
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    clearInterval(gameCounter);
+    stopStatusTextInterval = true;
 });
 
 // message to all clients that the game just started
@@ -255,6 +273,12 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // simple things
     OnlineGame_Lobby.style.display = 'none';
     DarkLayer.style.display = 'none';
+
+    // clear timer and stuff to prevent bugs
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    clearInterval(gameCounter);
+    stopStatusTextInterval = true;
 
     // game data
     let FieldIndex = RoomData['0']['game']['fieldIndex'];
