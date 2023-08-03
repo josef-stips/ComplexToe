@@ -1,4 +1,4 @@
-const { instrument } = require('@socket.io/admin-ui');
+// const { instrument } = require('@socket.io/admin-ui');
 
 const path = require('path');
 const http = require('http');
@@ -17,14 +17,14 @@ const io = new Server(server, {
 });
 
 // dev
-instrument(io, {
-    auth: {
-        type: "basic",
-        username: "admin",
-        password: "$2b$10$qoNcQaDE/Ri9B5Q40JQVHuWQV4Vzm6da8Tiwh50SIYiK/0N7CLYxG",
-    },
-    mode: 'production'
-});
+// instrument(io, {
+//     auth: {
+//         type: "basic",
+//         username: "admin",
+//         password: "$2b$10$qoNcQaDE/Ri9B5Q40JQVHuWQV4Vzm6da8Tiwh50SIYiK/0N7CLYxG",
+//     },
+//     mode: 'production'
+// });
 
 // server listen
 server.listen(PORT, () => {
