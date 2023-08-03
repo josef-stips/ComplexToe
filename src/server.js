@@ -23,7 +23,7 @@ instrument(io, {
         username: "admin",
         password: "$2b$10$qoNcQaDE/Ri9B5Q40JQVHuWQV4Vzm6da8Tiwh50SIYiK/0N7CLYxG",
     },
-    mode: 'development'
+    mode: 'production'
 });
 
 // server listen
