@@ -2,7 +2,7 @@
     "name": "ComplexToe",
     "productName": "ComplexToe",
     "version": "1.0.0",
-    "description": "My Electron application description",
+    "description": "ComplexToe is a unique game based on Tic Tac Toe that you can play online with your friend.",
     "main": "src/index.js",
     "scripts": {
         "start": "electron .",
