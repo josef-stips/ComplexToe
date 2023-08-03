@@ -162,6 +162,19 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode) {
     } else { // Is in online mode
         // Make sure that the user is not allowed to reload the game
 
+        // The global game timer is by the admin
+        if (personal_GameData.role == 'admin') {
+            // How long the game is - Game Counter
+            GameField_TimeMonitor.textContent = '0 s.';
+            clearInterval(gameCounter);
+
+            gameCounter = setInterval(() => {
+                // send message to server
+                // server sends message to all clients
+                socket.emit('globalTimer', personal_GameData.currGameID);
+            }, 1000);
+        };
+
         // set up restart button for online game
         if (personal_GameData.role == 'user') {
             restartBtn.style.color = '#56565659';
@@ -237,6 +250,12 @@ function initializePlayers() {
     scores[PlayerData[2].PlayerForm] = 1;
     scores['tie'] = 0;
 };
+
+// when the game starts, for all players in the game, 
+// the global game timer recieves the global timer from the server and displays it
+socket.on('display_GlobalGameTimer', timer => {
+    GameField_TimeMonitor.textContent = `${timer} s.`;
+});
 
 // user clicked some cell
 function cellCicked() {
@@ -681,7 +700,13 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination) {
 
             score_Player1_numb++;
             scorePlayer1.textContent = score_Player1_numb;
-            statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
+
+            if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+                statusText.textContent = `You just gained a point!`;
+
+            } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
+                statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
+            };
 
             Player1_won = false;
 
@@ -690,6 +715,13 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination) {
             score_Player2_numb++;
             scorePlayer2.textContent = score_Player2_numb;
             statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
+
+            if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
+                statusText.textContent = `You just gained a point!`;
+
+            } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+                statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
+            };
 
             Player2_won = false;
         };
@@ -730,6 +762,10 @@ function restartGame() {
             // bug fix
             restartTimeout();
         }, 50);
+
+        // play music
+        PauseMusic();
+        CreateMusicBars(audio); // error because javascript is as weird as usual 
     };
 };
 
@@ -915,11 +951,15 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
 
     // so the user can't leave during the win animation
     leaveGame_btn.removeEventListener('click', UserleavesGame);
+    restartBtn.removeEventListener('click', restartGame);
     leaveGame_btn.style.color = '#56565659';
+    restartBtn.style.color = '#56565659';
     setTimeout(() => {
         leaveGame_btn.addEventListener('click', UserleavesGame);
+        restartBtn.addEventListener('click', restartGame);
         leaveGame_btn.style.color = 'var(--font-color)';
-    }, 3000);
+        restartBtn.style.color = 'var(--font-color)';
+    }, 9000);
 
     clearInterval(firstClock);
     clearInterval(secondClock);

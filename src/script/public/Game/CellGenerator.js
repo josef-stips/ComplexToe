@@ -191,5 +191,4 @@ function Activate_InteractiveBlocker() {
             Grid[RIndex].removeEventListener('click', cellCicked);
         };
     };
-
 };

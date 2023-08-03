@@ -59,14 +59,13 @@ let ServerData = {
         //         'globalGameTimer': 0,
         //         'PlayerTimer': 15,
         //         'IsPlaying': false,
-        //         'fieldIndex': index of field to identify
-        //         'fieldTitle: title of the field
+        //         'fieldIndex': index of field to identify,
+        //         'fieldTitle: title of the field,
+        //         'GlobalGameInterval': {},
         //     },
         // },
     },
 }; // !Important: The id of a room is always a number 
-
-let globalGameTimer;
 
 // Websocket 
 io.on('connection', socket => {
@@ -87,10 +86,8 @@ io.on('connection', socket => {
                 // This code block checks if the socket that disconnected (for ex. it closed the app or has a poor internet connection)
                 // is in this server by comparing its id with the socket id that is storaged in the room data object 
                 if (socket.id == el['players'][1]['socket']) { // Check if user is admin
+                    // delete room from server global room data object
                     delete ServerData.RoomData[room];
-
-                    // if in game
-                    clearInterval(globalGameTimer);
 
                     // delete the room from the server and inform the other player (user) in the room about it
                     io.to(el['players'][2]['socket']).emit('INFORM_admin_left_room');
@@ -104,7 +101,7 @@ io.on('connection', socket => {
                     // inform the admin about the fact the user just left
 
                     // if in game
-                    clearInterval(globalGameTimer);
+                    ServerData.RoomData[parseFloat(room)]['game']['globalGameTimer'] = 0;
 
                     // reset data of user in player room object
                     el['players'][2]['name'] = '';
@@ -167,7 +164,7 @@ io.on('connection', socket => {
                     'globalGameTimer': 0,
                     'IsPlaying': false,
                     'fieldIndex': GameData[5], // the html index of the field to identify
-                    'fieldTitle': GameData[6] // the game title of the field
+                    'fieldTitle': GameData[6], // the game title of the field
                 },
             };
 
@@ -248,8 +245,8 @@ io.on('connection', socket => {
             // Check if they were in a game playing tic tac toe or not
             let isPlaying = ServerData.RoomData[parseFloat(roomID)]['game']['isPlaying'];
 
-            // kill global game timer if playing of were playing but it was not killed
-            clearInterval(globalGameTimer);
+            // set the global timer to default again
+            ServerData.RoomData[parseFloat(roomID)]['game']['globalGameTimer'] = 0;
 
             // If they are in a game
             if (isPlaying) {
@@ -285,6 +282,12 @@ io.on('connection', socket => {
 
             // If they were playing
             if (isPlaying) {
+                // all user data needs to be deleted now
+                // The 'role' is already declared when the room was created by the admin
+                ServerData.RoomData[parseInt(roomID)]['players'][2]['name'] = ''; // delete user name
+                ServerData.RoomData[parseInt(roomID)]['players'][2]['icon'] = ''; // delete user icon
+                ServerData.RoomData[parseInt(roomID)]['players'][2]['socket'] = ''; // delete user socket.id
+
                 // user just leaves
                 socket.leave(parseInt(roomID));
 
@@ -330,8 +333,8 @@ io.on('connection', socket => {
                 ServerData.RoomData[parseFloat(Data[0])]['game']['options'].push("");
             };
 
-            // start the global game timer
-            startGlobalGameTimer(parseInt(Data[0]));
+            // set the global timer to default again
+            ServerData.RoomData[parseFloat(Data[0])]['game']['globalGameTimer'] = 0;
 
             // sends all room data (game, player) to both clients so everything in the game is the same and synchronised
             io.to(parseInt(Data[0])).emit('StartGame', [ServerData.RoomData[parseFloat(Data[0])]]);
@@ -376,9 +379,8 @@ io.on('connection', socket => {
     // Only the admin can reload the game
     // When he reloads, a message to all clients gets send
     socket.on('Reload_OnlineGame', (id, xyCellAmount) => {
-        // restart global timer
-        clearInterval(globalGameTimer);
-        startGlobalGameTimer(parseInt(id));
+        // set the global timer to default again
+        ServerData.RoomData[parseFloat(id)]['game']['globalGameTimer'] = 0;
 
         // reset options
         ServerData.RoomData[parseFloat(id)]['game']['options'].length = 0; // reset 
@@ -445,6 +447,13 @@ io.on('connection', socket => {
     socket.on('Call_UltimateWin', (id, data) => {
         io.to(parseInt(id)).emit('global_UltimateWin', data[0], data[1], data[2]);
     });
+
+    socket.on('globalTimer', id => {
+        // set the global timer to default again
+        ServerData.RoomData[parseFloat(id)]['game']['globalGameTimer'] = ServerData.RoomData[parseFloat(id)]['game']['globalGameTimer'] + 1;
+
+        io.to(parseInt(id)).emit('display_GlobalGameTimer', ServerData.RoomData[parseFloat(id)]['game']['globalGameTimer']);
+    });
 });
 
 // generates ID for the room
@@ -461,18 +470,4 @@ const kill_room = id => {
         ServerData.Rooms.splice(index, 1); // Delete room id from "Rooms" where all room ids gets storaged
         delete ServerData.RoomData[id]; // Delete room with all its data from the "RoomData" Object
     };
-};
-
-// starts the global game timer that is displayed in the game for both users
-function startGlobalGameTimer(GameID) {
-    let i = 0;
-    globalGameTimer = setInterval(() => {
-        i++;
-
-        // update global variable
-        ServerData.RoomData[parseFloat(GameID)]['game']['globalGameTimer'] = i;
-
-        // send message to all clients in room
-        io.to(GameID).emit('display_GlobalGameTimer', i);
-    }, 1000);
 };

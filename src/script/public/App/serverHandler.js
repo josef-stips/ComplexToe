@@ -151,12 +151,16 @@ function UserleavesGame() {
                 personal_GameData.currGameID = null;
                 personal_GameData.EnterOnlineGame = false;
             };
-        });
-    };
 
-    // play music
-    PauseMusic();
-    CreateMusicBars(audio); // error because javascript is as weird as usual   
+            // play music
+            PauseMusic();
+            CreateMusicBars(audio); // error because javascript is as weird as usual 
+        });
+    } else {
+        // play music
+        PauseMusic();
+        CreateMusicBars(audio); // error because javascript is as weird as usual
+    };
 };
 
 // This message goes to all users in a room and gets callen when the admin of the room leaves it
@@ -183,6 +187,10 @@ socket.on('killed_game', () => {
     gameModeFields_Div.style.display = 'flex';
     DarkLayer.style.display = 'block';
     Lobby_GameCode_display.style.userSelect = 'text';
+
+    // play music
+    PauseMusic();
+    CreateMusicBars(audio); // error because javascript is as weird as usual 
 });
 
 // Admin created the game and now waits for the second player
@@ -200,8 +208,6 @@ socket.on('SecondPlayer_Joined', message => {
 socket.on('INFORM_user_left_room', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
-
-    console.log("simple admin sees and cienf")
 });
 
 // User just left the game but during a match
@@ -209,13 +215,8 @@ socket.on('INFORM_user_left_game', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
 
-    console.log("admin seees")
-
     // for the admin, he is in the lobby again
     if (personal_GameData.role == 'admin') {
-
-        console.log("admin confrims")
-
         gameModeFields_Div.style.display = 'flex';
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
@@ -223,6 +224,10 @@ socket.on('INFORM_user_left_game', () => {
         friendLeftGamePopUp.style.display = 'flex';
         friendLeft_text.textContent = 'Your friend left the game';
         Lobby_GameCode_display.style.userSelect = 'text';
+
+        // play music
+        PauseMusic();
+        CreateMusicBars(audio); // error because javascript is as weird as usual   
     };
 });
 
@@ -251,8 +256,6 @@ socket.on('StartGame', (RoomData) => { // RoomData
     OnlineGame_Lobby.style.display = 'none';
     DarkLayer.style.display = 'none';
 
-    console.log(RoomData)
-
     // game data
     let FieldIndex = RoomData['0']['game']['fieldIndex'];
     let FieldTitle = RoomData['0']['game']['fieldTitle'];
@@ -274,12 +277,6 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // play theme music 
     PauseMusic();
     CreateMusicBars(Fields[FieldIndex].theme_name);
-});
-
-// when the game starts, for all players in the game, 
-// the global game timer recieves the global timer from the server and displays it
-socket.on('display_GlobalGameTimer', timer => {
-    GameField_TimeMonitor.textContent = `${timer} s.`;
 });
 
 // When admin starts game, all clients recieve the global availible options

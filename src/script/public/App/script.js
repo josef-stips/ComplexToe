@@ -1029,7 +1029,6 @@ friendLeft_Aj_btn.addEventListener('click', () => {
 
     if (friendLeft_text.textContent == 'The admin disconnected from the game') {
         DarkLayer.style.display = 'none';
-
     };
 });
 
