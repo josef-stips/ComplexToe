@@ -22,6 +22,7 @@
         "@socket.io/admin-ui": "^0.5.1",
         "cors": "^2.8.5",
         "electron-squirrel-startup": "^1.0.0",
+        "express": "^4.18.2",
         "socket.io": "^4.7.1",
         "socket.io-client": "^4.7.1"
     },
@@ -32,7 +33,6 @@
         "@electron-forge/maker-squirrel": "^6.2.1",
         "@electron-forge/maker-zip": "^6.2.1",
         "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
-        "electron": "25.1.1",
-        "express": "^4.18.2"
+        "electron": "25.1.1"
     }
 }
