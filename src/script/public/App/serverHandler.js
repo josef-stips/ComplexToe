@@ -22,9 +22,9 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
                 // Initialize lobby display
                 // GameID, FieldSize, PlayerTimer, InnerGameMode
                 Lobby_GameCode_display.textContent = `Game Code: ${message[1]}`;
-                Lobby_InnerGameMode.textContent = `game mode: ${message[4]}`;
-                Lobby_PlayerClock.textContent = `Player clock: ${message[3]} seconds`;
-                Lobby_FieldSize.textContent = `Playing field size: ${message[2]}x${message[2]}`;
+                Lobby_InnerGameMode.textContent = `${message[4]}`;
+                Lobby_PlayerClock.textContent = `${message[3]} seconds`;
+                Lobby_FieldSize.textContent = `${message[2]}x${message[2]}`;
 
                 // Just for style and better user experience
                 EnterGameCode_Input.value = null;
@@ -47,7 +47,13 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
                 OnlineGame_NameWarnText[0].style.display = 'none';
                 OnlineGame_NameWarnText[0].style.display = 'none';
 
-                // Aftet this th user only needs to set his user data (name, icon) and clicks confirm
+                // for the user, the switch carets should not be visible
+                // cause he has no rights to do so
+                SwitchCaret.forEach(caret => {
+                    caret.style.display = 'none';
+                });
+
+                // Aftet this the user only needs to set his user data (name, icon) and clicks confirm
                 // So the next socket connection is at SetPlayerName_ConfirmButton in "script.js" with the "CONFIRM_enter_room" emit
 
             } else if (message[0] == 'no room found') { // no room found
@@ -357,4 +363,110 @@ socket.on('blockerCombat_action', Goptions => {
             break;
         };
     };
+});
+
+// carets
+Fieldsize_NegativeSwitcher.addEventListener('click', function a() {
+    SwitchToSelection(1, -1, Lobby_FieldSize);
+});
+
+Fieldsize_PositiveSwitcher.addEventListener('click', function a() {
+    SwitchToSelection(1, +1, Lobby_FieldSize);
+});
+
+PlayerClock_NegativeSwitcher.addEventListener('click', function a() {
+    SwitchToSelection(2, -1, Lobby_PlayerClock);
+});
+
+PlayerClock_PositiveSwitcher.addEventListener('click', function a() {
+    SwitchToSelection(2, +1, Lobby_PlayerClock);
+});
+
+InnerGameMode_NegativeSwitcher.addEventListener('click', function a() {
+    SwitchToSelection(3, -1, Lobby_InnerGameMode);
+});
+
+InnerGameMode_PositiveSwitcher.addEventListener('click', function a() {
+    SwitchToSelection(3, +1, Lobby_InnerGameMode);
+});
+
+// The user can switch between the different game data selections through carets
+// This function gets triggered by caret click event
+// Selection: What game data selection does the user want to change#
+// to: Does the user click the right or left caret? Negative value: left (decrease), Positive value: right (increase)
+function SwitchToSelection(Selection, to, display) {
+    // variables to alter
+    let curr_value = display.textContent;
+    let curr_directory = LobbyDataSelections[Selection]
+    let origin = 0;
+    let highest = 0;
+    let lowest = 1;
+    let SpecificData = '';
+
+    // Check current origin (What data the player already selected)
+    // so the value can be increa- or decreased by there
+    for (const k in curr_directory) {
+        if (Object.hasOwnProperty.call(curr_directory, k)) {
+            const el = curr_directory[k];
+
+            // if curr selected property is equal to property in object, origin is the index of that curr selected property
+            if (el == curr_value) {
+                origin = parseInt(k);
+            };
+
+            // property with highest index
+            highest = parseInt(k);
+        };
+    };
+
+    let newIndex = origin + to
+
+    if (newIndex > highest || newIndex < lowest) return;
+    // else
+    SpecificData = LobbyDataSelections[Selection][origin + to]
+
+    // send message to server so the data gets updated for all clients
+    socket.emit('Lobby_ChangeGameData', personal_GameData.currGameID, display, SpecificData, Selection);
+};
+
+// alter game data for every client
+// emit comes from the server obviously
+socket.on('ChangeGameData', (display, SpecificData, Selection) => {
+    // variables
+    let fieldIndex = curr_field_ele.getAttribute('index');
+    let fieldTitle = curr_field_ele.getAttribute('title');
+    let xyCell_Amount = Fields[fieldIndex].xyCellAmount;
+
+    // Check which game data selecetion to change
+    switch (Selection) {
+        case 1: // Fieldsize
+            curr_field_ele = DataFields[SpecificData];
+
+            fieldIndex = curr_field_ele.getAttribute('index');
+            fieldTitle = curr_field_ele.getAttribute('title');
+            xyCell_Amount = Fields[fieldIndex].xyCellAmount;
+
+            // update lobby game data display
+            Lobby_FieldSize.textContent = SpecificData;
+
+            break;
+
+        case 2: // Player clock
+            curr_selected_PlayerClock = PlayerClockData[SpecificData];
+
+            // update lobby game data display
+            Lobby_PlayerClock.textContent = SpecificData;
+
+            break;
+
+        case 3: // Inner game mode
+            curr_innerGameMode = SpecificData
+
+            // update lobby game data display
+            Lobby_InnerGameMode.textContent = SpecificData;
+            break;
+    };
+
+    // update global propertys
+    socket.emit('updateGameData', personal_GameData.currGameID, xyCell_Amount, curr_innerGameMode, curr_selected_PlayerClock, fieldIndex, fieldTitle)
 });

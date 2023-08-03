@@ -1721,7 +1721,7 @@ label h3 {
     right: 0;
     margin: auto auto auto auto;
     position: absolute;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
@@ -1729,7 +1729,6 @@ label h3 {
     background-image: linear-gradient(to bottom right, #373c42, #282d32);
     border: 3px solid;
     border-radius: 30px;
-    display: none;
     z-index: 10000;
 }
 
@@ -1828,6 +1827,17 @@ label h3 {
 
 .LobbyUserFooterInfo {
     margin: 0 1em 0 0;
+}
+
+.SwitchCaret {
+    transition: 0.1s all ease-in-out;
+    cursor: pointer;
+    color: white;
+}
+
+.SwitchCaret:hover {
+    color: var(--hover-item);
+    transition: 0.1s all ease-in-out;
 }
 
 

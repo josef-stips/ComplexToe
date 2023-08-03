@@ -2309,21 +2309,39 @@
             <div class="LobbyGameDataSection">
                 <h4 class="LobbySectionTitle">Game data:</h4>
 
-                <div class="LobbyGameData_SingleOuterContainer" id="">
+                <div class="LobbyGameData_SingleOuterContainer" id="FieldSizeOuter">
+                    <span>Fieldsize: </span>
 
+                    <!-- switch between ... -->
+                    <i id="Fieldsize_NegativeSwitcher" class="fa-solid fa-caret-left SwitchCaret"></i>
+
+                    <span class="Lobby_FieldSize">20x20</span>
+
+                    <i id="Fieldsize_PositiveSwitcher" class="fa-solid fa-caret-right SwitchCaret"></i>
                 </div>
 
-                <div class="LobbyGameData_SingleOuterContainer">
+                <div class="LobbyGameData_SingleOuterContainer" id="PlayerTimeOuter">
+                    <span>Player clock: </span>
 
+                    <!-- switch between ... -->
+                    <i id="PlayerClock_NegativeSwitcher" class="fa-solid fa-caret-left SwitchCaret"></i>
+
+                    <span class="Lobby_PlayerClock">15 seconds</span>
+
+                    <i id="PlayerClock_PositiveSwitcher" class="fa-solid fa-caret-right SwitchCaret"></i>
                 </div>
 
-                <div class="LobbyGameData_SingleOuterContainer">
+                <div class="LobbyGameData_SingleOuterContainer" id="InnerGameModeOuter">
+                    <span>Game Mode: </span>
 
+                    <!-- switch between ... -->
+                    <i id="InnerGameMode_NegativeSwitcher" class="fa-solid fa-caret-left SwitchCaret"></i>
+
+                    <span class="Lobby_InnerGameMode">Boneyard</span>
+
+                    <i id="InnerGameMode_PositiveSwitcher" class="fa-solid fa-caret-right SwitchCaret"></i>
                 </div>
 
-                <span class="Lobby_FieldSize">20x20</span>
-                <span class="Lobby_PlayerClock">15 seconds</span>
-                <span class="Lobby_InnerGameMode">Boneyard</span>
             </div>
         </div>
 

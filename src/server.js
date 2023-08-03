@@ -465,6 +465,24 @@ io.on('connection', socket => {
     socket.on('INI_playerTimer2', id => {
         io.to(parseInt(id)).emit('playerTimer2');
     });
+
+    // admin changes game data in the lobby
+    socket.on('Lobby_ChangeGameData', (id, display, SpecificData, Selection) => {
+        io.to(parseInt(id)).emit('ChangeGameData', display, SpecificData, Selection);
+    });
+
+    // admin updates game data in lobby
+    socket.on('updateGameData', (id, xyCellAmount, InnerGameMode, PlayerTimer, fieldIndex, fieldTitle) => {
+        // root directory in object
+        let root = ServerData.RoomData[parseInt(id)]['game'];
+
+        // update propertys
+        root['xyCellAmount'] = xyCellAmount;
+        root['InnerGameMode'] = InnerGameMode;
+        root['PlayerTimer'] = PlayerTimer;
+        root['fieldIndex'] = fieldIndex;
+        root['fieldTitle'] = fieldTitle;
+    });
 });
 
 // generates ID for the room

@@ -107,6 +107,16 @@ let friendLeftGamePopUp = document.querySelector('.friendLeftGamePopUp');
 let friendLeft_OK_btn = document.querySelectorAll('.friendLeft_OK_btn')[0];
 let friendLeft_Aj_btn = document.querySelectorAll('.friendLeft_OK_btn')[1];
 let friendLeft_text = document.querySelector('#friendLeft_text');
+let SwitchCaret = document.querySelectorAll('.SwitchCaret');
+
+let Fieldsize_NegativeSwitcher = document.querySelector('#Fieldsize_NegativeSwitcher');
+let Fieldsize_PositiveSwitcher = document.querySelector('#Fieldsize_PositiveSwitcher');
+
+let PlayerClock_NegativeSwitcher = document.querySelector('#PlayerClock_NegativeSwitcher');
+let PlayerClock_PositiveSwitcher = document.querySelector('#PlayerClock_PositiveSwitcher');
+
+let InnerGameMode_NegativeSwitcher = document.querySelector('#InnerGameMode_NegativeSwitcher');
+let InnerGameMode_PositiveSwitcher = document.querySelector('#InnerGameMode_PositiveSwitcher');
 
 let SetClockList_KI = document.querySelector('.SetClockList_KI');
 let Your_IconInput = document.querySelector('#Your_IconInput');
@@ -238,6 +248,49 @@ let Fields = {
         "theme": ".../assets/Maps/Long_Funeral.mp3",
         "theme_name": Long_funeral_Theme,
     },
+};
+
+// The user can switch between the different game data in the lobby
+// *Online mode 
+let LobbyDataSelections = {
+    // Fieldsize
+    1: {
+        1: '5x5',
+        2: '10x10',
+        3: '15x15',
+        4: '20x20',
+    },
+    // Player clock
+    2: {
+        1: '5 seconds',
+        2: '15 seconds',
+        3: '30 seconds',
+        4: '50 seconds',
+        5: '70 seconds',
+    },
+    // Inner game mode
+    3: {
+        1: 'Boneyard',
+        2: 'Blocker Combat',
+        3: 'Free Fight',
+    },
+};
+
+// to specicify in selection
+let PlayerClockData = {
+    '5 seconds': 5,
+    '15 seconds': 15,
+    '30 seconds': 30,
+    '50 seconds': 50,
+    '70 seconds': 70,
+};
+
+// to specicify in selection
+let DataFields = {
+    '5x5': document.querySelector('#FivexFive_Field'),
+    '10x10': document.querySelector('#TenxTen_Field'),
+    '15x15': document.querySelector('#FifTeenxFifTeen_Field'),
+    '20x20': document.querySelector('#TwentyxTwentyField'),
 };
 
 let curr_field_ele; //html element
@@ -552,9 +605,9 @@ function UserCreateRoom() {
         curr_selected_PlayerClock = Check[2]; // Player Clock
 
         // initialize lobby display
-        Lobby_InnerGameMode.textContent = `game mode: ${Check[3]}`;
-        Lobby_PlayerClock.textContent = `Player clock: ${Check[2]} seconds`;
-        Lobby_FieldSize.textContent = `Playing field size: ${xyCell_Amount}x${xyCell_Amount}`;
+        Lobby_InnerGameMode.textContent = `${Check[3]}`;
+        Lobby_PlayerClock.textContent = `${Check[2]} seconds`;
+        Lobby_FieldSize.textContent = `${xyCell_Amount}x${xyCell_Amount}`;
 
     } else {
         return;
