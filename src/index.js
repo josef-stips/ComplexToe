@@ -1,6 +1,5 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const server = require('./server'); // loads server script
 
 let windows = new Set();
 
@@ -24,8 +23,7 @@ const createWindow = () => {
     });
 
     // load content
-    window.loadURL('http://localhost:3000');
-
+    window.loadFile(path.join(__dirname, 'script/public/index.html'));
     // Open the DevTools.
     window.webContents.openDevTools();
 };

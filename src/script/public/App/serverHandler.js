@@ -1,5 +1,19 @@
 // This script is to handle the communication between client and server
 // All EventListener on html elements that send and recieve data from the server
+const socket = io('http://localhost:3000');
+
+socket.on('connect', () => {
+    console.log('connected!  ' + socket.id);
+});
+
+socket.on('disconnect', reason => {
+    console.log('disconnected  ' + socket.id);
+    console.log('reason: ' + reason);
+});
+
+socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+});
 
 // [The 'create_room', 'CONFIRM_enter_room' emit] There are (2) socket emits in script.js on "SetPlayerName_ConfirmButton", "click" Event
 

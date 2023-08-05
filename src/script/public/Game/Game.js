@@ -515,128 +515,6 @@ function update2() {
     };
 };
 
-// from the server to all clients in online mode
-socket.on('playerTimer1', () => {
-    let Seconds = GameData.PlayerClock;
-
-    SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
-    SecondPlayerTime.style.color = 'var(--font-color)';
-    FirstPlayerTime.style.color = 'var(--font-color)';
-
-    firstClock = setInterval(() => {
-        Seconds--;
-        FirstPlayerTime.textContent = `${Seconds}`;
-
-        // time is almost out, dangerous
-        if (personal_GameData.role == 'admin') {
-            if (Seconds <= 2) {
-                FirstPlayerTime.style.color = 'red';
-            };
-        };
-
-        // Time is out. play cool animation and next player's turn
-        if (Seconds == -1) {
-            chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
-            restartBtn.removeEventListener('click', restartGame);
-            leaveGame_btn.removeEventListener('click', UserleavesGame);
-
-            leaveGame_btn.style.color = '#56565659';
-            chooseWinnerWindowBtn.style.color = '#56565659';
-            leaveGame_btn.style.color = '#56565659';
-
-            FirstPlayerTime.textContent = `${0} `;
-            clearInterval(firstClock);
-
-            cellGrid.classList.remove('cellGrid_opacity');
-            cellGrid.classList.add('cellGrid-alert');
-
-            if (GameData.InnerGameMode == InnerGameModes[2]) {
-                Activate_InteractiveBlocker();
-            };
-
-            setTimeout(() => {
-                cellGrid.classList.remove('cellGrid-alert');
-                FirstPlayerTime.style.color = 'var(--font-color)';
-                cellGrid.style.backgroundColor = "";
-                // now it's player two turn
-                player1_can_set = false;
-                checkWinner();
-
-                leaveGame_btn.addEventListener('click', UserleavesGame);
-                leaveGame_btn.style.color = 'var(--font-color)';
-
-                if (personal_GameData.role == 'admin') {
-                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
-                    restartBtn.addEventListener('click', restartGame);
-                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
-                    restartBtn.style.color = 'var(--font-color)';
-                };
-            }, 1000);
-        };
-    }, 1000);
-});
-
-// from the server to all clients in online mode
-socket.on('playerTimer2', () => {
-    let Seconds = GameData.PlayerClock;
-
-    FirstPlayerTime.textContent = `${GameData.PlayerClock}`;
-    SecondPlayerTime.style.color = 'var(--font-color)';
-    FirstPlayerTime.style.color = 'var(--font-color)';
-
-    secondClock = setInterval(() => {
-        Seconds--;
-        SecondPlayerTime.textContent = `${Seconds}`;
-
-        // time is almost out, dangerous
-        if (personal_GameData.role == 'user') {
-            if (Seconds <= 2) {
-                SecondPlayerTime.style.color = 'red';
-            };
-        };
-
-        // Time is out. play cool animation and next player's turn
-        if (Seconds == -1) {
-            chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
-            restartBtn.removeEventListener('click', restartGame);
-            leaveGame_btn.removeEventListener('click', UserleavesGame);
-
-            leaveGame_btn.style.color = '#56565659';
-            chooseWinnerWindowBtn.style.color = '#56565659';
-            leaveGame_btn.style.color = '#56565659';
-
-            SecondPlayerTime.textContent = `${0}`;
-            clearInterval(secondClock);
-
-            cellGrid.classList.remove('cellGrid_opacity');
-            cellGrid.classList.add('cellGrid-alert');
-
-            if (GameData.InnerGameMode == InnerGameModes[2]) {
-                Activate_InteractiveBlocker();
-            };
-
-            setTimeout(() => {
-                cellGrid.classList.remove('cellGrid-alert');
-                SecondPlayerTime.style.color = 'var(--font-color)';
-                cellGrid.style.backgroundColor = "";
-                // now it's player two turn
-                player1_can_set = true;
-                checkWinner();
-
-                leaveGame_btn.addEventListener('click', UserleavesGame);
-                leaveGame_btn.style.color = 'var(--font-color)';
-
-                if (personal_GameData.role == 'admin') {
-                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
-                    restartBtn.addEventListener('click', restartGame);
-                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
-                    restartBtn.style.color = 'var(--font-color)';
-                };
-            }, 1000);
-        };
-    }, 1000);
-});
-
 function changePlayer(from_restart) {
     currentPlayer = (currentPlayer == PlayerData[1].PlayerForm) ? PlayerData[2].PlayerForm : PlayerData[1].PlayerForm;
     currentName = (currentName == PlayerData[1].PlayerName) ? PlayerData[2].PlayerName : PlayerData[1].PlayerName;
@@ -682,25 +560,6 @@ function changePlayer(from_restart) {
         cell.addEventListener('click', cellCicked);
     });
 };
-
-// additional change player function for online game mode
-// This is from the server to all clients
-socket.on('changePlayerTurnDisplay', (curr_name) => {
-    // Change for all clients
-    if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'admin') { // INFO: admin is always player one
-        statusText.textContent = `Your turn`;
-
-    } else if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'user') {
-        statusText.textContent = `${curr_name}'s turn`;
-    };
-
-    if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'user') { // INFO: user is always player two
-        statusText.textContent = `Your turn`;
-
-    } else if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'admin') {
-        statusText.textContent = `${curr_name}'s turn`;
-    };
-});
 
 function checkWinner() {
     let roundWon = false;
@@ -1257,3 +1116,145 @@ function setNew_SkillPoints(plus) {
         };
     }, 200);
 };
+
+// from the server to all clients in online mode
+socket.on('playerTimer1', () => {
+    let Seconds = GameData.PlayerClock;
+
+    SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
+    SecondPlayerTime.style.color = 'var(--font-color)';
+    FirstPlayerTime.style.color = 'var(--font-color)';
+
+    firstClock = setInterval(() => {
+        Seconds--;
+        FirstPlayerTime.textContent = `${Seconds}`;
+
+        // time is almost out, dangerous
+        if (personal_GameData.role == 'admin') {
+            if (Seconds <= 2) {
+                FirstPlayerTime.style.color = 'red';
+            };
+        };
+
+        // Time is out. play cool animation and next player's turn
+        if (Seconds == -1) {
+            chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+            restartBtn.removeEventListener('click', restartGame);
+            leaveGame_btn.removeEventListener('click', UserleavesGame);
+
+            leaveGame_btn.style.color = '#56565659';
+            chooseWinnerWindowBtn.style.color = '#56565659';
+            leaveGame_btn.style.color = '#56565659';
+
+            FirstPlayerTime.textContent = `${0} `;
+            clearInterval(firstClock);
+
+            cellGrid.classList.remove('cellGrid_opacity');
+            cellGrid.classList.add('cellGrid-alert');
+
+            if (GameData.InnerGameMode == InnerGameModes[2]) {
+                Activate_InteractiveBlocker();
+            };
+
+            setTimeout(() => {
+                cellGrid.classList.remove('cellGrid-alert');
+                FirstPlayerTime.style.color = 'var(--font-color)';
+                cellGrid.style.backgroundColor = "";
+                // now it's player two turn
+                player1_can_set = false;
+                checkWinner();
+
+                leaveGame_btn.addEventListener('click', UserleavesGame);
+                leaveGame_btn.style.color = 'var(--font-color)';
+
+                if (personal_GameData.role == 'admin') {
+                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+                    restartBtn.addEventListener('click', restartGame);
+                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
+                    restartBtn.style.color = 'var(--font-color)';
+                };
+            }, 1000);
+        };
+    }, 1000);
+});
+
+
+// from the server to all clients in online mode
+socket.on('playerTimer2', () => {
+    let Seconds = GameData.PlayerClock;
+
+    FirstPlayerTime.textContent = `${GameData.PlayerClock}`;
+    SecondPlayerTime.style.color = 'var(--font-color)';
+    FirstPlayerTime.style.color = 'var(--font-color)';
+
+    secondClock = setInterval(() => {
+        Seconds--;
+        SecondPlayerTime.textContent = `${Seconds}`;
+
+        // time is almost out, dangerous
+        if (personal_GameData.role == 'user') {
+            if (Seconds <= 2) {
+                SecondPlayerTime.style.color = 'red';
+            };
+        };
+
+        // Time is out. play cool animation and next player's turn
+        if (Seconds == -1) {
+            chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
+            restartBtn.removeEventListener('click', restartGame);
+            leaveGame_btn.removeEventListener('click', UserleavesGame);
+
+            leaveGame_btn.style.color = '#56565659';
+            chooseWinnerWindowBtn.style.color = '#56565659';
+            leaveGame_btn.style.color = '#56565659';
+
+            SecondPlayerTime.textContent = `${0}`;
+            clearInterval(secondClock);
+
+            cellGrid.classList.remove('cellGrid_opacity');
+            cellGrid.classList.add('cellGrid-alert');
+
+            if (GameData.InnerGameMode == InnerGameModes[2]) {
+                Activate_InteractiveBlocker();
+            };
+
+            setTimeout(() => {
+                cellGrid.classList.remove('cellGrid-alert');
+                SecondPlayerTime.style.color = 'var(--font-color)';
+                cellGrid.style.backgroundColor = "";
+                // now it's player two turn
+                player1_can_set = true;
+                checkWinner();
+
+                leaveGame_btn.addEventListener('click', UserleavesGame);
+                leaveGame_btn.style.color = 'var(--font-color)';
+
+                if (personal_GameData.role == 'admin') {
+                    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+                    restartBtn.addEventListener('click', restartGame);
+                    chooseWinnerWindowBtn.style.color = 'var(--font-color)';
+                    restartBtn.style.color = 'var(--font-color)';
+                };
+            }, 1000);
+        };
+    }, 1000);
+});
+
+// additional change player function for online game mode
+// This is from the server to all clients
+socket.on('changePlayerTurnDisplay', (curr_name) => {
+    // Change for all clients
+    if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'admin') { // INFO: admin is always player one
+        statusText.textContent = `Your turn`;
+
+    } else if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'user') {
+        statusText.textContent = `${curr_name}'s turn`;
+    };
+
+    if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'user') { // INFO: user is always player two
+        statusText.textContent = `Your turn`;
+
+    } else if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'admin') {
+        statusText.textContent = `${curr_name}'s turn`;
+    };
+});

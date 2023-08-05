@@ -339,8 +339,6 @@ let personal_GameData = {
     role: 'user' // admin ? user
 };
 
-let socket = io();
-
 // app initialization and code --------------
 function AppInit() {
     ini_LightDark_Mode();
