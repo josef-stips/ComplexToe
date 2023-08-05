@@ -1,11 +1,14 @@
 module.exports = {
     packagerConfig: {
         asar: true,
+        icon: '/src/script/public/assets/images/icons/win/icon'
     },
     rebuildConfig: {},
     makers: [{
             name: '@electron-forge/maker-squirrel',
-            config: {},
+            config: {
+                setupIcon: '/src/script/public/assets/images/icons/win/icon'
+            },
         },
         {
             name: '@electron-forge/maker-zip',
@@ -13,11 +16,15 @@ module.exports = {
         },
         {
             name: '@electron-forge/maker-deb',
-            config: {},
+            config: {
+                options: {
+                    icon: '/src/script/public/assets/images/icons/win/icon'
+                },
+            },
         },
         {
             name: '@electron-forge/maker-rpm',
-            config: {},
+            config: { icon: '/src/script/public/assets/images/icons/win/icon' },
         },
     ],
     plugins: [{

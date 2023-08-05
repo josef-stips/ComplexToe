@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "description": "ComplexToe is a unique game based on Tic Tac Toe that you can play online with your friend.",
     "main": "src/index.js",
+    "icon": "./src/script/public/assets/images/icons/win/icon.ico",
     "scripts": {
         "start": "electron .",
         "package": "electron-forge package",

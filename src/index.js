@@ -9,9 +9,11 @@ const createWindow = () => {
         width: 1000,
         height: 800,
         fullscreen: true,
-        // autoHideMenuBar: true,
+        icon: "./script/public/assets/images/icons/win/icon.ico",
+        autoHideMenuBar: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            devTools: false,
         },
     });
 
@@ -25,7 +27,7 @@ const createWindow = () => {
     // load content
     window.loadFile(path.join(__dirname, 'script/public/index.html'));
     // Open the DevTools.
-    window.webContents.openDevTools();
+    // window.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
