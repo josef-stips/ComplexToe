@@ -1,7 +1,7 @@
 // This script is to handle the communication between client and server
 // All EventListener on html elements that send and recieve data from the servers
 import { io } from "socket.io-client";
-const socket = io('https://www.google.com', {
+const socket = io('https://complextoeserveradmin.onrender.com', {
     // path: "https://complextoeserveradmin.onrender.com",
     // transports: ['websocket'],
 });
