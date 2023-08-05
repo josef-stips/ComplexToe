@@ -1,6 +1,6 @@
 // This script is to handle the communication between client and server
 // All EventListener on html elements that send and recieve data from the server
-const socket = io('http://localhost:3000');
+const socket = io('https://complextoeserveradmin.onrender.com');
 
 socket.on('connect', () => {
     console.log('connected!  ' + socket.id);
