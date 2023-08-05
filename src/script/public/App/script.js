@@ -339,6 +339,13 @@ let personal_GameData = {
     role: 'user' // admin ? user
 };
 
+let socket = io('https://complextoeserveradmin.onrender.com', {
+    // path: "https://complextoeserveradmin.onrender.com",
+    // transports: ['websocket'],
+});
+
+window.socket = socket
+
 // app initialization and code --------------
 function AppInit() {
     ini_LightDark_Mode();

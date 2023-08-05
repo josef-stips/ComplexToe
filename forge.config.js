@@ -6,9 +6,9 @@ module.exports = {
     rebuildConfig: {},
     makers: [{
             name: '@electron-forge/maker-squirrel',
-            config: {
-                setupIcon: '/src/script/public/assets/images/icons/win/icon'
-            },
+            // config: {
+            //     setupIcon: '/src/script/public/assets/images/icons/win/icon'
+            // },
         },
         {
             name: '@electron-forge/maker-zip',

@@ -1,13 +1,5 @@
 // This script is to handle the communication between client and server
 // All EventListener on html elements that send and recieve data from the servers
-import { io } from "socket.io-client";
-let socket = io('https://complextoeserveradmin.onrender.com', {
-    // path: "https://complextoeserveradmin.onrender.com",
-    // transports: ['websocket'],
-});
-
-window.socket = socket
-
 socket.on('connect', () => {
     console.log('connected!  ' + socket.id);
 });
