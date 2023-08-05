@@ -1,6 +1,8 @@
 // This script is to handle the communication between client and server
 // All EventListener on html elements that send and recieve data from the server
-const socket = io('https://complextoeserveradmin.onrender.com');
+const socket = io('https://www.google.com', {
+    path: "https://complextoeserveradmin.onrender.com"
+});
 
 socket.on('connect', () => {
     console.log('connected!  ' + socket.id);
