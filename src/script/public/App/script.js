@@ -147,6 +147,8 @@ let Lobby_first_player = document.querySelector('.Lobby_first_player');
 let Lobby_second_player = document.querySelector('.Lobby_second_player');
 let OnlineGameLobby_alertText = document.querySelector('.OnlineGameLobby_alertText');
 let Lobby_GameCode_display = document.querySelector('.Lobby_GameCode_display');
+let goToAdvancedFields = document.querySelector('#goTo-advancedFields');
+let secondTierModes = document.querySelector('.second-tier-modes');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -1095,5 +1097,20 @@ friendLeft_OK_btn.addEventListener('click', () => {
 
     if (friendLeft_text.textContent == 'The admin disconnected from the game') {
         DarkLayer.style.display = 'none';
+    };
+});
+
+let isInAdvancedGameModes = false;
+goToAdvancedFields.addEventListener('click', () => {
+
+    if (isInAdvancedGameModes) {
+        goToAdvancedFields.classList = "fa-solid fa-caret-down";
+        secondTierModes.style.marginBottom = "0";
+        isInAdvancedGameModes = false;
+
+    } else {
+        goToAdvancedFields.classList = "fa-solid fa-caret-up";
+        secondTierModes.style.marginBottom = "var(--width-for-goToAdvancedModes-btn)";
+        isInAdvancedGameModes = true;
     };
 });

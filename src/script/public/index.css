@@ -5,6 +5,7 @@
     --bg-gradient: rgb(255, 255, 255);
     --bg-gradient2: rgb(255, 255, 255);
     --bg-app-color2: #4b4e52;
+    --width-for-goToAdvancedModes-btn: 86%;
 }
 
 .dark-mode {
@@ -564,13 +565,39 @@ ul {
 }
 
 .GameMode-fields-area {
-    width: 90%;
-    height: 95%;
+    width: 100%;
+    height: 200%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 250px 0 0 0;
+    margin: 50px 0 0 0;
+    gap: 400px;
+}
+
+.first-tier-modes {
+    margin: 500px 0 0 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 3.5em;
+}
+
+.second-tier-modes {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3.5em;
+    transition: all 2s ease-in-out;
+    margin: 0 0 0 0;
 }
 
 .GameMode-fields-header {
@@ -604,7 +631,7 @@ ul {
 
 .NxN-field {
     width: 75%;
-    height: 50%;
+    height: 100%;
     border: 3px solid;
     border-radius: 20px;
     transition: all 0.1s ease-in-out;
@@ -613,6 +640,27 @@ ul {
     justify-content: center;
     align-items: center;
     position: relative;
+}
+
+.GameMode-fields-footer {
+    width: 100%;
+    height: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+}
+
+#goTo-advancedFields {
+    font-size: 19px;
+    position: absolute;
+    cursor: pointer;
+    bottom: 15%;
+}
+
+#goTo-advancedFields:hover {
+    color: var(--hover-item);
+    cursor: pointer;
 }
 
 .NxN-field:hover::before {
@@ -629,7 +677,7 @@ ul {
     transition: all 0.1s ease-in-out;
     cursor: pointer;
     width: 76%;
-    height: 51%;
+    height: 95%;
 }
 
 .NxN-field-card-header {
@@ -1951,5 +1999,17 @@ label h3 {
     .SetPlayerNamesPopUp {
         width: 65%;
         height: 80%;
+    }
+    .first-tier-modes {
+        margin: 350px 0 0 0;
+    }
+    .second-tier-modes {
+        margin: 0 0 100.5% 0;
+    }
+    .NxN-field {
+        height: 120%;
+    }
+     :root {
+        --width-for-goToAdvancedModes-btn: 102.3%;
     }
 }

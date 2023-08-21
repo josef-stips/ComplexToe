@@ -92,9 +92,7 @@ function CreateOptions() {
     options.length = 0;
 
     // create
-    for (i = 0; i < xCell_Amount * yCell_Amount; i++) {
-        options.push("");
-    };
+    options = Array(xCell_Amount * yCell_Amount).fill("");
 };
 
 // Game Mode: Boneyard
