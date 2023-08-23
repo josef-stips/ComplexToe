@@ -82,6 +82,12 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
         Player1_NameInput.value = null;
         Player1_IconInput.value = null;
 
+        // default data (for better user experience)
+        if (localStorage.getItem('UserName')) {
+            Player1_NameInput.value = localStorage.getItem('UserName');
+            Player1_IconInput.value = localStorage.getItem('UserIcon');
+        };
+
     } else {
         return
     };

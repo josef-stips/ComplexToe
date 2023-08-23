@@ -3,11 +3,13 @@ let input3 = document.querySelector('.EnterGameCode_Input');
 let icon_input1 = document.querySelector('#Player1_IconInput');
 let icon_input2 = document.querySelector('#Player2_IconInput');
 let icon_input3 = document.querySelector('#Your_IconInput');
+let userInfoEditable1 = document.querySelectorAll('.userInfoEditable')[0];
+let userInfoEditable2 = document.querySelectorAll('.userInfoEditable')[1];
 
 let settings = {
     maxInputLeng: 11,
     maxFormInputLeng: 2,
-    maxInputLeng2: 6
+    maxInputLeng2: 6,
 };
 
 let keys = {
@@ -173,6 +175,62 @@ icon_input2.addEventListener('keydown', function(event) {
 
 icon_input3.addEventListener('keydown', function(event) {
     let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxFormInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+userInfoEditable1.addEventListener('keydown', (event) => {
+    let len = event.target.textContent.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+userInfoEditable1.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && userInfoEditable1.textContent != "") {
+        e.preventDefault();
+        userInfoIcon.focus();
+    };
+});
+
+userInfoEditable2.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && userInfoEditable2.textContent != "") {
+        e.preventDefault();
+        submittedOfflineData();
+    };
+});
+
+userInfoEditable2.addEventListener('keydown', (event) => {
+    let len = event.target.textContent.trim().length;
     let hasSelection = false;
     let selection = window.getSelection();
     let isSpecial = utils.isSpecial(event);

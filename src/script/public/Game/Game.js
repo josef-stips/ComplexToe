@@ -1024,11 +1024,14 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
     setTimeout(() => {
         cellGrid.style.display = 'none';
         UltimateWinTextArea.style.display = 'flex';
-        if (player1_won && !player2_won) { // player 1 won (user)
+        if (player1_won && !player2_won) { // player 1 won (admin)
 
             // Display win text in the proper way
             if (personal_GameData.role == 'admin') {
                 UltimateWinText.textContent = `You won it! 🏆`;
+                let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
+                wins_storage++;
+                localStorage.setItem('onlineMatches-won', wins_storage);
 
             } else {
                 UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it! 🏆`;
@@ -1044,7 +1047,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
                 setNew_SkillPoints(1);
             };
 
-        } else if (player2_won && !player1_won) { // player 2 won (admin)
+        } else if (player2_won && !player1_won) { // player 2 won (user)
             // Display win text in the proper way
             if (personal_GameData.role == 'user') {
                 UltimateWinText.textContent = `You won it! 🏆`;

@@ -64,7 +64,7 @@
                 <nav class="header-nav">
                     <i id="switchColorMode-btn" class="header-item fa-solid fa-moon"></i>
                     <i id="header-sett-btn" class="header-item fa-solid fa-gear"></i>
-                    <i style="display: none;" class="header-item fa-solid fa-user"></i>
+                    <i id="header-user-btn" class="header-item fa-solid fa-user"></i>
                 </nav>
             </header>
         </div>
@@ -2982,6 +2982,43 @@
 
         <div class="animatedPop-footer">
             <button class="animatedPop-ConBtn">Continue</button>
+        </div>
+    </div>
+
+    <!-- user info pop up -->
+    <div class="userInfo-PopUp">
+        <!-- header -->
+        <div class="userInfo-header">
+            <div></div>
+            <!-- if user data already passed. else: blank -->
+            <h2>Your profile</h2>
+
+            <i id="userInfo-closeBtn" class="fa-solid fa-x"></i>
+        </div>
+        <!-- main -->
+        <div class="userInfo-main">
+            <!-- if user data already passed -->
+            <div class="UserInfo-cont">
+                <ol class="UserInfo-list">
+                    <li>
+                        name: <span contenteditable="true" subject="name" class="userInfo-Name userInfoEditable"></span>
+                    </li>
+                    <li>
+                        default icon: <span contenteditable="true" subject="icon" class="userInfo-Icon userInfoEditable"></span>
+                    </li>
+                    <li>
+                        Skill points: <span subject="skill-points" class="userInfo-Skillpoints"></span>
+                    </li>
+                    <li>
+                        Online matches won: <span subject="online-matches-won" class="userInfo-OnlineMatchesWon"></span>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- if user data is not passed -->
+            <div class="UpdateUserData-cont">
+                <button class="CreateOnlineProfile-btn">Create an offline profile first</button>
+            </div>
         </div>
     </div>
 </body>

@@ -46,6 +46,17 @@ let GameField_BlockAmountDisplay = document.querySelector('.GameField-BlockAmoun
 let GameField_AveragePlayTimeDisplay = document.querySelector('.GameField-AveragePlayTime-display')
 let lobbyHeader = document.querySelector('.lobby-header');
 let GameModeDisplay = document.querySelector('.GameMode-display');
+let headerUserBtn = document.querySelector('#header-user-btn');
+let userInfoPopUp = document.querySelector('.userInfo-PopUp');
+let userInfoCloseBtn = document.querySelector('#userInfo-closeBtn');
+let UserInfoCont = document.querySelector('.UserInfo-cont');
+let CreateOnlineProfileBtn = document.querySelector('.CreateOnlineProfile-btn');
+
+let userInfoName = document.querySelector('.userInfo-Name');
+let userInfoIcon = document.querySelector('.userInfo-Icon');
+let userInfoSkillpoints = document.querySelector('.userInfo-Skillpoints');
+let userInfoOnlineMatchesWon = document.querySelector('.userInfo-OnlineMatchesWon');
+
 
 let SetPlayerNamesPopUp = document.querySelector('.SetPlayerNamesPopUp');
 let SetPlayerName_ConfirmButton = document.querySelector('.SetPlayerName-ConfirmButton');
@@ -398,7 +409,10 @@ window.socket = socket;
 // app initialization and code --------------
 (function AppInit() {
     ini_LightDark_Mode();
+    // local storage properties
     ElO_Points();
+    OnlineMatchesWon();
+    UserOfflineData();
 
     KI_Card_DescriptionDisplay.textContent = GameMode[1].description;
     OnlineFriend_Card_DescriptionDisplay.textContent = GameMode[2].description;
@@ -412,10 +426,36 @@ function ElO_Points() {
 
     if (localStorage.getItem('ELO')) {
         ELO_Points_display.textContent = ELO_storage;
+        userInfoSkillpoints.textContent = ELO_storage;
 
     } else {
         localStorage.setItem('ELO', '1000');
         ELO_Points_display.textContent = localStorage.getItem('ELO');
+        userInfoSkillpoints.textContent = localStorage.getItem('ELO');
+    };
+};
+
+function OnlineMatchesWon() {
+    let OnlineMatchesWon_storage = localStorage.getItem('onlineMatches-won');
+
+    if (OnlineMatchesWon_storage) {
+        userInfoOnlineMatchesWon.textContent = OnlineMatchesWon_storage;
+
+    } else {
+        localStorage.setItem('onlineMatches-won', 0);
+        userInfoOnlineMatchesWon.textContent = localStorage.getItem('onlineMatches-won');
+    };
+};
+
+function UserOfflineData() {
+    let name = localStorage.getItem('UserName');
+    let icon = localStorage.getItem('UserIcon');
+
+    if (name && icon) {
+        userInfoName.textContent = name;
+        userInfoIcon.textContent = icon;
+        userInfoName.setAttribute('contenteditable', false)
+        userInfoIcon.setAttribute('contenteditable', false)
     };
 };
 
@@ -432,6 +472,12 @@ function checkForSettings() {
     };
     if (localStorage.getItem('sett-ShowPing')) {
         console.log(localStorage.getItem('sett-ShowPing'));
+    };
+    if (localStorage.getItem('ELO')) {
+        console.log(localStorage.getItem('ELO'));
+    };
+    if (localStorage.getItem('onlineMatches-won')) {
+        console.log(localStorage.getItem('onlineMatches-won'));
     };
 };
 
@@ -597,6 +643,12 @@ function EnterGame() {
                 curr_name1 = null;
                 curr_name2 = null;
                 curr_field_ele = f.target;
+
+                // default data
+                if (localStorage.getItem('UserName')) {
+                    YourName_Input_KI_mode.value = localStorage.getItem('UserName');
+                    Your_IconInput.value = localStorage.getItem('UserIcon');
+                };
             };
 
             if (curr_mode == GameMode[2].opponent) { // Online Game mode
@@ -610,6 +662,12 @@ function EnterGame() {
                 Player2_IconInput.style.display = 'none';
                 Player1_NameInput.style.height = '50%';
                 Player1_IconInput.style.height = '50%';
+
+                // default data
+                if (localStorage.getItem('UserName')) {
+                    Player1_NameInput.value = localStorage.getItem('UserName');
+                    Player1_IconInput.value = localStorage.getItem('UserIcon');
+                };
             };
         });
     });
@@ -1121,6 +1179,12 @@ function setUpOnlineGame(from) {
         OnlineGame_NameWarnText[0].style.display = 'none';
         OnlineGame_NameWarnText[0].style.display = 'none';
 
+        // default data
+        if (localStorage.getItem('UserName')) {
+            Player1_NameInput.value = localStorage.getItem('UserName');
+            Player1_IconInput.value = localStorage.getItem('UserIcon');
+        };
+
     } else if (from == 'enter') {
         OnlineGame_CodeName_PopUp.style.display = 'flex';
         // bug fix
@@ -1184,7 +1248,7 @@ animatedPopConBtn.addEventListener('click', () => {
     playBtn_Audio_2();
     if (ContBtnCount == 0) {
         let TextHead = document.createElement("h2");
-        let newText = document.createTextNode("Will you survive?");
+        let newText = document.createTextNode("Each individual field has its own secret properties... Will you survive?");
         TextHead.classList.add("newText")
         TextHead.appendChild(newText);
         animatedPopMain.querySelectorAll("h2")[0].style.display = "none";
@@ -1201,3 +1265,50 @@ animatedPopConBtn.addEventListener('click', () => {
         ContBtnCount = 0;
     };
 });
+
+headerUserBtn.addEventListener('click', () => {
+    DarkLayer.style.display = 'block';
+    userInfoPopUp.style.display = 'flex';
+    userInfoOnlineMatchesWon.textContent = JSON.parse(localStorage.getItem('onlineMatches-won'));
+
+    if (localStorage.getItem('UserName')) {
+        userInfoName.textContent = localStorage.getItem('UserName');
+        userInfoIcon.textContent = localStorage.getItem('UserIcon');
+
+        CreateOnlineProfileBtn.style.display = 'none';
+        UserInfoCont.style.display = 'flex';
+
+    } else {
+        userInfoName.textContent = "";
+        userInfoIcon.textContent = "";
+
+        CreateOnlineProfileBtn.style.display = 'block';
+        UserInfoCont.style.display = 'none';
+    };
+});
+
+userInfoCloseBtn.addEventListener('click', () => {
+    DarkLayer.style.display = 'none';
+    userInfoPopUp.style.display = 'none';
+});
+
+CreateOnlineProfileBtn.addEventListener('click', () => {
+    CreateOnlineProfileBtn.style.display = 'none';
+    UserInfoCont.style.display = 'flex';
+
+    userInfoName.focus();
+});
+
+// user submits his simple offline data
+function submittedOfflineData() {
+    let userName = userInfoName.textContent;
+    let userIcon = userInfoIcon.textContent;
+
+    localStorage.setItem('UserName', userName);
+    localStorage.setItem('UserIcon', userIcon);
+
+    userInfoName.setAttribute('contenteditable', false);
+    userInfoIcon.setAttribute('contenteditable', false);
+    DarkLayer.style.display = 'none';
+    userInfoPopUp.style.display = 'none';
+};
