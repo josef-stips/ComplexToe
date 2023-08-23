@@ -2007,6 +2007,7 @@ label h3 {
     flex-direction: column;
     font-size: 20px;
     font-family: 'Rubik', sans-serif;
+    padding: 0 20px 0 0;
 }
 
 .animatedPop-footer {
@@ -2030,6 +2031,10 @@ label h3 {
 .animatedPop-ConBtn:hover {
     color: var(--hover-item);
     transition: all 0.1s ease-in-out;
+}
+
+.newText {
+    margin: 0 10px 0 10px;
 }
 
 

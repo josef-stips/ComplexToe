@@ -318,6 +318,9 @@ let LobbyDataSelections = {
         2: '10x10',
         3: '15x15',
         4: '20x20',
+        5: '25x25',
+        6: '30x30',
+        7: '40x40',
     },
     // Player clock
     2: {
@@ -350,6 +353,9 @@ let DataFields = {
     '10x10': document.querySelector('#TenxTen_Field'),
     '15x15': document.querySelector('#FifTeenxFifTeen_Field'),
     '20x20': document.querySelector('#TwentyxTwentyField'),
+    '25x25': document.querySelector('#twentyfivextwentyfive'),
+    '30x30': document.querySelector('#thirtyxthirty'),
+    '40x40': document.querySelector('#fortyxforty'),
 };
 
 let curr_field_ele; //html element
@@ -1248,7 +1254,7 @@ animatedPopConBtn.addEventListener('click', () => {
     playBtn_Audio_2();
     if (ContBtnCount == 0) {
         let TextHead = document.createElement("h2");
-        let newText = document.createTextNode("Each individual field has its own secret properties... Will you survive?");
+        let newText = document.createTextNode("Each individual field has its own secret properties you have to discover... Will you survive?");
         TextHead.classList.add("newText")
         TextHead.appendChild(newText);
         animatedPopMain.querySelectorAll("h2")[0].style.display = "none";
@@ -1257,6 +1263,10 @@ animatedPopConBtn.addEventListener('click', () => {
         ContBtnCount++;
 
     } else if (ContBtnCount == 1) {
+        animatedPopMain.querySelector('.newText').textContent = "You entered boss mode!";
+        ContBtnCount++;
+
+    } else if (ContBtnCount == 2) {
         DarkLayer.style.display = 'none';
         animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
         animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
