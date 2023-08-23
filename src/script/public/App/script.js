@@ -3,6 +3,7 @@ let Allbtns = document.querySelectorAll('.btn');
 let btn_sound = document.querySelector('#btn_click_1');
 let btn_sound2 = document.querySelector('#btn_click_2');
 const audio = document.querySelector("#bg_audio");
+const boss_theme = document.querySelector('#boss_theme');
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -25,9 +26,11 @@ let TwentyxTwentyField = document.querySelector('#TwentyxTwentyField');
 // KI Games
 let ThreexThree_Field = document.querySelector('#ThreexThree_Field');
 let ForxFor_Field = document.querySelector('#ForxFor_Field');
+//Advanced games
+let fortyxforty_MiniBoard = document.querySelector('#fortyxforty_MiniBoard');
+let twentyfivextwentyfive_MiniBoard = document.querySelector('#twentyfivextwentyfive_MiniBoard');
 // other
 let checkBox = document.querySelectorAll('.checkBox');
-
 let settingsCloseBtn = document.querySelector('#settings-close-btn');
 let settingsWindow = document.querySelector('.settings-window');
 let DarkLayer = document.querySelector('.dark-layer');
@@ -149,6 +152,9 @@ let OnlineGameLobby_alertText = document.querySelector('.OnlineGameLobby_alertTe
 let Lobby_GameCode_display = document.querySelector('.Lobby_GameCode_display');
 let goToAdvancedFields = document.querySelector('#goTo-advancedFields');
 let secondTierModes = document.querySelector('.second-tier-modes');
+let animatedPopUp = document.querySelector('.animated-pop-up');
+let animatedPopConBtn = document.querySelector('.animatedPop-ConBtn');
+let animatedPopMain = document.querySelector('.animatedPop-main');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -250,6 +256,46 @@ let Fields = {
         "theme": ".../assets/Maps/Long_Funeral.mp3",
         "theme_name": Long_funeral_Theme,
     },
+    7: {
+        "name": "random",
+        "size": "???",
+        "blocks": "???",
+        "xyCellAmount": "???",
+        "icon": "???",
+        "averagePlayTime": "??? minutes",
+        "theme": "???",
+        "theme_name": "???",
+    },
+    8: {
+        "name": "Ground destroyer",
+        "size": "25x25",
+        "blocks": "625",
+        "xyCellAmount": "25",
+        "icon": "fa-solid fa-skull",
+        "averagePlayTime": "30 minutes",
+        "theme": ".../assets/Maps/Long_Funeral.mp3",
+        "theme_name": Long_funeral_Theme,
+    },
+    9: {
+        "name": "Impossible survival",
+        "size": "30x30",
+        "blocks": "900",
+        "xyCellAmount": "30",
+        "icon": "fa-solid fa-chess-knight",
+        "averagePlayTime": "2+ hours",
+        "theme": ".../assets/Maps/Tunnel_of_truth.mp3",
+        "theme_name": Quick_death_Theme,
+    },
+    10: {
+        "name": "Merciful slaughter",
+        "size": "40x40",
+        "blocks": "1600",
+        "xyCellAmount": "40",
+        "icon": "fa-solid fa-skull",
+        "averagePlayTime": "5+ hours",
+        "theme": ".../assets/Maps/Long_Funeral.mp3",
+        "theme_name": Long_funeral_Theme,
+    },
 };
 
 // The user can switch between the different game data in the lobby
@@ -329,6 +375,7 @@ let curr_KI_Level;
 
 // standard bg music volume
 let appVolume = 0.05;
+let bossModeIsActive = false;
 
 // server thing ----------------
 
@@ -346,10 +393,10 @@ let socket = io('https://complextoeserveradmin.onrender.com', {
     // transports: ['websocket'],
 });
 
-window.socket = socket
+window.socket = socket;
 
 // app initialization and code --------------
-function AppInit() {
+(function AppInit() {
     ini_LightDark_Mode();
     ElO_Points();
 
@@ -358,8 +405,7 @@ function AppInit() {
     ComputerFriend_Card_DescriptionDisplay.textContent = GameMode[3].description;
 
     checkForSettings();
-};
-AppInit();
+})();
 
 function ElO_Points() {
     let ELO_storage = localStorage.getItem('ELO');
@@ -1107,10 +1153,51 @@ goToAdvancedFields.addEventListener('click', () => {
         goToAdvancedFields.classList = "fa-solid fa-caret-down";
         secondTierModes.style.marginBottom = "0";
         isInAdvancedGameModes = false;
+        bossModeIsActive = false;
+        playGameTheme();
 
     } else {
         goToAdvancedFields.classList = "fa-solid fa-caret-up";
         secondTierModes.style.marginBottom = "var(--width-for-goToAdvancedModes-btn)";
         isInAdvancedGameModes = true;
+
+        // animation
+        DarkLayer.style.display = 'block';
+        DarkLayer.style.backgroundColor = "rgba(0,0,0,0)";
+        animatedPopUp.style.display = 'block';
+        animatedPopUp.style.opacity = '0';
+
+        setTimeout(() => {
+            setTimeout(() => {
+                animatedPopUp.style.opacity = '1';
+            }, 400);
+            DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
+        }, 700)
+
+        bossModeIsActive = true;
+        playBossTheme();
+    };
+});
+
+let ContBtnCount = 0;
+animatedPopConBtn.addEventListener('click', () => {
+    playBtn_Audio_2();
+    if (ContBtnCount == 0) {
+        let TextHead = document.createElement("h2");
+        let newText = document.createTextNode("Will you survive?");
+        TextHead.classList.add("newText")
+        TextHead.appendChild(newText);
+        animatedPopMain.querySelectorAll("h2")[0].style.display = "none";
+        animatedPopMain.querySelectorAll("h2")[1].style.display = "none";
+        animatedPopMain.appendChild(TextHead);
+        ContBtnCount++;
+
+    } else if (ContBtnCount == 1) {
+        DarkLayer.style.display = 'none';
+        animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
+        animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
+        animatedPopMain.querySelector('.newText').remove();
+        animatedPopUp.style.display = 'none';
+        ContBtnCount = 0;
     };
 });

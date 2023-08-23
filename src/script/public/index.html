@@ -17,8 +17,12 @@
     <audio id="March_into_fire_Theme" src="assets/Maps/March_into_fire.mp3"></audio>
     <audio id="Quick_death_Theme" src="assets/Maps/Quick_Death.mp3"></audio>
     <audio id="Tunnel_of_truth_Theme" src="assets/Maps/Tunnel_of_truth.mp3"></audio>
+    <audio id="boss_theme" src="assets/Maps/boss_theme.mp3"></audio>
     <audio id="lolol" src="assets/btn_click_1.mp3"></audio>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
@@ -33,6 +37,9 @@
 <script defer src="WinCombinations/10x10.js"></script>
 <script defer src="WinCombinations/15x15.js"></script>
 <script defer src="WinCombinations/20x20.js"></script>
+<script defer src="WinCombinations/25x25.js"></script>
+<script defer src="WinCombinations/30x30.js"></script>
+<script defer src="WinCombinations/40x40.js"></script>
 <script defer src="WinCombinations/4x4.js"></script>
 <script defer src="WinCombinations/3x3.js"></script>
 <script defer src="Game/KI.js"></script>
@@ -1149,128 +1156,9 @@
                         </div>
                     </div>
 
+                    <!-- "advanced" boardes -->
                     <div class="second-tier-modes">
-                        <div class="NxN-field" id="Twentyxfifteen" field="3x3" title="Small Price" index="5">
-
-                            <div class="card-header NxN-field-card-header">
-                                <div class="NxN-field-card-header-innerWrapper">
-                                    <div class="field-card-circle">
-                                        <i class="fa-solid fa-baby field-card-header-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="NxN-field-card-header">
-                                <h2 class="NxN-fieldCard-title">3x3</h2>
-                            </div>
-
-                            <div class="NxN-field-card-main">
-                                <div id="Twentyxfifteen_MiniBoard" class="card-miniBord-mini">
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini">X</div>
-                                </div>
-                            </div>
-
-                            <h2 class="field-card-title">Small Price</h2>
-
-                        </div>
-
-                        <div class="NxN-field" id="twentyfivextwentyfive_Field" field="4x4" title="Thunder Advanture" index="6">
-
-                            <div class="card-header NxN-field-card-header">
-                                <div class="NxN-field-card-header-innerWrapper">
-                                    <div class="field-card-circle">
-                                        <i class="fa-solid fa-baby field-card-header-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="NxN-field-card-header">
-                                <h2 class="NxN-fieldCard-title">4x4</h2>
-                            </div>
-
-                            <div class="NxN-field-card-main">
-                                <div id="twentyfivextwentyfive_MiniBoard" class="card-miniBord-mini">
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                </div>
-                            </div>
-
-                            <h2 class="field-card-title">Thunder Advanture</h2>
-
-                        </div>
-
-                        <!-- Normal Game -->
-                        <div class="NxN-field" id="fortyxtwentyfive_Field" field="5x5" title="Quick Death" index="1">
-
-                            <div class="card-header NxN-field-card-header">
-                                <div class="NxN-field-card-header-innerWrapper">
-                                    <div class="field-card-circle">
-                                        <i class="fa-solid fa-baby field-card-header-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="NxN-field-card-header">
-                                <h2 class="NxN-fieldCard-title">5x5</h2>
-                            </div>
-
-                            <div class="NxN-field-card-main">
-                                <div id="fortyxtwentyfive_MiniBoard" class="card-miniBord-mini">
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                </div>
-                            </div>
-
-                            <h2 class="field-card-title">Quick death</h2>
-
-                        </div>
-
-                        <div class="NxN-field" id="random_Field" field="10x10" title="March into fire" index="2">
+                        <div class="NxN-field" id="random_Field" field="10x10" title="???" index="7">
 
                             <div class="card-header NxN-field-card-header">
                                 <div class="NxN-field-card-header-innerWrapper">
@@ -1281,11 +1169,86 @@
                             </div>
 
                             <div class="NxN-field-card-header">
-                                <h2 class="NxN-fieldCard-title">10x10</h2>
+                                <h2 class="NxN-fieldCard-title">random</h2>
                             </div>
 
                             <div class="NxN-field-card-main">
                                 <div id="random_MiniBoard" class="card-miniBord-mini">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -1314,7 +1277,478 @@
                                 </div>
                             </div>
 
-                            <h2 class="field-card-title">March into fire</h2>
+                            <h2 class="field-card-title">???</h2>
+
+                        </div>
+
+                        <div class="NxN-field" id="twentyfivextwentyfive" field="25x25" title="Ground destroyer" index="8">
+
+                            <div class="card-header NxN-field-card-header">
+                                <div class="NxN-field-card-header-innerWrapper">
+                                    <div class="field-card-circle">
+                                        <i class="fa-solid fa-baby field-card-header-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="NxN-field-card-header">
+                                <h2 class="NxN-fieldCard-title">25x25</h2>
+                            </div>
+
+                            <div class="NxN-field-card-main">
+                                <div id="twentyfivextwentyfive_MiniBoard" class="card-miniBord-mini">
+                                </div>
+                            </div>
+
+                            <h2 class="field-card-title">Ground destroyer</h2>
+
+                        </div>
+
+                        <div class="NxN-field" id="thirtyxthirty" field="30x30" title="Impossible survival" index="9">
+
+                            <div class="card-header NxN-field-card-header">
+                                <div class="NxN-field-card-header-innerWrapper">
+                                    <div class="field-card-circle">
+                                        <i class="fa-solid fa-baby field-card-header-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="NxN-field-card-header">
+                                <h2 class="NxN-fieldCard-title">30x30</h2>
+                            </div>
+
+                            <div class="NxN-field-card-main">
+                                <div id="thirtyxthirty_MiniBoard" class="card-miniBord-mini">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+                            </div>
+
+                            <h2 class="field-card-title">Impossible survival</h2>
+
+                        </div>
+
+                        <!-- Normal Game -->
+                        <div class="NxN-field" id="fortyxforty" field="40x40" title="Merciful slaughter" index="10">
+
+                            <div class="card-header NxN-field-card-header">
+                                <div class="NxN-field-card-header-innerWrapper">
+                                    <div class="field-card-circle">
+                                        <i class="fa-solid fa-baby field-card-header-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="NxN-field-card-header">
+                                <h2 class="NxN-fieldCard-title">40x40</h2>
+                            </div>
+
+                            <div class="NxN-field-card-main">
+                                <div id="fortyxforty_MiniBoard" class="card-miniBord-mini">
+                                    <!-- 625 objects generated by javascript -->
+                                </div>
+                            </div>
+
+                            <h2 class="field-card-title">Merciful slaughter</h2>
 
                         </div>
                     </div>
@@ -2537,6 +2971,18 @@
         </div>
 
         <div></div>
+    </div>
+
+    <!-- Animated pop up -->
+    <div class="animated-pop-up">
+        <div class="animatedPop-main">
+            <h2>You have just explored the dangerous section of the internet...</h2>
+            <h2>keep your eyes opened wild things will occur.</h2>
+        </div>
+
+        <div class="animatedPop-footer">
+            <button class="animatedPop-ConBtn">Continue</button>
+        </div>
     </div>
 </body>
 

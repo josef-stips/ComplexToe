@@ -172,12 +172,20 @@ function UserleavesGame() {
 
             // play music
             PauseMusic();
-            CreateMusicBars(audio); // error because javascript is as weird as usual 
+            if (bossModeIsActive) {
+                CreateMusicBars(boss_theme);
+            } else {
+                CreateMusicBars(audio); // error because javascript is as weird as usual
+            };
         });
     } else {
         // play music
         PauseMusic();
-        CreateMusicBars(audio); // error because javascript is as weird as usual
+        if (bossModeIsActive) {
+            CreateMusicBars(boss_theme);
+        } else {
+            CreateMusicBars(audio); // error because javascript is as weird as usual
+        };
     };
 };
 

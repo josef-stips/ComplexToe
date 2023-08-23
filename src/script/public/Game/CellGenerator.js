@@ -57,6 +57,22 @@ function generateCell(index) {
         cell.style.width = "12.4vh";
         cell.style.height = "12.4vh";
         cell.style.fontSize = "88px";
+
+        // Advanced Game Boards
+    } else if (xCell_Amount == 25) {
+        cell.style.width = "1.75vh";
+        cell.style.height = "1.75vh";
+        cell.style.fontSize = "17px";
+
+    } else if (xCell_Amount == 30) {
+        cell.style.width = "1.4vh";
+        cell.style.height = "1.4vh";
+        cell.style.fontSize = "13px";
+
+    } else if (xCell_Amount == 40) {
+        cell.style.width = "var(--width-for-40x40-field)";
+        cell.style.height = "var(--width-for-40x40-field)";
+        cell.style.fontSize = "var(--font-size-for-40x40-field)";
     };
 
     cellGrid.appendChild(cell);
@@ -77,6 +93,15 @@ function CreateWinConditions(NxN) {
 
     } else if (NxN == 20) {
         Create_20x20_WinCombis(); // use win comb algorithm executer from 20x20.js
+
+    } else if (NxN == 25) {
+        Create_25x25_WinCombis(); // use win comb algorithm executer from 10x10.js
+
+    } else if (NxN == 30) {
+        Create_30x30_WinCombis(); // use win comb algorithm executer from 15x15.js
+
+    } else if (NxN == 40) {
+        Create_40x40_WinCombis(); // use win comb algorithm executer from 20x20.js
 
     } else if (NxN == 4) {
         Create_4x4_WinCombis(); // use win comb algorithm executer from 15x15.js
@@ -190,3 +215,20 @@ function Activate_InteractiveBlocker() {
         };
     };
 };
+
+// create 40x40 mini-board for lobby preview
+(function create40x40_LobbyPreview() {
+    for (let i = 0; i < 25 * 25; i++) {
+        let child = document.createElement('div');
+        child.classList = "miniCellMini";
+
+        fortyxforty_MiniBoard.appendChild(child);
+    };
+
+    for (let i = 0; i < 15 * 15; i++) {
+        let child = document.createElement('div');
+        child.classList = "miniCellMini";
+
+        twentyfivextwentyfive_MiniBoard.appendChild(child);
+    };
+})();

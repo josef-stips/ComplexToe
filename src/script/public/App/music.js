@@ -50,7 +50,7 @@ function CreateMusicBars(Audio) {
         const barWidth = firstDiv.offsetWidth / numBars;
 
         bars.forEach((bar, index) => {
-            const barHeight = (dataArray[index] / 255) * firstDiv.offsetHeight;
+            const barHeight = (dataArray[index] / 155) * firstDiv.offsetHeight;
 
             bar.style.width = barWidth + "px";
             bar.style.height = barHeight + "px";
@@ -58,7 +58,7 @@ function CreateMusicBars(Audio) {
 
         bars2.forEach((bar, index) => {
             const reversedIndex = numBars - 1 - index; // Umkehren der Indexreihenfolge
-            const barHeight = (dataArray[reversedIndex] / 255) * secondDiv.offsetHeight;
+            const barHeight = (dataArray[reversedIndex] / 155) * secondDiv.offsetHeight;
 
             bar.style.width = barWidth + "px";
             bar.style.height = barHeight + "px";
@@ -85,12 +85,26 @@ function PauseMusic() {
     March_into_fire_Theme.pause();
     Tunnel_of_truth_Theme.pause();
     Long_funeral_Theme.pause();
+    audio.pause();
+    boss_theme.pause();
 
     Quick_death_Theme.currentTime = 0;
     March_into_fire_Theme.currentTime = 0;
     Tunnel_of_truth_Theme.currentTime = 0;
     Long_funeral_Theme.currentTime = 0;
-
-    audio.pause();
+    boss_theme.currentTime = 0;
     audio.currentTime = 0;
+};
+
+function playGameTheme() {
+    PauseMusic();
+    audio.volume = 0.075;
+    audio.play();
+}
+
+function playBossTheme() {
+    PauseMusic();
+    boss_theme.volume = 0.075;
+    boss_theme.play();
+    CreateMusicBars(boss_theme);
 };
