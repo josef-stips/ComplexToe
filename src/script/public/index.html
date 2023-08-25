@@ -70,154 +70,173 @@
         </div>
 
         <div class="lobby-main-sec">
-            <div class="gameMode-cards">
+            <div class="gameModes-cards">
 
-                <!-- Card #1 -->
-                <div class="gameMode-card btn" id="gameMode-KI-card">
+                <div class="lobby-Cardsheader">
+                    <div class="lobby-cards-header-left">
+                        <div class="lobby-header-icon-innerWrapper">
+                            <i title="diamants" class="fa-solid fa-gem"></i>
+                            <span class="gems-icon">0</span>
+                        </div>
 
-                    <div class="card-header">
-                        <div class="card-circle">
-                            <i class="fa-solid fa-robot BotIcon"></i>
+                        <div class="lobby-header-icon-innerWrapper">
+                            <i title="diamants" class="fa-solid fa-x"></i>
+                            <span class="x-icon">0</span>
                         </div>
                     </div>
 
-                    <div class="card-mainSec">
-                        <div class="card-miniBord-mini">
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">O</div>
-                            <div class="miniCellMini">X</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">O</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">X</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">X</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">O</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                        </div>
+                    <div class="lobby-cards-header-right">
+                        <i id="store-icon" class="fa-solid fa-store"></i>
+                        <i id="treasure-icon" class="fa-regular fa-chess-queen"></i>
                     </div>
-
-                    <div class="card-footer">
-                        <h2 id="KI_Card_DescriptionDisplay"></h2>
-                    </div>
-
                 </div>
 
-                <!-- Card #2 -->
-                <div class="gameMode-card mainCard btn" id="gameMode-TwoPlayerOnline-card">
+                <div class="GameModeCards-main">
+                    <!-- Card #1 -->
+                    <div class="gameMode-card btn" id="gameMode-KI-card">
 
-                    <div class="card-header">
-                        <div class="card-circle" id="cardHeaderIcon-onlinePlayer">
-                            <i class="fa-solid fa-user-group BotIcon"></i>
+                        <div class="card-header">
+                            <div class="card-circle">
+                                <i class="fa-solid fa-robot BotIcon"></i>
+                            </div>
+                        </div>
+
+                        <div class="card-mainSec">
+                            <div class="card-miniBord-mini">
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <h2 id="KI_Card_DescriptionDisplay"></h2>
+                        </div>
+
+                    </div>
+
+                    <!-- Card #2 -->
+                    <div class="gameMode-card mainCard btn" id="gameMode-TwoPlayerOnline-card">
+
+                        <div class="card-header">
+                            <div class="card-circle" id="cardHeaderIcon-onlinePlayer">
+                                <i class="fa-solid fa-user-group BotIcon"></i>
+                            </div>
+                        </div>
+
+                        <div class="card-mainSec">
+                            <div class="card-miniBoard">
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell">X</div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell">X</div>
+                                <div class="miniCell">O</div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell">X</div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell">X</div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell">O</div>
+                                <div class="miniCell">O</div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                                <div class="miniCell"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <h2 id="OnlineFriend_Card_DescriptionDisplay"></h2>
+                        </div>
+
+                    </div>
+
+                    <!-- Card #3 -->
+                    <div class="gameMode-card btn" id="gameMode-OneVsOne-card">
+
+                        <div class="card-header">
+                            <div class="card-circle">
+                                <i class="fa-solid fa-computer BotIcon"></i>
+                            </div>
+                        </div>
+
+                        <div class="card-mainSec">
+                            <div class="card-miniBord-mini">
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">X</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini">O</div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                                <div class="miniCellMini"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <h2 id="ComputerFriend_Card_DescriptionDisplay"></h2>
                         </div>
                     </div>
-
-                    <div class="card-mainSec">
-                        <div class="card-miniBoard">
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell">X</div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell">X</div>
-                            <div class="miniCell">O</div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell">X</div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell">X</div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell">O</div>
-                            <div class="miniCell">O</div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                            <div class="miniCell"></div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <h2 id="OnlineFriend_Card_DescriptionDisplay"></h2>
-                    </div>
-
                 </div>
-
-                <!-- Card #3 -->
-                <div class="gameMode-card btn" id="gameMode-OneVsOne-card">
-
-                    <div class="card-header">
-                        <div class="card-circle">
-                            <i class="fa-solid fa-computer BotIcon"></i>
-                        </div>
-                    </div>
-
-                    <div class="card-mainSec">
-                        <div class="card-miniBord-mini">
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">X</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">X</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini">O</div>
-                            <div class="miniCellMini">O</div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                            <div class="miniCellMini"></div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <h2 id="ComputerFriend_Card_DescriptionDisplay"></h2>
-                    </div>
-
-                </div>
-
             </div>
 
             <!-- NxN Field Cards -->
@@ -3019,6 +3038,24 @@
             <div class="UpdateUserData-cont">
                 <button class="CreateOnlineProfile-btn">Create an offline profile first</button>
             </div>
+        </div>
+    </div>
+
+    <!-- treasure box pop up when timer is still counting -->
+    <div class="treasure-box-timer-pop-up">
+        <div class="treasurePopUp-header">
+            <i id="treasure-popUp-closeBtn" class="fa-solid fa-x"></i>
+        </div>
+
+        <div class="treasurePopUp-main">
+            <span>Next treasure in</span>
+            <span class="treasure-pop-up-timer">
+                <span class="hours">00</span>
+            <span>:</span>
+            <span class="minutes">00</span>
+            <span>:</span>
+            <span class="seconds">00</span>
+            </span>
         </div>
     </div>
 </body>

@@ -8,7 +8,7 @@ const boss_theme = document.querySelector('#boss_theme');
 let cellGrid = document.querySelector('#cellGrid');
 
 // general elements and buttons
-let gameModeCards_Div = document.querySelector('.gameMode-cards');
+let gameModeCards_Div = document.querySelector('.gameModes-cards');
 let gameModeFields_Div = document.querySelector('.GameMode-fields');
 let fieldsArea_back_btn = document.querySelector('#fields-area-back-btn');
 let switchColorMode_btn = document.querySelector('#switchColorMode-btn');
@@ -16,7 +16,9 @@ let settDarkMode = document.querySelector('#sett-darkMode');
 let ELO_Points_display = document.querySelector('.ELO-Points-display');
 let sett_rsetELO_Points_btn = document.querySelector('#sett_rsetELO_Points_btn');
 let ELO_Points_AddIcon = document.querySelector('.ELO-Points-AddIcon');
-// let OnlineGame_GameCode_Display = document.querySelector('.OnlineGame_GameCode_Display'); // in the "setupGameData" window, there is already the game id sown, which is not right
+let gemsIcon = document.querySelector('.gems-icon');
+let Xicon = document.querySelector('.x-icon')
+    // let OnlineGame_GameCode_Display = document.querySelector('.OnlineGame_GameCode_Display'); // in the "setupGameData" window, there is already the game id sown, which is not right
 
 // Normal Games
 let FivexFive_Field = document.querySelector('#FivexFive_Field');
@@ -56,7 +58,14 @@ let userInfoName = document.querySelector('.userInfo-Name');
 let userInfoIcon = document.querySelector('.userInfo-Icon');
 let userInfoSkillpoints = document.querySelector('.userInfo-Skillpoints');
 let userInfoOnlineMatchesWon = document.querySelector('.userInfo-OnlineMatchesWon');
-
+let treasureBoxTimerPopUp = document.querySelector('.treasure-box-timer-pop-up');
+let storeIcon = document.querySelector('#store-icon');
+let treasureIcon = document.querySelector('#treasure-icon');
+let treasurePopUpcloseBtn = document.querySelector('#treasure-popUp-closeBtn');
+let treasurePopUpTimer = document.querySelector('.treasure-pop-up-timer');
+let hours = document.querySelector('.hours');
+let minutes = document.querySelector('.minutes');
+let seconds = document.querySelector('.seconds');
 
 let SetPlayerNamesPopUp = document.querySelector('.SetPlayerNamesPopUp');
 let SetPlayerName_ConfirmButton = document.querySelector('.SetPlayerName-ConfirmButton');
@@ -186,6 +195,9 @@ let Long_funeral_Theme = document.querySelector('#Long_funeral_Theme');
 let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
 let gameMode_TwoPlayerOnline_card = document.querySelector('#gameMode-TwoPlayerOnline-card');
 let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
+
+// treasure countdown
+let TreasureCountdown;
 
 // important data
 let GameMode = {
@@ -419,6 +431,8 @@ window.socket = socket;
     ElO_Points();
     OnlineMatchesWon();
     UserOfflineData();
+    GameItems();
+    CheckTreasure();
 
     KI_Card_DescriptionDisplay.textContent = GameMode[1].description;
     OnlineFriend_Card_DescriptionDisplay.textContent = GameMode[2].description;
@@ -426,6 +440,40 @@ window.socket = socket;
 
     checkForSettings();
 })();
+
+function CheckTreasure() {
+    // user is first time in the game
+    if (localStorage.getItem('treasureIsAvailible') == null && localStorage.getItem('treasureIsAvailible') == undefined) {
+        treasureCountDown();
+        localStorage.setItem('treasureIsAvailible', false);
+        return;
+    };
+
+    // user is not the first time in the game
+    if (localStorage.getItem('treasureIsAvailible') == "true") {
+        treasureIsAvailible();
+
+    } else {
+        treasureCountDown();
+    };
+};
+
+function GameItems() {
+    let ItemX = localStorage.getItem('ItemX');
+    let ItemDiamants = localStorage.getItem('Diamants');
+
+    if (ItemX && ItemDiamants) {
+        Xicon.textContent = ItemX;
+        gemsIcon.textContent = ItemDiamants;
+
+    } else {
+        localStorage.setItem('ItemX', 1);
+        localStorage.setItem('GemsItem', 200);
+
+        Xicon.textContent = 1;
+        gemsIcon.textContent = 200;
+    };
+};
 
 function ElO_Points() {
     let ELO_storage = localStorage.getItem('ELO');
@@ -1321,4 +1369,106 @@ function submittedOfflineData() {
     userInfoIcon.setAttribute('contenteditable', false);
     DarkLayer.style.display = 'none';
     userInfoPopUp.style.display = 'none';
+};
+
+storeIcon.addEventListener('click', () => {
+
+});
+
+treasureIcon.addEventListener('click', () => {
+    // check if treasure can be opened
+    if (localStorage.getItem('treasureIsAvailible') == "true") {
+        openTreasure();
+    } else {
+        if (!TreasureCountdown) {
+            treasureCountDown();
+        };
+        treasureBoxTimerPopUp.style.display = 'flex';
+        DarkLayer.style.display = 'block';
+    };
+});
+
+treasurePopUpcloseBtn.addEventListener('click', () => {
+    treasureBoxTimerPopUp.style.display = 'none';
+    DarkLayer.style.display = 'none';
+});
+
+// 24 hour countdown for treasure
+// every 24 hours the user can open the treasure in the lobby
+function treasureCountDown() {
+    let Nhour = 23;
+    let Nminutes = 59;
+    let Nseconds = 59;
+
+    TreasureCountdown = setInterval(() => {
+        (init = () => {
+            seconds.textContent = Nseconds;
+            minutes.textContent = Nminutes;
+            hours.textContent = Nhour;
+        })();
+
+        if (Nhour < 1 && Nminutes < 1 && Nseconds <= 0) {
+            clearInterval(TreasureCountdown);
+            TreasureCountdown = null;
+            treasureIsAvailible();
+        };
+
+        Nseconds--;
+
+        if (Nseconds <= -1 && Nminutes <= 0 && Nhour >= 1) {
+            Nhour--;
+            Nminutes = 59;
+            Nseconds = 59;
+        };
+
+        // display minutes
+        if (Nseconds <= -1 && Nminutes > 0) {
+            Nminutes--;
+            Nseconds = 59;
+            minutes.textContent = Nminutes;
+        };
+
+        if (Nminutes <= 9) {
+            minutes.textContent = `0${Nminutes}`;
+        } else {
+            minutes.textContent = Nminutes;
+        };
+
+        // display seconds
+        if (Nseconds <= 9) {
+            seconds.textContent = `0${Nseconds}`;
+        } else {
+            seconds.textContent = Nseconds;
+        };
+
+        // display hours
+        if (Nminutes < 1 && Nminutes > 0) {
+            Nhour--;
+            hours.textContent = Nhour;
+        };
+
+        if (Nhour <= 9) {
+            hours.textContent = `0${Nhour}`;
+        } else {
+            hours.textContent = Nhour;
+        };
+
+    }, 1000);
+};
+
+// countdown is done, treasure can be opened now
+function treasureIsAvailible() {
+    localStorage.setItem('treasureIsAvailible', true);
+
+    // play animation
+    treasureIcon.style.animation = "treasure_availible 1s infinite";
+    treasureBoxTimerPopUp.style.display = "none";
+    DarkLayer.style.display = 'none';
+};
+
+// user opens the treasure
+function openTreasure() {
+    localStorage.setItem('treasureIsAvailible', false);
+
+    treasureIcon.style.animation = "none";
 };

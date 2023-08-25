@@ -391,6 +391,55 @@ ul {
 
 /* MAIN BODY PART */
 
+.lobby-Cardsheader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 26px;
+    margin: 0.3em;
+}
+
+.lobby-header-icon-innerWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3em;
+}
+
+.lobby-cards-header-left {
+    display: flex;
+    gap: 0.8em;
+}
+
+.lobby-cards-header-right {
+    gap: 0.5em;
+    display: flex;
+}
+
+.lobby-cards-header-left i {
+    display: flex;
+    gap: 0.3em;
+    transition: all 0.1s ease-in-out;
+}
+
+.lobby-cards-header-right i {
+    gap: 0.5em;
+    transition: all 0.1s ease-in-out;
+    display: flex;
+}
+
+.lobby-cards-header-left i:hover {
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+    color: var(--hover-item);
+}
+
+.lobby-cards-header-right i:hover {
+    transition: all 0.1s ease-in;
+    cursor: pointer;
+    color: var(--hover-item);
+}
+
 .lobby-main-sec {
     color: var(--font-color);
     display: block;
@@ -401,20 +450,29 @@ ul {
     justify-content: center;
 }
 
-.gameMode-cards {
+.gameModes-cards {
     width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5em;
+}
+
+.GameModeCards-main {
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
     gap: 5em;
-    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .gameMode-card {
     border: 4px solid var(--font-color);
     width: 90%;
-    height: 40%;
+    height: 45%;
     transition: all 0.1s ease-out;
     display: flex;
     justify-content: center;
@@ -443,7 +501,7 @@ ul {
 
 .mainCard {
     transition: all 0.1s ease-out;
-    height: 50%;
+    height: 55%;
     width: 100%;
 }
 
@@ -467,7 +525,7 @@ ul {
 }
 
 .card-circle {
-    margin-bottom: 1.6em;
+    margin-bottom: 1.7em;
     width: 4em;
     height: 4em;
     border: 3px solid;
@@ -481,15 +539,16 @@ ul {
 }
 
 .card-mainSec {
-    width: 100%;
-    height: 95%;
+    width: 95%;
+    height: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 0.4em;
 }
 
 #cardHeaderIcon-onlinePlayer {
-    margin-bottom: 2.5em;
+    margin-bottom: 2.1em;
 }
 
 .card-miniBoard {
@@ -500,8 +559,8 @@ ul {
 }
 
 .miniCell {
-    width: 4.7vh;
-    height: 4.7vh;
+    width: 3.8vh;
+    height: 3.8vh;
     border: 2px solid;
     box-shadow: 0 0 0 2px;
     line-height: 25px;
@@ -515,12 +574,12 @@ ul {
 
 .miniCellMini {
     color: var(--font-color);
-    width: 4.2vh;
-    height: 4.2vh;
+    width: 3.7vh;
+    height: 3.7vh;
     border: 2px solid;
     box-shadow: 0 0 0 2px;
     line-height: 25px;
-    font-size: 38px;
+    font-size: 37px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -2126,6 +2185,75 @@ label h3 {
 }
 
 
+/* treasure box pop up */
+
+.treasure-box-timer-pop-up {
+    position: absolute;
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 30%;
+    height: 30%;
+    border: 2px solid var(--font-color);
+    color: var(--font-color);
+    border-radius: 40px;
+    background-color: var(--bg-app-color);
+    z-index: 10001;
+    display: none;
+    flex-direction: column;
+}
+
+.treasurePopUp-header {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    font-size: 23px;
+}
+
+.treasurePopUp-main {
+    font-size: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#treasure-popUp-closeBtn {
+    margin: 0.9em 0.85em 0 0;
+    transition: all 0.1s ease-in;
+    cursor: pointer;
+}
+
+#treasure-popUp-closeBtn:hover {
+    transition: all 0.1s ease-in;
+    color: var(--hover-item);
+}
+
+.treasurePopUp-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 60%;
+}
+
+.treasure-pop-up-timer {
+    font-size: 50px;
+}
+
+#treasure-icon {
+    /* if treasure is availible */
+    /* animation: treasure_availible 1s infinite; */
+    animation: none;
+    position: absolute;
+    right: 8%;
+}
+
+
 /* Animations */
 
 @keyframes animatedBorder {
@@ -2182,6 +2310,53 @@ label h3 {
     }
     100% {
         background-color: rgba(255, 0, 0, 0);
+    }
+}
+
+@keyframes treasure_availible {
+    0% {
+        transform: scale(1);
+        color: rgb(73, 146, 73);
+    }
+    10% {
+        transform: scale(1.1);
+        color: rgb(73, 146, 73);
+    }
+    20% {
+        transform: scale(1.2);
+        color: rgb(12, 129, 12);
+    }
+    30% {
+        transform: scale(1.3);
+        color: rgb(66, 136, 66);
+    }
+    40% {
+        transform: scale(1.4);
+        color: rgb(73, 146, 73);
+    }
+    50% {
+        transform: scale(1.5);
+        color: rgb(73, 146, 73);
+    }
+    60% {
+        transform: scale(1.4);
+        color: rgb(73, 146, 73);
+    }
+    70% {
+        transform: scale(1.3);
+        color: rgb(12, 129, 12);
+    }
+    80% {
+        transform: scale(1.2);
+        color: rgb(66, 136, 66);
+    }
+    90% {
+        transform: scale(1.1);
+        color: rgb(73, 146, 73);
+    }
+    100% {
+        transform: scale(1);
+        color: rgb(73, 146, 73);
     }
 }
 
