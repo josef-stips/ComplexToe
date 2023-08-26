@@ -8,6 +8,8 @@
     --width-for-goToAdvancedModes-btn: 86%;
     --width-for-40x40-field: 1.0vh;
     --font-size-for-40x40-field: 11.5px;
+    --floating-gem-range: -152vh;
+    --floating-x-range: -142vh;
 }
 
 .dark-mode {
@@ -2254,7 +2256,37 @@ label h3 {
 }
 
 
+/* floating diamant */
+
+.floating-item {
+    position: absolute;
+    top: 11%;
+    right: 8%;
+    z-index: 10001;
+    color: var(--font-color);
+    font-size: 24px;
+}
+
+
 /* Animations */
+
+@keyframes gem {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(var(--floating-gem-range));
+    }
+}
+
+@keyframes x {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(var(--floating-x-range));
+    }
+}
 
 @keyframes animatedBorder {
     0% {
@@ -2381,5 +2413,7 @@ label h3 {
         --width-for-goToAdvancedModes-btn: 102.3%;
         --width-for-40x40-field: 0.9vh;
         --font-size-for-40x40-field: 9px;
+        --floating-x-range: -129.5vh;
+        --floating-gem-range: -142.5vh;
     }
 }

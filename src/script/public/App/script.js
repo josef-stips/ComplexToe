@@ -460,7 +460,7 @@ function CheckTreasure() {
 
 function GameItems() {
     let ItemX = localStorage.getItem('ItemX');
-    let ItemDiamants = localStorage.getItem('Diamants');
+    let ItemDiamants = localStorage.getItem('GemsItem');
 
     if (ItemX && ItemDiamants) {
         Xicon.textContent = ItemX;
@@ -1396,9 +1396,9 @@ treasurePopUpcloseBtn.addEventListener('click', () => {
 // 24 hour countdown for treasure
 // every 24 hours the user can open the treasure in the lobby
 function treasureCountDown() {
-    let Nhour = 23;
-    let Nminutes = 59;
-    let Nseconds = 59;
+    let Nhour = 0;
+    let Nminutes = 0;
+    let Nseconds = 5;
 
     TreasureCountdown = setInterval(() => {
         (init = () => {
@@ -1466,9 +1466,68 @@ function treasureIsAvailible() {
     DarkLayer.style.display = 'none';
 };
 
+// get random number global function
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+};
+
 // user opens the treasure
 function openTreasure() {
     localStorage.setItem('treasureIsAvailible', false);
 
     treasureIcon.style.animation = "none";
+
+    // The probability the earn x is 1/10 
+    // All the other times the player gets diamants
+    const isXRare = getRandomNumber(1, 11) === 1;
+
+    if (isXRare) {
+        // Player gains X
+        ItemAnimation('fa-solid fa-x');
+
+    } else {
+        // Spieler gains diamants
+        let counter = 0;
+        let count = setInterval(() => {
+            counter++;
+            if (counter >= 50) {
+                clearInterval(count);
+            };
+            ItemAnimation('fa-solid fa-gem');
+        }, 50);
+    };
+
+    treasureCountDown();
+};
+
+// floating element over the screen
+function ItemAnimation(item) {
+    let div = document.createElement('div');
+    let i = document.createElement('i');
+    div.classList = 'floating-item';
+    i.classList = item;
+
+    if (item == 'fa-solid fa-gem') {
+        div.style.animation = "gem 1s ease";
+        let Gems = parseInt(localStorage.getItem('GemsItem'));
+        Gems++;
+        localStorage.setItem('GemsItem', Gems);
+        gemsIcon.textContent = Gems;
+
+    } else if (item == 'fa-solid fa-x') {
+        div.style.animation = "x 1s ease";
+        let Xi = parseInt(localStorage.getItem('ItemX'));
+        Xi++;
+        localStorage.setItem('ItemX', Xi);
+        Xicon.textContent = Xi;
+    };
+
+    div.appendChild(i);
+    document.body.appendChild(div);
+
+    setTimeout(() => {
+        div.remove();
+    }, 1000);
+
+    playBtn_Audio_2();
 };
