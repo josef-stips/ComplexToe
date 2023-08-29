@@ -345,6 +345,12 @@ socket.on('player_clicked', Goptions => {
         const element = options[i];
 
         cells[i].textContent = element;
+
+        if (element != '') {
+            if (localStorage.getItem('userInfoColor')) {
+                cells[i].style.color = localStorage.getItem('userInfoColor');
+            };
+        };
     };
 
     // Check which inner game mode is activated

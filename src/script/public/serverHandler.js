@@ -110,6 +110,11 @@ Lobby_closeBtn.addEventListener('click', () => {
     OnlineGame_Lobby.style.display = 'none';
     DarkLayer.style.display = 'none';
     OnlineGameLobby_alertText.style.display = 'none';
+
+    // Check if player unlocked one of these fields
+    locked_25x25();
+    locked_30x30();
+    locked_40x40();
 });
 
 // If user already entered a room and just needs to set up his player data, he can close the window with the "x" in the header

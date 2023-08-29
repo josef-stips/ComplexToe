@@ -4,7 +4,7 @@ let icon_input1 = document.querySelector('#Player1_IconInput');
 let icon_input2 = document.querySelector('#Player2_IconInput');
 let icon_input3 = document.querySelector('#Your_IconInput');
 let userInfoEditable1 = document.querySelectorAll('.userInfoEditable')[0];
-let userInfoEditable2 = document.querySelectorAll('.userInfoEditable')[1];
+let userInfoEditable2 = document.querySelector('#userInfoIcon');
 
 let settings = {
     maxInputLeng: 11,
@@ -216,16 +216,32 @@ userInfoEditable1.addEventListener('keydown', (event) => {
 });
 
 userInfoEditable1.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && userInfoEditable1.textContent != "") {
+    if (e.key === 'Enter') {
         e.preventDefault();
-        userInfoIcon.focus();
+
+        if (userInfoEditable1.textContent != "") {
+            userInfoIcon.focus();
+        };
+    };
+
+    if (e.which === 32) {
+        e.preventDefault();
     };
 });
 
 userInfoEditable2.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && userInfoEditable2.textContent != "") {
+    if (e.key === 'Enter') {
         e.preventDefault();
-        submittedOfflineData();
+
+        if (userInfoEditable2.textContent != "") {
+            submittedOfflineData();
+        } else {
+            userInfoName.focus();
+        };
+    };
+
+    if (e.which === 32) {
+        e.preventDefault();
     };
 });
 

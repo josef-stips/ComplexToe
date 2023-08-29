@@ -31,6 +31,7 @@ let ForxFor_Field = document.querySelector('#ForxFor_Field');
 //Advanced games
 let fortyxforty_MiniBoard = document.querySelector('#fortyxforty_MiniBoard');
 let twentyfivextwentyfive_MiniBoard = document.querySelector('#twentyfivextwentyfive_MiniBoard');
+let thirtyxthirty_MiniBoard = document.querySelector('#thirtyxthirty_MiniBoard');
 // other
 let checkBox = document.querySelectorAll('.checkBox');
 let settingsCloseBtn = document.querySelector('#settings-close-btn');
@@ -131,6 +132,10 @@ let friendLeft_OK_btn = document.querySelectorAll('.friendLeft_OK_btn')[0];
 let friendLeft_Aj_btn = document.querySelectorAll('.friendLeft_OK_btn')[1];
 let friendLeft_text = document.querySelector('#friendLeft_text');
 let SwitchCaret = document.querySelectorAll('.SwitchCaret');
+let closeAlertPopUpBtn = document.querySelector('#closeAlertPopUpBtn');
+let AlertText = document.querySelector('.alert-text-span');
+let alertPopUp = document.querySelector('.alert-pop-up');
+let editUserProfileBtn = document.querySelector('#editUserProfileBtn');
 
 let Fieldsize_NegativeSwitcher = document.querySelector('#Fieldsize_NegativeSwitcher');
 let Fieldsize_PositiveSwitcher = document.querySelector('#Fieldsize_PositiveSwitcher');
@@ -175,6 +180,23 @@ let secondTierModes = document.querySelector('.second-tier-modes');
 let animatedPopUp = document.querySelector('.animated-pop-up');
 let animatedPopConBtn = document.querySelector('.animatedPop-ConBtn');
 let animatedPopMain = document.querySelector('.animatedPop-main');
+let skinShop = document.querySelector('.skin-shop');
+let skinShopCloseBtn = document.querySelector('.skinShopCloseBtn');
+let skinBigItem = document.querySelector('.skinBigItem');
+let skinToSelect = document.querySelectorAll('.skin-to-select');
+let skinPriceDisplay = document.querySelector('.skin-price-display');
+let buySkinBtn = document.querySelector('.buy-skin-button');
+let BuySkinError = document.querySelector('.BuySkinError');
+let useSkinBtn = document.querySelector('.use-skin-button');
+let sidelinePrice = document.querySelector('.sideline-price');
+let SkinInputDisplay = document.querySelector('.SkinInputDisplay');
+let SkinInputDisplaySkin = document.querySelector('.SkinInputDisplay-skin');
+let lockedIcon40 = document.querySelector('.locked-icon_40');
+let lockedIcon30 = document.querySelector('.locked-icon_30');
+let lockedIcon25 = document.querySelector('.locked-icon_25');
+let fieldTitle_25 = document.querySelector('.fieldTitle_25');
+let fieldTitle_30 = document.querySelector('.fieldTitle_30');
+let fieldTitle_40 = document.querySelector('.fieldTitle_40');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -330,9 +352,9 @@ let LobbyDataSelections = {
         2: '10x10',
         3: '15x15',
         4: '20x20',
-        5: '25x25',
-        6: '30x30',
-        7: '40x40',
+        // 5: '25x25',
+        // 6: '30x30',
+        // 7: '40x40',
     },
     // Player clock
     2: {
@@ -365,9 +387,9 @@ let DataFields = {
     '10x10': document.querySelector('#TenxTen_Field'),
     '15x15': document.querySelector('#FifTeenxFifTeen_Field'),
     '20x20': document.querySelector('#TwentyxTwentyField'),
-    '25x25': document.querySelector('#twentyfivextwentyfive'),
-    '30x30': document.querySelector('#thirtyxthirty'),
-    '40x40': document.querySelector('#fortyxforty'),
+    // '25x25': document.querySelector('#twentyfivextwentyfive'),
+    // '30x30': document.querySelector('#thirtyxthirty'),
+    // '40x40': document.querySelector('#fortyxforty'),
 };
 
 let curr_field_ele; //html element
@@ -433,6 +455,11 @@ window.socket = socket;
     UserOfflineData();
     GameItems();
     CheckTreasure();
+    // Check if fields are unlocked or not
+    // The player can unlock these advanced fields by winning a specific amount of online matches
+    locked_25x25();
+    locked_30x30();
+    locked_40x40();
 
     KI_Card_DescriptionDisplay.textContent = GameMode[1].description;
     OnlineFriend_Card_DescriptionDisplay.textContent = GameMode[2].description;
@@ -441,7 +468,213 @@ window.socket = socket;
     checkForSettings();
 })();
 
+// create 40x40 mini-board for lobby preview
+function create40x40_LobbyPreview() {
+    fortyxforty_MiniBoard.textContent = null;
+    for (let i = 0; i < 25 * 25; i++) {
+        let child = document.createElement('div');
+        child.classList = "miniCellMini";
+
+        fortyxforty_MiniBoard.appendChild(child);
+    };
+};
+
+function create25x25_LobbyPreview() {
+    twentyfivextwentyfive_MiniBoard.textContent = null;
+    for (let i = 0; i < 15 * 15; i++) {
+        let child = document.createElement('div');
+        child.classList = "miniCellMini";
+
+        twentyfivextwentyfive_MiniBoard.appendChild(child);
+    };
+};
+
+// check if the 25x25 field is unlocked
+function locked_25x25() {
+    // The player needs 5 online wins to unlock this field
+    if (localStorage.getItem('onlineMatches-won') >= 5) {
+        // check if the player already has it unlocked or just unlocked it
+        // If it happened just, a cool animation gets played
+        if (localStorage.getItem('unlocked_25') == "true") {
+            lockedIcon25.style.display = 'none';
+            fieldTitle_25.textContent = '25x25';
+            twentyfivextwentyfive_MiniBoard.style.display = 'grid';
+            twentyfivextwentyfive_MiniBoard.style.opacity = '1';
+            create25x25_LobbyPreview();
+
+            LobbyDataSelections[1][5] = "25x25";
+            DataFields['25x25'] = document.querySelector('#twentyfivextwentyfive');
+
+            // add click event
+            document.querySelector('#twentyfivextwentyfive').addEventListener('click', e => {
+                Click_single_NxN(e);
+            });
+
+        } else if (!localStorage.getItem('unlocked_25')) {
+            localStorage.setItem('unlocked_25', "true");
+            lockedIcon25.style.animation = "unlock_field 3s ease-in-out";
+
+            LobbyDataSelections[1][5] = "25x25";
+            DataFields['25x25'] = document.querySelector('#twentyfivextwentyfive');
+
+            // after the crazy ass animation:
+            setTimeout(() => {
+                // bug fix
+                lockedIcon25.style.animation = 'unset';
+                lockedIcon25.style.display = 'none';
+
+                // normal stuff + second cool animation for field
+                fieldTitle_25.textContent = '25x25';
+                twentyfivextwentyfive_MiniBoard.style.display = 'grid';
+                twentyfivextwentyfive_MiniBoard.style.opacity = '0';
+                create25x25_LobbyPreview();
+
+                twentyfivextwentyfive_MiniBoard.style.animation = "opacity_div 2s ease-out";
+
+                setTimeout(() => {
+                    twentyfivextwentyfive_MiniBoard.style.animation = "unset";
+                    twentyfivextwentyfive_MiniBoard.style.opacity = "1";
+
+                    // add click event
+                    document.querySelector('#twentyfivextwentyfive').addEventListener('click', e => {
+                        Click_single_NxN(e);
+                    });
+                }, 2000);
+
+            }, 3000);
+        };
+
+    } else { // it is locked
+        lockedIcon25.style.display = 'block';
+        fieldTitle_25.textContent = '???';
+    };
+};
+
+// check if the 30x30 field is unlocked
+function locked_30x30() {
+    // The player needs 10 online wins to unlock this field
+    if (localStorage.getItem('onlineMatches-won') >= 10) {
+
+        if (localStorage.getItem('unlocked_30') == "true") {
+            lockedIcon30.style.display = 'none';
+            thirtyxthirty_MiniBoard.style.display = 'grid';
+            thirtyxthirty_MiniBoard.style.opacity = '1';
+            fieldTitle_30.textContent = '30x30';
+
+            LobbyDataSelections[1][6] = "30x30";
+            DataFields['30x30'] = document.querySelector('#thirtyxthirty');
+
+            // add click event
+            document.querySelector('#thirtyxthirty').addEventListener('click', e => {
+                Click_single_NxN(e);
+            });
+
+        } else if (!localStorage.getItem('unlocked_30')) {
+            localStorage.setItem('unlocked_30', "true");
+            lockedIcon30.style.animation = "unlock_field 3s ease-in-out";
+
+            LobbyDataSelections[1][6] = "30x30";
+            DataFields['30x30'] = document.querySelector('#thirtyxthirty');
+
+            // after the crazy ass animation:
+            setTimeout(() => {
+                // bug fix
+                lockedIcon30.style.animation = 'unset';
+                lockedIcon30.style.display = 'none';
+
+                // normal stuff + second cool animation for field
+                fieldTitle_30.textContent = '30x30';
+                thirtyxthirty_MiniBoard.style.display = 'grid';
+                thirtyxthirty_MiniBoard.style.opacity = '0';
+
+                thirtyxthirty_MiniBoard.style.animation = "opacity_div 2s ease-out";
+
+                setTimeout(() => {
+                    thirtyxthirty_MiniBoard.style.animation = "unset";
+                    thirtyxthirty_MiniBoard.style.opacity = "1";
+
+                    // add click event
+                    document.querySelector('#thirtyxthirty').addEventListener('click', e => {
+                        Click_single_NxN(e);
+                    });
+                }, 2000);
+
+            }, 3000);
+        };
+
+    } else { // it is locked
+        lockedIcon30.style.display = 'block';
+        thirtyxthirty_MiniBoard.style.display = 'none';
+        fieldTitle_30.textContent = '???';
+    };
+};
+
+// check if the 40x40 field is unlocked
+function locked_40x40() {
+    // The player needs 30 online wins to unlock this field
+    if (localStorage.getItem('onlineMatches-won') >= 30) {
+
+        if (localStorage.getItem('unlocked_40') == "true") {
+            thirtyxthirty_MiniBoard.style.opacity = '1';
+            lockedIcon40.style.display = 'none';
+            fieldTitle_40.textContent = '40x40';
+            fortyxforty_MiniBoard.style.display = 'grid';
+            create40x40_LobbyPreview();
+
+            LobbyDataSelections[1][7] = "40x40";
+            DataFields['40x40'] = document.querySelector('#fortyxforty');
+
+            // add click event
+            document.querySelector('#fortyxforty').addEventListener('click', e => {
+                Click_single_NxN(e);
+            });
+
+        } else if (!localStorage.getItem('unlocked_40')) {
+            localStorage.setItem('unlocked_40', "true");
+            lockedIcon40.style.animation = "unlock_field 3s ease-in-out";
+
+            LobbyDataSelections[1][7] = "40x40";
+            DataFields['40x40'] = document.querySelector('#fortyxforty');
+
+            // after the crazy ass animation:
+            setTimeout(() => {
+                // bug fix
+                lockedIcon40.style.animation = 'unset';
+                lockedIcon40.style.display = 'none';
+
+                // normal stuff + second cool animation for field
+                fieldTitle_40.textContent = '40x40';
+                fortyxforty_MiniBoard.style.display = 'grid';
+                fortyxforty_MiniBoard.style.opacity = '0';
+                create40x40_LobbyPreview();
+
+                fortyxforty_MiniBoard.style.animation = "opacity_div 2s ease-out";
+
+                setTimeout(() => {
+                    fortyxforty_MiniBoard.style.animation = "unset";
+                    fortyxforty_MiniBoard.style.opacity = "1";
+
+                    // add click event
+                    document.querySelector('#fortyxforty').addEventListener('click', e => {
+                        Click_single_NxN(e);
+                    });
+                }, 2000);
+
+            }, 3000);
+        };
+
+    } else { // it is locked
+        lockedIcon40.style.display = 'block';
+        fieldTitle_40.textContent = '???';
+    };
+};
+
 function CheckTreasure() {
+    if (localStorage.getItem('UserOpenedTreasureOnceInHisLife') != "true") {
+        treasureIsAvailible();
+        return;
+    };
+
     // user is first time in the game
     if (localStorage.getItem('treasureIsAvailible') == null && localStorage.getItem('treasureIsAvailible') == undefined) {
         treasureCountDown();
@@ -504,12 +737,39 @@ function OnlineMatchesWon() {
 function UserOfflineData() {
     let name = localStorage.getItem('UserName');
     let icon = localStorage.getItem('UserIcon');
+    let IconEleColor = localStorage.getItem('userInfoColor');
+    let IconEleClass = localStorage.getItem('userInfoClass');
+
+    if (!localStorage.getItem('current_used_skin')) {
+        localStorage.setItem('current_used_skin', 'skin-default');
+    };
+
+    if (!localStorage.getItem('userInfoColor')) {
+        localStorage.setItem('userInfoColor', 'white');
+    };
+
+    if (!localStorage.getItem('userInfoClass')) {
+        localStorage.setItem('userInfoClass', "empty");
+    };
 
     if (name && icon) {
         userInfoName.textContent = name;
-        userInfoIcon.textContent = icon;
         userInfoName.setAttribute('contenteditable', false)
         userInfoIcon.setAttribute('contenteditable', false)
+
+        if (IconEleColor) {
+            userInfoIcon.style.color = IconEleColor;
+        };
+        if (IconEleClass) {
+            if (IconEleClass != 'empty') {
+                let classArray = IconEleClass.split(" ");
+                for (let i = 0; i < classArray.length; i++) {
+                    userInfoIcon.classList.add(classArray[i]);
+                };
+            } else if (IconEleClass == "empty") {
+                userInfoIcon.textContent = icon;
+            };
+        };
     };
 };
 
@@ -614,6 +874,11 @@ FifTeenxFifTeen_Field.addEventListener('click', () => { playBtn_Audio(); });
 TenxTen_Field.addEventListener('click', () => { playBtn_Audio(); });
 TwentyxTwentyField.addEventListener('click', () => { playBtn_Audio(); });
 
+document.querySelector('#thirtyxthirty').addEventListener('click', () => { playBtn_Audio(); });
+document.querySelector('#twentyfivextwentyfive').addEventListener('click', () => { playBtn_Audio(); });
+document.querySelector('#random_Field').addEventListener('click', () => { playBtn_Audio(); });
+document.querySelector('#fortyxforty').addEventListener('click', () => { playBtn_Audio(); });
+
 //Ki Mode
 ForxFor_Field.addEventListener('click', () => { playBtn_Audio(); });
 ThreexThree_Field.addEventListener('click', () => { playBtn_Audio(); });
@@ -660,73 +925,175 @@ headerSettBtn.addEventListener('click', () => {
 function EnterGame() {
     NxN_field.forEach(field => {
         field.addEventListener('click', f => {
-            SetClockList.style.display = 'flex';
-            SetGameModeList.style.display = 'flex';
+            // different functions for different fields
+            if (f.target.getAttribute('field') == "25x25" && localStorage.getItem('onlineMatches-won') < 5) {
+                click_locked_25();
 
-            // warn text for online game mode
-            OnlineGame_NameWarnText[0].style.display = 'none';
-            OnlineGame_NameWarnText[0].style.display = 'none';
+            } else if (f.target.getAttribute('field') == "30x30" && localStorage.getItem('onlineMatches-won') < 10) {
+                click_locked_30();
 
-            if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
+            } else if (f.target.getAttribute('field') == "40x40" && localStorage.getItem('onlineMatches-won') < 30) {
+                click_locked_40();
 
-                SetPlayerNamesPopUp.style.display = 'flex';
-                DarkLayer.style.display = 'block';
-                Player2_NameInput.style.display = 'block';
-                Player2_IconInput.style.display = 'block';
-
-                curr_name1 = null;
-                curr_name2 = null;
-                curr_field_ele = f.target;
-
-                // Initialize Inputs from pop up
-                DisableGameModeItems();
-                DisablePlayerClockItems();
-                Player1_NameInput.value = "";
-                Player2_NameInput.value = "";
-                Player1_IconInput.value = "X";
-                Player2_IconInput.value = "O";
-            };
-
-            if (curr_mode == GameMode[1].opponent) { // KI Mode
-
-                YourNamePopUp_KI_Mode.style.display = 'flex';
-                DarkLayer.style.display = 'block';
-                YourName_Input_KI_mode.value = "";
-                Your_IconInput.value = "";
-
-                curr_name1 = null;
-                curr_name2 = null;
-                curr_field_ele = f.target;
-
-                // default data
-                if (localStorage.getItem('UserName')) {
-                    YourName_Input_KI_mode.value = localStorage.getItem('UserName');
-                    Your_IconInput.value = localStorage.getItem('UserIcon');
-                };
-            };
-
-            if (curr_mode == GameMode[2].opponent) { // Online Game mode
-
-                curr_field_ele = f.target;
-
-                // Initialize Inputs from pop up
-                DarkLayer.style.display = 'block';
-                OnlineGame_iniPopUp.style.display = 'flex';
-                Player2_NameInput.style.display = 'none';
-                Player2_IconInput.style.display = 'none';
-                Player1_NameInput.style.height = '50%';
-                Player1_IconInput.style.height = '50%';
-
-                // default data
-                if (localStorage.getItem('UserName')) {
-                    Player1_NameInput.value = localStorage.getItem('UserName');
-                    Player1_IconInput.value = localStorage.getItem('UserIcon');
-                };
+            } else {
+                Click_NxN(f);
             };
         });
     });
 };
 EnterGame();
+
+function click_locked_25() {
+    locked_25x25();
+    alertPopUp.style.display = "flex";
+    DarkLayer.style.display = "block";
+    AlertText.textContent = "You need to win 5 online matches to unlock this field";
+};
+
+function click_locked_30() {
+    locked_30x30();
+    DarkLayer.style.display = "block";
+    alertPopUp.style.display = "flex";
+    AlertText.textContent = "You need to win 10 online matches to unlock this field";
+};
+
+function click_locked_40() {
+    locked_40x40();
+    DarkLayer.style.display = "block";
+    alertPopUp.style.display = "flex";
+    AlertText.textContent = "You need to win 30 online matches to unlock this field";
+};
+
+// User click a NxN field button
+function Click_NxN(f) {
+    SetClockList.style.display = 'flex';
+    SetGameModeList.style.display = 'flex';
+    Player1_IconInput.style.color = 'black';
+
+    // warn text for online game mode
+    OnlineGame_NameWarnText[0].style.display = 'none';
+    OnlineGame_NameWarnText[0].style.display = 'none';
+
+    // for skins in online mode
+    SkinInputDisplay.style.display = 'none';
+
+    if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
+
+        SetPlayerNamesPopUp.style.display = 'flex';
+        DarkLayer.style.display = 'block';
+        Player2_NameInput.style.display = 'block';
+        Player2_IconInput.style.display = 'block';
+        Player1_IconInput.style.display = 'block';
+
+        curr_name1 = null;
+        curr_name2 = null;
+        curr_field_ele = f.target;
+
+        // Initialize Inputs from pop up
+        DisableGameModeItems();
+        DisablePlayerClockItems();
+        Player1_NameInput.value = "";
+        Player2_NameInput.value = "";
+        Player1_IconInput.value = "X";
+        Player2_IconInput.value = "O";
+    };
+
+    if (curr_mode == GameMode[1].opponent) { // KI Mode
+
+        YourNamePopUp_KI_Mode.style.display = 'flex';
+        DarkLayer.style.display = 'block';
+        YourName_Input_KI_mode.value = "";
+        Your_IconInput.value = "";
+        Your_IconInput.style.color = localStorage.getItem('userInfoColor');
+        curr_name1 = null;
+        curr_name2 = null;
+        curr_field_ele = f.target;
+
+        // default data
+        if (localStorage.getItem('UserName')) {
+            YourName_Input_KI_mode.value = localStorage.getItem('UserName');
+            Your_IconInput.value = localStorage.getItem('UserIcon');
+        };
+    };
+
+    if (curr_mode == GameMode[2].opponent) { // Online Game mode
+
+        if (f.target.getAttribute('field') == "25x25" && localStorage.getItem('onlineMatches-won') >= 5 ||
+            f.target.getAttribute('field') == "30x30" && localStorage.getItem('onlineMatches-won') >= 10 ||
+            f.target.getAttribute('field') == "40x40" && localStorage.getItem('onlineMatches-won') >= 30) {
+
+            curr_field_ele = f.target;
+
+            // Initialize Inputs from pop up
+            DarkLayer.style.display = 'block';
+            OnlineGame_iniPopUp.style.display = 'flex';
+            Player2_NameInput.style.display = 'none';
+            Player2_IconInput.style.display = 'none';
+            Player1_NameInput.style.height = '50%';
+            Player1_IconInput.style.height = '50%';
+
+            // default data
+            if (localStorage.getItem('UserName')) {
+                Player1_NameInput.value = localStorage.getItem('UserName');
+                Player1_IconInput.value = localStorage.getItem('UserIcon');
+            };
+        };
+    };
+};
+
+// When the user unlocks a specific field, the click event for this field needs to be unlocked
+function Click_single_NxN(e) {
+    SetClockList.style.display = 'flex';
+    SetGameModeList.style.display = 'flex';
+    Player1_IconInput.style.color = 'black';
+
+    // warn text for online game mode
+    OnlineGame_NameWarnText[0].style.display = 'none';
+    OnlineGame_NameWarnText[0].style.display = 'none';
+
+    // for skins in online mode
+    SkinInputDisplay.style.display = 'none';
+
+    if (curr_mode == GameMode[2].opponent) { // Online Game mode
+
+        curr_field_ele = e.target;
+
+        // Initialize Inputs from pop up
+        DarkLayer.style.display = 'block';
+        OnlineGame_iniPopUp.style.display = 'flex';
+        Player2_NameInput.style.display = 'none';
+        Player2_IconInput.style.display = 'none';
+        Player1_NameInput.style.height = '50%';
+        Player1_IconInput.style.height = '50%';
+
+        // default data
+        if (localStorage.getItem('UserName')) {
+            Player1_NameInput.value = localStorage.getItem('UserName');
+            Player1_IconInput.value = localStorage.getItem('UserIcon');
+        };
+    };
+
+    if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
+
+        SetPlayerNamesPopUp.style.display = 'flex';
+        DarkLayer.style.display = 'block';
+        Player2_NameInput.style.display = 'block';
+        Player2_IconInput.style.display = 'block';
+        Player1_IconInput.style.display = 'block';
+
+        curr_name1 = null;
+        curr_name2 = null;
+        curr_field_ele = e.target;
+
+        // Initialize Inputs from pop up
+        DisableGameModeItems();
+        DisablePlayerClockItems();
+        Player1_NameInput.value = "";
+        Player2_NameInput.value = "";
+        Player1_IconInput.value = "X";
+        Player2_IconInput.value = "O";
+    };
+};
 
 // From the Confirm Button of the "create game button" in the SetUpGameData Window
 // User set all the game data for the game and his own player data. The confirm button calls this function
@@ -1232,11 +1599,22 @@ function setUpOnlineGame(from) {
         SetGameData_Label[1].style.display = 'block';
         OnlineGame_NameWarnText[0].style.display = 'none';
         OnlineGame_NameWarnText[0].style.display = 'none';
+        SkinInputDisplay.style.display = 'none';
+        Player1_IconInput.style.display = 'block';
 
         // default data
+        Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
+
         if (localStorage.getItem('UserName')) {
             Player1_NameInput.value = localStorage.getItem('UserName');
             Player1_IconInput.value = localStorage.getItem('UserIcon');
+        };
+
+        if (localStorage.getItem('userInfoClass') != "empty") {
+            Player1_IconInput.style.display = 'none';
+            SkinInputDisplay.style.display = 'block';
+
+            SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
         };
 
     } else if (from == 'enter') {
@@ -1267,6 +1645,7 @@ friendLeft_OK_btn.addEventListener('click', () => {
 let isInAdvancedGameModes = false;
 goToAdvancedFields.addEventListener('click', () => {
 
+    // If the player is in the advanced game modes
     if (isInAdvancedGameModes) {
         goToAdvancedFields.classList = "fa-solid fa-caret-down";
         secondTierModes.style.marginBottom = "0";
@@ -1274,6 +1653,7 @@ goToAdvancedFields.addEventListener('click', () => {
         bossModeIsActive = false;
         playGameTheme();
 
+        // If not
     } else {
         goToAdvancedFields.classList = "fa-solid fa-caret-up";
         secondTierModes.style.marginBottom = "var(--width-for-goToAdvancedModes-btn)";
@@ -1321,6 +1701,11 @@ animatedPopConBtn.addEventListener('click', () => {
         animatedPopMain.querySelector('.newText').remove();
         animatedPopUp.style.display = 'none';
         ContBtnCount = 0;
+
+        // Check if player unlocked one of these fields
+        locked_25x25();
+        locked_30x30();
+        locked_40x40();
     };
 });
 
@@ -1331,7 +1716,10 @@ headerUserBtn.addEventListener('click', () => {
 
     if (localStorage.getItem('UserName')) {
         userInfoName.textContent = localStorage.getItem('UserName');
-        userInfoIcon.textContent = localStorage.getItem('UserIcon');
+
+        if (localStorage.getItem('userInfoClass') == "empty") {
+            userInfoIcon.textContent = localStorage.getItem('UserIcon');
+        };
 
         CreateOnlineProfileBtn.style.display = 'none';
         UserInfoCont.style.display = 'flex';
@@ -1346,8 +1734,26 @@ headerUserBtn.addEventListener('click', () => {
 });
 
 userInfoCloseBtn.addEventListener('click', () => {
-    DarkLayer.style.display = 'none';
-    userInfoPopUp.style.display = 'none';
+    if (userInfoName.textContent != "" && userInfoIcon.textContent != "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "") {
+        DarkLayer.style.display = 'none';
+        userInfoPopUp.style.display = 'none';
+        userInfoName.setAttribute('contenteditable', false);
+        userInfoIcon.setAttribute('contenteditable', false);
+        localStorage.setItem('UserIcon', userInfoIcon.textContent);
+        localStorage.setItem('UserName', userInfoName.textContent);
+    };
+});
+
+editUserProfileBtn.addEventListener('click', () => {
+    userInfoName.setAttribute('contenteditable', true);
+    userInfoIcon.setAttribute('contenteditable', true);
+
+    if (localStorage.getItem('userInfoClass') != "empty") {
+        userInfoIcon.classList.remove(userInfoIcon.classList[userInfoIcon.classList.length - 1]);
+        userInfoIcon.classList.remove(userInfoIcon.classList[userInfoIcon.classList.length - 1]);
+    };
+
+    userInfoName.focus();
 });
 
 CreateOnlineProfileBtn.addEventListener('click', () => {
@@ -1371,10 +1777,6 @@ function submittedOfflineData() {
     userInfoPopUp.style.display = 'none';
 };
 
-storeIcon.addEventListener('click', () => {
-
-});
-
 treasureIcon.addEventListener('click', () => {
     // check if treasure can be opened
     if (localStorage.getItem('treasureIsAvailible') == "true") {
@@ -1396,9 +1798,9 @@ treasurePopUpcloseBtn.addEventListener('click', () => {
 // 24 hour countdown for treasure
 // every 24 hours the user can open the treasure in the lobby
 function treasureCountDown() {
-    let Nhour = 0;
-    let Nminutes = 0;
-    let Nseconds = 5;
+    let Nhour = 23;
+    let Nminutes = 59;
+    let Nseconds = 59;
 
     TreasureCountdown = setInterval(() => {
         (init = () => {
@@ -1497,6 +1899,7 @@ function openTreasure() {
         }, 50);
     };
 
+    localStorage.setItem('UserOpenedTreasureOnceInHisLife', true);
     treasureCountDown();
 };
 

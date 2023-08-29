@@ -10,6 +10,7 @@
     --font-size-for-40x40-field: 11.5px;
     --floating-gem-range: -152vh;
     --floating-x-range: -142vh;
+    --locked-field: #2e2e2e;
 }
 
 .dark-mode {
@@ -18,6 +19,7 @@
     --bg-gradient2: #32383f;
     --bg-app-color: #191c20;
     --bg-app-color2: #121518;
+    --locked-field: rgb(255, 255, 255);
 }
 
 body,
@@ -705,6 +707,27 @@ ul {
     position: relative;
 }
 
+.locked-icon_25 {
+    color: var(--locked-field);
+    position: absolute;
+    font-size: 120px;
+    display: none;
+}
+
+.locked-icon_30 {
+    color: var(--locked-field);
+    position: absolute;
+    display: none;
+    font-size: 120px;
+}
+
+.locked-icon_40 {
+    color: var(--locked-field);
+    display: none;
+    position: absolute;
+    font-size: 120px;
+}
+
 .GameMode-fields-footer {
     width: 100%;
     height: 0;
@@ -881,6 +904,7 @@ ul {
     width: 0.45vh;
     height: 0.45vh;
     font-size: 4px;
+    color: var(--locked-field);
 }
 
 #thirtyxthirty_MiniBoard {
@@ -1201,7 +1225,7 @@ ul {
     border-radius: 15px;
     padding: 0.25em 1em 0.25em 1em;
     outline: none;
-    border: 2px solid;
+    border: 2px solid black;
     font-size: 15px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -1231,7 +1255,7 @@ ul {
     border-radius: 15px;
     padding: 0.25em 1em 0.25em 1em;
     outline: none;
-    border: 2px solid;
+    border: 2px solid black;
     font-size: 15px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-transform: uppercase;
@@ -1425,6 +1449,13 @@ ul {
     font-size: 16px;
     font-weight: 500;
     margin: 0 0.75em 0.5em 0;
+}
+
+
+/* skins */
+
+.SkinInputDisplay {
+    font-size: 22px;
 }
 
 
@@ -2112,7 +2143,7 @@ label h3 {
     border-radius: 30px;
     border: 2px solid var(--font-color);
     width: 25%;
-    height: 30%;
+    height: 25%;
     background-color: var(--bg-app-color);
     justify-content: center;
     align-items: center;
@@ -2160,6 +2191,18 @@ label h3 {
 }
 
 #userInfo-closeBtn:hover {
+    color: var(--hover-item);
+    transition: all 0.1s ease-in-out;
+}
+
+#editUserProfileBtn {
+    font-size: 18px;
+    margin: 0 0.3em 0 0;
+    cursor: pointer;
+    transition: all 0.1s ease-out;
+}
+
+#editUserProfileBtn:hover {
     color: var(--hover-item);
     transition: all 0.1s ease-in-out;
 }
@@ -2268,7 +2311,280 @@ label h3 {
 }
 
 
+/* skin shop */
+
+.skin-shop {
+    position: absolute;
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 70%;
+    height: 60%;
+    border: 2px solid var(--font-color);
+    color: var(--font-color);
+    border-radius: 40px;
+    background-color: var(--bg-app-color);
+    z-index: 10001;
+    display: none;
+    flex-direction: column;
+}
+
+.skin-shop-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 8%;
+    border-bottom: 2px solid var(--font-color);
+}
+
+.skinShopCloseBtn {
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+    font-size: 20px;
+    margin: 0 0.85em 0 0;
+}
+
+.skinShopCloseBtn:hover {
+    transition: all 0.1s ease-in;
+    color: var(--hover-item);
+}
+
+.skin-shop-main {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.skinshop-main-innerWrapper {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.skin-shop-skin-preview {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-direction: column;
+}
+
+.skin-footer {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+}
+
+.skin-footer-left {
+    display: flex;
+    flex-direction: row;
+}
+
+.buy-skin-button {
+    display: none;
+    padding: 1px 6px 1px 6px;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 3px solid var(--font-color);
+    outline: none;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.use-skin-button {
+    display: none;
+    padding: 1px 6px 1px 6px;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 3px solid var(--font-color);
+    outline: none;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.use-skin-button:hover {
+    border: 3px solid var(--hover-item);
+    color: var(--hover-item);
+    transition: all 0.1s ease-in-out;
+}
+
+.buy-skin-button:hover {
+    border: 3px solid var(--hover-item);
+    color: var(--hover-item);
+    transition: all 0.1s ease-in-out;
+}
+
+.skinBigItem {
+    color: var(--font-color);
+    margin-bottom: 0.5em;
+    display: flex;
+    font-size: 90px;
+    position: absolute;
+    animation: floating-el 3s infinite ease-in-out;
+}
+
+.skin-shop-skin-selection {
+    border-top: 2px solid var(--font-color);
+    border-bottom: 2px solid var(--font-color);
+    width: 100%;
+    height: 40%;
+    padding-top: 15px;
+    padding-bottom: 25px;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
+
+.skinShop-SkinColors {
+    margin-top: 10px;
+    font-size: 35px;
+    display: flex;
+    flex-direction: row;
+    gap: 1.25em;
+}
+
+.skinShop-AdvancedSkins {
+    margin-top: 10px;
+    font-size: 35px;
+    display: flex;
+    flex-direction: row;
+    gap: 1.5em;
+}
+
+.BuySkinError {
+    color: red;
+    font-size: 22px;
+    font-weight: 500;
+    display: none;
+    transition: none;
+}
+
+.skin-to-select {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.skin-blue {
+    color: rgb(30, 77, 138);
+}
+
+.skin-green {
+    color: rgb(38, 138, 38);
+}
+
+.skin-purple {
+    color: rgb(128, 14, 128);
+}
+
+.skin-lightBlue {
+    color: rgb(133, 190, 209);
+}
+
+.skin-lightGreen {
+    color: rgb(132, 221, 132);
+}
+
+.skin-yellow {
+    color: rgb(216, 216, 46);
+}
+
+.skin-teal {
+    color: teal;
+}
+
+.skin-red {
+    color: red;
+}
+
+.skin-orange {
+    color: orangered;
+}
+
+.skin-pink {
+    color: rgb(228, 163, 174);
+}
+
+
+/* alert pop up */
+
+.alert-pop-up {
+    position: absolute;
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 30%;
+    height: 20%;
+    border: 2px solid var(--font-color);
+    color: var(--font-color);
+    border-radius: 40px;
+    background-color: var(--bg-app-color);
+    z-index: 10001;
+    display: none;
+    flex-direction: column;
+}
+
+#closeAlertPopUpBtn {
+    cursor: pointer;
+    transition: all 0.1s ease-in;
+    font-size: 19px;
+    margin: 0 1.1em 0 0;
+}
+
+#closeAlertPopUpBtn:hover {
+    transition: all 0.1s ease-in;
+    color: var(--hover-item);
+}
+
+.alert-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+    height: 18%;
+    border-bottom: 2px solid var(--font-color);
+}
+
+.alert-text-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    width: 100%;
+    height: 82%;
+}
+
+
 /* Animations */
+
+@keyframes floating-el {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
 
 @keyframes gem {
     from {
@@ -2392,6 +2708,28 @@ label h3 {
     }
 }
 
+@keyframes unlock_field {
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+    20% {
+        transform: translateY(-5px) rotate(5deg);
+    }
+    40% {
+        transform: translateY(5px) rotate(-5deg);
+    }
+    60% {
+        transform: translateY(-3px) rotate(3deg);
+    }
+    80% {
+        transform: translateY(3px) rotate(-3deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(0);
+        opacity: 0;
+    }
+}
+
 
 /* Mediq Querys */
 
@@ -2415,5 +2753,11 @@ label h3 {
         --font-size-for-40x40-field: 9px;
         --floating-x-range: -129.5vh;
         --floating-gem-range: -142.5vh;
+    }
+    .skinShop-SkinColors {
+        gap: 1em;
+    }
+    .skinShop-AdvancedSkins {
+        gap: 1em;
     }
 }

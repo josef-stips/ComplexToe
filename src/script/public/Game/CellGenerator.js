@@ -215,20 +215,3 @@ function Activate_InteractiveBlocker() {
         };
     };
 };
-
-// create 40x40 mini-board for lobby preview
-(function create40x40_LobbyPreview() {
-    for (let i = 0; i < 25 * 25; i++) {
-        let child = document.createElement('div');
-        child.classList = "miniCellMini";
-
-        fortyxforty_MiniBoard.appendChild(child);
-    };
-
-    for (let i = 0; i < 15 * 15; i++) {
-        let child = document.createElement('div');
-        child.classList = "miniCellMini";
-
-        twentyfivextwentyfive_MiniBoard.appendChild(child);
-    };
-})();

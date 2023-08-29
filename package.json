@@ -6,7 +6,7 @@
     "main": "src/index.js",
     "icon": "./src/script/public/assets/images/icons/win/icon.ico",
     "scripts": {
-        "start": "electron .",
+        "start": "electron . --multi-instance",
         "package": "electron-forge package",
         "make": "electron-forge make",
         "publish": "electron-forge publish",
