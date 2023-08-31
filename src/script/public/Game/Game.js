@@ -127,6 +127,11 @@ function initializeGame(field, onlineGame, OnlineGameDataArray) {
     } else {
         initializeDocument(field, fieldIndex, fieldTitle, false);
     };
+
+    // if in 40x40 field, generate its properties: eye
+    if (Fields[fieldIndex].size == "40x40") {
+        eye_40.style.display = 'flex';
+    };
 };
 
 function initializeDocument(field, fieldIndex, fieldTitle, onlineMode) {

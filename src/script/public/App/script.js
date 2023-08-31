@@ -136,6 +136,7 @@ let closeAlertPopUpBtn = document.querySelector('#closeAlertPopUpBtn');
 let AlertText = document.querySelector('.alert-text-span');
 let alertPopUp = document.querySelector('.alert-pop-up');
 let editUserProfileBtn = document.querySelector('#editUserProfileBtn');
+let eye_40 = document.querySelector('.eye');
 
 let Fieldsize_NegativeSwitcher = document.querySelector('#Fieldsize_NegativeSwitcher');
 let Fieldsize_PositiveSwitcher = document.querySelector('#Fieldsize_PositiveSwitcher');
@@ -319,7 +320,7 @@ let Fields = {
         "size": "25x25",
         "blocks": "625",
         "xyCellAmount": "25",
-        "icon": "fa-solid fa-skull",
+        "icon": "fa-solid fa-hamsa",
         "averagePlayTime": "30 minutes",
         "theme": ".../assets/Maps/Ground_destroyer.mp3",
         "theme_name": Ground_destroyer_Theme,
@@ -329,7 +330,7 @@ let Fields = {
         "size": "30x30",
         "blocks": "900",
         "xyCellAmount": "30",
-        "icon": "fa-solid fa-chess-knight",
+        "icon": "fa-solid fa-horse-head",
         "averagePlayTime": "2+ hours",
         "theme": ".../assets/Maps/Impossible_survival.mp3",
         "theme_name": Impossible_survival_Theme,
@@ -339,7 +340,7 @@ let Fields = {
         "size": "40x40",
         "blocks": "1600",
         "xyCellAmount": "40",
-        "icon": "fa-solid fa-skull",
+        "icon": "fa-solid fa-eye",
         "averagePlayTime": "5+ hours",
         "theme": ".../assets/Maps/Merciful_slaughter.mp3",
         "theme_name": Merciful_slaughter_Theme,
@@ -805,8 +806,30 @@ Allbtns.forEach(btn => {
         playBtn_Audio();
 
         // animation
-        gameModeCards_Div.style.display = 'none';
-        gameModeFields_Div.style.display = 'flex';
+        DarkLayer.style.backgroundColor = 'black';
+        DarkLayer.style.display = 'block';
+        DarkLayer.style.transition = 'opacity 0.1s ease-in';
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.opacity = '1';
+            setTimeout(() => {
+                gameModeCards_Div.style.display = 'none';
+                gameModeFields_Div.style.display = 'flex';
+            }, 100);
+        }, 100);
+
+        setTimeout(() => {
+            DarkLayer.style.opacity = '0';
+
+            setTimeout(() => {
+                DarkLayer.style.display = 'none';
+                DarkLayer.style.transition = 'none';
+                DarkLayer.style.opacity = '1';
+                DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+            }, 400);
+        }, 400);
+
     });
 });
 
@@ -818,9 +841,30 @@ fieldsArea_back_btn.addEventListener('click', () => {
     playBtn_Audio_2();
 
     // animation
-    gameModeCards_Div.style.display = 'flex';
-    gameModeFields_Div.style.display = 'none';
-    lobbyHeader.style.borderBottom = '3px solid';
+    DarkLayer.style.backgroundColor = 'black';
+    DarkLayer.style.display = 'block';
+    DarkLayer.style.transition = 'opacity 0.1s ease-in';
+    DarkLayer.style.opacity = '0';
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '1';
+        setTimeout(() => {
+            gameModeCards_Div.style.display = 'flex';
+            gameModeFields_Div.style.display = 'none';
+            lobbyHeader.style.borderBottom = '3px solid';
+        }, 100);
+    }, 100);
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.display = 'none';
+            DarkLayer.style.transition = 'none';
+            DarkLayer.style.opacity = '1';
+            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+        }, 400);
+    }, 400);
 });
 
 // Game Mode buttons 

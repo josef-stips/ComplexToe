@@ -158,9 +158,30 @@ function UserleavesGame() {
     // sound
     playBtn_Audio_2()
 
-    GameField.style.display = 'none';
-    gameModeFields_Div.style.display = 'flex';
-    // lobbyHeader.style.display = 'flex';
+    DarkLayer.style.backgroundColor = 'black';
+    DarkLayer.style.display = 'block';
+    DarkLayer.style.transition = 'opacity 0.1s ease-in';
+    DarkLayer.style.opacity = '0';
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '1';
+        setTimeout(() => {
+            GameField.style.display = 'none';
+            gameModeFields_Div.style.display = 'flex';
+            // lobbyHeader.style.display = 'flex';
+        }, 100);
+    }, 100);
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.display = 'none';
+            DarkLayer.style.transition = 'none';
+            DarkLayer.style.opacity = '1';
+            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+        }, 400);
+    }, 400);
 
     clearInterval(firstClock);
     clearInterval(secondClock);
