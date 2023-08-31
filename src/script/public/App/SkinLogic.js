@@ -413,6 +413,12 @@ function buySkin(user_currency_amount, currency) {
 };
 
 useSkinBtn.addEventListener('click', () => {
+    skinToSelect.forEach(skin => {
+        if (skin.getAttribute('name') == localStorage.getItem('current_used_skin')) {
+            skin.style.borderBottom = "4px solid green";
+        };
+    });
+
     current_used_skin = selected_skin.name;
     localStorage.setItem('current_used_skin', current_used_skin);
     skinPriceDisplay.textContent = 'This is your current skin';
@@ -420,6 +426,12 @@ useSkinBtn.addEventListener('click', () => {
     switch_skins(current_used_skin, localStorage.getItem('UserIcon'));
 
     useSkinBtn.style.display = 'none';
+
+    skinToSelect.forEach(skin => {
+        if (skin.getAttribute('name') == current_used_skin) {
+            skin.style.borderBottom = "4px solid royalblue";
+        };
+    });
 });
 
 // alert pop up
