@@ -1071,7 +1071,9 @@ function Click_NxN(f) {
 
         if (f.target.getAttribute('field') == "25x25" && localStorage.getItem('onlineMatches-won') >= 5 ||
             f.target.getAttribute('field') == "30x30" && localStorage.getItem('onlineMatches-won') >= 10 ||
-            f.target.getAttribute('field') == "40x40" && localStorage.getItem('onlineMatches-won') >= 30) {
+            f.target.getAttribute('field') == "40x40" && localStorage.getItem('onlineMatches-won') >= 30 ||
+            f.target.getAttribute('field') == "20x20" || f.target.getAttribute('field') == "15x15" || f.target.getAttribute('field') == "10x10" ||
+            f.target.getAttribute('field') == "5x5") {
 
             curr_field_ele = f.target;
 
@@ -1770,6 +1772,11 @@ headerUserBtn.addEventListener('click', () => {
 
         if (localStorage.getItem('userInfoClass') == "empty") {
             userInfoIcon.textContent = localStorage.getItem('UserIcon');
+            userInfoIcon.className = 'userInfo-Icon userInfoEditable';
+
+        } else {
+            userInfoIcon.textContent = "";
+            userInfoIcon.className = 'userInfo-Icon userInfoEditable fa-solid fa-' + localStorage.getItem('current_used_skin');
         };
 
         CreateOnlineProfileBtn.style.display = 'none';
@@ -1785,12 +1792,14 @@ headerUserBtn.addEventListener('click', () => {
 });
 
 userInfoCloseBtn.addEventListener('click', () => {
-    if (userInfoName.textContent != "" && userInfoIcon.textContent != "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "") {
+    if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "") {
         DarkLayer.style.display = 'none';
         userInfoPopUp.style.display = 'none';
         userInfoName.setAttribute('contenteditable', false);
         userInfoIcon.setAttribute('contenteditable', false);
-        localStorage.setItem('UserIcon', userInfoIcon.textContent);
+        if (userInfoIcon.textContent !== "") {
+            localStorage.setItem('UserIcon', userInfoIcon.textContent);
+        };
         localStorage.setItem('UserName', userInfoName.textContent);
     };
 });

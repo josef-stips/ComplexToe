@@ -195,7 +195,7 @@ function colorSkin(UserIcon, iColor, iClass) {
         for (let i = 0; i < classArray.length; i++) {
             userInfoIcon.classList.add(classArray[i]);
         };
-        userInfoIcon.textContent = null;
+        userInfoIcon.textContent = "";
 
     } else {
         userInfoIcon.textContent = UserIcon;

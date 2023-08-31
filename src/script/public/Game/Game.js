@@ -1053,6 +1053,9 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
                 if (personal_GameData.role == 'admin') {
                     setNew_SkillPoints(10);
                 };
+                if (personal_GameData.role == 'user') {
+                    minus_SkillPoints(5);
+                };
             };
             if (curr_mode == GameMode[1].opponent) { // KI 
                 setNew_SkillPoints(1);
@@ -1071,6 +1074,10 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
                 // only the user which is the winner in this case, earns skill points
                 if (personal_GameData.role == 'user') {
                     setNew_SkillPoints(10);
+                };
+
+                if (personal_GameData.role == 'admin') {
+                    minus_SkillPoints(5);
                 };
             };
             if (curr_mode == GameMode[1].opponent) { // KI 
@@ -1125,6 +1132,53 @@ function setNew_SkillPoints(plus) {
         plusELO();
 
         if (i >= plus) {
+            clearInterval(set);
+            i = 0
+        };
+    }, 200);
+};
+
+// Other player who loses gets -5 skill points
+// This function is only availible in the online mode and KI mode because it makes only sense there
+function minus_SkillPoints(minus) {
+    let old_Elo = parseInt(localStorage.getItem('ELO'));
+    let ELO_point = 0;
+
+    // extra animation addition
+    ELO_Points_AddIcon.style.transition = 'none';
+    ELO_Points_AddIcon.style.opacity = '1';
+    ELO_Points_AddIcon.textContent = `-${minus}`;
+    setTimeout(() => {
+        ELO_Points_AddIcon.style.transition = 'all 1.35s ease-out';
+        ELO_Points_AddIcon.style.opacity = '0';
+    }, 700);
+
+    // skill points N + additional_N
+    let i = 0
+    let set = setInterval(() => {
+        i++;
+
+        // animation
+        ELO_Points_display.classList.add('ELO_ani');
+
+        // sound
+        btn_sound2.volume = 0.075;
+        btn_sound2.play();
+
+        // logic
+        ELO_point--;
+        localStorage.setItem('ELO', `${old_Elo + ELO_point}`);
+        ELO_Points_display.textContent = localStorage.getItem('ELO');
+
+        // animation
+        function plusELO() {
+            setTimeout(() => {
+                ELO_Points_display.classList.remove('ELO_ani');
+            }, 150);
+        };
+        plusELO();
+
+        if (i >= minus) {
             clearInterval(set);
             i = 0
         };
