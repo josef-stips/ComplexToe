@@ -448,7 +448,7 @@ let personal_GameData = {
     role: 'user' // admin ? user
 };
 
-let socket = io('https://complextoeserveradmin.onrender.com', {
+let socket = io('http://localhost:3000', {
     // path: "https://complextoeserveradmin.onrender.com",
     // transports: ['websocket'],
 });

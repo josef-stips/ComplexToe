@@ -131,6 +131,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray) {
     // if in 40x40 field, generate its properties: eye
     if (Fields[fieldIndex].size == "40x40") {
         eye_40.style.display = 'flex';
+
+    } else {
+        eye_40.style.display = 'none';
     };
 };
 
@@ -286,14 +289,14 @@ function cellCicked() {
             // Check if the first player (admin) can set and the player that clicked it the admin
             // if not, nothing must happen
             if (player1_can_set && personal_GameData.role == 'admin') {
-                socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set]);
+                socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set, localStorage.getItem('userInfoColor')]);
 
             }; // the second player tries to click, but he must wait for his opponent;
 
             // Check if the second player (user) can set and the player that clicked it the user
             // if not, nothing must happen
             if (!player1_can_set && personal_GameData.role == 'user') {
-                socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set]);
+                socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set, localStorage.getItem('userInfoColor')]);
 
             }; // the first player tries to click, but he must wait for his opponent
 
@@ -351,10 +354,9 @@ socket.on('player_clicked', Goptions => {
 
         cells[i].textContent = element;
 
-        if (element != '') {
-            if (localStorage.getItem('userInfoColor')) {
-                cells[i].style.color = localStorage.getItem('userInfoColor');
-            };
+        if (element != '' && !cells[i].classList.contains('colored-cell')) {
+            cells[i].style.color = Goptions[2];
+            cells[i].classList.add('colored-cell');
         };
     };
 

@@ -156,32 +156,40 @@ leaveGame_btn.addEventListener('click', UserleavesGame);
 // User leaves game on leave game btn event
 function UserleavesGame() {
     // sound
-    playBtn_Audio_2()
+    playBtn_Audio_2();
 
-    DarkLayer.style.backgroundColor = 'black';
-    DarkLayer.style.display = 'block';
-    DarkLayer.style.transition = 'opacity 0.1s ease-in';
-    DarkLayer.style.opacity = '0';
+    if (personal_GameData.role == 'admin') {
+        GameField.style.display = 'none';
+        gameModeFields_Div.style.display = 'flex';
+        // lobbyHeader.style.display = 'flex';
 
-    setTimeout(() => {
-        DarkLayer.style.opacity = '1';
-        setTimeout(() => {
-            GameField.style.display = 'none';
-            gameModeFields_Div.style.display = 'flex';
-            // lobbyHeader.style.display = 'flex';
-        }, 100);
-    }, 100);
+    } else {
 
-    setTimeout(() => {
+        DarkLayer.style.backgroundColor = 'black';
+        DarkLayer.style.display = 'block';
+        DarkLayer.style.transition = 'opacity 0.1s ease-in';
         DarkLayer.style.opacity = '0';
 
         setTimeout(() => {
-            DarkLayer.style.display = 'none';
-            DarkLayer.style.transition = 'none';
             DarkLayer.style.opacity = '1';
-            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+            setTimeout(() => {
+                GameField.style.display = 'none';
+                gameModeFields_Div.style.display = 'flex';
+                // lobbyHeader.style.display = 'flex';
+            }, 100);
+        }, 100);
+
+        setTimeout(() => {
+            DarkLayer.style.opacity = '0';
+
+            setTimeout(() => {
+                DarkLayer.style.display = 'none';
+                DarkLayer.style.transition = 'none';
+                DarkLayer.style.opacity = '1';
+                DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+            }, 400);
         }, 400);
-    }, 400);
+    };
 
     clearInterval(firstClock);
     clearInterval(secondClock);
@@ -200,10 +208,6 @@ function UserleavesGame() {
                 personal_GameData.role = 'user';
                 personal_GameData.currGameID = null;
                 personal_GameData.EnterOnlineGame = false;
-            };
-
-            if (personal_GameData.role == 'admin') {
-                DarkLayer.style.display = 'block';
             };
 
             // play music
