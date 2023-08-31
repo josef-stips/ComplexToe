@@ -137,6 +137,10 @@ let AlertText = document.querySelector('.alert-text-span');
 let alertPopUp = document.querySelector('.alert-pop-up');
 let editUserProfileBtn = document.querySelector('#editUserProfileBtn');
 let eye_40 = document.querySelector('.eye');
+let tradeX_PopUp = document.querySelector('.tradeX_PopUp');
+let tradeX_closebtn = document.querySelector('.tradeX_closeBtn');
+let tradeX_ConfirmBtn = document.querySelector('.tradeX_ConfirmBtn');
+let XBtn = document.querySelector('.XBtn');
 
 let Fieldsize_NegativeSwitcher = document.querySelector('#Fieldsize_NegativeSwitcher');
 let Fieldsize_PositiveSwitcher = document.querySelector('#Fieldsize_PositiveSwitcher');
@@ -1981,3 +1985,33 @@ function ItemAnimation(item) {
 
     playBtn_Audio_2();
 };
+
+// click on X-btn to trade 1 x with 5 elo points
+XBtn.addEventListener('click', () => {
+    if (localStorage.getItem('ItemX') >= 5) {
+        DarkLayer.style.display = 'block';
+        tradeX_PopUp.style.display = 'flex';
+    };
+});
+
+tradeX_closebtn.addEventListener('click', () => {
+    DarkLayer.style.display = 'none';
+    tradeX_PopUp.style.display = 'none';
+});
+
+tradeX_ConfirmBtn.addEventListener('click', () => {
+    let X = parseInt(localStorage.getItem('ItemX'));
+    let SkillPoints = parseInt(localStorage.getItem('ELO'));
+
+    SkillPoints = SkillPoints + 5;
+    X = X - 5;
+
+    localStorage.setItem('ELO', SkillPoints);
+    localStorage.setItem('ItemX', X);
+
+    GameItems();
+    ElO_Points();
+
+    DarkLayer.style.display = 'none';
+    tradeX_PopUp.style.display = 'none';
+});
