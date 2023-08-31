@@ -85,6 +85,9 @@ function PauseMusic() {
     March_into_fire_Theme.pause();
     Tunnel_of_truth_Theme.pause();
     Long_funeral_Theme.pause();
+    Merciful_slaughter_Theme.pause();
+    Impossible_survival_Theme.pause();
+    Ground_destroyer_Theme.pause();
     audio.pause();
     boss_theme.pause();
 
@@ -92,6 +95,9 @@ function PauseMusic() {
     March_into_fire_Theme.currentTime = 0;
     Tunnel_of_truth_Theme.currentTime = 0;
     Long_funeral_Theme.currentTime = 0;
+    Merciful_slaughter_Theme.currentTime = 0;
+    Impossible_survival_Theme.currentTime = 0;
+    Ground_destroyer_Theme.currentTime = 0;
     boss_theme.currentTime = 0;
     audio.currentTime = 0;
 };
@@ -100,11 +106,14 @@ function playGameTheme() {
     PauseMusic();
     audio.volume = 0.075;
     audio.play();
-}
+    globalAudio = audio;
+    CreateMusicBars(audio);
+};
 
 function playBossTheme() {
     PauseMusic();
     boss_theme.volume = 0.075;
     boss_theme.play();
+    globalAudio = boss_theme;
     CreateMusicBars(boss_theme);
 };

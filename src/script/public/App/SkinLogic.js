@@ -55,7 +55,7 @@ let skins = {
     'jedi': false,
     'fish': false,
     'crown': false,
-    'monster': false,
+    'spaghetti-monster-flying': false,
     'hand-fist': false
 };
 

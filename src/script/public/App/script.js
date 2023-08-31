@@ -212,6 +212,9 @@ let Tunnel_of_truth_Theme = document.querySelector('#Tunnel_of_truth_Theme');
 let Quick_death_Theme = document.querySelector('#Quick_death_Theme');
 let March_into_fire_Theme = document.querySelector('#March_into_fire_Theme');
 let Long_funeral_Theme = document.querySelector('#Long_funeral_Theme');
+let Ground_destroyer_Theme = document.querySelector('#Ground_destroyer_Theme');
+let Impossible_survival_Theme = document.querySelector('#Impossible_survival_Theme');
+let Merciful_slaughter_Theme = document.querySelector('#Merciful_slaughter_Theme');
 
 // mode buttons 
 let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
@@ -318,8 +321,8 @@ let Fields = {
         "xyCellAmount": "25",
         "icon": "fa-solid fa-skull",
         "averagePlayTime": "30 minutes",
-        "theme": ".../assets/Maps/Long_Funeral.mp3",
-        "theme_name": Long_funeral_Theme,
+        "theme": ".../assets/Maps/Ground_destroyer.mp3",
+        "theme_name": Ground_destroyer_Theme,
     },
     9: {
         "name": "Impossible survival",
@@ -328,8 +331,8 @@ let Fields = {
         "xyCellAmount": "30",
         "icon": "fa-solid fa-chess-knight",
         "averagePlayTime": "2+ hours",
-        "theme": ".../assets/Maps/Tunnel_of_truth.mp3",
-        "theme_name": Quick_death_Theme,
+        "theme": ".../assets/Maps/Impossible_survival.mp3",
+        "theme_name": Impossible_survival_Theme,
     },
     10: {
         "name": "Merciful slaughter",
@@ -338,8 +341,8 @@ let Fields = {
         "xyCellAmount": "40",
         "icon": "fa-solid fa-skull",
         "averagePlayTime": "5+ hours",
-        "theme": ".../assets/Maps/Long_Funeral.mp3",
-        "theme_name": Long_funeral_Theme,
+        "theme": ".../assets/Maps/Merciful_slaughter.mp3",
+        "theme_name": Merciful_slaughter_Theme,
     },
 };
 
