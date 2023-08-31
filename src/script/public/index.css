@@ -148,6 +148,10 @@ ul {
 .Gamefield-sideCont {
     height: 100%;
     width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 #GameField {
@@ -2170,6 +2174,15 @@ label h3 {
     font-size: 25px;
 }
 
+.userInfo-footer {
+    width: 100%;
+    padding: 3px 0 5px 0px;
+}
+
+.clickEnter_text {
+    display: none;
+}
+
 .UserInfo-cont {
     display: none;
 }
@@ -2575,7 +2588,9 @@ label h3 {
 /* game eye */
 
 .eye {
+    font-size: 130px;
     display: none;
+    animation: floating-el 3.5s ease-in-out infinite;
 }
 
 

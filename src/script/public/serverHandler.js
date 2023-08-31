@@ -202,6 +202,10 @@ function UserleavesGame() {
                 personal_GameData.EnterOnlineGame = false;
             };
 
+            if (personal_GameData.role == 'admin') {
+                DarkLayer.style.display = 'block';
+            };
+
             // play music
             PauseMusic();
             if (bossModeIsActive) {

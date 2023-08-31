@@ -235,6 +235,9 @@ userInfoEditable2.addEventListener('keydown', e => {
 
         if (userInfoEditable2.textContent != "") {
             submittedOfflineData();
+            userIsEditingProfile = false;
+            clickEnter_text.style.display = 'none';
+
         } else {
             userInfoName.focus();
         };

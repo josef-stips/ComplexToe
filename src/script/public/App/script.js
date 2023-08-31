@@ -141,6 +141,7 @@ let tradeX_PopUp = document.querySelector('.tradeX_PopUp');
 let tradeX_closebtn = document.querySelector('.tradeX_closeBtn');
 let tradeX_ConfirmBtn = document.querySelector('.tradeX_ConfirmBtn');
 let XBtn = document.querySelector('.XBtn');
+let clickEnter_text = document.querySelector('.clickEnter_text');
 
 let Fieldsize_NegativeSwitcher = document.querySelector('#Fieldsize_NegativeSwitcher');
 let Fieldsize_PositiveSwitcher = document.querySelector('#Fieldsize_PositiveSwitcher');
@@ -1791,16 +1792,20 @@ headerUserBtn.addEventListener('click', () => {
     };
 });
 
+let userIsEditingProfile = false;
+
 userInfoCloseBtn.addEventListener('click', () => {
-    if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "") {
-        DarkLayer.style.display = 'none';
-        userInfoPopUp.style.display = 'none';
-        userInfoName.setAttribute('contenteditable', false);
-        userInfoIcon.setAttribute('contenteditable', false);
-        if (userInfoIcon.textContent !== "") {
-            localStorage.setItem('UserIcon', userInfoIcon.textContent);
+    if (!userIsEditingProfile) {
+        if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "") {
+            DarkLayer.style.display = 'none';
+            userInfoPopUp.style.display = 'none';
+            userInfoName.setAttribute('contenteditable', false);
+            userInfoIcon.setAttribute('contenteditable', false);
+            if (userInfoIcon.textContent !== "") {
+                localStorage.setItem('UserIcon', userInfoIcon.textContent);
+            };
+            localStorage.setItem('UserName', userInfoName.textContent);
         };
-        localStorage.setItem('UserName', userInfoName.textContent);
     };
 });
 
@@ -1814,12 +1819,20 @@ editUserProfileBtn.addEventListener('click', () => {
     };
 
     userInfoName.focus();
+
+    userIsEditingProfile = true;
+    clickEnter_text.style.display = 'block';
 });
 
 CreateOnlineProfileBtn.addEventListener('click', () => {
     CreateOnlineProfileBtn.style.display = 'none';
     UserInfoCont.style.display = 'flex';
 
+    userIsEditingProfile = true;
+    clickEnter_text.style.display = 'block';
+
+    userInfoName.setAttribute('contenteditable', true);
+    userInfoIcon.setAttribute('contenteditable', true);
     userInfoName.focus();
 });
 
