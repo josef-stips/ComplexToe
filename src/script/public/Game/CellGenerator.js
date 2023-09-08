@@ -109,8 +109,6 @@ function CreateWinConditions(NxN) {
     } else if (NxN == 3) {
         Create_3x3_WinCombis(); // use win comb algorithm executer from 20x20.js
     };
-
-    console.log(WinConditions);
 };
 
 // Create Options that are live in the game  

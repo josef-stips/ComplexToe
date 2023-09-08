@@ -1018,6 +1018,39 @@ function click_locked_40() {
 
 // User click a NxN field button
 function Click_NxN(f) {
+    let target = f.target;
+
+    // if user selected random field
+    if (target.id == "random_Field") {
+        // generate random number and choose the random choosed field by its index
+        const randomNumber = Math.floor(Math.random() * parseInt(Object.keys(DataFields).length)) + 1;
+
+        // Switch-Statement zur Verarbeitung der generierten Zahl
+        switch (randomNumber) {
+            case 1:
+                target = DataFields['5x5'];
+                break;
+            case 2:
+                target = DataFields['10x10'];
+                break;
+            case 3:
+                target = DataFields['15x15'];
+                break;
+            case 4:
+                target = DataFields['20x20'];
+                break;
+            case 5:
+                target = DataFields['25x25'];
+                break;
+            case 6:
+                target = DataFields['30x30'];
+                break;
+            case 7:
+                target = DataFields['40x40'];
+                break;
+        };
+    };
+
     SetClockList.style.display = 'flex';
     SetGameModeList.style.display = 'flex';
     Player1_IconInput.style.color = 'black';
@@ -1039,7 +1072,7 @@ function Click_NxN(f) {
 
         curr_name1 = null;
         curr_name2 = null;
-        curr_field_ele = f.target;
+        curr_field_ele = target;
 
         // Initialize Inputs from pop up
         DisableGameModeItems();
@@ -1059,7 +1092,7 @@ function Click_NxN(f) {
         Your_IconInput.style.color = localStorage.getItem('userInfoColor');
         curr_name1 = null;
         curr_name2 = null;
-        curr_field_ele = f.target;
+        curr_field_ele = target;
 
         // default data
         if (localStorage.getItem('UserName')) {
@@ -1070,13 +1103,13 @@ function Click_NxN(f) {
 
     if (curr_mode == GameMode[2].opponent) { // Online Game mode
 
-        if (f.target.getAttribute('field') == "25x25" && localStorage.getItem('onlineMatches-won') >= 5 ||
-            f.target.getAttribute('field') == "30x30" && localStorage.getItem('onlineMatches-won') >= 10 ||
-            f.target.getAttribute('field') == "40x40" && localStorage.getItem('onlineMatches-won') >= 30 ||
-            f.target.getAttribute('field') == "20x20" || f.target.getAttribute('field') == "15x15" || f.target.getAttribute('field') == "10x10" ||
-            f.target.getAttribute('field') == "5x5") {
+        if (target.getAttribute('field') == "25x25" && localStorage.getItem('onlineMatches-won') >= 5 ||
+            target.getAttribute('field') == "30x30" && localStorage.getItem('onlineMatches-won') >= 10 ||
+            target.getAttribute('field') == "40x40" && localStorage.getItem('onlineMatches-won') >= 30 ||
+            target.getAttribute('field') == "20x20" || target.getAttribute('field') == "15x15" || target.getAttribute('field') == "10x10" ||
+            target.getAttribute('field') == "5x5") {
 
-            curr_field_ele = f.target;
+            curr_field_ele = target;
 
             // Initialize Inputs from pop up
             DarkLayer.style.display = 'block';
