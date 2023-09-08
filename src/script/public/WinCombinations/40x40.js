@@ -1,3 +1,334 @@
-function Create_40x40_WinCombis() {
+// horizontale linie aus 4 blöcken
+function horizontale_Linie_for40(n) {
+    let i = 0;
+    for (let j = 0; j <= n; j++) {
+        let subArray = [];
+        let maxBorder = [];
 
+        for (let k = 40; k <= 1560; k += 40) {
+            maxBorder.push(k.toString());
+        };
+
+        for (let m = 0; m < maxBorder.length; m++) {
+            if (i + 3 == maxBorder[m]) {
+                i = i + 3;
+            };
+        };
+
+        subArray.push(i, i + 1, i + 2, i + 3);
+        WinConditions.push(subArray);
+
+        if (i + 3 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+
+        i++;
+    };
+};
+
+// vertikale linie aus 4 blöcken
+function vertikale_Linie_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 40, i + 80, i + 120);
+
+        WinConditions.push(subArray);
+
+        if (i + 120 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// diagonale linie aus 4 blöcken
+// diagonale linie #1
+function diagonale_Linie_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 41, i + 82, i + 123);
+        WinConditions.push(subArray);
+
+        if (i + 88 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// diagonale linie aus 4 blöcken
+// diagonale linie #2
+function diagonale_Linie2_for40(n) {
+    for (let i = 3; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 39, i + 78, i + 117);
+        WinConditions.push(subArray);
+
+        if (i + 117 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// diagonales viereck aus 4 blöcken
+function diagonales_viereck_for40(n) {
+    for (let i = 1; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 39, i + 41, i + 80);
+        WinConditions.push(subArray);
+
+        if (i + 80 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// Stern auf 5 Blöcken
+function stern_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 2, i + 41, i + 80, i + 82);
+        WinConditions.push(subArray);
+
+        if (i + 82 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// zweig #1 nach oben gerichtet
+// zweig -> linie aus 3 blöcken und 2 blöcke am ende der linie die diagonal von einander weggehen (5 Block muster)
+function zweig_oben_for40(n) {
+    for (let i = 1; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 40, i + 80, i + 119, i + 121);
+        WinConditions.push(subArray);
+
+        if (i + 121 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// zweig #2 nach unten gerichtet
+// zweig -> linie aus 3 blöcken und 2 blöcke am ende der linie die diagonal von einander weggehen (5 Block muster)
+function zweig_unten_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 2, i + 41, i + 81, i + 121);
+        WinConditions.push(subArray);
+
+        if (i + 121 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// zweig #3 nach rechts gerichtet
+// zweig -> linie aus 3 blöcken und 2 blöcke am ende der linie die diagonal von einander weggehen (5 Block muster)
+function zweig_rechts_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 41, i + 42, i + 43, i + 80);
+        WinConditions.push(subArray);
+
+        if (i + 80 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// zweig #2 nach links gerichtet
+// zweig -> linie aus 3 blöcken und 2 blöcke am ende der linie die diagonal von einander weggehen (5 Block muster)
+function zweig_links_for40(n) {
+    for (let i = 20; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 2, i - 37, i + 43);
+        WinConditions.push(subArray);
+
+        if (i + 43 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// Block #1 extra block ist rechts am block oben
+// Block mit extra block an der seite
+function block_mit_Ast_1_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 2, i + 40, i + 41);
+        WinConditions.push(subArray);
+
+        if (i + 41 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// Block #2 extra block ist rechts am block unten
+// Block mit extra block an der seite
+function block_mit_Ast_2_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 40, i + 41, i + 42);
+        WinConditions.push(subArray);
+
+        if (i + 42 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// L Block. 3 blöcke in eine horizontale richtung gefolgt von zwei liniaren Blöcken in eine vertikale Richtung
+// #1
+function L_1_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 40, i + 80, i + 81, i + 82);
+        WinConditions.push(subArray);
+
+        if (i + 82 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// L Block. 3 blöcke in eine horizontale richtung gefolgt von zwei liniaren Blöcken in eine vertikale Richtung
+// #2
+function L_2_for40(n) {
+    for (let i = 40; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 2, i - 38, i - 78);
+        WinConditions.push(subArray);
+
+        if (i + 2 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// L Block. 3 blöcke in eine horizontale richtung gefolgt von zwei liniaren Blöcken in eine vertikale Richtung
+// #3
+function L_3_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 2, i + 40, i + 80);
+        WinConditions.push(subArray);
+
+        if (i + 80 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// L Block. 3 blöcke in eine horizontale richtung gefolgt von zwei liniaren Blöcken in eine vertikale Richtung
+// #4
+function L_4_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 2, i + 42, i + 82);
+        WinConditions.push(subArray);
+
+        if (i + 82 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// W Block. Diagonale Linie bestehend aus 3 Blöcken zusammengeknüpft mit einer diagonalen Linie aus 2 Blöcken
+// #1
+function W_1_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 41, i + 42, i + 82);
+        WinConditions.push(subArray);
+
+        if (i + 82 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// W Block. Diagonale Linie bestehend aus 3 Blöcken zusammengeknüpft mit einer diagonalen Linie aus 2 Blöcken
+// #2
+function W_2_for40(n) {
+    for (let i = 0; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 40, i + 41, i + 81, i + 82);
+        WinConditions.push(subArray);
+
+        if (i + 82 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// W Block. Diagonale Linie bestehend aus 3 Blöcken zusammengeknüpft mit einer diagonalen Linie aus 2 Blöcken
+// #3
+function W_3_for40(n) {
+    for (let i = 1; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 1, i + 39, i + 40, i + 79);
+        WinConditions.push(subArray);
+
+        if (i + 79 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// W Block. Diagonale Linie bestehend aus 3 Blöcken zusammengeknüpft mit einer diagonalen Linie aus 2 Blöcken
+// #4
+function W_4_for40(n) {
+    for (let i = 2; i <= n; i++) {
+        let subArray = [];
+
+        subArray.push(i, i + 39, i + 40, i + 78, i + 79);
+        WinConditions.push(subArray);
+
+        if (i + 79 >= (xCell_Amount * yCell_Amount - 1)) {
+            break;
+        };
+    };
+};
+
+// Execute all algorithms
+function Create_40x40_WinCombis() {
+    horizontale_Linie_for40(yCell_Amount * xCell_Amount);
+    vertikale_Linie_for40(yCell_Amount * xCell_Amount);
+    diagonale_Linie_for40(yCell_Amount * xCell_Amount);
+    diagonale_Linie2_for40(yCell_Amount * xCell_Amount);
+    diagonales_viereck_for40(yCell_Amount * xCell_Amount);
+    stern_for40(yCell_Amount * xCell_Amount);
+    zweig_oben_for40(yCell_Amount * xCell_Amount);
+    zweig_unten_for40(yCell_Amount * xCell_Amount);
+    zweig_rechts_for40(yCell_Amount * xCell_Amount);
+    zweig_links_for40(yCell_Amount * xCell_Amount);
+    block_mit_Ast_1_for40(yCell_Amount * xCell_Amount);
+    block_mit_Ast_2_for40(yCell_Amount * xCell_Amount);
+    L_1_for40(yCell_Amount * xCell_Amount);
+    L_2_for40(yCell_Amount * xCell_Amount);
+    L_3_for40(yCell_Amount * xCell_Amount);
+    L_4_for40(yCell_Amount * xCell_Amount);
+    W_1_for40(yCell_Amount * xCell_Amount);
+    W_2_for40(yCell_Amount * xCell_Amount);
+    W_3_for40(yCell_Amount * xCell_Amount);
+    W_4_for40(yCell_Amount * xCell_Amount);
 };
