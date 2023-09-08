@@ -185,96 +185,6 @@ function block_mit_Ast_2_for20(n) {
     };
 };
 
-// Block #3 extra block ist unten am block rechts
-// Block mit extra block an der seite
-function block_mit_Ast_3_for20(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 20, i + 21, i + 41);
-        WinConditions.push(subArray);
-
-        if (i + 41 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #2 extra block ist unten am block links
-// Block mit extra block an der seite
-function block_mit_Ast_4_for20(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 20, i + 21, i + 40);
-        WinConditions.push(subArray);
-
-        if (i + 40 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #2 extra block ist links am block oben
-// Block mit extra block an der seite
-function block_mit_Ast_5_for20(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 2, i + 21, i + 22);
-        WinConditions.push(subArray);
-
-        if (i + 22 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #6 extra block ist links am block unten
-// Block mit extra block an der seite
-function block_mit_Ast_6_for20(n) {
-    for (let i = 1; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 19, i + 20, i + 21);
-        WinConditions.push(subArray);
-
-        if (i + 21 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #7 extra block ist oben auf dem dach links
-// Block mit extra block an der seite
-function block_mit_Ast_7_for20(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 20, i + 21, i + 40, i + 41);
-        WinConditions.push(subArray);
-
-        if (i + 41 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #8 extra block ist oben auf dem dach rechts
-// Block mit extra block an der seite
-function block_mit_Ast_8_for20(n) {
-    for (let i = 1; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 19, i + 20, i + 39, i + 40);
-        WinConditions.push(subArray);
-
-        if (i + 40 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
 // L Block. 3 blöcke in eine horizontale richtung gefolgt von zwei liniaren Blöcken in eine vertikale Richtung
 // #1
 function L_1_for20(n) {
@@ -409,12 +319,6 @@ function Create_20x20_WinCombis() {
     zweig_links_for20(yCell_Amount * xCell_Amount);
     block_mit_Ast_1_for20(yCell_Amount * xCell_Amount);
     block_mit_Ast_2_for20(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_3_for20(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_4_for20(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_5_for20(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_6_for20(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_7_for20(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_8_for20(yCell_Amount * xCell_Amount);
     L_1_for20(yCell_Amount * xCell_Amount);
     L_2_for20(yCell_Amount * xCell_Amount);
     L_3_for20(yCell_Amount * xCell_Amount);

@@ -198,108 +198,6 @@ function block_mit_Ast_2(n) {
     };
 };
 
-// Block #3 extra block ist unten am block rechts
-// Block mit extra block an der seite
-// [0, 1, 10, 11, 21]
-function block_mit_Ast_3(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 10, i + 11, i + 21);
-
-        WinConditions.push(subArray);
-
-        if (i + 21 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #2 extra block ist unten am block links
-// Block mit extra block an der seite
-// [0, 1, 10, 11, 20]
-function block_mit_Ast_4(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 10, i + 11, i + 20);
-
-        WinConditions.push(subArray);
-
-        if (i + 20 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #2 extra block ist links am block oben
-// Block mit extra block an der seite
-// [0, 1, 2, 11, 12]
-function block_mit_Ast_5(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 2, i + 11, i + 12);
-
-        WinConditions.push(subArray);
-
-        if (i + 12 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #6 extra block ist links am block unten
-// Block mit extra block an der seite
-// [1, 2, 11, 12, 10]
-function block_mit_Ast_6(n) {
-    for (let i = 1; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 1, i + 10, i + 11, i + 9);
-
-        WinConditions.push(subArray);
-
-        if (i + 11 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #7 extra block ist oben auf dem dach links
-// Block mit extra block an der seite
-// [0, 10, 11, 20, 21]
-function block_mit_Ast_7(n) {
-    for (let i = 0; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 10, i + 11, i + 20, i + 21);
-
-        WinConditions.push(subArray);
-
-        if (i + 21 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
-// Block #8 extra block ist oben auf dem dach rechts
-// Block mit extra block an der seite
-// [1, 10, 11, 20, 21]
-function block_mit_Ast_8(n) {
-    for (let i = 1; i <= n; i++) {
-        let subArray = [];
-
-        subArray.push(i, i + 9, i + 10, i + 19, i + 20);
-
-        WinConditions.push(subArray);
-
-        if (i + 20 >= (xCell_Amount * yCell_Amount - 1)) {
-            break;
-        };
-    };
-};
-
 // L Block. 3 blöcke in eine horizontale richtung gefolgt von zwei liniaren Blöcken in eine vertikale Richtung
 // #1
 // [0, 10, 20, 21, 22]
@@ -450,12 +348,6 @@ function Create_10x10_WinCombis() {
     zweig_links(yCell_Amount * xCell_Amount);
     block_mit_Ast_1(yCell_Amount * xCell_Amount);
     block_mit_Ast_2(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_3(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_4(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_5(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_6(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_7(yCell_Amount * xCell_Amount);
-    // block_mit_Ast_8(yCell_Amount * xCell_Amount);
     L_1(yCell_Amount * xCell_Amount);
     L_2(yCell_Amount * xCell_Amount);
     L_3(yCell_Amount * xCell_Amount);
