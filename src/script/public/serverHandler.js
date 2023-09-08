@@ -82,10 +82,19 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
         Player1_NameInput.value = null;
         Player1_IconInput.value = null;
 
-        // default data (for better user experience)
+        // default data
+        Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
+
         if (localStorage.getItem('UserName')) {
             Player1_NameInput.value = localStorage.getItem('UserName');
             Player1_IconInput.value = localStorage.getItem('UserIcon');
+        };
+
+        if (localStorage.getItem('userInfoClass') != "empty") {
+            Player1_IconInput.style.display = 'none';
+            SkinInputDisplay.style.display = 'block';
+
+            SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
         };
 
     } else {

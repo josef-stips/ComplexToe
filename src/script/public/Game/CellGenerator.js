@@ -211,6 +211,7 @@ function Activate_InteractiveBlocker() {
             Grid[RIndex].textContent = null;
             Grid[RIndex].classList = "cell death-cell";
             Grid[RIndex].style.backgroundColor = "var(--font-color)";
+            Grid[RIndex].style.color = "var(--font-color)";
             Grid[RIndex].removeEventListener('click', cellCicked);
         };
     };

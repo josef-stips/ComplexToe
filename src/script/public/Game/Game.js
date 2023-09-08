@@ -825,6 +825,8 @@ socket.on('Reload_GlobalGame', (Goptions) => {
 
     clearInterval(firstClock);
     clearInterval(secondClock);
+    firstClock = null;
+    secondClock = null;
     stopStatusTextInterval = true;
     cellGrid.classList.remove('cellGrid_opacity');
     changePlayer(true);
@@ -1315,14 +1317,14 @@ socket.on('playerTimer2', () => {
 socket.on('changePlayerTurnDisplay', (curr_name) => {
     // Change for all clients
     if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'admin') { // INFO: admin is always player one
-        statusText.textContent = `Your turn`;
+        statusText.textContent = `It is your turn ${PlayerData[1].PlayerName}`;
 
     } else if (curr_name == PlayerData[1].PlayerName && personal_GameData.role == 'user') {
         statusText.textContent = `${curr_name}'s turn`;
     };
 
     if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'user') { // INFO: user is always player two
-        statusText.textContent = `Your turn`;
+        statusText.textContent = `It is your turn ${PlayerData[2].PlayerName}`;
 
     } else if (curr_name == PlayerData[2].PlayerName && personal_GameData.role == 'admin') {
         statusText.textContent = `${curr_name}'s turn`;

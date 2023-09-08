@@ -1796,10 +1796,18 @@ animatedPopConBtn.addEventListener('click', () => {
     };
 });
 
+let userIsEditingProfile = false;
+
 headerUserBtn.addEventListener('click', () => {
     DarkLayer.style.display = 'block';
     userInfoPopUp.style.display = 'flex';
     userInfoOnlineMatchesWon.textContent = JSON.parse(localStorage.getItem('onlineMatches-won'));
+
+    if (userIsEditingProfile || localStorage.getItem('UserIcon') != null) {
+        editUserProfileBtn.style.display = 'initial';
+    } else {
+        editUserProfileBtn.style.display = 'none';
+    };
 
     if (localStorage.getItem('UserName')) {
         userInfoName.textContent = localStorage.getItem('UserName');
@@ -1825,19 +1833,23 @@ headerUserBtn.addEventListener('click', () => {
     };
 });
 
-let userIsEditingProfile = false;
-
 userInfoCloseBtn.addEventListener('click', () => {
     if (!userIsEditingProfile) {
-        if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "") {
+        if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
+            localStorage.getItem('UserIcon') == null) {
+
             DarkLayer.style.display = 'none';
             userInfoPopUp.style.display = 'none';
             userInfoName.setAttribute('contenteditable', false);
             userInfoIcon.setAttribute('contenteditable', false);
+
             if (userInfoIcon.textContent !== "") {
                 localStorage.setItem('UserIcon', userInfoIcon.textContent);
             };
-            localStorage.setItem('UserName', userInfoName.textContent);
+
+            if (localStorage.getItem('UserIcon') != null) {
+                localStorage.setItem('UserName', userInfoName.textContent);
+            };
         };
     };
 });
@@ -1863,6 +1875,7 @@ CreateOnlineProfileBtn.addEventListener('click', () => {
 
     userIsEditingProfile = true;
     clickEnter_text.style.display = 'block';
+    editUserProfileBtn.style.display = 'initial';
 
     userInfoName.setAttribute('contenteditable', true);
     userInfoIcon.setAttribute('contenteditable', true);

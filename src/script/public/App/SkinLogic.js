@@ -79,7 +79,7 @@ let skins_display = {
     'jedi': 'fa-solid fa-jedi',
     'fish': 'fa-solid fa-fish',
     'crown': 'fa-solid fa-crown',
-    'monster': 'fa-solid fa-spaghetti-monster-flying',
+    'spaghetti-monster-flying': 'fa-solid fa-spaghetti-monster-flying',
     'hand-fist': 'fa-solid fa-hand-fist'
 };
 
@@ -176,8 +176,8 @@ function switch_skins(current_used_skin, UserIcon) {
             colorSkin("", "", skins_display['crown']);
             break;
 
-        case 'monster':
-            colorSkin("", "", skins_display['monster']);
+        case 'spaghetti-monster-flying':
+            colorSkin("", "", skins_display['spaghetti-monster-flying']);
             break;
 
         case 'hand-fist':
@@ -207,6 +207,7 @@ function colorSkin(UserIcon, iColor, iClass) {
         localStorage.setItem('UserIcon', UserIcon);
     };
 
+    console.log(iClass)
     localStorage.setItem('userInfoColor', iColor);
     localStorage.setItem('userInfoClass', iClass);
 };

@@ -2733,9 +2733,11 @@ label h3 {
 @keyframes blackenCell {
     from {
         background-color: transparent;
+        color: transparent;
     }
     to {
         background-color: var(--font-color);
+        color: var(--font-color);
     }
 }
 
