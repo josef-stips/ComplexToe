@@ -77,170 +77,181 @@
         <div class="lobby-main-sec">
             <div class="gameModes-cards">
 
-                <div class="lobby-Cardsheader">
-                    <div class="lobby-cards-header-left">
-                        <div class="lobby-header-icon-innerWrapper">
-                            <i title="diamants" class="fa-solid fa-gem"></i>
-                            <span class="gems-icon">0</span>
+                <div class="gameModes-cards-Left">
+                    <i class="fa-solid fa-earth-asia planet"></i>
+                </div>
+
+                <div class="gameModes-cards-Main">
+
+                    <div class="lobby-Cardsheader">
+                        <div class="lobby-cards-header-left">
+                            <div class="lobby-header-icon-innerWrapper">
+                                <i title="diamants" class="fa-solid fa-gem"></i>
+                                <span class="gems-icon">0</span>
+                            </div>
+
+                            <div class="lobby-header-icon-innerWrapper">
+                                <i title="X" class="fa-solid fa-x XBtn"></i>
+                                <span class="x-icon">0</span>
+                            </div>
                         </div>
 
-                        <div class="lobby-header-icon-innerWrapper">
-                            <i title="X" class="fa-solid fa-x XBtn"></i>
-                            <span class="x-icon">0</span>
+                        <div class="lobby-cards-header-right">
+                            <i id="store-icon" class="fa-solid fa-store"></i>
+                            <i id="treasure-icon" class="fa-regular fa-chess-queen"></i>
                         </div>
                     </div>
 
-                    <div class="lobby-cards-header-right">
-                        <i id="store-icon" class="fa-solid fa-store"></i>
-                        <i id="treasure-icon" class="fa-regular fa-chess-queen"></i>
+                    <div class="GameModeCards-main">
+                        <!-- Card #1 -->
+                        <div class="gameMode-card btn" id="gameMode-KI-card">
+
+                            <div class="card-header">
+                                <div class="card-circle">
+                                    <i class="fa-solid fa-robot BotIcon"></i>
+                                </div>
+                            </div>
+
+                            <div class="card-mainSec">
+                                <div class="card-miniBord-mini">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <h2 id="KI_Card_DescriptionDisplay"></h2>
+                            </div>
+
+                        </div>
+
+                        <!-- Card #2 -->
+                        <div class="gameMode-card mainCard btn" id="gameMode-TwoPlayerOnline-card">
+
+                            <div class="card-header">
+                                <div class="card-circle" id="cardHeaderIcon-onlinePlayer">
+                                    <i class="fa-solid fa-user-group BotIcon"></i>
+                                </div>
+                            </div>
+
+                            <div class="card-mainSec">
+                                <div class="card-miniBoard">
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell">X</div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell">X</div>
+                                    <div class="miniCell">O</div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell">X</div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell">X</div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell">O</div>
+                                    <div class="miniCell">O</div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <h2 id="OnlineFriend_Card_DescriptionDisplay"></h2>
+                            </div>
+
+                        </div>
+
+                        <!-- Card #3 -->
+                        <div class="gameMode-card btn" id="gameMode-OneVsOne-card">
+
+                            <div class="card-header">
+                                <div class="card-circle">
+                                    <i class="fa-solid fa-computer BotIcon"></i>
+                                </div>
+                            </div>
+
+                            <div class="card-mainSec">
+                                <div class="card-miniBord-mini">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <h2 id="ComputerFriend_Card_DescriptionDisplay"></h2>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="GameModeCards-main">
-                    <!-- Card #1 -->
-                    <div class="gameMode-card btn" id="gameMode-KI-card">
+                <div class="gameModes-cards-Right">
 
-                        <div class="card-header">
-                            <div class="card-circle">
-                                <i class="fa-solid fa-robot BotIcon"></i>
-                            </div>
-                        </div>
-
-                        <div class="card-mainSec">
-                            <div class="card-miniBord-mini">
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">O</div>
-                                <div class="miniCellMini">X</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">O</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">X</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">X</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">O</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <h2 id="KI_Card_DescriptionDisplay"></h2>
-                        </div>
-
-                    </div>
-
-                    <!-- Card #2 -->
-                    <div class="gameMode-card mainCard btn" id="gameMode-TwoPlayerOnline-card">
-
-                        <div class="card-header">
-                            <div class="card-circle" id="cardHeaderIcon-onlinePlayer">
-                                <i class="fa-solid fa-user-group BotIcon"></i>
-                            </div>
-                        </div>
-
-                        <div class="card-mainSec">
-                            <div class="card-miniBoard">
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell">X</div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell">X</div>
-                                <div class="miniCell">O</div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell">X</div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell">X</div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell">O</div>
-                                <div class="miniCell">O</div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                                <div class="miniCell"></div>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <h2 id="OnlineFriend_Card_DescriptionDisplay"></h2>
-                        </div>
-
-                    </div>
-
-                    <!-- Card #3 -->
-                    <div class="gameMode-card btn" id="gameMode-OneVsOne-card">
-
-                        <div class="card-header">
-                            <div class="card-circle">
-                                <i class="fa-solid fa-computer BotIcon"></i>
-                            </div>
-                        </div>
-
-                        <div class="card-mainSec">
-                            <div class="card-miniBord-mini">
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">X</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">X</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini">O</div>
-                                <div class="miniCellMini">O</div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                                <div class="miniCellMini"></div>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <h2 id="ComputerFriend_Card_DescriptionDisplay"></h2>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -1923,6 +1934,123 @@
                     </div>
                 </div>
 
+            </div>
+
+            <div class="AdvantureMap">
+                <div class="AdvantureMap-header">
+                    <i id="AdvantureMap-Backbtn" class="fa-solid fa-arrow-left"></i>
+                </div>
+
+                <div class="AdvantureMap-main">
+                    <div class="map">
+                        <!-- level 1 -->
+                        <i style="margin-top:12em ;" level="1" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:32.5em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:22em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top: 10em;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:0 ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-7em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-17em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-26em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-35em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-43em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-50em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-55em ;" class="fa-solid fa-circle mapCircle"></i>
+
+                        <!-- level 2 -->
+                        <i style="margin-top:-18em ;" level="2" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:-55em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-50em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-43em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-35em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-26em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-17em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-7em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top: 0;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:10em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:20em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:30em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:38em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:45.5em ;" class="fa-solid fa-circle mapCircle"></i>
+
+                        <!-- level 3 -->
+                        <i style="margin-top:16em ;" level="3" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:45.5em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:38em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:30em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:24em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:17em ;" class="fa-solid fa-circle mapCircle"></i>
+
+                        <!-- level 4 -->
+                        <i style="margin-top:3.5em ;" level="4" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:5em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-1em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-8em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-14em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-21em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-25em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <!-- level 5 -->
+                        <i style="margin-top:-9em ;" level="5" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:-25em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-17em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-7em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top: 0;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:10em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:20em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <!-- level 6 -->
+                        <i style="margin-top:9em ;" level="6" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:22em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top: 10em;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:0 ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-7em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-17em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-26em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-35em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-43em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-53em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-61em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <!-- level 7 -->
+                        <i style="margin-top:-20em ;" level="7" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:-62em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-54em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-46em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-35em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-26em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-17em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-7em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top: 0;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:10em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:20em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:30em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:38em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:47.5em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:59em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:68em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:76em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <!-- level 8 -->
+                        <i style="margin-top:25em ;" level="8" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:76em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:68em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:59em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:47.5em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:38em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:30em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:20em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:10em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top: 0;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top:-10em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <!-- level 9 -->
+                        <i style="margin-top:-6em ;" level="9" class="fa-solid fa-dungeon mapLevel_Btn"></i>
+                        <i style="margin-top:-12em ;" class="fa-solid fa-circle mapCircle"></i>
+                        <i style="margin-top: -5em;" class="fa-solid fa-circle mapCircle"></i>
+                        <!-- level 10 -->
+                        <i style="margin-top:0 ;font-size: 2.9vh;" level="10" class="fa-solid fa-eye mapLevel_Btn"></i>
+
+                    </div>
+                </div>
+                <div class="AdvantureMap-footer">
+
+                </div>
             </div>
         </div>
 

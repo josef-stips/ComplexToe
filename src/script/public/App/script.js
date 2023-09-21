@@ -203,6 +203,10 @@ let lockedIcon25 = document.querySelector('.locked-icon_25');
 let fieldTitle_25 = document.querySelector('.fieldTitle_25');
 let fieldTitle_30 = document.querySelector('.fieldTitle_30');
 let fieldTitle_40 = document.querySelector('.fieldTitle_40');
+let planet = document.querySelector('.planet');
+let AdvantureMap = document.querySelector('.AdvantureMap');
+let AdvantureMapBackbtn = document.querySelector('#AdvantureMap-Backbtn');
+let MapLevelBtns = document.querySelectorAll('.mapLevel_Btn');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -1930,4 +1934,65 @@ tradeX_ConfirmBtn.addEventListener('click', () => {
 
     DarkLayer.style.display = 'none';
     tradeX_PopUp.style.display = 'none';
+});
+
+// planet
+planet.addEventListener('click', () => {
+    // sound
+    playBtn_Audio_2();
+
+    // style animation
+    DarkLayer.style.backgroundColor = 'black';
+    DarkLayer.style.display = 'block';
+    DarkLayer.style.transition = 'opacity 0.1s ease-in';
+    DarkLayer.style.opacity = '0';
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '1';
+        setTimeout(() => {
+            AdvantureMap.style.display = 'flex';
+            gameModeCards_Div.style.display = 'none';
+        }, 100);
+    }, 100);
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.display = 'none';
+            DarkLayer.style.transition = 'none';
+            DarkLayer.style.opacity = '1';
+            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+        }, 400);
+    }, 400);
+});
+
+AdvantureMapBackbtn.addEventListener('click', () => {
+    // sound
+    playBtn_Audio_2();
+
+    // style animation
+    DarkLayer.style.backgroundColor = 'black';
+    DarkLayer.style.display = 'block';
+    DarkLayer.style.transition = 'opacity 0.1s ease-in';
+    DarkLayer.style.opacity = '0';
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '1';
+        setTimeout(() => {
+            AdvantureMap.style.display = 'none';
+            gameModeCards_Div.style.display = 'flex';
+        }, 100);
+    }, 100);
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.display = 'none';
+            DarkLayer.style.transition = 'none';
+            DarkLayer.style.opacity = '1';
+            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+        }, 400);
+    }, 400);
 });
