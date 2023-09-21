@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 let windows = new Set();
@@ -9,7 +9,7 @@ const createWindow = () => {
         width: 1000,
         height: 800,
         fullscreen: true,
-        icon: "./script/public/assets/images/icons/win/icon.ico",
+        icon: "/src/script/public/assets/images/icons/win/icon.ico",
         autoHideMenuBar: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),

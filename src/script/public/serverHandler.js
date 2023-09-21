@@ -539,3 +539,20 @@ socket.on('ChangeGameData', (display, SpecificData, Selection) => {
     // update global propertys
     socket.emit('updateGameData', personal_GameData.currGameID, xyCell_Amount, curr_innerGameMode, curr_selected_PlayerClock, fieldIndex, fieldTitle)
 });
+
+// check if the player already was in the game once
+socket.on('CheckIfPlayerAlreadyExists', () => {
+    if (localStorage.getItem('PlayerOpenedThisGameAtleastOnceInHisLife')) {
+        socket.emit("PlayerAlreadyExists", localStorage.getItem("PlayerID"), localStorage.getItem('treasureIsAvailible'));
+
+    } else {
+        socket.emit("PlayerNotExisted");
+        localStorage.setItem('PlayerOpenedThisGameAtleastOnceInHisLife', true);
+    };
+});
+
+// server generates random player id if he is the first time in this game
+socket.on("RandomPlayerID_generated", id => {
+    console.log(id)
+    localStorage.setItem("PlayerID", id);
+});

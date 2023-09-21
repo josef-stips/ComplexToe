@@ -227,9 +227,6 @@ let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
 let gameMode_TwoPlayerOnline_card = document.querySelector('#gameMode-TwoPlayerOnline-card');
 let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
 
-// treasure countdown
-let TreasureCountdown;
-
 // important data
 let GameMode = {
     1: {
@@ -463,7 +460,6 @@ window.socket = socket;
     OnlineMatchesWon();
     UserOfflineData();
     GameItems();
-    CheckTreasure();
     // Check if fields are unlocked or not
     // The player can unlock these advanced fields by winning a specific amount of online matches
     locked_25x25();
@@ -675,28 +671,6 @@ function locked_40x40() {
     } else { // it is locked
         lockedIcon40.style.display = 'block';
         fieldTitle_40.textContent = '???';
-    };
-};
-
-function CheckTreasure() {
-    if (localStorage.getItem('UserOpenedTreasureOnceInHisLife') != "true") {
-        treasureIsAvailible();
-        return;
-    };
-
-    // user is first time in the game
-    if (localStorage.getItem('treasureIsAvailible') == null && localStorage.getItem('treasureIsAvailible') == undefined) {
-        treasureCountDown();
-        localStorage.setItem('treasureIsAvailible', false);
-        return;
-    };
-
-    // user is not the first time in the game
-    if (localStorage.getItem('treasureIsAvailible') == "true") {
-        treasureIsAvailible();
-
-    } else {
-        treasureCountDown();
     };
 };
 
@@ -1894,132 +1868,6 @@ function submittedOfflineData() {
     userInfoIcon.setAttribute('contenteditable', false);
     DarkLayer.style.display = 'none';
     userInfoPopUp.style.display = 'none';
-};
-
-treasureIcon.addEventListener('click', () => {
-    // check if treasure can be opened
-    if (localStorage.getItem('treasureIsAvailible') == "true") {
-        openTreasure();
-    } else {
-        if (!TreasureCountdown) {
-            treasureCountDown();
-        };
-        treasureBoxTimerPopUp.style.display = 'flex';
-        DarkLayer.style.display = 'block';
-    };
-});
-
-treasurePopUpcloseBtn.addEventListener('click', () => {
-    treasureBoxTimerPopUp.style.display = 'none';
-    DarkLayer.style.display = 'none';
-});
-
-// 24 hour countdown for treasure
-// every 24 hours the user can open the treasure in the lobby
-function treasureCountDown() {
-    let Nhour = 23;
-    let Nminutes = 59;
-    let Nseconds = 59;
-
-    TreasureCountdown = setInterval(() => {
-        (init = () => {
-            seconds.textContent = Nseconds;
-            minutes.textContent = Nminutes;
-            hours.textContent = Nhour;
-        })();
-
-        if (Nhour < 1 && Nminutes < 1 && Nseconds <= 0) {
-            clearInterval(TreasureCountdown);
-            TreasureCountdown = null;
-            treasureIsAvailible();
-        };
-
-        Nseconds--;
-
-        if (Nseconds <= -1 && Nminutes <= 0 && Nhour >= 1) {
-            Nhour--;
-            Nminutes = 59;
-            Nseconds = 59;
-        };
-
-        // display minutes
-        if (Nseconds <= -1 && Nminutes > 0) {
-            Nminutes--;
-            Nseconds = 59;
-            minutes.textContent = Nminutes;
-        };
-
-        if (Nminutes <= 9) {
-            minutes.textContent = `0${Nminutes}`;
-        } else {
-            minutes.textContent = Nminutes;
-        };
-
-        // display seconds
-        if (Nseconds <= 9) {
-            seconds.textContent = `0${Nseconds}`;
-        } else {
-            seconds.textContent = Nseconds;
-        };
-
-        // display hours
-        if (Nminutes < 1 && Nminutes > 0) {
-            Nhour--;
-            hours.textContent = Nhour;
-        };
-
-        if (Nhour <= 9) {
-            hours.textContent = `0${Nhour}`;
-        } else {
-            hours.textContent = Nhour;
-        };
-
-    }, 1000);
-};
-
-// countdown is done, treasure can be opened now
-function treasureIsAvailible() {
-    localStorage.setItem('treasureIsAvailible', true);
-
-    // play animation
-    treasureIcon.style.animation = "treasure_availible 1s infinite";
-    treasureBoxTimerPopUp.style.display = "none";
-    DarkLayer.style.display = 'none';
-};
-
-// get random number global function
-function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-};
-
-// user opens the treasure
-function openTreasure() {
-    localStorage.setItem('treasureIsAvailible', false);
-
-    treasureIcon.style.animation = "none";
-
-    // The probability the earn x is 1/10 
-    // All the other times the player gets diamants
-    const isXRare = getRandomNumber(1, 11) === 1;
-
-    if (isXRare) {
-        // Player gains X
-        ItemAnimation('fa-solid fa-x');
-
-    } else {
-        // Spieler gains diamants
-        let counter = 0;
-        let count = setInterval(() => {
-            counter++;
-            if (counter >= 50) {
-                clearInterval(count);
-            };
-            ItemAnimation('fa-solid fa-gem');
-        }, 50);
-    };
-
-    localStorage.setItem('UserOpenedTreasureOnceInHisLife', true);
-    treasureCountDown();
 };
 
 // floating element over the screen
