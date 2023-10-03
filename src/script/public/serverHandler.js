@@ -2,15 +2,26 @@
 // All EventListener on html elements that send and recieve data from the servers
 socket.on('connect', () => {
     console.log('connected!  ' + socket.id);
+
+    DarkLayer.style.display = "none";
+    DarkLayer.style.display = "none";
 });
 
 socket.on('disconnect', reason => {
     console.log('disconnected  ' + socket.id);
     console.log('reason: ' + reason);
+
+    DarkLayer.style.display = "block";
+    alertPopUp.style.display = "flex";
+    AlertText.textContent = "It looks like you're offline! Try to reconnect.";
 });
 
 socket.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
+
+    DarkLayer.style.display = "block";
+    alertPopUp.style.display = "flex";
+    AlertText.textContent = "It looks like you're offline! Try to reconnect.";
 });
 
 // [The 'create_room', 'CONFIRM_enter_room' emit] There are (2) socket emits in script.js on "SetPlayerName_ConfirmButton", "click" Event
@@ -84,6 +95,9 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
 
         // default data
         Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
+        if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
+            Player1_IconInput.style.color = "black";
+        };
 
         if (localStorage.getItem('UserName')) {
             Player1_NameInput.value = localStorage.getItem('UserName');
@@ -163,7 +177,7 @@ Lobby_startGame_btn.addEventListener('click', () => {
 leaveGame_btn.addEventListener('click', UserleavesGame);
 
 // User leaves game on leave game btn event
-function UserleavesGame() {
+function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     // sound
     playBtn_Audio_2();
 
@@ -183,7 +197,12 @@ function UserleavesGame() {
             DarkLayer.style.opacity = '1';
             setTimeout(() => {
                 GameField.style.display = 'none';
-                gameModeFields_Div.style.display = 'flex';
+
+                if (!inAdvantureMode) {
+                    gameModeFields_Div.style.display = 'flex';
+                } else {
+                    AdvantureMap.style.display = 'flex';
+                };
                 // lobbyHeader.style.display = 'flex';
             }, 100);
         }, 100);
@@ -203,6 +222,13 @@ function UserleavesGame() {
     clearInterval(firstClock);
     clearInterval(secondClock);
     clearInterval(gameCounter);
+    clearInterval(eye_attack_interval_global);
+    clearInterval(sun_attack_interval_global);
+    sun_attack_interval_global = null;
+    eye_attack_interval_global = null;
+    firstClock = null;
+    secondClock = null;
+    gameCounter = null;
     stopStatusTextInterval = true;
 
     // If in online mode
@@ -219,6 +245,14 @@ function UserleavesGame() {
                 personal_GameData.EnterOnlineGame = false;
             };
 
+            clearInterval(firstClock);
+            clearInterval(secondClock);
+            clearInterval(gameCounter);
+            firstClock = null;
+            secondClock = null;
+            gameCounter = null;
+            stopStatusTextInterval = true;
+
             // play music
             PauseMusic();
             if (bossModeIsActive) {
@@ -228,12 +262,32 @@ function UserleavesGame() {
             };
         });
     } else {
+        // bug fix
+        setTimeout(() => {
+            if (inAdvantureMode) {
+                lobbyHeader.style.borderBottom = '3px solid var(--font-color)';
+            };
+
+            // user won a level in advanture mode
+            console.log(inAdvantureMode, userWonInAdvantureMode, LevelIndex_AdvantureMode)
+            if (inAdvantureMode && userWonInAdvantureMode == true) {
+                UserWon_AdvantureLevel(LevelIndex_AdvantureMode);
+            } else {
+                // for floating level item animation in map
+                conqueredLevels();
+            }
+        }, 200);
+
         // play music
         PauseMusic();
         if (bossModeIsActive) {
             CreateMusicBars(boss_theme);
         } else {
-            CreateMusicBars(audio); // error because javascript is as weird as usual
+            if (inAdvantureMode) {
+                CreateMusicBars(mapSound);
+            } else {
+                CreateMusicBars(audio); // error because javascript is as weird as usual
+            };
         };
     };
 };
@@ -276,7 +330,26 @@ socket.on('killed_game', () => {
 
 // Admin created the game and now waits for the second player
 socket.on('Admin_Created_And_Joined', message => {
-    Lobby_first_player.textContent = `${message[0]} (You) - ${message[1].toUpperCase()}`;
+    console.log(message)
+    if (message[1] != 'fontawesome') { // everything's normal
+        Lobby_first_player.textContent = `${message[0]} (You) - ${message[1].toUpperCase()}`;
+        Lobby_first_player.style.color = localStorage.getItem('userInfoColor');
+
+        if (document.querySelector('.Temporary_IconSpan')) {
+            document.querySelector('.Temporary_IconSpan').remove();
+        };
+
+    } else {
+        let skinIconCode = localStorage.getItem("userInfoClass");
+        let span = document.createElement('span');
+        span.className = skinIconCode; // example: "fa-solid fa-chess-rook"
+        span.classList.add("Temporary_IconSpan");
+        Lobby_first_player.style.color = "white";
+
+        Lobby_first_player.textContent = `${message[0]} (You) - `;
+        Lobby_first_player.appendChild(span);
+    };
+
     Lobby_second_player.textContent = 'waiting for second player..';
 });
 
@@ -370,8 +443,11 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // initialize game
     // curr_field_ele = null;
     curr_innerGameMode = currInnerGameMode;
+    // allowed patterns
+    let allowed_patterns = JSON.parse(localStorage.getItem('unlocked_mapLevels'))[1][6]; // array
 
-    initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon, PlayerTimer]);
+    // initialize game with given data
+    initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon, PlayerTimer], allowed_patterns);
 
     // play theme music 
     PauseMusic();
@@ -505,10 +581,18 @@ socket.on('ChangeGameData', (display, SpecificData, Selection) => {
     let fieldIndex = curr_field_ele.getAttribute('index');
     let fieldTitle = curr_field_ele.getAttribute('title');
     let xyCell_Amount = Fields[fieldIndex].xyCellAmount;
+    var user_unlocked_Advanced_fields_online = true;
 
     // Check which game data selecetion to change
     switch (Selection) {
         case 1: // Fieldsize
+            if (DataFields[SpecificData] == undefined) {
+                DataFields['25x25'] = document.querySelector('#twentyfivextwentyfive');
+                DataFields['30x30'] = document.querySelector('#thirtyxthirty');
+                DataFields['40x40'] = document.querySelector('#fortyxforty');
+                user_unlocked_Advanced_fields_online = false;
+            };
+
             curr_field_ele = DataFields[SpecificData];
 
             fieldIndex = curr_field_ele.getAttribute('index');
@@ -538,6 +622,13 @@ socket.on('ChangeGameData', (display, SpecificData, Selection) => {
 
     // update global propertys
     socket.emit('updateGameData', personal_GameData.currGameID, xyCell_Amount, curr_innerGameMode, curr_selected_PlayerClock, fieldIndex, fieldTitle)
+
+    // delete advanced data fields again if generated
+    if (!user_unlocked_Advanced_fields_online) {
+        delete DataFields['25x25'];
+        delete DataFields['30x30'];
+        delete DataFields['40x40'];
+    };
 });
 
 // check if the player already was in the game once

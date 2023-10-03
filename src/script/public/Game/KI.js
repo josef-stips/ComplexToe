@@ -18,7 +18,7 @@ let ai_difficulty = {
 };
 
 // how deep the minimax algorithm must search
-let max_depth;
+let max_depth = 1;
 
 function Find_MaxDepth() {
     if (curr_field == 'Thunder Advanture') { max_depth = 6 };
@@ -34,22 +34,25 @@ function KI_Action() {
     });
 
     // call minimax algorithm
-    let bestScore = -Infinity;
-    let move;
-    for (let i = 0; i < cells.length; i++) {
-        if (cells[i].classList.length <= 1 && cells[i].textContent == "") {
-            cells[i].textContent = PlayerData[2].PlayerForm;
-            options[i] = PlayerData[2].PlayerForm;
-            let score = minimax(cells, 0, -Infinity, Infinity, false);
-            cells[i].textContent = '';
-            options[i] = '';
+    // let bestScore = -Infinity;
+    // let move;
+    // for (let i = 0; i < cells.length; i++) {
+    //     if (cells[i].classList.length <= 1 && cells[i].textContent == "") {
+    //         cells[i].textContent = PlayerData[2].PlayerForm;
+    //         options[i] = PlayerData[2].PlayerForm;
+    //         let score = minimax(cells, 0, -Infinity, Infinity, false);
+    //         cells[i].textContent = '';
+    //         options[i] = '';
 
-            if (score > bestScore) {
-                bestScore = score;
-                move = i;
-            };
-        };
-    };
+    //         if (score > bestScore) {
+    //             bestScore = score;
+    //             move = i;
+    //         };
+    //     };
+    // };
+
+    let move = Math.floor(Math.random() * (4 * 4));
+    console.log(move)
 
     // Ki move
     cells[move].textContent = currentPlayer;

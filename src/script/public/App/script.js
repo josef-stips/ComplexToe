@@ -2,8 +2,13 @@
 let Allbtns = document.querySelectorAll('.btn');
 let btn_sound = document.querySelector('#btn_click_1');
 let btn_sound2 = document.querySelector('#btn_click_2');
+let eye_attack_soundeffect = document.querySelector('#eye_attack_soundeffect');
 const audio = document.querySelector("#bg_audio");
-const boss_theme = document.querySelector('#boss_theme');
+const boss_theme = document.querySelector('#boss_theme')
+const mapSound = document.querySelector('#mapSound');
+let default_MapLevel_theme = document.querySelector('#default_MapLevel_theme');
+let default_MapLevel_theme2 = document.querySelector('#default_MapLevel_theme2');
+let theEye_theme = document.querySelector('#theEye_theme');
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -18,7 +23,8 @@ let sett_rsetELO_Points_btn = document.querySelector('#sett_rsetELO_Points_btn')
 let ELO_Points_AddIcon = document.querySelector('.ELO-Points-AddIcon');
 let gemsIcon = document.querySelector('.gems-icon');
 let Xicon = document.querySelector('.x-icon')
-    // let OnlineGame_GameCode_Display = document.querySelector('.OnlineGame_GameCode_Display'); // in the "setupGameData" window, there is already the game id sown, which is not right
+let KEYicon = document.querySelector('.KEYicon');
+// let OnlineGame_GameCode_Display = document.querySelector('.OnlineGame_GameCode_Display'); // in the "setupGameData" window, there is already the game id shown, which is not right
 
 // Normal Games
 let FivexFive_Field = document.querySelector('#FivexFive_Field');
@@ -54,6 +60,11 @@ let userInfoPopUp = document.querySelector('.userInfo-PopUp');
 let userInfoCloseBtn = document.querySelector('#userInfo-closeBtn');
 let UserInfoCont = document.querySelector('.UserInfo-cont');
 let CreateOnlineProfileBtn = document.querySelector('.CreateOnlineProfile-btn');
+let loading_fill = document.querySelector('.loading_fill');
+let loadingGame_ProcentDisplay = document.querySelector('.loadingGame_ProcentDisplay');
+let loadingScreen = document.querySelector('.loadingScreen');
+let random_loadingText = document.querySelector('.random_loadingText');
+let lobbyFooterText = document.querySelector('.lobby-footer-text');
 
 let userInfoName = document.querySelector('.userInfo-Name');
 let userInfoIcon = document.querySelector('.userInfo-Icon');
@@ -137,11 +148,29 @@ let AlertText = document.querySelector('.alert-text-span');
 let alertPopUp = document.querySelector('.alert-pop-up');
 let editUserProfileBtn = document.querySelector('#editUserProfileBtn');
 let eye_40 = document.querySelector('.eye');
+let The_eye = document.querySelector('.eyeIMG');
+let eyeLifeBar = document.querySelector('.eyeLifeBar');
+let eyeLifeCounter = document.querySelector('.eyeLifeCounter');
+let eyeIMG_container = document.querySelector('.eyeIMG_container');
+let eyeBar_fill2 = document.querySelector('.eyeBar_fill2');
+let eyeNextAttackTimer = document.querySelector('.eyeNextAttackTimer');
+let eye_attckingBeam = document.querySelector('.eye_attckingBeam');
 let tradeX_PopUp = document.querySelector('.tradeX_PopUp');
 let tradeX_closebtn = document.querySelector('.tradeX_closeBtn');
 let tradeX_ConfirmBtn = document.querySelector('.tradeX_ConfirmBtn');
 let XBtn = document.querySelector('.XBtn');
 let clickEnter_text = document.querySelector('.clickEnter_text');
+let mapLevel_AllowedPatterns_Text = document.querySelector('.mapLevel_AllowedPatterns_Text');
+let conquered_MapLevel_Display = document.querySelector('.conquered_MapLevel_Display');
+let mapLevel_ModeDisplay = document.querySelector('.mapLevel_ModeDisplay');
+// sun
+let sun_40 = document.querySelector('.sun');
+let sunIMG_container = document.querySelector('.sunIMG_container');
+let The_sun = document.querySelector('.sunIMG');
+let sunLifeBar = document.querySelector('.sunLifeBar');
+let sunBar_fill2 = document.querySelector('.unBar_fill2');
+let sunLifeCounter = document.querySelector('.sunLifeCounter');
+let sun_attckingBeam = document.querySelector('.sun_attckingBeam');
 
 let Fieldsize_NegativeSwitcher = document.querySelector('#Fieldsize_NegativeSwitcher');
 let Fieldsize_PositiveSwitcher = document.querySelector('#Fieldsize_PositiveSwitcher');
@@ -195,8 +224,10 @@ let buySkinBtn = document.querySelector('.buy-skin-button');
 let BuySkinError = document.querySelector('.BuySkinError');
 let useSkinBtn = document.querySelector('.use-skin-button');
 let sidelinePrice = document.querySelector('.sideline-price');
-let SkinInputDisplay = document.querySelector('.SkinInputDisplay');
-let SkinInputDisplaySkin = document.querySelector('.SkinInputDisplay-skin');
+let SkinInputDisplay = document.querySelectorAll('.SkinInputDisplay')[0];
+let Map_SkinInputDisplay = document.querySelectorAll('.SkinInputDisplay')[1];
+let SkinInputDisplaySkin = document.querySelectorAll('.SkinInputDisplay-skin')[0];
+let Map_SkinInputDisplaySkin = document.querySelectorAll('.SkinInputDisplay-skin')[1];
 let lockedIcon40 = document.querySelector('.locked-icon_40');
 let lockedIcon30 = document.querySelector('.locked-icon_30');
 let lockedIcon25 = document.querySelector('.locked-icon_25');
@@ -207,6 +238,25 @@ let planet = document.querySelector('.planet');
 let AdvantureMap = document.querySelector('.AdvantureMap');
 let AdvantureMapBackbtn = document.querySelector('#AdvantureMap-Backbtn');
 let MapLevelBtns = document.querySelectorAll('.mapLevel_Btn');
+let mapItem = document.querySelectorAll('.mapItem');
+let mapKey = document.querySelector('.mapKey');
+let mapKeyValueDisplay = document.querySelector('.KEYicon1');
+let mapLevelOverview = document.querySelector('.mapLevelOverview');
+let mapLevelTitle = document.querySelector('.mapLevel-title');
+let closeMapLevelOverviewBtn = document.querySelector('.closeMapLevelOverviewBtn');
+let startMapLevelBtn = document.querySelector('.startMapLevelBtn');
+let MapLevel_IconInput = document.querySelector('#MapLevel_IconInput');
+let MapLevel_NameInput = document.querySelector('#MapLevel_NameInput');
+let MapLevel_SetIconLabel = document.querySelector('#MapLevel_SetIconLabel');
+const MapLevel_Bar_fillElement = document.querySelector('.fill2');
+let mapLevel_description = document.querySelector('.mapLevel_Description_Text');
+let HowToWinText = document.querySelector('.HowToWinText');
+let UserGivesData_PopUp_name = document.querySelectorAll('.UserGivesData_PopUp')[0];
+let UserGivesData_PopUp_icon = document.querySelectorAll('.UserGivesData_PopUp')[1];
+let UserGivesData_closeBtn_NAME = document.querySelector('#UserGivesData_closeBtn_NAME');
+let UserGivesData_closeBtn_ICON = document.querySelector('#UserGivesData_closeBtn_ICON');
+let UserGivesData_IconInput = document.querySelector('#UserGivesData_IconInput');
+let UserGivesData_NameInput = document.querySelector('#UserGivesData_NameInput');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -418,6 +468,11 @@ let score_Player1_numb = 0;
 let score_Player2_numb = 0;
 
 let curr_mode = "";
+let inAdvantureMode = false;
+
+// for creating a profile
+let userName = "";
+let userIcon = "";
 
 // Inner Game Modes
 let InnerGameModes = {
@@ -435,7 +490,7 @@ let KI_Mode_Levels = {
 let curr_KI_Level;
 
 // standard bg music volume
-let appVolume = 0.05;
+let appVolume = 0.02;
 let bossModeIsActive = false;
 
 // server thing ----------------
@@ -449,15 +504,171 @@ let personal_GameData = {
     role: 'user' // admin ? user
 };
 
-let socket = io('http://localhost:3000', {
-    // path: "https://complextoeserveradmin.onrender.com",
-    // transports: ['websocket'],
-});
+let socket;
 
-window.socket = socket;
+// random loading text in loading screen
+function rnd_loadingText() {
+    let rndIndex = Math.floor(Math.random() * 6);
+
+    switch (rndIndex) {
+        case 0:
+            random_loadingText.textContent = "You need a profile to get skins";
+
+            break;
+
+        case 1:
+            random_loadingText.textContent = "Seeing sunlight or playing advanture mode?";
+
+            break;
+
+        case 2:
+            random_loadingText.textContent = "Server responded with shit";
+
+            break;
+        case 3:
+            random_loadingText.textContent = "The probability of getting 10 X from a single treasure is one in 3000";
+
+            break;
+
+        case 4:
+            let name = localStorage.getItem('UserName');
+
+            name ? random_loadingText.textContent = `Hello ${name}! Did you already see sunlight today?` : random_loadingText.textContent = `Play the online mode or touch grass...`;
+
+            break;
+        case 5:
+            random_loadingText.textContent = "Requesting shit from server...";
+
+            break;
+    };
+};
+rnd_loadingText();
+
+// start of loading screen
+// several things that load in the app gives progress points
+let loading_progress = 0;
+const loadingScreenFunc = () => { // starting value of progress is 10 because head info loaded
+    // when DOM loaded => extra progress points
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            loading_progress = loading_progress + 65;
+            loadingGame_ProcentDisplay.textContent = `${loading_progress}%`;
+            loading_fill.style.width = `${loading_progress}%`;
+        }, 10);
+    });
+
+    // when the function finished, it returns 24 points for the progress
+    let AppLoaded_progressPoints = AppInit();
+
+    // general stuff loaded
+    loading_progress = loading_progress + AppLoaded_progressPoints;
+    loadingGame_ProcentDisplay.textContent = `${loading_progress}%`;
+    loading_fill.style.width = `${loading_progress}%`;
+
+    // try to connect to server 
+    try {
+        socket = io('http://localhost:3000', {
+            // path: "https://complextoeserveradmin.onrender.com",
+            // transports: ['websocket'],
+        });
+        window.socket = socket;
+
+        socket.on('connect', () => {
+            console.log('connected!  ' + socket.id);
+        });
+
+        loading_progress = loading_progress + 1;
+        loadingGame_ProcentDisplay.textContent = `${loading_progress}%`;
+        loading_fill.style.width = `${loading_progress}%`;
+
+    } catch (error) { // error example: no internet
+        console.log("error: ", error);
+
+        DarkLayer.style.display = "block";
+        alertPopUp.style.display = "flex";
+        AlertText.textContent = "It looks like you're offline! Try to reconnect.";
+
+    } finally {
+        // finally: check constantly if loading progress finished
+        checkLoadingProgress(loading_progress)
+    };
+};
+
+// check constantly if loading progress finished
+function checkLoadingProgress() {
+    if (loading_progress >= 100) {
+        loadingScreen.style.display = "none";
+        // start background music
+        CreateMusicBars(audio);
+    } else {
+        setTimeout(() => {
+            checkLoadingProgress();
+        }, 1000);
+    };
+};
+
+// loads several dom head information dynamically
+(function loadToHead() {
+    try {
+        let head = document.querySelector('head');
+        let script_fontawesome = document.createElement('script');
+        let fonts_googleapis = document.createElement('link');
+        let fonts_gstatic = document.createElement('link');
+        let fonts_googleapis2 = document.createElement('link');
+        let fonts_gstatic2 = document.createElement('link');
+        let link_googleFont1 = document.createElement('link');
+        let link_googleFont2 = document.createElement('link');
+
+        // font awesome script
+        script_fontawesome.src = "https://kit.fontawesome.com/8f7afdedcd.js";
+        script_fontawesome.setAttribute("crossorigin", "anonymous");
+        // google fonts tag 1
+        fonts_googleapis.href = "https://fonts.googleapis.com";
+        fonts_googleapis.rel = "preconnect";
+        // google fonts tag 2
+        fonts_gstatic.href = "https://fonts.gstatic.com";
+        fonts_gstatic.setAttribute("crossorigin", true);
+        // google fonts tag 3
+        fonts_googleapis2.href = "https://fonts.googleapis.com";
+        fonts_googleapis2.rel = "preconnect";
+        // google fonts tag 4
+        fonts_googleapis.href = "https://fonts.googleapis.com";
+        fonts_googleapis.rel = "preconnect";
+        // google fonts tag 5
+        fonts_gstatic2.href = "https://fonts.gstatic.com";
+        fonts_gstatic2.setAttribute("crossorigin", true);
+        // font link 1 google
+        link_googleFont1.href = "https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
+        link_googleFont1.rel = "stylesheet";
+        // font link 1 google
+        link_googleFont2.href = "https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
+        link_googleFont2.rel = "stylesheet";
+
+        head.appendChild(script_fontawesome);
+        head.appendChild(fonts_googleapis);
+        head.appendChild(fonts_gstatic);
+        head.appendChild(fonts_googleapis2);
+        head.appendChild(fonts_gstatic2);
+        head.appendChild(link_googleFont2);
+        head.appendChild(link_googleFont1);
+
+        // when everything loaded to DOM => load things in loading screen
+        loading_progress = loading_progress + 24;
+        loadingScreenFunc();
+
+    } catch (error) {
+        console.log("error: " + error)
+
+        DarkLayer.style.display = "block";
+        alertPopUp.style.display = "flex";
+        AlertText.textContent = "It looks like you're offline! Try to reconnect.";
+
+        loadingScreenFunc();
+    };
+})();
 
 // app initialization and code --------------
-(function AppInit() {
+function AppInit() {
     ini_LightDark_Mode();
     // local storage properties
     ElO_Points();
@@ -475,7 +686,9 @@ window.socket = socket;
     ComputerFriend_Card_DescriptionDisplay.textContent = GameMode[3].description;
 
     checkForSettings();
-})();
+
+    return 10;
+};
 
 // create 40x40 mini-board for lobby preview
 function create40x40_LobbyPreview() {
@@ -763,22 +976,22 @@ function UserOfflineData() {
 function checkForSettings() {
     // check for the settings
     if (localStorage.getItem('sett-DarkMode')) {
-        console.log(localStorage.getItem('sett-DarkMode'));
+        // console.log(localStorage.getItem('sett-DarkMode'));
     };
     if (localStorage.getItem('sett-RoundEdges')) {
-        console.log(localStorage.getItem('sett-RoundEdges'));
+        // console.log(localStorage.getItem('sett-RoundEdges'));
     };
     if (localStorage.getItem('sett-Secret')) {
-        console.log(localStorage.getItem('sett-Secret'));
+        // console.log(localStorage.getItem('sett-Secret'));
     };
     if (localStorage.getItem('sett-ShowPing')) {
-        console.log(localStorage.getItem('sett-ShowPing'));
+        // console.log(localStorage.getItem('sett-ShowPing'));
     };
     if (localStorage.getItem('ELO')) {
-        console.log(localStorage.getItem('ELO'));
+        // console.log(localStorage.getItem('ELO'));
     };
     if (localStorage.getItem('onlineMatches-won')) {
-        console.log(localStorage.getItem('onlineMatches-won'));
+        // console.log(localStorage.getItem('onlineMatches-won'));
     };
 };
 
@@ -854,6 +1067,7 @@ fieldsArea_back_btn.addEventListener('click', () => {
 gameMode_KI_card.addEventListener('click', () => {
     curr_mode = GameMode[1].opponent;
     lobbyHeader.style.borderBottom = 'none';
+    goToAdvancedFields.style.display = 'none';
 
     // visibility for Ki Fields and GameMode fields
     ThreexThree_Field.style.display = 'flex';
@@ -869,6 +1083,7 @@ gameMode_KI_card.addEventListener('click', () => {
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
     curr_mode = GameMode[2].opponent;
     lobbyHeader.style.borderBottom = 'none';
+    goToAdvancedFields.style.display = 'block';
 
     // visibility for Ki Fields and GameMode fields
     ThreexThree_Field.style.display = 'none';
@@ -884,6 +1099,7 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
 gameMode_OneVsOne_card.addEventListener('click', () => {
     curr_mode = GameMode[3].opponent;
     lobbyHeader.style.borderBottom = 'none';
+    goToAdvancedFields.style.display = 'block';
 
     // visibility for Ki Fields and GameMode fields
     ThreexThree_Field.style.display = 'none';
@@ -1175,8 +1391,15 @@ function UserCreateRoom() {
 
         let xyCell_Amount = Fields[fieldIndex].xyCellAmount;
 
+        if (localStorage.getItem('userInfoClass') == "empty") { // user doesn't use an advanced skin => everything's normal
+            curr_form1 = Player1_IconInput.value.toUpperCase();
+
+        } else { // user uses an advanced skin => change things
+            curr_form1 = "fontawesome"; // later it will check if it has this value and do the required things
+        };
+
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
-        socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, Player1_IconInput.value, fieldIndex, fieldTitle], message => {
+        socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle], message => {
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
             Lobby_GameCode_display.style.userSelect = 'text';
 
@@ -1196,7 +1419,6 @@ function UserCreateRoom() {
         // initialize game with the right values
         curr_name1 = Player1_NameInput.value;
         curr_name2 = Player2_NameInput.value;
-        curr_form1 = Player1_IconInput.value.toUpperCase();
         curr_form2 = Player2_IconInput.value.toUpperCase();
         curr_innerGameMode = Check[3]; // Inner Game
         curr_selected_PlayerClock = Check[2]; // Player Clock
@@ -1278,7 +1500,7 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
             curr_selected_PlayerClock = Check[2]; // Player Clock
 
             DarkLayer.style.display = 'none';
-            initializeGame(curr_field_ele);
+            initializeGame(curr_field_ele, undefined, undefined, JSON.parse(localStorage.getItem('unlocked_mapLevels'))[1][6]);
 
             // play theme music 
             PauseMusic();
@@ -1304,7 +1526,7 @@ SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
         curr_form1 = Your_IconInput.value;
         curr_form2 = 'O' // Bot        
 
-        initializeGame(curr_field_ele);
+        initializeGame(curr_field_ele, undefined, undefined, JSON.parse(localStorage.getItem('unlocked_mapLevels'))[1][6]);
 
         // play theme music 
         PauseMusic();
@@ -1348,20 +1570,50 @@ gameInfo_btn.addEventListener('click', () => {
     GameInfoPopUp.style.display = 'flex';
     GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
-    if (curr_field == 'Small Price') {
-        PatternGridThree.forEach(pattern => pattern.style.display = 'grid');
-        PatternGridFor.forEach(pattern => pattern.style.display = 'none');
-        PatternGridFive.forEach(pattern => pattern.style.display = 'none');
+    // not in advanture mode
+    if (!inAdvantureMode) {
+        if (curr_field == 'Small Price') {
+            PatternGridThree.forEach(pattern => pattern.style.display = 'grid');
+            PatternGridFor.forEach(pattern => pattern.style.display = 'none');
+            PatternGridFive.forEach(pattern => pattern.style.display = 'none');
 
-    } else if (curr_field == 'Thunder Advanture') {
-        PatternGridThree.forEach(pattern => pattern.style.display = 'none');
-        PatternGridFor.forEach(pattern => pattern.style.display = 'grid');
-        PatternGridFive.forEach(pattern => pattern.style.display = 'none');
+        } else if (curr_field == 'Thunder Advanture') {
+            PatternGridThree.forEach(pattern => pattern.style.display = 'none');
+            PatternGridFor.forEach(pattern => pattern.style.display = 'grid');
+            PatternGridFive.forEach(pattern => pattern.style.display = 'none');
 
-    } else {
+        } else {
+            PatternGridThree.forEach(pattern => pattern.style.display = 'none');
+            PatternGridFor.forEach(pattern => pattern.style.display = 'none');
+            PatternGridFive.forEach(pattern => pattern.style.display = 'grid');
+        };
+
+        // how to win text
+        HowToWinText.textContent = "Score more points than your opponent";
+
+    } else { // in advanture mode
+        // display for 5x5 fields and higher
         PatternGridThree.forEach(pattern => pattern.style.display = 'none');
         PatternGridFor.forEach(pattern => pattern.style.display = 'none');
         PatternGridFive.forEach(pattern => pattern.style.display = 'grid');
+
+        let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
+        let allowed_patterns = unlocked_mapLevels[current_selected_level][6]; // array
+        let Children = [...PatternGridFive];
+
+        for (let i = 0; i < Children.length; i++) {
+            const patt = Children[i];
+            let pattern_class = patt.classList[2];
+
+            if (allowed_patterns[i] == pattern_class) {
+                patt.style.display = 'grid';
+            } else {
+                patt.style.display = 'none';
+            };
+        };
+
+        // how to win text
+        HowToWinText.textContent = unlocked_mapLevels[current_selected_level][7][1];
     };
 });
 
@@ -1669,6 +1921,9 @@ function setUpOnlineGame(from) {
 
         // default data
         Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
+        if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
+            Player1_IconInput.style.color = "black";
+        };
 
         if (localStorage.getItem('UserName')) {
             Player1_NameInput.value = localStorage.getItem('UserName');
@@ -1744,44 +1999,71 @@ goToAdvancedFields.addEventListener('click', () => {
 
 let ContBtnCount = 0;
 animatedPopConBtn.addEventListener('click', () => {
-    playBtn_Audio_2();
-    if (ContBtnCount == 0) {
-        let TextHead = document.createElement("h2");
-        let newText = document.createTextNode("Each individual field has its own secret properties you have to discover... Will you survive?");
-        TextHead.classList.add("newText")
-        TextHead.appendChild(newText);
-        animatedPopMain.querySelectorAll("h2")[0].style.display = "none";
-        animatedPopMain.querySelectorAll("h2")[1].style.display = "none";
-        animatedPopMain.appendChild(TextHead);
-        ContBtnCount++;
+    if (!inAdvantureMode) {
+        playBtn_Audio_2();
+        if (ContBtnCount == 0) {
+            let TextHead = document.createElement("h2");
+            let newText = document.createTextNode("Each individual field has its own secret properties you have to discover... Will you survive?");
+            TextHead.classList.add("newText")
+            TextHead.appendChild(newText);
+            animatedPopMain.querySelectorAll("h2")[0].style.display = "none";
+            animatedPopMain.querySelectorAll("h2")[1].style.display = "none";
+            animatedPopMain.appendChild(TextHead);
+            ContBtnCount++;
 
-    } else if (ContBtnCount == 1) {
-        animatedPopMain.querySelector('.newText').textContent = "You entered boss mode!";
-        ContBtnCount++;
+        } else if (ContBtnCount == 1) {
+            animatedPopMain.querySelector('.newText').textContent = "You entered boss mode!";
+            ContBtnCount++;
 
-    } else if (ContBtnCount == 2) {
-        DarkLayer.style.display = 'none';
-        animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
-        animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
-        animatedPopMain.querySelector('.newText').remove();
-        animatedPopUp.style.display = 'none';
-        ContBtnCount = 0;
+        } else if (ContBtnCount == 2) {
+            DarkLayer.style.display = 'none';
+            animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
+            animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
+            animatedPopMain.querySelector('.newText').remove();
+            animatedPopUp.style.display = 'none';
+            ContBtnCount = 0;
 
-        // Check if player unlocked one of these fields
-        locked_25x25();
-        locked_30x30();
-        locked_40x40();
+            // Check if player unlocked one of these fields
+            locked_25x25();
+            locked_30x30();
+            locked_40x40();
+        };
+    } else { // player is in advanture mode => other speech bubbles
+        let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
+        let level_text = unlocked_mapLevels[current_selected_level][7];
+
+        playBtn_Audio_2();
+
+        if (ContBtnCount == 0) {
+            animatedPopMain.querySelector('.newText').textContent = level_text[1];
+            ContBtnCount++;
+
+        } else if (ContBtnCount == 1) {
+            animatedPopMain.querySelector('.newText').textContent = "Click on the help button in the top left corner to see more information.";
+            ContBtnCount++;
+
+        } else if (ContBtnCount == 2) {
+            DarkLayer.style.display = 'none';
+            animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
+            animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
+            animatedPopMain.querySelector('.newText').remove();
+            animatedPopUp.style.display = 'none';
+            ContBtnCount = 0;
+
+            // Check if player unlocked one of these fields
+            locked_25x25();
+            locked_30x30();
+            locked_40x40();
+        };
     };
 });
-
-let userIsEditingProfile = false;
 
 headerUserBtn.addEventListener('click', () => {
     DarkLayer.style.display = 'block';
     userInfoPopUp.style.display = 'flex';
     userInfoOnlineMatchesWon.textContent = JSON.parse(localStorage.getItem('onlineMatches-won'));
 
-    if (userIsEditingProfile || localStorage.getItem('UserIcon') != null) {
+    if (localStorage.getItem('UserIcon') != null) {
         editUserProfileBtn.style.display = 'initial';
     } else {
         editUserProfileBtn.style.display = 'none';
@@ -1812,96 +2094,208 @@ headerUserBtn.addEventListener('click', () => {
 });
 
 userInfoCloseBtn.addEventListener('click', () => {
-    if (!userIsEditingProfile) {
-        if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
-            localStorage.getItem('UserIcon') == null) {
+    if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
+        localStorage.getItem('UserIcon') == null) {
 
-            DarkLayer.style.display = 'none';
-            userInfoPopUp.style.display = 'none';
-            userInfoName.setAttribute('contenteditable', false);
-            userInfoIcon.setAttribute('contenteditable', false);
+        DarkLayer.style.display = 'none';
+        userInfoPopUp.style.display = 'none';
 
-            if (userInfoIcon.textContent !== "") {
-                localStorage.setItem('UserIcon', userInfoIcon.textContent);
-            };
+        if (userInfoIcon.textContent !== "") {
+            localStorage.setItem('UserIcon', userInfoIcon.textContent);
+        };
 
-            if (localStorage.getItem('UserIcon') != null) {
-                localStorage.setItem('UserName', userInfoName.textContent);
-            };
+        if (localStorage.getItem('UserIcon') != null) {
+            localStorage.setItem('UserName', userInfoName.textContent);
         };
     };
 });
 
 editUserProfileBtn.addEventListener('click', () => {
-    userInfoName.setAttribute('contenteditable', true);
-    userInfoIcon.setAttribute('contenteditable', true);
-
-    if (localStorage.getItem('userInfoClass') != "empty") {
-        userInfoIcon.classList.remove(userInfoIcon.classList[userInfoIcon.classList.length - 1]);
-        userInfoIcon.classList.remove(userInfoIcon.classList[userInfoIcon.classList.length - 1]);
-    };
-
-    userInfoName.focus();
-
-    userIsEditingProfile = true;
-    clickEnter_text.style.display = 'block';
+    UserGivesData_PopUp_name.style.display = "flex";
+    UserGivesData_NameInput.focus();
 });
 
 CreateOnlineProfileBtn.addEventListener('click', () => {
-    CreateOnlineProfileBtn.style.display = 'none';
-    UserInfoCont.style.display = 'flex';
+    UserGivesData_PopUp_name.style.display = "flex";
+    userInfoPopUp.style.display = "none";
+    UserGivesData_NameInput.focus();
+});
 
-    userIsEditingProfile = true;
-    clickEnter_text.style.display = 'block';
-    editUserProfileBtn.style.display = 'initial';
+// Input on user name
+UserGivesData_NameInput.addEventListener('keydown', e => {
+    const inputValue = e.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
-    userInfoName.setAttribute('contenteditable', true);
-    userInfoIcon.setAttribute('contenteditable', true);
-    userInfoName.focus();
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        e.target.value = validInput;
+    };
+
+    if (e.key === 'Enter') {
+        e.preventDefault();
+
+        if (UserGivesData_NameInput.value != "") {
+            UserGivesData_PopUp_name.style.display = "none";
+            UserGivesData_PopUp_icon.style.display = "flex";
+            UserGivesData_IconInput.focus();
+
+            userName = UserGivesData_NameInput.value;
+        };
+    };
+
+    if (e.which === 32) {
+        e.preventDefault();
+    };
+});
+
+// Input on user icon
+UserGivesData_IconInput.addEventListener('keydown', e => {
+    const inputValue = e.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        e.target.value = validInput;
+    };
+
+    if (e.key === 'Enter') {
+        e.preventDefault();
+
+        if (UserGivesData_IconInput.value != "") {
+            userIcon = UserGivesData_IconInput.value;
+
+            // store data in storage
+            submittedOfflineData();
+
+            // general stuff
+            UserGivesData_PopUp_icon.style.display = "none";
+            CreateOnlineProfileBtn.style.display = 'none';
+            userInfoPopUp.style.display = 'flex';
+            UserInfoCont.style.display = "flex";
+
+            clickEnter_text.style.display = 'none';
+            editUserProfileBtn.style.display = 'initial';
+        };
+    };
+
+    if (e.which === 32) {
+        e.preventDefault();
+    };
+});
+
+// user closes pop up and aborts giving data
+UserGivesData_closeBtn_NAME.addEventListener('click', () => { // for name
+    userName = "";
+    UserGivesData_NameInput.value = null;
+    UserGivesData_PopUp_name.style.display = "none";
+    DarkLayer.style.display = "none";
+});
+
+// for icon 
+UserGivesData_closeBtn_ICON.addEventListener('click', () => {
+    userIcon = "";
+    UserGivesData_NameInput.value = null;
+    UserGivesData_IconInput.value = null;
+    UserGivesData_PopUp_icon.style.display = "none";
+    DarkLayer.style.display = "none";
 });
 
 // user submits his simple offline data
 function submittedOfflineData() {
-    let userName = userInfoName.textContent;
-    let userIcon = userInfoIcon.textContent;
-
     localStorage.setItem('UserName', userName);
     localStorage.setItem('UserIcon', userIcon);
 
-    userInfoName.setAttribute('contenteditable', false);
-    userInfoIcon.setAttribute('contenteditable', false);
-    DarkLayer.style.display = 'none';
-    userInfoPopUp.style.display = 'none';
+    userInfoName.textContent = localStorage.getItem('UserName');
+
+    // user uses just a skin color
+    if (localStorage.getItem(`userInfoClass`) == "empty") {
+
+        userInfoIcon.textContent = localStorage.getItem('UserIcon');
+    } else { // user uses an advanced skin => do nothing
+        return
+    };
 };
 
 // floating element over the screen
-function ItemAnimation(item) {
+function ItemAnimation(item, destination_position, fromMap, mapItem) {
+    // position of treasure
+    let rect
+    if (!fromMap) {
+        rect = treasureIcon.getBoundingClientRect(); // lobby treasure
+    } else {
+        rect = mapItem.getBoundingClientRect();
+    };
+
     let div = document.createElement('div');
     let i = document.createElement('i');
-    div.classList = 'floating-item';
-    i.classList = item;
 
-    if (item == 'fa-solid fa-gem') {
-        div.style.animation = "gem 1s ease";
-        let Gems = parseInt(localStorage.getItem('GemsItem'));
-        Gems++;
-        localStorage.setItem('GemsItem', Gems);
-        gemsIcon.textContent = Gems;
-
-    } else if (item == 'fa-solid fa-x') {
-        div.style.animation = "x 1s ease";
-        let Xi = parseInt(localStorage.getItem('ItemX'));
-        Xi++;
-        localStorage.setItem('ItemX', Xi);
-        Xicon.textContent = Xi;
-    };
+    div.classList += 'floating-item';
+    i.classList += item;
+    div.style.transition = "transform 350ms linear, opacity 50ms linear";
+    div.style.top = rect.top + "px";
+    div.style.left = rect.left + "px";
+    div.style.opacity = "0"
 
     div.appendChild(i);
     document.body.appendChild(div);
 
     setTimeout(() => {
-        div.remove();
-    }, 1000);
+        if (item == 'fa-solid fa-gem') {
+            div.style.transform = `translateX(-${rect.right - destination_position.left}px)`;
+            div.style.opacity = "1";
+
+            // save in storage and parse in html
+            let Gems = parseInt(localStorage.getItem('GemsItem'));
+            Gems = Gems + 2;
+            localStorage.setItem('GemsItem', Gems);
+            gemsIcon.textContent = Gems;
+
+            // remove item from html so it looks better
+            setTimeout(() => {
+                div.remove();
+            }, 350);
+
+        } else if (item == 'fa-solid fa-x') {
+            div.style.transform = `translateX(-${rect.right - destination_position.left}px)`;
+            div.style.opacity = "1";
+
+            // save in storage and parse in html
+            let Xi = parseInt(localStorage.getItem('ItemX'));
+            Xi++;
+            localStorage.setItem('ItemX', Xi);
+            Xicon.textContent = Xi;
+
+            // remove item from html so it looks better
+            setTimeout(() => {
+                div.remove();
+            }, 350);
+
+        } else if (item == 'fa-solid fa-key') {
+
+            div.style.transform = `translate(calc(-${(rect.right - destination_position.right)}px + 100%), -${rect.top - destination_position.top}px)`;
+            div.style.opacity = "1";
+
+            // save in storage and parse in html
+            let KeyItem = parseInt(localStorage.getItem('keys'));
+            KeyItem++;
+            localStorage.setItem('keys', KeyItem);
+
+            // alter opacity so it looks better
+            setTimeout(() => {
+                div.style.opacity = "0.5";
+            }, 200);
+            // remove item from html so it looks better
+            setTimeout(() => {
+                div.remove();
+            }, 350);
+
+            // Player gains keys
+            mapKey.style.animation = "increase-item-value ease-in-out 1s";
+            // localstorage things
+            mapKeyValueDisplay.textContent = localStorage.getItem('keys');
+            KEYicon.textContent = localStorage.getItem('keys');
+        };
+    }, 10);
 
     playBtn_Audio_2();
 };
@@ -1934,65 +2328,4 @@ tradeX_ConfirmBtn.addEventListener('click', () => {
 
     DarkLayer.style.display = 'none';
     tradeX_PopUp.style.display = 'none';
-});
-
-// planet
-planet.addEventListener('click', () => {
-    // sound
-    playBtn_Audio_2();
-
-    // style animation
-    DarkLayer.style.backgroundColor = 'black';
-    DarkLayer.style.display = 'block';
-    DarkLayer.style.transition = 'opacity 0.1s ease-in';
-    DarkLayer.style.opacity = '0';
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '1';
-        setTimeout(() => {
-            AdvantureMap.style.display = 'flex';
-            gameModeCards_Div.style.display = 'none';
-        }, 100);
-    }, 100);
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '0';
-
-        setTimeout(() => {
-            DarkLayer.style.display = 'none';
-            DarkLayer.style.transition = 'none';
-            DarkLayer.style.opacity = '1';
-            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-        }, 400);
-    }, 400);
-});
-
-AdvantureMapBackbtn.addEventListener('click', () => {
-    // sound
-    playBtn_Audio_2();
-
-    // style animation
-    DarkLayer.style.backgroundColor = 'black';
-    DarkLayer.style.display = 'block';
-    DarkLayer.style.transition = 'opacity 0.1s ease-in';
-    DarkLayer.style.opacity = '0';
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '1';
-        setTimeout(() => {
-            AdvantureMap.style.display = 'none';
-            gameModeCards_Div.style.display = 'flex';
-        }, 100);
-    }, 100);
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '0';
-
-        setTimeout(() => {
-            DarkLayer.style.display = 'none';
-            DarkLayer.style.transition = 'none';
-            DarkLayer.style.opacity = '1';
-            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-        }, 400);
-    }, 400);
 });

@@ -1,8 +1,4 @@
 // background music
-window.addEventListener("DOMContentLoaded", event => {
-    CreateMusicBars(audio);
-});
-
 let globalAudio;
 
 function CreateMusicBars(Audio) {
@@ -11,7 +7,20 @@ function CreateMusicBars(Audio) {
     let analyser = null;
 
     globalAudio = Audio;
-    globalAudio.volume = appVolume;
+
+    // volume animation
+    globalAudio.volume = 0;
+    count = 10
+    let volumeInterval = setInterval(() => {
+        globalAudio.volume = appVolume / count;
+
+        count = count - 2;
+        if (count <= 0) {
+            clearInterval(volumeInterval);
+            volumeInterval = null;
+        };
+    }, 100);
+
     globalAudio.loop = true;
     globalAudio.play();
 
@@ -90,6 +99,10 @@ function PauseMusic() {
     Ground_destroyer_Theme.pause();
     audio.pause();
     boss_theme.pause();
+    mapSound.pause();
+    theEye_theme.pause();
+    default_MapLevel_theme.pause();
+    default_MapLevel_theme2.pause();
 
     Quick_death_Theme.currentTime = 0;
     March_into_fire_Theme.currentTime = 0;
@@ -100,6 +113,10 @@ function PauseMusic() {
     Ground_destroyer_Theme.currentTime = 0;
     boss_theme.currentTime = 0;
     audio.currentTime = 0;
+    mapSound.currentTime = 0;
+    theEye_theme.currentTime = 0;
+    default_MapLevel_theme.currentTime = 0;
+    default_MapLevel_theme2.currentTime = 0;
 };
 
 function playGameTheme() {
@@ -116,4 +133,12 @@ function playBossTheme() {
     boss_theme.play();
     globalAudio = boss_theme;
     CreateMusicBars(boss_theme);
+};
+
+function playMapTheme() {
+    PauseMusic();
+    mapSound.volume = 0.075;
+    mapSound.play();
+    globalAudio = mapSound;
+    CreateMusicBars(mapSound);
 };

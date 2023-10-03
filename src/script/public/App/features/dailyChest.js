@@ -38,6 +38,10 @@ function getRandomNumber(min, max) {
 
 // user opens the treasure
 function openTreasure() {
+    // position of x-icon
+    let positionOf_XIcon = Xicon.getBoundingClientRect();
+    let positionOf_GemIcon = gemsIcon.getBoundingClientRect();
+
     localStorage.setItem('treasureIsAvailible', false);
 
     treasureIcon.style.animation = "none";
@@ -45,20 +49,33 @@ function openTreasure() {
     // The probability the earn x is 1/10 
     // All the other times the player gets diamants
     const isXRare = getRandomNumber(1, 11) === 1;
+    const SuperRare = getRandomNumber(1, 3000) === 3000;
 
-    if (isXRare) {
+    // player gains 10 X which is incredible
+    if (SuperRare) {
+        // Spieler gains diamants
+        let counter = 0;
+        let count = setInterval(() => {
+            counter++;
+            if (counter >= 10) {
+                clearInterval(count);
+            };
+            ItemAnimation('fa-solid fa-x', positionOf_XIcon);
+        }, 50);
+
+    } else if (isXRare && !SuperRare) {
         // Player gains X
-        ItemAnimation('fa-solid fa-x');
+        ItemAnimation('fa-solid fa-x', positionOf_XIcon);
 
     } else {
         // Spieler gains diamants
         let counter = 0;
         let count = setInterval(() => {
             counter++;
-            if (counter >= 50) {
+            if (counter >= 25) {
                 clearInterval(count);
             };
-            ItemAnimation('fa-solid fa-gem');
+            ItemAnimation('fa-solid fa-gem', positionOf_GemIcon);
         }, 50);
     };
 

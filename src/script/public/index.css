@@ -58,6 +58,10 @@ ul {
     padding: 0;
 }
 
+img {
+    pointer-events: none;
+}
+
 ::-webkit-scrollbar {
     width: 0;
 }
@@ -161,6 +165,7 @@ ul {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    margin: 0 0 0 0;
 }
 
 .game-status {
@@ -272,6 +277,10 @@ ul {
 .death-cell {
     background-color: var(--font-color);
     transition: background-color 1.5s ease-in-out;
+}
+
+.death-cell:hover {
+    cursor: default;
 }
 
 .GameArea-HeaderNav-Item {
@@ -1148,7 +1157,7 @@ ul {
 #settings-close-btn {
     font-size: 24px;
     transition: all 0.1s ease-out;
-    margin: 0.69em 0.57em 1.8em 0;
+    margin: 0 1em 0 0;
 }
 
 #settings-close-btn:hover {
@@ -1588,7 +1597,7 @@ label h3 {
 .Pattern-Div {
     height: 30%;
     width: 100%;
-    border-top: 2px solid;
+    /* border-top: 2px solid; */
     padding: 15px;
 }
 
@@ -1613,6 +1622,12 @@ label h3 {
 .PatternGrid-Five {
     display: none;
     grid-template-columns: repeat(5, auto);
+}
+
+.HowToWinContainer {
+    font-size: 25px;
+    padding: 20px 0 30px 0;
+    border-bottom: 2px solid var(--font-color);
 }
 
 
@@ -2183,6 +2198,8 @@ label h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--font-color);
 }
 
 .userInfo-main {
@@ -2192,6 +2209,12 @@ label h3 {
     justify-content: center;
     align-items: center;
     font-size: 25px;
+}
+
+.UpdateUserData-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .userInfo-footer {
@@ -2241,7 +2264,6 @@ label h3 {
 }
 
 .CreateOnlineProfile-btn {
-    margin: 0 1.5em 1em 0;
     border: 2px solid black;
     border-radius: 30px;
     padding: 25px;
@@ -2254,12 +2276,86 @@ label h3 {
 .CreateOnlineProfile-btn:hover {
     color: var(--hover-item);
     border: 2px solid var(--hover-item);
-    padding: 13px;
+    padding: 18px;
 }
 
 .userInfoEditable {
     outline: none;
     border: none;
+}
+
+
+/* user gives data pop up */
+
+.UserGivesData_PopUp {
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    display: none;
+    border-radius: 30px;
+    border: 2px solid var(--font-color);
+    width: 25%;
+    height: 25%;
+    background-color: var(--bg-app-color);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    z-index: 10001;
+    color: var(--font-color);
+}
+
+.UserGivesData_header {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--font-color);
+    padding-bottom: 10px;
+}
+
+.UserGivesData_main {
+    height: 85%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.UserGivesData_footer {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.UserGivesData_closeBtn {
+    cursor: pointer;
+    margin: 0 0.25em 0 0;
+    transition: color 0.1s ease-out;
+    font-size: 18px;
+}
+
+.UserGivesData_closeBtn:hover {
+    color: var(--hover-item);
+    transition: color 0.1s ease-out;
+}
+
+.UserGivesData_Input {
+    outline: none;
+    font-size: 25px;
+    border-radius: 20px;
+    font-weight: 500;
+    height: 20%;
+    width: 80%;
+    text-align: center;
 }
 
 
@@ -2334,11 +2430,21 @@ label h3 {
 
 .floating-item {
     position: absolute;
-    top: 11%;
-    right: 8%;
-    z-index: 10001;
+    z-index: 90301;
     color: var(--font-color);
     font-size: 24px;
+}
+
+
+/* appearing item */
+
+.appearing-item {
+    position: absolute;
+    /* top: ;
+    right: ; */
+    z-index: 10001;
+    color: var(--font-color);
+    font-size: 3vh;
 }
 
 
@@ -2606,9 +2712,156 @@ label h3 {
 /* game eye */
 
 .eye {
-    font-size: 130px;
+    font-size: 20px;
     display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1em;
     animation: floating-el 3.5s ease-in-out infinite;
+    z-index: 500;
+}
+
+.eyeIMG {
+    transition: all 0.2s ease-in-out;
+    width: 400px;
+    height: 400px;
+    color: var(--font-color);
+}
+
+.eyeLifeBar {
+    width: 300px !important;
+}
+
+.eyeIMG_container {
+    transition: all 1s ease-out;
+}
+
+.eyeIMG_container:hover {
+    cursor: pointer;
+}
+
+.eyeBar_fill {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    border-radius: 20px;
+    background-color: var(--font-color);
+}
+
+.eyeBar_fill2 {
+    width: 0;
+    height: 100%;
+    position: absolute;
+    background-color: var(--bg-app-color);
+    top: 0;
+    right: 0;
+    z-index: 10010;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.eyeDamageDisplay {
+    display: block;
+    color: var(--font-color);
+    position: absolute;
+    bottom: 70%;
+    animation: flying_text 2s ease-out;
+}
+
+
+/* eye attacks */
+
+.eye_attckingBeam {
+    display: none;
+    position: absolute;
+    margin: auto 0 auto auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 50%;
+    z-index: 400;
+    background-color: var(--font-color);
+    width: 90vh;
+    height: 10vh;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+
+/* game sun */
+
+.sun {
+    font-size: 20px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1em;
+    animation: floating-el 3.5s ease-in-out infinite;
+    z-index: 500;
+}
+
+.sunIMG {
+    transition: all 0.2s ease-in-out;
+    width: 400px;
+    height: 400px;
+    color: var(--font-color);
+}
+
+.sunLifeBar {
+    width: 300px !important;
+}
+
+.sunIMG_container {
+    transition: all 1s ease-out;
+}
+
+.sunIMG_container:hover {
+    cursor: pointer;
+}
+
+.sunBar_fill {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    border-radius: 20px;
+    background-color: var(--font-color);
+}
+
+.sunBar_fill2 {
+    width: 0;
+    height: 100%;
+    position: absolute;
+    background-color: var(--bg-app-color);
+    top: 0;
+    right: 0;
+    z-index: 10010;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+
+/* eye attacks */
+
+.sun_attckingBeam {
+    display: none;
+    position: absolute;
+    margin: auto 0 auto auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 50%;
+    z-index: 400;
+    background-color: var(--font-color);
+    width: 90vh;
+    height: 10vh;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
 }
 
 
@@ -2709,11 +2962,13 @@ label h3 {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 0.4em;
     align-items: center;
 }
 
 #AdvantureMap-Backbtn {
+    font-size: 27.5px;
     transition: all 0.2s ease-out;
     cursor: pointer;
 }
@@ -2739,6 +2994,8 @@ label h3 {
 }
 
 .mapLevel_Btn {
+    width: 2.5%;
+    height: 2.5%;
     transition: all 0.2s ease-out;
     font-size: 2.7vh;
     cursor: pointer;
@@ -2763,8 +3020,346 @@ label h3 {
     align-items: center;
 }
 
+.mapItem {
+    font-size: 4.5vh;
+    cursor: pointer;
+}
+
+.mapItemIMG {
+    width: 2.5%;
+    height: 2.5%;
+}
+
+
+/* map level info pop up */
+
+.mapLevelOverview {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    z-index: 10000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto auto auto auto;
+    width: 60%;
+    height: 60%;
+    border: 3px solid var(--font-color);
+    border-radius: 40px;
+    background-color: var(--bg-app-color);
+    color: var(--font-color);
+}
+
+.mapLevelDisplay-header {
+    height: 10%;
+    width: 100%;
+    border-bottom: 2px solid var(--font-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mapLevelDisplay-header-innerWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    font-size: 24px;
+    padding: 0 1em 0 1em;
+}
+
+.mapLevel-title {
+    font-size: 25px;
+}
+
+.closeMapLevelOverviewBtn {
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+}
+
+.closeMapLevelOverviewBtn:hover {
+    transition: all 0.2s ease-out;
+    color: var(--hover-item);
+}
+
+.mapLevelDisplay-main {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mapLevelDisplay-mainInnerWrapper {
+    display: flex;
+    padding: 1em 0.5em 0.5em 0.5em;
+    font-size: 26px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+}
+
+.mapLevelDisplay-footer {
+    height: 10%;
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    align-self: end;
+}
+
+.startMapLevelBtn {
+    z-index: 10000;
+    height: 65%;
+    width: 35%;
+    margin: 0 1em 0 0;
+    border-radius: 15px;
+    outline: none;
+    border: 2.5px solid;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0.75em 0.5em 0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    transition: all 0.2s ease-out;
+    align-items: center;
+}
+
+.startMapLevelBtn:hover {
+    transition: all 0.2s ease-out;
+    color: var(--hover-item);
+}
+
+.MapLevelPreview_UserData {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+    width: 100%;
+    height: 100%;
+    border-right: solid 2px var(--font-color);
+}
+
+.MapLevelPreview_LevelData {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 0 0 0 1em;
+}
+
+#MapLevel_NameInput {
+    height: 25px;
+    width: 200px;
+}
+
+#MapLevel_IconInput {
+    height: 25px;
+    width: 200px;
+}
+
+.MapLevelPreview_LevelDataList li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.3em;
+}
+
+.mapLevel_column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: start !important;
+    gap: 0.1em !important;
+    text-align: start;
+}
+
+.mapLevel_column_text {
+    margin: 0 0 0 1em;
+}
+
+.difficulty-bar {
+    width: 200px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    position: relative;
+    margin: 10px 2px;
+    border: 3px solid rgb(139, 139, 139);
+    border-radius: 20px;
+    outline: none;
+}
+
+.fill {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    border-radius: 20px;
+    background: linear-gradient(to right, rgb(3, 155, 0), rgb(200, 255, 0), rgb(255, 95, 0));
+}
+
+.fill2 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--bg-app-color);
+    top: 0;
+    right: 0;
+    z-index: 10010;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+
+/* background map icons */
+
+.BG_mapIcons {
+    position: absolute;
+}
+
+.BGICON_1 {
+    top: 50%;
+    right: 70%;
+}
+
+.BGICON_2 {
+    top: 25%;
+    right: 45%;
+    font-size: 50px;
+    color: rgba(255, 255, 255, 0.01);
+}
+
+.BGICON_3 {
+    top: 55%;
+    right: 20%;
+}
+
+.BGICON_4 {
+    top: 0;
+    right: 80%;
+}
+
+.BGICON_5 {
+    top: 0;
+    right: 0;
+}
+
+.BGICON_6 {
+    top: 25%;
+    right: 64%;
+}
+
+.BG_LoadingScreen3 {
+    top: 70% !important;
+    right: -5% !important;
+}
+
+.BG_LoadingScreen1 {
+    top: 60% !important;
+    right: 76% !important;
+}
+
+
+/* loading screen */
+
+.loadingScreen {
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-app-color);
+    color: var(--font-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 499;
+}
+
+.loadScreen_main {
+    display: flex;
+    flex-direction: column;
+    font-size: 230px;
+    width: 90%;
+    height: 40%;
+    gap: 15px;
+}
+
+.LoadingScreenTitle {
+    font-weight: 300;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 14px;
+}
+
+.random_loadingText {
+    font-size: 16px;
+}
+
+.loadingGameBar {
+    width: 30%;
+    height: 5%;
+    border: 2px solid var(--font-color);
+    border-radius: 15px;
+    align-self: center;
+}
+
+.loading_fill {
+    border-radius: 15px;
+    width: 40%;
+    height: 100%;
+    background-color: white;
+}
+
+.loadingGame_ProcentDisplay {
+    font-size: 20px;
+}
+
 
 /* Animations */
+
+@keyframes flying_text {
+    0% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+}
+
+@keyframes increase-item-value {
+    0% {
+        font-size: 25px;
+        color: var(--font-color);
+    }
+    50% {
+        font-size: 27px;
+        color: rgb(25, 126, 25);
+    }
+    100% {
+        font-size: 25px;
+        color: var(--font-color);
+    }
+}
 
 @keyframes floating-el {
     0% {
@@ -2836,10 +3431,27 @@ label h3 {
     from {
         background-color: transparent;
         color: transparent;
+        opacity: 1;
+        border: 2px solid;
     }
     to {
         background-color: var(--font-color);
         color: var(--font-color);
+        opacity: 0.1;
+        border: 0px;
+    }
+}
+
+@keyframes destroyCell {
+    from {
+        background-color: transparent;
+        color: transparent;
+        opacity: 1;
+        border: 2px solid;
+    }
+    to {
+        opacity: 0;
+        border: 0px;
     }
 }
 
@@ -2924,6 +3536,102 @@ label h3 {
     }
 }
 
+@keyframes animated_popUp {
+    0% {
+        opacity: 0;
+        top: 100%;
+    }
+    5% {
+        opacity: 0.05;
+        top: 95%;
+    }
+    10% {
+        opacity: 0.1;
+        top: 90%;
+    }
+    15% {
+        opacity: 0.15;
+        top: 85%;
+    }
+    20% {
+        opacity: 0.2;
+        top: 80%;
+    }
+    25% {
+        opacity: 0.25;
+        top: 75%;
+    }
+    30% {
+        opacity: 0.3;
+        top: 70%;
+    }
+    35% {
+        opacity: 0.35;
+        top: 65%;
+    }
+    40% {
+        opacity: 0.4;
+        top: 60%;
+    }
+    45% {
+        opacity: 0.45;
+        top: 55%;
+    }
+    50% {
+        opacity: 0.5;
+        top: 50%;
+    }
+    55% {
+        opacity: 0.55;
+        top: 45%;
+    }
+    60% {
+        opacity: 0.6;
+        top: 40%;
+    }
+    65% {
+        opacity: 0.65;
+        top: 35%;
+    }
+    70% {
+        opacity: 0.7;
+        top: 30%;
+    }
+    75% {
+        opacity: 0.75;
+        top: 25%;
+    }
+    80% {
+        opacity: 0.8;
+        top: 20%;
+    }
+    85% {
+        opacity: 0.85;
+        top: 15%;
+    }
+    90% {
+        opacity: 0.9;
+        top: 10%;
+    }
+    95% {
+        opacity: 0.95;
+        top: 5%;
+    }
+    100% {
+        opacity: 1;
+        top: 0;
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 
 /* Mediq Querys */
 
@@ -2959,5 +3667,12 @@ label h3 {
     }
     .mapCircle {
         font-size: 1v;
+    }
+    .eyeIMG {
+        width: 200px;
+        height: 200px;
+    }
+    .loadScreen_main {
+        font-size: 140px;
     }
 }

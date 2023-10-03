@@ -79,7 +79,7 @@ function generateCell(index) {
 };
 
 // Generates an 2-dimensional array with all possible win combination for a 10x10 field
-function CreateWinConditions(NxN) {
+function CreateWinConditions(NxN, Allowed_Patterns) {
     WinConditions.length = 0;
 
     if (NxN == 5) {
@@ -92,13 +92,13 @@ function CreateWinConditions(NxN) {
         Create_15x15_WinCombis(); // use win comb algorithm executer from 15x15.js
 
     } else if (NxN == 20) {
-        Create_20x20_WinCombis(); // use win comb algorithm executer from 20x20.js
+        Create_20x20_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 20x20.js
 
     } else if (NxN == 25) {
-        Create_25x25_WinCombis(); // use win comb algorithm executer from 10x10.js
+        Create_25x25_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 10x10.js
 
     } else if (NxN == 30) {
-        Create_30x30_WinCombis(); // use win comb algorithm executer from 15x15.js
+        Create_30x30_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 15x15.js
 
     } else if (NxN == 40) {
         Create_40x40_WinCombis(); // use win comb algorithm executer from 20x20.js
@@ -112,12 +112,22 @@ function CreateWinConditions(NxN) {
 };
 
 // Create Options that are live in the game  
-function CreateOptions() {
+function CreateOptions(fromMap) {
     // reset 
     options.length = 0;
 
     // create
     options = Array(xCell_Amount * yCell_Amount).fill("");
+
+    // bug fix
+    if (fromMap == "fromMap") {
+        setTimeout(() => {
+            let cells = [...cellGrid.children];
+            cells.forEach(cell => {
+                cell.textContent = null;
+            });
+        }, 1000);
+    };
 };
 
 // Game Mode: Boneyard

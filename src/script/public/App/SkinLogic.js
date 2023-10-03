@@ -207,7 +207,6 @@ function colorSkin(UserIcon, iColor, iClass) {
         localStorage.setItem('UserIcon', UserIcon);
     };
 
-    console.log(iClass)
     localStorage.setItem('userInfoColor', iColor);
     localStorage.setItem('userInfoClass', iClass);
 };

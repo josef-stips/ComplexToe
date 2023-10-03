@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <title>ComplexToe</title>
-    <script src="https://kit.fontawesome.com/8f7afdedcd.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <!-- <script src="https://kit.fontawesome.com/8f7afdedcd.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
 
     <!-- server -->
     <link rel="stylesheet" href="index.css" />
@@ -22,43 +24,79 @@
     <audio id="Ground_destroyer_Theme" src="assets/Maps/Ground_destroyer.mp3"></audio>
     <audio id="Merciful_slaughter_Theme" src="assets/Maps/Merciful_slaughter.mp3"></audio>
     <audio id="Impossible_survival_Theme" src="assets/Maps/Impossible_survival.mp3"></audio>
+    <audio src="assets/map.mp3" id="mapSound"></audio>
+    <audio id="theEye_theme" src="assets/Maps/the_eye_theme.mp3"></audio>
+    <audio id="default_MapLevel_theme" src="assets/Maps/mapLevel_theme.mp3"></audio>
+    <audio id="default_MapLevel_theme2" src="assets/Maps/mapLevel_theme2.mp3"></audio>
+    <audio id="eye_attack_soundeffect" src="assets/eye_attack.mp3"></audio>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> -->
+
+    <script defer src="App/script.js"></script>
+    <script defer src="App/SkinLogic.js"></script>
+    <script defer src="App/features/dailyChest.js"></script>
+    <script defer src="App/features/AdvantureMap.js"></script>
+    <script defer src="App/features/eye.js"></script>
+    <script defer src="App/features/sun.js"></script>
+    <script defer src="Game/Game.js"></script>
+    <script defer src="./serverHandler.js"></script>
+    <script defer src="App/music.js"></script>
+    <script defer src="Game/CellGenerator.js"></script>
+    <script defer src="WinCombinations/5x5.js"></script>
+    <script defer src="WinCombinations/10x10.js"></script>
+    <script defer src="WinCombinations/15x15.js"></script>
+    <script defer src="WinCombinations/20x20.js"></script>
+    <script defer src="WinCombinations/25x25.js"></script>
+    <script defer src="WinCombinations/30x30.js"></script>
+    <script defer src="WinCombinations/40x40.js"></script>
+    <script defer src="WinCombinations/4x4.js"></script>
+    <script defer src="WinCombinations/3x3.js"></script>
+    <script defer src="Game/KI.js"></script>
+    <script defer src="App/MaxTextLength.js"></script>
+    <script defer src="App/input.js"></script>
 </head>
 
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-<script defer src="App/script.js"></script>
-<script defer src="App/SkinLogic.js"></script>
-<script defer src="App/features/dailyChest.js"></script>
-<script defer src="Game/Game.js"></script>
-<script defer src="./serverHandler.js"></script>
-<script defer src="App/music.js"></script>
-<script defer src="Game/CellGenerator.js"></script>
-<script defer src="WinCombinations/5x5.js"></script>
-<script defer src="WinCombinations/10x10.js"></script>
-<script defer src="WinCombinations/15x15.js"></script>
-<script defer src="WinCombinations/20x20.js"></script>
-<script defer src="WinCombinations/25x25.js"></script>
-<script defer src="WinCombinations/30x30.js"></script>
-<script defer src="WinCombinations/40x40.js"></script>
-<script defer src="WinCombinations/4x4.js"></script>
-<script defer src="WinCombinations/3x3.js"></script>
-<script defer src="Game/KI.js"></script>
-<script defer src="App/MaxTextLength.js"></script>
-<script defer src="App/input.js"></script>
-
 <body>
+    <!-- loading screen -->
+    <div class="loadingScreen">
+        <div class="loadScreen_main">
+            <div class="LoadingScreenTitle">
+                <span style="margin-top: -10px;font-size:larger;" class="titleLetter">C</span>
+                <span class="titleLetter">o</span>
+                <span style="margin-top: 0;" class="titleLetter">m</span>
+                <span style="margin-top: 0;" class="titleLetter">p</span>
+                <span style="margin-top: 0;" class="titleLetter">l</span>
+                <span style="margin-top: 0;" class="titleLetter">e</span>
+                <span style="margin-top: 0;" class="titleLetter">x</span>
+                <span style="margin-top: -10px;font-size: larger;" class="titleLetter">T</span>
+                <span style="margin-top: 0;" class="titleLetter">o</span>
+                <span style="margin-top: 0;" class="titleLetter">e</span>
+            </div>
+
+            <span class="random_loadingText"></span>
+            <div class="loadingGameBar">
+                <div class="loading_fill"></div>
+            </div>
+            <span class="loadingGame_ProcentDisplay">50%</span>
+        </div>
+
+        <!-- background icons -->
+        <img class="BG_mapIcons BGICON_1 BG_LoadingScreen1" src="assets/game/cave-entrance.svg" width="500" height="500">
+        <img class="BG_mapIcons BGICON_3 BG_LoadingScreen3" src="assets/game/BG_icon_2.svg" width="500" height="500">
+        <img class="BG_mapIcons BGICON_4" src="assets/game/BG_icon_3.svg" width="400" height="400">
+        <img class="BG_mapIcons BGICON_5" src="assets/game/BG_icon_4.svg" width="400" height="400">
+    </div>
+
     <!-- Lobby page -->
     <div class="Lobby">
         <div class="header-body">
             <header class="lobby-header">
                 <div class="ELO-Points-div">
                     <p class="ELO-Points-display"></p>
-                    <p class="ELO-Points-icon">🔱</p>
+                    <p class="ELO-Points-icon"><img style="margin: 5px 0 0 7px;" width="35" height="35" src="assets/game/crenel-crown.svg"></p>
                     <p class="ELO-Points-AddIcon"></p>
                 </div>
 
@@ -93,6 +131,10 @@
                             <div class="lobby-header-icon-innerWrapper">
                                 <i title="X" class="fa-solid fa-x XBtn"></i>
                                 <span class="x-icon">0</span>
+                            </div>
+                            <div class="lobby-header-icon-innerWrapper">
+                                <i title="key" class="fa-solid fa-key KeyBtn"></i>
+                                <span class="KEYicon">0</span>
                             </div>
                         </div>
 
@@ -1778,7 +1820,7 @@
                             <div class="card-header NxN-field-card-header">
                                 <div class="NxN-field-card-header-innerWrapper">
                                     <div class="field-card-circle">
-                                        <i class="fa-solid fa-eye field-card-header-icon"></i>
+                                        <i class="field-card-header-icon"><img style="margin-top: 7px;" width="40" height="40" src="./assets/game/semi-closed-eye.svg"></i>
                                     </div>
                                 </div>
                             </div>
@@ -1926,8 +1968,35 @@
 
                         <!-- #3 -->
                         <div class="Gamefield-sideCont">
+                            <!-- The eye -->
                             <div class="eye">
-                                <i class="fa-solid fa-eye"></i>
+                                <span class="eyeIMG_container"><img class="eyeIMG" width="400" height="400" src="./assets/game/semi-closed-eye.svg"></span>
+                                <div class="difficulty-bar eyeLifeBar">
+                                    <div class="eyeBar_fill"></div>
+                                    <div class="eyeBar_fill2"></div>
+                                </div>
+                                <span class="eyeLifeCounter"></span>
+                                <span class="eyeNextAttackTimer"></span>
+                            </div>
+
+                            <!-- eye attacks -->
+                            <div class="eye_attckingBeam">
+
+                            </div>
+
+                            <!-- The sun -->
+                            <div class="sun">
+                                <span class="sunIMG_container"><img class="sunIMG" width="400" height="400" src="./assets/game/pentagram-rose.svg"></span>
+                                <div class="difficulty-bar sunLifeBar">
+                                    <div class="sunBar_fill"></div>
+                                    <div class="sunBar_fill2"></div>
+                                </div>
+                                <span class="sunLifeCounter"></span>
+                            </div>
+
+                            <!-- sun attacks -->
+                            <div class="sun_attckingBeam">
+
                             </div>
                         </div>
 
@@ -1936,9 +2005,14 @@
 
             </div>
 
+            <!-- Advanture map scene -->
             <div class="AdvantureMap">
                 <div class="AdvantureMap-header">
                     <i id="AdvantureMap-Backbtn" class="fa-solid fa-arrow-left"></i>
+                    <div class="lobby-header-icon-innerWrapper">
+                        <i title="key" class="fa-solid fa-key KeyBtn mapKey"></i>
+                        <span class="KEYicon1">0</span>
+                    </div>
                 </div>
 
                 <div class="AdvantureMap-main">
@@ -1958,7 +2032,7 @@
                         <i style="margin-top:-55em ;" class="fa-solid fa-circle mapCircle"></i>
 
                         <!-- level 2 -->
-                        <i style="margin-top:-18em ;" level="2" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:-18em ;" level="2" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:-55em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-50em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-43em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -1974,7 +2048,7 @@
                         <i style="margin-top:45.5em ;" class="fa-solid fa-circle mapCircle"></i>
 
                         <!-- level 3 -->
-                        <i style="margin-top:16em ;" level="3" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:16em ;" level="3" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:45.5em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:38em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:30em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -1982,7 +2056,7 @@
                         <i style="margin-top:17em ;" class="fa-solid fa-circle mapCircle"></i>
 
                         <!-- level 4 -->
-                        <i style="margin-top:3.5em ;" level="4" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:3.5em ;" level="4" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:5em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-1em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-8em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -1990,7 +2064,7 @@
                         <i style="margin-top:-21em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-25em ;" class="fa-solid fa-circle mapCircle"></i>
                         <!-- level 5 -->
-                        <i style="margin-top:-9em ;" level="5" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:-9em ;" level="5" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:-25em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-17em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-7em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -1998,7 +2072,7 @@
                         <i style="margin-top:10em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:20em ;" class="fa-solid fa-circle mapCircle"></i>
                         <!-- level 6 -->
-                        <i style="margin-top:9em ;" level="6" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:9em ;" level="6" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:22em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top: 10em;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:0 ;" class="fa-solid fa-circle mapCircle"></i>
@@ -2010,7 +2084,7 @@
                         <i style="margin-top:-53em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-61em ;" class="fa-solid fa-circle mapCircle"></i>
                         <!-- level 7 -->
-                        <i style="margin-top:-20em ;" level="7" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:-20em ;" level="7" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:-62em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-54em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-46em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -2028,7 +2102,7 @@
                         <i style="margin-top:68em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:76em ;" class="fa-solid fa-circle mapCircle"></i>
                         <!-- level 8 -->
-                        <i style="margin-top:25em ;" level="8" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+                        <i style="margin-top:25em ;" level="8" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:76em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:68em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:59em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -2040,12 +2114,33 @@
                         <i style="margin-top: 0;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-10em ;" class="fa-solid fa-circle mapCircle"></i>
                         <!-- level 9 -->
-                        <i style="margin-top:-6em ;" level="9" class="fa-solid fa-dungeon mapLevel_Btn"></i>
+                        <i style="margin-top:-6em ;" level="9" class="mapLevel_Btn"><img src="./assets/game/fangs.svg"></i>
                         <i style="margin-top:-12em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top: -5em;" class="fa-solid fa-circle mapCircle"></i>
                         <!-- level 10 -->
-                        <i style="margin-top:0 ;font-size: 2.9vh;" level="10" class="fa-solid fa-eye mapLevel_Btn"></i>
+                        <i style="margin-top:0 ;font-size: 2.9vh;" level="10" class="mapLevel_Btn"><img src="./assets/game/fire-iris.svg"></i>
 
+                        <!-- absolute position items -->
+                        <i style="position: absolute;top: 70%;right: 93%;" class="mapItemIMG mapItem"><img src="./assets/game/bamboo-fountain.svg"></i>
+                        <i style="position: absolute;top: 40%;left: 20%;" class="mapItemIMG mapItem"><img src="./assets/game/pine-tree.svg"></i>
+                        <i style="position: absolute;top: 73%;right: 70%;" class="mapItemIMG mapItem"><img src="./assets/game/shiny-iris.svg"></i>
+                        <i style="position: absolute;top: 15%;right: 60%;" class="mapItemIMG mapItem"><img src="./assets/game/tribal-mask.svg"></i>
+                        <i style="position: absolute;top: 83%;right: 55%;" class="mapItemIMG mapItem"><img src="./assets/game/sunken-eye.svg"></i>
+                        <i style="position: absolute;top: 55%;left: 60%;" class="mapItem mapItemIMG"><img src="./assets/game/caldera.svg"></i>
+                        <i style="position: absolute;top: 88%;right: 25%;" class="mapItem mapItemIMG"><img src="./assets/game/lock-spy.svg"></i>
+                        <i style="position: absolute;top: 80%;right: 5%;" class="mapItemIMG mapItem"><img src="./assets/game/wolf-head.svg"></i>
+                        <i style="position: absolute;top: 15%;right: 15%;" class="mapItem mapItemIMG"><img src="./assets/game/willow-tree.svg"></i>
+
+                        <i style="position: absolute;top: 42%;right: 54%;" class="mapItem mapItemIMG"><img src="./assets/game/gluttonous-smile.svg"></i>
+                        <i style="position: absolute;top: 61%;right: 18%;" class="mapItem mapItemIMG"><img src="./assets/game/book-cover.svg"></i>
+
+                        <!-- background icons -->
+                        <img class="BG_mapIcons BGICON_1" src="assets/game/BG_icon_1.svg" width="500" height="500">
+                        <span class="BG_mapIcons BGICON_2">X</span>
+                        <img class="BG_mapIcons BGICON_3" src="assets/game/BG_icon_2.svg" width="400" height="400">
+                        <img class="BG_mapIcons BGICON_4" src="assets/game/BG_icon_3.svg" width="400" height="400">
+                        <img class="BG_mapIcons BGICON_5" src="assets/game/BG_icon_4.svg" width="400" height="400">
+                        <img class="BG_mapIcons BGICON_6" src="assets/game/BG_icon_5.svg" width="200" height="200">
                     </div>
                 </div>
                 <div class="AdvantureMap-footer">
@@ -2061,7 +2156,7 @@
             </div>
 
             <div class="lobby-footer-text">
-                🔱
+                <img src="assets/game/holy-grail.svg" width="35" height="35">
             </div>
 
             <div class="music-bars-2">
@@ -2134,8 +2229,8 @@
                     <label for="Player1_NameInput"><h3>Player Name</h3></label>
 
                     <div class="Player-NameInputArea IconSetArea">
-                        <input id="Player1_NameInput" class="SetPlayerName-input" placeholder="Player1" type="text" pattern="[a-zA-Z0-9]*">
-                        <input id="Player2_NameInput" class="SetPlayerName-input" placeholder="Player2" type="text" pattern="[a-zA-Z0-9]*">
+                        <input id="Player1_NameInput" class="SetPlayerName-input" placeholder="Player1" type="text">
+                        <input id="Player2_NameInput" class="SetPlayerName-input" placeholder="Player2" type="text">
 
                         <!-- if users current icon is not a letter -->
                         <div class="OnlineGame_NameWarnText">Choose a different name!</div>
@@ -2149,8 +2244,8 @@
                     <label for="Player1_IconInput"><h3>Player Icon</h3></label>
 
                     <div class="Player-IconSet-Area IconSetArea">
-                        <input id="Player1_IconInput" class="SetPlayerName-input" placeholder="Player1 Icon" type="text" pattern="[a-zA-Z0-9]*">
-                        <input id="Player2_IconInput" class="SetPlayerName-input" placeholder="Player2 Icon" type="text" pattern="[a-zA-Z0-9]*">
+                        <input id="Player1_IconInput" class="SetPlayerName-input" placeholder="Player1 Icon" type="text">
+                        <input id="Player2_IconInput" class="SetPlayerName-input" placeholder="Player2 Icon" type="text">
 
                         <span class="SkinInputDisplay">Your current selected skin <span class="SkinInputDisplay-skin"></span> is your icon.</span>
 
@@ -2290,7 +2385,12 @@
 
             <div class="GameInfo-Main">
                 <div class="GameInfo-AllowedPatterns">
-                    <h2>Allowed Patterns</h2>
+                    <h2 class="HowToWinDisplay">How to win</h2>
+                    <div class="HowToWinContainer">
+                        <span class="HowToWinText"></span>
+                    </div>
+
+                    <h2 style="margin-top: 1em;">Allowed Patterns</h2>
                     <div class="GameInfo-AllowedPatterns-Div">
 
                         <div class="KIMode-AllowedPatterns-Div Pattern-Div">
@@ -2423,7 +2523,7 @@
                                 </div>
 
                                 <!-- 5x5 Field and everything above -->
-                                <div class="horizontal-Pattern-Grid PatternGrid-Five">
+                                <div class="horizontal-Pattern-Grid PatternGrid-Five hor">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
@@ -2451,7 +2551,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="vertikal-Pattern-Grid PatternGrid-Five">
+                                <div class="vertikal-Pattern-Grid PatternGrid-Five vert">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -2479,7 +2579,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="diagonal-Pattern-Grid PatternGrid-Five">
+                                <div class="diagonal-Pattern-Grid PatternGrid-Five dia">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -2507,7 +2607,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="diagonal2-Pattern-Grid PatternGrid-Five">
+                                <div class="diagonal2-Pattern-Grid PatternGrid-Five dia2">
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -2535,91 +2635,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="Normal-L-Pattern-Grid PatternGrid-Five">
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                </div>
-
-                                <div class="Mirror-L-Pattern-Grid PatternGrid-Five">
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                </div>
-
-                                <div class="L3-diagonal-Pattern-Grid PatternGrid-Five">
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                </div>
-
-                                <div class="L4-Pattern-Grid PatternGrid-Five">
+                                <div class="L4-Pattern-Grid PatternGrid-Five L1">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -2647,8 +2663,92 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
+                                <div class="L3-diagonal-Pattern-Grid PatternGrid-Five L2">
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
 
-                                <div class="W1-Pattern-Grid PatternGrid-Five">
+                                <div class="Normal-L-Pattern-Grid PatternGrid-Five L3">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+                                <div class="Mirror-L-Pattern-Grid PatternGrid-Five L4">
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                </div>
+
+
+                                <div class="W1-Pattern-Grid PatternGrid-Five W1">
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
@@ -2676,7 +2776,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="W2-Pattern-Grid PatternGrid-Five">
+                                <div class="W2-Pattern-Grid PatternGrid-Five W2">
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini">X</div>
@@ -2704,7 +2804,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="W3-diagonal-Pattern-Grid PatternGrid-Five">
+                                <div class="W3-diagonal-Pattern-Grid PatternGrid-Five W3">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
@@ -2732,7 +2832,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="W4-diagonal-Pattern-Grid PatternGrid-Five">
+                                <div class="W4-diagonal-Pattern-Grid PatternGrid-Five W4">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -2760,7 +2860,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="Stern-diagonal-Grid PatternGrid-Five">
+                                <div class="Stern-diagonal-Grid PatternGrid-Five star">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini">X</div>
@@ -2788,7 +2888,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="diagonales-viereck-Pattern-Grid PatternGrid-Five">
+                                <div class="diagonales-viereck-Pattern-Grid PatternGrid-Five diamond">
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
@@ -2817,7 +2917,7 @@
                                 </div>
 
 
-                                <div class="ZweigOben-Pattern-Grid PatternGrid-Five">
+                                <div class="ZweigOben-Pattern-Grid PatternGrid-Five branch1">
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
@@ -2845,7 +2945,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="ZweigUnten-Pattern-Grid PatternGrid-Five">
+                                <div class="ZweigUnten-Pattern-Grid PatternGrid-Five branch2">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini">X</div>
@@ -2873,7 +2973,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="ZweigLinks-Pattern-Grid PatternGrid-Five">
+                                <div class="ZweigLinks-Pattern-Grid PatternGrid-Five branch3">
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -2901,7 +3001,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="ZweigRechts-Pattern-Grid PatternGrid-Five">
+                                <div class="ZweigRechts-Pattern-Grid PatternGrid-Five branch4">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -2929,7 +3029,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="BlockMitZweig-Pattern-Grid PatternGrid-Five">
+                                <div class="BlockMitZweig-Pattern-Grid PatternGrid-Five special1">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
@@ -2957,7 +3057,7 @@
                                     <div class="miniCellMini"></div>
                                 </div>
 
-                                <div class="BlockMitZweig-Pattern-Grid PatternGrid-Five">
+                                <div class="BlockMitZweig-Pattern-Grid PatternGrid-Five special2">
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini">X</div>
                                     <div class="miniCellMini"></div>
@@ -3192,13 +3292,47 @@
 
             <!-- if user data is not passed -->
             <div class="UpdateUserData-cont">
-                <button class="CreateOnlineProfile-btn">Create an offline profile</button>
+                <button class="CreateOnlineProfile-btn">Create a profile</button>
             </div>
         </div>
 
         <!-- footer -->
         <div class="userInfo-footer">
             <span class="clickEnter_text">Click Enter to submit</span>
+        </div>
+    </div>
+
+    <!-- user gives single data pop up NAME -->
+    <div class="UserGivesData_PopUp">
+        <div class="UserGivesData_header">
+            <div></div>
+            <h2>Type in a name</h2>
+            <i class="fa-solid fa-x UserGivesData_closeBtn" id="UserGivesData_closeBtn_NAME"></i>
+        </div>
+
+        <div class="UserGivesData_main">
+            <input class="UserGivesData_Input" type="text" id="UserGivesData_NameInput">
+        </div>
+
+        <div class="UserGivesData_footer">
+            <span>Click Enter to submit</span>
+        </div>
+    </div>
+
+    <!-- user gives single data pop up ICON -->
+    <div class="UserGivesData_PopUp">
+        <div class="UserGivesData_header">
+            <div></div>
+            <h2>Type in your favorite letter</h2>
+            <i class="fa-solid fa-x UserGivesData_closeBtn" id="UserGivesData_closeBtn_ICON"></i>
+        </div>
+
+        <div class="UserGivesData_main">
+            <input class="UserGivesData_Input" type="text" id="UserGivesData_IconInput">
+        </div>
+
+        <div class="UserGivesData_footer">
+            <span>Click Enter to submit</span>
         </div>
     </div>
 
@@ -3305,6 +3439,87 @@
         <div class="tradeX_main">
             <span>Do you want to trade 1 X with 5 Skill points?</span>
             <button class="tradeX_ConfirmBtn">confirm</button>
+        </div>
+    </div>
+
+    <!-- map level overview -->
+    <div class="mapLevelOverview">
+        <div class="mapLevelDisplay-header">
+            <div class="mapLevelDisplay-header-innerWrapper">
+                <i class="fa-solid fa-map"></i>
+                <h2 class="mapLevel-title"></h2>
+                <i class="fa-solid fa-x closeMapLevelOverviewBtn"></i>
+            </div>
+        </div>
+
+        <div class="mapLevelDisplay-main">
+            <div class="mapLevelDisplay-mainInnerWrapper">
+
+                <div class="MapLevelPreview_UserData">
+                    <label for="MapLevel_NameInput">Set your name</label>
+                    <input id="MapLevel_NameInput" class="SetPlayerName-input" placeholder="Your name" type="text">
+
+                    <label for="MapLevel_IconInput" id="MapLevel_SetIconLabel">Set your icon</label>
+                    <input id="MapLevel_IconInput" class="SetPlayerName-input" placeholder="Your icon" type="text">
+
+                    <span class="SkinInputDisplay">Your current selected skin <span class="SkinInputDisplay-skin"></span> is your icon.</span>
+
+                    <hr align="center" width="90%">
+
+                    <span class="mapLevel_ModeDisplay">Mode: ???</span>
+                </div>
+
+                <div class="MapLevelPreview_LevelData">
+                    <ul class="MapLevelPreview_LevelDataList">
+                        <li>
+                            <span>Difficulty</span>
+                            <i class="fa-solid fa-child"></i>
+                            <div class="difficulty-bar">
+                                <div class="fill"></div>
+                                <div class="fill2"></div>
+                            </div>
+                            <i class="fa-solid fa-skull"></i>
+                        </li>
+
+                        <li>
+                            <hr align="center" width="90%">
+                        </li>
+
+                        <li class="mapLevel_Description mapLevel_column">
+                            <span>Level describtion:</span>
+                            <span class="mapLevel_Description_Text mapLevel_column_text">
+                                
+                            </span>
+                        </li>
+
+                        <li>
+                            <hr align="center" width="90%">
+                        </li>
+
+                        <li class="mapLevel_AllowedPatterns mapLevel_column">
+                            <span>Allowed patterns:</span>
+                            <span class="mapLevel_AllowedPatterns_Text mapLevel_column_text">
+                                <!-- default text -->
+                                All patterns are allowed
+                            </span>
+                        </li>
+
+                        <li>
+                            <hr align="center" width="90%">
+                        </li>
+
+                        <li>
+                            <span>Level conquered:</span>
+                            <span class="conquered_MapLevel_Display"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="mapLevelDisplay-footer">
+            <div></div>
+            <button class="startMapLevelBtn">Try level</button>
         </div>
     </div>
 

@@ -131,6 +131,48 @@ input3.addEventListener('keydown', function(event) {
     };
 });
 
+MapLevel_NameInput.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+UserGivesData_NameInput.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
 icon_input1.addEventListener('keydown', function(event) {
     let len = event.target.value.trim().length;
     let hasSelection = false;
@@ -194,6 +236,48 @@ icon_input3.addEventListener('keydown', function(event) {
     };
 });
 
+MapLevel_IconInput.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxFormInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+UserGivesData_IconInput.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxFormInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
 userInfoEditable1.addEventListener('keydown', (event) => {
     let len = event.target.textContent.trim().length;
     let hasSelection = false;
@@ -212,39 +296,6 @@ userInfoEditable1.addEventListener('keydown', (event) => {
     if (len >= settings.maxInputLeng && !hasSelection) {
         event.preventDefault();
         return false;
-    };
-});
-
-userInfoEditable1.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-
-        if (userInfoEditable1.textContent != "") {
-            userInfoIcon.focus();
-        };
-    };
-
-    if (e.which === 32) {
-        e.preventDefault();
-    };
-});
-
-userInfoEditable2.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-
-        if (userInfoEditable2.textContent != "") {
-            submittedOfflineData();
-            userIsEditingProfile = false;
-            clickEnter_text.style.display = 'none';
-
-        } else {
-            userInfoName.focus();
-        };
-    };
-
-    if (e.which === 32) {
-        e.preventDefault();
     };
 });
 
@@ -267,4 +318,84 @@ userInfoEditable2.addEventListener('keydown', (event) => {
         event.preventDefault();
         return false;
     };
+});
+
+Player1_NameInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    }
+});
+
+Player2_NameInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    };
+});
+
+Player1_IconInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    }
+});
+
+Player2_IconInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    }
+});
+
+YourName_Input_KI_mode.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    }
+});
+
+Your_IconInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    }
+});
+
+UserGivesData_NameInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    };
+});
+
+UserGivesData_IconInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    }
 });
