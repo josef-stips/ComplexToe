@@ -24,13 +24,16 @@ socket.on("connect_error", (err) => {
     AlertText.textContent = "It looks like you're offline! Try to reconnect.";
 });
 
-// [The 'create_room', 'CONFIRM_enter_room' emit] There are (2) socket emits in script.js on "SetPlayerName_ConfirmButton", "click" Event
-
 // User wants to enter a room by the "enter game button" 
 // He first needs to set up ONLY HIS data. not for the game because he wants to enter an existing room
 // With this Event he confirms his data and it checks if the room he wrote, exists
 // If yes, he joins the room 
 EnterCodeName_ConfirmBtn.addEventListener('click', () => {
+    EnterCodeName();
+});
+
+// execute function enter code name through button click (code )
+function EnterCodeName() {
     if (EnterGameCode_Input.value != null && EnterGameCode_Input.value != '' && EnterGameCode_Input.value != undefined) {
         // server stuff
         console.log(EnterGameCode_Input.value.trim());
@@ -68,7 +71,7 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
                 LobbyUserFooterInfo.style.display = 'block';
                 // warn text 
                 OnlineGame_NameWarnText[0].style.display = 'none';
-                OnlineGame_NameWarnText[0].style.display = 'none';
+                OnlineGame_NameWarnText[1].style.display = 'none';
 
                 // for the user, the switch carets should not be visible
                 // cause he has no rights to do so
@@ -109,12 +112,15 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
             SkinInputDisplay.style.display = 'block';
 
             SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
+
+        } else { // player uses normal skin just with a color
+            Player1_IconInput.style.display = 'block';
         };
 
     } else {
         return
     };
-});
+};
 
 // if user is in the lobby and clicks the "x-icon" in the header of the pop up, he leaves the game 
 // the "user" parameter checks if the user was just a user or the creater of the game
@@ -160,7 +166,7 @@ SetPlayerNamesCloseBtn.addEventListener('click', () => {
     };
 });
 
-// Only the admin can start the game
+// Only the admin can start the game, only for the admin this button is visible
 Lobby_startGame_btn.addEventListener('click', () => {
     let fieldIndex = curr_field_ele.getAttribute('index');
     let xyAmount = Fields[fieldIndex].xyCellAmount; // 5, 10, 15, 20 ?
@@ -340,9 +346,8 @@ socket.on('Admin_Created_And_Joined', message => {
         };
 
     } else {
-        let skinIconCode = localStorage.getItem("userInfoClass");
         let span = document.createElement('span');
-        span.className = skinIconCode; // example: "fa-solid fa-chess-rook"
+        span.className = message[2]; // example: "fa-solid fa-chess-rook"
         span.classList.add("Temporary_IconSpan");
         Lobby_first_player.style.color = "white";
 
@@ -355,19 +360,44 @@ socket.on('Admin_Created_And_Joined', message => {
 
 // When the second player wants to join the game, all other players in the room needs to see this
 socket.on('SecondPlayer_Joined', message => {
-    Lobby_second_player.textContent = `${message[0]} - ${message[1].toUpperCase()}`; // set name of second player for all in the room
+    console.log(message)
+        // when it is not "empty" the player uses an advanced skin
+    if (message[2] != "empty") {
+        // create span element for second player where the advanced skin can be displayed
+        let span = document.createElement('span');
+        span.className = message[2]; // example: "fa-solid fa-chess-rook"
+        span.classList.add("Temporary_IconSpan2");
+        Lobby_second_player.style.color = "white";
+
+        // set name of second player for all in the room
+        personal_GameData.role == "user" ? Lobby_second_player.textContent = Lobby_second_player.textContent = `${message[0]} (You) - ` : Lobby_second_player.textContent = `${message[0]} - `;
+
+        Lobby_second_player.appendChild(span);
+
+
+    } else { // uses normal skin with color or just white color
+        personal_GameData.role == "user" ? Lobby_second_player.textContent = `${message[0]} (You) - ${message[1].toUpperCase()}` : Lobby_second_player.textContent = `${message[0]} - ${message[1].toUpperCase()}`;
+        // set name of second player for all in the room    
+        Lobby_second_player.style.color = message[3];
+
+        if (document.querySelector('.Temporary_IconSpan2')) {
+            document.querySelector('.Temporary_IconSpan2').remove();
+        };
+    };
 });
 
 // When the normal user leaves the game, the admin needs to be informed by that
 socket.on('INFORM_user_left_room', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
+    Lobby_second_player.style.color = "white";
 });
 
 // User just left the game but during a match
 socket.on('INFORM_user_left_game', () => {
     // The admin sees this after the user left:
     Lobby_second_player.textContent = 'waiting for second player..';
+    Lobby_second_player.style.color = "white";
 
     // clear timer and stuff to prevent bugs
     clearInterval(firstClock);
@@ -422,6 +452,14 @@ socket.on('StartGame', (RoomData) => { // RoomData
     OnlineGame_Lobby.style.display = 'none';
     DarkLayer.style.display = 'none';
 
+    // better user experience, you can call them bug fixes:
+    ChatMain.textContent = null;
+    openedChat = false;
+    recievedUnseenMessages = 0;
+    if (document.querySelector(".notification-icon")) {
+        document.querySelector(".notification-icon").remove();
+    };
+
     // clear timer and stuff to prevent bugs
     clearInterval(firstClock);
     clearInterval(secondClock);
@@ -440,6 +478,11 @@ socket.on('StartGame', (RoomData) => { // RoomData
     let player1_icon = RoomData['0']['players'][1].icon;
     let player2_icon = RoomData['0']['players'][2].icon;
 
+    let player1_advancedIcon = RoomData['0']['players'][1].advanced_icon;
+    let player2_advancedIcon = RoomData['0']['players'][2].advanced_icon;
+    let player1_SkinColor = RoomData['0']['players'][1].icon_color;
+    let player2_SkinColor = RoomData['0']['players'][2].icon_color;
+
     // initialize game
     // curr_field_ele = null;
     curr_innerGameMode = currInnerGameMode;
@@ -447,7 +490,9 @@ socket.on('StartGame', (RoomData) => { // RoomData
     let allowed_patterns = JSON.parse(localStorage.getItem('unlocked_mapLevels'))[1][6]; // array
 
     // initialize game with given data
-    initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon, PlayerTimer], allowed_patterns);
+    initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
+        PlayerTimer, player1_advancedIcon, player2_advancedIcon, player1_SkinColor, player2_SkinColor
+    ], allowed_patterns);
 
     // play theme music 
     PauseMusic();
@@ -647,3 +692,90 @@ socket.on("RandomPlayerID_generated", id => {
     console.log(id)
     localStorage.setItem("PlayerID", id);
 });
+
+// online game chat button
+OnlineChat_btn.addEventListener('click', () => {
+    Chat_PopUp.style.display = "flex";
+    DarkLayer.style.display = "block";
+
+    openedChat = true;
+    recievedUnseenMessages = 0;
+    if (document.querySelector(".notification-icon")) {
+        document.querySelector(".notification-icon").remove();
+    };
+
+    // Name of other player
+    personal_GameData.role == "admin" ? ChatTitle.textContent = `A chat between you and ${PlayerData[2].PlayerName}` : ChatTitle.textContent = `A chat between you and ${PlayerData[1].PlayerName}`;
+});
+
+// close chat pop up
+closeChat_btn.addEventListener('click', () => {
+    Chat_PopUp.style.display = "none";
+    DarkLayer.style.display = "none";
+
+    openedChat = false;
+});
+
+// send message on enter
+ChatMessage.addEventListener('keyup', e => {
+    if (e.key === "Enter") {
+        sendMessageEvent();
+    };
+});
+
+// user wants to send a message
+Submit_chatMessageBtn.addEventListener('click', () => {
+    sendMessageEvent();
+});
+
+// user wants to send message on event
+function sendMessageEvent() {
+    if (ChatMessage.value != "") {
+        sendTextMessage(ChatMessage.value);
+        ChatMessage.value = null;
+    };
+};
+
+// create text message on submit button
+function sendTextMessage(text) {
+    // send message to server, server sends it to the other players
+    socket.emit("sendMessage", text, personalname, personal_GameData.currGameID); // message and name 
+};
+
+// recieve message
+socket.on("recieveMessage", (message, from) => {
+    let span = document.createElement('span');
+    let p = document.createElement('p');
+    let span2 = document.createElement('span');
+    let div = document.createElement('div');
+    div.className = "messageWrapper recievedMessage";
+    span2.className = "messageFrom";
+    personalname == from ? span2.textContent = `${from} (You)` : span2.textContent = from;
+    p.textContent = message;
+    p.className = "messageText";
+    span.className = "message";
+
+    // add message to main field of pop up
+    span.appendChild(p);
+    div.appendChild(span2);
+    div.appendChild(span);
+    ChatMain.appendChild(div);
+
+    // Go to the very bottom of the chat to see message 
+    ChatMain.scrollTop = ChatMain.scrollHeight;
+
+    !openedChat ? createNotificationIcon() : console.log("lol");
+});
+
+// create an icon with a number that shows how many messages the user recieved from the other user that he has not seen yet
+function createNotificationIcon() {
+    if (document.querySelector(".notification-icon")) {
+        document.querySelector(".notification-icon").textContent = recievedUnseenMessages;
+    } else {
+        recievedUnseenMessages++;
+        let div = document.createElement('div');
+        div.className = "notification-icon";
+        div.textContent = recievedUnseenMessages;
+        OnlineChat_btn.appendChild(div);
+    };
+};

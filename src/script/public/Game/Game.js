@@ -16,11 +16,13 @@ let xCell_Amount; // numb
 let PlayerData = {
     1: {
         'PlayerName': '',
-        'PlayerForm': ''
+        'PlayerForm': '',
+        'AdvancedSkin': ''
     },
     2: {
         'PlayerName': '',
-        'PlayerForm': ''
+        'PlayerForm': '',
+        'AdvancedSkin': ''
     },
 };
 
@@ -52,9 +54,12 @@ let player1_can_set = true; // admin has the right to set first when the game st
 // !!! In advanced mode the patterns are already specified and cannot be modified by the user
 let allowedPatterns = [];
 
+// the user can only set a maximum amount of moves. If he didn't win the game but already hasn't any moves left. He lost
+let MaxAmountOfMovesCount = 0;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
-function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode) {
+function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves) {
     // Define field data for game
     // If online game set online game data, if not set normal data
     let fieldIndex = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[0] : field.getAttribute('index');
@@ -68,6 +73,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     } else {
         curr_field = Fields[fieldIndex].name;
     };
+
+    // make max amount of moves global availible if it exists
+    maxAmoOfMoves != undefined ? MaxAmountOfMovesCount = maxAmoOfMoves : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
 
     // The reqired amount to win a game (optional in normal games and normal in advanture mode)
     points_to_win = required_amount_to_win;
@@ -150,9 +158,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     Find_MaxDepth();
 
     if (onlineGame == 'OnlineMode') {
-        initializeDocument(field, fieldIndex, fieldTitle, true);
+        initializeDocument(field, fieldIndex, fieldTitle, true, OnlineGameDataArray, maxAmoOfMoves);
     } else {
-        initializeDocument(field, fieldIndex, fieldTitle, false);
+        initializeDocument(field, fieldIndex, fieldTitle, false, OnlineGameDataArray, maxAmoOfMoves);
     };
 
     // if in 40x40 field, generate its properties: eye
@@ -181,17 +189,21 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     };
 };
 
-function initializeDocument(field, fieldIndex, fieldTitle, onlineMode) {
+function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves) {
     GameField.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
+    CheckmateWarnText.style.display = 'none';
+    OnlineChat_btn.style.display = "none";
     // lobbyHeader.style.display = 'none';
+    console.log(maxAmoOfMoves)
 
     // Init game title,game icon and game info
     GameTitle.textContent = fieldTitle;
     Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
     GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
     GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
-    GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
+
+    inAdvantureMode ? GameField_AveragePlayTimeDisplay.textContent = `ave. playtime is unknown` : GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
 
     // cell grid things
     cellGrid.style.display = 'grid';
@@ -242,21 +254,29 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode) {
             restartBtn.style.color = 'var(--font-color)';
             restartBtn.addEventListener('click', restartGame);
         };
+
+        OnlineChat_btn.style.display = "block";
     };
 
     if (inAdvantureMode) {
         restartBtn.style.display = 'none';
         chooseWinnerWindowBtn.style.display = 'none';
+        MaxAmountOfMovesGameDisplay.style.display = 'block';
+        MaxAmountOfMovesGameDisplay.textContent = `moves left: ${maxAmoOfMoves}`;
+    } else {
+        restartBtn.style.display = 'block';
+        chooseWinnerWindowBtn.style.display = 'block';
+        MaxAmountOfMovesGameDisplay.style.display = 'none';
     };
 
     // choose winner button
     chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
 
     // Init Player 
-    initializePlayers();
+    initializePlayers(OnlineGameDataArray);
 };
 
-function initializePlayers() {
+function initializePlayers(OnlineGameDataArray) {
     scorePlayer1.textContent = score_Player1_numb;
     scorePlayer2.textContent = score_Player2_numb;
 
@@ -267,8 +287,85 @@ function initializePlayers() {
     PlayerData[1].PlayerForm = curr_form1.toUpperCase();
     PlayerData[2].PlayerForm = curr_form2.toUpperCase();
 
-    namePlayer1.textContent = curr_name1 + ` (${PlayerData[1].PlayerForm})`;
-    namePlayer2.textContent = curr_name2 + ` (${PlayerData[2].PlayerForm})`;
+    console.log(OnlineGameDataArray);
+
+    // for online mode, for chat feature
+    personalname = personal_GameData.role == "admin" ? personalname = PlayerData[1].PlayerName : personalname = PlayerData[2].PlayerName;
+
+    // Advanced skin in Player data
+    if (OnlineGameDataArray != undefined) { // in online mode
+        PlayerData[1].AdvancedSkin = 'cell ' + OnlineGameDataArray[8];
+        PlayerData[2].AdvancedSkin = 'cell ' + OnlineGameDataArray[9];
+
+        // if player 1 uses an advanced skin
+        if (OnlineGameDataArray[8] != "empty") {
+            let span = document.createElement('span');
+            span.className = OnlineGameDataArray[8];
+            span.classList.add("sideScore_TemporarySpan1");
+
+            namePlayer1.textContent = `${curr_name1} `;
+            namePlayer1.appendChild(span);
+
+        } else { // he uses normal skin with or with no color
+            namePlayer1.textContent = curr_name1 + ` (${PlayerData[1].PlayerForm})`;
+
+            // if previous span existed, remove it as a bug fix
+            if (document.querySelector('.sideScore_TemporarySpan1')) {
+                document.querySelector('.sideScore_TemporarySpan1').remove();
+            };
+        };
+
+        // if player 2 uses an advanced skin
+        if (OnlineGameDataArray[9] != "empty") {
+            let span = document.createElement('span');
+            span.className = OnlineGameDataArray[9];
+            span.classList.add("sideScore_TemporarySpan2");
+
+            namePlayer2.textContent = `${curr_name2} `;
+            namePlayer2.appendChild(span);
+
+        } else { // he uses normal skin with or with no color
+            namePlayer2.textContent = curr_name2 + ` (${PlayerData[2].PlayerForm})`;
+
+            // if previous span existed, remove it as a bug fix
+            if (document.querySelector('.sideScore_TemporarySpan2')) {
+                document.querySelector('.sideScore_TemporarySpan2').remove();
+            };
+        };
+
+        // set color of player icon
+        namePlayer1.style.color = OnlineGameDataArray[10];
+        namePlayer2.style.color = OnlineGameDataArray[11];
+
+    } else { // offline mode
+        PlayerData[1].AdvancedSkin = 'cell ' + localStorage.getItem('userInfoClass');
+        PlayerData[2].AdvancedSkin = 'cell empty'; // The second player can't choose between skin colors and advanced skins. He always uses normal white skin with normal letter
+
+        // if player 1 uses an advanced skin
+        if (localStorage.getItem('userInfoClass') != "empty") {
+            let span = document.createElement('span');
+            span.className = localStorage.getItem('userInfoClass');
+            span.classList.add("sideScore_TemporarySpan1");
+
+            namePlayer1.textContent = `${curr_name1} `;
+            namePlayer1.appendChild(span);
+
+        } else { // he uses normal skin with or with no color
+            namePlayer1.textContent = curr_name1 + ` (${PlayerData[1].PlayerForm})`;
+
+            // if previous span existed, remove it as a bug fix
+            if (document.querySelector('.sideScore_TemporarySpan1')) {
+                document.querySelector('.sideScore_TemporarySpan1').remove();
+            };
+        };
+
+        // player 2 uses a normal skin in offline mode (player 2 is wether a KI or an offline friend on local computer)
+        namePlayer2.textContent = curr_name2 + ` (${PlayerData[2].PlayerForm})`;
+
+        // set color of player icon
+        namePlayer1.style.color = localStorage.getItem('userInfoColor');
+        namePlayer2.style.color = "var(--font-color)";
+    };
 
     currentName = PlayerData[1].PlayerName;
     currentPlayer = PlayerData[1].PlayerForm;
@@ -326,7 +423,7 @@ socket.on('display_GlobalGameTimer', timer => {
 
 // user clicked some cell
 function cellCicked() {
-    if (this.classList == "cell") { // cell is alive and useable
+    if (this.classList == "cell" && MaxAmountOfMovesCount > 0) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
 
         // check if cell is already drawn or the game is running
@@ -359,7 +456,7 @@ function cellCicked() {
 
             }; // the first player tries to click, but he must wait for his opponent
 
-        } else { // some other mode
+        } else { // some other mode - offline mode obviously
 
             // so the user can't leave the game directly after he setted 
             leaveGame_btn.removeEventListener('click', UserleavesGame);
@@ -426,13 +523,13 @@ socket.on('player_clicked', Goptions => {
     for (let i = 0; i < options.length; i++) {
         const element = options[i];
 
-        if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] == "empty") {
+        if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] == "empty" && cells[i].classList.length == 1) {
             cells[i].style.color = Goptions[2];
             cells[i].classList.add('colored-cell');
 
             cells[i].textContent = element;
 
-        } else if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] != "empty") {
+        } else if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] != "empty" && cells[i].classList.length == 1) {
 
             cells[i].style.color = "var(--font-color)";
             cells[i].className = `cell ${Goptions[3]}`;
@@ -470,7 +567,19 @@ function updateCell(index) {
     options[index] = currentPlayer;
 
     let cells = [...cellGrid.children];
-    cells[index].textContent = currentPlayer;
+
+    // user uses an advanced skin
+    if (PlayerData[1].AdvancedSkin != "cell empty" && currentPlayer == PlayerData[1].PlayerForm) {
+        cells[index].className = `${PlayerData[1].AdvancedSkin}`;
+
+    } else { // he uses normal skin
+        cells[index].textContent = currentPlayer;
+
+        if (currentPlayer == PlayerData[1].PlayerForm) cells[index].style.color = localStorage.getItem('userInfoColor');
+    };
+
+    MaxAmountOfMovesCount >= 1 ? MaxAmountOfMovesCount-- : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
+    MaxAmountOfMovesGameDisplay.textContent = `moves left: ${MaxAmountOfMovesCount}`;
 };
 
 function Activate_PlayerClock(PlayerOne, PlayerTwo) {
@@ -660,7 +769,9 @@ function checkWinner() {
     // for minimax
     let winner = null;
     let WinCombination = [];
+    let extra_points = 0; // 2 additional points by a win pattern of 5 cells
     let Grid = Array.from(cellGrid.children);
+    let someoneIsCheck = false;
 
     // remove access to set
     cells.forEach(cell => {
@@ -686,16 +797,80 @@ function checkWinner() {
         // Check win
         if (cellE == undefined && cellD != undefined) { // if pattern with 4 blocks
 
-            if (cellA == "" || cellB == "" || cellC == "" || cellD == "") { // Check win for a 4 block pattern combination
-                continue
+            // if (cellA == "" || cellB == "" || cellC == "" || cellD == "") { // Check win for a 4 block pattern combination
+            //     continue;
+            // };
+
+            // check when player is check
+            if (cellA == cellB && cellB == cellC && cellD == "" && EleOf_D.textContent == "" && EleOf_D.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
+                cellA == cellB && cellB == cellD && cellC == "" && EleOf_C.textContent == "" && EleOf_C.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
+                cellA == cellD && cellD == cellC && cellB == "" && EleOf_B.textContent == "" && EleOf_B.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
+                cellD == cellC && cellC == cellB && cellA == "" && EleOf_A.textContent == "" && EleOf_A.className != "cell death-cell" && cellD != "" && EleOf_D.textContent != "") {
+                someoneIsCheck = true;
+                console.log(cellA, cellB, cellC, cellD, cellE)
+                console.log(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E)
+
+                // look who the pattern belongs to
+                if (EleOf_A.textContent == PlayerData[1].PlayerForm || EleOf_B.textContent == PlayerData[1].PlayerForm || EleOf_C.textContent == PlayerData[1].PlayerForm ||
+                    EleOf_D.textContent == PlayerData[1].PlayerForm || EleOf_A.className == PlayerData[1].AdvancedSkin || EleOf_B.className == PlayerData[1].AdvancedSkin ||
+                    EleOf_C.className == PlayerData[1].AdvancedSkin || EleOf_D.className == PlayerData[1].AdvancedSkin) {
+                    // belongs to first player => second player must be warned
+                    if (curr_mode == GameMode[2].opponent) {
+                        // online mode                        
+                        if (personal_GameData.role == "user") {
+                            CheckmateWarnText.style.display = 'block';
+                            CheckmateWarnText.textContent = `${PlayerData[1].PlayerName} can beat you with one move, ${PlayerData[2].PlayerName}!`;
+                        };
+                        continue;
+
+                    } else if (curr_mode == GameMode[3].opponent) {
+                        // same computer mode
+                        CheckmateWarnText.style.display = 'block';
+                        CheckmateWarnText.textContent = `Your opponent can beat you with one move, ${PlayerData[2].PlayerName}`;
+
+                        continue;
+                    };
+
+                } else {
+                    // belongs to second player => first player must be warned
+                    if (curr_mode == GameMode[2].opponent) {
+                        // online mode
+                        if (personal_GameData.role == "admin") {
+                            CheckmateWarnText.style.display = 'block';
+                            CheckmateWarnText.textContent = `${PlayerData[2].PlayerName} can beat you with one move, ${PlayerData[1].PlayerName}!`;
+                        };
+                        continue;
+
+                    } else {
+                        // other mode
+                        CheckmateWarnText.style.display = 'block';
+                        // KI Mode
+                        if (curr_mode == GameMode[1].opponent) {
+                            if (inAdvantureMode) { // in advanture mode
+                                CheckmateWarnText.textContent = `The unknown can beat you with one move, ${PlayerData[1].PlayerName}`;
+
+                            } else { // not in advanture mode
+                                CheckmateWarnText.textContent = `The ${PlayerData[2].PlayerName} can beat you with one move, ${PlayerData[1].PlayerName}`;
+                            };
+                            continue;
+
+                        } else {
+                            CheckmateWarnText.textContent = `Your opponent can beat you with one move, ${PlayerData[1].PlayerName}`;
+                            continue;
+                        };
+                    };
+                };
             };
-            if (cellA == cellB && cellB == cellC && cellC == cellD) {
-                winner = cellA;
+
+            if (cellA == cellB && cellB == cellC && cellC == cellD && cellA != "") {
+                winner = [cellA, EleOf_A.classList[2]];
                 roundWon = true;
                 WinCombination.push(EleOf_A, EleOf_B, EleOf_C, EleOf_D);
 
                 break;
             };
+
+            if (!someoneIsCheck) CheckmateWarnText.style.display = "none";
 
         } else if (cellD == undefined && cellE == undefined && cellC != undefined) { // Check win for a 3 block pattern combination
 
@@ -703,7 +878,7 @@ function checkWinner() {
                 continue
             };
             if (cellA == cellB && cellB == cellC) {
-                winner = cellA
+                winner = [cellA, EleOf_A.classList[2]];
                 roundWon = true;
                 WinCombination.push(EleOf_A, EleOf_B, EleOf_C);
 
@@ -712,303 +887,317 @@ function checkWinner() {
 
         } else if (cellD != undefined && cellE != undefined) { // Check win for a 5 block pattern combination
 
-            if (cellA == "" || cellB == "" || cellC == "" || cellD == "" || cellE == "") {
-                continue
+            // if (cellA == "" || cellB == "" || cellC == "" || cellD == "" || cellE == "") {
+            //     continue
+            // };
+
+            // check when player is check
+            if (cellA == cellB && cellB == cellC && cellC == cellD && cellE == "" && EleOf_E.textContent == "" && EleOf_E.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
+                cellA == cellB && cellB == cellC && cellC == cellE && cellD == "" && EleOf_D.textContent == "" && EleOf_D.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
+                cellA == cellB && cellB == cellD && cellD == cellE && cellC == "" && EleOf_C.textContent == "" && EleOf_C.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
+                cellA == cellC && cellC == cellD && cellD == cellE && cellB == "" && EleOf_B.textContent == "" && EleOf_B.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
+                cellB == cellC && cellC == cellD && cellD == cellE && cellA == "" && EleOf_A.textContent == "" && EleOf_A.className != "cell death-cell" && cellB != "" && EleOf_B.textContent != "") {
+                someoneIsCheck = true;
+                console.log(cellA, cellB, cellC, cellD, cellE)
+                console.log(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E)
+
+                // look who the pattern belongs to
+                if (EleOf_A.textContent == PlayerData[1].PlayerForm || EleOf_B.textContent == PlayerData[1].PlayerForm || EleOf_C.textContent == PlayerData[1].PlayerForm ||
+                    EleOf_D.textContent == PlayerData[1].PlayerForm || EleOf_E.textContent == PlayerData[1].PlayerForm || EleOf_A.className == PlayerData[1].AdvancedSkin || EleOf_B.className == PlayerData[1].AdvancedSkin ||
+                    EleOf_C.className == PlayerData[1].AdvancedSkin || EleOf_D.className == PlayerData[1].AdvancedSkin || EleOf_E.className == PlayerData[1].AdvancedSkin) {
+                    // belongs to first player => second player must be warned
+                    if (curr_mode == GameMode[2].opponent) {
+                        // online mode                        
+                        if (personal_GameData.role == "user") {
+                            CheckmateWarnText.style.display = 'block';
+                            CheckmateWarnText.textContent = `${PlayerData[1].PlayerName} can beat you with one move, ${PlayerData[2].PlayerName}!`;
+                        };
+                        continue;
+
+                    } else {
+                        // other mode
+                        CheckmateWarnText.style.display = 'block';
+                        CheckmateWarnText.textContent = `Your opponent can beat you with one move, ${PlayerData[2].PlayerName}`;
+                        continue;
+                    };
+
+                } else {
+                    // belongs to second player => first player must be warned
+                    if (curr_mode == GameMode[2].opponent) {
+                        // online mode
+                        if (personal_GameData.role == "admin") {
+                            CheckmateWarnText.style.display = 'block';
+                            CheckmateWarnText.textContent = `${PlayerData[2].PlayerName} can beat you with one move, ${PlayerData[1].PlayerName}!`;
+                        };
+                        continue;
+
+                    } else {
+                        // other mode
+                        CheckmateWarnText.style.display = 'block';
+                        // KI Mode
+                        if (curr_mode == GameMode[1].opponent) {
+                            if (inAdvantureMode) { // in advanture mode
+                                CheckmateWarnText.textContent = `The unknown can beat you with one move, ${PlayerData[1].PlayerName}`;
+
+                            } else { // not in advanture mode
+                                CheckmateWarnText.textContent = `The ${PlayerData[2].PlayerName} can beat you with one move, ${PlayerData[1].PlayerName}`;
+                            };
+                            continue;
+
+                        } else {
+                            CheckmateWarnText.textContent = `Your opponent can beat you with one move, ${PlayerData[1].PlayerName}`;
+                            continue;
+                        };
+                    };
+                };
             };
-            if (cellA == cellB && cellB == cellC && cellC == cellD && cellD == cellE) {
-                winner = cellA
+
+            if (cellA == cellB && cellB == cellC && cellC == cellD && cellD == cellE && cellA != "") {
+                winner = [cellA, EleOf_A.classList[2]]; // second value: false if the user uses a normal skin
                 roundWon = true;
+                extra_points = 2;
                 WinCombination.push(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E);
 
                 break;
             };
+
+            if (!someoneIsCheck) CheckmateWarnText.style.display = "none";
         };
     };
 
-    if (winner == PlayerData[1].PlayerForm) {
-        Player1_won = true;
+    // if the cell pattern which won is an ADVANCED skin => check which player it belongs to
+    if (winner != null) {
+        if (winner[1] != undefined) {
+            if (PlayerData[1].AdvancedSkin == WinCombination[0].className) { // the advanced skin win pattern belongs to PLayer 1
+                Player1_won = true;
 
-    } else if (winner == PlayerData[2].PlayerForm) {
-        Player2_won = true;
+            } else if (PlayerData[2].AdvancedSkin == WinCombination[0].className) { // the advanced skin win pattern belongs to PLayer 2
+                Player2_won = true;
+            };
+
+        } else { // if the cell pattern which won is a NORMAL skin => check which player it belongs to
+            if (PlayerData[1].PlayerForm == winner[0]) { // the normal skin pattern belongs to the first player
+                Player1_won = true;
+
+            } else if (PlayerData[2].PlayerForm == winner[0]) {
+                Player2_won = true;
+            };
+        };
     };
 
-    ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination);
+    ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points);
 };
 
-function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination) {
+function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points) {
     // check if there are still availible cells remaining
     let ava_cells = check_RemainingCells();
 
-    if (roundWon) {
-        clearInterval(firstClock);
-        clearInterval(secondClock);
-        // Choose winner
-        chooseSubWinner(Player1_won, Player2_won, WinCombination);
+    if (roundWon) { // someone won the round
+        processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points);
 
-        setTimeout(() => {
-            // Make cells die effect
-            if (curr_field != 'Small Price' || curr_field != 'Thunder Advanture') {
-                setTimeout(() => {
-                    let grid = [...cellGrid.children];
-                    // Make used cells die
-                    for (cell of grid) {
-                        if (cell.textContent == PlayerData[1].PlayerForm || cell.textContent == PlayerData[2].PlayerForm) {
-                            single_CellBlock(cell);
-                        };
-                    };
-                    ava_cells = check_RemainingCells();
-                }, 600);
-            };
-
-            // Ultimate Game Win Check
-            rounds_played++;
-            if (curr_field == 'Small Price' && rounds_played == 1 || curr_field == 'Thunder Advanture' && rounds_played == 1 || curr_field == 'Quick Death' && rounds_played == 1) {
-                Call_UltimateWin(WinCombination);
-                return;
-            };
-
-            // Change player things
-            setTimeout(() => {
-                if (currentPlayer == PlayerData[1].PlayerForm && curr_mode == GameMode[1].opponent) {
-                    setTimeout(() => {
-                        changePlayer(false);
-                        KI_Action();
-                    }, 1000);
-
-                } else {
-                    // add access to set
-                    setTimeout(() => {
-                        running = true;
-                        changePlayer(false);
-                    }, 1600);
-                };
-            }, 600);
-        }, 1500);
-
-    } else if (ava_cells.length <= 0) {
+    } else if (ava_cells.length <= 0) { // there are literally no availible cells on the field to set => process who is the winner now
         Call_UltimateWin(WinCombination);
         return;
 
-    } else if (inAdvantureMode) {
-        // in advanture mode there are special win conditions for each level (10 levels)
-        switch (current_selected_level) {
-            case 1: // user have to score 5 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
+    } else if (inAdvantureMode) { // In the advanture mode there are special win conditions
+        processResult_AdvantureMode(Player1_won, Player2_won, roundWon, winner, WinCombination);
 
-                } else if (score_Player2_numb >= 5) { // Bot won
-                    Call_UltimateWin(WinCombination);
+    } else { // if nothing special happened , no one won and if not in advanture mode => do normal stuff
+        processResult_continueGame();
+    };
+};
 
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
+// process result of game: if a sub game round is won 
+function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points) {
+    clearInterval(firstClock);
+    clearInterval(secondClock);
+    // Choose winner
+    chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points);
 
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
+    setTimeout(() => {
+        // Make cells die effect
+        if (curr_field != 'Small Price' || curr_field != 'Thunder Advanture') {
+            setTimeout(() => {
+                let grid = [...cellGrid.children];
+                // Make used cells die
+                for (let cell of grid) {
+                    // cells with normal skins => look if their textContent is a form, cells with advanced skins => look at their classList
+                    // All cells that contain an advanced skin have 3 classNames (cell fa-solid fa-xxx)
+                    if (cell.textContent == PlayerData[1].PlayerForm || cell.textContent == PlayerData[2].PlayerForm || cell.classList.length >= 3) {
+                        single_CellBlock(cell);
+                    };
                 };
-                break;
-
-            case 2: // user have to score 7 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 7) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-
-            case 3: // user have to score 8 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 8) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-
-            case 4: // user have to score 10 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 10) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-            case 5: // user have to score 11 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 11) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-            case 6: // user have to score 7 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 7) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-            case 7: // user have to score 9 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 9) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-            case 8: // user have to score 13 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 2) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 13) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-            case 9: // user have to score 15 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 4 && sun_HP <= 4100) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 15) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
-            case 10: // user have to score 20 points against the opponent (opponent: Bot)
-                if (score_Player1_numb >= 4 && eye_HP <= 10000) { // Player won
-                    Call_UltimateWin(WinCombination);
-
-                } else if (score_Player2_numb >= 20) { // Bot won
-                    Call_UltimateWin(WinCombination);
-
-                } else { // No one won
-                    setTimeout(() => {
-                        if (currentPlayer == PlayerData[1].PlayerForm) {
-                            changePlayer(false);
-                            KI_Action();
-
-                        } else {
-                            changePlayer(false);
-                            running = true;
-                        };
-                    }, 400);
-                };
-                break;
+                ava_cells = check_RemainingCells();
+            }, 600);
         };
 
-    } else {
-        running = false;
-        if (currentPlayer == PlayerData[1].PlayerForm && curr_mode == GameMode[1].opponent) {
-            changePlayer(false);
-            setTimeout(() => {
-                running = true;
-                KI_Action();
-            }, 1000);
+        // Ultimate Game Win Check for fields where you only can play 1 round!!! 3x3, 4x4, 5x5 Ignore this if it is not this case
+        rounds_played++;
+        if (curr_field == 'Small Price' && rounds_played == 1 || curr_field == 'Thunder Advanture' && rounds_played == 1 || curr_field == 'Quick Death' && rounds_played == 1) {
+            Call_UltimateWin(WinCombination);
+            return;
+        };
 
-        } else {
+        // Change player things. execute this everytime
+        setTimeout(() => {
+            processResult_continueGame();
+        }, 600);
+    }, 1200);
+};
+
+// process result: advanture mode (special)
+function processResult_AdvantureMode(WinCombination) {
+    // in advanture mode there are special win conditions for each level (10 levels)
+    switch (current_selected_level) {
+        case 1: // user have to score 5 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+
+        case 2: // user have to score 7 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 7 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+
+        case 3: // user have to score 8 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 8 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+
+        case 4: // user have to score 10 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 10 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+        case 5: // user have to score 11 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 11 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+        case 6: // user have to score 7 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 7 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+        case 7: // user have to score 9 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 9 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+        case 8: // user have to score 13 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 2) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 13 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+        case 9: // user have to score 15 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 4 && sun_HP <= 4100) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 15 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+        case 10: // user have to score 20 points against the opponent (opponent: Bot)
+            if (score_Player1_numb >= 4 && eye_HP <= 10000) { // Player won
+                Call_UltimateWin(WinCombination);
+
+            } else if (score_Player2_numb >= 20 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination);
+
+            } else { // No one won
+                processResult_continueGame();
+            };
+            break;
+    };
+};
+
+// everything processed and checked. Now the game can continue and the other player can set now
+function processResult_continueGame() {
+    // if in advanture mode
+    if (inAdvantureMode) {
+        setTimeout(() => {
+            if (currentPlayer == PlayerData[1].PlayerForm) {
+                changePlayer(false);
+                KI_Action();
+
+            } else {
+                changePlayer(false);
+                running = true;
+            };
+        }, 400);
+
+    } else { // not in advanture mode
+        // if in KI Mode and Player just setted his icon. Now it is KI's turn
+        if (curr_mode == GameMode[1].opponent) {
             setTimeout(() => {
-                // add access to set
+                // Check who can set next the bot or the player
+                if (currentPlayer == PlayerData[1].PlayerForm) {
+                    changePlayer(false);
+                    KI_Action();
+
+                } else {
+                    changePlayer(false);
+                    running = true;
+                };
+            }, 400);
+
+        } else if (curr_mode != GameMode[1].opponent) { // It is not KI Mode
+            // add access to set
+            setTimeout(() => {
                 running = true;
                 changePlayer(false);
             }, 100);
@@ -1017,7 +1206,8 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
 };
 
 // choose sub winner
-function chooseSubWinner(Player1_won, Player2_won, WinCombination) {
+function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points) {
+    CheckmateWarnText.style.display = 'none';
     WinCombination.forEach(Ele => {
         Ele.classList.add('about-to-die-cell');
     });
@@ -1025,7 +1215,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination) {
     setTimeout(() => {
         if (Player1_won == true) {
 
-            score_Player1_numb++;
+            score_Player1_numb = score_Player1_numb + 1 + extra_points;
             scorePlayer1.textContent = score_Player1_numb;
 
             // player made a point in advanture mode
@@ -1062,7 +1252,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination) {
 
         } else if (Player2_won == true) {
 
-            score_Player2_numb++;
+            score_Player2_numb = score_Player2_numb + 1 + extra_points;
             scorePlayer2.textContent = score_Player2_numb;
             statusText.textContent = `the unknown just gained a point`;
 
@@ -1086,7 +1276,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination) {
 
             Player2_won = false;
         };
-    }, 2000);
+    }, 1000);
 };
 
 // check remaining white cells
@@ -1167,7 +1357,7 @@ socket.on('Reload_GlobalGame', (Goptions) => {
 
 // Block used cells after a win
 function single_CellBlock(cell, fromMap) {
-    cell.classList = "cell death-cell";
+    cell.className = "cell death-cell";
     cell.style.cursor = "default";
     if (fromMap == "fromMap") {
         cell.style.animation = "destroyCell 2s forwards"; // Animation aktivieren
@@ -1194,6 +1384,7 @@ function single_CellBlock(cell, fromMap) {
 
 // call Ultimate Game Win Function
 function Call_UltimateWin(WinCombination) {
+    CheckmateWarnText.style.display = "none" // just small bug fix nothing special
     chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
 
     if (WinCombination == undefined) {
@@ -1281,6 +1472,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
                         } else {
                             if (player1_won) { // user won and conquered the level
                                 UserleavesGame(true, current_selected_level);
+                            } else {
+                                UserleavesGame();
                             };
                         };
                     };
@@ -1361,19 +1554,19 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
                     // Display win text in the proper way
                     UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it`;
 
+                    // additional img svg
+                    let img = document.createElement('img');
+                    let br = document.createElement('br');
+                    img.src = "./assets/game/holy-grail.svg";
+                    img.width = "300";
+                    img.height = "300";
+                    UltimateWinText.appendChild(br);
+                    UltimateWinText.appendChild(img);
+
                     if (curr_mode == GameMode[2].opponent) { // online friend
                         setNew_SkillPoints(10);
                     };
                 };
-
-                // additional img svg
-                let img = document.createElement('img');
-                let br = document.createElement('br');
-                img.src = "./assets/game/holy-grail.svg";
-                img.width = "300";
-                img.height = "300";
-                UltimateWinText.appendChild(br);
-                UltimateWinText.appendChild(img);
 
             } else if (player1_won && player2_won) {
                 UltimateWinText.textContent = `GG Well played!`;
@@ -1417,15 +1610,16 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
         GameFieldHeaderUnderBody.style.display = 'none';
 
         // restart Game counter
-        let i = 5;
+        let i = 4;
         var counter = setInterval(() => {
             if (!stopStatusTextInterval) {
-                statusText.textContent = `New game in ${i}`;
+                statusText.textContent = `leave game in ${i}`;
                 statusText.classList.remove('Invisible');
                 i--;
                 if (i <= -1) {
                     clearInterval(counter);
-                    restartGame();
+                    // leave game after win and return to lobby
+                    if (personal_GameData.role == "admin") UserleavesGame();
                 };
             } else {
                 GameFieldHeaderUnderBody.style.display = 'flex';
@@ -1480,7 +1674,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
                 UltimateWinText.textContent = `You won it `;
 
             } else {
-                UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it! 🏆`;
+                UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it `;
             };
             // additional img svg
             let img = document.createElement('img');
@@ -1516,7 +1710,6 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
             UltimateWinText.appendChild(br);
             UltimateWinText.appendChild(img);
         };
-
     }, 2000);
 });
 

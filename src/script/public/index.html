@@ -37,7 +37,8 @@
 
     <script defer src="App/script.js"></script>
     <script defer src="App/SkinLogic.js"></script>
-    <script defer src="App/features/dailyChest.js"></script>
+    <script defer src="App/features/Treasure.js"></script>
+    <script defer src="App/features/itemDropPropability.js"></script>
     <script defer src="App/features/AdvantureMap.js"></script>
     <script defer src="App/features/eye.js"></script>
     <script defer src="App/features/sun.js"></script>
@@ -140,7 +141,8 @@
 
                         <div class="lobby-cards-header-right">
                             <i id="store-icon" class="fa-solid fa-store"></i>
-                            <i id="treasure-icon" class="fa-regular fa-chess-queen"></i>
+                            <img id="treasure-icon" width="31" height="31" src="assets/game/locked-chest.svg" draggable="false">
+                            <img id="treasure-icon-2" width="31" height="31" src="assets/game/locked-chest.svg" draggable="falses">
                         </div>
                     </div>
 
@@ -1866,11 +1868,17 @@
 
                             </div>
                         </div>
+
+                        <i class="OnlineChat_btn fa-regular fa-comment-dots"></i>
                     </div>
 
                     <div class="GameArea">
                         <!-- #1 -->
                         <div class="GameArea-SideInfo">
+
+                            <!-- absolute position text -->
+                            <!-- Schachmatt text -->
+                            <span class="CheckmateWarnText">Your opponent can beat you with one move, player!</span>
 
                             <!-- #1 -->
                             <div class="GameArea-SideInfo-Header">
@@ -1930,6 +1938,9 @@
                                 </div>
 
                             </div>
+
+                            <!-- position absolute -->
+                            <div class="MaxAmountOfMovesGameDisplay"></div>
 
                         </div>
 
@@ -2005,6 +2016,114 @@
 
             </div>
 
+            <!-- explored items pop up -->
+            <div class="exploredItems_PopUp">
+                <div class="exploredItems_header">
+                    <div></div>
+                    <h2>explored items</h2>
+                    <i class="fa-solid fa-x exploredItemPopUp_closeBtn"></i>
+                </div>
+
+                <div class="exploredItems_MainWrapper">
+                    <div class="exploredItems_main">
+
+                        <div class="exploredItem_container">
+                            <span style="text-align: start;">ore</span>
+                            <div class="exploreditem_wrapper">
+                                <img src="assets/game/ore.svg" width="29" height="29"> &nbsp;
+                                <span class="exploredItem_count ore_ItemCount">0</span>
+                            </div>
+                        </div>
+
+                        <div class="exploredItem_container">
+                            <span>diamonds</span>
+                            <div class="exploreditem_wrapper">
+                                <img src="assets/game/minerals.svg" width="29" height="29"> &nbsp;
+                                <span class="exploredItem_count diamonds_ItemCount">0</span>
+                            </div>
+                        </div>
+
+                        <div class="exploredItem_container">
+                            <span>minerals</span>
+                            <div class="exploreditem_wrapper">
+                                <img src="assets/game/crystal-bars.svg" width="29" height="29"> &nbsp;
+                                <span class="exploredItem_count minerals_ItemCount">0</span>
+                            </div>
+                        </div>
+
+                        <div class="exploredItem_container">
+                            <span>abandoned eye</span>
+                            <div class="exploreditem_wrapper">
+                                <img src="assets/game/crystal-eye.svg" width="29" height="29"> &nbsp;
+                                <span class="exploredItem_count abandonedEye_ItemCount">0</span>
+                            </div>
+                        </div>
+
+                        <div class="exploredItem_container">
+                            <span>asteroids</span>
+                            <div class="exploreditem_wrapper">
+                                <img src="assets/game/asteroid.svg" width="29" height="29"> &nbsp;
+                                <span class="exploredItem_count asteroid_ItemCount">0</span>
+                            </div>
+                        </div>
+
+                        <div class="exploredItem_container">
+                            <span>encrypted writings</span>
+                            <div class="exploreditem_wrapper">
+                                <img src="assets/game/wax-tablet.svg" width="29" height="29"> &nbsp;
+                                <span class="exploredItem_count encryptedWriting_ItemCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="explored_itemsDescription_Div">
+                        <h2 class="exploredItemTitle">Ore</h2>
+
+                        <div class="infoContainer">
+                            <span class="exploredItem_rarity" style="color: lightgreen;">rarity: common</span>
+                            <hr width="95%" align="left">
+
+                            <span>describtion:</span>
+                            <span class="exploredItem_describtion">
+                                It can be found everywhere on this map and is a normal material to upgrade and build weapons.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exploredItems_footer"></div>
+            </div>
+
+            <!-- you found pop up for explored items pop up -->
+            <div class="YouFoundItems_PopUp">
+                <h3 class="YouFoundTitle">You found:</h3>
+                <hr width="100%">
+                <div class="YouFoundMain">
+
+                    <div class="foundItemContainer FoundItem1">
+                        <span class="foundItem_Title1">Gold:</span>
+                        <img class="foundItem1_img" src="assets/game/crystal-bars.svg" width="30" height="30">
+                        <span class="FoundItemCount_Display">0</span>
+                    </div>
+
+                    <div class="foundItemContainer FoundItem2">
+                        <span class="foundItem_Title2">Gold:</span>
+                        <img class="foundItem2_img" src="assets/game/crystal-bars.svg" width="30" height="30">
+                        <span class="FoundItemCount_Display">0</span>
+                    </div>
+
+                    <div class="foundItemContainer FoundItem3">
+                        <span class="foundItem_Title3">Gold:</span>
+                        <img class="foundItem3_img" src="assets/game/crystal-bars.svg" width="30" height="30">
+                        <span class="FoundItemCount_Display">0</span>
+                    </div>
+                </div>
+
+                <div class="YouFoundFooter">
+                    <span class="YouFound_OkBtn">OK</span>
+                </div>
+            </div>
+
             <!-- Advanture map scene -->
             <div class="AdvantureMap">
                 <div class="AdvantureMap-header">
@@ -2013,6 +2132,8 @@
                         <i title="key" class="fa-solid fa-key KeyBtn mapKey"></i>
                         <span class="KEYicon1">0</span>
                     </div>
+                    <span class="exploredItems_bookBtn"><img src="assets/game/black-book.svg" width="35" height="35"></span>
+
                 </div>
 
                 <div class="AdvantureMap-main">
@@ -2245,9 +2366,8 @@
 
                     <div class="Player-IconSet-Area IconSetArea">
                         <input id="Player1_IconInput" class="SetPlayerName-input" placeholder="Player1 Icon" type="text">
-                        <input id="Player2_IconInput" class="SetPlayerName-input" placeholder="Player2 Icon" type="text">
-
                         <span class="SkinInputDisplay">Your current selected skin <span class="SkinInputDisplay-skin"></span> is your icon.</span>
+                        <input id="Player2_IconInput" class="SetPlayerName-input" placeholder="Player2 Icon" type="text">
 
                         <div class="OnlineGame_NameWarnText">Choose a different icon!</div>
                     </div>
@@ -3467,6 +3587,15 @@
                     <hr align="center" width="90%">
 
                     <span class="mapLevel_ModeDisplay">Mode: ???</span>
+
+                    <span>Requirements:</span>
+                    <ul>
+                        <li class="LevelOverview_requirement"></li>
+                        <li class="LevelOverview_requirement"></li>
+                        <li class="LevelOverview_requirement"></li>
+                        <li class="LevelOverview_requirement"></li>
+                        <li class="LevelOverview_requirement"></li>
+                    </ul>
                 </div>
 
                 <div class="MapLevelPreview_LevelData">
@@ -3509,9 +3638,28 @@
                         </li>
 
                         <li>
+                            <span>max. amount of moves:</span>
+                            <span class="MaxAmountOfMoves"></span>
+                        </li>
+
+                        <li>
+                            <hr align="center" width="90%">
+                        </li>
+
+                        <li>
                             <span>Level conquered:</span>
                             <span class="conquered_MapLevel_Display"></span>
                         </li>
+
+                        <li>
+                            <hr align="center" width="90%">
+                        </li>
+
+                        <li>
+                            <span>Boss:</span>
+                            <span class="BossIn_MapLevel_Display"></span>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -3520,6 +3668,25 @@
         <div class="mapLevelDisplay-footer">
             <div></div>
             <button class="startMapLevelBtn">Try level</button>
+        </div>
+    </div>
+
+    <!-- chat pop up in online mode -->
+    <div class="Chat">
+        <div class="ChatHeader">
+            <div></div>
+            <h3 class="ChatTitle">Chat between you and ???</h3>
+            <i class="fa-solid fa-x closeChat_btn"></i>
+        </div>
+
+        <div class="ChatMain">
+        </div>
+
+        <div class="ChatFooter">
+            <div class="ChatFooterInnerWrapper">
+                <input class="ChatMessage" type="text">
+                <button class="Submit_chatMessageBtn">Send</button>
+            </div>
         </div>
     </div>
 

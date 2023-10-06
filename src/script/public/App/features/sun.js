@@ -163,7 +163,6 @@ function sunAttack_damage() {
 
     let rndIndex = Math.floor(Math.random() * (25 * 25));
 
-    console.log(cells, cells[rndIndex], rndIndex)
     single_CellBlock(cells[rndIndex], "fromMap");
     single_CellBlock(cells[rndIndex + 1], "fromMap");
 
@@ -229,7 +228,7 @@ function sunDies() {
         clearInterval(sun_pos);
         sun_pos = null;
 
-        The_sun.style.transition = "all 1s ease-out";
+        The_sun.style.transition = "all 0.6s ease-out";
         The_sun.style.transform = "scale(0.01)";
         The_sun.style.opacity = "1";
 
@@ -246,7 +245,7 @@ function sunDies() {
                     Call_UltimateWin();
                 };
             }, 800);
-        }, 1000);
+        }, 600);
     }, 2000);
 };
 

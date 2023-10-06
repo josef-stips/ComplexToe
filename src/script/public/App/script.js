@@ -257,6 +257,44 @@ let UserGivesData_closeBtn_NAME = document.querySelector('#UserGivesData_closeBt
 let UserGivesData_closeBtn_ICON = document.querySelector('#UserGivesData_closeBtn_ICON');
 let UserGivesData_IconInput = document.querySelector('#UserGivesData_IconInput');
 let UserGivesData_NameInput = document.querySelector('#UserGivesData_NameInput');
+let BossIn_MapLevel_Display = document.querySelector('.BossIn_MapLevel_Display');
+let exploredItems_bookBtn = document.querySelector('.exploredItems_bookBtn');
+let exploredItems_PopUp = document.querySelector('.exploredItems_PopUp');
+let exploredItems_main = document.querySelector('.exploredItems_main');
+let exploredItemPopUp_closeBtn = document.querySelector('.exploredItemPopUp_closeBtn');
+let encryptedWriting_ItemCount = document.querySelector('.encryptedWriting_ItemCount');
+let ore_ItemCount = document.querySelector('.ore_ItemCount');
+let abandonedEye_ItemCount = document.querySelector('.abandonedEye_ItemCount');
+let asteroid_ItemCount = document.querySelector('.asteroid_ItemCount');
+let diamonds_ItemCount = document.querySelector('.diamonds_ItemCount');
+let minerals_ItemCount = document.querySelector('.minerals_ItemCount');
+let exploredItemTitle = document.querySelector('.exploredItemTitle');
+let exploredItem_describtion = document.querySelector('.exploredItem_describtion');
+let exploredItem_rarity = document.querySelector('.exploredItem_rarity');
+let YouFoundItems_PopUp = document.querySelector('.YouFoundItems_PopUp');
+let YouFound_OkBtn = document.querySelector('.YouFound_OkBtn');
+let FoundItem1 = document.querySelector('.FoundItem1');
+let FoundItem2 = document.querySelector('.FoundItem2');
+let FoundItem3 = document.querySelector('.FoundItem3');
+let foundItem1_img = document.querySelector('.foundItem1_img');
+let foundItem2_img = document.querySelector('.foundItem2_img');
+let foundItem3_img = document.querySelector('.foundItem3_img');
+let foundItem_Title3 = document.querySelector('.foundItem_Title3');
+let foundItem_Title2 = document.querySelector('.foundItem_Title2');
+let foundItem_Title1 = document.querySelector('.foundItem_Title1');
+let FoundItemCount_Display = document.querySelectorAll('.FoundItemCount_Display');
+let LevelOverview_requirement = document.querySelectorAll('.LevelOverview_requirement');
+let CheckmateWarnText = document.querySelector('.CheckmateWarnText');
+let treasureIcon2 = document.querySelector('#treasure-icon-2');
+let OnlineChat_btn = document.querySelector('.OnlineChat_btn');
+let ChatMessage = document.querySelector('.ChatMessage');
+let Submit_chatMessageBtn = document.querySelector('.Submit_chatMessageBtn');
+let closeChat_btn = document.querySelector('.closeChat_btn');
+let ChatTitle = document.querySelector('.ChatTitle');
+let Chat_PopUp = document.querySelector('.Chat');
+let ChatMain = document.querySelector('.ChatMain');
+let MaxAmountOfMovesDisplay = document.querySelector('.MaxAmountOfMoves');
+let MaxAmountOfMovesGameDisplay = document.querySelector('.MaxAmountOfMovesGameDisplay');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -473,6 +511,11 @@ let inAdvantureMode = false;
 // for creating a profile
 let userName = "";
 let userIcon = "";
+
+// everything about the online chat in online game mode
+let openedChat = false;
+let recievedUnseenMessages = 0;
+let personalname;
 
 // Inner Game Modes
 let InnerGameModes = {
@@ -1035,6 +1078,7 @@ Allbtns.forEach(btn => {
 fieldsArea_back_btn.addEventListener('click', () => {
     // audio
     playBtn_Audio_2();
+    CheckTreasureCanBeOpened();
 
     // animation
     DarkLayer.style.backgroundColor = 'black';
@@ -1275,6 +1319,24 @@ function Click_NxN(f) {
         Player2_NameInput.value = "";
         Player1_IconInput.value = "X";
         Player2_IconInput.value = "O";
+
+        // default data
+        Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
+        if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
+            Player1_IconInput.style.color = "black";
+        };
+
+        if (localStorage.getItem('UserName')) {
+            Player1_NameInput.value = localStorage.getItem('UserName');
+            Player1_IconInput.value = localStorage.getItem('UserIcon');
+        };
+
+        if (localStorage.getItem('userInfoClass') != "empty") {
+            Player1_IconInput.style.display = 'none';
+            SkinInputDisplay.style.display = 'block';
+
+            SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
+        };
     };
 
     if (curr_mode == GameMode[1].opponent) { // KI Mode
@@ -1399,7 +1461,7 @@ function UserCreateRoom() {
         };
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
-        socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle], message => {
+        socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor')], message => {
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
             Lobby_GameCode_display.style.userSelect = 'text';
 
@@ -1433,8 +1495,13 @@ function UserCreateRoom() {
     };
 };
 
-// set player names in normal mode
+// set player data confirm button
 SetPlayerName_ConfirmButton.addEventListener('click', () => {
+    SetPlayerData_ConfirmEvent();
+});
+
+// user tries to start the game
+function SetPlayerData_ConfirmEvent() {
     if (curr_mode == GameMode[2].opponent) { // online mode
 
         // if user wants to enter an online game
@@ -1443,7 +1510,9 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
             // If user entered his name and which form he wants to use in the game
             if (Player1_IconInput.value != "" && Player1_NameInput.value != "") {
 
-                socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim()], (m) => {
+                socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim(),
+                    localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor')
+                ], (m) => {
                     // If user name is equal to admins name
                     if (m == 'Choose a different name!') {
                         OnlineGame_NameWarnText[1].style.display = 'none';
@@ -1461,9 +1530,28 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
                         curr_name1 = Player1_NameInput.value;
                         curr_form1 = Player1_IconInput.value.toUpperCase();
 
-                        Lobby_first_player.textContent = `${m[1]} - ${m[2].toUpperCase()}`; // set name of first player for all in the room
-                        Lobby_second_player.textContent = `${m[0]} (You) - ${m[3].toUpperCase()}`; // set name of second player for all in the room
+                        // m[2] icon of first player
+                        // This code block is just so the second player who joins the lobby sees the icon of the first player in the right way
+                        if (m[2] == "fontawesome") {
+                            // admin uses an advanced skin => do stuff
+                            let span = document.createElement('span');
+                            span.className = m[5]; // example: "fa-solid fa-chess-rook"
+                            span.classList.add("Temporary_IconSpan1");
+                            Lobby_first_player.style.color = "white";
 
+                            Lobby_first_player.textContent = `${m[1]} - `; // set name of first player for all in the room with advances icon
+                            Lobby_first_player.appendChild(span);
+
+                        } else { // admin uses a normal or color skin, everything's alright
+                            Lobby_first_player.textContent = `${m[1]} - ${m[2].toUpperCase()}`; // set name of first player for all in the room
+                            Lobby_first_player.style.color = m[6];
+
+                            if (document.querySelector('.Temporary_IconSpan1')) {
+                                document.querySelector('.Temporary_IconSpan1').remove();
+                            };
+                        };
+
+                        // bug fixes
                         OnlineGame_NameWarnText[0].style.display = 'none';
                         OnlineGame_NameWarnText[0].style.display = 'none';
 
@@ -1510,10 +1598,15 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
             return;
         };
     };
-});
+};
 
 //If you play against a bot in the KI Mode
 SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
+    CreateGame_KIMode();
+});
+
+// create and start game in KI Mode
+function CreateGame_KIMode() {
     if (YourName_Input_KI_mode.value != "" && Your_IconInput.value != "") {
         // html stuff
         YourNamePopUp_KI_Mode.style.display = 'none';
@@ -1532,7 +1625,7 @@ SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
         PauseMusic();
         CreateMusicBars(Fields[fieldIndex].theme_name);
     };
-});
+};
 
 // If player clicks confirm button check if he selected the clock and Inner game mode
 const SetGameData_CheckConfirm = () => {
@@ -1842,25 +1935,28 @@ const DisableGameModeItems = () => {
 
 // Set Light/Dark Mode
 function Set_Light_Dark_Mode(from) {
-    if (localStorage.getItem('sett-DarkMode') == "true") { // dark mode is already on, switch to light mode
-        document.body.classList.remove('dark-mode');
-        localStorage.setItem('sett-DarkMode', false);
+    // if (localStorage.getItem('sett-DarkMode') == "true") { // dark mode is already on, switch to light mode
+    //     document.body.classList.remove('dark-mode');
+    //     localStorage.setItem('sett-DarkMode', false);
 
 
-        if (from == "moon") {
-            settDarkMode.classList = "fa-regular fa-square checkBox";
-            settDarkMode.setAttribute("marked", "false");
-        };
+    //     if (from == "moon") {
+    //         settDarkMode.classList = "fa-regular fa-square checkBox";
+    //         settDarkMode.setAttribute("marked", "false");
+    //     };
 
-    } else { // light mode is already on, switch to dark mode
-        document.body.classList.add('dark-mode');
-        localStorage.setItem('sett-DarkMode', true);
+    // } else { // light mode is already on, switch to dark mode
+    //     document.body.classList.add('dark-mode');
+    //     localStorage.setItem('sett-DarkMode', true);
 
-        if (from == "moon") {
-            settDarkMode.classList = "fa-regular fa-check-square checkBox";
-            settDarkMode.setAttribute("marked", "true");
-        };
-    };
+    //     if (from == "moon") {
+    //         settDarkMode.classList = "fa-regular fa-check-square checkBox";
+    //         settDarkMode.setAttribute("marked", "true");
+    //     };
+    // };
+    alertPopUp.style.display = "flex";
+    DarkLayer.style.display = "block";
+    AlertText.textContent = "Do you really wanted to turn off the dark mode?!";
 };
 
 // set Light/Dark mode in the start of the app on the base of already existing data in localstorage
@@ -1941,6 +2037,7 @@ function setUpOnlineGame(from) {
         OnlineGame_CodeName_PopUp.style.display = 'flex';
         // bug fix
         EnterGameCode_Input.value = null;
+        OnlineGameLobby_alertText.style.display = 'none';
     };
 };
 
@@ -2217,11 +2314,12 @@ function submittedOfflineData() {
 };
 
 // floating element over the screen
-function ItemAnimation(item, destination_position, fromMap, mapItem) {
+function ItemAnimation(item, destination_position, fromMap, mapItem, fromSecondTreasure) {
     // position of treasure
     let rect
     if (!fromMap) {
-        rect = treasureIcon.getBoundingClientRect(); // lobby treasure
+        // start position lobby treasure or second lobby treasure?
+        fromSecondTreasure ? rect = treasureIcon2.getBoundingClientRect() : rect = treasureIcon.getBoundingClientRect();
     } else {
         rect = mapItem.getBoundingClientRect();
     };
@@ -2255,6 +2353,12 @@ function ItemAnimation(item, destination_position, fromMap, mapItem) {
                 div.remove();
             }, 350);
 
+            gemsIcon.style.animation = "increase-item-value ease-in-out 1s";
+
+            setTimeout(() => {
+                gemsIcon.style.animation = "none";
+            }, 1000);
+
         } else if (item == 'fa-solid fa-x') {
             div.style.transform = `translateX(-${rect.right - destination_position.left}px)`;
             div.style.opacity = "1";
@@ -2270,9 +2374,15 @@ function ItemAnimation(item, destination_position, fromMap, mapItem) {
                 div.remove();
             }, 350);
 
+            Xicon.style.animation = "increase-item-value ease-in-out 1s";
+
+            setTimeout(() => {
+                Xicon.style.animation = "none";
+            }, 1000);
+
         } else if (item == 'fa-solid fa-key') {
 
-            div.style.transform = `translate(calc(-${(rect.right - destination_position.right)}px + 100%), -${rect.top - destination_position.top}px)`;
+            div.style.transform = `translateX(-${rect.right - destination_position.left}px)`;
             div.style.opacity = "1";
 
             // save in storage and parse in html
@@ -2291,6 +2401,7 @@ function ItemAnimation(item, destination_position, fromMap, mapItem) {
 
             // Player gains keys
             mapKey.style.animation = "increase-item-value ease-in-out 1s";
+            KEYicon.style.animation = "increase-item-value ease-in-out 1s";
             // localstorage things
             mapKeyValueDisplay.textContent = localStorage.getItem('keys');
             KEYicon.textContent = localStorage.getItem('keys');
@@ -2328,4 +2439,11 @@ tradeX_ConfirmBtn.addEventListener('click', () => {
 
     DarkLayer.style.display = 'none';
     tradeX_PopUp.style.display = 'none';
+});
+
+// alert pop up
+closeAlertPopUpBtn.addEventListener('click', () => {
+    alertPopUp.style.display = 'none';
+    settingsWindow.style.display = 'none';
+    DarkLayer.style.display = 'none';
 });

@@ -433,9 +433,3 @@ useSkinBtn.addEventListener('click', () => {
         };
     });
 });
-
-// alert pop up
-closeAlertPopUpBtn.addEventListener('click', () => {
-    alertPopUp.style.display = 'none';
-    DarkLayer.style.display = 'none';
-});

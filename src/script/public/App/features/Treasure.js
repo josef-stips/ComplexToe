@@ -16,6 +16,98 @@ treasureIcon.addEventListener('click', () => {
     };
 });
 
+// every 5 wins the user can open it
+function init_SecondTreasure() {
+    let treasureOpenedCounter = localStorage.getItem('treasureOpenedCounter');
+    let treasureOpenedOnWin = localStorage.getItem('treasureOpenedOnWin');
+
+    // doesn't exist yet
+    if (!treasureOpenedCounter) {
+        localStorage.setItem('treasureOpenedCounter', 0);
+        localStorage.setItem('treasureOpenedOnWin', 0);
+    };
+};
+init_SecondTreasure();
+
+// this second treasure the user can open every 5 wins in an online game
+treasureIcon2.addEventListener('click', () => {
+    let treasureOpenedCounter = parseInt(localStorage.getItem('treasureOpenedCounter'));
+    let treasureOpenedOnWin = parseInt(localStorage.getItem('treasureOpenedOnWin'));
+    let OnlineMatchesWins = parseInt(localStorage.getItem('onlineMatches-won'));
+
+    treasureIcon2.style.animation = "none";
+    if (OnlineMatchesWins < treasureOpenedOnWin + 5) {
+        DarkLayer.style.display = "block";
+        alertPopUp.style.display = "flex";
+        AlertText.textContent = `You need to win ${treasureOpenedOnWin + 5} online matches in total to unlock this treasure. You currently won ${OnlineMatchesWins}.`;
+
+    } else {
+        treasureOpenedCounter++;
+        treasureOpenedOnWin = treasureOpenedOnWin + 5;
+
+        localStorage.setItem('treasureOpenedCounter', treasureOpenedCounter);
+        localStorage.setItem('treasureOpenedOnWin', treasureOpenedOnWin);
+
+        // The probability the earn x is 1/10 
+        // All the other times the player gets diamants
+        const isXRare = getRandomNumber(1, 11) === 1;
+        const isKeyRare = getRandomNumber(1, 3) === 1;
+
+        let positionOf_XIcon = Xicon.getBoundingClientRect();
+        let positionOf_GemIcon = gemsIcon.getBoundingClientRect();
+        let positionOf_KeyIcon = KEYicon.getBoundingClientRect();
+
+        // player gains 10 X which is incredible
+        if (isKeyRare) {
+            // Spieler gains diamants
+            let counter = 0;
+            let count = setInterval(() => {
+                counter++;
+                if (counter >= 5) {
+                    clearInterval(count);
+                };
+                ItemAnimation('fa-solid fa-key', positionOf_KeyIcon, undefined, undefined, true);
+            }, 50);
+
+            setTimeout(() => {
+                KEYicon.style.animation = "none";
+            }, 1000);
+
+        } else if (isXRare && !isKeyRare) {
+            // Player gains X
+            ItemAnimation('fa-solid fa-x', positionOf_XIcon, undefined, undefined, true);
+
+        } else {
+            // Spieler gains diamants
+            let counter = 0;
+            let count = setInterval(() => {
+                counter++;
+                if (counter >= 25) {
+                    clearInterval(count);
+                };
+                ItemAnimation('fa-solid fa-gem', positionOf_GemIcon, undefined, undefined, true);
+            }, 50);
+        };
+    };
+
+    CheckTreasureCanBeOpened();
+});
+
+// check if treasure can be opened
+// function will be executed on the back to lobby btn event and when the game starts
+function CheckTreasureCanBeOpened() {
+    let OnlineMatchesWins = parseInt(localStorage.getItem('onlineMatches-won'));
+    let treasureOpenedOnWin = parseInt(localStorage.getItem('treasureOpenedOnWin'));
+
+    if (OnlineMatchesWins >= treasureOpenedOnWin + 5) {
+        treasureIcon2.style.animation = "treasure_availible 1s infinite";
+
+    } else {
+        treasureIcon2.style.animation = "none";
+    };
+};
+CheckTreasureCanBeOpened();
+
 treasurePopUpcloseBtn.addEventListener('click', () => {
     treasureBoxTimerPopUp.style.display = 'none';
     DarkLayer.style.display = 'none';

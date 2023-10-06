@@ -62,12 +62,12 @@ function generateCell(index) {
     } else if (xCell_Amount == 25) {
         cell.style.width = "1.75vh";
         cell.style.height = "1.75vh";
-        cell.style.fontSize = "17px";
+        cell.style.fontSize = "15px";
 
     } else if (xCell_Amount == 30) {
         cell.style.width = "1.4vh";
         cell.style.height = "1.4vh";
-        cell.style.fontSize = "13px";
+        cell.style.fontSize = "11.5px";
 
     } else if (xCell_Amount == 40) {
         cell.style.width = "var(--width-for-40x40-field)";
@@ -125,8 +125,9 @@ function CreateOptions(fromMap) {
             let cells = [...cellGrid.children];
             cells.forEach(cell => {
                 cell.textContent = null;
+                cell.className = "cell";
             });
-        }, 1000);
+        }, 500);
     };
 };
 

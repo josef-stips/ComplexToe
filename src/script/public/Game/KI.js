@@ -51,7 +51,7 @@ function KI_Action() {
     //     };
     // };
 
-    let move = Math.floor(Math.random() * (4 * 4));
+    let move = Math.floor(Math.random() * (3 * 3));
     console.log(move)
 
     // Ki move
@@ -118,7 +118,7 @@ function minimax(cells, depth, alpha, beta, isMaximazing) {
         };
         return bestScore;
     };
-};
+}
 
 // This is just for the minimax algorithm
 function minimax_checkWinner() {

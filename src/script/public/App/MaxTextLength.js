@@ -47,6 +47,38 @@ utils.navigational[keys['downArrow']] = true;
 utils.navigational[keys['leftArrow']] = true;
 utils.navigational[keys['rightArrow']] = true;
 
+Player1_NameInput.addEventListener('keyup', (event) => {
+    if (event.key === "Enter") {
+        Player2_NameInput.focus();
+        if (curr_mode == 'OnlineFriend') {
+            Player1_IconInput.focus();
+        };
+    };
+});
+
+Player2_NameInput.addEventListener('keyup', (event) => {
+    if (event.key === "Enter") {
+        Player1_IconInput.focus();
+    };
+});
+
+Player1_IconInput.addEventListener('keyup', (event) => {
+    if (event.key === "Enter") {
+        Player2_IconInput.focus();
+        if (curr_mode == 'OnlineFriend' && personal_GameData.EnterOnlineGame) {
+            EnterCodeName();
+        } else if (curr_mode == 'OnlineFriend' && !personal_GameData.EnterOnlineGame) {
+            SetPlayerData_ConfirmEvent();
+        };
+    };
+});
+
+Player2_IconInput.addEventListener('keyup', (event) => {
+    if (event.key === "Enter") {
+        SetPlayerData_ConfirmEvent();
+    };
+});
+
 Player1_NameInput.addEventListener('keydown', function(event) {
     let len = event.target.value.trim().length;
     let hasSelection = false;
@@ -63,6 +95,27 @@ Player1_NameInput.addEventListener('keydown', function(event) {
     };
 
     if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+ChatMessage.addEventListener('keydown', function(event) {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 60 && !hasSelection) {
         event.preventDefault();
         return false;
     };
@@ -89,6 +142,18 @@ Player2_NameInput.addEventListener('keydown', function(event) {
     };
 });
 
+input2.addEventListener('keyup', (event) => {
+    if (event.key === "Enter") {
+        icon_input3.focus();
+    };
+});
+
+icon_input3.addEventListener('keyup', (event) => {
+    if (event.key === "Enter") {
+        CreateGame_KIMode();
+    };
+});
+
 input2.addEventListener('keydown', function(event) {
     let len = event.target.value.trim().length;
     let hasSelection = false;
@@ -107,6 +172,12 @@ input2.addEventListener('keydown', function(event) {
     if (len >= settings.maxInputLeng && !hasSelection) {
         event.preventDefault();
         return false;
+    };
+});
+
+input3.addEventListener('keyup', (event) => {
+    if (event.key === "Enter") {
+        EnterCodeName();
     };
 });
 

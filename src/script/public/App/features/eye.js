@@ -116,11 +116,12 @@ function eyeAttack_damage() {
 
     let rndIndex = Math.floor(Math.random() * (25 * 25));
 
-    console.log(cells, cells[rndIndex], rndIndex)
     single_CellBlock(cells[rndIndex], "fromMap");
     single_CellBlock(cells[rndIndex + 1], "fromMap");
     single_CellBlock(cells[rndIndex + 2], "fromMap");
     single_CellBlock(cells[rndIndex + 3], "fromMap");
+    single_CellBlock(cells[rndIndex + 4], "fromMap");
+    single_CellBlock(cells[rndIndex + 5], "fromMap");
 
     randomEdgeOnAttackDamageCellgrid(cells, rndIndex);
 
@@ -128,16 +129,36 @@ function eyeAttack_damage() {
     single_CellBlock(cells[rndIndex + 31], "fromMap");
     single_CellBlock(cells[rndIndex + 32], "fromMap");
     single_CellBlock(cells[rndIndex + 33], "fromMap");
+    single_CellBlock(cells[rndIndex + 34], "fromMap");
+    single_CellBlock(cells[rndIndex + 35], "fromMap");
 
     single_CellBlock(cells[rndIndex + 60], "fromMap");
     single_CellBlock(cells[rndIndex + 61], "fromMap");
     single_CellBlock(cells[rndIndex + 62], "fromMap");
     single_CellBlock(cells[rndIndex + 63], "fromMap");
+    single_CellBlock(cells[rndIndex + 64], "fromMap");
+    single_CellBlock(cells[rndIndex + 65], "fromMap");
 
     single_CellBlock(cells[rndIndex + 90], "fromMap");
     single_CellBlock(cells[rndIndex + 91], "fromMap");
     single_CellBlock(cells[rndIndex + 92], "fromMap");
     single_CellBlock(cells[rndIndex + 93], "fromMap");
+    single_CellBlock(cells[rndIndex + 94], "fromMap");
+    single_CellBlock(cells[rndIndex + 95], "fromMap");
+
+    single_CellBlock(cells[rndIndex + 120], "fromMap");
+    single_CellBlock(cells[rndIndex + 121], "fromMap");
+    single_CellBlock(cells[rndIndex + 122], "fromMap");
+    single_CellBlock(cells[rndIndex + 123], "fromMap");
+    single_CellBlock(cells[rndIndex + 124], "fromMap");
+    single_CellBlock(cells[rndIndex + 125], "fromMap");
+
+    single_CellBlock(cells[rndIndex + 150], "fromMap");
+    single_CellBlock(cells[rndIndex + 151], "fromMap");
+    single_CellBlock(cells[rndIndex + 152], "fromMap");
+    single_CellBlock(cells[rndIndex + 153], "fromMap");
+    single_CellBlock(cells[rndIndex + 154], "fromMap");
+    single_CellBlock(cells[rndIndex + 155], "fromMap");
 };
 
 // eye attack interval
@@ -228,7 +249,7 @@ function eyeDies() {
         clearInterval(eye_pos);
         eye_pos = null;
 
-        The_eye.style.transition = "all 1s ease-out";
+        The_eye.style.transition = "all 0.6s ease-out";
         The_eye.style.transform = "scale(0.01)";
         The_eye.style.opacity = "1";
 
@@ -245,7 +266,7 @@ function eyeDies() {
                     Call_UltimateWin();
                 };
             }, 800);
-        }, 1000);
+        }, 600);
     }, 2000);
 };
 

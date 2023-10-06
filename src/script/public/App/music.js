@@ -12,12 +12,16 @@ function CreateMusicBars(Audio) {
     globalAudio.volume = 0;
     count = 10
     let volumeInterval = setInterval(() => {
-        globalAudio.volume = appVolume / count;
+        try {
+            globalAudio.volume = appVolume / count;
 
-        count = count - 2;
-        if (count <= 0) {
-            clearInterval(volumeInterval);
-            volumeInterval = null;
+            count = count - 2;
+            if (count <= 0) {
+                clearInterval(volumeInterval);
+                volumeInterval = null;
+            };
+        } catch (error) {
+            location.reload();
         };
     }, 100);
 
