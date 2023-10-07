@@ -166,7 +166,8 @@ function sunAttack_damage() {
     single_CellBlock(cells[rndIndex], "fromMap");
     single_CellBlock(cells[rndIndex + 1], "fromMap");
 
-    randomEdgeOnAttackDamageCellgrid(cells, rndIndex);
+    let cellDistance = 30;
+    randomEdgeOnAttackDamageCellgrid(cells, rndIndex, cellDistance);
 
     single_CellBlock(cells[rndIndex + 30], "fromMap");
     single_CellBlock(cells[rndIndex + 31], "fromMap");

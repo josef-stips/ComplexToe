@@ -73,8 +73,8 @@ function UserGets_N_Items(n) {
             // amount of different items
             let rarityForItems2 = Math.floor(Math.random() * 100001);
 
-            let legendary = isInRange(rarityForItems2, 0, 500); // propability for legendary
-            let mystique = isInRange(rarityForItems2, 501, 9000); // propability for mystique
+            let legendary = isInRange(rarityForItems2, 0, 300); // propability for legendary
+            let mystique = isInRange(rarityForItems2, 301, 9000); // propability for mystique
             let rare = isInRange(rarityForItems2, 9001, 30000); // propability for rare
             let common = isInRange(rarityForItems2, 30001, 100000); // propability for common
 

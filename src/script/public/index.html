@@ -117,7 +117,7 @@
             <div class="gameModes-cards">
 
                 <div class="gameModes-cards-Left">
-                    <i class="fa-solid fa-earth-asia planet"></i>
+                    <img draggable="false" class="planet" src="assets/game/treasure-map.svg" height="57px" width="57px">
                 </div>
 
                 <div class="gameModes-cards-Main">
@@ -142,7 +142,7 @@
                         <div class="lobby-cards-header-right">
                             <i id="store-icon" class="fa-solid fa-store"></i>
                             <img id="treasure-icon" width="31" height="31" src="assets/game/locked-chest.svg" draggable="false">
-                            <img id="treasure-icon-2" width="31" height="31" src="assets/game/locked-chest.svg" draggable="falses">
+                            <img id="treasure-icon-2" width="31" height="31" src="assets/game/locked-chest.svg" draggable="false">
                         </div>
                     </div>
 
@@ -2374,6 +2374,12 @@
 
                 </div>
 
+                <div class="SetPlayerDataContainer">
+                    <label class="SetGameData_Label"><h3>Required points to win the game</h3></label>
+
+                    <input class="UserSetPointsToWinGameInput SetPlayerName-input" type="text" placeholder="10">
+                </div>
+
                 <!-- Set Player Clock -->
                 <div class="SetPlayerNames-ClockInput SetPlayerDataContainer">
                     <label class="SetGameData_Label" for="Player1_ClockInput"><h3>Set Player Clock</h3></label>
@@ -2433,6 +2439,7 @@
                                 <div class="GameModeListItem-TextWrapper">
                                     <p class="GameModeListItem-Text">Blocker Combat</p>
                                     <i id="GameModeListItem-CheckMark-BlockerCombat" class=""></i>
+                                    <span class="BlockerCombat_OnlineGameWarnText">(A third player will be required)</span>
                                 </div>
                             </li>
                             <li class="GameModeListItem" id="GameModeListItem-FreeFight" selected="false">
@@ -2444,6 +2451,633 @@
 
                         </ul>
                     </div>
+                </div>
+            </div>
+
+            <div class="SetAllowedPatternsWrapper">
+                <h2 style="text-align: start;position: absolute;top: 50px;">Set allowed patterns</h2>
+                <h4 style="text-align: start;position: absolute;top: 80px;">random <i class="fa-regular fa-square RandomAllowedWinCombinations_Btn" activated="false"></i></h4>
+                <!-- 5x5 Field and everything above -->
+                <div class="setPatternWrapper hor">
+                    <div class="SetPatternGrid hor">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+
+                    <i for-pattern="hor" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper vert">
+                    <div class="SetPatternGrid vert">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+
+                    <i for-pattern="vert" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper dia">
+                    <div class="SetPatternGrid dia">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="dia" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper dia2">
+                    <div class="SetPatternGrid dia2">
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="dia2" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper L1">
+                    <div class="SetPatternGrid L1">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="L1" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper L2">
+                    <div class="SetPatternGrid L2">
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="L2" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper L3">
+                    <div class="SetPatternGrid L3">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="L3" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper L4">
+                    <div class="SetPatternGrid L4">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="L4" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper W1">
+                    <div class="SetPatternGrid W1">
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="W1" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper W2">
+                    <div class="SetPatternGrid W2">
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="W2" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper W3">
+                    <div class="SetPatternGrid W3">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="W3" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper W4">
+                    <div class="SetPatternGrid W4">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="W4" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper star">
+                    <div class="SetPatternGrid star">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="star" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper diamond">
+                    <div class="SetPatternGrid diamond">
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="diamond" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper branch1">
+                    <div class="SetPatternGrid branch1">
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="branch1" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper branch2">
+                    <div class="SetPatternGrid branch2">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="branch2" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper branch3">
+                    <div class="SetPatternGrid branch3">
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="branch3" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper branch4">
+                    <div class="SetPatternGrid branch4">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="branch4" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper special1">
+                    <div class="SetPatternGrid special1">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="special1" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
+                </div>
+
+                <div class="setPatternWrapper special2">
+                    <div class="SetPatternGrid special2">
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini">X</div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                        <div class="miniCellMini"></div>
+                    </div>
+                    <i for-pattern="special2" class="fa-regular fa-square-check togglePatternBtn" active="true"></i>
                 </div>
             </div>
 

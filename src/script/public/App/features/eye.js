@@ -7,9 +7,9 @@ let eyeDied = false;
 function init_eye() {
     // normally the eye has an different HP count than in advanture mode
     if (inAdvantureMode) {
-        eye_HP = 10000;
+        eye_HP = 20000;
     } else {
-        eye_HP = 5000;
+        eye_HP = 10000;
     };
 
     eyeDied = false;
@@ -92,7 +92,7 @@ function eye_attack() {
                 cellGrid.classList.remove('cellGrid-alert');
 
                 // damage on cellGrid
-                eyeAttack_damage();
+                eyeAttack_damage(cellDistance = curr_field == "Merciful slaughter" ? 40 : 30);
             }, 1000);
 
             setTimeout(() => {
@@ -111,10 +111,10 @@ function eye_attack() {
 };
 
 // damage from eye attack on cell-grid
-function eyeAttack_damage() {
+function eyeAttack_damage(cellDistance) {
     let cells = [...cellGrid.children];
 
-    let rndIndex = Math.floor(Math.random() * (25 * 25));
+    let rndIndex = Math.floor(Math.random() * ((cellDistance - 5) * (cellDistance - 5)));
 
     single_CellBlock(cells[rndIndex], "fromMap");
     single_CellBlock(cells[rndIndex + 1], "fromMap");
@@ -123,42 +123,42 @@ function eyeAttack_damage() {
     single_CellBlock(cells[rndIndex + 4], "fromMap");
     single_CellBlock(cells[rndIndex + 5], "fromMap");
 
-    randomEdgeOnAttackDamageCellgrid(cells, rndIndex);
+    randomEdgeOnAttackDamageCellgrid(cells, rndIndex, cellDistance);
 
-    single_CellBlock(cells[rndIndex + 30], "fromMap");
-    single_CellBlock(cells[rndIndex + 31], "fromMap");
-    single_CellBlock(cells[rndIndex + 32], "fromMap");
-    single_CellBlock(cells[rndIndex + 33], "fromMap");
-    single_CellBlock(cells[rndIndex + 34], "fromMap");
-    single_CellBlock(cells[rndIndex + 35], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 1], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 2], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 3], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 4], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 5], "fromMap");
 
-    single_CellBlock(cells[rndIndex + 60], "fromMap");
-    single_CellBlock(cells[rndIndex + 61], "fromMap");
-    single_CellBlock(cells[rndIndex + 62], "fromMap");
-    single_CellBlock(cells[rndIndex + 63], "fromMap");
-    single_CellBlock(cells[rndIndex + 64], "fromMap");
-    single_CellBlock(cells[rndIndex + 65], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance], "fromMap");
 
-    single_CellBlock(cells[rndIndex + 90], "fromMap");
-    single_CellBlock(cells[rndIndex + 91], "fromMap");
-    single_CellBlock(cells[rndIndex + 92], "fromMap");
-    single_CellBlock(cells[rndIndex + 93], "fromMap");
-    single_CellBlock(cells[rndIndex + 94], "fromMap");
-    single_CellBlock(cells[rndIndex + 95], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance + cellDistance], "fromMap");
 
-    single_CellBlock(cells[rndIndex + 120], "fromMap");
-    single_CellBlock(cells[rndIndex + 121], "fromMap");
-    single_CellBlock(cells[rndIndex + 122], "fromMap");
-    single_CellBlock(cells[rndIndex + 123], "fromMap");
-    single_CellBlock(cells[rndIndex + 124], "fromMap");
-    single_CellBlock(cells[rndIndex + 125], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance + cellDistance + cellDistance], "fromMap");
 
-    single_CellBlock(cells[rndIndex + 150], "fromMap");
-    single_CellBlock(cells[rndIndex + 151], "fromMap");
-    single_CellBlock(cells[rndIndex + 152], "fromMap");
-    single_CellBlock(cells[rndIndex + 153], "fromMap");
-    single_CellBlock(cells[rndIndex + 154], "fromMap");
-    single_CellBlock(cells[rndIndex + 155], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
+    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
 };
 
 // eye attack interval
@@ -273,7 +273,7 @@ function eyeDies() {
 // eye gets damage by clicking
 let clickEyeCounter = 0;
 eyeIMG_container.addEventListener('click', () => {
-    if (eye_HP >= 9000 && clickEyeCounter <= 500) {
+    if (eye_HP >= 19000 && clickEyeCounter <= 1000) {
         clickEyeCounter++;
         eyeGot_HP_Damage(1);
         document.querySelector('.eyeIMG').style.transition = "transform 100ms ease";
@@ -286,7 +286,7 @@ eyeIMG_container.addEventListener('click', () => {
 });
 
 // side functions
-function randomEdgeOnAttackDamageCellgrid(cells, rndIndex) {
+function randomEdgeOnAttackDamageCellgrid(cells, rndIndex, cellDistance) {
     let randomEdge1 = Math.floor(Math.random() * 5);
     let randomEdge2 = Math.floor(Math.random() * 5);
     let randomEdge3 = Math.floor(Math.random() * 5);
@@ -296,41 +296,41 @@ function randomEdgeOnAttackDamageCellgrid(cells, rndIndex) {
             single_CellBlock(cells[rndIndex + 4], "fromMap");
             break;
         case 2:
-            single_CellBlock(cells[rndIndex + 34], "fromMap");
+            single_CellBlock(cells[rndIndex + 4 + cellDistance], "fromMap");
             break;
         case 3:
-            single_CellBlock(cells[rndIndex + 64], "fromMap");
+            single_CellBlock(cells[rndIndex + 4 + cellDistance + cellDistance], "fromMap");
             break;
         case 4:
-            single_CellBlock(cells[rndIndex + 94], "fromMap");
+            single_CellBlock(cells[rndIndex + 4 + cellDistance + cellDistance + cellDistance], "fromMap");
             break;
     };
     switch (randomEdge2) {
         case 1:
-            single_CellBlock(cells[rndIndex + 120], "fromMap");
+            single_CellBlock(cells[rndIndex + 0 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
             break;
         case 2:
-            single_CellBlock(cells[rndIndex + 121], "fromMap");
+            single_CellBlock(cells[rndIndex + 1 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
             break;
         case 3:
-            single_CellBlock(cells[rndIndex + 122], "fromMap");
+            single_CellBlock(cells[rndIndex + 2 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
             break;
         case 4:
-            single_CellBlock(cells[rndIndex + 123], "fromMap");
+            single_CellBlock(cells[rndIndex + 3 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
             break;
     };
     switch (randomEdge3) {
         case 1:
-            single_CellBlock(cells[rndIndex + 29], "fromMap");
+            single_CellBlock(cells[rndIndex + cellDistance - 1], "fromMap");
             break;
         case 2:
-            single_CellBlock(cells[rndIndex + 59], "fromMap");
+            single_CellBlock(cells[rndIndex + cellDistance + cellDistance - 1], "fromMap");
             break;
         case 3:
-            single_CellBlock(cells[rndIndex + 89], "fromMap");
+            single_CellBlock(cells[rndIndex + cellDistance + cellDistance + cellDistance - 1], "fromMap");
             break;
         default:
-            single_CellBlock(cells[rndIndex + 59], "fromMap");
+            single_CellBlock(cells[rndIndex + cellDistance + cellDistance - 1], "fromMap");
             break;
     };
 };

@@ -197,6 +197,13 @@ let ClockListItemCheckMark_70sec_KI = document.querySelector('#ClockListItemChec
 let OnlineGame_iniPopUp = document.querySelector('.OnlineGame_iniPopUp');
 let onlineGame_closeBtn = document.querySelector('#onlineGame_closeBtn');
 
+let BlockerCombat_OnlineGameWarnText = document.querySelector('.BlockerCombat_OnlineGameWarnText');
+let RandomAllowedWinCombinations_Btn = document.querySelector('.RandomAllowedWinCombinations_Btn');
+let UserSetPointsToWinGameInput = document.querySelector('.UserSetPointsToWinGameInput');
+let SetAllowedPatternsWrapper = document.querySelector('.SetAllowedPatternsWrapper');
+let setPatternWrapper = document.querySelectorAll('.setPatternWrapper');
+let togglePatternBtn = document.querySelectorAll('.togglePatternBtn');
+let SetPatternGrid = document.querySelectorAll('.SetPatternGrid');
 let CreateGame_btn = document.querySelector('#CreateGame-btn');
 let EnterGame_btn = document.querySelector('#EnterGame-btn');
 let OnlineGame_CodeName_PopUp = document.querySelector('.OnlineGame_CodeName_PopUp');
@@ -512,6 +519,12 @@ let inAdvantureMode = false;
 let userName = "";
 let userIcon = "";
 
+// allowed patterns choosed by player
+// At the beginning all patterns are allowed, the user can choose which one to disable
+let allowedPatternsFromUser = ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+    "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"
+];
+
 // everything about the online chat in online game mode
 let openedChat = false;
 let recievedUnseenMessages = 0;
@@ -546,6 +559,11 @@ let personal_GameData = {
     currGameID: null,
     role: 'user' // admin ? user
 };
+
+// (online mode) if the user creates a game so he is the admin and selected blocker combat mode
+// A third player will be required for this so the game has a real blocker
+// This variable checks wether a third player is required in the game or not
+let thirdPlayer_required = false;
 
 let socket;
 
@@ -1300,6 +1318,9 @@ function Click_NxN(f) {
     // for skins in online mode
     SkinInputDisplay.style.display = 'none';
 
+    // reset previously made changes by the user
+    resetUserChoosedAllowedPatterns();
+
     if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
 
         SetPlayerNamesPopUp.style.display = 'flex';
@@ -1588,7 +1609,7 @@ function SetPlayerData_ConfirmEvent() {
             curr_selected_PlayerClock = Check[2]; // Player Clock
 
             DarkLayer.style.display = 'none';
-            initializeGame(curr_field_ele, undefined, undefined, JSON.parse(localStorage.getItem('unlocked_mapLevels'))[1][6]);
+            initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value);
 
             // play theme music 
             PauseMusic();
@@ -1678,11 +1699,22 @@ gameInfo_btn.addEventListener('click', () => {
         } else {
             PatternGridThree.forEach(pattern => pattern.style.display = 'none');
             PatternGridFor.forEach(pattern => pattern.style.display = 'none');
-            PatternGridFive.forEach(pattern => pattern.style.display = 'grid');
+            PatternGridFive.forEach(pattern => pattern.style.display = 'none');
         };
 
+        // display allowed win patterns
+        let Children = [...PatternGridFive];
+        allowedPatternsFromUser.map(el => {
+            Children.forEach(e => {
+                if (el == e.classList[2]) {
+                    e.style.display = 'grid';
+                    return;
+                };
+            });
+        });
+
         // how to win text
-        HowToWinText.textContent = "Score more points than your opponent";
+        HowToWinText.textContent = `Get ${UserSetPointsToWinGameInput.value} points or score more points than your opponent if he gives up.`;
 
     } else { // in advanture mode
         // display for 5x5 fields and higher
@@ -1716,6 +1748,8 @@ GameInfoClose_btn.addEventListener('click', () => {
 });
 
 GameModelistItem_Boneyard.addEventListener('click', () => {
+    thirdPlayer_required = false;
+    BlockerCombat_OnlineGameWarnText.style.display = "none";
     switch (GameModelistItem_Boneyard.getAttribute('selected')) {
         case 'false':
             DisableGameModeItems();
@@ -1736,12 +1770,16 @@ GameModeListItem_BlockerCombat.addEventListener('click', () => {
     switch (GameModeListItem_BlockerCombat.getAttribute('selected')) {
         case 'false':
             DisableGameModeItems();
+            curr_mode == GameMode[2].opponent ? BlockerCombat_OnlineGameWarnText.style.display = "block" : BlockerCombat_OnlineGameWarnText.style.display = "none";
+            thirdPlayer_required = true;
             GameModeListItemCheckMark_BlockerCombat.classList = 'fa-solid fa-check';
             GameModeListItem_BlockerCombat.style.color = 'white';
             GameModeListItem_BlockerCombat.setAttribute('selected', 'true');
             break;
 
         case 'true':
+            thirdPlayer_required = false;
+            BlockerCombat_OnlineGameWarnText.style.display = "none"
             GameModeListItemCheckMark_BlockerCombat.classList = '';
             GameModeListItem_BlockerCombat.style.color = 'black';
             GameModeListItem_BlockerCombat.setAttribute('selected', 'false');
@@ -1750,6 +1788,8 @@ GameModeListItem_BlockerCombat.addEventListener('click', () => {
 });
 
 GameModeListItem_FreeFight.addEventListener('click', () => {
+    thirdPlayer_required = false;
+    BlockerCombat_OnlineGameWarnText.style.display = "none";
     switch (GameModeListItem_FreeFight.getAttribute('selected')) {
         case 'false':
             DisableGameModeItems();
@@ -2015,6 +2055,9 @@ function setUpOnlineGame(from) {
         SkinInputDisplay.style.display = 'none';
         Player1_IconInput.style.display = 'block';
 
+        // for better user experience 
+        resetUserChoosedAllowedPatterns();
+
         // default data
         Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
         if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
@@ -2039,6 +2082,27 @@ function setUpOnlineGame(from) {
         EnterGameCode_Input.value = null;
         OnlineGameLobby_alertText.style.display = 'none';
     };
+};
+
+// reset the settings the user previously made in the set data pop up to start the game
+function resetUserChoosedAllowedPatterns() {
+    SetAllowedPatternsWrapper.style.scrollBottom = SetAllowedPatternsWrapper.style.scrollHeight;
+
+    RandomAllowedWinCombinations_Btn.className = "fa-regular fa-square RandomAllowedWinCombinations_Btn";
+    RandomAllowedWinCombinations_Btn.setAttribute('activated', "false");
+
+    setPatternWrapper.forEach(ele => {
+        ele.style.display = 'flex';
+        ele.style.color = "white";
+        [...ele.children[0].children].forEach(c => {
+            c.style.color = "white";
+        });
+        ele.children[1].className = "fa-regular fa-square-check togglePatternBtn";
+        ele.children[1].setAttribute("active", "true");
+    });
+    allowedPatternsFromUser = ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+        "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"
+    ];
 };
 
 // When user left the online game during a match, the admin gets informed by that with a pop up
@@ -2447,3 +2511,106 @@ closeAlertPopUpBtn.addEventListener('click', () => {
     settingsWindow.style.display = 'none';
     DarkLayer.style.display = 'none';
 });
+
+// when player wants to create/start a game and passes the required data
+// he can choose which patterns should be allowed in the game and which not
+// on: toggle button event
+togglePatternBtn.forEach(el => {
+    el.addEventListener('click', e => {
+        switch (e.target.getAttribute("active")) {
+            case "true":
+                e.target.className = "fa-regular fa-square togglePatternBtn";
+                e.target.setAttribute("active", "false");
+
+                // if pattern has the same class name as the check box button attribute value (if name is the same) =>disable it
+                SetPatternGrid.forEach(ele => {
+                    if (ele.classList[1] == e.target.getAttribute("for-pattern")) {
+                        // example: hor
+                        allowedPatternsFromUser = allowedPatternsFromUser.filter(item => item !== ele.classList[1]);
+                    };
+                });
+
+                // change color to grey so the disability of the pattern is more displayed to the user
+                setPatternWrapper.forEach(ele => {
+                    if (ele.classList[1] == e.target.getAttribute("for-pattern")) {
+                        ele.style.color = "#121518";
+
+                        Array.from(ele.children[0].children).forEach(c => {
+                            c.style.color = "#121518";
+                        });
+                    };
+                });
+                break;
+
+            case "false":
+                e.target.className = "fa-regular fa-square-check togglePatternBtn";
+                e.target.setAttribute("active", "true");
+
+                // if pattern has the same class name as the check box button attribute value (if name is the same) =>disable it
+                SetPatternGrid.forEach(ele => {
+                    if (ele.classList[1] == e.target.getAttribute("for-pattern")) {
+                        // example: hor
+                        allowedPatternsFromUser.push(ele.classList[1]);
+                    };
+                });
+
+                // change color to grey so the disability of the pattern is more displayed to the user
+                setPatternWrapper.forEach(ele => {
+                    if (ele.classList[1] == e.target.getAttribute("for-pattern")) {
+                        ele.style.color = "white";
+
+                        [...ele.children[0].children].forEach(c => {
+                            c.style.color = "white";
+                        });
+                    };
+                });
+                break;
+        };
+    });
+});
+
+// random allowed win combinations button , toggle!
+RandomAllowedWinCombinations_Btn.addEventListener('click', () => {
+    switch (RandomAllowedWinCombinations_Btn.getAttribute('activated')) {
+        case "true":
+            RandomAllowedWinCombinations_Btn.className = "fa-regular fa-square RandomAllowedWinCombinations_Btn";
+            RandomAllowedWinCombinations_Btn.setAttribute('activated', "false");
+
+            resetUserChoosedAllowedPatterns();
+            break;
+
+        case "false":
+            RandomAllowedWinCombinations_Btn.className = "fa-regular fa-square-check RandomAllowedWinCombinations_Btn";
+            RandomAllowedWinCombinations_Btn.setAttribute('activated', "true");
+
+            let allPatterns = ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+                "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"
+            ];
+
+            let amountToRemove = Math.floor(Math.random() * 19);
+            SetRandomAllowedWinCombinations(allowedPatternsFromUser, amountToRemove);
+            break;
+    };
+});
+
+// execute the random wc's
+function SetRandomAllowedWinCombinations(arr, numToRemove) {
+    for (let i = 0; i < numToRemove; i++) {
+        let randomIndex = Math.floor(Math.random() * arr.length);
+        arr.splice(randomIndex, 1);
+    };
+
+    // display everything to none
+    setPatternWrapper.forEach(e => {
+        e.style.display = 'none';
+        return;
+    });
+
+    [...setPatternWrapper].map(e => {
+        allowedPatternsFromUser.forEach(p => {
+            if (e.classList[1] == p) {
+                e.style.display = "flex";
+            };
+        });
+    });
+};

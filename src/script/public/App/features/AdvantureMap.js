@@ -68,7 +68,7 @@ function UnlockedMapLevel() {
             ],
             9: [false, 5, "Last step before death", 90, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1"],
                 ["This is the last step before you are never seen again. No one knows if you can do that.",
-                    "To conquer this level you have to score 15 points against your enemy and defeat the evil sun."
+                    "To conquer this level you have to score 15 points against your enemy and defeat the evil star."
                 ], 15, InnerGameModes[3], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
                 400
             ],
@@ -342,6 +342,9 @@ conqueredLevels();
 
 // planet
 planet.addEventListener('click', () => {
+    // bug fixes
+    secondTierModes.style.marginBottom = "0";
+    bossModeIsActive = false;
     // sound
     playBtn_Audio_2();
 

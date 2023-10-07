@@ -55,7 +55,10 @@ let player1_can_set = true; // admin has the right to set first when the game st
 let allowedPatterns = [];
 
 // the user can only set a maximum amount of moves. If he didn't win the game but already hasn't any moves left. He lost
-let MaxAmountOfMovesCount = 0;
+let MaxAmountOfMovesCount = Infinity;
+
+// default
+UserSetPointsToWinGameInput.value = 10;
 
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
@@ -78,7 +81,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     maxAmoOfMoves != undefined ? MaxAmountOfMovesCount = maxAmoOfMoves : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
 
     // The reqired amount to win a game (optional in normal games and normal in advanture mode)
-    points_to_win = required_amount_to_win;
+    !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
@@ -166,7 +169,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // if in 40x40 field, generate its properties: eye
     // or level 10: eye boss, or level 9: sun boss
     if (Fields[fieldIndex].size == "40x40" || current_selected_level == 10 && inAdvantureMode || current_selected_level == 9 && inAdvantureMode) {
-        document.querySelector('#GameArea-FieldCircle').style.margin = "0 60px 0 0";
+        document.querySelector('#GameArea-FieldCircle').style.margin = "0 var(--BossMode-fieldcircleMargin) 0 0";
         lobbyFooterText.style.display = 'none';
 
         // in advanture map on the last level with the eye boss
@@ -179,6 +182,11 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
             sun_40.style.display = 'flex';
             eye_40.style.display = 'none';
             init_sun();
+
+        } else if (Fields[fieldIndex].size == "40x40") {
+            eye_40.style.display = 'flex';
+            sun_40.style.display = 'none';
+            init_eye();
         };
 
     } else {
@@ -578,7 +586,7 @@ function updateCell(index) {
         if (currentPlayer == PlayerData[1].PlayerForm) cells[index].style.color = localStorage.getItem('userInfoColor');
     };
 
-    MaxAmountOfMovesCount >= 1 ? MaxAmountOfMovesCount-- : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
+    MaxAmountOfMovesCount >= 1 && MaxAmountOfMovesCount != Infinity ? MaxAmountOfMovesCount-- : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
     MaxAmountOfMovesGameDisplay.textContent = `moves left: ${MaxAmountOfMovesCount}`;
 };
 
@@ -914,8 +922,8 @@ function checkWinner() {
                         };
                         continue;
 
-                    } else {
-                        // other mode
+                    } else if (curr_mode == GameMode[3].opponent) {
+                        // computer mode
                         CheckmateWarnText.style.display = 'block';
                         CheckmateWarnText.textContent = `Your opponent can beat you with one move, ${PlayerData[2].PlayerName}`;
                         continue;
@@ -1214,7 +1222,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
     setTimeout(() => {
         if (Player1_won == true) {
-
+            statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
             score_Player1_numb = score_Player1_numb + 1 + extra_points;
             scorePlayer1.textContent = score_Player1_numb;
 
@@ -1240,6 +1248,13 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 };
             };
 
+            if (score_Player1_numb >= points_to_win) {
+                Player1_won = false;
+                running = false;
+                Call_UltimateWin();
+                return;
+            };
+
             // other mode
             if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                 statusText.textContent = `You just gained a point!`;
@@ -1251,19 +1266,26 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
             Player1_won = false;
 
         } else if (Player2_won == true) {
-
+            statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
             score_Player2_numb = score_Player2_numb + 1 + extra_points;
             scorePlayer2.textContent = score_Player2_numb;
-            statusText.textContent = `the unknown just gained a point`;
 
             // the opponent made a point in advanture mode
             if (inAdvantureMode) {
+                statusText.textContent = `the unknown just gained a point`;
                 if (score_Player2_numb >= points_to_win) {
                     statusText.textContent = `You lost against the evil. Are you willing to you try again?`;
                     Player2_won = false;
                     Call_UltimateWin();
                     return;
                 };
+            };
+
+            if (score_Player2_numb >= points_to_win) {
+                Player2_won = false;
+                running = false;
+                Call_UltimateWin();
+                return;
             };
 
             // other mode
@@ -1359,6 +1381,7 @@ socket.on('Reload_GlobalGame', (Goptions) => {
 function single_CellBlock(cell, fromMap) {
     cell.className = "cell death-cell";
     cell.style.cursor = "default";
+    cell.style.color = "white";
     if (fromMap == "fromMap") {
         cell.style.animation = "destroyCell 2s forwards"; // Animation aktivieren
 
@@ -1529,10 +1552,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
                 };
                 if (curr_mode == GameMode[1].opponent) { // KI 
                     if (inAdvantureMode) {
-                        setNew_SkillPoints(20);
-
-                    } else {
-                        setNew_SkillPoints(1);
+                        let conquered_mapLevel = JSON.parse(localStorage.getItem('unlocked_mapLevels'))[current_selected_level][0];
+                        if (!conquered_mapLevel) setNew_SkillPoints(20);
                     };
                 };
 
