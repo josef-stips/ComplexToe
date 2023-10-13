@@ -8,7 +8,7 @@ let userInfoEditable2 = document.querySelector('#userInfoIcon');
 
 let settings = {
     maxInputLeng: 11,
-    maxFormInputLeng: 2,
+    maxFormInputLeng: 1,
     maxInputLeng2: 6,
 };
 
@@ -182,6 +182,11 @@ input3.addEventListener('keyup', (event) => {
 });
 
 input3.addEventListener('keydown', function(event) {
+    if (event.code === "Space") {
+        event.preventDefault();
+        return;
+    };
+
     let len = event.target.value.trim().length;
     let hasSelection = false;
     let selection = window.getSelection();
@@ -391,6 +396,48 @@ userInfoEditable2.addEventListener('keydown', (event) => {
     };
 });
 
+Lobby_PointsToWin.addEventListener('keydown', (event) => {
+    let len = event.target.textContent.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 3 && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+UserSetPointsToWinGameInput.addEventListener('keydown', (event) => {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 3 && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
 Player1_NameInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
     const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
@@ -469,4 +516,34 @@ UserGivesData_IconInput.addEventListener("input", function(event) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
         event.target.value = validInput;
     }
+});
+
+Lobby_PointsToWin.addEventListener("input", function(event) {
+    const inputValue = event.target.textContent;
+    const validInput = inputValue.replace(/[^0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.textContent = validInput;
+    };
+});
+
+UserSetPointsToWinGameInput.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    };
+});
+
+input3.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    };
 });

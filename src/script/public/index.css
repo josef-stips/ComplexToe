@@ -5,7 +5,7 @@
     --bg-gradient: rgb(255, 255, 255);
     --bg-gradient2: rgb(255, 255, 255);
     --bg-app-color2: #4b4e52;
-    --width-for-goToAdvancedModes-btn: 86%;
+    --width-for-goToAdvancedModes-btn: 1580px;
     --width-for-40x40-field: 1.0vh;
     --font-size-for-40x40-field: 11.5px;
     --floating-gem-range: -152vh;
@@ -249,11 +249,11 @@ img {
 }
 
 .cellGrid-alert {
-    animation: alert_red 1s linear;
+    animation: alert_red 0.9s linear;
 }
 
 .cellGrid_opacity {
-    animation: opacity_div 1s linear;
+    animation: opacity_div 0.9s linear;
 }
 
 #cellGrid.Invisible {
@@ -484,6 +484,60 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#AllowedPatternsOuter {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
+
+.Lobby_PointsToWin {
+    outline: none;
+}
+
+.Lobby_AllowedPatternsScrollContainer {
+    width: 39em;
+    height: 80%;
+    padding: 10px 10px;
+    margin-top: 5px;
+    border-top: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: row;
+    gap: 20px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.Lobby_AllowedPatternsScrollContainer::-webkit-scrollbar {
+    width: 100px;
+    height: 10px;
+    background-color: #121518;
+    cursor: pointer;
+}
+
+.setPatternWrapperLobby {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    gap: 10px;
+}
+
+.SetPatternGridLobby {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+}
+
+.SetPatternGridLobby .miniCellMini {
+    width: 1.7vh;
+    height: 1.7vh;
+    font-size: 17px;
 }
 
 .gameModes-cards {
@@ -1435,11 +1489,11 @@ img {
 }
 
 .SetPlayerNames-InputArea {
-    gap: 1em;
+    gap: 0.9em;
 }
 
 .SetPlayerNames-IconInput {
-    gap: 1em;
+    gap: 0.9em;
 }
 
 .SetPlayerNames-ClockInput {
@@ -1540,10 +1594,11 @@ img {
 }
 
 .OnlineGame_NameWarnText {
+    position: absolute;
     font-size: 18px;
     color: red;
     font-weight: 400;
-    margin: 0.1em 0 0.1em 0.1em;
+    margin: 0.1em 0 0.1em 11.1em;
     display: none;
 }
 
@@ -1564,7 +1619,7 @@ img {
 
 .BlockerCombat_OnlineGameWarnText {
     display: none;
-    margin: 0 0 0 12.5px;
+    margin: 0 0 0 8.5px;
     color: red;
     font-size: 17px;
 }
@@ -2063,13 +2118,12 @@ label h3 {
 }
 
 .Lobby_main {
-    margin-top: 10;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
     width: 96%;
-    font-size: 23px;
+    font-size: 21.5px;
     height: 75%;
     font-weight: 400;
     border-top: 2px solid;
@@ -2768,7 +2822,7 @@ label h3 {
     color: var(--font-color);
     border-radius: 40px;
     background-color: var(--bg-app-color);
-    z-index: 10001;
+    z-index: 93001;
     display: none;
     flex-direction: column;
 }
@@ -3087,7 +3141,7 @@ label h3 {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    gap: 0.5em;
+    gap: 0.3em;
 }
 
 .mapLevel_Btn {
@@ -3802,6 +3856,91 @@ label h3 {
 }
 
 
+/* give up btn */
+
+.GiveUp_btn {
+    cursor: pointer;
+    transition: color 0.1s ease-in-out;
+}
+
+.GiveUp_btn:hover {
+    transition: color 0.1s ease-in-out;
+    color: var(--hover-item);
+}
+
+
+/* give up pop up */
+
+.GiveUpPopUp {
+    position: absolute;
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 35%;
+    height: 30%;
+    border: 2px solid var(--font-color);
+    color: var(--font-color);
+    border-radius: 25px;
+    background-color: var(--bg-app-color);
+    z-index: 10001;
+    display: none;
+    flex-direction: column;
+}
+
+.giveUp_header {
+    height: 10%;
+    width: 100%;
+    border-bottom: 2px solid var(--font-color);
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.GiveUpPopUp_closeBtn {
+    cursor: pointer;
+    margin-right: 10px;
+    transition: color 0.1s ease-in-out;
+}
+
+.GiveUpPopUp_closeBtn:hover {
+    transition: color 0.1s ease-in-out;
+    color: var(--hover-item);
+}
+
+.giveUp_main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60%;
+    font-size: 26px;
+}
+
+.giveUp_footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+}
+
+.giveUpChooseBtn {
+    padding: 5px 15px;
+    font-size: 22px;
+    border-radius: 20px;
+    border: 2px solid var(--font-color);
+    cursor: pointer;
+    transition: color 0.1s ease-in-out;
+}
+
+.giveUpChooseBtn:hover {
+    transition: color 0.1s ease-in-out;
+    color: var(--hover-item);
+}
+
+
 /* Animations */
 
 @keyframes flying_text {
@@ -4166,8 +4305,10 @@ label h3 {
     }
     .skinShop-SkinColors {
         gap: 1em;
+        font-size: 28px;
     }
     .skinShop-AdvancedSkins {
+        font-size: 27px;
         gap: 1em;
     }
     .map {
@@ -4189,5 +4330,16 @@ label h3 {
     }
     .CheckmateWarnText {
         font-size: 15px;
+    }
+    .Lobby_main {
+        font-size: 16px;
+    }
+    .Lobby_AllowedPatternsScrollContainer {
+        width: 33em;
+    }
+    .SetPatternGridLobby .miniCellMini {
+        width: 1.2vh;
+        height: 1.2vh;
+        font-size: 8px;
     }
 }

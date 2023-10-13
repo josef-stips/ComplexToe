@@ -17,8 +17,12 @@ function init_eye() {
     The_eye.style.opacity = "1";
     The_eye.style.transform = "scale(1)";
 
-    // start interval for attacking
-    EyeAttackInterval();
+    if (curr_mode != GameMode[2].opponent) {
+        // start interval for attacking
+        EyeAttackInterval();
+    } else {
+        console.log("The server starts the eye attack interval in the databas as an event scheduler");
+    };
     // HP
     eyeLifeCounter.textContent = `${eye_HP}/${eye_HP} HP`;
     // get position
@@ -81,7 +85,7 @@ function eye_attack() {
                 cellGrid.classList.add('cellGrid-alert');
             }, 100);
 
-            setTimeout(() => {
+            setTimeout(async() => {
                 eye_attckingBeam.style.display = "none";
 
                 DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
@@ -92,20 +96,27 @@ function eye_attack() {
                 cellGrid.classList.remove('cellGrid-alert');
 
                 // damage on cellGrid
-                eyeAttack_damage(cellDistance = curr_field == "Merciful slaughter" ? 40 : 30);
+                if (curr_mode != GameMode[2].opponent) {
+                    eyeAttack_damage(cellDistance = curr_field == "Merciful slaughter" ? 40 : 30);
+                } else {
+                    if (personal_GameData.role == "admin") {
+                        await socket.emit("activateEyeDamage", personal_GameData.currGameID, 40);
+                    };
+                };
             }, 1000);
 
             setTimeout(() => {
                 The_eye.style.transition = "all 0.2s ease-in-out";
             }, 2500);
 
-            // start attack interval again
-            EyeAttackInterval();
+            if (curr_mode != GameMode[2].opponent) {
+                // start attack interval again
+                EyeAttackInterval();
 
-            // bug fix: user can leave again
-            leaveGame_btn.style.color = 'var(--font-color)';
-            leaveGame_btn.addEventListener('click', UserleavesGame);
-
+                // bug fix: user can leave again
+                leaveGame_btn.style.color = 'var(--font-color)';
+                leaveGame_btn.addEventListener('click', UserleavesGame);
+            };
         }, 3000); // Ändern Sie die Dauer der Vibration nach Bedarf
     };
 };
@@ -163,7 +174,8 @@ function eyeAttack_damage(cellDistance) {
 
 // eye attack interval
 function EyeAttackInterval() {
-    if (!eyeDied) {
+    if (!eyeDied && curr_mode != GameMode[2].opponent) {
+        console.log("nah man")
         let minute = 1;
         let second = 0;
 
@@ -199,6 +211,41 @@ function EyeAttackInterval() {
         }, 1000);
     };
 };
+
+socket.on("EyeAttackInterval", (eyeAttackInterval) => {
+    console.log(eyeAttackInterval)
+    eyeNextAttackTimer.textContent = `${0}:${eyeAttackInterval}`;
+
+    if (eyeAttackInterval == 3) {
+        removeAccessToAnything();
+    };
+
+    if (eyeAttackInterval < 6) {
+        eyeNextAttackTimer.style.color = "red";
+    } else {
+        eyeNextAttackTimer.style.color = "var(--font-color)";
+    };
+});
+
+socket.on("EyeAttack", () => {
+    console.log("attack!")
+    eyeNextAttackTimer.textContent = `0:0`;
+    eye_attack();
+});
+
+socket.on("EyeDamage", async(OptionsArray) => {
+    console.log("eye damage", OptionsArray)
+    let cells = [...cellGrid.children];
+
+    await OptionsArray.forEach((c, i) => {
+        if (c == '§') {
+            console.log(i, c, "lol");
+            single_CellBlock(cells[i], "fromMap");
+        };
+    });
+
+    addAccesOnlineMode();
+});
 
 // user can defeat the eye through his patterns and if he clicks on the eye with the cursor
 // cursor damage: 1, pattern damage: 450 - 900

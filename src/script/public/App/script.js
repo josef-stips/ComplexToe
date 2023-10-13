@@ -180,6 +180,8 @@ let PlayerClock_PositiveSwitcher = document.querySelector('#PlayerClock_Positive
 
 let InnerGameMode_NegativeSwitcher = document.querySelector('#InnerGameMode_NegativeSwitcher');
 let InnerGameMode_PositiveSwitcher = document.querySelector('#InnerGameMode_PositiveSwitcher');
+InnerGameMode_NegativeSwitcher.style.display = "none";
+InnerGameMode_PositiveSwitcher.style.display = "none";
 
 let SetClockList_KI = document.querySelector('.SetClockList_KI');
 let Your_IconInput = document.querySelector('#Your_IconInput');
@@ -204,6 +206,9 @@ let SetAllowedPatternsWrapper = document.querySelector('.SetAllowedPatternsWrapp
 let setPatternWrapper = document.querySelectorAll('.setPatternWrapper');
 let togglePatternBtn = document.querySelectorAll('.togglePatternBtn');
 let SetPatternGrid = document.querySelectorAll('.SetPatternGrid');
+let SetPatternGridLobby = document.querySelectorAll('.SetPatternGridLobby');
+let setPatternWrapperLobby = document.querySelectorAll('.setPatternWrapperLobby');
+let togglePatternBtnLobby = document.querySelectorAll('.togglePatternBtnLobby');
 let CreateGame_btn = document.querySelector('#CreateGame-btn');
 let EnterGame_btn = document.querySelector('#EnterGame-btn');
 let OnlineGame_CodeName_PopUp = document.querySelector('.OnlineGame_CodeName_PopUp');
@@ -215,6 +220,7 @@ let Lobby_startGame_btn = document.querySelector('.Lobby_startGame_btn');
 let Lobby_closeBtn = document.querySelector('#Lobby_closeBtn');
 let Lobby_first_player = document.querySelector('.Lobby_first_player');
 let Lobby_second_player = document.querySelector('.Lobby_second_player');
+let lobby_third_player = document.querySelector('.Lobby_third_player');
 let OnlineGameLobby_alertText = document.querySelector('.OnlineGameLobby_alertText');
 let Lobby_GameCode_display = document.querySelector('.Lobby_GameCode_display');
 let goToAdvancedFields = document.querySelector('#goTo-advancedFields');
@@ -258,6 +264,11 @@ let MapLevel_SetIconLabel = document.querySelector('#MapLevel_SetIconLabel');
 const MapLevel_Bar_fillElement = document.querySelector('.fill2');
 let mapLevel_description = document.querySelector('.mapLevel_Description_Text');
 let HowToWinText = document.querySelector('.HowToWinText');
+let GiveUp_btn = document.querySelector('#GiveUp_btn');
+let GiveUpPopUp_closeBtn = document.querySelector('.GiveUpPopUp_closeBtn');
+let giveUp_No_btn = document.querySelector('.giveUp_No_btn');
+let giveUp_Yes_btn = document.querySelector('.giveUp_Yes_btn');
+let GiveUpPopUp = document.querySelector('.GiveUpPopUp');
 let UserGivesData_PopUp_name = document.querySelectorAll('.UserGivesData_PopUp')[0];
 let UserGivesData_PopUp_icon = document.querySelectorAll('.UserGivesData_PopUp')[1];
 let UserGivesData_closeBtn_NAME = document.querySelector('#UserGivesData_closeBtn_NAME');
@@ -302,6 +313,7 @@ let Chat_PopUp = document.querySelector('.Chat');
 let ChatMain = document.querySelector('.ChatMain');
 let MaxAmountOfMovesDisplay = document.querySelector('.MaxAmountOfMoves');
 let MaxAmountOfMovesGameDisplay = document.querySelector('.MaxAmountOfMovesGameDisplay');
+let Lobby_PointsToWin = document.querySelector('.Lobby_PointsToWin');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -648,6 +660,7 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
         DarkLayer.style.display = "block";
         alertPopUp.style.display = "flex";
         AlertText.textContent = "It looks like you're offline! Try to reconnect.";
+        DarkLayer.style.zIndex = "93000";
 
     } finally {
         // finally: check constantly if loading progress finished
@@ -723,6 +736,7 @@ function checkLoadingProgress() {
         DarkLayer.style.display = "block";
         alertPopUp.style.display = "flex";
         AlertText.textContent = "It looks like you're offline! Try to reconnect.";
+        DarkLayer.style.zIndex = "93000";
 
         loadingScreenFunc();
     };
@@ -1140,6 +1154,11 @@ gameMode_KI_card.addEventListener('click', () => {
     TwentyxTwentyField.style.display = 'none';
     // Display Game Mode Description
     GameModeDisplay.textContent = GameMode[1].description;
+
+    // bug fix:
+    goToAdvancedFields.classList = "fa-solid fa-caret-down";
+    secondTierModes.style.marginBottom = "0";
+    isInAdvancedGameModes = false;
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
@@ -1310,6 +1329,12 @@ function Click_NxN(f) {
     SetClockList.style.display = 'flex';
     SetGameModeList.style.display = 'flex';
     Player1_IconInput.style.color = 'black';
+    SetAllowedPatternsWrapper.style.display = 'display';
+    UserSetPointsToWinGameInput.style.display = "block";
+    Player1_IconInput.style.display = "block";
+    document.querySelector(`[for="Player1_IconInput"]`).style.display = "block";
+    SetAllowedPatternsWrapper.style.display = "flex";
+    SetGameData_Label[2].style.display = "block";
 
     // warn text for online game mode
     OnlineGame_NameWarnText[0].style.display = 'none';
@@ -1482,7 +1507,9 @@ function UserCreateRoom() {
         };
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
-        socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor')], message => {
+        socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
+            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser
+        ], message => {
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
             Lobby_GameCode_display.style.userSelect = 'text';
 
@@ -1498,6 +1525,7 @@ function UserCreateRoom() {
         // general stuff
         OnlineGame_Lobby.style.display = 'flex';
         SetPlayerNamesPopUp.style.display = 'none';
+        Lobby_PointsToWin.contentEditable = "true";
 
         // initialize game with the right values
         curr_name1 = Player1_NameInput.value;
@@ -1510,6 +1538,34 @@ function UserCreateRoom() {
         Lobby_InnerGameMode.textContent = `${Check[3]}`;
         Lobby_PlayerClock.textContent = `${Check[2]} seconds`;
         Lobby_FieldSize.textContent = `${xyCell_Amount}x${xyCell_Amount}`;
+        Lobby_PointsToWin.textContent = UserSetPointsToWinGameInput.value;
+
+        // initialize allowed patterns in lobby for the creator: admin
+        setPatternWrapperLobby.forEach(ele => {
+            ele.style.color = "#121518";
+
+            Array.from(ele.children[0].children).forEach(c => {
+                c.style.color = "#121518";
+            });
+
+            ele.children[1].setAttribute("active", "false");
+            ele.children[1].className = "fa-regular fa-square togglePatternBtnLobby";
+        });
+
+        allowedPatternsFromUser.forEach(p => {
+            setPatternWrapperLobby.forEach(el => {
+                if (el.classList[0] == p) {
+                    el.style.color = "white";
+
+                    el.children[1].setAttribute("active", "true");
+                    el.children[1].className = "fa-regular fa-square-check togglePatternBtnLobby";
+
+                    Array.from(el.children[0].children).forEach(c => {
+                        c.style.color = "white";
+                    });
+                };
+            });
+        });
 
     } else {
         return;
@@ -1529,10 +1585,13 @@ function SetPlayerData_ConfirmEvent() {
         if (personal_GameData.EnterOnlineGame) {
 
             // If user entered his name and which form he wants to use in the game
-            if (Player1_IconInput.value != "" && Player1_NameInput.value != "") {
+            if (Player1_IconInput.value != "" && Player1_NameInput.value != "" && personal_GameData.role == "user" ||
+                // or second condition: user joins as blocker so he only needs to pass his name
+                Player1_NameInput.value != "" && personal_GameData.role == "blocker") {
+                console.log(personal_GameData.role)
 
                 socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim(),
-                    localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor')
+                    localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role
                 ], (m) => {
                     // If user name is equal to admins name
                     if (m == 'Choose a different name!') {
@@ -1714,7 +1773,7 @@ gameInfo_btn.addEventListener('click', () => {
         });
 
         // how to win text
-        HowToWinText.textContent = `Get ${UserSetPointsToWinGameInput.value} points or score more points than your opponent if he gives up.`;
+        HowToWinText.textContent = `Get ${Lobby_PointsToWin.textContent} points or score more points than your opponent if he gives up.`;
 
     } else { // in advanture mode
         // display for 5x5 fields and higher
@@ -2054,6 +2113,7 @@ function setUpOnlineGame(from) {
         OnlineGame_NameWarnText[0].style.display = 'none';
         SkinInputDisplay.style.display = 'none';
         Player1_IconInput.style.display = 'block';
+        BlockerCombat_OnlineGameWarnText.style.display = "none";
 
         // for better user experience 
         resetUserChoosedAllowedPatterns();
@@ -2366,6 +2426,13 @@ function submittedOfflineData() {
     localStorage.setItem('UserName', userName);
     localStorage.setItem('UserIcon', userIcon);
 
+    try {
+        // send name to server, server sends it to database, store in database
+        socket.emit("sendNameToDatabase", localStorage.getItem('PlayerID'), localStorage.getItem('UserName'));
+    } catch (error) {
+        console.error(error);
+    };
+
     userInfoName.textContent = localStorage.getItem('UserName');
 
     // user uses just a skin color
@@ -2445,8 +2512,11 @@ function ItemAnimation(item, destination_position, fromMap, mapItem, fromSecondT
             }, 1000);
 
         } else if (item == 'fa-solid fa-key') {
-
-            div.style.transform = `translateX(-${rect.right - destination_position.left}px)`;
+            if (fromSecondTreasure) {
+                div.style.transform = `translateX(-${rect.right - destination_position.left}px)`;
+            } else {
+                div.style.transform = `translate(calc(-${(rect.right - destination_position.right)}px + 100%), -${rect.top - destination_position.top}px)`;
+            };
             div.style.opacity = "1";
 
             // save in storage and parse in html
@@ -2549,8 +2619,16 @@ togglePatternBtn.forEach(el => {
                 // if pattern has the same class name as the check box button attribute value (if name is the same) =>disable it
                 SetPatternGrid.forEach(ele => {
                     if (ele.classList[1] == e.target.getAttribute("for-pattern")) {
-                        // example: hor
-                        allowedPatternsFromUser.push(ele.classList[1]);
+                        let alreadyExists = false;
+                        for (const i of allowedPatternsFromUser) {
+                            if (i == ele.classList[1]) {
+                                alreadyExists = true;
+                                break;
+                            };
+                        };
+                        if (!alreadyExists) {
+                            allowedPatternsFromUser.push(ele.classList[1]);
+                        };
                     };
                 });
 
@@ -2583,10 +2661,6 @@ RandomAllowedWinCombinations_Btn.addEventListener('click', () => {
             RandomAllowedWinCombinations_Btn.className = "fa-regular fa-square-check RandomAllowedWinCombinations_Btn";
             RandomAllowedWinCombinations_Btn.setAttribute('activated', "true");
 
-            let allPatterns = ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
-                "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"
-            ];
-
             let amountToRemove = Math.floor(Math.random() * 19);
             SetRandomAllowedWinCombinations(allowedPatternsFromUser, amountToRemove);
             break;
@@ -2614,3 +2688,128 @@ function SetRandomAllowedWinCombinations(arr, numToRemove) {
         });
     });
 };
+
+// for allowed patterns in lobby
+togglePatternBtnLobby.forEach(btn => {
+    btn.addEventListener('click', e => {
+        switch (e.target.getAttribute("active")) {
+            case "true":
+                e.target.className = "fa-regular fa-square togglePatternBtnLobby";
+                e.target.setAttribute("active", "false");
+
+                // if pattern has the same class name as the check box button attribute value (if name is the same) =>disable it
+                SetPatternGridLobby.forEach(ele => {
+                    if (ele.classList[0] == e.target.getAttribute("for-pattern")) {
+                        // example: hor
+                        allowedPatternsFromUser = allowedPatternsFromUser.filter(item => item !== ele.classList[0]);
+
+                        // update for all users
+                        socket.emit("Admin_AlterAllowedPatterns", personal_GameData.currGameID, allowedPatternsFromUser);
+                    };
+                });
+
+                // change color to grey so the disability of the pattern is more displayed to the user
+                setPatternWrapperLobby.forEach(ele => {
+                    if (ele.classList[0] == e.target.getAttribute("for-pattern")) {
+                        ele.style.color = "#121518";
+
+                        Array.from(ele.children[0].children).forEach(c => {
+                            c.style.color = "#121518";
+                        });
+                    };
+                });
+
+                break;
+
+            case "false":
+                e.target.className = "fa-regular fa-square-check togglePatternBtnLobby";
+                e.target.setAttribute("active", "true");
+
+                // if pattern has the same class name as the check box button attribute value (if name is the same) =>disable it
+                SetPatternGridLobby.forEach(ele => {
+                    if (ele.classList[0] == e.target.getAttribute("for-pattern")) {
+                        // example: hor
+                        let alreadyExists = false;
+                        for (const i of allowedPatternsFromUser) {
+                            if (i == ele.classList[0]) {
+                                alreadyExists = true;
+                                break;
+                            };
+                        };
+                        if (!alreadyExists) {
+                            allowedPatternsFromUser.push(ele.classList[0]);
+
+                            // update for all users
+                            socket.emit("Admin_AlterAllowedPatterns", personal_GameData.currGameID, allowedPatternsFromUser);
+                        };
+                    };
+                });
+
+                // change color to grey so the disability of the pattern is more displayed to the user
+                setPatternWrapperLobby.forEach(ele => {
+                    if (ele.classList[0] == e.target.getAttribute("for-pattern")) {
+                        ele.style.color = "white";
+
+                        [...ele.children[0].children].forEach(c => {
+                            c.style.color = "white";
+                        });
+                    };
+                });
+
+                break;
+        };
+    });
+});
+
+// when the admin alters the availible win patterns in the lobby all player need to be informed by that and the data needs to be updated
+socket.on("Updated_AllowedPatterns", patternsArray => {
+    allowedPatternsFromUser = patternsArray;
+
+    // blur all patterns
+    setPatternWrapperLobby.forEach(ele => {
+        ele.style.color = "#121518";
+
+        Array.from(ele.children[0].children).forEach(c => {
+            c.style.color = "#121518";
+        });
+
+        // mark checkbox
+        ele.children[1].setAttribute("active", "false");
+        ele.children[1].className = "fa-regular fa-square togglePatternBtnLobby";
+    });
+
+    // make availible patterns white
+    allowedPatternsFromUser.forEach(p => {
+        setPatternWrapperLobby.forEach(el => {
+            if (el.classList[0] == p) {
+                el.style.color = "white";
+
+                Array.from(el.children[0].children).forEach(c => {
+                    c.style.color = "white";
+                });
+
+                // mark checkbox
+                el.children[1].setAttribute("active", "true");
+                el.children[1].className = "fa-regular fa-square-check togglePatternBtnLobby";
+            };
+        });
+    });
+});
+
+// give up online game button
+GiveUp_btn.addEventListener('click', () => {
+    DarkLayer.style.display = "block";
+    GiveUpPopUp.style.display = "flex";
+});
+
+// give up online game button close pop up btn
+GiveUpPopUp_closeBtn.addEventListener('click', () => {
+    DarkLayer.style.display = "none";
+    GiveUpPopUp.style.display = "none";
+});
+
+// give up online game button close pop up btn on No request
+giveUp_No_btn.addEventListener('click', () => {
+    DarkLayer.style.display = "none";
+    GiveUpPopUp.style.display = "none";
+});

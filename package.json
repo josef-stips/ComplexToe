@@ -2,16 +2,40 @@
     "name": "ComplexToe",
     "productName": "ComplexToe",
     "version": "1.0.0",
-    "description": "ComplexToe is a unique game based on Tic Tac Toe that you can play online with your friend.",
+    "description": "Conquer your opponent.",
     "main": "src/index.js",
-    "icon": "./src/script/public/assets/images/icons/win/icon.ico",
+    "build": {
+        "appId": "com.josefstips.ComplexToe",
+        "win": {
+            "target": [
+                "nsis"
+            ],
+            "icon": "icon.ico"
+        },
+        "nsis": {
+            "allowToChangeInstallationDirectory": true,
+            "oneClick": false,
+            "installerIcon": "icon.ico",
+            "uninstallerIcon": "icon.ico",
+            "installerHeaderIcon": "icon.ico",
+            "uninstallDisplayName": "ComplexToe",
+            "runAfterFinish": true,
+            "deleteAppDataOnUninstall": false,
+            "multiLanguageInstaller": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "installerSidebar": "./nsisSideBar.bmp",
+            "uninstallerSidebar": "./nsisSideBar.bmp"
+        }
+    },
     "scripts": {
         "start": "electron . --multi-instance",
         "package": "electron-forge package",
         "make": "electron-forge make",
         "publish": "electron-forge publish",
         "lint": "echo \"No linting configured\"",
-        "nodemon": "nodemon index.js"
+        "nodemon": "nodemon index.js",
+        "dist": "electron-builder"
     },
     "keywords": [],
     "author": {
@@ -21,10 +45,7 @@
     "license": "MIT",
     "dependencies": {
         "@socket.io/admin-ui": "^0.5.1",
-        "better-sqlite3": "^8.5.2",
-        "cors": "^2.8.5",
         "electron-squirrel-startup": "^1.0.0",
-        "express": "^4.18.2",
         "socket.io": "^4.7.1",
         "socket.io-client": "^4.7.1"
     },
@@ -35,6 +56,7 @@
         "@electron-forge/maker-squirrel": "^6.2.1",
         "@electron-forge/maker-zip": "^6.2.1",
         "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
-        "electron": "^25.4.0"
+        "electron": "^25.4.0",
+        "electron-builder": "^24.6.4"
     }
 }

@@ -10,7 +10,7 @@ storeIcon.addEventListener('click', () => {
 
     } else {
         alertPopUp.style.display = 'flex';
-        AlertText.textContent = "Create an offline user account first";
+        AlertText.textContent = "Create an user account first";
     };
 });
 

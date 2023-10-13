@@ -38,14 +38,14 @@ function generateCell(index) {
         cell.style.fontSize = "47px";
 
     } else if (xCell_Amount == 15) {
-        cell.style.width = "3.23vh";
-        cell.style.height = "3.23vh";
-        cell.style.fontSize = "30px";
+        cell.style.width = "3.05vh";
+        cell.style.height = "3.05vh";
+        cell.style.fontSize = "24px";
 
     } else if (xCell_Amount == 20) {
         cell.style.width = "2.34vh";
         cell.style.height = "2.34vh";
-        cell.style.fontSize = "24px";
+        cell.style.fontSize = "20.5px";
 
         // KI specified Game Boards
     } else if (xCell_Amount == 3) {
@@ -62,12 +62,12 @@ function generateCell(index) {
     } else if (xCell_Amount == 25) {
         cell.style.width = "1.75vh";
         cell.style.height = "1.75vh";
-        cell.style.fontSize = "15px";
+        cell.style.fontSize = "13.5px";
 
     } else if (xCell_Amount == 30) {
         cell.style.width = "1.4vh";
         cell.style.height = "1.4vh";
-        cell.style.fontSize = "11.5px";
+        cell.style.fontSize = "11px";
 
     } else if (xCell_Amount == 40) {
         cell.style.width = "var(--width-for-40x40-field)";
@@ -83,13 +83,13 @@ function CreateWinConditions(NxN, Allowed_Patterns) {
     WinConditions.length = 0;
 
     if (NxN == 5) {
-        Create_5x5_WinCombis(); // use win comb algorithm executer from 5x5.js
+        Create_5x5_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 5x5.js
 
     } else if (NxN == 10) {
-        Create_10x10_WinCombis(); // use win comb algorithm executer from 10x10.js
+        Create_10x10_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 10x10.js
 
     } else if (NxN == 15) {
-        Create_15x15_WinCombis(); // use win comb algorithm executer from 15x15.js
+        Create_15x15_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 15x15.js
 
     } else if (NxN == 20) {
         Create_20x20_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 20x20.js
@@ -101,7 +101,7 @@ function CreateWinConditions(NxN, Allowed_Patterns) {
         Create_30x30_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 15x15.js
 
     } else if (NxN == 40) {
-        Create_40x40_WinCombis(); // use win comb algorithm executer from 20x20.js
+        Create_40x40_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 20x20.js
 
     } else if (NxN == 4) {
         Create_4x4_WinCombis(); // use win comb algorithm executer from 15x15.js
@@ -198,6 +198,7 @@ function continueArray(XbyX, targetNumber) {
 
 // GameMode: Blocker Combat
 // Everytime when a player do his set, this interactive blocker blocks one "random" cell in his near
+// This specific function is only availible in offline mode
 function Activate_InteractiveBlocker() {
     // remove access to set
     cells.forEach(cell => {
@@ -208,22 +209,15 @@ function Activate_InteractiveBlocker() {
     // blocker functionality ------------
     let Grid = [...cellGrid.children];
 
-    // if in online mode
-    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
-        // This message get send to server then the server generates a random Index, updates the global options array
-        // and sends the updated options array back to ALL clients so every client has the same result
-        socket.emit('BlockerCombat', personal_GameData.currGameID, options);
+    // random index in the grid
+    var RIndex = Math.floor(Math.random() * Grid.length);
 
-    } else if (curr_mode != GameMode[2].opponent) { // some offline mode
-        var RIndex = Math.floor(Math.random() * Grid.length);
-
-        // update Grid
-        if (Grid[RIndex].classList.length <= 1) {
-            Grid[RIndex].textContent = null;
-            Grid[RIndex].classList = "cell death-cell";
-            Grid[RIndex].style.backgroundColor = "var(--font-color)";
-            Grid[RIndex].style.color = "var(--font-color)";
-            Grid[RIndex].removeEventListener('click', cellCicked);
-        };
+    // update Grid
+    if (Grid[RIndex].classList.length <= 1) {
+        Grid[RIndex].textContent = null;
+        Grid[RIndex].classList = "cell death-cell";
+        Grid[RIndex].style.backgroundColor = "var(--font-color)";
+        Grid[RIndex].style.color = "var(--font-color)";
+        Grid[RIndex].removeEventListener('click', cellCicked);
     };
 };

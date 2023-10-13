@@ -1,0 +1,216 @@
+function Activate_PlayerClock(PlayerOne, PlayerTwo) {
+    killPlayerClocks();
+    if (PlayerOne) update1();
+    if (PlayerTwo) update2();
+};
+
+// kill all intervals
+async function killPlayerClocks(command, playerN_timer_event, playerN_timer, playerInNumber) {
+    if (curr_mode != GameMode[2].opponent) {
+        clearInterval(firstClock);
+        clearInterval(secondClock);
+        firstClock = null;
+        secondClock = null;
+
+        FirstPlayerTime.textContent = `${GameData.PlayerClock} `;
+        SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
+
+    } else {
+        // stop player timer
+        if (command == "stop") {
+            await socket.emit("stop_Players_timer", parseInt(personal_GameData.currGameID));
+
+        } else if (command == "Reset&&Continue") {
+            // send new request to display the current player times
+            await socket.emit("Request_Players_timer", parseInt(personal_GameData.currGameID), playerN_timer_event, playerN_timer, playerInNumber, currentPlayer);
+        };
+    };
+    SecondPlayerTime.style.color = 'var(--font-color)';
+    FirstPlayerTime.style.color = 'var(--font-color)';
+};
+
+// remove acccess to anything
+function removeAccessToAnything() {
+    running = false;
+    globalChooseWinnerBtn.removeEventListener('click', openChooseWinnerWindow);
+    restartBtn.removeEventListener('click', restartGame);
+    leaveGame_btn.removeEventListener('click', UserleavesGame);
+    giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
+    leaveGame_btn.style.color = '#56565659';
+    globalChooseWinnerBtn.style.color = '#56565659';
+    restartBtn.removeEventListener('click', restartGame);
+    restartBtn.style.color = '#56565659';
+
+    // remove access to set
+    cells.forEach(cell => {
+        cell.removeEventListener('click', cellCicked);
+    });
+
+    if (player3_can_set) {
+        leaveGame_btn.addEventListener('click', UserleavesGame);
+        restartBtn.addEventListener('click', restartGame);
+        restartBtn.style.color = 'white';
+        leaveGame_btn.style.color = 'white';
+        running = true;
+
+        if (personal_GameData.role == "blocker") {
+            cells.forEach(cell => {
+                cell.addEventListener('click', cellCicked);
+            });
+        };
+    };
+};
+
+// add excess to anything
+function addAccessToAnything() {
+    globalChooseWinnerBtn.addEventListener('click', openChooseWinnerWindow);
+    restartBtn.addEventListener('click', restartGame);
+    leaveGame_btn.addEventListener('click', UserleavesGame);
+    giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
+    leaveGame_btn.style.color = 'white';
+    globalChooseWinnerBtn.style.color = 'white';
+    leaveGame_btn.style.color = 'white';
+};
+
+// add excess to anything in online mode
+function addAccesOnlineMode() {
+    leaveGame_btn.addEventListener('click', UserleavesGame);
+    leaveGame_btn.style.color = 'var(--font-color)';
+
+    if (personal_GameData.role == 'admin') {
+        chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+        restartBtn.addEventListener('click', restartGame);
+        giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
+
+        globalChooseWinnerBtn.style.color = 'var(--font-color)';
+        restartBtn.style.color = 'var(--font-color)';
+    };
+};
+
+// modify cellGrid for animation
+function modifyCellgrid() {
+    cellGrid.classList.remove('cellGrid_opacity');
+    cellGrid.classList.add('cellGrid-alert');
+};
+
+// modify cellGrid for animation
+function initCellgrid() {
+    cellGrid.classList.remove('cellGrid-alert');
+    cellGrid.style.backgroundColor = "";
+};
+
+function update1() {
+    // In online mode, the admin sends an emit to the server so the server sends an emit
+    // to all clients
+    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+
+    } else if (curr_mode != GameMode[2].opponent) {
+        let Seconds = GameData.PlayerClock;
+
+        firstClock = setInterval(() => {
+            Seconds--;
+            FirstPlayerTime.textContent = `${Seconds}`;
+
+            // time is almost out, dangerous
+            if (Seconds <= 2) {
+                FirstPlayerTime.style.color = 'red';
+            };
+
+            // Time is out. play cool animation and next player's turn
+            if (Seconds == 0) {
+                EndOfPlayerTimer();
+            };
+        }, 1000);
+    };
+};
+
+function update2() {
+    // In online mode, the admin sends an emit to the server so the server sends an emit
+    // to all clients
+    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+
+    } else if (curr_mode != GameMode[2].opponent) {
+        let Seconds = GameData.PlayerClock;
+
+        secondClock = setInterval(() => {
+            Seconds--;
+            SecondPlayerTime.textContent = `${Seconds}`;
+
+            // time is almost out, dangerous
+            if (Seconds <= 2) {
+                SecondPlayerTime.style.color = 'red';
+            };
+
+            // Time is out. play cool animation and next player's turn
+            if (Seconds == 0) {
+                EndOfPlayerTimer();
+            };
+        }, 1000);
+    };
+};
+
+// from the server to all clients in online mode
+socket.on('playerTimer', (player1_timer, player2_timer) => {
+    FirstPlayerTime.textContent = `${player1_timer} `;
+    SecondPlayerTime.textContent = `${player2_timer}`;
+
+    // time is almost out, dangerous
+    if (personal_GameData.role == 'admin') {
+        if (player1_timer <= 2) {
+            FirstPlayerTime.style.color = 'red';
+        };
+    };
+    if (personal_GameData.role == 'user') {
+        if (player2_timer <= 2) {
+            SecondPlayerTime.style.color = 'red';
+        };
+    };
+
+    if (player1_timer <= 1 || player2_timer <= 1) {
+        removeAccessToAnything();
+    };
+});
+
+socket.on("EndOfPlayerTimer", () => {
+    removeAccessToAnything();
+    SecondPlayerTime.style.color = 'var(--font-color)';
+    FirstPlayerTime.style.color = 'var(--font-color)';
+
+    // animational purpose
+    modifyCellgrid();
+
+    setTimeout(() => {
+        // make cell grid normal again
+        initCellgrid();
+
+        addAccesOnlineMode();
+
+        // now it's player two turn
+        if (curr_mode == GameMode[2].opponent)(player1_can_set == true) ? player1_can_set = false : player1_can_set = true;
+        checkWinner();
+    }, 1000);
+});
+
+// for offline game
+function EndOfPlayerTimer() {
+    // remove access to do anything
+    removeAccessToAnything();
+    // reset player clocks
+    killPlayerClocks();
+
+    if (GameData.InnerGameMode == InnerGameModes[2]) {
+        // now the third player can set his block
+        Activate_InteractiveBlocker();
+    };
+
+    setTimeout(() => {
+        // make cell grid normal again
+        initCellgrid();
+
+        // add access to anything, user is restricted
+        addAccessToAnything();
+
+        // continue game
+        checkWinner();
+    }, 1000);
+};
