@@ -268,11 +268,11 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
         };
 
         // Ultimate Game Win Check for fields where you only can play 1 round!!! 3x3, 4x4, 5x5 Ignore this if it is not this case
-        rounds_played++;
-        if (curr_field == 'Small Price' && rounds_played == 1 || curr_field == 'Thunder Advanture' && rounds_played == 1 || curr_field == 'Quick Death' && rounds_played == 1) {
-            Call_UltimateWin(WinCombination);
-            return;
-        };
+        // rounds_played++;
+        // if (curr_field == 'Small Price' && rounds_played == 1 || curr_field == 'Thunder Advanture' && rounds_played == 1 || curr_field == 'Quick Death' && rounds_played == 1) {
+        //     Call_UltimateWin(WinCombination);
+        //     return;
+        // };
 
         // Change player things. execute this everytime
         setTimeout(() => {
@@ -583,6 +583,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
         giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
         leaveGame_btn.style.color = '#56565659';
         restartBtn.style.color = '#56565659';
+        statusText.style.display = 'none';
         setTimeout(() => {
             leaveGame_btn.addEventListener('click', UserleavesGame);
             restartBtn.addEventListener('click', restartGame);
@@ -597,8 +598,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
             single_CellBlock(cell, "fromMap");
         });
 
-        clearInterval(firstClock);
-        clearInterval(secondClock);
+        killPlayerClocks();
         clearInterval(gameCounter);
 
         score_Player1_numb = 0;
@@ -608,6 +608,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
             cellGrid.classList.add('Invisible');
             statusText.classList.add('Invisible');
             GameFieldHeaderUnderBody.style.display = 'none';
+            statusText.style.display = 'block';
 
             // restart Game counter
             let i = 4;
@@ -639,9 +640,10 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
                 } else {
                     GameFieldHeaderUnderBody.style.display = 'flex';
                     clearInterval(counter);
+                    counter = null;
                 };
             }, 1000);
-        }, 2000);
+        }, 3000);
 
         setTimeout(() => {
             cellGrid.style.display = 'none';
@@ -690,6 +692,11 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
                     };
                 };
 
+                if (!inAdvantureMode) {
+                    player1_won = false;
+                    player2_won = false;
+                };
+
             } else if (player2_won && !player1_won) { // player 2 won (user)
 
                 if (inAdvantureMode) {
@@ -718,10 +725,28 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
                     UltimateWinText.appendChild(img);
                 };
 
+                if (!inAdvantureMode) {
+                    player1_won = false;
+                    player2_won = false;
+                };
+
             } else if (player1_won && player2_won) {
                 UltimateWinText.textContent = `GG Well played!`;
-            };
 
+                // additional img svg
+                let img = document.createElement('img');
+                let br = document.createElement('br');
+                img.src = "./assets/game/holy-grail.svg";
+                img.width = "300";
+                img.height = "300";
+                UltimateWinText.appendChild(br);
+                UltimateWinText.appendChild(img);
+
+                if (!inAdvantureMode) {
+                    player1_won = false;
+                    player2_won = false;
+                };
+            };
         }, 2000);
     };
 };
@@ -741,6 +766,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
     giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
     leaveGame_btn.style.color = '#56565659';
     restartBtn.style.color = '#56565659';
+    statusText.style.display = 'none';
     setTimeout(() => {
         leaveGame_btn.addEventListener('click', UserleavesGame);
         restartBtn.addEventListener('click', restartGame);
@@ -759,6 +785,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
         cellGrid.classList.add('Invisible');
         statusText.classList.add('Invisible');
         GameFieldHeaderUnderBody.style.display = 'none';
+        statusText.style.display = 'block';
 
         // restart Game counter
         let i = 4;
@@ -769,15 +796,17 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
                 i--;
                 if (i <= -1) {
                     clearInterval(counter);
+                    counter = null;
                     // leave game after win and return to lobby
                     if (personal_GameData.role == "admin") UserleavesGame();
                 };
             } else {
                 GameFieldHeaderUnderBody.style.display = 'flex';
                 clearInterval(counter);
+                counter = null;
             };
         }, 1000);
-    }, 2000);
+    }, 3000);
 
     console.log(player1_won, player2_won)
     setTimeout(() => {

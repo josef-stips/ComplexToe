@@ -11,6 +11,8 @@ const createWindow = () => {
         fullscreen: true,
         icon: "/src/script/public/assets/images/icons/win/icon.ico",
         autoHideMenuBar: false,
+        nodeIntegration: true,
+        contextIsolation: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             devTools: true,

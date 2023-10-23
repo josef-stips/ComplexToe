@@ -93,6 +93,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // console.log(required_amount_to_win);
     !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
+    // for the KI Mode 
+    if (tt) tt.init();
+
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
     yCell_Amount = Fields[fieldIndex].xyCellAmount;
@@ -215,7 +218,6 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     CheckmateWarnText.style.display = 'none';
     OnlineChat_btn.style.display = "none";
     // lobbyHeader.style.display = 'none';
-    console.log(maxAmoOfMoves)
 
     // in online mode: display give up button, in offline mode: display choose winner button
     curr_mode == GameMode[2].opponent ? globalChooseWinnerBtn = GiveUp_btn : globalChooseWinnerBtn = chooseWinnerWindowBtn;
@@ -311,6 +313,8 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         MaxAmountOfMovesGameDisplay.style.display = 'none';
     };
 
+    (curr_mode == GameMode[2].opponent) ? GameFieldHeaderUnderBody.style.display = "none": GameFieldHeaderUnderBody.style.display = "flex";
+
     // Init Player 
     initializePlayers(OnlineGameDataArray);
 };
@@ -325,8 +329,6 @@ function initializePlayers(OnlineGameDataArray) {
     // Player Form
     PlayerData[1].PlayerForm = curr_form1.toUpperCase();
     PlayerData[2].PlayerForm = curr_form2.toUpperCase();
-
-    console.log(OnlineGameDataArray);
 
     // for online mode, for chat feature
     personalname = personal_GameData.role == "admin" ? personalname = PlayerData[1].PlayerName : personalname = PlayerData[2].PlayerName;
@@ -372,6 +374,7 @@ function initializePlayers(OnlineGameDataArray) {
             };
         };
 
+        console.log(OnlineGameDataArray[10], OnlineGameDataArray[11]);
         // set color of player icon
         namePlayer1.style.color = OnlineGameDataArray[10];
         namePlayer2.style.color = OnlineGameDataArray[11];

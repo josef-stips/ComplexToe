@@ -42,7 +42,7 @@
         "name": "Josef Stips",
         "email": "stipsjosef@gmail.com"
     },
-    "license": "MIT",
+    "license": "GNU",
     "dependencies": {
         "@socket.io/admin-ui": "^0.5.1",
         "electron-squirrel-startup": "^1.0.0",

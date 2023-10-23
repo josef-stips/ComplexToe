@@ -93,6 +93,12 @@ function playBtn_Audio_2() {
     btn_sound2.play()
 };
 
+function coinsSoundTrack() {
+    // coins audio
+    coinsSound.volume = 0.020;
+    coinsSound.play();
+};
+
 function PauseMusic() {
     Quick_death_Theme.pause();
     March_into_fire_Theme.pause();

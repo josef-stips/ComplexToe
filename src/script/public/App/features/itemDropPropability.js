@@ -1,10 +1,13 @@
 // when the player conquered a map level (it doesn't matter if he already conquered it)
 // he gets 1 - 3 different items with different amount
 function UserFoundItems() {
+    console.log("ofg");
     // animated pop up
     setTimeout(() => {
         YouFoundItems_PopUp.style.display = 'flex';
         YouFoundItems_PopUp.style.animation = 'popUp-POP 0.07s ease-in';
+        // sound 
+        coinsSoundTrack();
 
         setTimeout(() => {
             YouFoundItems_PopUp.style.transform = "scale(1)";

@@ -295,15 +295,12 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
         }, 400);
     };
 
-    clearInterval(firstClock);
-    clearInterval(secondClock);
+    killPlayerClocks();
     clearInterval(gameCounter);
     clearInterval(eye_attack_interval_global);
     clearInterval(sun_attack_interval_global);
     sun_attack_interval_global = null;
     eye_attack_interval_global = null;
-    firstClock = null;
-    secondClock = null;
     gameCounter = null;
     stopStatusTextInterval = true;
 
@@ -927,7 +924,7 @@ socket.on("recieveMessage", (message, from) => {
     // Go to the very bottom of the chat to see message 
     ChatMain.scrollTop = ChatMain.scrollHeight;
 
-    !openedChat ? createNotificationIcon() : console.log("lol");
+    !openedChat ? createNotificationIcon() : openedChat;
 });
 
 // create an icon with a number that shows how many messages the user recieved from the other user that he has not seen yet

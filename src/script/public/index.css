@@ -3290,6 +3290,7 @@ label h3 {
 }
 
 .MapLevelPreview_UserData {
+    overflow: auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

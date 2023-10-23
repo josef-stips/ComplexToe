@@ -9,6 +9,7 @@ const mapSound = document.querySelector('#mapSound');
 let default_MapLevel_theme = document.querySelector('#default_MapLevel_theme');
 let default_MapLevel_theme2 = document.querySelector('#default_MapLevel_theme2');
 let theEye_theme = document.querySelector('#theEye_theme');
+let coinsSound = document.querySelector('#coinsSound');
 
 let cellGrid = document.querySelector('#cellGrid');
 
