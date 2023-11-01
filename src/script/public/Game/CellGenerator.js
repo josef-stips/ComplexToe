@@ -117,7 +117,7 @@ function CreateOptions(fromMap) {
     options.length = 0;
 
     // create
-    options = Array(xCell_Amount * yCell_Amount).fill("");
+    options = Array(xCell_Amount * yCell_Amount).fill('');
 
     // bug fix
     if (fromMap == "fromMap") {

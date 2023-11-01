@@ -1149,8 +1149,8 @@ gameMode_KI_card.addEventListener('click', () => {
     // visibility for Ki Fields and GameMode fields
     ThreexThree_Field.style.display = 'flex';
     ForxFor_Field.style.display = 'flex';
-    FivexFive_Field.style.display = 'none';
-    TenxTen_Field.style.display = 'none';
+    FivexFive_Field.style.display = 'flex';
+    TenxTen_Field.style.display = 'flex';
     FifTeenxFifTeen_Field.style.display = 'none';
     TwentyxTwentyField.style.display = 'none';
     // Display Game Mode Description

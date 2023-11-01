@@ -414,7 +414,7 @@ function processResult_continueGame(fromRestart, fromClick) {
                 changePlayer(false);
                 running = true;
             };
-        }, 400);
+        }, 200);
 
     } else { // not in advanture mode
         // if in KI Mode and Player just setted his icon. Now it is KI's turn
@@ -429,7 +429,7 @@ function processResult_continueGame(fromRestart, fromClick) {
                     changePlayer(false);
                     running = true;
                 };
-            }, 400);
+            }, 200);
 
         } else if (curr_mode != GameMode[1].opponent) { // It is not KI Mode
             // add access to set

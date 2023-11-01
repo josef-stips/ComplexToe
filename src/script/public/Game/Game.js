@@ -41,8 +41,8 @@ let cells;
 
 // minimax scores
 let scores = {
-    // 'X': -1,
-    // 'O': 1,
+    // 'X': -10,
+    // 'O': 10,
     // tie: 0,
 };
 
@@ -95,6 +95,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // for the KI Mode 
     if (tt) tt.init();
+    counter = 0;
 
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
@@ -542,7 +543,8 @@ async function cellCicked() {
                     checkWinner();
                 };
 
-            } else if (curr_mode == GameMode[1].opponent && !inAdvantureMode) { // if in KI Mode but not in Advanture mode => just check the winner 
+            } else if (curr_mode == GameMode[1].opponent && !inAdvantureMode) { // if in KI Mode but not in Advanture mode => just check the winner
+                statusText.textContent = "Waiting for Bot...";
                 checkWinner();
 
             } else if (curr_mode == GameMode[1].opponent && inAdvantureMode) { // if in KI Mode and in Advanture mode 
@@ -612,7 +614,8 @@ socket.on('player_clicked', Goptions => {
 // normal update cell function when player in offline mode clicks cell
 function updateCell(index) {
     options[index] = currentPlayer;
-
+    console.log(bitboard)
+    setBit(bitboard, index, true);
     let cells = [...cellGrid.children];
 
     // user uses an advanced skin
