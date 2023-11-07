@@ -418,6 +418,8 @@ function W_4_for5(n) {
 // Execute all algorithms
 function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
     console.log(all_patt)
+    yCell_Amount = 5;
+    xCell_Amount = 5;
     all_patt.forEach(patt => {
         switch (patt) {
             case "hor":

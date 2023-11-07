@@ -245,8 +245,7 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
 
 // process result of game: if a sub game round is won 
 function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points, fromRestart, fromClick) {
-    clearInterval(firstClock);
-    clearInterval(secondClock);
+    killPlayerClocks();
     // Choose winner
     chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points);
 
@@ -276,7 +275,7 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
 
         // Change player things. execute this everytime
         setTimeout(() => {
-            processResult_continueGame(fromRestart, fromClick);
+            processResult_continueGame(fromRestart, fromClick, true);
         }, 600);
     }, 1200);
 };
@@ -402,7 +401,7 @@ function processResult_AdvantureMode(WinCombination) {
 };
 
 // everything processed and checked. Now the game can continue and the other player can set now
-function processResult_continueGame(fromRestart, fromClick) {
+function processResult_continueGame(fromRestart, fromClick, won) {
     // if in advanture mode
     if (inAdvantureMode) {
         setTimeout(() => {
@@ -414,11 +413,11 @@ function processResult_continueGame(fromRestart, fromClick) {
                 changePlayer(false);
                 running = true;
             };
-        }, 200);
+        }, 100);
 
     } else { // not in advanture mode
         // if in KI Mode and Player just setted his icon. Now it is KI's turn
-        if (curr_mode == GameMode[1].opponent) {
+        if (curr_mode == GameMode[1].opponent && !won) {
             setTimeout(() => {
                 // Check who can set next the bot or the player
                 if (currentPlayer == PlayerData[1].PlayerForm) {

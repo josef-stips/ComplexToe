@@ -95,7 +95,6 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // for the KI Mode 
     if (tt) tt.init();
-    counter = 0;
 
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
@@ -131,6 +130,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     //Creates TicTacToe field etc.
     CreateField();
     CreateWinConditions(xCell_Amount, Allowed_Patterns);
+    ki_board = 0b0;
+    player_board = 0b0;
 
     // add Event Listener
     const el_cells = document.querySelectorAll('.cell');
@@ -470,6 +471,7 @@ socket.on('display_GlobalGameTimer', timer => {
 });
 
 // user clicked some cell
+let lastCellIndex_Clicked = 0;
 async function cellCicked() {
     if (this.classList == "cell" && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
@@ -521,6 +523,7 @@ async function cellCicked() {
             }, 2000);
 
             updateCell(cellIndex);
+            lastCellIndex_Clicked = cellIndex;
 
             if (curr_mode != GameMode[1].opponent) { // If not in KI Mode
 
@@ -614,8 +617,9 @@ socket.on('player_clicked', Goptions => {
 // normal update cell function when player in offline mode clicks cell
 function updateCell(index) {
     options[index] = currentPlayer;
-    console.log(bitboard)
-    setBit(bitboard, index, true);
+
+    // player_board ^= (1 << index);
+
     let cells = [...cellGrid.children];
 
     // user uses an advanced skin

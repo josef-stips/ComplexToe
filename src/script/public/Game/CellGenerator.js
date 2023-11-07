@@ -115,7 +115,6 @@ function CreateWinConditions(NxN, Allowed_Patterns) {
 function CreateOptions(fromMap) {
     // reset 
     options.length = 0;
-
     // create
     options = Array(xCell_Amount * yCell_Amount).fill('');
 
