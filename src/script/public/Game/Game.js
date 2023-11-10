@@ -94,7 +94,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
     // for the KI Mode 
-    if (tt) tt.init();
+    // if (tt) tt.init();
 
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
