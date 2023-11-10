@@ -1,9 +1,7 @@
-// let minimaxWorker = new Worker('minimax.js');
-
 let max_depth;
 
 function Find_MaxDepth() {
-    if (curr_field != 'Small Price') { max_depth = 1 };
+    if (curr_field != 'Small Price') { max_depth = 2 };
     if (curr_field == 'Small Price') { max_depth = Infinity };
 };
 
@@ -46,13 +44,13 @@ function KI_Action() {
     };
 
     let completedWorkers = 0;
-    let currentWorkers = 4;
+    let currentWorkers = 1;
 
     let chunks = chunkify(currentWorkers);
 
     chunks.forEach((chunk, i) => {
         let worker = new Worker(`./Game/minimax.js`);
-        worker.postMessage([chunk, WinConditions, options, player_board, ki_board, PlayerData, scores]);
+        worker.postMessage([chunk, WinConditions, options, player_board, ki_board, PlayerData, scores, max_depth]);
 
         worker.onmessage = (move) => {
             completedWorkers++;
