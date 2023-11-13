@@ -9,7 +9,14 @@ const chunkify = n => {
     let boards = [];
     let board_chunks = [];
 
+    options.forEach((el, i) => {
+        if (el == PlayerData[2].PlayerForm) {
+            options[i] = "%%";
+        };
+    });
+
     for (let i = 0; i < options.length; i++) { // all possible board states in one array
+
         if (options[i] == "") {
 
             options[i] = PlayerData[2].PlayerForm;
@@ -27,26 +34,6 @@ const chunkify = n => {
 
 // KI sets O somewhere
 async function KI_Action() {
-    // chunks.forEach((chunk, i) => {
-    //     let worker = new Worker(`./Game/minimax.js`);
-    //     worker.postMessage([chunk, WinConditions, options, player_board, ki_board, PlayerData, scores, max_depth]);
-
-    //     worker.onmessage = (move) => {
-    //         completedWorkers++;
-    //         console.log(`worker ${i} completed. result: ` + move.data)
-
-    //         if (completedWorkers === currentWorkers) { // all workers all done
-    //             console.log("all workers completed")
-
-    //             // ki_board |= 0b1 << move;
-    //             cells[move.data].textContent = currentPlayer;
-    //             options[move.data] = currentPlayer;
-
-    //             // change Player
-    //             checkWinner();
-    //         };
-    //     };
-    // });
     setTimeout(() => {
         cells.forEach(cell => {
             cell.removeEventListener('click', cellCicked);
@@ -55,7 +42,7 @@ async function KI_Action() {
     }, 700);
 
     let completedWorkers = 0;
-    let currentWorkers = 1;
+    let currentWorkers = 2;
     let calculatedMoves = new Array();
 
     const startTime = performance.now();
@@ -70,7 +57,9 @@ async function KI_Action() {
         worker.onmessage = (move) => {
             completedWorkers++;
             calculatedMoves.push(move.data);
-            // console.log(`worker ${i} completed. result: ` + move.data)
+            console.log(`worker ${i} completed. result: ` + move.data)
+
+            options.forEach((el, i) => { if (el == '%%') { options[i] = PlayerData[2].PlayerForm; }; });
 
             if (completedWorkers === currentWorkers) { // all workers all done
                 let BestFinalMove = calculatedMoves.sort((a, b) => a - b)[calculatedMoves.length - 1];
@@ -85,6 +74,8 @@ async function KI_Action() {
                 // ki_board |= 0b1 << move.data;
                 cells[BestFinalMove].textContent = currentPlayer;
                 options[BestFinalMove] = currentPlayer;
+
+                console.log(options)
 
                 // change Player
                 checkWinner();

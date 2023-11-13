@@ -24,29 +24,32 @@ onmessage = (data) => {
         let bestScore = -Infinity;
 
         console.log(chunk);
+        let indexes = [];
 
         for (let i = 0; i < chunk.length; i++) {
+            for (const [index, value] of chunk[i].entries()) {
+                if (value == PlayerData[2].PlayerForm) indexes.push(index);
+            };
+        };
 
-            let copy_Options = new Array(...options);
-            // for (const [index, value] of chunk[i].entries()) {
-            //     if (value == '') options[index] = '';
-            //     if (value == PlayerData[1].PlayerForm) options[index] = PlayerData[1].PlayerForm;
-            //     if (value == PlayerData[2].PlayerForm) options[index] = PlayerData[2].PlayerForm;
-            // };
+        console.log(indexes); // ex. 3x3f: 1 thread = 8 indexes, 2 threads = 4 indexes etc.
 
-            console.log(chunk[i], options);
-            options = chunk[i];
+        options.forEach((el, i) => { if (el == '%%') { options[i] = PlayerData[2].PlayerForm; }; });
+
+        for (let indexX of indexes) {
+            console.log(indexX);
+
+            options[indexX] = PlayerData[2].PlayerForm;
 
             let score = minimax(options, 0, -Infinity, Infinity, false);
 
-            options = copy_Options;
+            options[indexX] = '';
 
             if (score > bestScore) {
                 bestScore = score;
-                move = i;
+                move = indexX;
             };
         };
-        // console.log(move);
         postMessage(move);
     };
     KI_Action();
