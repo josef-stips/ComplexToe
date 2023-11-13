@@ -26,32 +26,76 @@ const chunkify = n => {
 };
 
 // KI sets O somewhere
-function KI_Action() {
+async function KI_Action() {
+    // chunks.forEach((chunk, i) => {
+    //     let worker = new Worker(`./Game/minimax.js`);
+    //     worker.postMessage([chunk, WinConditions, options, player_board, ki_board, PlayerData, scores, max_depth]);
+
+    //     worker.onmessage = (move) => {
+    //         completedWorkers++;
+    //         console.log(`worker ${i} completed. result: ` + move.data)
+
+    //         if (completedWorkers === currentWorkers) { // all workers all done
+    //             console.log("all workers completed")
+
+    //             // ki_board |= 0b1 << move;
+    //             cells[move.data].textContent = currentPlayer;
+    //             options[move.data] = currentPlayer;
+
+    //             // change Player
+    //             checkWinner();
+    //         };
+    //     };
+    // });
+    setTimeout(() => {
+        cells.forEach(cell => {
+            cell.removeEventListener('click', cellCicked);
+            cell.style.cursor = 'default';
+        });
+    }, 700);
+
     let completedWorkers = 0;
-    let currentWorkers = 4;
+    let currentWorkers = 1;
+    let calculatedMoves = new Array();
+
+    const startTime = performance.now();
 
     let chunks = chunkify(currentWorkers);
+    console.log(chunks)
 
-    chunks.forEach((chunk, i) => {
-        let worker = new Worker(`./Game/minimax.js`);
-        worker.postMessage([chunk, WinConditions, options, player_board, ki_board, PlayerData, scores, max_depth]);
+    chunks.forEach((chunk, i) => { // send one chunk to one worker
+        let worker = new Worker('./Game/minimax.js');
+        worker.postMessage([WinConditions, options, player_board, ki_board, PlayerData, scores, max_depth, chunk])
 
         worker.onmessage = (move) => {
             completedWorkers++;
-            console.log(`worker ${i} completed. result: ` + move.data)
+            calculatedMoves.push(move.data);
+            // console.log(`worker ${i} completed. result: ` + move.data)
 
             if (completedWorkers === currentWorkers) { // all workers all done
-                console.log("all workers completed")
+                let BestFinalMove = calculatedMoves.sort((a, b) => a - b)[calculatedMoves.length - 1];
 
-                // ki_board |= 0b1 << move;
-                cells[move.data].textContent = currentPlayer;
-                options[move.data] = currentPlayer;
+                console.log(BestFinalMove, calculatedMoves.sort((a, b) => a - b));
+
+                // time measurement
+                const endTime = performance.now();
+                const elapsedTime = endTime - startTime;
+                console.log(`Worker hat ${elapsedTime.toFixed(2)} Millisekunden gebraucht.`);
+
+                // ki_board |= 0b1 << move.data;
+                cells[BestFinalMove].textContent = currentPlayer;
+                options[BestFinalMove] = currentPlayer;
 
                 // change Player
                 checkWinner();
+
+                setTimeout(() => {
+                    cells.forEach(cell => {
+                        cell.addEventListener('click', cellCicked);
+                        cell.style.cursor = 'pointer';
+                    });
+                }, 700);
             };
         };
     });
-
-
 };

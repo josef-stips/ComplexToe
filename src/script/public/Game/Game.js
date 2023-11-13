@@ -106,7 +106,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     rounds_played = 0;
 
     // set allowed patterns to global allowed patterns variable
-    console.log(Allowed_Patterns)
+    // console.log(Allowed_Patterns)
     allowedPatterns = Allowed_Patterns;
 
     // If in online game mode

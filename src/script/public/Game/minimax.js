@@ -2,53 +2,64 @@ let ki_board = 0b0; // player 2 (ki)
 let player_board = 0b0; // player 1 (human)
 
 onmessage = (data) => {
-    let chunk = data.data[0];
-    let WinConditions = data.data[1];
-    let options = data.data[2];
-    let player_board = data.data[3];
-    let ki_board = data.data[4];
-    let PlayerData = data.data[5];
-    let scores = data.data[6];
-    let max_depth = data.data[7];
+    let WinConditions = data.data[0];
+    let options = data.data[1];
+    let player_board = data.data[2];
+    let ki_board = data.data[3];
+    let PlayerData = data.data[4];
+    let scores = data.data[5];
+    let max_depth = data.data[6];
+    let chunk = data.data[7];
 
-    chunk.forEach(element => {
-        console.log(element.toString(2));
-    });
+    // chunk.forEach(element => {
+    //     console.log(element);
+    // });
+    // console.log(chunk)
 
-    console.log(max_depth, PlayerData,
-        WinConditions, options, player_board, ki_board, chunk, scores)
+    // console.log(max_depth, PlayerData,
+    //     WinConditions, options, player_board, ki_board, chunk, scores)
 
-    function KI_Action(chunk) {
+    function KI_Action() {
         let move = -1;
         let bestScore = -Infinity;
 
-        for (let i = 0; i < chunk.length; i++) {
-            // if (options[i] == "") {
+        console.log(chunk);
 
-            // ki_board = chunk[i];
+        for (let i = 0; i < chunk.length; i++) {
+
+            let copy_Options = new Array(...options);
+            // for (const [index, value] of chunk[i].entries()) {
+            //     if (value == '') options[index] = '';
+            //     if (value == PlayerData[1].PlayerForm) options[index] = PlayerData[1].PlayerForm;
+            //     if (value == PlayerData[2].PlayerForm) options[index] = PlayerData[2].PlayerForm;
+            // };
+
+            console.log(chunk[i], options);
             options = chunk[i];
-            // console.log(ki_board.toString(2));
+
             let score = minimax(options, 0, -Infinity, Infinity, false);
-            // ki_board = 0b1;
-            options = new Array(25).fill('');
+
+            options = copy_Options;
 
             if (score > bestScore) {
                 bestScore = score;
                 move = i;
             };
-            // };
         };
+        // console.log(move);
         postMessage(move);
     };
-    KI_Action(chunk);
+    KI_Action();
 
     // minimax algorithm
     function minimax(options, depth, alpha, beta, isMaximazing) {
-        let result = minimax_checkWinner(options);
-        // console.count();
+        let result = minimax_checkWinner();
+        // console.log(result);
         if (result !== null) {
             return scores[result];
         };
+
+        // console.log(options)
 
         if (isMaximazing) {
             let bestScore = -Infinity;
@@ -69,7 +80,6 @@ onmessage = (data) => {
                     if (depth >= max_depth) break;
                 }
             };
-
             return bestScore;
 
         } else {
@@ -78,7 +88,7 @@ onmessage = (data) => {
                 if (options[k] == "") {
 
                     // player_board |= (0b1 << k);
-                    options[k] = PlayerData[2].PlayerForm;
+                    options[k] = PlayerData[1].PlayerForm;
 
                     let score = minimax(options, depth + 1, alpha, beta, true);
                     // player_board &= ~(0b1 << k);
@@ -91,13 +101,14 @@ onmessage = (data) => {
                     if (depth >= max_depth) break;
                 }
             };
-
             return bestScore;
         };
     };
 
-    function minimax_checkWinner(options) {
+    function minimax_checkWinner() {
         let winner = null;
+
+        // console.log(options);
 
         for (let i = 0; i < WinConditions.length; i++) {
             const condition = WinConditions[i];
@@ -108,10 +119,18 @@ onmessage = (data) => {
             let cellD = options[condition[3]];
             let cellE = options[condition[4]]; // fifth block
 
-            if (cellA == "" || cellB == "" || cellC == "" || cellD == "" || cellE == "") {
+            // if (cellA == "" || cellB == "" || cellC == "" || cellD == "" || cellE == "") {
+            //     continue
+            // };
+            // if (cellA == cellB && cellB == cellC && cellC == cellD && cellD == cellE) {
+            //     winner = cellA
+            //     break;
+            // };
+
+            if (cellA == "" || cellB == "" || cellC == "") {
                 continue
             };
-            if (cellA == cellB && cellB == cellC && cellC == cellD && cellD == cellE) {
+            if (cellA == cellB && cellB == cellC && cellA != "") {
                 winner = cellA
                 break;
             };
