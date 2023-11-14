@@ -1,6 +1,3 @@
-let ki_board = 0b0; // player 2 (ki)
-let player_board = 0b0; // player 1 (human)
-
 onmessage = (data) => {
     let WinConditions = data.data[0];
     let options = data.data[1];
@@ -10,40 +7,34 @@ onmessage = (data) => {
     let scores = data.data[5];
     let max_depth = data.data[6];
     let chunk = data.data[7];
+    let KIBoardOrigin = data.data[8];
 
-    // chunk.forEach(element => {
-    //     console.log(element);
-    // });
-    // console.log(chunk)
-
-    // console.log(max_depth, PlayerData,
-    //     WinConditions, options, player_board, ki_board, chunk, scores)
+    function isBitSet(bitboard, index) {
+        return (bitboard & (1 << index)) !== 0;
+    };
 
     function KI_Action() {
         let move = -1;
         let bestScore = -Infinity;
-
-        console.log(chunk);
         let indexes = [];
 
         for (let i = 0; i < chunk.length; i++) {
-            for (const [index, value] of chunk[i].entries()) {
-                if (value == PlayerData[2].PlayerForm) indexes.push(index);
+            for (const [index] of options.entries()) {
+                if (isBitSet(chunk[i], index)) {
+                    indexes.push(index);
+                    break;
+                };
             };
         };
+        // console.log(indexes); // ex. 3x3f: 1 thread = 8 indexes, 2 threads = 4 indexes etc.
 
-        console.log(indexes); // ex. 3x3f: 1 thread = 8 indexes, 2 threads = 4 indexes etc.
-
-        options.forEach((el, i) => { if (el == '%%') { options[i] = PlayerData[2].PlayerForm; }; });
+        ki_board = KIBoardOrigin;
 
         for (let indexX of indexes) {
-            console.log(indexX);
 
-            options[indexX] = PlayerData[2].PlayerForm;
-
-            let score = minimax(options, 0, -Infinity, Infinity, false);
-
-            options[indexX] = '';
+            ki_board |= (0b1 << indexX);
+            let score = minimax(player_board, ki_board, 0, -Infinity, Infinity, false);
+            ki_board &= ~(0b1 << indexX);
 
             if (score > bestScore) {
                 bestScore = score;
@@ -55,26 +46,21 @@ onmessage = (data) => {
     KI_Action();
 
     // minimax algorithm
-    function minimax(options, depth, alpha, beta, isMaximazing) {
-        let result = minimax_checkWinner();
+    function minimax(player_board, ki_board, depth, alpha, beta, isMaximazing) {
+        let result = minimax_checkWinner(player_board, ki_board);
         // console.log(result);
         if (result !== null) {
             return scores[result];
         };
 
-        // console.log(options)
-
         if (isMaximazing) {
             let bestScore = -Infinity;
             for (let k = 0; k < options.length; k++) {
-                if (options[k] == "") {
+                if ((((ki_board >> k) & 1) === 0) && (((player_board >> k) & 1) === 0)) {
 
-                    // ki_board |= (0b1 << k);
-                    options[k] = PlayerData[2].PlayerForm;
-
-                    let score = minimax(options, depth + 1, alpha, beta, false);
-                    // ki_board &= ~(0b1 << k);
-                    options[k] = '';
+                    ki_board |= (0b1 << k);
+                    let score = minimax(player_board, ki_board, depth + 1, alpha, beta, false);
+                    ki_board &= ~(0b1 << k);
 
                     bestScore = Math.max(score, bestScore);
                     alpha = Math.max(alpha, score);
@@ -88,14 +74,11 @@ onmessage = (data) => {
         } else {
             let bestScore = Infinity;
             for (let k = 0; k < options.length; k++) {
-                if (options[k] == "") {
+                if ((((ki_board >> k) & 1) === 0) && (((player_board >> k) & 1) === 0)) {
 
-                    // player_board |= (0b1 << k);
-                    options[k] = PlayerData[1].PlayerForm;
-
-                    let score = minimax(options, depth + 1, alpha, beta, true);
-                    // player_board &= ~(0b1 << k);
-                    options[k] = '';
+                    player_board |= (0b1 << k);
+                    let score = minimax(player_board, ki_board, depth + 1, alpha, beta, true);
+                    player_board &= ~(0b1 << k);
 
                     bestScore = Math.min(score, bestScore);
                     beta = Math.min(beta, score);
@@ -108,40 +91,50 @@ onmessage = (data) => {
         };
     };
 
-    function minimax_checkWinner() {
+    function minimax_checkWinner(player_board, ki_board) {
         let winner = null;
 
-        // console.log(options);
+        for (let pattern of WinConditions) {
+            let [a, b, c, d, e] = pattern;
 
-        for (let i = 0; i < WinConditions.length; i++) {
-            const condition = WinConditions[i];
+            if (d == undefined && e == undefined) { // 3x3
+                if (isBitSet(player_board, a) && isBitSet(player_board, b) && isBitSet(player_board, c)) {
+                    winner = PlayerData[1].PlayerForm;
+                    break;
+                };
 
-            let cellA = options[condition[0]];
-            let cellB = options[condition[1]];
-            let cellC = options[condition[2]];
-            let cellD = options[condition[3]];
-            let cellE = options[condition[4]]; // fifth block
+                if (isBitSet(ki_board, a) && isBitSet(ki_board, b) && isBitSet(ki_board, c)) {
+                    winner = PlayerData[2].PlayerForm;
+                    break;
+                };
 
-            // if (cellA == "" || cellB == "" || cellC == "" || cellD == "" || cellE == "") {
-            //     continue
-            // };
-            // if (cellA == cellB && cellB == cellC && cellC == cellD && cellD == cellE) {
-            //     winner = cellA
-            //     break;
-            // };
+            } else if (d != undefined && e == undefined) { // 4x4
+                if (isBitSet(player_board, a) && isBitSet(player_board, b) && isBitSet(player_board, c) && isBitSet(player_board, d)) {
+                    winner = PlayerData[1].PlayerForm;
+                    break;
+                };
 
-            if (cellA == "" || cellB == "" || cellC == "") {
-                continue
-            };
-            if (cellA == cellB && cellB == cellC && cellA != "") {
-                winner = cellA
-                break;
+                if (isBitSet(ki_board, a) && isBitSet(ki_board, b) && isBitSet(ki_board, c) && isBitSet(ki_board, d)) {
+                    winner = PlayerData[2].PlayerForm;
+                    break;
+                };
+
+            } else if (e != undefined) { // N>=5 N >=5
+                if (isBitSet(player_board, a) && isBitSet(player_board, b) && isBitSet(player_board, c) && isBitSet(player_board, d) && isBitSet(player_board, e)) {
+                    winner = PlayerData[1].PlayerForm;
+                    break;
+                };
+
+                if (isBitSet(ki_board, a) && isBitSet(ki_board, b) && isBitSet(ki_board, c) && isBitSet(ki_board, d) && isBitSet(ki_board, e)) {
+                    winner = PlayerData[2].PlayerForm;
+                    break;
+                };
             };
         };
 
         let openSpots = 0;
         for (let i = 0; i < options.length; i++) {
-            if (options[i] == "") {
+            if ((((ki_board >> i) & 1) === 0) && (((player_board >> i) & 1) === 0)) {
                 openSpots++;
             };
         };
