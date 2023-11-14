@@ -57,8 +57,8 @@ function KI_Action() {
 
     // worker variables
     let completedWorkers = 0;
-    let currentWorkers = 1;
-    let calculatedMoves = new Array();
+    let currentWorkers = 4;
+    let calculatedMoves = new Object();
 
     // initialize start time for worker 
     const startTime = performance.now();
@@ -73,22 +73,26 @@ function KI_Action() {
     // create a worker for each chunk
     chunks.forEach((chunk, i) => { // send one chunk to one worker
         let worker = new Worker('./Game/minimax.js');
-        worker.postMessage([WinConditions, options, player_board, ki_board, PlayerData, scores, max_depth, chunk, KIBoardOrigin])
+        worker.postMessage([WinConditions, options, player_board, ki_board, PlayerData,
+            scores, max_depth, chunk, KIBoardOrigin
+        ]);
 
-        worker.onmessage = (move) => { // calculated move from worker: move.data
+        worker.onmessage = (data) => { // calculated move from worker: move.data
 
             // save move in array to evaluate best moves from the workers
             completedWorkers++;
-            calculatedMoves.push(move.data);
+            calculatedMoves[data.data[0]] = data.data[1] // move with its score
 
             // console.log(`worker ${i} completed. result: ` + move.data)
 
             ki_board = KIBoardOrigin; // reset board to right stage
 
             if (completedWorkers === currentWorkers) { // all workers all done
-                let BestFinalMove = calculatedMoves.sort((a, b) => a - b)[calculatedMoves.length - 1];
 
-                // console.log(BestFinalMove, calculatedMoves.sort((a, b) => a - b));
+                // find best move
+                let bestScoreIndex = Object.values(calculatedMoves).indexOf(Math.max(...Object.values(calculatedMoves)))
+                let BestFinalMove = parseInt(Object.keys(calculatedMoves)[bestScoreIndex]);
+                // console.log(calculatedMoves, BestFinalMove);
 
                 // time measurement
                 const endTime = performance.now();

@@ -1,3 +1,46 @@
+class HashTable {
+    table = new Array(3);
+
+    hash = (s, tableSize) => {
+        let hash = 3;
+        for (let i = 0; i < s.length; i++) {
+            hash = (13 * hash * s.charCodeAt(i)) % tableSize;
+        };
+        return hash;
+    };
+    setItem = (key, value) => {
+        const idx = this.hash(key, this.table.length);
+        if (this.table[idx]) {
+            this.table[idx].push([key, value]);
+        } else {
+            if (this.table[idx]) {
+                this.table[idx].push([key, value]);
+            } else {
+                this.table[idx] = [
+                    [key, value]
+                ];
+            };
+        };
+        this.table[idx] = [
+            [key, value]
+        ];
+    };
+    getItem = (key) => {
+        const idx = this.hash(key, this.table.length);
+        if (!this.table[idx]) return null;
+        // return this.table[idx].find(x => x[0] === key) != undefined ? this.table[idx].find(x => x[0] === key)[1] : null;
+        // return this.table[idx].find(x => x[0] === key)[1];
+
+        const item = this.table[idx].find(x => x[0] === key);
+        return item ? item[1] : null;
+    };
+
+    init = () => {
+        this.table = new Array(3);
+    };
+};
+const tt = new HashTable;
+
 onmessage = (data) => {
     let WinConditions = data.data[0];
     let options = data.data[1];
@@ -8,6 +51,8 @@ onmessage = (data) => {
     let max_depth = data.data[6];
     let chunk = data.data[7];
     let KIBoardOrigin = data.data[8];
+
+    tt.init();
 
     function isBitSet(bitboard, index) {
         return (bitboard & (1 << index)) !== 0;
@@ -37,11 +82,13 @@ onmessage = (data) => {
             ki_board &= ~(0b1 << indexX);
 
             if (score > bestScore) {
+                console.log(score, indexX)
+
                 bestScore = score;
                 move = indexX;
             };
         };
-        postMessage(move);
+        postMessage([move, bestScore]);
     };
     KI_Action();
 
@@ -51,6 +98,23 @@ onmessage = (data) => {
         // console.log(result);
         if (result !== null) {
             return scores[result];
+        };
+
+        let alphaOrigin = alpha;
+        let ttEntry = tt.getItem(JSON.stringify(`${ki_board}${player_board}`));
+
+        if (ttEntry != null && ttEntry.depth >= depth) {
+            if (ttEntry.flag == "EXACT") {
+                return ttEntry.bestScore;
+
+            } else if (ttEntry.flag == alpha) {
+                alpha = Math.max(alpha, ttEntry.bestScore);
+
+            } else if (ttEntry.flag == beta) {
+                beta = Math.min(beta, ttEntry.bestScore);
+            };
+
+            if (alpha >= beta) return ttEntry.bestScore;
         };
 
         if (isMaximazing) {
@@ -69,6 +133,19 @@ onmessage = (data) => {
                     if (depth >= max_depth) break;
                 }
             };
+
+            if (bestScore <= alphaOrigin) {
+                flag = beta;
+
+            } else if (bestScore >= beta) {
+                flag = alpha;
+
+            } else {
+                flag = 'EXACT';
+            };
+
+            tt.setItem(JSON.stringify(`${ki_board}${player_board}`), { bestScore: bestScore, flag: flag, is_valid: true, depth: depth });
+
             return bestScore;
 
         } else {
@@ -87,6 +164,19 @@ onmessage = (data) => {
                     if (depth >= max_depth) break;
                 }
             };
+
+            if (bestScore <= alphaOrigin) {
+                flag = beta;
+
+            } else if (bestScore >= beta) {
+                flag = alpha;
+
+            } else {
+                flag = 'EXACT';
+            };
+
+            tt.setItem(JSON.stringify(`${ki_board}${player_board}`), { bestScore: bestScore, flag: flag, is_valid: true, depth: depth });
+
             return bestScore;
         };
     };
