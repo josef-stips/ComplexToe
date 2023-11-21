@@ -418,8 +418,6 @@ function W_4_for5(n) {
 // Execute all algorithms
 function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
     // console.log(all_patt)
-    yCell_Amount = 5;
-    xCell_Amount = 5;
 
     all_patt.forEach(patt => {
         switch (patt) {
@@ -430,7 +428,7 @@ function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
             //     //     vertikale_Linie_for5(yCell_Amount * xCell_Amount);
             //     //     break;
             case "dia":
-                diagonale_Linie_for5(yCell_Amount * xCell_Amount);
+                diagonale_Linie_for5(5 * 5);
                 break;
                 // case "dia2":
                 //     diagonale_Linie2_for5(yCell_Amount * xCell_Amount);
@@ -463,7 +461,7 @@ function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
                 //     stern_for5(yCell_Amount * xCell_Amount);
                 //     break;
             case "diamond":
-                diagonales_viereck_for5(yCell_Amount * xCell_Amount);
+                diagonales_viereck_for5(5 * 5);
                 break;
                 // case "branch1":
                 //     zweig_unten_for5(yCell_Amount * xCell_Amount);

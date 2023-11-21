@@ -98,10 +98,9 @@ onmessage = (data) => {
             if (!isBitSet(player_board, a) && !isBitSet(player_board, b) &&
                 !isBitSet(player_board, c) && !isBitSet(player_board, d) ||
                 !isBitSet(ki_board, a) && !isBitSet(ki_board, b) &&
-                !isBitSet(ki_board, c) && !isBitSet(ki_board, d)
-                /*||
-                               !isBitSet(blockages, a) && !isBitSet(blockages, b) &&
-                               !isBitSet(blockages, c) && !isBitSet(blockages, d)*/
+                !isBitSet(ki_board, c) && !isBitSet(ki_board, d) ||
+                !isBitSet(blockages, a) && !isBitSet(blockages, b) &&
+                !isBitSet(blockages, c) && !isBitSet(blockages, d)
             ) {
                 return 1;
             };
@@ -224,9 +223,8 @@ onmessage = (data) => {
             let moves = [];
             for (let k = 0; k < options.length; k++) {
                 if ((((ki_board >> k) & 1) === 0) &&
-                    (((player_board >> k) & 1) === 0)
-                    /*&&
-                                       (((blockages >> k) & BigInt(1)) === 0)*/
+                    (((player_board >> k) & 1) === 0) &&
+                    (((blockages >> k) & 1) === 0)
                 ) {
                     moves.push(k);
                 };
@@ -267,9 +265,8 @@ onmessage = (data) => {
             let moves = [];
             for (let k = 0; k < options.length; k++) {
                 if ((((ki_board >> k) & 1) === 0) &&
-                    (((player_board >> k) & 1) === 0)
-                    /*&&
-                                       (((blockages >> i) & BigInt(1)) === 0)*/
+                    (((player_board >> k) & 1) === 0) &&
+                    (((blockages >> k) & 1) === 0)
                 ) {
                     moves.push(k);
                 };

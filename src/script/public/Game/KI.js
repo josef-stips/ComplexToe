@@ -18,9 +18,8 @@ const chunkifyAndModify = (n, InnerFieldOptions) => {
     for (let i = 0; i < InnerFieldOptions.length; i++) { // all possible board states in one array
 
         if ((((copyKIBoard >> i) & 1) === 0) &&
-            (((player_board >> i) & 1) === 0)
-            /*&&
-                       (((blockages >> i) & BigInt(1)) === 0)*/
+            (((player_board >> i) & 1) === 0) &&
+            (((blockages >> i) & 1) === 0)
         ) {
 
             ki_board |= (1 << i);

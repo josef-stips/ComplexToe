@@ -283,7 +283,7 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
 
         // Change player things. execute this everytime
         setTimeout(() => {
-            processResult_continueGame(fromRestart, fromClick, true);
+            (!inAdvantureMode) ? processResult_continueGame(fromRestart, fromClick, true): processResult_continueGame();
         }, 600);
     }, 1200);
 };
