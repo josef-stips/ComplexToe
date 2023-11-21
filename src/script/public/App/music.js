@@ -95,7 +95,7 @@ function playBtn_Audio_2() {
 
 function coinsSoundTrack() {
     // coins audio
-    coinsSound.volume = 0.020;
+    coinsSound.volume = 0.015;
     coinsSound.play();
 };
 

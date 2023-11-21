@@ -339,66 +339,66 @@ function Create_10x10_WinCombis(all_patt) { // all_patt = allowed patterns
     console.log(all_patt)
     all_patt.forEach(patt => {
         switch (patt) {
-            case "hor":
-                horizontale_Linie(yCell_Amount * xCell_Amount);
-                break;
-            case "vert":
-                vertikale_Linie(yCell_Amount * xCell_Amount);
-                break;
+            // case "hor":
+            //     horizontale_Linie(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "vert":
+            //     vertikale_Linie(yCell_Amount * xCell_Amount);
+            //     break;
             case "dia":
                 diagonale_Linie(yCell_Amount * xCell_Amount);
                 break;
-            case "dia2":
-                diagonale_Linie2(yCell_Amount * xCell_Amount);
-                break;
-            case "L1":
-                L_1(yCell_Amount * xCell_Amount);
-                break;
-            case "L2":
-                L_2(yCell_Amount * xCell_Amount);
-                break;
-            case "L3":
-                L_3(yCell_Amount * xCell_Amount);
-                break;
-            case "L4":
-                L_4(yCell_Amount * xCell_Amount);
-                break;
-            case "W1":
-                W_1(yCell_Amount * xCell_Amount);
-                break;
-            case "W2":
-                W_2(yCell_Amount * xCell_Amount);
-                break;
-            case "W3":
-                W_3(yCell_Amount * xCell_Amount);
-                break;
-            case "W4":
-                W_4(yCell_Amount * xCell_Amount);
-                break;
-            case "star":
-                stern(yCell_Amount * xCell_Amount);
-                break;
-            case "diamond":
-                diagonales_viereck(yCell_Amount * xCell_Amount);
-                break;
-            case "branch1":
-                zweig_unten(yCell_Amount * xCell_Amount);
-                break;
-            case "branch2":
-                zweig_oben(yCell_Amount * xCell_Amount);
-                break;
-            case "branch3":
-                zweig_links(yCell_Amount * xCell_Amount);
-                break;
-            case "branch4":
-                zweig_rechts(yCell_Amount * xCell_Amount);
-                break;
-            case "special1":
-                block_mit_Ast_1(yCell_Amount * xCell_Amount);
-                break;
-            case "special2":
-                block_mit_Ast_2(yCell_Amount * xCell_Amount);
-                break;
+                // case "dia2":
+                //     diagonale_Linie2(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L1":
+                //     L_1(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L2":
+                //     L_2(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L3":
+                //     L_3(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L4":
+                //     L_4(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W1":
+                //     W_1(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W2":
+                //     W_2(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W3":
+                //     W_3(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W4":
+                //     W_4(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "star":
+                //     stern(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "diamond":
+                //     diagonales_viereck(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "branch1":
+                //     zweig_unten(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "branch2":
+                //     zweig_oben(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "branch3":
+                //     zweig_links(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "branch4":
+                //     zweig_rechts(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "special1":
+                //     block_mit_Ast_1(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "special2":
+                //     block_mit_Ast_2(yCell_Amount * xCell_Amount);
+                //     break;
         };
     });
 };

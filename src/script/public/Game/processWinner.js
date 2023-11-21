@@ -198,6 +198,14 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             };
 
             if (!someoneIsCheck) CheckmateWarnText.style.display = "none";
+
+        } else if (cellD == undefined && cellE == undefined && cellC == undefined && cellB != undefined && cellA != undefined) {
+            if (cellA != "" && cellA == cellB) {
+                winner = [cellA, EleOf_A.classList[2]]; // second value: false if the user uses a normal skin
+                roundWon = true;
+                extra_points = 1;
+                WinCombination.push(EleOf_A, EleOf_B);
+            };
         };
     };
 

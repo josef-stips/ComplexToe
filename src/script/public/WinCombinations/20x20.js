@@ -307,72 +307,73 @@ function W_4_for20(n) {
 
 // Execute all algorithms
 function Create_20x20_WinCombis(all_patt) { // all_patt = allowed patterns
-    console.log(all_patt)
+    // console.log(all_patt)
 
-    Create_5x5_WinCombis(all_patt);
+    // Create_5x5_WinCombis(all_patt);
+    allPatt_KIMode_Copy = all_patt
 
-    // all_patt.forEach(patt => {
-    //     switch (patt) {
-    //         case "hor":
-    //             horizontale_Linie_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "vert":
-    //             vertikale_Linie_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "dia":
-    //             diagonale_Linie_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "dia2":
-    //             diagonale_Linie2_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "L1":
-    //             L_1_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "L2":
-    //             L_2_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "L3":
-    //             L_3_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "L4":
-    //             L_4_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "W1":
-    //             W_1_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "W2":
-    //             W_2_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "W3":
-    //             W_3_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "W4":
-    //             W_4_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "star":
-    //             stern_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "diamond":
-    //             diagonales_viereck_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "branch1":
-    //             zweig_unten_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "branch2":
-    //             zweig_oben_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "branch3":
-    //             zweig_links_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "branch4":
-    //             zweig_rechts_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "special1":
-    //             block_mit_Ast_1_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //         case "special2":
-    //             block_mit_Ast_2_for20(yCell_Amount * xCell_Amount);
-    //             break;
-    //     };
-    // });
+    all_patt.forEach(patt => {
+        switch (patt) {
+            // case "hor":
+            //     horizontale_Linie_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "vert":
+            //     vertikale_Linie_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            case "dia":
+                diagonale_Linie_for20(yCell_Amount * xCell_Amount);
+                break;
+                // case "dia2":
+                //     diagonale_Linie2_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L1":
+                //     L_1_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L2":
+                //     L_2_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L3":
+                //     L_3_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "L4":
+                //     L_4_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W1":
+                //     W_1_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W2":
+                //     W_2_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W3":
+                //     W_3_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "W4":
+                //     W_4_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "star":
+                //     stern_for20(yCell_Amount * xCell_Amount);
+                //     break;
+            case "diamond":
+                diagonales_viereck_for20(yCell_Amount * xCell_Amount);
+                break;
+                // case "branch1":
+                //     zweig_unten_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "branch2":
+                //     zweig_oben_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "branch3":
+                //     zweig_links_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "branch4":
+                //     zweig_rechts_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "special1":
+                //     block_mit_Ast_1_for20(yCell_Amount * xCell_Amount);
+                //     break;
+                // case "special2":
+                //     block_mit_Ast_2_for20(yCell_Amount * xCell_Amount);
+                //     break;
+        };
+    });
 };

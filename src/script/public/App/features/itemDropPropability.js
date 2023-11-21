@@ -76,8 +76,8 @@ function UserGets_N_Items(n) {
             // amount of different items
             let rarityForItems2 = Math.floor(Math.random() * 100001);
 
-            let legendary = isInRange(rarityForItems2, 0, 300); // propability for legendary
-            let mystique = isInRange(rarityForItems2, 301, 9000); // propability for mystique
+            let legendary = isInRange(rarityForItems2, 0, 100); // propability for legendary
+            let mystique = isInRange(rarityForItems2, 101, 9000); // propability for mystique
             let rare = isInRange(rarityForItems2, 9001, 30000); // propability for rare
             let common = isInRange(rarityForItems2, 30001, 100000); // propability for common
 
@@ -108,7 +108,7 @@ function UserGets_N_Items(n) {
             };
 
             if (rare) {
-                let amount = Math.floor(Math.random() * 10);
+                let amount = Math.floor(Math.random() * 10) + 1;
 
                 foundItem1_img.src = "assets/game/minerals.svg";
                 foundItem_Title1.textContent = items["rare"];

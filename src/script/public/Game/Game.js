@@ -69,6 +69,9 @@ let globalChooseWinnerBtn = null;
 // player 3, the blocker can set
 let player3_can_set = false;
 
+// allowed patterns special for the ki mode
+let allPatt_KIMode_Copy = [];
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves) {
@@ -130,8 +133,14 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     //Creates TicTacToe field etc.
     CreateField();
     CreateWinConditions(xCell_Amount, Allowed_Patterns);
+
+    // for KI Mode
     ki_board = 0b0;
     player_board = 0b0;
+    blockages = 0b0;
+
+    InnerFieldData_Indexes = {};
+    InnerFieldData_Options = [];
 
     // add Event Listener
     const el_cells = document.querySelectorAll('.cell');
@@ -167,7 +176,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     } else if (curr_mode == GameMode[1].opponent && inAdvantureMode) { // If in advanture mode
         // in advanture mode every level has a presetted inner game mode the user can't change
-        GameData.InnerGameMode = AdvantureLevel_InnerGameMode;
+        // GameData.InnerGameMode = AdvantureLevel_InnerGameMode;
+        GameData.InnerGameMode = InnerGameModes[1];
 
         // If the map level inner game mode is Boneyard
         if (GameData.InnerGameMode == InnerGameModes[1]) {

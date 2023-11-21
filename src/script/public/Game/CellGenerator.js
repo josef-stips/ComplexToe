@@ -169,6 +169,7 @@ function Start_Blocker(onlineGame) {
             Grid[Index].style.backgroundColor = "var(--font-color)";
             Grid[Index].classList = "cell death-cell";
             Grid[Index].removeEventListener('click', cellCicked);
+
             setTimeout(() => {
                 Grid[Index].textContent = null;
             }, 100);
@@ -218,5 +219,7 @@ function Activate_InteractiveBlocker() {
         Grid[RIndex].style.backgroundColor = "var(--font-color)";
         Grid[RIndex].style.color = "var(--font-color)";
         Grid[RIndex].removeEventListener('click', cellCicked);
+
+        blockages |= (RIndex << 1); // update bitboard
     };
 };
