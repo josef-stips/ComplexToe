@@ -169,6 +169,30 @@ function InnerField(OriginIndex) { // Origin Index : Where player placed his ico
     };
 };
 
+function convertToBinary(winPatterns) {
+    const binaryPatterns = [];
+    for (const pattern of winPatterns) {
+        let binaryRepresentation = BigInt(0);
+        for (const position of pattern) {
+            binaryRepresentation += BigInt(1) << BigInt(position)
+        }
+        binaryPatterns.push(binaryRepresentation)
+    }
+    return binaryPatterns;
+};
+
+function convertToBinary_SmallBitMask(winPatterns) {
+    const binaryPatterns = [];
+    for (const pattern of winPatterns) {
+        let binaryRepresentation = 0;
+        for (const position of pattern) {
+            binaryRepresentation += 1 << position
+        }
+        binaryPatterns.push(binaryRepresentation)
+    }
+    return binaryPatterns;
+};
+
 // KI sets O somewhere
 function KI_Action() {
     setTimeout(() => { // remove access to set for the player
@@ -203,15 +227,70 @@ function KI_Action() {
     let KIBoardOrigin = results[1];
 
     // console.log(results, chunks, KIBoardOrigin, ki_board.toString(2), player_board.toString(2), options);
+    let result = lookForInstantWin();
+    console.log(result)
 
-    // create a worker for each chunk
-    Create_5x5_WinCombis(allPatt_KIMode_Copy);
-    chunks.forEach((chunk, i) => { // send one chunk to one worker
-        completedWorkers++;
-        workerFunction(
-            WinConditions, InnerFieldOptions, player_board, ki_board, PlayerData,
-            scores, max_depth, chunk, KIBoardOrigin, blockages, completedWorkers, currentWorkers, calculatedMoves, startTime, i, MixedField_Indexes);
-    });
+    if (result[0] == true) { // false
+        placeAtInstantWinForOpponent(result);
+
+    } else {
+        // create a worker for each chunk
+        Create_5x5_WinCombis(allPatt_KIMode_Copy);
+        // convert copy of win conditions in binary
+        let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
+        // create one worker for each chunk 
+        chunks.forEach((chunk, i) => {
+            completedWorkers++;
+            workerFunction(
+                binaryWinConds, InnerFieldOptions, player_board, ki_board, PlayerData,
+                scores, max_depth, chunk, KIBoardOrigin, blockages, completedWorkers, currentWorkers, calculatedMoves, startTime, i, MixedField_Indexes);
+        });
+    };
+};
+
+// KI has to set on the cell where the player could win instantly
+const placeAtInstantWinForOpponent = (result) => {
+    // set final move from bot
+    console.log(result);
+    cells[result[1]].textContent = PlayerData[2].PlayerForm;
+    options[result[1]] = PlayerData[2].PlayerForm;
+
+    // change Player
+    checkWinner();
+
+    // player gets access to set again
+    setTimeout(() => {
+        cells.forEach(cell => {
+            cell.addEventListener('click', cellCicked);
+            cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+        });
+    }, 700);
+};
+
+// if the opponent of the KI (player [you]) can beat it in just one move, the KI does not have to do calculations with the minimax algorithm 
+// but just place the icon on that right cell
+const lookForInstantWin = () => {
+    // create big bitboards
+    let bigboards = InitBigboards(options); // 0 : ki_board, 1 : player_board, 2 : blockages
+    console.log(bigboards[2].toString(2));
+
+    // set icon for player in every cell and look if he would win
+    for (let i = BigInt(0); i < options.length; i++) {
+        // console.log(cells[i].classList.length, val[i], val, i)
+        if ((((bigboards[0] >> i) & BigInt(1)) === BigInt(0)) &&
+            (((bigboards[1] >> i) & BigInt(1)) === BigInt(0)) &&
+            (((bigboards[2] >> i) & BigInt(1)) === BigInt(0))) {
+            // set for second player and check win
+            bigboards[1] |= (BigInt(1) << i)
+            let result = minimax_checkWinner(bigboards[1])
+            bigboards[1] &= ~(BigInt(1) << i)
+
+            if (result === PlayerData[1].PlayerForm) {
+                return [true, i]
+            }
+        }
+    }
+    return [false]
 };
 
 // Start inner field work
@@ -250,6 +329,27 @@ const InitBitboards = (InnerFieldOptions) => {
     return [ki_board, player_board];
 };
 
+// initialize big bitboards
+const InitBigboards = (Options) => {
+    let KIBOARD = BigInt(0)
+    let PLAYERBOARD = BigInt(0)
+    let BLOCKAGES = BigInt(0)
+
+    for (let i = BigInt(0); i < Options.length; i++) {
+        if (Options[i] === PlayerData[2].PlayerForm) {
+            KIBOARD |= (BigInt(1) << i)
+        }
+        if (Options[i] === PlayerData[1].PlayerForm) {
+            PLAYERBOARD |= (BigInt(1) << i);
+        }
+        if (cells[i].classList == "cell death-cell") {
+            BLOCKAGES |= (BigInt(1) << i)
+        }
+    }
+
+    return [KIBOARD, PLAYERBOARD, BLOCKAGES];
+};
+
 // worker tasks
 const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board, PlayerData,
     scores, max_depth, chunk, KIBoardOrigin, blockages, completedWorkers, currentWorkers, calculatedMoves, startTime, i, MixedField_Indexes) => {
@@ -265,7 +365,6 @@ const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board
         calculatedMoves[data.data[0]] = data.data[1] // move with its score
 
         console.log(`worker ${i} completed. result: ` + data.data[0], data.data[1]);
-        // console.log(data.data[2]);
 
         ki_board = KIBoardOrigin; // reset board to right stage
 
@@ -298,9 +397,38 @@ const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board
             setTimeout(() => {
                 cells.forEach(cell => {
                     cell.addEventListener('click', cellCicked);
-                    cell.style.cursor = 'pointer';
+                    cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
                 });
             }, 700);
         };
     };
+};
+
+const evaluatingTie = (pattern, Player_B) => {
+    // let [a, b, c, d] = pattern;
+
+    if ((Player_B & pattern) == BigInt(0)) {
+        return 1;
+    };
+    return 0;
+};
+
+function minimax_checkWinner(Player_B) { // give ki and player big bit boards (type BigInt)
+    let winner = null;
+    let tie = 0; // 1 || 0
+
+    let WinConds = convertToBinary(WinConditions);
+
+    for (let i = 0; i < WinConds.length; i++) {
+        let pattern = WinConds[i];
+
+        if (tie == 0) { tie = evaluatingTie(pattern, Player_B) }
+
+        if ((Player_B & pattern) == pattern) {
+            winner = PlayerData[1].PlayerForm
+            break
+        }
+    }
+
+    return (winner == null && tie == 0) ? 'tie' : winner;
 };

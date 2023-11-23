@@ -12,6 +12,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
     // remove access to set
     cells.forEach(cell => {
         cell.removeEventListener('click', cellCicked);
+        cell.style.cursor = "default";
     });
     running = false;
 
@@ -43,8 +44,8 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                 cellA == cellD && cellD == cellC && cellB == "" && EleOf_B.textContent == "" && EleOf_B.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
                 cellD == cellC && cellC == cellB && cellA == "" && EleOf_A.textContent == "" && EleOf_A.className != "cell death-cell" && cellD != "" && EleOf_D.textContent != "") {
                 someoneIsCheck = true;
-                console.log(cellA, cellB, cellC, cellD, cellE)
-                console.log(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E)
+                // console.log(cellA, cellB, cellC, cellD, cellE)
+                // console.log(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E)
 
                 // look who the pattern belongs to
                 if (EleOf_A.textContent == PlayerData[1].PlayerForm || EleOf_B.textContent == PlayerData[1].PlayerForm || EleOf_C.textContent == PlayerData[1].PlayerForm ||
@@ -134,8 +135,8 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                 cellA == cellC && cellC == cellD && cellD == cellE && cellB == "" && EleOf_B.textContent == "" && EleOf_B.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
                 cellB == cellC && cellC == cellD && cellD == cellE && cellA == "" && EleOf_A.textContent == "" && EleOf_A.className != "cell death-cell" && cellB != "" && EleOf_B.textContent != "") {
                 someoneIsCheck = true;
-                console.log(cellA, cellB, cellC, cellD, cellE)
-                console.log(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E)
+                // console.log(cellA, cellB, cellC, cellD, cellE)
+                // console.log(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E)
 
                 // look who the pattern belongs to
                 if (EleOf_A.textContent == PlayerData[1].PlayerForm || EleOf_B.textContent == PlayerData[1].PlayerForm || EleOf_C.textContent == PlayerData[1].PlayerForm ||

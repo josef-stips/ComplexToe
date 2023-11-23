@@ -485,15 +485,13 @@ let lastCellIndex_Clicked = 0;
 async function cellCicked() {
     if (this.classList == "cell" && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
-
-        console.log(this.classList, options[cellIndex])
+        // console.log(this.classList, options[cellIndex])
 
         // check if cell is already drawn or the game is running
         if (options[cellIndex] != "" || !running) {
             return;
         };
-
-        console.log(options[cellIndex])
+        // console.log(options[cellIndex])
 
         // If in online mode
         if (curr_mode == GameMode[2].opponent) {
@@ -633,7 +631,7 @@ function updateCell(index) {
     options[index] = currentPlayer;
 
     // player_board ^= (1 << index);
-    console.log(index);
+    // console.log(index);
 
     let cells = [...cellGrid.children];
 

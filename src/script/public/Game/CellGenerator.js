@@ -124,7 +124,7 @@ function CreateOptions(fromMap) {
             let cells = [...cellGrid.children];
             cells.forEach(cell => {
                 cell.textContent = null;
-                cell.className = "cell";
+                (cell.classList.contains("death-cell")) ? cell.className = "cell death-cell": cell.className = "cell";
             });
         }, 500);
     };
