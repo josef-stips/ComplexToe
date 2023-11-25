@@ -1,8 +1,8 @@
 class HashTable {
-    table = new Array(3);
+    table = new Array(17);
 
     hash = (s, tableSize) => {
-        let hash = 3;
+        let hash = 17;
         for (let i = 0; i < s.length; i++) {
             hash = (13 * hash * s.charCodeAt(i)) % tableSize;
         };
@@ -36,7 +36,7 @@ class HashTable {
     };
 
     init = () => {
-        this.table = new Array(3);
+        this.table = new Array(17);
     };
 };
 const tt = new HashTable;
@@ -58,7 +58,7 @@ onmessage = (data) => {
     tt.init();
 
     function isBitSet(bitboard, index) {
-        return (bitboard & (1 << index)) !== 0;
+        return (bitboard & (1 << index)) !== 0
     };
 
     function getMVVLVAValue(piece) {
@@ -67,14 +67,14 @@ onmessage = (data) => {
             [PlayerData[2].PlayerForm]: 3, // Wert von 'O'
             '': 0 // Wert von leeren Zellen
         };
-        return pieceValues[piece];
+        return pieceValues[piece]
     };
 
     function compareMoves(a, b) {
-        const pieceA = options[a];
-        const pieceB = options[b];
-        const valueA = getMVVLVAValue(pieceA);
-        const valueB = getMVVLVAValue(pieceB);
+        const pieceA = options[a]
+        const pieceB = options[b]
+        const valueA = getMVVLVAValue(pieceA)
+        const valueB = getMVVLVAValue(pieceB)
 
         // Sortiere absteigend, damit die wertvollsten Züge zuerst kommen
         return valueB - valueA;
@@ -82,9 +82,9 @@ onmessage = (data) => {
 
     const evaluatingTie = (board) => {
         if ((player_board & board) == 0 || (ki_board & board) == 0) {
-            return 1;
+            return 1
         };
-        return 0;
+        return 0
     };
 
     function KI_Action() {
@@ -95,81 +95,81 @@ onmessage = (data) => {
         for (let i = 0; i < chunk.length; i++) {
             for (const [index] of options.entries()) {
                 if (isBitSet(chunk[i], index)) {
-                    indexes.push(index);
+                    indexes.push(index)
                     break;
-                };
-            };
-        };
+                }
+            }
+        }
 
         ki_board = KIBoardOrigin;
 
-        let maxDepth = 1;
-        let startTime = Date.now();
+        let maxDepth = 1
+        let startTime = Date.now()
 
         while (Date.now() - startTime < 1000) { // Adjust the time limit as needed
-            let bestResult = iterativeDeepening(ki_board, player_board, indexes);
+            let bestResult = iterativeDeepening(ki_board, player_board, indexes)
 
-            let tempBestMove = bestResult[0];
-            let tempBestScore = bestResult[1];
+            let tempBestMove = bestResult[0]
+            let tempBestScore = bestResult[1]
 
             if (tempBestMove !== -1) {
                 move = tempBestMove;
-                bestScore = tempBestScore;
-            };
-            maxDepth++;
-        };
+                bestScore = tempBestScore
+            }
+            maxDepth++
+        }
 
-        postMessage([move, bestScore]);
+        postMessage([move, bestScore])
     };
     KI_Action();
 
     function iterativeDeepening(ki_board, player_board, indexes) {
-        let bestMove = -1;
-        let bestScore = -Infinity;
-        let alpha = -Infinity;
-        let beta = Infinity;
+        let bestMove = -1
+        let bestScore = -Infinity
+        let alpha = -Infinity
+        let beta = Infinity
 
         for (let indexX of indexes) {
 
-            ki_board |= (1 << indexX);
-            let score = minimax(player_board, ki_board, 0, -Infinity, Infinity, false);
-            ki_board &= ~(1 << indexX);
+            ki_board |= (1 << indexX)
+            let score = minimax(player_board, ki_board, 0, -Infinity, Infinity, false)
+            ki_board &= ~(1 << indexX)
 
             if (score > bestScore) {
 
                 bestScore = score;
                 bestMove = indexX;
-            };
+            }
 
-            alpha = Math.max(alpha, score);
-            if (beta <= alpha) break;
-        };
+            alpha = Math.max(alpha, score)
+            if (beta <= alpha) break
+        }
 
-        return [bestMove, bestScore];
+        return [bestMove, bestScore]
     };
 
     // minimax algorithm
     function minimax(player_board, ki_board, depth, alpha, beta, isMaximazing) {
-        let result = minimax_checkWinner(player_board, ki_board);
+        let result = minimax_checkWinner(player_board, ki_board)
         if (result !== null) {
-            return scores[result];
-        };
+            return scores[result]
+        }
 
-        let alphaOrigin = alpha;
-        let ttEntry = tt.getItem(JSON.stringify(`${ki_board}${player_board}`));
+        let alphaOrigin = alpha
+        let ttEntry = tt.getItem(JSON.stringify(`${ki_board}${player_board}`))
 
         if (ttEntry != null && ttEntry.depth >= depth) {
             if (ttEntry.flag == "EXACT") {
-                return ttEntry.bestScore;
+                return ttEntry.bestScore
 
             } else if (ttEntry.flag == alpha) {
-                alpha = Math.max(alpha, ttEntry.bestScore);
+                alpha = Math.max(alpha, ttEntry.bestScore)
 
             } else if (ttEntry.flag == beta) {
-                beta = Math.min(beta, ttEntry.bestScore);
+                beta = Math.min(beta, ttEntry.bestScore)
             };
 
-            if (alpha >= beta) return ttEntry.bestScore;
+            if (alpha >= beta) return ttEntry.bestScore
         };
 
         if (isMaximazing) {
@@ -182,40 +182,40 @@ onmessage = (data) => {
                     (((blockages >> k) & 1) === 0)
                 ) {
                     moves.push(k);
-                };
-            };
+                }
+            }
             moves.sort(compareMoves);
 
             for (let k = 0; k < moves.length; k++) {
-                let move = moves[k];
+                let move = moves[k]
 
-                ki_board |= (1 << move);
-                let score = minimax(player_board, ki_board, depth + 1, alpha, beta, false);
-                ki_board &= ~(1 << move);
+                ki_board |= (1 << move)
+                let score = minimax(player_board, ki_board, depth + 1, alpha, beta, false)
+                ki_board &= ~(1 << move)
 
-                bestScore = Math.max(score, bestScore);
-                alpha = Math.max(alpha, score);
+                bestScore = Math.max(score, bestScore)
+                alpha = Math.max(alpha, score)
 
-                if (beta <= alpha) break;
-                if (depth >= max_depth) break;
+                if (beta <= alpha) break
+                if (depth >= max_depth) break
             };
 
             if (bestScore <= alphaOrigin) {
-                flag = beta;
+                flag = beta
 
             } else if (bestScore >= beta) {
-                flag = alpha;
+                flag = alpha
 
             } else {
-                flag = 'EXACT';
-            };
+                flag = 'EXACT'
+            }
 
-            tt.setItem(JSON.stringify(`${ki_board}${player_board}`), { bestScore: bestScore, flag: flag, is_valid: true, depth: depth });
+            tt.setItem(JSON.stringify(`${ki_board}${player_board}`), { bestScore: bestScore, flag: flag, is_valid: true, depth: depth })
 
-            return bestScore;
+            return bestScore
 
         } else {
-            let bestScore = Infinity;
+            let bestScore = Infinity
 
             let moves = [];
             for (let k = 0; k < options.length; k++) {
@@ -224,37 +224,37 @@ onmessage = (data) => {
                     (((blockages >> k) & 1) === 0)
                 ) {
                     moves.push(k);
-                };
-            };
-            moves.sort(compareMoves).reverse();
+                }
+            }
+            moves.sort(compareMoves).reverse()
 
             for (let k = 0; k < moves.length; k++) {
-                let move = moves[k];
+                let move = moves[k]
 
-                player_board |= (1 << move);
-                let score = minimax(player_board, ki_board, depth + 1, alpha, beta, true);
-                player_board &= ~(1 << move);
+                player_board |= (1 << move)
+                let score = minimax(player_board, ki_board, depth + 1, alpha, beta, true)
+                player_board &= ~(1 << move)
 
-                bestScore = Math.min(score, bestScore);
-                beta = Math.min(beta, score);
+                bestScore = Math.min(score, bestScore)
+                beta = Math.min(beta, score)
 
-                if (beta <= alpha) break;
-                if (depth >= max_depth) break;
+                if (beta <= alpha) break
+                if (depth >= max_depth) break
             };
 
             if (bestScore <= alphaOrigin) {
-                flag = beta;
+                flag = beta
 
             } else if (bestScore >= beta) {
-                flag = alpha;
+                flag = alpha
 
             } else {
-                flag = 'EXACT';
-            };
+                flag = 'EXACT'
+            }
 
-            tt.setItem(JSON.stringify(`${ki_board}${player_board}`), { bestScore: bestScore, flag: flag, is_valid: true, depth: depth });
+            tt.setItem(JSON.stringify(`${ki_board}${player_board}`), { bestScore: bestScore, flag: flag, is_valid: true, depth: depth })
 
-            return bestScore;
+            return bestScore
         };
     };
 
@@ -263,20 +263,21 @@ onmessage = (data) => {
         let tie = 0; // 1 || 0
 
         for (let i = 0; i < WinConditions.length; i++) {
-            let board = WinConditions[i];
+            let board = WinConditions[i]
 
-            if (tie == 0) { tie = evaluatingTie(board) };
+            if (tie == 0) { tie = evaluatingTie(board) }
 
             if ((player_board & board) == board) {
-                winner = PlayerData[1].PlayerForm;
-                break;
+                winner = PlayerData[1].PlayerForm
+                break
 
             } else if ((ki_board & board) == board) {
-                winner = PlayerData[2].PlayerForm;
-                break;
+                winner = PlayerData[2].PlayerForm
+                console.log(winner);
+                break
             }
         };
 
-        return (winner == null && tie == 0) ? 'tie' : winner;
+        return (winner == null && tie == 0) ? 'tie' : winner
     };
 };

@@ -229,7 +229,6 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             };
         };
     };
-
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);
 };
 

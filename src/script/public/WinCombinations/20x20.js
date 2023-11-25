@@ -320,39 +320,39 @@ function Create_20x20_WinCombis(all_patt) { // all_patt = allowed patterns
             // case "vert":
             //     vertikale_Linie_for20(yCell_Amount * xCell_Amount);
             //     break;
-            case "dia":
-                diagonale_Linie_for20(yCell_Amount * xCell_Amount);
-                break;
-                // case "dia2":
-                //     diagonale_Linie2_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "L1":
-                //     L_1_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "L2":
-                //     L_2_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "L3":
-                //     L_3_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "L4":
-                //     L_4_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "W1":
-                //     W_1_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "W2":
-                //     W_2_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "W3":
-                //     W_3_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "W4":
-                //     W_4_for20(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "star":
-                //     stern_for20(yCell_Amount * xCell_Amount);
-                //     break;
+            // case "dia":
+            //     diagonale_Linie_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "dia2":
+            //     diagonale_Linie2_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "L1":
+            //     L_1_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "L2":
+            //     L_2_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "L3":
+            //     L_3_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "L4":
+            //     L_4_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "W1":
+            //     W_1_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "W2":
+            //     W_2_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "W3":
+            //     W_3_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "W4":
+            //     W_4_for20(yCell_Amount * xCell_Amount);
+            //     break;
+            // case "star":
+            //     stern_for20(yCell_Amount * xCell_Amount);
+            //     break;
             case "diamond":
                 diagonales_viereck_for20(yCell_Amount * xCell_Amount);
                 break;

@@ -12,7 +12,7 @@ function UnlockedMapLevel() {
                 ["Here begins the journey to become king and defeat your greatest enemy. Do you really think you will survive this?",
                     "To conquer this level you have to score 5 points against your enemy."
                 ], 5, InnerGameModes[3], false, {},
-                10
+                40
             ], // level 1 is unlocked by default
             2: [false, 2, "extinct happiness", 30, 20, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
                     "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2"

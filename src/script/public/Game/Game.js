@@ -96,9 +96,6 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // console.log(required_amount_to_win);
     !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
-    // for the KI Mode 
-    // if (tt) tt.init();
-
     // set up x and y coordinate
     xCell_Amount = Fields[fieldIndex].xyCellAmount;
     yCell_Amount = Fields[fieldIndex].xyCellAmount;
@@ -421,7 +418,7 @@ function initializePlayers(OnlineGameDataArray) {
 
         // set color of player icon
         namePlayer1.style.color = localStorage.getItem('userInfoColor');
-        namePlayer2.style.color = "var(--font-color)";
+        namePlayer2.style.color = "gold";
     };
 
     currentName = PlayerData[1].PlayerName;
