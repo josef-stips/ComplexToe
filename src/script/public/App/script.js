@@ -315,6 +315,12 @@ let ChatMain = document.querySelector('.ChatMain');
 let MaxAmountOfMovesDisplay = document.querySelector('.MaxAmountOfMoves');
 let MaxAmountOfMovesGameDisplay = document.querySelector('.MaxAmountOfMovesGameDisplay');
 let Lobby_PointsToWin = document.querySelector('.Lobby_PointsToWin');
+let SpellAmountDisplay = document.querySelector('.SpellAmountDisplay');
+let AdvantureMode_SpellDisplay = document.querySelector('.AdvantureMode_SpellDisplay');
+let UseSpell_PopUp = document.querySelector('.UseSpell_PopUp');
+let UseSpell_CloseBtn = document.querySelector('.UseSpell_CloseBtn');
+let UseSpell_UseBtn = document.querySelector('.UseSpell_btn');
+let UseSpell_Qbtn = document.querySelector('.UseSpell_questionBtn');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -742,6 +748,14 @@ function checkLoadingProgress() {
         loadingScreenFunc();
     };
 })();
+
+function isBitSet(bitboard, index) {
+    return (bitboard & (1 << index)) !== 0;
+};
+
+function isBitSetBIGINT(bitboard, index) {
+    return (bitboard & (BigInt(1) << BigInt(index))) !== BigInt(0);
+};
 
 // app initialization and code --------------
 function AppInit() {

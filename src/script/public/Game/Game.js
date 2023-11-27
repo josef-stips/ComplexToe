@@ -72,6 +72,17 @@ let player3_can_set = false;
 // allowed patterns special for the ki mode
 let allPatt_KIMode_Copy = [];
 
+// amount of moves the ki and player did
+let MovesAmount_PlayerAndKi = 0;
+
+// normal spell: the user can place two times in a row
+let SpellsInStore = 0;
+
+// check if player is allowed to set two times in a row
+let PlayerIsAllowedToSetTwoTimes = false;
+
+let UserClicksNTimesInARow = 0;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves) {
@@ -136,8 +147,15 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     player_board = 0b0;
     blockages = 0b0;
 
+    MovesAmount_PlayerAndKi = 0;
+
     InnerFieldData_Indexes = {};
     InnerFieldData_Options = [];
+
+    // spells
+    SpellsInStore = 0;
+
+    PlayerIsAllowedToSetTwoTimes = false;
 
     // add Event Listener
     const el_cells = document.querySelectorAll('.cell');
@@ -180,6 +198,10 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         if (GameData.InnerGameMode == InnerGameModes[1]) {
             Start_Blocker(onlineGame);
         };
+
+        // every advanture mode level has invisible spells on the field
+        // if the lucky user clicks on a cell that contains a spell he can , for example , place two times in a row
+        SpellsSpawnRate();
     };
 
     Find_MaxDepth();
@@ -314,12 +336,18 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     if (inAdvantureMode) {
         restartBtn.style.display = 'none';
         globalChooseWinnerBtn.style.display = 'none';
+        // max amount of moves to set for player
         MaxAmountOfMovesGameDisplay.style.display = 'block';
         MaxAmountOfMovesGameDisplay.textContent = `moves left: ${maxAmoOfMoves}`;
+        // spell to place two times in a row
+        AdvantureMode_SpellDisplay.style.display = "flex";
+        SpellAmountDisplay.textContent = SpellsInStore;
+
     } else {
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
         MaxAmountOfMovesGameDisplay.style.display = 'none';
+        AdvantureMode_SpellDisplay.style.display = "none";
     };
 
     (curr_mode == GameMode[2].opponent) ? GameFieldHeaderUnderBody.style.display = "none": GameFieldHeaderUnderBody.style.display = "flex";
@@ -482,13 +510,12 @@ let lastCellIndex_Clicked = 0;
 async function cellCicked() {
     if (this.classList == "cell" && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
-        // console.log(this.classList, options[cellIndex])
 
         // check if cell is already drawn or the game is running
         if (options[cellIndex] != "" || !running) {
             return;
         };
-        // console.log(options[cellIndex])
+        console.log(options[cellIndex])
 
         // If in online mode
         if (curr_mode == GameMode[2].opponent) {
@@ -561,6 +588,11 @@ async function cellCicked() {
 
             } else if (curr_mode == GameMode[1].opponent && inAdvantureMode) { // if in KI Mode and in Advanture mode 
 
+                // check if player found spell
+                let foundSpell = isBitSetBIGINT(Bitboard_spells, cellIndex);
+                if (foundSpell) UserFoundSpell(cellIndex);
+
+                // other
                 if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
                     // Active Blocker blocks a cell
                     Activate_InteractiveBlocker();
@@ -627,8 +659,7 @@ socket.on('player_clicked', Goptions => {
 function updateCell(index) {
     options[index] = currentPlayer;
 
-    // player_board ^= (1 << index);
-    // console.log(index);
+    MovesAmount_PlayerAndKi++;
 
     let cells = [...cellGrid.children];
 

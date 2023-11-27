@@ -414,12 +414,35 @@ function processResult_continueGame(fromRestart, fromClick, won) {
     if (inAdvantureMode) {
         setTimeout(() => {
             if (currentPlayer == PlayerData[1].PlayerForm) {
-                changePlayer(false);
-                KI_Action();
+
+                if (PlayerIsAllowedToSetTwoTimes) { // if player can place two times in a row through a forbidden spell he found
+                    running = true;
+
+                    AdvantureMode_SpellDisplay.style.color = "white";
+
+                    // player gets access to set again
+                    cells.forEach(cell => {
+                        cell.addEventListener('click', cellCicked);
+                        cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+                    });
+
+                    UserClicksNTimesInARow++;
+                    if (UserClicksNTimesInARow >= 1) {
+                        PlayerIsAllowedToSetTwoTimes = false;
+                        UserClicksNTimesInARow = 0;
+                    };
+
+                } else {
+                    AdvantureMode_SpellDisplay.style.color = "grey";
+                    changePlayer(false);
+                    KI_Action();
+                };
 
             } else {
                 changePlayer(false);
                 running = true;
+
+                AdvantureMode_SpellDisplay.style.color = "white";
             };
         }, 100);
 

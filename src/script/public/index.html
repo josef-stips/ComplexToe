@@ -21,7 +21,7 @@
     <audio id="Quick_death_Theme" src="assets/Maps/Quick_Death.mp3"></audio>
     <audio id="Tunnel_of_truth_Theme" src="assets/Maps/Tunnel_of_truth.mp3"></audio>
     <audio id="boss_theme" src="assets/Maps/boss_theme.mp3"></audio>
-    <audio id="lolol" src="assets/btn_click_1.mp3"></audio>
+    <!-- <audio id="lolol" src="assets/btn_click_1.mp3"></audio> -->
     <audio id="Ground_destroyer_Theme" src="assets/Maps/Ground_destroyer.mp3"></audio>
     <audio id="Merciful_slaughter_Theme" src="assets/Maps/Merciful_slaughter.mp3"></audio>
     <audio id="Impossible_survival_Theme" src="assets/Maps/Impossible_survival.mp3"></audio>
@@ -44,6 +44,7 @@
     <script defer src="App/features/eye.js"></script>
     <script defer src="App/features/sun.js"></script>
     <script defer src="Game/Game.js"></script>
+    <script defer src="Game/Spells.js"></script>
     <script defer src="Game/PlayerClocks.js"></script>
     <script defer src="Game/processWinner.js"></script>
     <script defer src="./serverHandler.js"></script>
@@ -1945,6 +1946,11 @@
 
                             <!-- position absolute -->
                             <div class="MaxAmountOfMovesGameDisplay"></div>
+
+                            <div class="AdvantureMode_SpellDisplay">
+                                <img src="assets/game/spell.svg">
+                                <span class="SpellAmountDisplay"></span>
+                            </div>
 
                         </div>
 
@@ -4972,6 +4978,28 @@
             <span class="giveUp_Yes_btn giveUpChooseBtn">Yes</span>
             <span class="giveUp_No_btn giveUpChooseBtn">Nah</span>
         </div>
+    </div>
+
+    <!-- Use spell pop up -->
+    <div class="UseSpell_PopUp">
+        <div class="UseSpell_PopUp_header">
+            <div class="UseSpell_InnerHeader">
+                <i class="fa-solid far fa-question-circle UseSpell_questionBtn"></i>
+                <i class="fa-solid fa-x UseSpell_CloseBtn"></i>
+            </div>
+        </div>
+
+        <div class="UseSpell_PopUp_main">
+            <span>            Use the forbidden spell
+                <img src="./assets/game/spell.svg" width="22px" height="22px"></span> to place two times in a row.
+        </div>
+
+        <div class="UseSpell_PopUp_footer">
+            <span class="UseSpell_btn">Use</span>
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="150" height="150">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="150" height="150">
     </div>
 
 </body>

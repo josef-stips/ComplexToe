@@ -358,6 +358,8 @@ function KI_Action() {
         });
     }, 700);
 
+    MovesAmount_PlayerAndKi++;
+
     // if KI can place first it needs to find the best, that means the most open space, spot on the field
     let finalMove;
     finalMove = FindBestSpot(options); // return index
@@ -406,8 +408,10 @@ function KI_Action() {
     let chunks = results[0];
     let KIBoardOrigin = results[1];
 
-    let result = lookForInstantWin();
-    let KIMove_result = lookForInstantWin_KI();
+    let result = [0b0]; // 0b0 = placeholder
+    if (MovesAmount_PlayerAndKi > 5) result = lookForInstantWin();
+    let KIMove_result = [0b0];
+    if (MovesAmount_PlayerAndKi > 5) KIMove_result = lookForInstantWin_KI();
 
     if (KIMove_result[0] == true) { // if KI can win with one move left
         KI_placeAtInstantWin(KIMove_result);

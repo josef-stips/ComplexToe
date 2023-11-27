@@ -273,7 +273,7 @@ onmessage = (data) => {
 
             } else if ((ki_board & board) == board) {
                 winner = PlayerData[2].PlayerForm
-                console.log(winner);
+                    // console.log(winner);
                 break
             }
         };
