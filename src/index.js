@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 let windows = new Set();
+let mainWindow;
 
 const createWindow = () => {
     // Create the browser window.
@@ -20,6 +21,7 @@ const createWindow = () => {
     });
 
     windows.add(window)
+    mainWindow = window
 
     window.on("closed", () => {
         windows.delete(window);
@@ -52,4 +54,13 @@ app.whenReady().then(() => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
+});
+
+// on ipcMain
+ipcMain.on("ActivateFullscreen", () => {
+    mainWindow.setFullScreen(true); // Aktiviert den Fullscreen-Modus
+});
+
+ipcMain.on("DeactivateFullscreen", () => {
+    mainWindow.setFullScreen(false); // Deaktiviert den Fullscreen-Modus
 });

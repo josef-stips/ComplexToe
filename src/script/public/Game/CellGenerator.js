@@ -22,8 +22,7 @@ function generateCell(index) {
     cell.setAttribute('cell-index', index);
 
     cell.addEventListener('click', () => {
-        btn_sound2.volume = 0.075;
-        btn_sound2.play();
+        playBtn_Audio_2();
     });
 
     // configure cell size

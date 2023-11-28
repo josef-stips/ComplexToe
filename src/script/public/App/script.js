@@ -321,6 +321,14 @@ let UseSpell_PopUp = document.querySelector('.UseSpell_PopUp');
 let UseSpell_CloseBtn = document.querySelector('.UseSpell_CloseBtn');
 let UseSpell_UseBtn = document.querySelector('.UseSpell_btn');
 let UseSpell_Qbtn = document.querySelector('.UseSpell_questionBtn');
+let settFullscreenBtn = document.querySelector('#sett-fullscreen');
+let Settings_MailBtn = document.querySelector('.Settings_MailBtn');
+let Settings_CreditsBtn = document.querySelector('.Settings_CreditsBtn');
+let MailCloseBtn = document.querySelector('.MailCloseBtn');
+let MailPopUp = document.querySelector('.MailPopUp');
+let SubmitMailBtn = document.querySelector('.SubmitMailBtn');
+let MailInput_Name = document.querySelector('.MailInput_Name');
+let MailInput_Message = document.querySelector('.MailInput_Message');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -566,6 +574,7 @@ let curr_KI_Level;
 
 // standard bg music volume
 let appVolume = 0.02;
+let sfxVolume = 0.02;
 let bossModeIsActive = false;
 
 // server thing ----------------
@@ -1071,8 +1080,13 @@ function checkForSettings() {
     if (localStorage.getItem('sett-RoundEdges')) {
         // console.log(localStorage.getItem('sett-RoundEdges'));
     };
-    if (localStorage.getItem('sett-Secret')) {
-        // console.log(localStorage.getItem('sett-Secret'));
+    if (localStorage.getItem('sett-Secret') == "true") {
+        document.getElementById('sett-secret').classList = "fa-regular fa-square-check checkBox";
+        localStorage.setItem('sett-Secret', true);
+
+    } else {
+        document.getElementById('sett-secret').classList = "fa-regular fa-square checkBox";
+        localStorage.setItem('sett-Secret', false);
     };
     if (localStorage.getItem('sett-ShowPing')) {
         // console.log(localStorage.getItem('sett-ShowPing'));
@@ -1084,6 +1098,40 @@ function checkForSettings() {
         // console.log(localStorage.getItem('onlineMatches-won'));
     };
 };
+
+const InitFullscreen = () => {
+    if (localStorage.getItem("Fullscreen") == null) {
+        localStorage.setItem("Fullscreen", true);
+        settFullscreenBtn.classList = "fa-regular fa-check-square checkBox";
+        window.App.ToggleFullScreen(true);
+        settFullscreenBtn.setAttribute('marked', "true");
+
+    } else if (localStorage.getItem("Fullscreen") == "false") {
+        window.App.ToggleFullScreen(false);
+        settFullscreenBtn.setAttribute('marked', "false");
+
+    } else if (localStorage.getItem("Fullscreen") == "true") {
+        window.App.ToggleFullScreen(true);
+        settFullscreenBtn.classList = "fa-regular fa-check-square checkBox";
+        settFullscreenBtn.setAttribute('marked', "true");
+    };
+};
+InitFullscreen();
+
+settFullscreenBtn.addEventListener('click', () => {
+    console.log(localStorage.getItem('Fullscreen'))
+    if (localStorage.getItem('Fullscreen') == "false") {
+        localStorage.setItem("Fullscreen", true);
+        window.App.ToggleFullScreen(true);
+        this.EventTarget.classList = "fa-regular fa-check-square checkBox";
+
+
+    } else {
+        localStorage.setItem("Fullscreen", false);
+        window.App.ToggleFullScreen(false);
+        this.EventTarget.classList = "fa-regular fa-square checkBox";
+    };
+});
 
 // add click sound to gameMode Cards and animation
 Allbtns.forEach(btn => {
@@ -1241,7 +1289,7 @@ checkBox.forEach(box => {
         // save in storage
         let setting = box.getAttribute('sett'); // which setting
 
-        if (setting != "sett-DarkMode") {
+        if (setting != "sett-DarkMode" && setting != "Fullscreen") {
             let bool = box.getAttribute('marked'); // true ? false
             localStorage.setItem(setting, bool);
         };
@@ -1261,6 +1309,28 @@ settingsCloseBtn.addEventListener('click', () => {
 headerSettBtn.addEventListener('click', () => {
     settingsWindow.style.display = 'block';
     DarkLayer.style.display = 'block';
+});
+
+// settings important buttons: mail and credits
+Settings_MailBtn.addEventListener('click', () => {
+    if (localStorage.getItem("UserName")) {
+        MailPopUp.style.display = "flex";
+        settingsWindow.style.display = "none";
+        DarkLayer.style.display = "block";
+
+        localStorage.getItem("UserName") ? MailInput_Name.value = localStorage.getItem("UserName") : MailInput_Name.value = "";
+        MailInput_Message.value = "";
+        MailInput_Name.focus();
+
+    } else {
+        alertPopUp.style.display = "block";
+        AlertText.textContent = "Create an user account first";
+    };
+});
+
+Settings_CreditsBtn.addEventListener('click', () => {
+    DarkLayer.style.display = "block";
+
 });
 
 // Enter Game
@@ -2828,3 +2898,72 @@ giveUp_No_btn.addEventListener('click', () => {
     DarkLayer.style.display = "none";
     GiveUpPopUp.style.display = "none";
 });
+
+// Mail
+MailCloseBtn.addEventListener('click', () => {
+    DarkLayer.style.display = "none";
+    MailPopUp.style.display = "none";
+});
+
+MailInput_Message.addEventListener('mousedown', function(event) {
+    event.preventDefault(); // Verhindert die Auswahl beim Klicken
+});
+
+MailInput_Name.addEventListener('mousedown', function(event) {
+    event.preventDefault(); // Verhindert die Auswahl beim Klicken
+});
+
+MailInput_Message.addEventListener('click', function(event) {
+    MailInput_Message.focus();
+});
+
+MailInput_Name.addEventListener('click', function(event) {
+    MailInput_Name.focus();
+});
+
+MailInput_Message.addEventListener('keydown', (e) => {
+    if (e.key === "ArrowUp") {
+        MailInput_Name.focus();
+    };
+
+    if (e.key === "Enter" && MailInput_Name.value.trim() != "" && MailInput_Message.value.trim() != "") {
+        SendMail(localStorage.getItem("UserName"), localStorage.getItem("PlayerID"), MailInput_Name.value, MailInput_Message.value);
+    };
+});
+
+MailInput_Name.addEventListener('keydown', (e) => {
+    if (e.key === "ArrowDown" || e.key === "Enter") {
+        MailInput_Message.focus();
+    };
+});
+
+SubmitMailBtn.addEventListener('click', (e) => {
+    // DarkLayer.style.display = "none";
+    e.preventDefault();
+
+    if (MailInput_Name.value.trim() != "" && MailInput_Message.value.trim() != "") {
+        SendMail(localStorage.getItem("UserName"), localStorage.getItem("PlayerID"), MailInput_Name.value, MailInput_Message.value);
+
+    };
+});
+
+//Sends Mail to developer
+async function SendMail(PlayerName, PlayerID, mailName, message) {
+    // let email = document.getElementById('email').value; //display = none;
+    // let subject = document.getElementById('subject').value; //display = none;
+    let body = `name - ${PlayerName}, mail name - ${mailName}, id - ${PlayerID}<br/>
+        message:<br/>${message}`;
+
+    await Email.send({
+            SecureToken: "50ae5256-e4e9-4700-b42b-fafc3cd150ec",
+            To: 'josef.stips@sgw-schule.de',
+            From: 'josefstips@gmx.de',
+            Subject: 'Sended from User',
+            Body: body
+        })
+        .then();
+
+    alertPopUp.style.display = "block"
+    AlertText.textContent = "Email was successfully send to the developer. (He will probably never read it)";
+    MailPopUp.style.display = "none";
+};

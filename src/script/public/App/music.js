@@ -83,19 +83,19 @@ function CreateMusicBars(Audio) {
 
 function playBtn_Audio() {
     // audio
-    btn_sound.volume = 0.075;
+    btn_sound.volume = sfxVolume;
     btn_sound.play()
 };
 
 function playBtn_Audio_2() {
     // audio
-    btn_sound2.volume = 0.075;
+    btn_sound2.volume = sfxVolume;
     btn_sound2.play()
 };
 
 function coinsSoundTrack() {
     // coins audio
-    coinsSound.volume = 0.015;
+    coinsSound.volume = sfxVolume;
     coinsSound.play();
 };
 
@@ -131,24 +131,21 @@ function PauseMusic() {
 
 function playGameTheme() {
     PauseMusic();
-    audio.volume = 0.075;
     audio.play();
     globalAudio = audio;
-    CreateMusicBars(audio);
+    CreateMusicBars(globalAudio);
 };
 
 function playBossTheme() {
     PauseMusic();
-    boss_theme.volume = 0.075;
     boss_theme.play();
     globalAudio = boss_theme;
-    CreateMusicBars(boss_theme);
+    CreateMusicBars(globalAudio);
 };
 
 function playMapTheme() {
     PauseMusic();
-    mapSound.volume = 0.075;
     mapSound.play();
     globalAudio = mapSound;
-    CreateMusicBars(mapSound);
+    CreateMusicBars(globalAudio);
 };

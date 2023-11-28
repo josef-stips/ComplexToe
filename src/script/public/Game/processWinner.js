@@ -962,8 +962,7 @@ function setNew_SkillPoints(plus) {
         ELO_Points_display.classList.add('ELO_ani');
 
         // sound
-        btn_sound2.volume = 0.075;
-        btn_sound2.play();
+        playBtn_Audio_2();
 
         // logic
         ELO_point++;
@@ -1009,8 +1008,7 @@ function minus_SkillPoints(minus) {
         ELO_Points_display.classList.add('ELO_ani');
 
         // sound
-        btn_sound2.volume = 0.075;
-        btn_sound2.play();
+        playBtn_Audio_2();
 
         // logic
         ELO_point--;
