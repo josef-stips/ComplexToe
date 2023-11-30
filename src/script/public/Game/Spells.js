@@ -19,7 +19,7 @@ UseSpell_CloseBtn.addEventListener('click', () => {
 
 UseSpell_Qbtn.addEventListener('click', () => {
     UseSpell_PopUp.style.display = "none";
-    alertPopUp.style.display = "block";
+    alertPopUp.style.display = "flex";
     AlertText.textContent = "You have a question?";
 });
 

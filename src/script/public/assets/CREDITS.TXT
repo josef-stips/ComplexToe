@@ -1,0 +1,20 @@
+Title:
+    Picked Coin Echo
+
+Author:
+    NenadSimic
+
+URL:
+    https://opengameart.org/content/picked-coin-echo
+
+License(s):
+    * CC-BY 3.0 ( http://creativecommons.org/licenses/by/3.0/legalcode )
+
+File(s):
+    * Picked Coin Echo.wav
+
+Note: The file is edited. Only the first bit of the sound is there.
+
+----------------------------------------
+
+

@@ -34,6 +34,7 @@ html {
     overflow: hidden;
     padding: 0;
     background-color: var(--bg-app-color);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 p,
@@ -373,12 +374,13 @@ img {
 
 .lobby-header {
     color: var(--font-color);
-    height: 90%;
-    width: 97%;
+    height: 85%;
+    width: 100%;
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
-    border-bottom: 3px solid;
+    border-bottom: 3px solid #5e5e5e;
+    background-color: #15171a;
 }
 
 .header-nav {
@@ -388,23 +390,25 @@ img {
     align-items: center;
     justify-content: center;
     gap: 0.9em;
-    margin: 0.5em 0.55em 0 0;
+    margin-top: -0.2em;
 }
 
 .AppTitle-div {
     width: 80%;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }
 
 #AppTitle {
-    margin: 0.4em 0 0 0;
     font-size: 37.5px;
+    padding: 15px 0 0 0;
+    letter-spacing: 4px;
 }
 
 .header-item {
     transition: all 0.1s ease-in-out;
+    pointer-events: all !important;
 }
 
 .header-item:hover {
@@ -414,12 +418,32 @@ img {
 }
 
 .ELO-Points-div {
-    width: 10%;
+    width: 22.5%;
+    height: max-content;
+    padding: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     font-size: 30px;
-    margin: 0.5em 0 0 0.5em;
+    border-radius: 50px;
+    background-color: rgb(17, 19, 22);
+    margin: 0 0 0 1%;
+}
+
+.ELO-Points-div div {
+    width: max-content;
+    height: 100%;
+    width: 100%;
+}
+
+.ELO-Points-div div div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    border: 2px solid white;
+    padding: 5px 0 5px 0;
+    border-radius: 40px;
 }
 
 .ELO-Points-display {
@@ -440,6 +464,18 @@ img {
 
 .ELO-Points-AddIcon {
     transition: opacity 2.15s ease-out;
+}
+
+.XP_JourneyBtn {
+    pointer-events: all !important;
+    transform: scale(1);
+    transition: transform 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.XP_JourneyBtn:hover {
+    transition: transform 0.15s ease-in-out;
+    transform: scale(1.1);
 }
 
 
@@ -597,8 +633,29 @@ img {
     margin-bottom: 1em;
 }
 
+
+/* GameModeCards-main in slide show mode */
+
+.SlideMode {
+    width: 50% !important;
+    align-self: center;
+    gap: 1em;
+}
+
+.MainCardsSlideCaret_Left {
+    display: none;
+    cursor: pointer;
+    font-size: 45px;
+}
+
+.MainCardsSlideCaret_Right {
+    display: none;
+    font-size: 45px;
+    cursor: pointer;
+}
+
 .gameMode-card {
-    border: 4px solid var(--font-color);
+    border: 4px solid rgba(100, 35, 35, 0.856);
     width: 90%;
     height: 45%;
     transition: all 0.1s ease-out;
@@ -608,15 +665,7 @@ img {
     flex-direction: column;
     border-radius: 30px;
     position: relative;
-}
-
-.gameMode-card::before {
-    content: "";
-    position: absolute;
-    width: calc(100% + 1px);
-    height: calc(100% + 1px);
-    border: 4px solid transparent;
-    border-radius: 30px;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     animation: animatedBorder 4s linear infinite;
 }
 
@@ -667,7 +716,6 @@ img {
 }
 
 .card-mainSec {
-    width: 95%;
     height: 90%;
     display: flex;
     align-items: center;
@@ -1168,6 +1216,7 @@ img {
     flex-direction: column;
     display: none;
     color: var(--font-color);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .settings-header {
@@ -1176,11 +1225,14 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #15171a;
+    border-top-right-radius: 30px;
+    border-top-left-radius: 30px;
 }
 
 .settings-main {
     padding: 0.5em 1em 0 1em;
-    height: 83.5%;
+    height: 95%;
     flex-direction: column;
     display: flex;
     justify-content: start;
@@ -1198,7 +1250,7 @@ img {
     flex-direction: column;
     justify-content: space-evenly;
     width: 100%;
-    border-bottom: 2px dashed;
+    /* border-bottom: 2px dashed; */
     margin: 0 0 10px;
 }
 
@@ -1223,8 +1275,8 @@ img {
 
 .user-settings {
     width: 100%;
-    height: 50%;
-    display: flex;
+    height: 30%;
+    display: none;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
@@ -2876,13 +2928,16 @@ label h3 {
     left: 0;
     width: 35%;
     height: 25%;
-    border: 2px solid var(--font-color);
+    border: 2px solid rgba(211, 183, 24, 0.644);
     color: var(--font-color);
-    border-radius: 40px;
+    border-radius: 30px;
     background-color: var(--bg-app-color);
     z-index: 93001;
     display: none;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 #closeAlertPopUpBtn {
@@ -2894,7 +2949,7 @@ label h3 {
 
 #closeAlertPopUpBtn:hover {
     transition: all 0.1s ease-in;
-    color: var(--hover-item);
+    color: rgba(211, 183, 24, 0.644);
 }
 
 .alert-header {
@@ -2903,8 +2958,8 @@ label h3 {
     align-items: center;
     justify-content: end;
     width: 100%;
-    height: 18%;
-    border-bottom: 2px solid var(--font-color);
+    height: 17%;
+    /* border-bottom: 2px solid var(--font-color); */
 }
 
 .alert-text-wrapper {
@@ -2912,8 +2967,12 @@ label h3 {
     justify-content: center;
     align-items: center;
     font-size: 30px;
-    width: 100%;
-    height: 82%;
+    width: 90%;
+    height: 83%;
+}
+
+.alert-text-span {
+    margin-bottom: 10%;
 }
 
 
@@ -3502,6 +3561,7 @@ label h3 {
     justify-content: center;
     align-items: center;
     z-index: 499;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .loadScreen_main {
@@ -4179,6 +4239,88 @@ label h3 {
 }
 
 
+/* Shop */
+
+.Shop {
+    width: 50%;
+    height: 45%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 2px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
+    display: none;
+    flex-direction: column;
+    color: white;
+    font-size: 23px;
+    z-index: 10001;
+    border-radius: 25px;
+}
+
+.Shop_main {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.Shop_header {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.ShopCloseBtn {
+    cursor: pointer;
+    margin: 0 15px;
+    transition: color 0.1s ease-in-out;
+}
+
+.ShopCloseBtn:hover {
+    transition: color 0.1s ease-in-out;
+    color: rgb(211, 183, 26);
+}
+
+
+/* XP Journey Pop up */
+
+.XP_Journey {
+    width: 50%;
+    height: 45%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 2px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
+    display: none;
+    flex-direction: column;
+    color: white;
+    font-size: 23px;
+    z-index: 10001;
+    border-radius: 25px;
+}
+
+.JourneyCloseBtn {
+    cursor: pointer;
+}
+
+.XP_Journey_main {}
+
+.XP_Journey_footer {}
+
+
 /* Animations */
 
 @keyframes flying_text {
@@ -4242,13 +4384,13 @@ label h3 {
 
 @keyframes animatedBorder {
     0% {
-        border-color: transparent;
+        border-color: rgba(128, 36, 36, 0.110);
     }
     50% {
         border-color: rgba(128, 36, 36, 0.856);
     }
     100% {
-        border-color: transparent;
+        border-color: rgba(128, 36, 36, 0.110);
     }
 }
 

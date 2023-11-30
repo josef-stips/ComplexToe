@@ -93,6 +93,12 @@ function playBtn_Audio_2() {
     btn_sound2.play()
 };
 
+function playBtn_Audio_3() {
+    // audio
+    btn_click3.volume = sfxVolume;
+    btn_click3.play()
+};
+
 function coinsSoundTrack() {
     // coins audio
     coinsSound.volume = sfxVolume;

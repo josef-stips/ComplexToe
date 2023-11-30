@@ -15,6 +15,7 @@
     <audio id="bg_audio" src="assets/bg_music.m4a"></audio>
     <audio id="coinsSound" src="assets/coins.mp3"></audio>
     <audio id="btn_click_1" src="assets/increase_elo.mp3"></audio>
+    <audio src="assets/Picked Coin Echo.wav" id="btn_click3"></audio>
     <audio id="btn_click_2" src="assets/btn-click_2.mp3"></audio>
     <audio id="Long_funeral_Theme" src="assets/Maps/Long_Funeral.mp3"></audio>
     <audio id="March_into_fire_Theme" src="assets/Maps/March_into_fire.mp3"></audio>
@@ -101,19 +102,26 @@
         <div class="header-body">
             <header class="lobby-header">
                 <div class="ELO-Points-div">
-                    <p class="ELO-Points-display"></p>
-                    <p class="ELO-Points-icon"><img style="margin: 5px 0 0 7px;" width="35" height="35" src="assets/game/crenel-crown.svg"></p>
+                    <div>
+                        <div>
+                            XP
+                            <p class="ELO-Points-display"></p>
+                            <img src="assets/game/battle-axe.svg" width="30" height="30" class="XP_JourneyBtn" draggable="false">
+                        </div>
+                    </div>
+
+                    <!-- <p class="ELO-Points-icon"><img style="margin: 5px 0 0 7px;" width="35" height="35" src="assets/game/crenel-crown.svg"></p> -->
                     <p class="ELO-Points-AddIcon"></p>
                 </div>
 
                 <div class="AppTitle-div">
-                    <h1 id="AppTitle"></h1>
+                    <h1 id="AppTitle">ComplexToe</h1>
                 </div>
 
                 <nav class="header-nav">
-                    <i id="switchColorMode-btn" class="header-item fa-solid fa-moon"></i>
-                    <i id="header-sett-btn" class="header-item fa-solid fa-gear"></i>
-                    <i id="header-user-btn" class="header-item fa-solid fa-user"></i>
+                    <i id="switchColorMode-btn" class="header-item fa-solid fa-moon" style="display: none;"></i>
+                    <img src="assets/game/big-gear.svg" width="45px" height="45px" id="header-sett-btn" class="header-item" draggable="false">
+                    <img src="assets/game/hobbit-door.svg" width="46px" height="46px" id="header-user-btn" class="header-item" draggable="false">
                 </nav>
             </header>
         </div>
@@ -152,12 +160,14 @@
                     </div>
 
                     <div class="GameModeCards-main">
+                        <i class="fa-solid fa-caret-left MainCardsSlideCaret_Left"></i>
+
                         <!-- Card #1 -->
                         <div class="gameMode-card btn" id="gameMode-KI-card">
 
                             <div class="card-header">
                                 <div class="card-circle">
-                                    <i class="fa-solid fa-robot BotIcon"></i>
+                                    <img width="44px" height="44px" src="assets/game/battered-axe.svg" class="BotIcon">
                                 </div>
                             </div>
 
@@ -167,22 +177,22 @@
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini" style="color: rgb(190, 145, 30);border-color: white;">X</div>
+                                    <div class="miniCellMini">V</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini" style="color: rgb(190, 145, 30);border-color: white;">X</div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">V</div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini">V</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
+                                    <div class="miniCellMini" style="color: rgb(190, 145, 30);border-color: white;">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
+                                    <div class="miniCellMini"></div>
+                                    <div class="miniCellMini death-cell"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -202,7 +212,7 @@
 
                             <div class="card-header">
                                 <div class="card-circle" id="cardHeaderIcon-onlinePlayer">
-                                    <i class="fa-solid fa-user-group BotIcon"></i>
+                                    <img width="44px" height="44px" src="assets/game/winged-sword-yellow.svg" class="BotIcon">
                                 </div>
                             </div>
 
@@ -217,26 +227,26 @@
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
-                                    <div class="miniCell">X</div>
+                                    <div class="miniCell">V</div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
-                                    <div class="miniCell">X</div>
-                                    <div class="miniCell">O</div>
+                                    <div class="miniCell">V</div>
+                                    <div class="miniCell" style="color: rgb(190, 145, 30);border-color: white;">X</div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
-                                    <div class="miniCell">X</div>
+                                    <div class="miniCell">V</div>
                                     <div class="miniCell"></div>
-                                    <div class="miniCell">X</div>
-                                    <div class="miniCell"></div>
-                                    <div class="miniCell"></div>
+                                    <div class="miniCell">V</div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
-                                    <div class="miniCell">O</div>
-                                    <div class="miniCell">O</div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell"></div>
+                                    <div class="miniCell" style="color: rgb(190, 145, 30);border-color: white;">X</div>
+                                    <div class="miniCell" style="color: rgb(190, 145, 30);border-color: white;">X</div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
                                     <div class="miniCell"></div>
@@ -258,7 +268,7 @@
 
                             <div class="card-header">
                                 <div class="card-circle">
-                                    <i class="fa-solid fa-computer BotIcon"></i>
+                                    <img width="44px" height="44px" src="assets/game/crossed-swords.svg" class="BotIcon">
                                 </div>
                             </div>
 
@@ -271,18 +281,18 @@
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">V</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">X</div>
+                                    <div class="miniCellMini">V</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
-                                    <div class="miniCellMini">O</div>
-                                    <div class="miniCellMini">O</div>
+                                    <div class="miniCellMini" style="color: rgb(190, 145, 30);border-color: white;">X</div>
+                                    <div class="miniCellMini" style="color: rgb(190, 145, 30);border-color: white;">X</div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
                                     <div class="miniCellMini"></div>
@@ -296,6 +306,8 @@
                                 <h2 id="ComputerFriend_Card_DescriptionDisplay"></h2>
                             </div>
                         </div>
+
+                        <i class="fa-solid fa-caret-right MainCardsSlideCaret_Right"></i>
                     </div>
                 </div>
 
@@ -2317,6 +2329,10 @@
                     <li><i id="sett-secret" marked="false" class="fa-regular fa-square checkBox" sett="sett-Secret"></i> secret</li>
                     <li><i id="sett-fullscreen" marked="false" class="fa-regular fa-square checkBox" sett="Fullscreen"></i> fullscreen</li>
 
+                    <li><i id="sett-MainCardAnimation" marked="true" class="fa-regular far fa-check-square checkBox" sett="sett-MainCardAnimation"></i> Main card animation</li>
+                    <li><i id="MainCardSlideShow" marked="false" class="fa-regular fa-square checkBox" sett="sett-MainCardSlideShow"></i> Main card slide show</li>
+                    <li><i id="sett-ShowGameDataInGame" marked="true" class="fa-regular far fa-check-square checkBox" sett="sett-ShowFieldData"></i> show field data in game</li>
+
                     <hr align="left" width="70%">
                     <li>
                         <div class="sett-BGmusic-slider">
@@ -2346,7 +2362,6 @@
         </div>
 
         <div class="settings-footer">
-            <span>some Background music by: Karl Casey @ white Bat Audio</span>
         </div>
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="300" height="300">
@@ -4839,6 +4854,9 @@
         <div class="alert-text-wrapper">
             <span class="alert-text-span"></span>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="170" height="170">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="170" height="170">
     </div>
 
     <!-- user clicks x item to trade it with ELO Points -->
@@ -5036,6 +5054,38 @@
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="150" height="150">
         <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="150" height="150">
     </div>
+
+    <!-- shop pop up -->
+    <div class="Shop">
+        <div class="Shop_header">
+            <img src="assets/game/minerals.svg">
+            <i class="fa-solid fa-x ShopCloseBtn"></i>
+        </div>
+
+        <div class="Shop_main">
+
+        </div>
+    </div>
+
+    <!-- XP Journey -->
+    <div class="XP_Journey">
+        <div class="XP_Journey_header">
+            <i class="fa-solid fa-x JourneyCloseBtn"></i>
+        </div>
+
+        <div class="XP_Journey_main">
+
+        </div>
+
+        <div class="XP_Journey_footer">
+
+        </div>
+    </div>
+
+    <img src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">
+    <img src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;right: 0;z-index: 0;transform:rotate(270deg);" width="450" height="450">
+
+    <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="100" height="100">
 
 </body>
 

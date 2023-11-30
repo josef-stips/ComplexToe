@@ -10,11 +10,13 @@ let default_MapLevel_theme = document.querySelector('#default_MapLevel_theme');
 let default_MapLevel_theme2 = document.querySelector('#default_MapLevel_theme2');
 let theEye_theme = document.querySelector('#theEye_theme');
 let coinsSound = document.querySelector('#coinsSound');
+let btn_click3 = document.querySelector('#btn_click3');
 
 let cellGrid = document.querySelector('#cellGrid');
 
 // general elements and buttons
 let gameModeCards_Div = document.querySelector('.gameModes-cards');
+let gameModeCards = document.querySelectorAll('.gameMode-card ');
 let gameModeFields_Div = document.querySelector('.GameMode-fields');
 let fieldsArea_back_btn = document.querySelector('#fields-area-back-btn');
 let switchColorMode_btn = document.querySelector('#switchColorMode-btn');
@@ -329,6 +331,14 @@ let MailPopUp = document.querySelector('.MailPopUp');
 let SubmitMailBtn = document.querySelector('.SubmitMailBtn');
 let MailInput_Name = document.querySelector('.MailInput_Name');
 let MailInput_Message = document.querySelector('.MailInput_Message');
+let XPJourneyBtn = document.querySelector('.XP_JourneyBtn');
+let XP_Journey = document.querySelector('.XP_Journey');
+let JourneyCloseBtn = document.querySelector('.JourneyCloseBtn');
+let sett_MainCardAnimation = document.querySelector('#sett-MainCardAnimation');
+let sett_ShowGameDataInGame = document.querySelector('#sett-ShowGameDataInGame');
+let MainCardSlideShow = document.querySelector('#MainCardSlideShow');
+let MainCardsSlideCaret_Left = document.querySelector('.MainCardsSlideCaret_Left');
+let MainCardsSlideCaret_Right = document.querySelector('.MainCardsSlideCaret_Right');
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -358,17 +368,17 @@ let GameMode = {
     1: {
         "opponent": "KI", // You play against a KI if your offline or you want to get better
         "icon": "fa-solid fa-robot",
-        "description": "Play against a KI"
+        "description": "Training arena"
     },
     2: {
         "opponent": "OnlineFriend", // Guy you send a link to so you can play with him together
         "icon": "fa-solid fa-user-group",
-        "description": "Play online with a friend"
+        "description": "Play online with your friend"
     },
     3: {
         "opponent": "ComputerFriend", // Guy on same computer
         "icon": "fa-solid fa-computer",
-        "description": "Play with a friend"
+        "description": "Play with a friend on same computer"
     },
 };
 
@@ -595,6 +605,107 @@ let thirdPlayer_required = false;
 
 let socket;
 
+// toggle little main card animation
+const toggleMainCardAnimation = (setting) => {
+    console.log(localStorage.getItem(setting))
+    if (localStorage.getItem(setting) == "true") { // if setting is enabled
+
+        gameModeCards.forEach(card => { card.style.animation = "animatedBorder 4s linear infinite" });
+
+        localStorage.setItem(setting, "true");
+        sett_MainCardAnimation.classList = "fa-regular fa-check-square checkBox";
+        sett_MainCardAnimation.setAttribute("marked", "true");
+
+    } else if (localStorage.getItem(setting) == "false") {
+
+        gameModeCards.forEach(card => { card.style.animation = "unset" });
+
+        localStorage.setItem(setting, "false");
+        sett_MainCardAnimation.classList = "fa-regular fa-square checkBox";
+        sett_MainCardAnimation.setAttribute("marked", "false");
+    };
+};
+
+// toggle field data in game 
+const toggleFieldDataInGame = (setting) => {
+    if (localStorage.getItem(setting) == "true") { // if setting is enabled
+        document.querySelector('.GameField-info-corner').style.display = "block";
+
+        localStorage.setItem(setting, "true");
+        sett_ShowGameDataInGame.classList = "fa-regular fa-check-square checkBox";
+        sett_ShowGameDataInGame.setAttribute("marked", "true");
+
+    } else if (localStorage.getItem(setting) == "false") {
+        document.querySelector('.GameField-info-corner').style.display = "none";
+
+        localStorage.setItem(setting, "false");
+        sett_ShowGameDataInGame.classList = "fa-regular fa-square checkBox";
+        sett_ShowGameDataInGame.setAttribute("marked", "false");
+    };
+};
+
+// how the main cards in lobby should be displayed
+const MainCardDisplay = (setting) => {
+    if (localStorage.getItem(setting) == "true") { // if setting is enabled
+
+        localStorage.setItem(setting, "true");
+        MainCardSlideShow.classList = "fa-regular fa-check-square checkBox";
+        MainCardSlideShow.setAttribute("marked", "true");
+
+        document.querySelector('.GameModeCards-main').classList.add("SlideMode");
+        MainCardsSlideCaret_Left.style.display = "block";
+        MainCardsSlideCaret_Right.style.display = "block";
+        gameMode_KI_card.style.display = "none";
+        gameMode_OneVsOne_card.style.display = "none";
+        gameMode_TwoPlayerOnline_card.style.display = "block";
+        ComputerFriend_Card_DescriptionDisplay.style.marginTop = "0.3em";
+        OnlineFriend_Card_DescriptionDisplay.style.marginTop = "0.3em";
+        KI_Card_DescriptionDisplay.style.marginTop = "0.3em";
+
+    } else if (localStorage.getItem(setting) == "false") {
+
+        localStorage.setItem(setting, "false");
+        MainCardSlideShow.classList = "fa-regular fa-square checkBox";
+        MainCardSlideShow.setAttribute("marked", "false");
+
+        document.querySelector('.GameModeCards-main').classList.remove("SlideMode");
+        MainCardsSlideCaret_Left.style.display = "none";
+        MainCardsSlideCaret_Right.style.display = "none";
+        gameMode_KI_card.style.display = "block";
+        gameMode_OneVsOne_card.style.display = "block";
+        gameMode_TwoPlayerOnline_card.style.display = "block";
+        ComputerFriend_Card_DescriptionDisplay.style.marginTop = "0.5em";
+        OnlineFriend_Card_DescriptionDisplay.style.marginTop = "0.5em";
+        KI_Card_DescriptionDisplay.style.marginTop = "0.5em";
+    };
+};
+
+let currentCardIndex = 1;
+const CardsForIndex = {
+    0: gameMode_KI_card,
+    1: gameMode_TwoPlayerOnline_card,
+    2: gameMode_OneVsOne_card
+};
+
+// when main cards are in slide show
+MainCardsSlideCaret_Left.addEventListener('click', () => {
+    if (currentCardIndex > 0) {
+        currentCardIndex--;
+        ShowCardForIndex(currentCardIndex)
+    };
+});
+
+MainCardsSlideCaret_Right.addEventListener('click', () => {
+    if (currentCardIndex < 2) {
+        currentCardIndex++;
+        ShowCardForIndex(currentCardIndex)
+    };
+});
+
+const ShowCardForIndex = Index => {
+    Object.keys(CardsForIndex).forEach(idx => idx != Index ? CardsForIndex[idx].style.display = "none" : CardsForIndex[idx].style.display = "block");
+};
+
 // random loading text in loading screen
 function rnd_loadingText() {
     let rndIndex = Math.floor(Math.random() * 6);
@@ -674,7 +785,7 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
         console.log("error: ", error);
 
         DarkLayer.style.display = "block";
-        alertPopUp.style.display = "flex";
+        alertPopUp.style.display = "flex"
         AlertText.textContent = "It looks like you're offline! Try to reconnect.";
         DarkLayer.style.zIndex = "93000";
 
@@ -1074,12 +1185,6 @@ function UserOfflineData() {
 
 function checkForSettings() {
     // check for the settings
-    if (localStorage.getItem('sett-DarkMode')) {
-        // console.log(localStorage.getItem('sett-DarkMode'));
-    };
-    if (localStorage.getItem('sett-RoundEdges')) {
-        // console.log(localStorage.getItem('sett-RoundEdges'));
-    };
     if (localStorage.getItem('sett-Secret') == "true") {
         document.getElementById('sett-secret').classList = "fa-regular fa-square-check checkBox";
         localStorage.setItem('sett-Secret', true);
@@ -1088,6 +1193,26 @@ function checkForSettings() {
         document.getElementById('sett-secret').classList = "fa-regular fa-square checkBox";
         localStorage.setItem('sett-Secret', false);
     };
+
+    if (localStorage.getItem('sett-MainCardAnimation')) {
+        toggleMainCardAnimation("sett-MainCardAnimation");
+    };
+
+    if (localStorage.getItem('sett-MainCardSlideShow')) {
+        MainCardDisplay("sett-MainCardSlideShow");
+    };
+
+    if (localStorage.getItem('sett-ShowFieldData')) {
+        toggleFieldDataInGame("sett-ShowFieldData");
+    };
+
+    if (localStorage.getItem('sett-DarkMode')) {
+        // console.log(localStorage.getItem('sett-DarkMode'));
+    };
+    if (localStorage.getItem('sett-RoundEdges')) {
+        // console.log(localStorage.getItem('sett-RoundEdges'));
+    };
+
     if (localStorage.getItem('sett-ShowPing')) {
         // console.log(localStorage.getItem('sett-ShowPing'));
     };
@@ -1294,9 +1419,22 @@ checkBox.forEach(box => {
             localStorage.setItem(setting, bool);
         };
 
-        // dark/light mode switcher
-        if (setting == "sett-DarkMode") {
-            Set_Light_Dark_Mode();
+        switch (setting) {
+            case "sett-DarkMode":
+                Set_Light_Dark_Mode();
+                break;
+
+            case "sett-MainCardAnimation":
+                toggleMainCardAnimation(setting);
+                break;
+
+            case "sett-MainCardSlideShow":
+                MainCardDisplay(setting);
+                break;
+
+            case "sett-ShowFieldData":
+                toggleFieldDataInGame(setting);
+                break;
         };
     });
 });
@@ -1323,7 +1461,7 @@ Settings_MailBtn.addEventListener('click', () => {
         MailInput_Name.focus();
 
     } else {
-        alertPopUp.style.display = "block";
+        alertPopUp.style.display = "flex"
         AlertText.textContent = "Create an user account first";
     };
 });
@@ -2925,10 +3063,6 @@ MailInput_Message.addEventListener('keydown', (e) => {
     if (e.key === "ArrowUp") {
         MailInput_Name.focus();
     };
-
-    if (e.key === "Enter" && MailInput_Name.value.trim() != "" && MailInput_Message.value.trim() != "") {
-        SendMail(localStorage.getItem("UserName"), localStorage.getItem("PlayerID"), MailInput_Name.value, MailInput_Message.value);
-    };
 });
 
 MailInput_Name.addEventListener('keydown', (e) => {
@@ -2963,7 +3097,18 @@ async function SendMail(PlayerName, PlayerID, mailName, message) {
         })
         .then();
 
-    alertPopUp.style.display = "block"
+    alertPopUp.style.display = "flex"
     AlertText.textContent = "Email was successfully send to the developer. (He will probably never read it)";
     MailPopUp.style.display = "none";
 };
+
+// XP journey
+XPJourneyBtn.addEventListener('click', () => {
+    XP_Journey.style.display = "flex";
+    DarkLayer.style.display = "block";
+});
+
+JourneyCloseBtn.addEventListener('click', () => {
+    XP_Journey.style.display = "none";
+    DarkLayer.style.display = "none";
+});
