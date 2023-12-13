@@ -10,6 +10,8 @@ let settings = {
     maxInputLeng: 11,
     maxFormInputLeng: 1,
     maxInputLeng2: 6,
+    maxTextLength: 60,
+    maxBigTextLength: 200
 };
 
 let keys = {
@@ -76,6 +78,48 @@ Player1_IconInput.addEventListener('keyup', (event) => {
 Player2_IconInput.addEventListener('keyup', (event) => {
     if (event.key === "Enter") {
         SetPlayerData_ConfirmEvent();
+    };
+});
+
+SendMessage_textArea.addEventListener('keydown', event => {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxBigTextLength && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
+SearchBar_placeholderText.addEventListener('keydown', event => {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxInputLeng && !hasSelection) {
+        event.preventDefault();
+        return false;
     };
 });
 
@@ -545,5 +589,27 @@ input3.addEventListener("input", function(event) {
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
         event.target.value = validInput;
+    };
+});
+
+// about user quote
+UserQuote.addEventListener('keydown', (event) => {
+    let len = event.target.textContent.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= settings.maxTextLength && !hasSelection) {
+        event.preventDefault();
+        return false;
     };
 });

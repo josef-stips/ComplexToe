@@ -339,6 +339,46 @@ let sett_ShowGameDataInGame = document.querySelector('#sett-ShowGameDataInGame')
 let MainCardSlideShow = document.querySelector('#MainCardSlideShow');
 let MainCardsSlideCaret_Left = document.querySelector('.MainCardsSlideCaret_Left');
 let MainCardsSlideCaret_Right = document.querySelector('.MainCardsSlideCaret_Right');
+let JourneyInnerSideWrapper = document.querySelector('.JourneyInnerSideWrapper');
+let JourneyMainInner = document.querySelector('.JourneyMainInner');
+let JourneyQuestionBtn = document.querySelector('.JourneyQuestionBtn');
+let bodyBGIMG = document.querySelectorAll('.bodyBGIMG');
+let KEYICON_Wrapper = document.querySelector('.KEYICON_Wrapper');
+let Gem_Wrapper = document.querySelector('.Gem_Wrapper');
+let XICON_Wrapper = document.querySelector('.XICON_Wrapper');
+let UserID_display = document.querySelector('.UserID_display');
+let GetMessage_Btn = document.querySelector('.GetMessage_Btn');
+let SearchUser_Btn = document.querySelector('.SearchUser_Btn');
+let FriendsList_Btn = document.querySelector('.FriendsList_Btn');
+let GameInfoLobby_btn = document.querySelector('.GameInfoLobby_btn');
+let Lobby_GameInfo_PopUp = document.querySelector('.Lobby_GameInfo_PopUp');
+let CloseBtn_LobbyInfoPopUp = document.querySelector('.CloseBtn_LobbyInfoPopUp');
+let UserQuote = document.querySelector('.UserQuote');
+let UserQuoteSubmitBtn = document.querySelector('.UserQuoteSubmitBtn ');
+let UserLastTimeOnlineDisplay = document.querySelector('.UserLastTimeOnlineDisplay');
+let SendMessage_Btn = document.querySelector('.SendMessage_Btn');
+let AddFriend_Or_Friend_btn = document.querySelector('.AddFriend_Or_Friend_btn');
+let FriendsListPopUp = document.querySelector('.FriendsListPopUp');
+let MessagesPopUp = document.querySelector('.MessagesPopUp');
+let closeFriendsList_Btn = document.querySelector(".closeFriendsList_Btn");
+let closeMessages_Btn = document.querySelector(".closeMessages_Btn");
+let FriendsListInnerList = document.querySelector(".FriendsListInnerList");
+let Messages_InnerWrapper = document.querySelector('.Messages_InnerWrapper');
+let Inbox_InnerWrapper = document.querySelector('.Inbox_InnerWrapper');
+let SendMessageTo_PlayerNameDisplay = document.querySelector(".SendMessageTo_PlayerNameDisplay");
+let closeSendMessage_Btn = document.querySelector('.closeSendMessage_Btn');
+let SendMessagePopUp = document.querySelector('.SendMessagePopUp');
+let SendMessage_textArea = document.querySelector(".SendMessage_textArea");
+let SendMessageToPlayer_Btn = document.querySelector('.SendMessageToPlayer_Btn');
+let AmountOfMessagesDisplay = document.querySelector('.AmountOfMessagesDisplay');
+let InboxMessagesDisplay = document.querySelector('.InboxMessagesDisplay');
+let NotiOnUserInfoBtn = document.querySelector(".userInfoBtn_notificationText_Display");
+let GetMessageBtn_notificationText_Display = document.querySelector('.GetMessageBtn_notificationText_Display');
+let DeleteFriend_PopUp = document.querySelector(".DeleteFriend_PopUp");
+let DeleteFriendOption_NotYet = document.querySelector(".DeleteFriendOption_NotYet");
+let DeleteFriendOption_Yes = document.querySelector(".DeleteFriendOption_Yes");
+
+bodyBGIMG.forEach(e => e.style.display = "none");
 
 let OnlineFriend_Card_DescriptionDisplay = document.querySelector('#OnlineFriend_Card_DescriptionDisplay');
 let ComputerFriend_Card_DescriptionDisplay = document.querySelector('#ComputerFriend_Card_DescriptionDisplay');
@@ -556,6 +596,17 @@ let inAdvantureMode = false;
 let userName = "";
 let userIcon = "";
 
+let UserEditsQuote = false;
+
+let UserIsOnProfileFromOtherPlayer = false;
+
+let AmountOfReceivedMessages = 0;
+let AmountOfReceivedRequests = 0;
+
+// The Alert pop up is a general pop up you can use for any scenario with personalized text
+// Sometimes you open alert pop up while being in normal pop up and you don't want that the darkLayer in the background disapears
+let OpenedPopUp_WhereAlertPopUpNeeded = false;
+
 // allowed patterns choosed by player
 // At the beginning all patterns are allowed, the user can choose which one to disable
 let allowedPatternsFromUser = ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
@@ -605,9 +656,81 @@ let thirdPlayer_required = false;
 
 let socket;
 
+// about social activities
+const OpenGetMessagesPopUp = () => { // open user messages pop up
+    MessagesPopUp.style.display = "flex";
+
+};
+
+const OpenFriendsListPopUp = () => { // "try" to open friends list
+    // try to open friendslist
+    try {
+        FriendsListPopUp.style.display = "flex";
+        socket.emit("RequestFriends", localStorage.getItem("PlayerID"), cb => {
+            // small text with link to the "search player" pop-up if the user has no friends 
+            let div = document.createElement("div");
+            let p = document.createElement("p");
+            p.textContent = "No friends. Wanna get some friends? Go outside or click";
+            let span = document.createElement("span");
+            span.textContent = "here";
+            span.className = "ClickTextTo_SearchPlayersPopUp";
+            span.addEventListener('click', () => {
+                FriendsListPopUp.style.display = "none";
+                SearchPlayerPopUp.style.display = "flex";
+            });
+
+            FriendsListInnerList.textContent = null;
+
+            if (!cb) { // No friends
+                div.append(p);
+                div.appendChild(span);
+                FriendsListInnerList.appendChild(div);
+
+            } else { // Friends detected
+                GenerateFriendsList(cb);
+            };
+        });
+
+    } catch (error) {
+        alertPopUp.style.display = "flex";
+        AlertText.textContent = "something went wrong. Is it your connection?";
+    };
+};
+
+const OpenSearchUserPopUp = () => { // open search pop up to search for users
+    SearchPlayerPopUp.style.display = "flex";
+    FoundPlayer_List.textContent = "Do you even have any real friends?";
+};
+
+// player is not friend of user and user clicks on friend option button
+const AddFriend_OpenPopUp = () => {
+    try {
+        socket.emit("SendFriendRequest", localStorage.getItem("PlayerID"), UserID_OfCurrentVisitedProfile, cb => {
+            AlertText.textContent = `You already sended a request to ${UserName_OfCurrentVisitedProfile}! Wait for his answer.`;
+            alertPopUp.style.display = "flex";
+        });
+
+    } catch (error) {
+        console.log(error)
+        AlertText.textContent = "Something went wrong! Is it your connection? hihihi...";
+        alertPopUp.style.display = "flex";
+    };
+};
+
+// player is friend of user and user clicks on friend option button 
+const DeleteFriend_OpenPopUp = () => {
+    DeleteFriend_PopUp.style.display = "flex";
+};
+
+const OpenSendMessagePopUp = () => {
+    SendMessagePopUp.style.display = "flex";
+    SendMessage_textArea.value = null;
+    SendMessage_textArea.focus();
+    SendMessageTo_PlayerNameDisplay.textContent = UserName_OfCurrentVisitedProfile;
+};
+
 // toggle little main card animation
 const toggleMainCardAnimation = (setting) => {
-    console.log(localStorage.getItem(setting))
     if (localStorage.getItem(setting) == "true") { // if setting is enabled
 
         gameModeCards.forEach(card => { card.style.animation = "animatedBorder 4s linear infinite" });
@@ -702,6 +825,13 @@ MainCardsSlideCaret_Right.addEventListener('click', () => {
     };
 });
 
+// Display user id in user pop up
+const DisplayUserID = () => {
+    const UserID = localStorage.getItem("PlayerID");
+
+    UserID_display.textContent = "User ID: " + UserID;
+};
+
 const ShowCardForIndex = Index => {
     Object.keys(CardsForIndex).forEach(idx => idx != Index ? CardsForIndex[idx].style.display = "none" : CardsForIndex[idx].style.display = "block");
 };
@@ -790,17 +920,19 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
         DarkLayer.style.zIndex = "93000";
 
     } finally {
-        // finally: check constantly if loading progress finished
+        // finally: check if loading progress finished
         checkLoadingProgress(loading_progress)
     };
 };
 
-// check constantly if loading progress finished
+// check if loading progress finished
 function checkLoadingProgress() {
     if (loading_progress >= 100) {
         loadingScreen.style.display = "none";
         // start background music
         CreateMusicBars(audio);
+        bodyBGIMG.forEach(e => e.style.display = "block");
+
     } else {
         setTimeout(() => {
             checkLoadingProgress();
@@ -812,7 +944,7 @@ function checkLoadingProgress() {
 (function loadToHead() {
     try {
         let head = document.querySelector('head');
-        let script_fontawesome = document.createElement('script');
+        // let script_fontawesome = document.createElement('script');
         let fonts_googleapis = document.createElement('link');
         let fonts_gstatic = document.createElement('link');
         let fonts_googleapis2 = document.createElement('link');
@@ -821,8 +953,8 @@ function checkLoadingProgress() {
         let link_googleFont2 = document.createElement('link');
 
         // font awesome script
-        script_fontawesome.src = "https://kit.fontawesome.com/8f7afdedcd.js";
-        script_fontawesome.setAttribute("crossorigin", "anonymous");
+        // script_fontawesome.src = "https://kit.fontawesome.com/8f7afdedcd.js";
+        // script_fontawesome.setAttribute("crossorigin", "anonymous");
         // google fonts tag 1
         fonts_googleapis.href = "https://fonts.googleapis.com";
         fonts_googleapis.rel = "preconnect";
@@ -845,7 +977,7 @@ function checkLoadingProgress() {
         link_googleFont2.href = "https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
         link_googleFont2.rel = "stylesheet";
 
-        head.appendChild(script_fontawesome);
+        // head.appendChild(script_fontawesome);
         head.appendChild(fonts_googleapis);
         head.appendChild(fonts_gstatic);
         head.appendChild(fonts_googleapis2);
@@ -896,6 +1028,8 @@ function AppInit() {
     ComputerFriend_Card_DescriptionDisplay.textContent = GameMode[3].description;
 
     checkForSettings();
+
+    DisplayUserID();
 
     return 10;
 };
@@ -1126,7 +1260,7 @@ function ElO_Points() {
         userInfoSkillpoints.textContent = ELO_storage;
 
     } else {
-        localStorage.setItem('ELO', '1000');
+        localStorage.setItem('ELO', '0');
         ELO_Points_display.textContent = localStorage.getItem('ELO');
         userInfoSkillpoints.textContent = localStorage.getItem('ELO');
     };
@@ -1144,6 +1278,7 @@ function OnlineMatchesWon() {
     };
 };
 
+// from app init which voids automatically at the start of the game
 function UserOfflineData() {
     let name = localStorage.getItem('UserName');
     let icon = localStorage.getItem('UserIcon');
@@ -1180,6 +1315,18 @@ function UserOfflineData() {
                 userInfoIcon.textContent = icon;
             };
         };
+    } else { // user has not an account
+        GetMessage_Btn.style.color = "rgb(80,80,80)";
+        GetMessage_Btn.style.borderColor = "rgb(40,40,40)";
+        GetMessage_Btn.removeEventListener('click', OpenGetMessagesPopUp);
+
+        FriendsList_Btn.removeEventListener('click', OpenFriendsListPopUp);
+        FriendsList_Btn.style.color = "rgb(80,80,80)";
+        FriendsList_Btn.style.borderColor = "rgb(40,40,40)";
+
+        SearchUser_Btn.removeEventListener('click', OpenSearchUserPopUp);
+        SearchUser_Btn.style.color = "rgb(80,80,80)";
+        SearchUser_Btn.style.borderColor = "rgb(40,40,40)";
     };
 };
 
@@ -1260,36 +1407,78 @@ settFullscreenBtn.addEventListener('click', () => {
 
 // add click sound to gameMode Cards and animation
 Allbtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // audio
-        playBtn_Audio();
+    if (btn.classList.contains("mainCard")) {
 
-        // animation
-        DarkLayer.style.backgroundColor = 'black';
-        DarkLayer.style.display = 'block';
-        DarkLayer.style.transition = 'opacity 0.1s ease-in';
-        DarkLayer.style.opacity = '0';
+        btn.addEventListener('click', (card) => { // event listener for online card
 
-        setTimeout(() => {
-            DarkLayer.style.opacity = '1';
-            setTimeout(() => {
-                gameModeCards_Div.style.display = 'none';
-                gameModeFields_Div.style.display = 'flex';
-            }, 100);
-        }, 100);
+            // the main card is the play online card which the player can only play if he has an online account
+            if (!localStorage.getItem("UserName")) {
+                AlertText.textContent = "Create an account to play online";
+                DarkLayer.style.display = "block";
+                alertPopUp.style.display = "flex";
 
-        setTimeout(() => {
+            } else {
+                // audio
+                playBtn_Audio();
+
+                // animation
+                DarkLayer.style.backgroundColor = 'black';
+                DarkLayer.style.display = 'block';
+                DarkLayer.style.transition = 'opacity 0.1s ease-in';
+                DarkLayer.style.opacity = '0';
+
+                setTimeout(() => {
+                    DarkLayer.style.opacity = '1';
+                    setTimeout(() => {
+                        gameModeCards_Div.style.display = 'none';
+                        gameModeFields_Div.style.display = 'flex';
+                    }, 100);
+                }, 100);
+
+                setTimeout(() => {
+                    DarkLayer.style.opacity = '0';
+
+                    setTimeout(() => {
+                        DarkLayer.style.display = 'none';
+                        DarkLayer.style.transition = 'none';
+                        DarkLayer.style.opacity = '1';
+                        DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+                    }, 400);
+                }, 400);
+            };
+        });
+
+    } else { // event listener for all other cards
+        btn.addEventListener('click', (card) => {
+            // audio
+            playBtn_Audio();
+
+            // animation
+            DarkLayer.style.backgroundColor = 'black';
+            DarkLayer.style.display = 'block';
+            DarkLayer.style.transition = 'opacity 0.1s ease-in';
             DarkLayer.style.opacity = '0';
 
             setTimeout(() => {
-                DarkLayer.style.display = 'none';
-                DarkLayer.style.transition = 'none';
                 DarkLayer.style.opacity = '1';
-                DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-            }, 400);
-        }, 400);
+                setTimeout(() => {
+                    gameModeCards_Div.style.display = 'none';
+                    gameModeFields_Div.style.display = 'flex';
+                }, 100);
+            }, 100);
 
-    });
+            setTimeout(() => {
+                DarkLayer.style.opacity = '0';
+
+                setTimeout(() => {
+                    DarkLayer.style.display = 'none';
+                    DarkLayer.style.transition = 'none';
+                    DarkLayer.style.opacity = '1';
+                    DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+                }, 400);
+            }, 400);
+        });
+    };
 });
 
 // event listener
@@ -2503,6 +2692,8 @@ animatedPopConBtn.addEventListener('click', () => {
 });
 
 headerUserBtn.addEventListener('click', () => {
+    OpenedPopUp_WhereAlertPopUpNeeded = true;
+
     DarkLayer.style.display = 'block';
     userInfoPopUp.style.display = 'flex';
     userInfoOnlineMatchesWon.textContent = JSON.parse(localStorage.getItem('onlineMatches-won'));
@@ -2513,7 +2704,7 @@ headerUserBtn.addEventListener('click', () => {
         editUserProfileBtn.style.display = 'none';
     };
 
-    if (localStorage.getItem('UserName')) {
+    if (localStorage.getItem('UserName')) { // user has account
         userInfoName.textContent = localStorage.getItem('UserName');
 
         if (localStorage.getItem('userInfoClass') == "empty") {
@@ -2528,7 +2719,18 @@ headerUserBtn.addEventListener('click', () => {
         CreateOnlineProfileBtn.style.display = 'none';
         UserInfoCont.style.display = 'flex';
 
-    } else {
+        // Try to send data to the server
+        try {
+            socket.emit("SaveAllData", localStorage.getItem('UserName'), localStorage.getItem('UserIcon'),
+                localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), localStorage.getItem('UserQuote'),
+                JSON.parse(localStorage.getItem('onlineMatches-won')), localStorage.getItem('ELO'),
+                localStorage.getItem('current_used_skin'), localStorage.getItem("PlayerID"));
+
+        } catch (error) {
+            console.log(error);
+        };
+
+    } else { // user has not an account
         userInfoName.textContent = "";
         userInfoIcon.textContent = "";
 
@@ -2538,18 +2740,64 @@ headerUserBtn.addEventListener('click', () => {
 });
 
 userInfoCloseBtn.addEventListener('click', () => {
-    if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
-        localStorage.getItem('UserIcon') == null) {
+    OpenedPopUp_WhereAlertPopUpNeeded = false;
 
-        DarkLayer.style.display = 'none';
-        userInfoPopUp.style.display = 'none';
+    if (!UserIsOnProfileFromOtherPlayer) { // user was on his own profile
+        if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
+            localStorage.getItem('UserIcon') == null) {
 
-        if (userInfoIcon.textContent !== "") {
-            localStorage.setItem('UserIcon', userInfoIcon.textContent);
+            if (!UserIsOnProfileFromOtherPlayer) DarkLayer.style.display = 'none';
+            if (!UserIsOnProfileFromOtherPlayer) userInfoPopUp.style.display = 'none';
+
+            if (userInfoIcon.textContent !== "") {
+                localStorage.setItem('UserIcon', userInfoIcon.textContent);
+            };
+
+            if (localStorage.getItem('UserIcon') != null) {
+                localStorage.setItem('UserName', userInfoName.textContent);
+            };
+
+            UserQuote.contentEditable = "false";
+            UserEditsQuote = false;
+            UserQuoteSubmitBtn.textContent = "Edit";
+            (localStorage.getItem("UserQuote")) ? UserQuoteSubmitBtn.textContent = "Edit": UserQuoteSubmitBtn.textContent = "Create a quote";
+            (localStorage.getItem("UserQuote")) ? UserQuote.innerHTML = localStorage.getItem("UserQuote"): UserQuoteSubmitBtn.textContent = "Create a quote";
         };
 
-        if (localStorage.getItem('UserIcon') != null) {
-            localStorage.setItem('UserName', userInfoName.textContent);
+        // if player visited profile from other player
+    } else if (UserIsOnProfileFromOtherPlayer) {
+        UserIsOnProfileFromOtherPlayer = false;
+        userInfoPopUp.style.zIndex = "10001";
+
+        UserID_OfCurrentVisitedProfile = undefined;
+        UserName_OfCurrentVisitedProfile = undefined;
+
+        editUserProfileBtn.style.display = "initial";
+        UserQuoteSubmitBtn.style.display = "block";
+        FriendsList_Btn.style.display = "flex";
+        SearchUser_Btn.style.display = "flex";
+        GetMessage_Btn.style.display = "flex";
+        DarkLayer.style.display = "block";
+
+        UserLastTimeOnlineDisplay.style.display = "none";
+        SendMessage_Btn.style.display = "none";
+        AddFriend_Or_Friend_btn.style.display = "none";
+
+        userInfoName.textContent = localStorage.getItem("UserName");
+        UserID_display.textContent = "User ID: " + localStorage.getItem("PlayerID");
+        if (localStorage.getItem("UserQuote")) UserQuote.textContent = localStorage.getItem("UserQuote");
+        userInfoOnlineMatchesWon.textContent = localStorage.getItem("onlineMatches-won");
+        userInfoSkillpoints.textContent = localStorage.getItem("ELO");
+
+        if (localStorage.getItem("userInfoClass") == "empty") { // user has standard skin
+            userInfoIcon.classList = "userInfo-Icon userInfoEditable";
+            userInfoIcon.textContent = localStorage.getItem("UserIcon");
+            userInfoIcon.style.color = localStorage.getItem("UserInfoColor");
+
+        } else { // user has advanced skin
+            userInfoIcon.classList = "userInfo-Icon userInfoEditable " + localStorage.getItem("userInfoClass");
+            userInfoIcon.textContent = null;
+            userInfoIcon.style.color = "var(--font-color)";
         };
     };
 });
@@ -2619,6 +2867,18 @@ UserGivesData_IconInput.addEventListener('keydown', e => {
 
             clickEnter_text.style.display = 'none';
             editUserProfileBtn.style.display = 'initial';
+
+            // User gets access to online social activities
+            GetMessage_Btn.style.color = "white";
+            GetMessage_Btn.style.borderColor = "white";
+            FriendsList_Btn.style.color = "white";
+            FriendsList_Btn.style.borderColor = "white";
+            SearchUser_Btn.style.color = "white";
+            SearchUser_Btn.style.borderColor = "white";
+
+            GetMessage_Btn.addEventListener('click', OpenGetMessagesPopUp);
+            FriendsList_Btn.addEventListener('click', OpenFriendsListPopUp);
+            SearchUser_Btn.addEventListener('click', OpenSearchUserPopUp);
         };
     };
 
@@ -2632,7 +2892,6 @@ UserGivesData_closeBtn_NAME.addEventListener('click', () => { // for name
     userName = "";
     UserGivesData_NameInput.value = null;
     UserGivesData_PopUp_name.style.display = "none";
-    DarkLayer.style.display = "none";
 });
 
 // for icon 
@@ -2641,7 +2900,6 @@ UserGivesData_closeBtn_ICON.addEventListener('click', () => {
     UserGivesData_NameInput.value = null;
     UserGivesData_IconInput.value = null;
     UserGivesData_PopUp_icon.style.display = "none";
-    DarkLayer.style.display = "none";
 });
 
 // user submits his simple offline data
@@ -2651,12 +2909,14 @@ function submittedOfflineData() {
 
     try {
         // send name to server, server sends it to database, store in database
-        socket.emit("sendNameToDatabase", localStorage.getItem('PlayerID'), localStorage.getItem('UserName'));
+        socket.emit("sendNameToDatabase", localStorage.getItem('PlayerID'), localStorage.getItem('UserName'), localStorage.getItem("UserIcon"),
+            localStorage.getItem('userInfoClass'), localStorage.getItem("userInfoColor"));
     } catch (error) {
         console.error(error);
     };
 
     userInfoName.textContent = localStorage.getItem('UserName');
+    UserID_display.textContent = "User ID: " + localStorage.getItem("PlayerID");
 
     // user uses just a skin color
     if (localStorage.getItem(`userInfoClass`) == "empty") {
@@ -2802,7 +3062,11 @@ tradeX_ConfirmBtn.addEventListener('click', () => {
 closeAlertPopUpBtn.addEventListener('click', () => {
     alertPopUp.style.display = 'none';
     settingsWindow.style.display = 'none';
-    DarkLayer.style.display = 'none';
+
+    // Don't disable dark background layer if player is on other pop up
+    if (!XPJourneyMapOpen && UserID_OfCurrentVisitedProfile == undefined && !OpenedPopUp_WhereAlertPopUpNeeded) {
+        DarkLayer.style.display = 'none';
+    };
 });
 
 // when player wants to create/start a game and passes the required data
@@ -3019,6 +3283,14 @@ socket.on("Updated_AllowedPatterns", patternsArray => {
     });
 });
 
+GameInfoLobby_btn.addEventListener('click', () => {
+    Lobby_GameInfo_PopUp.style.display = "flex";
+})
+
+CloseBtn_LobbyInfoPopUp.addEventListener('click', () => {
+    Lobby_GameInfo_PopUp.style.display = "none";
+});
+
 // give up online game button
 GiveUp_btn.addEventListener('click', () => {
     DarkLayer.style.display = "block";
@@ -3102,13 +3374,46 @@ async function SendMail(PlayerName, PlayerID, mailName, message) {
     MailPopUp.style.display = "none";
 };
 
-// XP journey
-XPJourneyBtn.addEventListener('click', () => {
-    XP_Journey.style.display = "flex";
-    DarkLayer.style.display = "block";
+// User Quote things
+
+// check if there is quote if not inform user he can create one
+localStorage.getItem("UserQuote") ? UserQuote.innerHTML = localStorage.getItem("UserQuote") : UserQuoteSubmitBtn.textContent = "Create a quote";
+
+UserQuoteSubmitBtn.addEventListener('click', () => {
+    if (!UserEditsQuote) { // user is gonna edit his epic quote now
+        UserEditsQuote = true;
+        UserQuoteSubmitBtn.textContent = "Done";
+        UserQuote.contentEditable = "true";
+        UserQuote.focus();
+        UserQuote.innerHTML = 'My Quote'.replace(/\n/g, "<br>"); // Ersetze Zeilenumbrüche durch <br> Tags
+
+    } else { // user is done quoting
+        UserEditsQuote = false;
+        UserQuoteSubmitBtn.textContent = "Edit";
+        UserQuote.contentEditable = "false";
+        const quoteWithBr = UserQuote.innerHTML.replace(/<br\s*\/?>/mg, "\n"); // Ersetze <br> Tags durch Zeilenumbrüche
+        localStorage.setItem('UserQuote', quoteWithBr);
+
+        try {
+            socket.emit("UserSubmitsNewQuote", localStorage.getItem("UserQuote"), localStorage.getItem("PlayerID"));
+
+        } catch (error) {
+            alertPopUp.style.display = "flex"
+            AlertText.textContent = "something gone wrong. Is it your connection?"
+        };
+    };
 });
 
-JourneyCloseBtn.addEventListener('click', () => {
-    XP_Journey.style.display = "none";
-    DarkLayer.style.display = "none";
+UserQuote.addEventListener('click', () => {
+    UserQuote.focus();
+});
+
+UserQuote.addEventListener('keydown', (e) => {
+    if (e.code == "Enter") {
+        e.preventDefault();
+    };
+});
+
+UserQuote.addEventListener('mousedown', function(event) {
+    event.preventDefault(); // Verhindert die Auswahl beim Klicken
 });

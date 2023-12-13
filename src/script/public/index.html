@@ -9,6 +9,8 @@
     <!-- <script src="https://kit.fontawesome.com/8f7afdedcd.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <link rel="stylesheet" href="assets/libraries/all.min.css">
+    <link rel="stylesheet" href="assets/libraries/fontawesome.min.css">
 
     <!-- server -->
     <link rel="stylesheet" href="index.css" />
@@ -39,10 +41,12 @@
     <script src="./libraries/smtp.js"></script>
 
     <script defer src="App/script.js"></script>
+    <script defer src="App/features/OnlineSocialUser.js"></script>
     <script defer src="App/SkinLogic.js"></script>
     <script defer src="App/features/Treasure.js"></script>
     <script defer src="App/features/itemDropPropability.js"></script>
     <script defer src="App/features/AdvantureMap.js"></script>
+    <script defer src="App/features/XPJourney.js"></script>
     <script defer src="App/features/eye.js"></script>
     <script defer src="App/features/sun.js"></script>
     <script defer src="Game/Game.js"></script>
@@ -122,6 +126,9 @@
                     <i id="switchColorMode-btn" class="header-item fa-solid fa-moon" style="display: none;"></i>
                     <img src="assets/game/big-gear.svg" width="45px" height="45px" id="header-sett-btn" class="header-item" draggable="false">
                     <img src="assets/game/hobbit-door.svg" width="46px" height="46px" id="header-user-btn" class="header-item" draggable="false">
+
+                    <!-- notification text -->
+                    <div class="userInfoBtn_notificationText_Display">0</div>
                 </nav>
             </header>
         </div>
@@ -137,16 +144,16 @@
 
                     <div class="lobby-Cardsheader">
                         <div class="lobby-cards-header-left">
-                            <div class="lobby-header-icon-innerWrapper">
+                            <div class="lobby-header-icon-innerWrapper Gem_Wrapper">
                                 <i title="diamants" class="fa-solid fa-gem"></i>
                                 <span class="gems-icon">0</span>
                             </div>
 
-                            <div class="lobby-header-icon-innerWrapper">
+                            <div class="lobby-header-icon-innerWrapper XICON_Wrapper">
                                 <i title="X" class="fa-solid fa-x XBtn"></i>
                                 <span class="x-icon">0</span>
                             </div>
-                            <div class="lobby-header-icon-innerWrapper">
+                            <div class="lobby-header-icon-innerWrapper KEYICON_Wrapper">
                                 <i title="key" class="fa-solid fa-key KeyBtn"></i>
                                 <span class="KEYicon">0</span>
                             </div>
@@ -160,7 +167,9 @@
                     </div>
 
                     <div class="GameModeCards-main">
-                        <i class="fa-solid fa-caret-left MainCardsSlideCaret_Left"></i>
+                        <div class="MainCardsSlideCaret_Left">
+                            <i class="fa-solid fa-caret-left"></i>
+                        </div>
 
                         <!-- Card #1 -->
                         <div class="gameMode-card btn" id="gameMode-KI-card">
@@ -307,7 +316,9 @@
                             </div>
                         </div>
 
-                        <i class="fa-solid fa-caret-right MainCardsSlideCaret_Right"></i>
+                        <div class="MainCardsSlideCaret_Right">
+                            <i class="fa-solid fa-caret-right"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -2276,7 +2287,7 @@
                         <i style="position: absolute;top: 15%;right: 15%;" class="mapItem mapItemIMG"><img src="./assets/game/willow-tree.svg"></i>
 
                         <i style="position: absolute;top: 42%;right: 54%;" class="mapItem mapItemIMG"><img src="./assets/game/gluttonous-smile.svg"></i>
-                        <i style="position: absolute;top: 61%;right: 18%;" class="mapItem mapItemIMG"><img src="./assets/game/book-cover.svg"></i>
+                        <i style="position: absolute;top: 61%;right: 10%;" class="mapItem mapItemIMG"><img src="./assets/game/book-cover.svg"></i>
 
                         <!-- background icons -->
                         <img class="BG_mapIcons BGICON_1" src="assets/game/BG_icon_1.svg" width="500" height="500">
@@ -3962,23 +3973,18 @@
         </div>
     </div>
 
-    <!-- OnlineGame: Lobby -->
-    <div class="OnlineGame_Lobby">
-        <div class="Lobby_header">
-            <span class="Lobby_GameCode_display">Game Code: 13123</span>
-            <i class="fa-solid fa-x" id="Lobby_closeBtn"></i>
+    <!-- OnlineGame Lobby Game Info Pop up -->
+    <div class="Lobby_GameInfo_PopUp">
+
+        <div class="LobbyInfo_header">
+            <div></div>
+            <span>Game Info</span>
+            <i class="fa-solid fa-x CloseBtn_LobbyInfoPopUp"></i>
         </div>
 
-        <div class="Lobby_main">
-            <div class="LobbyPlayerSection">
-                <h4 class="LobbySectionTitle">Players:</h4>
-                <span class="Lobby_first_player">Player 1 - X</span>
-                <span class="Lobby_second_player">Player 2 - O</span>
-                <span class="Lobby_third_player">Player 3 (blocker)</span>
-            </div>
-
+        <div class="LobbyInfo_main">
             <div class="LobbyGameDataSection">
-                <h4 class="LobbySectionTitle">Game data:</h4>
+                <h4 class="LobbySectionTitle" style="text-decoration: underline;">Game data:</h4>
 
                 <div class="LobbyGameData_SingleOuterContainer" id="FieldSizeOuter">
                     <span>Fieldsize: </span>
@@ -4650,11 +4656,44 @@
 
             </div>
         </div>
+    </div>
+
+    <!-- OnlineGame: Lobby -->
+    <div class="OnlineGame_Lobby">
+        <div class="Lobby_header">
+            <span class="Lobby_GameCode_display">Game Code: 13123</span>
+            <i class="fa-solid fa-x" id="Lobby_closeBtn"></i>
+        </div>
+
+        <div class="Lobby_main">
+            <div class="GameInfoLobby_btn">
+                Game Info
+            </div>
+
+            <div class="LobbyPlayerSection">
+                <h4 style="display: none;" class="LobbySectionTitle">Players:</h4>
+
+                <div class="playerDisplayLobby_Wrapper">
+                    <span class="Lobby_first_player PlayerLobbyDisplay">X</span>
+                </div>
+
+                <div class="playerDisplayLobby_Wrapper playerDisplayLobby_Wrapper_SecondPlayer">
+                    <span class="Lobby_second_player PlayerLobbyDisplay">O</span>
+                </div>
+
+                <div class="playerDisplayLobby_Wrapper">
+                    <span class="Lobby_third_player PlayerLobbyDisplay">W</span>
+                </div>
+            </div>
+        </div>
 
         <div class="Lobby_footer">
             <button class="Lobby_startGame_btn">start game</button>
             <span class="LobbyUserFooterInfo">Wait for the admin to start the game..</span>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
     <!-- friend left the game pop up -->
@@ -4687,11 +4726,20 @@
 
     <!-- user info pop up -->
     <div class="userInfo-PopUp">
+        <!-- name -->
+        <div class="NameBatch">
+            <div></div>
+            <span contenteditable="false" subject="name" class="userInfo-Name userInfoEditable"></span>
+            <span id="userInfoIcon" contenteditable="false" subject="icon" class="userInfo-Icon userInfoEditable">-</span>
+        </div>
+
         <!-- header -->
         <div class="userInfo-header">
+            <div>
+                <img style="margin: 13px 0 0 13px;" width="38" height="38" src="assets/game/winged-sword.svg">
+            </div>
+
             <div></div>
-            <!-- if user data already passed. else: blank -->
-            <h2>Your profile</h2>
 
             <div>
                 <i id="editUserProfileBtn" class="fa-solid fa-pen"></i>
@@ -4703,19 +4751,22 @@
             <!-- if user data already passed -->
             <div class="UserInfo-cont">
                 <ol class="UserInfo-list">
+
                     <li>
-                        name: <span contenteditable="true" subject="name" class="userInfo-Name userInfoEditable"></span>
+                        <span subject="skill-points" class="userInfo-Skillpoints"></span>
+                        <img src="assets/game/battle-axe.svg" width="35" height="35">
                     </li>
                     <li>
-                        default icon: <span id="userInfoIcon" contenteditable="true" subject="icon" class="userInfo-Icon userInfoEditable"></span>
-                    </li>
-                    <li>
-                        Skill points: <span subject="skill-points" class="userInfo-Skillpoints"></span>
-                    </li>
-                    <li>
-                        Online matches won: <span subject="online-matches-won" class="userInfo-OnlineMatchesWon"></span>
+                        <span subject="online-matches-won" class="userInfo-OnlineMatchesWon"></span>
+                        <img width="35" height="35" src="assets/game/laurels-trophy.svg">
                     </li>
                 </ol>
+
+                <div class="UserQuoteWrapper">
+                    <p class="UserQuote" contenteditable="false" spellcheck="false">
+                    </p>
+                    <div class="UserQuoteSubmitBtn">Edit</div>
+                </div>
             </div>
 
             <!-- if user data is not passed -->
@@ -4726,8 +4777,41 @@
 
         <!-- footer -->
         <div class="userInfo-footer">
+            <div></div>
             <span class="clickEnter_text">Click Enter to submit</span>
+
+            <div class="UserIDWrapper">
+                <div class="UserLastTimeOnlineDisplay" style="display: none;">last time online: 19.11.23</div>
+                <div class="UserID_display">User ID: </div>
+            </div>
+
         </div>
+
+        <div class="FooterBoxes">
+            <div class="UserPopUpBtnBox FriendsList_Btn">
+                <i class="fa-solid fa-user-group UserBtnIcons"></i>
+            </div>
+            <div class="UserPopUpBtnBox SearchUser_Btn">
+                <i class="fa-solid fas fa-search UserBtnIcons"></i>
+            </div>
+            <div class="UserPopUpBtnBox GetMessage_Btn">
+                <i class="fa-solid fas fa-envelope UserBtnIcons"></i>
+
+                <!-- notification text -->
+                <div class="GetMessageBtn_notificationText_Display">0</div>
+            </div>
+
+            <div class="UserPopUpBtnBox AddFriend_Or_Friend_btn" style="display: none;">
+                <i class="fa-solid fas fa-user-plus UserBtnIcons"></i>
+                <!-- fa-solid fa-user-check -->
+            </div>
+            <div class="UserPopUpBtnBox SendMessage_Btn" style="display: none;">
+                <i class="fa-solid fas fa-comment-dots UserBtnIcons"></i>
+            </div>
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
     <!-- user gives single data pop up NAME -->
@@ -5069,23 +5153,169 @@
 
     <!-- XP Journey -->
     <div class="XP_Journey">
-        <div class="XP_Journey_header">
-            <i class="fa-solid fa-x JourneyCloseBtn"></i>
-        </div>
+
+        <img src="assets/game/diamond-hilt.svg" width="200px" height="200px" style="transform: rotate(90deg);position: absolute;bottom: 0;right: 10px;">
 
         <div class="XP_Journey_main">
+            <div class="XP_mainSideWrapper">
 
+                <div class="JourneyInnerSideWrapper">
+
+                </div>
+            </div>
+
+            <div class="XP_mainMainWrapper">
+                <div class="XP_Journey_header">
+                    <h3 style="margin: 35px 0 0 20px;padding: 5px 18px 5px 18px;border: 2px solid;border-radius: 20px;background-color: #121518;">Your XP Journey</h3>
+
+                    <div style="display: flex;flex-direction: row;gap: 2.5px;">
+                        <i class="fa-solid fa-question-circle JourneyQuestionBtn"></i>
+                        <i class="fa-solid fa-x JourneyCloseBtn"></i>
+                    </div>
+                </div>
+
+                <div class="JourneyMainInner">
+
+                </div>
+            </div>
         </div>
 
-        <div class="XP_Journey_footer">
-
-        </div>
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
-    <img src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">
-    <img src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;right: 0;z-index: 0;transform:rotate(270deg);" width="450" height="450">
+    <!-- search player pop up -->
+    <div class="SearchPlayerPopUp">
 
-    <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="100" height="100">
+        <div class="SocialPopUp_Header">
+
+            <img src="assets/game/black-book.svg" width="35" height="35" style="margin: 0 0 0 25px;">
+
+            <div class="SearchPlayer_SearchBar">
+                <div class="SearchBar_leftWrapper">
+                    <i class="fa-solid fa-search SearchBar_searchIcon" style="margin: 0 0 0 30px;"></i>
+                </div>
+                <input class="SearchBar_placeholderText" contenteditable="true" placeholder="Search a player with his name or id!">
+            </div>
+
+            <i class="fa-solid fa-x closeSearchPlayer_Btn"></i>
+        </div>
+
+        <div class="SearchPlayer_Main">
+            <h3>Player found:</h3>
+
+            <hr width="80%" align="left">
+            <div class="FoundPlayer_List">
+
+            </div>
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <!-- Friends list pop up -->
+    <div class="FriendsListPopUp">
+
+        <div class="SocialPopUp_Header">
+
+            <img src="assets/game/scroll-unfurled.svg" width="35" height="35" style="margin: 0 0 0 25px;">
+
+            <span>Your Friends... hihihi</span>
+
+            <i class="fa-solid fa-x closeFriendsList_Btn"></i>
+        </div>
+
+        <div class="FriendsListMainWrapper">
+            <div class="FriendsListInnerList">
+
+                <!-- <div class="Friend HoverBorderAni">
+                    <div class="FriendName">Josef</div>
+                    <div class="FriendIcon">F</div>
+                </div> -->
+
+            </div>
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <!-- messages pop up -->
+    <div class="MessagesPopUp">
+
+        <div class="SocialPopUp_Header">
+
+            <img src="assets/game/tied-scroll.svg" width="35" height="35" style="margin: 0 0 0 25px;">
+
+            <span>
+                Your inbox and messages
+            </span>
+
+            <i class="fa-solid fa-x closeMessages_Btn"></i>
+        </div>
+
+        <div class="MessageMainWrapper">
+
+            <div style="display: flex;flex-direction: row; align-items: center;">
+                <h3>Inbox &nbsp;</h3>
+                <p class="InboxMessagesDisplay AmountDisplay">0</p>
+            </div>
+
+            <div class="Inbox_InnerWrapper">
+
+            </div>
+
+            <hr align="center" width="95%">
+
+            <div style="display: flex;flex-direction: row;align-items: center;">
+                <h3>Messages &nbsp;</h3>
+                <p class="AmountOfMessagesDisplay AmountDisplay">0</p>
+            </div>
+
+            <div class="Messages_InnerWrapper">
+
+
+            </div>
+
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <!-- send message to other pop up -->
+    <div class="SendMessagePopUp">
+
+        <div class="SocialPopUp_Header">
+
+            <img src="assets/game/tied-scroll.svg" width="35" height="35" style="margin: 0 0 0 25px;">
+
+            <span style="display: flex;flex-direction: row;align-items: center;">
+                Send a message to &nbsp;
+                <span class="SendMessageTo_PlayerNameDisplay"></span>
+            </span>
+
+            <i class="fa-solid fa-x closeSendMessage_Btn"></i>
+        </div>
+
+        <div class="SendMessageMain">
+            <textarea class="SendMessage_textArea" cols="30" rows="10" spellcheck="false"></textarea>
+            <div class="SendMessageToPlayer_Btn">Send</div>
+        </div>
+
+    </div>
+
+    <!-- delete friend pop up -->
+    <div class="DeleteFriend_PopUp">
+        <div class="DeleteFriendOption_Yes">Yes</div>
+        <div class="DeleteFriendOption_NotYet">Not yet</div>
+    </div>
+
+    <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">
+    <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;right: 0;z-index: 0;transform:rotate(270deg);" width="450" height="450">
+
+    <img class="bodyBGIMG" src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="100" height="100">
 
 </body>
 

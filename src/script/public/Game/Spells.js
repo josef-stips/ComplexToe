@@ -79,8 +79,6 @@ const SpellFoundAnimation = (index) => {
     img.style.right = `${cellPos.right}px`;
     img.style.left = `${cellPos.left}px`;
     img.style.bottom = `${cellPos.bottom}px`;
-    img.style.x = `${cellPos.x}px`;
-    img.style.y = `${cellPos.y}px`;
     img.style.animation = "1.5s SmallToBigToSmallQuickly ease-in-out"
 
     setTimeout(() => {

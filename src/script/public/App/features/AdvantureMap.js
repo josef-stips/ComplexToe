@@ -345,6 +345,9 @@ planet.addEventListener('click', () => {
     // bug fixes
     secondTierModes.style.marginBottom = "0";
     bossModeIsActive = false;
+
+    bodyBGIMG.forEach(e => e.style.display = "none");
+
     // sound
     playBtn_Audio_2();
 
@@ -382,6 +385,9 @@ AdvantureMapBackbtn.addEventListener('click', () => {
     // sound
     playBtn_Audio_2();
 
+    // XP Journey
+    CheckIfUserCanGetReward();
+
     // style animation
     DarkLayer.style.backgroundColor = 'black';
     DarkLayer.style.display = 'block';
@@ -394,6 +400,9 @@ AdvantureMapBackbtn.addEventListener('click', () => {
             AdvantureMap.style.display = 'none';
             gameModeCards_Div.style.display = 'flex';
         }, 100);
+
+        // bug fix
+        bodyBGIMG.forEach(e => e.style.display = "block");
     }, 100);
 
     setTimeout(() => {
@@ -408,6 +417,7 @@ AdvantureMapBackbtn.addEventListener('click', () => {
     }, 400);
 
     inAdvantureMode = false;
+
 
     playGameTheme();
 });

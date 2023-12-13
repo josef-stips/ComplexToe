@@ -257,6 +257,9 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     // sound
     playBtn_Audio_2();
 
+    // XP Journey reward
+    CheckIfUserCanGetReward();
+
     if (personal_GameData.role == 'admin') {
         GameField.style.display = 'none';
         gameModeFields_Div.style.display = 'flex';
@@ -330,7 +333,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
                 CreateMusicBars(audio); // error because javascript is as weird as usual
             };
         });
-    } else {
+    } else { // in offline mode
         // bug fix
         setTimeout(() => {
             if (inAdvantureMode) {
