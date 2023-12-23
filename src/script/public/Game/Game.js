@@ -167,6 +167,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // Adds click event to every single cell and starts game
     el_cells.forEach(cell => {
         cell.addEventListener('click', cellCicked);
+        cell.style.cursor = "pointer";
     });
 
     running = true;
@@ -248,6 +249,10 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     gameModeFields_Div.style.display = 'none';
     CheckmateWarnText.style.display = 'none';
     OnlineChat_btn.style.display = "none";
+
+    // close pop ups if there is any on
+    CloseOnlinePopUps(true);
+
     // lobbyHeader.style.display = 'none';
 
     // in online mode: display give up button, in offline mode: display choose winner button
@@ -266,22 +271,25 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     cellGrid.classList.remove('Invisible');
     cellGrid.classList.remove('cellGrid-alert');
     cellGrid.classList.add('cellGrid_opacity');
+    cellGrid.style.opacity = "1";
 
     // choose winner button
     chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
-    // give up button
+    // // give up button
     giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) }); // give up online game button close pop up btn on Yes request: User actually gives up
 
-    // initialize display of the choose winner buttons, they will be modified later
+    // initialize display of the choose winner buttons, they will be modified later during game in certain events
     chooseWinnerWindowBtn.style.display = "none";
     GiveUp_btn.style.display = "none";
+    globalChooseWinnerBtn.style.display = "block";
 
-    // if in mode x
+    // if in offline mode
     if (!onlineMode) {
         // How long the game is - Game Counter
         let GameSeconds = 0;
         GameField_TimeMonitor.textContent = '0 s.';
         clearInterval(gameCounter)
+        gameCounter = null;
         gameCounter = setInterval(() => {
             GameSeconds++;
             GameField_TimeMonitor.textContent = GameSeconds + ' s.';
@@ -290,6 +298,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
         restartBtn.style.color = 'var(font-color)';
+        addAccessToAnything("TimerEnded");
 
     } else { // Is in online mode
         // Make sure that the user is not allowed to reload the game
@@ -302,6 +311,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
             // How long the game is - Game Counter
             GameField_TimeMonitor.textContent = '0 s.';
             clearInterval(gameCounter);
+            gameCounter = null;
 
             gameCounter = setInterval(() => {
                 // send message to server
@@ -310,7 +320,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
             }, 1000);
         };
 
-        // set up restart button for online game
+        // set up buttons for online game
         if (personal_GameData.role == 'user') {
             restartBtn.style.color = '#56565659';
             restartBtn.removeEventListener('click', restartGame);
@@ -329,6 +339,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
             giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
             GiveUp_btn.style.display = 'none';
         };
+        addAccesOnlineMode("TimerEnded");
 
         OnlineChat_btn.style.display = "block";
     };
@@ -346,6 +357,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     } else {
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
+        // advanture mode things
         MaxAmountOfMovesGameDisplay.style.display = 'none';
         AdvantureMode_SpellDisplay.style.display = "none";
     };
@@ -446,7 +458,7 @@ function initializePlayers(OnlineGameDataArray) {
 
         // set color of player icon
         namePlayer1.style.color = localStorage.getItem('userInfoColor');
-        namePlayer2.style.color = "gold";
+        curr_mode == GameMode[1].opponent ? namePlayer2.style.color = "gold" : namePlayer2.style.color = "white";
     };
 
     currentName = PlayerData[1].PlayerName;
@@ -508,14 +520,16 @@ socket.on('display_GlobalGameTimer', timer => {
 // user clicked some cell
 let lastCellIndex_Clicked = 0;
 async function cellCicked() {
+    console.log(this.classList, MaxAmountOfMovesGameDisplay, running);
     if (this.classList == "cell" && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
+
+        console.log(options[cellIndex]);
 
         // check if cell is already drawn or the game is running
         if (options[cellIndex] != "" || !running) {
             return;
         };
-        console.log(options[cellIndex])
 
         // If in online mode
         if (curr_mode == GameMode[2].opponent) {
@@ -640,7 +654,7 @@ socket.on('player_clicked', Goptions => {
 
         if (personal_GameData.role == "admin") {
             // important stuff
-            killPlayerClocks("stop");
+            killPlayerClocks(false, "stop");
         };
 
         // now the third player can set his block
@@ -684,7 +698,6 @@ function thirdPlayerSets() {
         // add blocker access to set
         cells.forEach(cell => {
             cell.addEventListener('click', cellCicked);
-            console.log("lol")
         });
         statusText.textContent = "You can block now!";
         running = true;
@@ -749,7 +762,7 @@ async function changePlayer(from_restart, fromClick) {
                     Activate_PlayerClock(true, false);
                 } else {
                     // start player clock for a player
-                    await killPlayerClocks("Reset&&Continue", "player1_timer_event", "player1_timer", 1) // the params are only for online mode
+                    await killPlayerClocks(false, "Reset&&Continue", "player1_timer_event", "player1_timer", 1) // the params are only for online mode
                 };
 
             } else if (currentPlayer == PlayerData[2].PlayerForm) {
@@ -757,7 +770,7 @@ async function changePlayer(from_restart, fromClick) {
                     Activate_PlayerClock(false, true)
                 } else {
                     // start player clock for a player
-                    await killPlayerClocks("Reset&&Continue", "player2_timer_event", "player2_timer", 2) // the params are only for online mode
+                    await killPlayerClocks(false, "Reset&&Continue", "player2_timer_event", "player2_timer", 2) // the params are only for online mode
                 };
             };
             // in online mode the player things get handled in the server wih the "playerClocks" function above
@@ -775,7 +788,10 @@ async function changePlayer(from_restart, fromClick) {
     cells = el_cells;
 
     el_cells.forEach(cell => {
-        if (cell.classList.length <= 1) cell.addEventListener('click', cellCicked);
+        if (cell.classList.length <= 1) {
+            cell.addEventListener('click', cellCicked);
+            cell.style.cursor = "pointer";
+        };
     });
 };
 
@@ -798,7 +814,7 @@ function restartGame() {
         socket.emit('Reload_OnlineGame', personal_GameData.currGameID, xCell_Amount);
 
     } else { // if other mode
-        killPlayerClocks();
+        killPlayerClocks(true);
         stopStatusTextInterval = true;
         cellGrid.classList.remove('cellGrid_opacity');
         changePlayer(true);
@@ -838,56 +854,47 @@ function UserGivesUp(user_role) {
     console.log(score_Player1_numb == score_Player2_numb)
     console.log(score_Player1_numb < score_Player2_numb)
 
-    switch (user_role) {
-        case 'admin':
-            // if admin had more points than user but gives up
-            if (score_Player1_numb > score_Player2_numb) {
-                // make the score the same
-                score_Player1_numb = Infinity;
-                score_Player2_numb = Infinity;
-                Call_UltimateWin();
-                return;
+    if (user_role == "admin") {
+        // if admin had more points than user but gives up
+        if (score_Player1_numb > score_Player2_numb) {
+            // make the score the same
+            score_Player1_numb = Infinity;
+            score_Player2_numb = -Infinity;
+            Call_UltimateWin();
 
-            } else if (score_Player1_numb == score_Player2_numb) {
-                // score is already the same but make it the same 
-                score_Player1_numb = Infinity;
-                score_Player2_numb = Infinity;
-                Call_UltimateWin();
-                return;
+        } else if (score_Player1_numb == score_Player2_numb) {
+            // score is already the same but make it the same 
+            score_Player1_numb = Infinity;
+            score_Player2_numb = Infinity;
+            Call_UltimateWin();
 
-            } else if (score_Player1_numb < score_Player2_numb) {
-                // if the admin has less points than user, the user wins obviously
-                score_Player1_numb = -Infinity;
-                score_Player2_numb = Infinity;
-                Call_UltimateWin();
-                return;
-            };
-            break;
+        } else if (score_Player1_numb < score_Player2_numb) {
+            // if the admin has less points than user, the user wins obviously
+            score_Player1_numb = -Infinity;
+            score_Player2_numb = Infinity;
+            Call_UltimateWin();
+        };
 
-        case 'user':
-            // if admin had more points than user but gives up
-            if (score_Player2_numb > score_Player1_numb) {
-                // make the score the same
-                score_Player1_numb = Infinity;
-                score_Player2_numb = Infinity;
-                Call_UltimateWin();
-                return;
+    } else if (user_role == "user") {
+        // if admin had more points than user but gives up
+        if (score_Player2_numb > score_Player1_numb) {
+            // make the score the same
+            score_Player1_numb = -Infinity;
+            score_Player2_numb = Infinity;
+            Call_UltimateWin();
 
-            } else if (score_Player2_numb == score_Player1_numb) {
-                // score is already the same but make it the same 
-                score_Player1_numb = Infinity;
-                score_Player2_numb = Infinity;
-                Call_UltimateWin();
-                return;
+        } else if (score_Player2_numb == score_Player1_numb) {
+            // score is already the same but make it the same 
+            score_Player1_numb = Infinity;
+            score_Player2_numb = Infinity;
+            Call_UltimateWin();
 
-            } else if (score_Player2_numb < score_Player1_numb) {
-                // if the user has less points than admin, the admin wins obviously
-                score_Player1_numb = Infinity;
-                score_Player2_numb = -Infinity;
-                Call_UltimateWin();
-                return;
-            };
-            break;
+        } else if (score_Player2_numb < score_Player1_numb) {
+            // if the user has less points than admin, the admin wins obviously
+            score_Player1_numb = Infinity;
+            score_Player2_numb = -Infinity;
+            Call_UltimateWin();
+        };
     };
 };
 
@@ -898,6 +905,7 @@ socket.on('Reload_GlobalGame', (Goptions) => {
     options = Goptions
     OnlineGameData[2] = Goptions;
 
+    killPlayerClocks(true);
     stopStatusTextInterval = true;
     cellGrid.classList.remove('cellGrid_opacity');
     changePlayer(true);
@@ -920,6 +928,7 @@ function single_CellBlock(cell, fromMap) {
     cell.className = "cell death-cell";
     cell.style.cursor = "default";
     cell.style.color = "white";
+    // just different animation style
     if (fromMap == "fromMap") {
         cell.style.animation = "destroyCell 2s forwards"; // Animation aktivieren
 

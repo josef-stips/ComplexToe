@@ -1,12 +1,12 @@
 :root {
-    --hover-item: rgb(50, 86, 141);
+    --hover-item: goldenrod;
     --font-color: #101214;
     --bg-app-color: rgb(255, 255, 255);
     --bg-gradient: rgb(255, 255, 255);
     --bg-gradient2: rgb(255, 255, 255);
     --bg-app-color2: #4b4e52;
     --width-for-goToAdvancedModes-btn: 1580px;
-    --width-for-40x40-field: 1.0vh;
+    --width-for-40x40-field: 1.2vh;
     --font-size-for-40x40-field: 11.5px;
     --floating-gem-range: -152vh;
     --floating-x-range: -142vh;
@@ -35,6 +35,10 @@ html {
     padding: 0;
     background-color: var(--bg-app-color);
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+*::selection {
+    background-color: rgba(141, 105, 14, 0.548);
 }
 
 p,
@@ -167,7 +171,7 @@ img {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin: 0 0 0 0;
+    margin: 20px 0 0 0;
 }
 
 .game-status {
@@ -176,8 +180,9 @@ img {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 15%;
+    height: 20%;
     gap: 0.5em;
+    margin: 30px;
 }
 
 .ComplexToe-Field {
@@ -205,13 +210,15 @@ img {
 }
 
 .GameFieldHeader-underBody {
-    height: 30%;
+    height: max-content;
+    margin: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .GameFieldHeader-under {
+    margin-bottom: 5px;
     font-size: 20px;
     display: flex;
     justify-content: center;
@@ -237,7 +244,7 @@ img {
 }
 
 #GameTitle {
-    font-size: 40px;
+    font-size: 35px;
 }
 
 #cellGrid {
@@ -246,7 +253,7 @@ img {
     justify-content: center;
     margin: 0 auto;
     opacity: 1;
-    transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out, opacity 1s ease-in-out;
 }
 
 .cellGrid-alert {
@@ -533,11 +540,12 @@ img {
 .lobby-main-sec {
     color: var(--font-color);
     display: block;
-    height: 80%;
+    height: 85%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 20px 0 0 0;
 }
 
 #AllowedPatternsOuter {
@@ -548,6 +556,7 @@ img {
 }
 
 .Lobby_PointsToWin {
+    padding: 0 50px 0 0;
     outline: none;
 }
 
@@ -991,6 +1000,9 @@ img {
     flex-direction: column;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    font-weight: 500;
 }
 
 #UltimateWinText {
@@ -1269,7 +1281,7 @@ img {
 }
 
 .general-settings h2 {
-    margin: 0 0 0.5em 0;
+    margin: 1em 0 0.5em 0;
     font-size: 28px;
 }
 
@@ -1395,9 +1407,9 @@ img {
     right: 0;
     left: 0;
     z-index: 1000;
-    width: 50%;
-    height: 65%;
-    background-image: linear-gradient(to bottom right, #373c42, #282d32);
+    width: 70%;
+    height: 70%;
+    background-color: var(--bg-app-color);
     padding: 0px;
     border: solid 4px;
     border-radius: 35px;
@@ -1418,12 +1430,16 @@ img {
 .SetPlayerNames-Header {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    font-size: 16px;
+    font-size: 19px;
     height: 21%;
     width: 100%;
     border-bottom: 2px solid;
+}
+
+.SetPlayerNames-Header img {
+    margin: 0 0 0 20px;
 }
 
 .SetPlayerNames-footer {
@@ -1510,7 +1526,7 @@ img {
 }
 
 .SetUpPopUp-CloseBtn {
-    margin: 0.8em 0 0.4em 1em;
+    margin: 0.8em 1em 0.4em 0;
     cursor: pointer;
     transition: color 0.1s ease-out;
 }
@@ -1665,7 +1681,7 @@ img {
 
 .GameModeListItem {
     cursor: pointer;
-    color: black;
+    color: rgb(202, 202, 202);
     padding: 4px;
     margin: 0;
     transition: all 0.15s ease-out;
@@ -1708,7 +1724,7 @@ img {
     font-size: 18px;
     color: red;
     font-weight: 400;
-    margin: 0.1em 0 0.1em 11.1em;
+    margin: 0.1em 0 0.1em 15.5em;
     display: none;
 }
 
@@ -1776,7 +1792,7 @@ label h3 {
     height: 70%;
     border: 3px solid;
     border-radius: 30px;
-    background-image: linear-gradient(to bottom right, var(--bg-gradient), var(--bg-gradient2));
+    background-color: var(--bg-app-color);
     z-index: 1000;
     position: absolute;
     margin: auto auto auto auto;
@@ -1901,7 +1917,7 @@ label h3 {
     display: none;
     z-index: 1000;
     color: var(--font-color);
-    background-image: linear-gradient(to bottom right, var(--bg-gradient), var(--bg-gradient2));
+    background-color: var(--bg-app-color);
 }
 
 .ChooseWinner-header {
@@ -1925,8 +1941,8 @@ label h3 {
 }
 
 #ChooseWinnerWindow-CloseBtn:hover {
-    transition: all 0.15s ease-in-out;
-    color: var(--hover-item);
+    transition: all 0.1s ease-in-out;
+    color: goldenrod;
     cursor: pointer;
 }
 
@@ -1938,6 +1954,7 @@ label h3 {
     align-items: flex-start;
     flex-direction: row;
     font-size: 17px;
+    margin-top: 10px;
 }
 
 .ChooseWinner-main {
@@ -2051,12 +2068,9 @@ label h3 {
 .onlineGame_main-btn {
     width: 25%;
     height: 35%;
-    background-image: linear-gradient(to bottom right, rgb(236, 236, 236), rgb(221, 221, 221));
-    color: #191c20;
-    font-size: 26px;
+    color: white;
+    font-size: 45px;
     font-weight: 500;
-    border: 3px solid #191c20;
-    border-radius: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2200,7 +2214,7 @@ label h3 {
     justify-content: space-between;
     align-items: center;
     color: white;
-    background-image: linear-gradient(to bottom right, #373c42, #282d32);
+    background-color: var(--bg-app-color);
     border: 3px solid;
     border-radius: 30px;
     z-index: 10001;
@@ -2252,7 +2266,7 @@ label h3 {
     justify-content: space-between;
     align-items: center;
     color: white;
-    background-image: linear-gradient(to bottom right, #373c42, #282d32);
+    background-color: var(--bg-app-color);
     border: 3px solid;
     border-radius: 30px;
     z-index: 10000;
@@ -2294,8 +2308,8 @@ label h3 {
 
 .Lobby_main {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     width: 96%;
     font-size: 21.5px;
@@ -2329,7 +2343,7 @@ label h3 {
 }
 
 .Lobby_startGame_btn:hover {
-    color: var(--hover-item);
+    border-color: goldenrod;
     transition: all 0.15s ease-out;
 }
 
@@ -2351,8 +2365,33 @@ label h3 {
     height: 100%;
 }
 
+.Lobby_FirstPlayer_Wrapper {
+    display: none;
+}
+
+.Lobby_SecondPlayer_Wrapper {
+    display: none;
+}
+
+.Lobby_ThirdPlayer_Wrapper {
+    display: none;
+}
+
+.Lobby_XPlayer_Wrapper {
+    width: 33%;
+    height: 100%;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.1em;
+    align-items: center;
+}
+
+.Lobby_XPlayerNameDisplay {
+    font-size: 30px;
+}
+
 .playerDisplayLobby_Wrapper {
-    width: 10%;
+    width: 100%;
     display: flex;
     align-items: center;
     height: 32.5%;
@@ -2363,10 +2402,6 @@ label h3 {
 .PlayerLobbyDisplay {
     animation: floating-el 3.5s ease-in-out infinite;
     position: absolute;
-}
-
-.playerDisplayLobby_Wrapper_SecondPlayer {
-    margin-bottom: 60px;
 }
 
 .LobbyGameDataSection {
@@ -2928,7 +2963,7 @@ label h3 {
     cursor: pointer;
     transition: all 0.1s ease-in;
     font-size: 20px;
-    margin: 0 0.85em 0 0;
+    margin: 0 0.95em 0 0;
 }
 
 .skinShopCloseBtn:hover {
@@ -3345,6 +3380,7 @@ label h3 {
     justify-content: space-between;
     align-items: center;
     margin: 6px 0 0 0;
+    border-bottom: 2px solid white;
 }
 
 .tradeX_closeBtn {
@@ -4747,11 +4783,11 @@ label h3 {
 .FriendsListInnerList {
     width: 100%;
     height: 90%;
-    display: grid;
-    grid-template-columns: auto;
-    row-gap: 20px;
+    display: flex;
+    flex-direction: column;
     overflow: auto;
     margin: 10px 0 20px 10px;
+    row-gap: 2vh;
 }
 
 .ClickTextTo_SearchPlayersPopUp {
@@ -4930,6 +4966,11 @@ label h3 {
     border-radius: 100px;
 }
 
+.AddFriend_Or_Friend_btn::before {
+    content: none;
+    display: none;
+}
+
 
 /* send message pop up */
 
@@ -5029,7 +5070,7 @@ label h3 {
 
 .DeleteFriend_PopUp {
     width: 40%;
-    height: 40%;
+    height: 35%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -5039,7 +5080,7 @@ label h3 {
     border: 2px solid rgba(255, 217, 0, 0.37);
     background-color: var(--bg-app-color);
     display: none;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: white;
@@ -5048,6 +5089,35 @@ label h3 {
     border-radius: 25px;
     align-items: center;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.DeleteFriendHeader {
+    width: 100%;
+    border-bottom: 2px solid white;
+    height: 17.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.DeleteFriendHeader img {
+    margin: 0 0 0 15px;
+}
+
+.ClosePopUp_DeleteFriend {
+    margin: 0 15px 0 0;
+    cursor: pointer;
+    font-size: 23px;
+}
+
+.DeleteFriendMain {
+    font-size: 27.5px;
+    width: 100%;
+    height: 87.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5em;
 }
 
 .DeleteFriendOption_Yes {

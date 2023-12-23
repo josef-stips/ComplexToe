@@ -45,120 +45,139 @@ EnterCodeName_ConfirmBtn.addEventListener('click', () => {
     EnterCodeName();
 });
 
-// execute function enter code name through button click (code )
+// init. style for user enters lobby
+const InitStyleForUserEntersLobby = (message) => {
+    Lobby_GameCode_display.textContent = `Game Code: ${message[1]}`;
+    Lobby_InnerGameMode.textContent = `${message[4]}`;
+    Lobby_PlayerClock.textContent = `${message[3]} seconds`;
+    Lobby_FieldSize.textContent = `${message[2]}x${message[2]}`;
+
+    // Just for style and better user experience
+    EnterGameCode_Input.value = null;
+    OnlineGameLobby_alertText.style.display = 'none';
+    OnlineGame_CodeName_PopUp.style.display = 'none';
+    SetPlayerNamesPopUp.style.display = 'flex';
+    SetClockList.style.display = 'none';
+    SetGameModeList.style.display = 'none';
+    SetGameData_Label[0].style.display = 'none';
+    SetGameData_Label[1].style.display = 'none';
+    SetGameData_Label[2].style.display = 'none';
+    SetPlayerNames_Header.style.height = '8%';
+    SetAllowedPatternsWrapper.style.display = 'none';
+    UserSetPointsToWinGameInput.style.display = "none";
+    Lobby_PointsToWin.contentEditable = "false";
+    // SetPlayerNamesPopUp.style.height = '60%';
+    ConfirmName_Btn.style.height = '15%';
+    Player1_IconInput.style.height = '60%';
+    Player1_NameInput.style.height = '60%';
+    // so the user can't start the game
+    Lobby_startGame_btn.style.display = 'none';
+    LobbyUserFooterInfo.style.display = 'block';
+    // warn text 
+    OnlineGame_NameWarnText[0].style.display = 'none';
+    OnlineGame_NameWarnText[1].style.display = 'none';
+};
+
+// Init and display all game info for user enters the lobby
+const InitGameInfoForUserEntersLobby = () => {
+    socket.emit("Request_PointsToWin", personal_GameData.currGameID, cb => {
+        points_to_win = cb;
+        Lobby_PointsToWin.textContent = cb;
+    });
+
+    // so the user sees the current allowed win patterns
+    socket.emit("Request_AllowedPatterns", personal_GameData.currGameID, cb => { // cb: array with all names of the allowed patterns
+        console.log(cb);
+        // abstract data from the originall array with the names of all win patterns and copy it to own array
+        allowedPatternsFromUser = cb;
+        // blur all patterns
+        setPatternWrapperLobby.forEach(ele => {
+            ele.style.color = "#121518";
+
+            Array.from(ele.children[0].children).forEach(c => {
+                c.style.color = "#121518";
+            });
+
+            // unmark every check box
+            ele.children[1].setAttribute("active", "false");
+            ele.children[1].className = "fa-regular fa-square togglePatternBtnLobby";
+        });
+
+        // display of check boxes equal none so the user can't modify them, only the admin is expected to do it
+        togglePatternBtnLobby.forEach(el => el.style.display = "none");
+
+        // make availible patterns white
+        cb.forEach(p => {
+            setPatternWrapperLobby.forEach(el => {
+                if (el.classList[0] == p) {
+                    Array.from(el.children[0].children).forEach(c => {
+                        c.style.color = "white";
+                    });
+
+                    // mark checkbox
+                    el.children[1].setAttribute("active", "false");
+                    el.children[1].className = "fa-regular fa-square-check togglePatternBtnLobby";
+                };
+            });
+        });
+    });
+
+    // for the user, the switch carets should not be visible
+    // cause he has no rights to do so
+    SwitchCaret.forEach(caret => {
+        caret.style.display = 'none';
+    });
+};
+
+// execute function enter code name through button click
 function EnterCodeName() {
     if (EnterGameCode_Input.value != null && EnterGameCode_Input.value != '' && EnterGameCode_Input.value != undefined) {
         // server stuff
         console.log(EnterGameCode_Input.value.trim());
+
         socket.emit('TRY_enter_room', EnterGameCode_Input.value.trim(), message => {
 
             // Handle callback message
             if (message[0] == 'room exists') { // room exists
                 personal_GameData.EnterOnlineGame = true;
                 personal_GameData.currGameID = message[1]; // the game id
-                // if he joined as blocker, his role is blocker, otherwise as user
-                console.log(message[5])
+
+                // if he joined as blocker, his role is blocker, otherwise his role is user
+                console.log(message[5]);
+
                 if (message[5] == "thirdplayer") {
+                    // set role
                     personal_GameData.role = 'blocker'
                     Player1_IconInput.style.display = "none";
                     document.querySelector(`[for="Player1_IconInput"]`).style.display = "none";
 
+                    // display third player wrapper 
+                    Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+
                 } else {
+                    // set role
                     personal_GameData.role = 'user';
-                    lobby_third_player.style.display = "none";
+                    Lobby_ThirdPlayer_Wrapper.style.display = "none";
+                    Lobby_FirstPlayer_Wrapper.style.margin = "0";
                 };
 
                 // Initialize lobby display
                 // GameID, FieldSize, PlayerTimer, InnerGameMode
-                Lobby_GameCode_display.textContent = `Game Code: ${message[1]}`;
-                Lobby_InnerGameMode.textContent = `${message[4]}`;
-                Lobby_PlayerClock.textContent = `${message[3]} seconds`;
-                Lobby_FieldSize.textContent = `${message[2]}x${message[2]}`;
+                InitStyleForUserEntersLobby(message);
 
-                // Just for style and better user experience
-                EnterGameCode_Input.value = null;
-                OnlineGameLobby_alertText.style.display = 'none';
-                OnlineGame_CodeName_PopUp.style.display = 'none';
-                SetPlayerNamesPopUp.style.display = 'flex';
-                SetClockList.style.display = 'none';
-                SetGameModeList.style.display = 'none';
-                SetGameData_Label[0].style.display = 'none';
-                SetGameData_Label[1].style.display = 'none';
-                SetGameData_Label[2].style.display = 'none';
-                SetPlayerNames_Header.style.height = '8%';
-                SetAllowedPatternsWrapper.style.display = 'none';
-                UserSetPointsToWinGameInput.style.display = "none";
-                Lobby_PointsToWin.contentEditable = "false";
-                // SetPlayerNamesPopUp.style.height = '60%';
-                ConfirmName_Btn.style.height = '15%';
-                Player1_IconInput.style.height = '60%';
-                Player1_NameInput.style.height = '60%';
-                // so the user can't start the game
-                Lobby_startGame_btn.style.display = 'none';
-                LobbyUserFooterInfo.style.display = 'block';
-                // warn text 
-                OnlineGame_NameWarnText[0].style.display = 'none';
-                OnlineGame_NameWarnText[1].style.display = 'none';
-
-                // for the user, the switch carets should not be visible
-                // cause he has no rights to do so
-                SwitchCaret.forEach(caret => {
-                    caret.style.display = 'none';
-                });
-
-                // so the user sees the current required amount of points to win a game in the lobby
-                socket.emit("Request_PointsToWin", personal_GameData.currGameID, cb => {
-                    points_to_win = cb;
-                    Lobby_PointsToWin.textContent = cb;
-                });
-
-                // so the user sees the current allowed win patterns
-                socket.emit("Request_AllowedPatterns", personal_GameData.currGameID, cb => { // cb: array with all names of the allowed patterns
-                    console.log(cb);
-                    // abstract data from the originall array with the names of all win patterns and copy it to own array
-                    allowedPatternsFromUser = cb;
-                    // blur all patterns
-                    setPatternWrapperLobby.forEach(ele => {
-                        ele.style.color = "#121518";
-
-                        Array.from(ele.children[0].children).forEach(c => {
-                            c.style.color = "#121518";
-                        });
-
-                        // unmark every check box
-                        ele.children[1].setAttribute("active", "false");
-                        ele.children[1].className = "fa-regular fa-square togglePatternBtnLobby";
-                    });
-
-                    // display of check boxes equal none so the user can't modify them, only the admin is expected to do it
-                    togglePatternBtnLobby.forEach(el => el.style.display = "none");
-
-                    // make availible patterns white
-                    cb.forEach(p => {
-                        setPatternWrapperLobby.forEach(el => {
-                            if (el.classList[0] == p) {
-                                Array.from(el.children[0].children).forEach(c => {
-                                    c.style.color = "white";
-                                });
-
-                                // mark checkbox
-                                el.children[1].setAttribute("active", "false");
-                                el.children[1].className = "fa-regular fa-square-check togglePatternBtnLobby";
-                            };
-                        });
-                    });
-                });
+                // so the user sees all the current game info the admin (first player) setted
+                InitGameInfoForUserEntersLobby();
 
                 // Aftet this the user only needs to set his user data (name, icon) and clicks confirm
                 // So the next socket connection is at SetPlayerName_ConfirmButton in "script.js" with the "CONFIRM_enter_room" emit
 
             } else if (message[0] == 'no room found') { // no room found
                 OnlineGameLobby_alertText.style.display = 'block';
-                OnlineGameLobby_alertText.textContent = 'There is no room found!';
+                OnlineGameLobby_alertText.textContent = 'No room found!';
 
             } else if (message[0] == `You can't join`) { // room is full
                 OnlineGameLobby_alertText.style.display = 'block';
-                OnlineGameLobby_alertText.textContent = `You can't join this room`;
+                OnlineGameLobby_alertText.textContent = `You can't join this room.`;
             };
         });
 
@@ -168,9 +187,7 @@ function EnterCodeName() {
 
         // default data
         Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
-        if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
-            Player1_IconInput.style.color = "black";
-        };
+        if (localStorage.getItem('userInfoColor') == "var(--font-color)") Player1_IconInput.style.color = "black";
 
         if (localStorage.getItem('UserName')) {
             Player1_NameInput.value = localStorage.getItem('UserName');
@@ -188,14 +205,23 @@ function EnterCodeName() {
         };
 
     } else {
-        return
+        return;
     };
+};
+
+const RemoveEventListeners = () => {
+    // remove event listener
+    [...[Lobby_first_player, namePlayer1]].forEach((e) => e.removeEventListener("click", Lobby_first_player.fn));
+    [...[Lobby_second_player, namePlayer2]].forEach((e) => e.removeEventListener("click", Lobby_second_player.fn));
+    lobby_third_player.removeEventListener("click", lobby_third_player.fn);
 };
 
 // if user is in the lobby and clicks the "x-icon" in the header of the pop up, he leaves the game 
 // the "user" parameter checks if the user was just a user or the creater of the game
 // If it's the creater who leaves, the room needs to be killed and the other user gets kicked out
 Lobby_closeBtn.addEventListener('click', () => {
+    RemoveEventListeners();
+
     // server
     socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
         // Do things after room was killed
@@ -204,6 +230,9 @@ Lobby_closeBtn.addEventListener('click', () => {
         personal_GameData.currGameID = null;
         personal_GameData.EnterOnlineGame = false;
     });
+
+    // remove "inGame" status from player
+    socket.emit("removePlayerInRoomStatus", localStorage.getItem("PlayerID"));
 
     // some things
     OnlineGame_Lobby.style.display = 'none';
@@ -244,13 +273,120 @@ Lobby_startGame_btn.addEventListener('click', () => {
     // just a little change for better user experience
     Lobby_GameCode_display.style.userSelect = 'none';
 
-    // First, send an emit to the server to inform it about it
-    // The server sends a message to all clients in the lobby 
-    socket.emit('request_StartGame', [personal_GameData.currGameID, xyAmount, curr_field_ele, allowedPatternsFromUser]);
+    try {
+        // First, send an emit to the server to inform it about it
+        // The server sends a message to all clients in the lobby 
+        socket.emit('request_StartGame', [personal_GameData.currGameID, xyAmount, curr_field_ele, allowedPatternsFromUser]);
+
+    } catch (error) {
+        AlertText.textContent = "Uhm... Something went wrong.";
+        alertPopUp.style.display = "flex";
+    };
 });
 
 // Leave Game button
 leaveGame_btn.addEventListener('click', UserleavesGame);
+
+// clear timer and stuff to prevent bugs 
+const clearTimer = () => {
+    killPlayerClocks(true); // true: also kill boss timer f.ex eye interval
+    clearInterval(gameCounter);
+    gameCounter = null;
+    stopStatusTextInterval = true;
+};
+
+// after some player leaves game and is not the admin so it could be also an offline game, do animation etc.
+const DarkLayerAfterGameAnimation = () => {
+    DarkLayer.style.backgroundColor = 'black';
+    DarkLayer.style.display = 'block';
+    DarkLayer.style.transition = 'opacity 0.1s ease-in';
+    DarkLayer.style.opacity = '0';
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '1';
+        setTimeout(() => {
+            GameField.style.display = 'none';
+
+            if (!inAdvantureMode) {
+                gameModeFields_Div.style.display = 'flex';
+            } else {
+                AdvantureMap.style.display = 'flex';
+            };
+        }, 100);
+    }, 100);
+
+    setTimeout(() => {
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.display = 'none';
+            DarkLayer.style.transition = 'none';
+            DarkLayer.style.opacity = '1';
+            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+        }, 400);
+    }, 400);
+};
+
+// in online mode, some player left the game
+const UserLeftGameInOnlineMode = () => {
+    // user left the game
+    // Many things are happening in server.js on this emit
+    socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
+        // only if the user that left is not the admin
+        if (personal_GameData.role == 'user' || personal_GameData.role == "blocker") {
+            // Do things after room was killed
+            // The client isn't connected to any server now so the "current id of the room" is null
+            personal_GameData.role = 'user';
+            personal_GameData.currGameID = null;
+            personal_GameData.EnterOnlineGame = false;
+        };
+
+        // remove "inGame" status from player
+        socket.emit("removePlayerInRoomStatus", localStorage.getItem("PlayerID"));
+
+        // kill standard timers for all players
+        clearTimer();
+
+        // play music
+        PauseMusic();
+        if (bossModeIsActive) {
+            CreateMusicBars(boss_theme);
+        } else {
+            CreateMusicBars(audio); // error because javascript is as weird as usual
+        };
+    });
+};
+
+// in offline or single player offline mode, player left the game
+const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureMode) => {
+    // bug fix
+    setTimeout(() => {
+        if (inAdvantureMode) {
+            lobbyHeader.style.borderBottom = '3px solid var(--font-color)';
+        };
+
+        // user won a level in advanture mode
+        console.log(inAdvantureMode, userWonInAdvantureMode, LevelIndex_AdvantureMode)
+        if (inAdvantureMode && userWonInAdvantureMode == true) {
+            UserWon_AdvantureLevel(LevelIndex_AdvantureMode);
+        } else {
+            // for floating level item animation in map
+            conqueredLevels();
+        }
+    }, 200);
+
+    // play music
+    PauseMusic();
+    if (bossModeIsActive) {
+        CreateMusicBars(boss_theme);
+    } else {
+        if (inAdvantureMode) {
+            CreateMusicBars(mapSound);
+        } else {
+            CreateMusicBars(audio); // error because javascript is as weird as usual
+        };
+    };
+};
 
 // User leaves game on leave game btn event
 function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
@@ -260,108 +396,364 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     // XP Journey reward
     CheckIfUserCanGetReward();
 
-    if (personal_GameData.role == 'admin') {
-        GameField.style.display = 'none';
-        gameModeFields_Div.style.display = 'flex';
-        // lobbyHeader.style.display = 'flex';
+    if (personal_GameData.role == "admin") {
+        gameModeFields_Div.style.display = "flex";
+        GameField.style.display = "none";
 
     } else {
-
-        DarkLayer.style.backgroundColor = 'black';
-        DarkLayer.style.display = 'block';
-        DarkLayer.style.transition = 'opacity 0.1s ease-in';
-        DarkLayer.style.opacity = '0';
-
-        setTimeout(() => {
-            DarkLayer.style.opacity = '1';
-            setTimeout(() => {
-                GameField.style.display = 'none';
-
-                if (!inAdvantureMode) {
-                    gameModeFields_Div.style.display = 'flex';
-                } else {
-                    AdvantureMap.style.display = 'flex';
-                };
-                // lobbyHeader.style.display = 'flex';
-            }, 100);
-        }, 100);
-
-        setTimeout(() => {
-            DarkLayer.style.opacity = '0';
-
-            setTimeout(() => {
-                DarkLayer.style.display = 'none';
-                DarkLayer.style.transition = 'none';
-                DarkLayer.style.opacity = '1';
-                DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-            }, 400);
-        }, 400);
+        DarkLayerAfterGameAnimation();
     };
 
-    killPlayerClocks();
-    clearInterval(gameCounter);
-    clearInterval(eye_attack_interval_global);
-    clearInterval(sun_attack_interval_global);
-    sun_attack_interval_global = null;
-    eye_attack_interval_global = null;
-    gameCounter = null;
-    stopStatusTextInterval = true;
+    // kill timers
+    clearTimer();
 
     // If in online mode
     if (curr_mode == GameMode[2].opponent) {
-        // user left the game
-        // Many things are happening in server.js on this emit
-        socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
-            // only if the user that left is not the admin
-            if (personal_GameData.role == 'user' || personal_GameData.role == "blocker") {
-                // Do things after room was killed
-                // The client isn't connected to any server now so the "current id of the room" is null
-                personal_GameData.role = 'user';
-                personal_GameData.currGameID = null;
-                personal_GameData.EnterOnlineGame = false;
-            };
+        UserLeftGameInOnlineMode();
 
-            clearInterval(gameCounter);
-            gameCounter = null;
-            stopStatusTextInterval = true;
+    } else { // in offline mode
+        UserLeftGameInOfflineMode(userWonInAdvantureMode, LevelIndex_AdvantureMode);
+    };
+};
 
-            // play music
-            PauseMusic();
-            if (bossModeIsActive) {
-                CreateMusicBars(boss_theme);
-            } else {
-                CreateMusicBars(audio); // error because javascript is as weird as usual
+// display third player 
+const DisplayThirdPlayer = () => {
+    lobby_third_player.classList = "Lobby_third_player PlayerLobbyDisplay fa-regular fa-square";
+    lobby_third_player.textContent = null;
+    Lobby_XPlayerNameDisplay[2].style.display = "block";
+};
+
+// undisplay third player 
+const UnDisplayThirdPlayer = () => {
+    lobby_third_player.classList = "Lobby_third_player PlayerLobbyDisplay";
+    lobby_third_player.textContent = "...";
+    Lobby_XPlayerNameDisplay[2].style.display = "none";
+    Lobby_XPlayerNameDisplay[2].textContent = null;
+};
+
+// reset first player wrapper
+const Reset_FirstPlayer_Wrapper = () => {
+    // reset advanced icon if there is one
+    if (Lobby_first_player.querySelector("span")) Lobby_first_player.querySelector("span").remove();
+    // reset normal icon display
+    Lobby_first_player.textContent = "...";
+    // reset player color
+    Lobby_first_player.style.color = "white";
+    Lobby_FirstPlayer_Wrapper.style.color = "white";
+    // reset name
+    Lobby_XPlayerNameDisplay[1].textContent = null;
+
+    // name as attribute in icon element
+    Lobby_first_player.setAttribute("LobbyPlayerName", null);
+
+    Lobby_first_player.style.cursor = "default";
+
+    RemoveEventListeners();
+};
+
+// reset second player wrapper
+const Reset_SecondPlayer_Wrapper = () => {
+    // reset advanced icon if there is one
+    if (Lobby_second_player.querySelector("span")) Lobby_second_player.querySelector("span").remove();
+    // reset normal icon display
+    Lobby_second_player.textContent = "...";
+    // reset player color
+    Lobby_second_player.style.color = "white";
+    Lobby_SecondPlayer_Wrapper.style.color = "white";
+    // reset name
+    Lobby_XPlayerNameDisplay[0].textContent = null;
+
+    // name as attribute in icon element
+    Lobby_second_player.setAttribute("LobbyPlayerName", null);
+
+    Lobby_second_player.style.cursor = "default";
+
+    RemoveEventListeners();
+};
+
+// reset third player wrapper
+const Reset_ThirdPlayer_Wrapper = () => {
+    // reset normal icon display
+    lobby_third_player.textContent = "...";
+    // reset player color
+    lobby_third_player.style.color = "white";
+    Lobby_ThirdPlayer_Wrapper.style.color = "white";
+    // reset name
+    Lobby_XPlayerNameDisplay[2].textContent = null;
+    // reset third player blocker icon
+    lobby_third_player.classList = "Lobby_third_player PlayerLobbyDisplay";
+
+    // name as attribute in icon element
+    lobby_third_player.setAttribute("LobbyPlayerName", null);
+
+    lobby_third_player.style.cursor = "default";
+
+    RemoveEventListeners();
+};
+
+// reset first player wrapper
+const ResetXPlayerWrapper = (x) => { // 1: first player, 2: second player, 3: third player
+    switch (x) {
+        case 1:
+            Reset_FirstPlayer_Wrapper();
+            break;
+        case 2:
+            Reset_SecondPlayer_Wrapper();
+            break;
+
+        case 3:
+            Reset_ThirdPlayer_Wrapper();
+            break;
+            // on default, reset every player wrapper
+        default:
+            Reset_FirstPlayer_Wrapper();
+            Reset_SecondPlayer_Wrapper();
+            Reset_ThirdPlayer_Wrapper();
+            break;
+    };
+};
+
+// whenever a player in lobby has an advanced icon, just call this function and parse in parameters
+const CreateAndAddAdvancedIconSpan = (lobby_icon_display, lobby_player_wrapper_display, icon) => {
+    // delete any text in icon display element
+    lobby_icon_display.textContent = null;
+    // display player color in white. There are no colorful advanced icons
+    lobby_icon_display.style.color = "white";
+    lobby_player_wrapper_display.style.color = "white";
+
+    // create and add span
+    let span = document.createElement("span");
+    span.classList = `${icon} Temporary_IconSpan`;
+    lobby_icon_display.appendChild(span);
+};
+
+// display first player 
+const Display_FirstPlayer_Wrapper = (name, color, icon, IsIconAdvanced) => {
+    // make player visible
+    Lobby_FirstPlayer_Wrapper.style.display = "flex";
+
+    // delete previous advanced icon if there is one
+    if (Lobby_first_player.querySelector("span")) Lobby_first_player.querySelector("span").remove();
+
+    // set icon display
+    if (IsIconAdvanced != 'empty') {
+        // create and add advanced icon
+        CreateAndAddAdvancedIconSpan(Lobby_first_player, Lobby_FirstPlayer_Wrapper, IsIconAdvanced);
+
+    } else {
+        Lobby_first_player.textContent = icon.toUpperCase();
+        // display player color the right way. white if advanced icon. costum color if standard icon
+        Lobby_first_player.style.color = color;
+        Lobby_FirstPlayer_Wrapper.style.color = color;
+    };
+
+    Lobby_first_player.style.cursor = "pointer";
+
+    // set name
+    personal_GameData.role == "admin" ? Lobby_XPlayerNameDisplay[1].textContent = `${name} (you)` : Lobby_XPlayerNameDisplay[1].textContent = name;
+};
+
+// display second player 
+const Display_SecondPlayer_Wrapper = (name, color, icon, IsIconAdvanced, AdminName) => { // if "isIconAdvanced" is not false, it is the fontawesome string for the icon
+    // make player visible
+    Lobby_SecondPlayer_Wrapper.style.display = "flex";
+
+    // delete previous advanced icon if there is one
+    if (Lobby_second_player.querySelector("span")) Lobby_second_player.querySelector("span").remove();
+
+    // set icon display
+    if (IsIconAdvanced != 'empty') {
+        // create and add advanced icon
+        CreateAndAddAdvancedIconSpan(Lobby_second_player, Lobby_SecondPlayer_Wrapper, IsIconAdvanced);
+
+    } else {
+        Lobby_second_player.textContent = icon.toUpperCase();
+        // display player color the right way. white if advanced icon. costum color if standard icon
+        Lobby_second_player.style.color = color;
+        Lobby_SecondPlayer_Wrapper.style.color = color;
+    };
+
+    // set name
+    personal_GameData.role == "user" ? Lobby_XPlayerNameDisplay[0].textContent = `${name} (you)` : Lobby_XPlayerNameDisplay[0].textContent = name;
+
+    // name as attribute in icon element
+    Lobby_second_player.setAttribute("LobbyPlayerName", name);
+    // name as attribute in icon element for first player
+    Lobby_first_player.setAttribute("LobbyPlayerName", AdminName);
+
+    Lobby_first_player.style.cursor = "pointer";
+    Lobby_second_player.style.cursor = "pointer";
+};
+
+// display third player. The third player is not a player but only a blocker so no icon is needed
+const Display_ThirdPlayer_Wrapper = (name) => {
+    // make player visible
+    Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+
+    // undisplay "wait for player dots"
+    lobby_third_player.textContent = null;
+    // reset player color
+    lobby_third_player.style.color = "white";
+    Lobby_ThirdPlayer_Wrapper.style.color = "white";
+    // display third player blocker "icon"
+    lobby_third_player.classList = "Lobby_third_player PlayerLobbyDisplay fa-regular fa-square";
+
+    // display name
+    personal_GameData.role == "blocker" ? Lobby_XPlayerNameDisplay[2].textContent = `Blocker: ${name} (you)` : Lobby_XPlayerNameDisplay[2].textContent = `Blocker: ${name}`;
+
+    // name as attribute in icon element
+    lobby_third_player.setAttribute("LobbyPlayerName", name);
+
+    lobby_third_player.style.cursor = "pointer";
+};
+
+// display x player with the right data
+const DisplayXPlayer = (x, name, color, icon, IsIconAdvanced, AdminName) => {
+    switch (x) {
+        case 1:
+            Display_FirstPlayer_Wrapper(name, color, icon, IsIconAdvanced);
+            break;
+        case 2:
+            Display_SecondPlayer_Wrapper(name, color, icon, IsIconAdvanced, AdminName);
+            break;
+
+        case 3:
+            Display_ThirdPlayer_Wrapper(name);
+            break;
+            // on default, reset every player wrapper
+        default:
+            Display_FirstPlayer_Wrapper(name, color, icon, IsIconAdvanced);
+            Display_SecondPlayer_Wrapper(name, color, icon, IsIconAdvanced);
+            Display_ThirdPlayer_Wrapper(name);
+            break;
+    };
+};
+
+// player wants to click on other player profiles in the lobby or mid online game
+const EventListenerForXPlayer = (x) => {
+    let player_display;
+
+    switch (x) {
+        case 1:
+            player_display = Lobby_first_player;
+            break;
+
+        case 2:
+            player_display = Lobby_second_player;
+            break;
+
+        case 3:
+            player_display = lobby_third_player;
+            break;
+    };
+
+    try {
+        console.log(player_display, player_display.getAttribute("LobbyPlayerName"), personal_GameData.currGameID);
+
+        socket.emit("ClickOnProfile", player_display.getAttribute("LobbyPlayerName"), personal_GameData.currGameID, player => { // name of player to click on and the lobby id
+            console.log(player);
+
+            if (player) {
+                try {
+                    let player_name = player.player_name;
+                    let player_id = player.player_id;
+                    let player_icon = player.player_icon;
+                    let playerInfoClass = player.playerInfoClass;
+                    let playerInfoColor = player.playerInfoColor;
+                    let quote = player.quote;
+                    let onlineGamesWon = player.onlineGamesWon;
+                    let XP = player.XP;
+                    let currentUsedSkin = player.currentUsedSkin;
+                    let last_connection = player.last_connection;
+
+                    ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+
+                } catch (error) {
+                    console.log(error);
+                };
             };
         });
-    } else { // in offline mode
-        // bug fix
-        setTimeout(() => {
-            if (inAdvantureMode) {
-                lobbyHeader.style.borderBottom = '3px solid var(--font-color)';
-            };
 
-            // user won a level in advanture mode
-            console.log(inAdvantureMode, userWonInAdvantureMode, LevelIndex_AdvantureMode)
-            if (inAdvantureMode && userWonInAdvantureMode == true) {
-                UserWon_AdvantureLevel(LevelIndex_AdvantureMode);
-            } else {
-                // for floating level item animation in map
-                conqueredLevels();
-            }
-        }, 200);
 
-        // play music
-        PauseMusic();
-        if (bossModeIsActive) {
-            CreateMusicBars(boss_theme);
-        } else {
-            if (inAdvantureMode) {
-                CreateMusicBars(mapSound);
-            } else {
-                CreateMusicBars(audio); // error because javascript is as weird as usual
-            };
-        };
+    } catch (error) {
+        AlertText.textContent = "Something went wrong. Is it your connection?";
+        alertPopUp.style.display = "flex";
     };
+};
+
+// add event listener for players
+// When second and/or third player joins this function calls for every player in room
+const SetClickOnProfileListeners = (fromAdmin) => {
+    RemoveEventListeners();
+
+    // admin is alone in the lobby and wants to click on himself
+    if (fromAdmin) {
+        [...[Lobby_first_player, namePlayer1]].forEach((e) => e.addEventListener("click", Lobby_first_player.fn = () => {
+            OpenOwnUserProfile();
+        }));
+        return;
+    };
+
+    if (personal_GameData.role == "user") {
+        // second player can click on first and third player
+        [...[Lobby_first_player, namePlayer1]].forEach((e) => e.addEventListener("click", Lobby_first_player.fn = () => {
+            EventListenerForXPlayer(1)
+        }));
+
+        lobby_third_player.addEventListener("click", lobby_third_player.fn = () => {
+            EventListenerForXPlayer(3);
+        });
+
+        [...[Lobby_second_player, namePlayer2]].forEach((e) => e.addEventListener("click", Lobby_second_player.fn = () => {
+            OpenOwnUserProfile();
+        }));
+
+    } else if (personal_GameData.role == "blocker") {
+        // second player can click on first and third player
+        [...[Lobby_first_player, namePlayer1]].forEach((e) => e.addEventListener("click", Lobby_first_player.fn = () => {
+            EventListenerForXPlayer(1)
+        }));
+
+        [...[Lobby_second_player, namePlayer2]].forEach((e) => e.addEventListener("click", Lobby_second_player.fn = () => {
+            EventListenerForXPlayer(2);
+        }));
+
+        lobby_third_player.addEventListener("click", lobby_third_player.fn = () => {
+            OpenOwnUserProfile();
+        });
+
+    } else if (personal_GameData.role == "admin") {
+        // first player can click on second and third player
+        lobby_third_player.addEventListener("click", lobby_third_player.fn = () => {
+            EventListenerForXPlayer(3);
+        });
+
+        [...[Lobby_second_player, namePlayer2]].forEach((e) => e.addEventListener("click", Lobby_second_player.fn = () => {
+            EventListenerForXPlayer(2);
+        }));
+
+        [...[Lobby_first_player, namePlayer1]].forEach((e) => e.addEventListener("click", Lobby_first_player.fn = () => {
+            OpenOwnUserProfile();
+        }));
+    };
+};
+
+// close all in game pop ups the user can open in lobby or online game
+const CloseOnlinePopUps = (CloseDarkLayer) => {
+    GameInfoPopUp.style.display = "none";
+    settingsWindow.style.display = "none";
+    TryToCloseUserInfoPopUp();
+    Lobby_GameInfo_PopUp.style.display = "none";
+    XP_Journey.style.display = "none";
+    Chat_PopUp.style.display = "none";
+    GiveUpPopUp.style.display = "none";
+    ChooseWinner_popUp.style.display = "none";
+    SearchPlayerPopUp.style.display = "none";
+    FriendsListPopUp.style.display = "none";
+    MailPopUp.style.display = "none";
+    MessagesPopUp.style.display = "none";
+
+    if (CloseDarkLayer) DarkLayer.style.display = "none";
 };
 
 // This message goes to all users in a room and gets callen when the admin of the room leaves it
@@ -374,8 +766,9 @@ socket.on('killed_room', () => {
     // some things
     OnlineGame_Lobby.style.display = 'none';
     SetPlayerNamesPopUp.style.display = 'none';
-    DarkLayer.style.display = 'none';
     OnlineGameLobby_alertText.style.display = 'none';
+
+    CloseOnlinePopUps(true);
 });
 
 // if they were in a game in the admin left the game
@@ -386,18 +779,14 @@ socket.on('killed_game', () => {
     // enter lobby
     OnlineGame_Lobby.style.display = 'flex';
     gameModeFields_Div.style.display = 'flex';
-    DarkLayer.style.display = 'block';
     Lobby_GameCode_display.style.userSelect = 'text';
     // close pop ups if there where any open
-    settingsWindow.style.display = "none";
-    userInfoPopUp.style.display = "none";
-    GameInfoPopUp.style.display = "none";
-    GiveUpPopUp.style.display = "none";
+    CloseOnlinePopUps();
+    DarkLayer.style.display = "block";
 
+    running = false;
     // clear timer and stuff to prevent bugs
-    killPlayerClocks();
-    clearInterval(gameCounter);
-    stopStatusTextInterval = true;
+    clearTimer();
 
     // play music
     PauseMusic();
@@ -406,149 +795,152 @@ socket.on('killed_game', () => {
 
 // Admin created the game and now waits for the second player
 socket.on('Admin_Created_And_Joined', message => {
-    console.log(message)
-    if (message[1] != 'fontawesome') { // everything's normal
-        Lobby_first_player.textContent = `${message[0]} (You) - ${message[1].toUpperCase()}`;
-        Lobby_first_player.style.color = localStorage.getItem('userInfoColor');
+    console.log(message);
 
-        if (document.querySelector('.Temporary_IconSpan')) {
-            document.querySelector('.Temporary_IconSpan').remove();
-        };
+    // set in database the "inGame" status to current game id
+    socket.emit("setPlayerInRoomStatus", localStorage.getItem("PlayerID"), personal_GameData.currGameID);
 
-    } else {
-        let span = document.createElement('span');
-        span.className = message[2]; // example: "fa-solid fa-chess-rook"
-        span.classList.add("Temporary_IconSpan");
-        Lobby_first_player.style.color = "white";
+    ResetXPlayerWrapper(4); // reset every wrapper
 
-        Lobby_first_player.textContent = `${message[0]} (You) - `;
-        Lobby_first_player.appendChild(span);
-    };
+    // just so the admin can click on himself
+    SetClickOnProfileListeners(true);
 
-    Lobby_second_player.textContent = 'waiting for second player..';
+    // name of first player (admin)
+    DisplayXPlayer(1, message[0], localStorage.getItem("userInfoColor"), message[1], message[2]);
+
+    // display player wrapper from first and second player
+    Lobby_SecondPlayer_Wrapper.style.display = "flex";
 
     // if a third player can play
     if (message[3]) {
-        lobby_third_player.style.display = 'block';
-        lobby_third_player.textContent = 'waiting for the blocker..';
+        // display player wrapper from third player
+        Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+
+        ResetXPlayerWrapper(3);
 
     } else {
-        lobby_third_player.style.display = 'none';
+        // undisplay player wrapper from third player
+        Lobby_ThirdPlayer_Wrapper.style.display = "none";
     };
 });
 
 // When the second player wants to join the game, all other players in the room needs to see this
 socket.on('SecondPlayer_Joined', message => {
-    console.log(message);
-    // when it is not "empty" the player uses an advanced skin
-    if (message[2] != "empty") {
-        // create span element for second player where the advanced skin can be displayed
-        let span = document.createElement('span');
-        span.className = message[2]; // example: "fa-solid fa-chess-rook"
-        span.classList.add("Temporary_IconSpan2");
-        Lobby_second_player.style.color = "white";
+    console.log("Second Player joined: ", message);
 
-        // set name of second player for all in the room
-        personal_GameData.role == "user" ? Lobby_second_player.textContent = Lobby_second_player.textContent = `${message[0]} (You) - ` : Lobby_second_player.textContent = `${message[0]} - `;
+    // set for second and (third player if he joins) the "inGame" status to the current game id which means true
+    socket.emit("setPlayerInRoomStatus", localStorage.getItem("PlayerID"), personal_GameData.currGameID);
 
-        Lobby_second_player.appendChild(span);
+    // display player wrapper for second player
+    Lobby_FirstPlayer_Wrapper.style.display = "flex";
 
-    } else { // uses normal skin with color or just white color
-        personal_GameData.role == "user" ? Lobby_second_player.textContent = `${message[0]} (You) - ${message[1].toUpperCase()}` : Lobby_second_player.textContent = `${message[0]} - ${message[1].toUpperCase()}`;
-        // set name of second player for all in the room    
-        Lobby_second_player.style.color = message[3];
-
-        if (document.querySelector('.Temporary_IconSpan2')) {
-            document.querySelector('.Temporary_IconSpan2').remove();
-        };
-    };
+    // last param: name of admin
+    DisplayXPlayer(2, message[0], message[3], message[1], message[2], message[6]);
 
     // if the request comes not from the third player or third player name is not defined
     if (message[5] == undefined || message[5] == '') {
-        // display things for third player if required
+        // display things for third player
         if (message[4]) {
-            lobby_third_player.style.display = "block";
-            lobby_third_player.textContent = "waiting for the blocker..";
+            Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+            // The first player is only higher if there is a third player.
+            Lobby_FirstPlayer_Wrapper.style.margin = "0 0 100px 0";
+
+            ResetXPlayerWrapper(3);
+
         } else {
-            lobby_third_player.style.display = "none";
+            Lobby_ThirdPlayer_Wrapper.style.display = "none";
+            // The first player is as high as the second player 
+            Lobby_FirstPlayer_Wrapper.style.margin = "0 0 0 0";
         };
     };
 
+    // add event listener for players
+    // When second and/or third player joins this function calls for every player in room
+    SetClickOnProfileListeners();
+
     // if the second player rejoins and the third player is still there
     if (message[5] != "" && message[5] != 'thirdPlayer_RequestsData') {
-        lobby_third_player.style.display = "block";
-        personal_GameData.role == "blocker" ? lobby_third_player.textContent = `Blocker: ${message[5]} (You)` : lobby_third_player.textContent = `Blocker: ${message[5]}`;
+        // Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+        Lobby_FirstPlayer_Wrapper.style.margin = "0 0 100px 0";
+        // Display third player with his data
+        DisplayXPlayer(3, message[5]);
     };
 });
 
 // third player joins
 socket.on('ThirdPlayer_Joined', message => {
-    console.log(message);
+    console.log("Third player joined: ", message);
 
-    // display things for third player if required
-    personal_GameData.role == "blocker" ? lobby_third_player.textContent = `Blocker: ${message[0]} (You)` : lobby_third_player.textContent = `Blocker: ${message[0]}`;
+    // display for third player the other players
+    Lobby_FirstPlayer_Wrapper.style.display = "flex";
+    Lobby_SecondPlayer_Wrapper.style.display = "flex";
 
-    socket.emit('thirdplayer_requests_SecondPlayerData', [parseInt(personal_GameData.currGameID)]);
+    // display first player in the right way
+    Lobby_FirstPlayer_Wrapper.style.margin = "0 0 100px 0";
+
+    // display data from third player
+    DisplayXPlayer(3, message[0])
+
+    if (personal_GameData.role == "blocker") {
+        // so the third player (blocker) sees data about second player
+        socket.emit('thirdplayer_requests_SecondPlayerData', [parseInt(personal_GameData.currGameID)]);
+    };
 });
 
 // When the normal user leaves the game, the other player need to be informed by that
 socket.on('INFORM_user_left_room', () => {
     // The other players see this after the user left:
-    Lobby_second_player.textContent = 'waiting for second player..';
-    Lobby_second_player.style.color = "white";
+    ResetXPlayerWrapper(2);
 });
 
 // When the third player (blocker) leaves the game, the other player need to be informed by that
 socket.on('INFORM_blocker_left_room', () => {
     // The other players see this after the user left:
-    lobby_third_player.textContent = 'waiting for blocker..';
+    ResetXPlayerWrapper(3);
 });
 
 // User just left the game but during a match
 socket.on('INFORM_user_left_game', () => {
     // The admin sees this after the user left:
-    Lobby_second_player.textContent = 'waiting for second player..';
-    Lobby_second_player.style.color = "white";
+    ResetXPlayerWrapper(2);
 
     // close pop ups if there where any open
-    settingsWindow.style.display = "none";
-    userInfoPopUp.style.display = "none";
-    GameInfoPopUp.style.display = "none";
-    GiveUpPopUp.style.display = "none";
+    CloseOnlinePopUps();
 
     // clear timer and stuff to prevent bugs
-    clearInterval(firstClock);
-    clearInterval(secondClock);
-    clearInterval(gameCounter);
-    stopStatusTextInterval = true;
+    clearTimer();
 
-    // for the admin, he is in the lobby again
+    running = false;
+    // for the admin and blocker, they are in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == "blocker") {
+        // display right things
         gameModeFields_Div.style.display = 'flex';
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
         DarkLayer.style.display = 'block';
+        // informative pop up for other players in lobby
         friendLeftGamePopUp.style.display = 'flex';
         friendLeft_text.textContent = 'Your friend left the game';
+        // so user can select game code with mouse
         Lobby_GameCode_display.style.userSelect = 'text';
 
         // play music
         PauseMusic();
-        CreateMusicBars(audio); // error because javascript is as weird as usual   
+        CreateMusicBars(audio); // error because javascript is weird language   
     };
 });
 
 // The third player (blocker) left the game but during a match
 socket.on('INFORM_blocker_left_game', () => {
     // The admin sees this after the user left:
-    lobby_third_player.textContent = 'waiting for blocker..';
+    ResetXPlayerWrapper(3);
 
     // clear timer and stuff to prevent bugs
-    clearInterval(firstClock);
-    clearInterval(secondClock);
-    clearInterval(gameCounter);
-    stopStatusTextInterval = true;
+    clearTimer();
 
+    CloseOnlinePopUps();
+
+    running = false;
     // for the admin, he is in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == 'user') {
         gameModeFields_Div.style.display = 'flex';
@@ -561,7 +953,7 @@ socket.on('INFORM_blocker_left_game', () => {
 
         // play music
         PauseMusic();
-        CreateMusicBars(audio); // error because javascript is as weird as usual   
+        CreateMusicBars(audio); // error because javascript is weird language
     };
 });
 
@@ -575,37 +967,34 @@ socket.on('INFORM_admin_left_room', () => {
 
     // some things
     OnlineGame_Lobby.style.display = 'none';
-    DarkLayer.style.display = 'block';
     GameField.style.display = 'none';
     gameModeFields_Div.style.display = 'flex';
     SetPlayerNamesPopUp.style.display = 'none';
-    OnlineGameLobby_alertText.style.display = 'none';
+    CloseOnlinePopUps();
+    DarkLayer.style.display = 'block';
+
+    // informative pop up for other player
     friendLeftGamePopUp.style.display = 'flex';
     friendLeft_text.textContent = 'The admin disconnected from the game';
 
     // clear timer and stuff to prevent bugs
-    clearInterval(gameCounter);
-    stopStatusTextInterval = true;
+    clearTimer();
 });
 
 // message to all clients that the game just started
 socket.on('StartGame', (RoomData) => { // RoomData
     // simple things
-    OnlineGame_Lobby.style.display = 'none';
-    DarkLayer.style.display = 'none';
+    CloseOnlinePopUps(true);
+    OnlineGame_Lobby.style.display = "none";
 
     // better user experience, you can call them bug fixes:
     ChatMain.textContent = null;
     openedChat = false;
     recievedUnseenMessages = 0;
-    if (document.querySelector(".notification-icon")) {
-        document.querySelector(".notification-icon").remove();
-    };
+    if (document.querySelector(".notification-icon")) document.querySelector(".notification-icon").remove();
 
     // clear timer and stuff to prevent bugs
-    killPlayerClocks();
-    clearInterval(gameCounter);
-    stopStatusTextInterval = true;
+    clearTimer();
 
     // many data about the room from the database
     // game data
@@ -690,36 +1079,6 @@ PlayerClock_NegativeSwitcher.addEventListener('click', function a() {
 PlayerClock_PositiveSwitcher.addEventListener('click', function a() {
     SwitchToSelection(2, +1, Lobby_PlayerClock);
 });
-
-// InnerGameMode_NegativeSwitcher.addEventListener('click', function a() {
-//     if (curr_innerGameMode != "Blocker Combat") {
-//         SwitchToSelection(3, -1, Lobby_InnerGameMode);
-
-//     } else {
-//         InnerGameMode_NegativeSwitcher.style.transition = "none";
-//         InnerGameMode_NegativeSwitcher.style.color = "red";
-
-//         setTimeout(() => {
-//             InnerGameMode_NegativeSwitcher.style.transition = "color 0.05s ease-in-out";
-//             InnerGameMode_NegativeSwitcher.style.color = "white";
-//         }, 50);
-//     };
-// });
-
-// InnerGameMode_PositiveSwitcher.addEventListener('click', function a() {
-//     if (curr_innerGameMode != "Blocker Combat") {
-//         SwitchToSelection(3, +1, Lobby_InnerGameMode);
-
-//     } else {
-//         InnerGameMode_PositiveSwitcher.style.transition = "none";
-//         InnerGameMode_PositiveSwitcher.style.color = "red";
-
-//         setTimeout(() => {
-//             InnerGameMode_PositiveSwitcher.style.transition = "color 0.05s ease-in-out";
-//             InnerGameMode_PositiveSwitcher.style.color = "white";
-//         }, 50);
-//     };
-// });
 
 // The user can switch between the different game data selections through carets
 // This function gets triggered by caret click event
@@ -863,9 +1222,7 @@ OnlineChat_btn.addEventListener('click', () => {
 
     openedChat = true;
     recievedUnseenMessages = 0;
-    if (document.querySelector(".notification-icon")) {
-        document.querySelector(".notification-icon").remove();
-    };
+    if (document.querySelector(".notification-icon")) document.querySelector(".notification-icon").remove();
 
     // Name of other player
     personal_GameData.role == "admin" ? ChatTitle.textContent = `A chat between you and ${PlayerData[2].PlayerName}` : ChatTitle.textContent = `A chat between you and ${PlayerData[1].PlayerName}`;

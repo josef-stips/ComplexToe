@@ -1,12 +1,25 @@
 // background music
 let globalAudio;
 
-function CreateMusicBars(Audio) {
+async function CreateMusicBars(Audio) {
     let source = null;
     let audioContext = null;
     let analyser = null;
 
-    globalAudio = Audio;
+    // create audio element with audio as source
+    // extract file name
+    let globalAudioSrcSegments = Audio.src.split("/");
+    let fileName = globalAudioSrcSegments.pop();
+    // create audio
+    let AudioElement = document.createElement("audio");
+    // different location based on file
+    (fileName == "map.mp3" || fileName == "bg_music.m4a") ? AudioElement.src = `assets/${fileName}`: AudioElement.src = `assets/Maps/${fileName}`;
+
+    globalAudio = AudioElement.cloneNode(true);
+    AudioElement.remove();
+
+    globalAudio.loop = true;
+    globalAudio.play();
 
     // volume animation
     globalAudio.volume = 0;
@@ -25,12 +38,10 @@ function CreateMusicBars(Audio) {
         };
     }, 100);
 
-    globalAudio.loop = true;
-    globalAudio.play();
-
     audioContext = new(window.AudioContext || window.webkitAudioContext)();
     analyser = audioContext.createAnalyser();
     source = audioContext.createMediaElementSource(globalAudio);
+
     source.connect(analyser);
     analyser.connect(audioContext.destination);
 
@@ -106,52 +117,21 @@ function coinsSoundTrack() {
 };
 
 function PauseMusic() {
-    Quick_death_Theme.pause();
-    March_into_fire_Theme.pause();
-    Tunnel_of_truth_Theme.pause();
-    Long_funeral_Theme.pause();
-    Merciful_slaughter_Theme.pause();
-    Impossible_survival_Theme.pause();
-    Ground_destroyer_Theme.pause();
-    audio.pause();
-    boss_theme.pause();
-    mapSound.pause();
-    theEye_theme.pause();
-    default_MapLevel_theme.pause();
-    default_MapLevel_theme2.pause();
-
-    Quick_death_Theme.currentTime = 0;
-    March_into_fire_Theme.currentTime = 0;
-    Tunnel_of_truth_Theme.currentTime = 0;
-    Long_funeral_Theme.currentTime = 0;
-    Merciful_slaughter_Theme.currentTime = 0;
-    Impossible_survival_Theme.currentTime = 0;
-    Ground_destroyer_Theme.currentTime = 0;
-    boss_theme.currentTime = 0;
-    audio.currentTime = 0;
-    mapSound.currentTime = 0;
-    theEye_theme.currentTime = 0;
-    default_MapLevel_theme.currentTime = 0;
-    default_MapLevel_theme2.currentTime = 0;
+    globalAudio.pause();
+    globalAudio.currentTime = 0;
 };
 
 function playGameTheme() {
     PauseMusic();
-    audio.play();
-    globalAudio = audio;
-    CreateMusicBars(globalAudio);
+    CreateMusicBars(audio);
 };
 
 function playBossTheme() {
     PauseMusic();
-    boss_theme.play();
-    globalAudio = boss_theme;
-    CreateMusicBars(globalAudio);
+    CreateMusicBars(boss_theme);
 };
 
 function playMapTheme() {
     PauseMusic();
-    mapSound.play();
-    globalAudio = mapSound;
-    CreateMusicBars(globalAudio);
+    CreateMusicBars(mapSound);
 };

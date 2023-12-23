@@ -1,22 +1,28 @@
 function Activate_PlayerClock(PlayerOne, PlayerTwo) {
-    killPlayerClocks();
+    killPlayerClocks(false);
     if (PlayerOne) update1();
     if (PlayerTwo) update2();
 };
 
 // kill all intervals
-async function killPlayerClocks(command, playerN_timer_event, playerN_timer, playerInNumber) {
-    if (curr_mode != GameMode[2].opponent) {
+async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, playerN_timer, playerInNumber) {
+    if (curr_mode != GameMode[2].opponent) { // offline mode
         clearInterval(firstClock);
         clearInterval(secondClock);
         firstClock = null;
         secondClock = null;
+        // special boss timer
+        if (clearEyeInterval) {
+            clearInterval(eye_attack_interval_global);
+            clearInterval(sun_attack_interval_global);
+            sun_attack_interval_global = null;
+            eye_attack_interval_global = null;
+        };
 
         FirstPlayerTime.textContent = `${GameData.PlayerClock} `;
         SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
 
-    } else {
-        // stop player timer
+    } else { // online mode
         if (command == "stop") {
             await socket.emit("stop_Players_timer", parseInt(personal_GameData.currGameID));
 
@@ -41,9 +47,13 @@ function removeAccessToAnything() {
     restartBtn.removeEventListener('click', restartGame);
     restartBtn.style.color = '#56565659';
 
+    CloseOnlinePopUps(true);
+    GiveUpPopUp.style.display = "none";
+
     // remove access to set
     cells.forEach(cell => {
         cell.removeEventListener('click', cellCicked);
+        cell.style.cursor = "default";
     });
 
     if (player3_can_set) {
@@ -62,27 +72,29 @@ function removeAccessToAnything() {
 };
 
 // add excess to anything
-function addAccessToAnything() {
+function addAccessToAnything(TimerEnded) {
     globalChooseWinnerBtn.addEventListener('click', openChooseWinnerWindow);
     restartBtn.addEventListener('click', restartGame);
     leaveGame_btn.addEventListener('click', UserleavesGame);
     giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
     leaveGame_btn.style.color = 'white';
     globalChooseWinnerBtn.style.color = 'white';
-    leaveGame_btn.style.color = 'white';
+    restartBtn.style.color = 'white';
 };
 
 // add excess to anything in online mode
-function addAccesOnlineMode() {
+function addAccesOnlineMode(TimerEnded) {
+    // allowed to leave againW
     leaveGame_btn.addEventListener('click', UserleavesGame);
     leaveGame_btn.style.color = 'var(--font-color)';
+    // in online mode this button is to capitulate
+    chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+    globalChooseWinnerBtn.style.color = 'var(--font-color)';
+    giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
 
+    // only admin can restart game
     if (personal_GameData.role == 'admin') {
-        chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
         restartBtn.addEventListener('click', restartGame);
-        giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
-
-        globalChooseWinnerBtn.style.color = 'var(--font-color)';
         restartBtn.style.color = 'var(--font-color)';
     };
 };
@@ -183,7 +195,7 @@ socket.on("EndOfPlayerTimer", () => {
         // make cell grid normal again
         initCellgrid();
 
-        addAccesOnlineMode();
+        addAccesOnlineMode("TimerEnded");
 
         // now it's player two turn
         if (curr_mode == GameMode[2].opponent)(player1_can_set == true) ? player1_can_set = false : player1_can_set = true;
@@ -196,7 +208,7 @@ function EndOfPlayerTimer() {
     // remove access to do anything
     removeAccessToAnything();
     // reset player clocks
-    killPlayerClocks();
+    killPlayerClocks(false);
 
     if (GameData.InnerGameMode == InnerGameModes[2]) {
         // now the third player can set his block
@@ -208,7 +220,7 @@ function EndOfPlayerTimer() {
         initCellgrid();
 
         // add access to anything, user is restricted
-        addAccessToAnything();
+        addAccessToAnything("TimerEnded");
 
         // continue game
         checkWinner();

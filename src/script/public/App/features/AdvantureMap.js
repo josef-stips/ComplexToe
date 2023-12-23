@@ -344,6 +344,7 @@ conqueredLevels();
 planet.addEventListener('click', () => {
     // bug fixes
     secondTierModes.style.marginBottom = "0";
+    goToAdvancedFields.classList = "fa-solid fa-caret-down";
     bossModeIsActive = false;
 
     bodyBGIMG.forEach(e => e.style.display = "none");

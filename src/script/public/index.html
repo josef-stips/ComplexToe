@@ -47,8 +47,8 @@
     <script defer src="App/features/itemDropPropability.js"></script>
     <script defer src="App/features/AdvantureMap.js"></script>
     <script defer src="App/features/XPJourney.js"></script>
-    <script defer src="App/features/eye.js"></script>
-    <script defer src="App/features/sun.js"></script>
+    <script defer src="App/features/bosses/eye.js"></script>
+    <script defer src="App/features/bosses/sun.js"></script>
     <script defer src="Game/Game.js"></script>
     <script defer src="Game/Spells.js"></script>
     <script defer src="Game/PlayerClocks.js"></script>
@@ -426,7 +426,9 @@
                             <div class="card-header NxN-field-card-header">
                                 <div class="NxN-field-card-header-innerWrapper">
                                     <div class="field-card-circle">
-                                        <i class="fa-solid fa-baby field-card-header-icon"></i>
+                                        <i class="field-card-header-icon">
+                                            <img src="./assets/game/warlord-helmet.svg" width="35" height="35" style="margin-top: 7px;transform: rotate(90deg);">
+                                        </i>
                                     </div>
                                 </div>
                             </div>
@@ -474,7 +476,9 @@
                             <div class="card-header NxN-field-card-header">
                                 <div class="NxN-field-card-header-innerWrapper">
                                     <div class="field-card-circle">
-                                        <i class="fa-solid fas fa-dragon field-card-header-icon"></i>
+                                        <i class="field-card-header-icon">
+                                            <img src="./assets/game/wolf-head.svg" width="35" height="35" style="margin-top: 7px;">
+                                        </i>
                                     </div>
                                 </div>
                             </div>
@@ -597,7 +601,9 @@
                             <div class="card-header NxN-field-card-header">
                                 <div class="NxN-field-card-header-innerWrapper">
                                     <div class="field-card-circle">
-                                        <i class="fa-solid fa-chess-knight field-card-header-icon"></i>
+                                        <i class="field-card-header-icon">
+                                            <img src="./assets/game/shattered-sword.svg" width="31" height="31" style="margin-top: 7px;transform: scaleX(-1);margin-right: 4px;">
+                                        </i>
                                     </div>
                                 </div>
                             </div>
@@ -844,7 +850,9 @@
                             <div class="card-header NxN-field-card-header">
                                 <div class="NxN-field-card-header-innerWrapper">
                                     <div class="field-card-circle">
-                                        <i class="fa-solid fa-skull field-card-header-icon"></i>
+                                        <i class="field-card-header-icon">
+                                            <img src="./assets/game/dragon-head.svg" width="35" height="35" style="margin-top: 7px;transform: rotate(90deg) scaleY(-1);">
+                                        </i>
                                     </div>
                                 </div>
                             </div>
@@ -2001,7 +2009,7 @@
                                     <!-- javascript generates the required amount of cells -->
                                 </div>
                                 <div id="UltimateWinTextArea">
-                                    <h1 id="UltimateWinText"></h1>
+                                    <span id="UltimateWinText"></span>
                                 </div>
                             </div>
 
@@ -2126,6 +2134,9 @@
                 </div>
 
                 <div class="exploredItems_footer"></div>
+
+                <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+                <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
             </div>
 
             <!-- you found pop up for explored items pop up -->
@@ -2388,6 +2399,7 @@
     <div class="SetPlayerNamesPopUp">
         <!-- Header -->
         <div class="SetPlayerNames-Header">
+            <img src="assets/game/holy-grail.svg" width="32" height="32">
             <i id="SetPlayerNames-close-btn" class="fa-solid fa-x SetUpPopUp-CloseBtn"></i>
         </div>
 
@@ -3137,6 +3149,9 @@
             <span class="OnlineGame_GameCode_Display">Game Code: 73840</span>
             <button class="SetPlayerName-ConfirmButton Confirm-Name-btn">Confirm</button>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="300" height="300">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="300" height="300">
     </div>
 
     <!-- Set Player Names Pop up for the KI Mode -->
@@ -3895,6 +3910,9 @@
                 </div>
             </div>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="150" height="150">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="150" height="150">
     </div>
 
     <!-- Choose Winner Pop Up -->
@@ -3905,7 +3923,7 @@
         </div>
 
         <div class="ChooseWinner-SubHeader">
-            <p>What do you think? Who deserves to be the winner? You as an administrator and creater of this lobby, can choose it</p>
+            <p>What do you think? Who deserves to be the winner?</p>
         </div>
 
         <div class="ChooseWinner-main">
@@ -3918,6 +3936,9 @@
         </div>
 
         <div class="lolol"></div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="150" height="150">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="150" height="150">
     </div>
 
 
@@ -3971,13 +3992,16 @@
             <span class="OnlineGameLobby_alertText">There is no room found!</span>
             <div class="EnterCodeName_ConfirmBtn"><span>Enter</span> </div>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="150" height="150">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="150" height="150">
     </div>
 
     <!-- OnlineGame Lobby Game Info Pop up -->
     <div class="Lobby_GameInfo_PopUp">
 
         <div class="LobbyInfo_header">
-            <div></div>
+            <img style="margin: 0 0 0 20px;" src="assets/game/book-cover.svg" width="32" height="32">
             <span>Game Info</span>
             <i class="fa-solid fa-x CloseBtn_LobbyInfoPopUp"></i>
         </div>
@@ -4656,6 +4680,9 @@
 
             </div>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
     <!-- OnlineGame: Lobby -->
@@ -4673,17 +4700,36 @@
             <div class="LobbyPlayerSection">
                 <h4 style="display: none;" class="LobbySectionTitle">Players:</h4>
 
-                <div class="playerDisplayLobby_Wrapper">
-                    <span class="Lobby_first_player PlayerLobbyDisplay">X</span>
+                <!-- second player display -->
+                <div class="Lobby_SecondPlayer_Wrapper Lobby_XPlayer_Wrapper">
+
+                    <div class="playerDisplayLobby_Wrapper playerDisplayLobby_Wrapper_SecondPlayer">
+                        <span class="Lobby_second_player PlayerLobbyDisplay">...</span>
+                    </div>
+                    <span class="Lobby_secondPlayerNameDisplay Lobby_XPlayerNameDisplay">Player 2</span>
+
                 </div>
 
-                <div class="playerDisplayLobby_Wrapper playerDisplayLobby_Wrapper_SecondPlayer">
-                    <span class="Lobby_second_player PlayerLobbyDisplay">O</span>
+                <!-- first player display. It is in the middle cause looks cooler and makes more sense -->
+                <div class="Lobby_FirstPlayer_Wrapper Lobby_XPlayer_Wrapper">
+
+                    <div class="playerDisplayLobby_Wrapper">
+                        <span class="Lobby_first_player PlayerLobbyDisplay"></span>
+                    </div>
+                    <span class="Lobby_firstPlayerNameDisplay Lobby_XPlayerNameDisplay">Player 1</span>
+
                 </div>
 
-                <div class="playerDisplayLobby_Wrapper">
-                    <span class="Lobby_third_player PlayerLobbyDisplay">W</span>
+                <!-- third player display -->
+                <div class="Lobby_ThirdPlayer_Wrapper Lobby_XPlayer_Wrapper">
+
+                    <div class="playerDisplayLobby_Wrapper">
+                        <span class="Lobby_third_player PlayerLobbyDisplay">...</span>
+                    </div>
+                    <span class="Lobby_thirdPlayerNameDisplay Lobby_XPlayerNameDisplay">Player 3</span>
+
                 </div>
+
             </div>
         </div>
 
@@ -4802,7 +4848,7 @@
             </div>
 
             <div class="UserPopUpBtnBox AddFriend_Or_Friend_btn" style="display: none;">
-                <i class="fa-solid fas fa-user-plus UserBtnIcons"></i>
+                <i class="fa-solid fas fa-user-plus UserBtnIcons AddFriend_OrDeleteFriend_Icon"></i>
                 <!-- fa-solid fa-user-check -->
             </div>
             <div class="UserPopUpBtnBox SendMessage_Btn" style="display: none;">
@@ -4864,12 +4910,15 @@
             <span class="seconds">00</span>
             </span>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="150" height="150">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="150" height="150">
     </div>
 
     <!-- skin shop -->
     <div class="skin-shop">
         <div class="skin-shop-header">
-            <div></div>
+            <img style="margin-left: 20px;" src="assets/game/tribal-mask.svg" width="27" height="27">
             <h2>Skin shop</h2>
             <i class="fa-solid fa-x skinShopCloseBtn"></i>
         </div>
@@ -4927,6 +4976,9 @@
                 </div>
             </div>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
     <!-- general alert pop up -->
@@ -4946,15 +4998,18 @@
     <!-- user clicks x item to trade it with ELO Points -->
     <div class="tradeX_PopUp">
         <div class="tradeX_header">
-            <div></div>
+            <img style="margin-left: 20px;" width="25" height="25" src="assets/game/semi-closed-eye.svg">
             <h1>Trade rare item</h1>
             <i class="fa-solid fa-x tradeX_closeBtn"></i>
         </div>
 
         <div class="tradeX_main">
-            <span>Do you want to trade 1 X with 5 Skill points?</span>
-            <button class="tradeX_ConfirmBtn">confirm</button>
+            <span>Do you want to trade 1 X with 5 XP?</span>
+            <button class="tradeX_ConfirmBtn">trade</button>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="170" height="170">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="170" height="170">
     </div>
 
     <!-- map level overview -->
@@ -5064,6 +5119,9 @@
             <div></div>
             <button class="startMapLevelBtn">Try level</button>
         </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
     <!-- chat pop up in online mode -->
@@ -5308,8 +5366,16 @@
 
     <!-- delete friend pop up -->
     <div class="DeleteFriend_PopUp">
-        <div class="DeleteFriendOption_Yes">Yes</div>
-        <div class="DeleteFriendOption_NotYet">Not yet</div>
+        <div class="DeleteFriendHeader">
+            <img src="assets/game/wolf-head.svg" width="25" height="25">
+            <span>Do you want to delete him from your friend list?</span>
+            <i class="fa-solid fa-x ClosePopUp_DeleteFriend"></i>
+        </div>
+
+        <div class="DeleteFriendMain">
+            <div class="DeleteFriendOption_Yes">Yes</div>
+            <div class="DeleteFriendOption_NotYet">Not yet</div>
+        </div>
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">

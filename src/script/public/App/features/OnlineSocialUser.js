@@ -1,4 +1,4 @@
-// This script is all about the social interactions the user can make through user search, friends and online messages
+// This script is all about the social interactions the user can make through user search, friends and online messages etc.
 // the functions of the main function of the three main buttons are in script.js
 
 // Search Player elements
@@ -42,7 +42,6 @@ const closePlayerSearch = () => {
 // request player 
 const RequestPlayer = () => {
     let text = SearchBar_placeholderText.value;
-    console.log(text);
 
     if (text != "") {
         // send request to server
@@ -60,19 +59,23 @@ const RequestPlayer = () => {
 
 // Player clicks on other player when he searched him or he is in his lobby f.e
 const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection) => {
+    console.log(player_name, player_id);
+
     // check if player is friends with searched and displayed player
     try {
         AddFriend_Or_Friend_btn.style.display = "flex";
         socket.emit("CheckIfUserIsFriend", localStorage.getItem("PlayerID"), player_id, cb => {
-            console.log(cb);
             if (cb) { // is friend: true
-                AddFriend_Or_Friend_btn.classList = "fa-solid fa-user-check UserPopUpBtnBox";
+                AddFriend_OrDeleteFriend_Icon.classList = "fa-solid fa-user-check UserBtnIcons";
                 AddFriend_Or_Friend_btn.addEventListener('click', DeleteFriend_OpenPopUp);
+                AddFriend_Or_Friend_btn.removeEventListener('click', AddFriend_OpenPopUp);
 
                 // User is only allowed to send messages to other player if they are friends together
                 SendMessage_Btn.style.display = "flex";
 
             } else { // is no friend: false
+                AddFriend_OrDeleteFriend_Icon.classList = "fa-solid fa-user-plus UserBtnIcons";
+                AddFriend_Or_Friend_btn.removeEventListener('click', DeleteFriend_OpenPopUp);
                 AddFriend_Or_Friend_btn.addEventListener('click', AddFriend_OpenPopUp);
 
                 // No friends : no messages
@@ -98,8 +101,12 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
     FriendsList_Btn.style.display = "none";
     SearchUser_Btn.style.display = "none";
     GetMessage_Btn.style.display = "none";
+    CreateOnlineProfileBtn.style.display = "none";
 
     UserLastTimeOnlineDisplay.style.display = "block";
+    UserInfoCont.style.display = "flex";
+
+    (running) ? DarkLayer.style.display = "block": DarkLayer.style.display = "none";
 
     let date = new Date(last_connection);
     let options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -210,8 +217,62 @@ closeFriendsList_Btn.addEventListener("click", () => {
 });
 
 // Generate friends list with data from database
-const GenerateFriendsList = (data) => {
-    console.log(data);
+const GenerateFriendsList = async(FriendsList) => { // looks like this: id = [FriendName, FriendIcon, FriendIconColor, FriendIconClass];
+    if (Object.keys(FriendsList).length > 0) {
+        FriendsListInnerList.textContent = null;
+
+        // create friend button for every friend in database friends list
+        for (let friendID of Object.keys(FriendsList)) {
+            // All data of players
+            let player = FriendsList[friendID][4]["AllData"]; // All player data from database
+            let player_name = player.player_name;
+            let player_id = player.player_id;
+            let player_icon = player.player_icon;
+            let playerInfoClass = player.playerInfoClass;
+            let playerInfoColor = player.playerInfoColor;
+            let quote = player.quote;
+            let onlineGamesWon = player.onlineGamesWon;
+            let XP = player.XP;
+            let currentUsedSkin = player.currentUsedSkin;
+            let last_connection = player.last_connection;
+
+            // create elements needed
+            let MainWrapper = document.createElement("div");
+            MainWrapper.classList = `Friend HoverBorderAni FriendButtonID_${friendID}`;
+
+            let NameDiv = document.createElement("div");
+            let IconDiv = document.createElement("div");
+
+            // display name
+            NameDiv.classList = "FriendName";
+            NameDiv.textContent = FriendsList[friendID][0];
+
+            // display icon the right way
+            if (FriendsList[friendID][3] == "empty") { // normal skin
+                IconDiv.textContent = FriendsList[friendID][1]; // display normal icon which is a letter
+                IconDiv.style.color = FriendsList[friendID][2];
+
+                IconDiv.classList = `FriendIcon`;
+
+            } else { // advanced skin
+                IconDiv.classList = `FriendIcon ${FriendsList[friendID][3]}`;
+                IconDiv.style.color = "white";
+                IconDiv.textContent = null;
+            };
+
+
+            MainWrapper.addEventListener("click", () => {
+                ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+            });
+
+            MainWrapper.appendChild(NameDiv);
+            MainWrapper.appendChild(IconDiv);
+            FriendsListInnerList.appendChild(MainWrapper);
+        };
+
+    } else {
+        FriendsListInnerList.textContent = "You have no friends. Go outside.";
+    };
 };
 
 // Add/Delete Friend btn/pop up - Friend Requests //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -226,15 +287,31 @@ DeleteFriendOption_NotYet.addEventListener('click', () => {
 // yes, delete friend from friends list
 DeleteFriendOption_Yes.addEventListener('click', () => {
     DeleteFriend_PopUp.style.display = "none";
+
+    // remove friend. send id and id from friend to database
+    try {
+        socket.emit("DeleteFriend", localStorage.getItem("PlayerID"), UserID_OfCurrentVisitedProfile, async cb => {
+            await RequestFriendsListFromDatabase();
+            CloseUserPopUpOfOtherPlayer();
+        });
+
+    } catch (error) {
+        console.log(error);
+        AlertText.textContent = "Something went wrong. Is it your connection?";
+    };
+});
+
+// just close the small pop up where you can delete a friend
+ClosePopUp_DeleteFriend.addEventListener("click", () => {
+    DeleteFriend_PopUp.style.display = "none";
 });
 
 // check in database for friend request and display them
 const CheckForFriendRequests = () => {
     try {
         socket.emit("RequestFriendRequests", localStorage.getItem("PlayerID"), cb => {
-            console.log(cb);
-
             if (cb) { // There are some or one friend request
+                Inbox_InnerWrapper.textContent = null;
                 DisplayFriendRequests(cb);
 
             } else { // No friend requests
@@ -384,12 +461,12 @@ closeMessages_Btn.addEventListener("click", () => {
 const CheckForMessages = () => {
     try {
         socket.emit("RequestMessages", localStorage.getItem("PlayerID"), cb => {
-            console.log(JSON.parse(cb));
             // No messages
             if (!cb || cb == "[]") {
                 Messages_InnerWrapper.textContent = "There are no messages for you yet."
 
             } else { // messages are availible
+                console.log(cb);
                 let messagesArray = JSON.parse(cb);
                 let AmountOfMessages = messagesArray.length;
                 // global scope variable
@@ -405,6 +482,7 @@ const CheckForMessages = () => {
                 NotiOnUserInfoBtn.textContent = AmountOfReceivedMessages + AmountOfReceivedRequests;
                 GetMessageBtn_notificationText_Display.textContent = AmountOfReceivedMessages + AmountOfReceivedRequests;
 
+                Messages_InnerWrapper.textContent = null;
                 // create element in messages inbox for every message
                 for (let message of messagesArray) {
 
@@ -428,7 +506,6 @@ const CheckForMessages = () => {
                         // delete element from database
                         try {
                             socket.emit("DeleteMessage", localStorage.getItem("PlayerID"), el.target.getAttribute("text"), AmountOfMessages_par => {
-                                console.log(AmountOfMessages_par);
                                 AmountOfMessagesDisplay.textContent = AmountOfMessages_par;
                                 AmountOfReceivedMessages = parseInt(AmountOfMessages_par);
 

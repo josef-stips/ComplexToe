@@ -33,15 +33,7 @@ function init_eye() {
 function eye_attack() {
     if (!eyeDied) {
         // bug fix
-        animatedPopUp.style.display = 'none';
-        GameInfoPopUp.style.display = 'none';
-        userInfoPopUp.style.display = 'none';
-        settingsWindow.style.display = 'none';
-        DarkLayer.style.display = 'none';
-
-        // bug fix: user should not leave while attack
-        leaveGame_btn.removeEventListener('click', UserleavesGame);
-        leaveGame_btn.style.color = '#56565659';
+        CloseOnlinePopUps(true);
 
         // animation
         // change eye position so it is vibrating
@@ -109,13 +101,11 @@ function eye_attack() {
                 The_eye.style.transition = "all 0.2s ease-in-out";
             }, 2500);
 
-            if (curr_mode != GameMode[2].opponent) {
+            if (curr_mode != GameMode[2].opponent) { // in offline mode
                 // start attack interval again
                 EyeAttackInterval();
 
-                // bug fix: user can leave again
-                leaveGame_btn.style.color = 'var(--font-color)';
-                leaveGame_btn.addEventListener('click', UserleavesGame);
+                addAccessToAnything();
             };
         }, 3000); // Ändern Sie die Dauer der Vibration nach Bedarf
     };
@@ -127,57 +117,22 @@ function eyeAttack_damage(cellDistance) {
 
     let rndIndex = Math.floor(Math.random() * ((cellDistance - 5) * (cellDistance - 5)));
 
-    single_CellBlock(cells[rndIndex], "fromMap");
-    single_CellBlock(cells[rndIndex + 1], "fromMap");
-    single_CellBlock(cells[rndIndex + 2], "fromMap");
-    single_CellBlock(cells[rndIndex + 3], "fromMap");
-    single_CellBlock(cells[rndIndex + 4], "fromMap");
-    single_CellBlock(cells[rndIndex + 5], "fromMap");
-
-    randomEdgeOnAttackDamageCellgrid(cells, rndIndex, cellDistance);
-
-    single_CellBlock(cells[rndIndex + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 1], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 2], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 3], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 4], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 5], "fromMap");
-
-    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance], "fromMap");
-
-    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance + cellDistance], "fromMap");
-
-    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance + cellDistance + cellDistance], "fromMap");
-
-    single_CellBlock(cells[rndIndex + cellDistance + 0 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 1 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 2 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 3 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 4 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
-    single_CellBlock(cells[rndIndex + cellDistance + 5 + cellDistance + cellDistance + cellDistance + cellDistance], "fromMap");
+    for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 6; j++) {
+            let maxCellDistance = cellDistance * i;
+            single_CellBlock(cells[rndIndex + j + maxCellDistance], "fromMap");
+        };
+    };
+    for (let i = 0; i < 4; i++) {
+        randomEdgeOnAttackDamageCellgrid(cells, rndIndex, cellDistance);
+    };
 };
 
 // eye attack interval
 function EyeAttackInterval() {
     if (!eyeDied && curr_mode != GameMode[2].opponent) {
-        console.log("nah man")
-        let minute = 1;
-        let second = 0;
+        let minute = 0;
+        let second = 59;
 
         eye_attack_interval_global = setInterval(() => {
             second--;
@@ -187,19 +142,17 @@ function EyeAttackInterval() {
                 eyeNextAttackTimer.textContent = `${minute}:0${second}`;
             };
 
+            // shortly before attack
+            if (minute <= 0 && second <= 5) {
+                removeAccessToAnything();
+            };
+
             // interval finished
             if (minute <= 0 && second <= 0) {
                 clearInterval(eye_attack_interval_global);
                 eye_attack_interval_global = null;
                 eye_attack();
                 return;
-            };
-
-            // 30 seconds go by
-            if (second <= 0) {
-                minute--;
-                second = 59;
-                eyeNextAttackTimer.textContent = `${minute}:${second}`;
             };
 
             // red text when under 6 seconds
@@ -213,10 +166,9 @@ function EyeAttackInterval() {
 };
 
 socket.on("EyeAttackInterval", (eyeAttackInterval) => {
-    console.log(eyeAttackInterval)
     eyeNextAttackTimer.textContent = `${0}:${eyeAttackInterval}`;
 
-    if (eyeAttackInterval == 3) {
+    if (eyeAttackInterval >= 5) {
         removeAccessToAnything();
     };
 
@@ -228,18 +180,15 @@ socket.on("EyeAttackInterval", (eyeAttackInterval) => {
 });
 
 socket.on("EyeAttack", () => {
-    console.log("attack!")
     eyeNextAttackTimer.textContent = `0:0`;
     eye_attack();
 });
 
 socket.on("EyeDamage", async(OptionsArray) => {
-    console.log("eye damage", OptionsArray)
     let cells = [...cellGrid.children];
 
     await OptionsArray.forEach((c, i) => {
         if (c == '§') {
-            console.log(i, c, "lol");
             single_CellBlock(cells[i], "fromMap");
         };
     });
@@ -273,7 +222,7 @@ function eyeGot_HP_Damage(damage) {
         }, 2000);
 
         // eye dies
-        if (eye_HP <= 9000) eyeDies();
+        if (eye_HP <= 0) eyeDies();
     };
 };
 
@@ -319,8 +268,9 @@ function eyeDies() {
 
 // eye gets damage by clicking
 let clickEyeCounter = 0;
-eyeIMG_container.addEventListener('click', () => {
-    if (eye_HP >= 19000 && clickEyeCounter <= 1000) {
+eyeIMG_container.addEventListener('mousedown', () => {
+    if (eye_HP >= 0 && clickEyeCounter <= 10000 && curr_mode != GameMode[2].opponent && !inAdvantureMode ||
+        eye_HP >= 9000 && clickEyeCounter <= 1000 && curr_mode != GameMode[2].opponent && inAdvantureMode) {
         clickEyeCounter++;
         eyeGot_HP_Damage(1);
         document.querySelector('.eyeIMG').style.transition = "transform 100ms ease";

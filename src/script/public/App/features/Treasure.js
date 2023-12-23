@@ -319,7 +319,6 @@ function CalculateTimeDifference(timestamp) {
     const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
     const timeString = `${hours}:${minutes}:${seconds}`;
 
-    console.log(timeString);
     // activate treasure html countdown for better user experience
     clearInterval(TreasureCountdown);
     TreasureCountdown = null;

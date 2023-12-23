@@ -30,11 +30,7 @@ function init_sun() {
 function sun_attack() {
     if (!sunDied) {
         // bug fix
-        animatedPopUp.style.display = 'none';
-        GameInfoPopUp.style.display = 'none';
-        userInfoPopUp.style.display = 'none';
-        settingsWindow.style.display = 'none';
-        DarkLayer.style.display = 'none';
+        CloseOnlinePopUps(true);
 
         // animation
         // change sun position so it is vibrating
@@ -121,8 +117,7 @@ function SunAttackInterval() {
                 sun_attack_interval_global = null;
 
                 // bug fix: user should not leave while attack
-                leaveGame_btn.removeEventListener('click', UserleavesGame);
-                leaveGame_btn.style.color = '#56565659';
+                removeAccessToAnything();
 
                 // the sun shoots 3 times in a row
                 let attack_count = 0;
@@ -140,9 +135,8 @@ function SunAttackInterval() {
                         // start attack interval again
                         SunAttackInterval();
 
-                        // bug fix: user can leave again
-                        leaveGame_btn.style.color = 'var(--font-color)';
-                        leaveGame_btn.addEventListener('click', UserleavesGame);
+                        // bug fix: user can leave now and do anything
+                        addAccessToAnything();
                     };
                 }, 1500);
                 return;

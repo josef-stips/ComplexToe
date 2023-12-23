@@ -377,6 +377,12 @@ let GetMessageBtn_notificationText_Display = document.querySelector('.GetMessage
 let DeleteFriend_PopUp = document.querySelector(".DeleteFriend_PopUp");
 let DeleteFriendOption_NotYet = document.querySelector(".DeleteFriendOption_NotYet");
 let DeleteFriendOption_Yes = document.querySelector(".DeleteFriendOption_Yes");
+let AddFriend_OrDeleteFriend_Icon = document.querySelector(".AddFriend_OrDeleteFriend_Icon");
+let ClosePopUp_DeleteFriend = document.querySelector(".ClosePopUp_DeleteFriend");
+let Lobby_XPlayerNameDisplay = document.querySelectorAll(".Lobby_XPlayerNameDisplay"); // amount: 3
+let Lobby_ThirdPlayer_Wrapper = document.querySelector(".Lobby_ThirdPlayer_Wrapper");
+let Lobby_FirstPlayer_Wrapper = document.querySelector(".Lobby_FirstPlayer_Wrapper");
+let Lobby_SecondPlayer_Wrapper = document.querySelector(".Lobby_SecondPlayer_Wrapper");
 
 bodyBGIMG.forEach(e => e.style.display = "none");
 
@@ -656,40 +662,44 @@ let thirdPlayer_required = false;
 
 let socket;
 
+// Request friends from database and take action
+const RequestFriendsListFromDatabase = async() => {
+    await socket.emit("RequestFriends", localStorage.getItem("PlayerID"), cb => {
+        // small text with link to the "search player" pop-up if the user has no friends 
+        let div = document.createElement("div");
+        let p = document.createElement("p");
+        p.textContent = "No friends. Wanna get some friends? Go outside or click";
+        let span = document.createElement("span");
+        span.textContent = "here";
+        span.className = "ClickTextTo_SearchPlayersPopUp";
+        span.addEventListener('click', () => {
+            FriendsListPopUp.style.display = "none";
+            SearchPlayerPopUp.style.display = "flex";
+        });
+
+        FriendsListInnerList.textContent = null;
+
+        if (!cb) { // No friends
+            div.append(p);
+            div.appendChild(span);
+            FriendsListInnerList.appendChild(div);
+
+        } else { // Friends detected
+            GenerateFriendsList(cb);
+        };
+    });
+};
+
 // about social activities
 const OpenGetMessagesPopUp = () => { // open user messages pop up
     MessagesPopUp.style.display = "flex";
-
 };
 
-const OpenFriendsListPopUp = () => { // "try" to open friends list
+const OpenFriendsListPopUp = async() => { // "try" to open friends list
     // try to open friendslist
     try {
+        await RequestFriendsListFromDatabase();
         FriendsListPopUp.style.display = "flex";
-        socket.emit("RequestFriends", localStorage.getItem("PlayerID"), cb => {
-            // small text with link to the "search player" pop-up if the user has no friends 
-            let div = document.createElement("div");
-            let p = document.createElement("p");
-            p.textContent = "No friends. Wanna get some friends? Go outside or click";
-            let span = document.createElement("span");
-            span.textContent = "here";
-            span.className = "ClickTextTo_SearchPlayersPopUp";
-            span.addEventListener('click', () => {
-                FriendsListPopUp.style.display = "none";
-                SearchPlayerPopUp.style.display = "flex";
-            });
-
-            FriendsListInnerList.textContent = null;
-
-            if (!cb) { // No friends
-                div.append(p);
-                div.appendChild(span);
-                FriendsListInnerList.appendChild(div);
-
-            } else { // Friends detected
-                GenerateFriendsList(cb);
-            };
-        });
 
     } catch (error) {
         alertPopUp.style.display = "flex";
@@ -706,8 +716,13 @@ const OpenSearchUserPopUp = () => { // open search pop up to search for users
 const AddFriend_OpenPopUp = () => {
     try {
         socket.emit("SendFriendRequest", localStorage.getItem("PlayerID"), UserID_OfCurrentVisitedProfile, cb => {
-            AlertText.textContent = `You already sended a request to ${UserName_OfCurrentVisitedProfile}! Wait for his answer.`;
-            alertPopUp.style.display = "flex";
+            if (cb == false) {
+                AlertText.textContent = `You already sended a request to ${UserName_OfCurrentVisitedProfile}! Wait for his answer.`;
+                alertPopUp.style.display = "flex";
+            } else if (cb == "FriendsNow") {
+                AlertText.textContent = `${UserName_OfCurrentVisitedProfile} also sended you a friend request! You are friends with him now.`;
+                alertPopUp.style.display = "flex";
+            };
         });
 
     } catch (error) {
@@ -838,37 +853,34 @@ const ShowCardForIndex = Index => {
 
 // random loading text in loading screen
 function rnd_loadingText() {
-    let rndIndex = Math.floor(Math.random() * 6);
+    let rndIndex = Math.floor(Math.random() * 8);
 
     switch (rndIndex) {
         case 0:
             random_loadingText.textContent = "You need a profile to get skins";
-
             break;
-
         case 1:
             random_loadingText.textContent = "Seeing sunlight or playing advanture mode?";
-
             break;
-
         case 2:
             random_loadingText.textContent = "Server responded with shit";
-
             break;
         case 3:
             random_loadingText.textContent = "The probability of getting 10 X from a single treasure is one in 3000";
-
             break;
-
         case 4:
             let name = localStorage.getItem('UserName');
-
             name ? random_loadingText.textContent = `Hello ${name}! Did you already see sunlight today?` : random_loadingText.textContent = `Play the online mode or touch grass...`;
-
             break;
         case 5:
             random_loadingText.textContent = "Requesting shit from server...";
-
+            break;
+        case 6:
+            random_loadingText.textContent = "Hey there, adventurer! Ever considered a break to smell the real roses?";
+            break;
+        case 7:
+            let name2 = localStorage.getItem('UserName');
+            name2 ? random_loadingText.textContent = `Greetings, ${name2}! Between quests, a bit of real-world sunshine, perhaps?` : random_loadingText.textContent = `Play the online mode or touch grass...`;
             break;
     };
 };
@@ -1500,7 +1512,6 @@ fieldsArea_back_btn.addEventListener('click', () => {
         setTimeout(() => {
             gameModeCards_Div.style.display = 'flex';
             gameModeFields_Div.style.display = 'none';
-            lobbyHeader.style.borderBottom = '3px solid';
         }, 100);
     }, 100);
 
@@ -1514,12 +1525,17 @@ fieldsArea_back_btn.addEventListener('click', () => {
             DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
         }, 400);
     }, 400);
+
+    CheckForMessages(); // Check for messages in database
+    CheckForFriendRequests(); // check for friend requests
+
+    // for XP Journey
+    CheckIfUserCanGetReward();
 });
 
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
     curr_mode = GameMode[1].opponent;
-    lobbyHeader.style.borderBottom = 'none';
     goToAdvancedFields.style.display = 'none';
 
     // visibility for Ki Fields and GameMode fields
@@ -1540,7 +1556,6 @@ gameMode_KI_card.addEventListener('click', () => {
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
     curr_mode = GameMode[2].opponent;
-    lobbyHeader.style.borderBottom = 'none';
     goToAdvancedFields.style.display = 'block';
 
     // visibility for Ki Fields and GameMode fields
@@ -1556,7 +1571,6 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
 
 gameMode_OneVsOne_card.addEventListener('click', () => {
     curr_mode = GameMode[3].opponent;
-    lobbyHeader.style.borderBottom = 'none';
     goToAdvancedFields.style.display = 'block';
 
     // visibility for Ki Fields and GameMode fields
@@ -1803,7 +1817,10 @@ function Click_NxN(f) {
         DarkLayer.style.display = 'block';
         YourName_Input_KI_mode.value = "";
         Your_IconInput.value = "";
-        Your_IconInput.style.color = localStorage.getItem('userInfoColor');
+        // display black if skin is white
+        (localStorage.getItem('userInfoColor') == "white" || localStorage.getItem('userInfoColor') == "var(--font-color)") ? Your_IconInput.style.color = "black":
+            Your_IconInput.style.color = localStorage.getItem('userInfoColor');
+        // other important data
         curr_name1 = null;
         curr_name2 = null;
         curr_field_ele = target;
@@ -1811,7 +1828,9 @@ function Click_NxN(f) {
         // default data
         if (localStorage.getItem('UserName')) {
             YourName_Input_KI_mode.value = localStorage.getItem('UserName');
-            Your_IconInput.value = localStorage.getItem('UserIcon');
+            // display black if skin is white
+            (localStorage.getItem('userInfoColor') == "white" || localStorage.getItem('userInfoColor') == "var(--font-color)") ? Your_IconInput.style.color = "black":
+                Your_IconInput.style.color = localStorage.getItem('userInfoColor');
         };
     };
 
@@ -1846,7 +1865,7 @@ function Click_NxN(f) {
 function Click_single_NxN(e) {
     SetClockList.style.display = 'flex';
     SetGameModeList.style.display = 'flex';
-    Player1_IconInput.style.color = 'black';
+    Player1_IconInput.style.color = 'black'; // idk if this line is nessecary
 
     // warn text for online game mode
     OnlineGame_NameWarnText[0].style.display = 'none';
@@ -1989,70 +2008,86 @@ SetPlayerName_ConfirmButton.addEventListener('click', () => {
     SetPlayerData_ConfirmEvent();
 });
 
+// user tries to ENTER a game in online mode
+const UserTriesToEnterOnlineGame = () => {
+    // If user entered his name and which form he wants to use in the game
+    if (Player1_IconInput.value != "" && Player1_NameInput.value != "" && personal_GameData.role == "user" ||
+        // or second condition: user joins as blocker so he only needs to pass his name
+        Player1_NameInput.value != "" && personal_GameData.role == "blocker") {
+        console.log(personal_GameData.role)
+
+        socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim(),
+            localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role
+        ], (m) => {
+            // If user name is equal to admins name
+            if (m == 'Choose a different name!') {
+                OnlineGame_NameWarnText[1].style.display = 'none';
+                OnlineGame_NameWarnText[0].style.display = 'block';
+            };
+
+            // If user icon is equal to admins icon
+            if (m == 'Choose a different icon!') {
+                OnlineGame_NameWarnText[0].style.display = 'none';
+                OnlineGame_NameWarnText[1].style.display = 'block';
+            };
+
+            // user can finally enters the online game lobby
+            if (m != 'Choose a different name!' && m != 'Choose a different icon!') {
+                UserEntersOnlineGame(m);
+            };
+        });
+    };
+};
+
+// User enters online game
+const UserEntersOnlineGame = (m) => {
+    // initialize game with the right values
+    curr_name1 = Player1_NameInput.value;
+    curr_form1 = Player1_IconInput.value.toUpperCase();
+
+    // set name of first player
+    Lobby_XPlayerNameDisplay[1].textContent = `${m[1]}`;
+
+    // m[2] icon of first player
+    // This code block is just so the second player who joins the lobby sees the icon of the first player in the right way
+    if (m[2] == "fontawesome") {
+        // remove previous advanced icon if there was one
+        if (document.querySelector('.Temporary_IconSpan1')) document.querySelector('.Temporary_IconSpan1').remove();
+
+        // reset text of first player icon if there was one
+        Lobby_first_player.textContent = null;
+
+        // admin uses an advanced skin => create span element which displays advanced icon. You can just delete this icon later (like in the else code below)
+        let span = document.createElement('span');
+        span.className = m[5]; // example: "fa-solid fa-chess-rook"
+        span.classList.add("Temporary_IconSpan1");
+        Lobby_first_player.style.color = "white";
+
+        Lobby_first_player.appendChild(span);
+
+    } else { // admin uses a normal or color skin, everything's alright
+        Lobby_first_player.textContent = `${m[2].toUpperCase()}`; // set icon of first player
+        Lobby_first_player.style.color = m[6]; // color of first player's skin
+
+        // remove advanced icon if there was one
+        if (document.querySelector('.Temporary_IconSpan1')) document.querySelector('.Temporary_IconSpan1').remove();
+    };
+
+    // bug fixes
+    OnlineGame_NameWarnText[0].style.display = 'none';
+    OnlineGame_NameWarnText[0].style.display = 'none';
+
+    // general stuff
+    OnlineGame_Lobby.style.display = 'flex';
+    SetPlayerNamesPopUp.style.display = 'none';
+};
+
 // user tries to start the game
 function SetPlayerData_ConfirmEvent() {
     if (curr_mode == GameMode[2].opponent) { // online mode
-
         // if user wants to enter an online game
         if (personal_GameData.EnterOnlineGame) {
-
-            // If user entered his name and which form he wants to use in the game
-            if (Player1_IconInput.value != "" && Player1_NameInput.value != "" && personal_GameData.role == "user" ||
-                // or second condition: user joins as blocker so he only needs to pass his name
-                Player1_NameInput.value != "" && personal_GameData.role == "blocker") {
-                console.log(personal_GameData.role)
-
-                socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim(),
-                    localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role
-                ], (m) => {
-                    // If user name is equal to admins name
-                    if (m == 'Choose a different name!') {
-                        OnlineGame_NameWarnText[1].style.display = 'none';
-                        OnlineGame_NameWarnText[0].style.display = 'block';
-                    };
-
-                    // If user icon is equal to admins icon
-                    if (m == 'Choose a different icon!') {
-                        OnlineGame_NameWarnText[0].style.display = 'none';
-                        OnlineGame_NameWarnText[1].style.display = 'block';
-                    };
-
-                    if (m != 'Choose a different name!' && m != 'Choose a different icon!') {
-                        // initialize game with the right values
-                        curr_name1 = Player1_NameInput.value;
-                        curr_form1 = Player1_IconInput.value.toUpperCase();
-
-                        // m[2] icon of first player
-                        // This code block is just so the second player who joins the lobby sees the icon of the first player in the right way
-                        if (m[2] == "fontawesome") {
-                            // admin uses an advanced skin => do stuff
-                            let span = document.createElement('span');
-                            span.className = m[5]; // example: "fa-solid fa-chess-rook"
-                            span.classList.add("Temporary_IconSpan1");
-                            Lobby_first_player.style.color = "white";
-
-                            Lobby_first_player.textContent = `${m[1]} - `; // set name of first player for all in the room with advances icon
-                            Lobby_first_player.appendChild(span);
-
-                        } else { // admin uses a normal or color skin, everything's alright
-                            Lobby_first_player.textContent = `${m[1]} - ${m[2].toUpperCase()}`; // set name of first player for all in the room
-                            Lobby_first_player.style.color = m[6];
-
-                            if (document.querySelector('.Temporary_IconSpan1')) {
-                                document.querySelector('.Temporary_IconSpan1').remove();
-                            };
-                        };
-
-                        // bug fixes
-                        OnlineGame_NameWarnText[0].style.display = 'none';
-                        OnlineGame_NameWarnText[0].style.display = 'none';
-
-                        // general stuff
-                        OnlineGame_Lobby.style.display = 'flex';
-                        SetPlayerNamesPopUp.style.display = 'none';
-                    };
-                });
-            };
+            UserTriesToEnterOnlineGame();
 
         } else { // user wants to create an online game
             UserCreateRoom();
@@ -2691,7 +2726,8 @@ animatedPopConBtn.addEventListener('click', () => {
     };
 });
 
-headerUserBtn.addEventListener('click', () => {
+// user wants to open his own user pop-up
+const OpenOwnUserProfile = () => {
     OpenedPopUp_WhereAlertPopUpNeeded = true;
 
     DarkLayer.style.display = 'block';
@@ -2737,16 +2773,66 @@ headerUserBtn.addEventListener('click', () => {
         CreateOnlineProfileBtn.style.display = 'block';
         UserInfoCont.style.display = 'none';
     };
+};
+
+headerUserBtn.addEventListener('click', () => {
+    OpenOwnUserProfile();
 });
 
-userInfoCloseBtn.addEventListener('click', () => {
+// close user pop up of other player
+const CloseUserPopUpOfOtherPlayer = () => {
+    OpenedPopUp_WhereAlertPopUpNeeded = false;
+    UserIsOnProfileFromOtherPlayer = false;
+    userInfoPopUp.style.zIndex = "10001";
+
+    UserID_OfCurrentVisitedProfile = undefined;
+    UserName_OfCurrentVisitedProfile = undefined;
+
+    editUserProfileBtn.style.display = "initial";
+    UserQuoteSubmitBtn.style.display = "block";
+    FriendsList_Btn.style.display = "flex";
+    SearchUser_Btn.style.display = "flex";
+    GetMessage_Btn.style.display = "flex";
+    (!running) ? DarkLayer.style.display = "block": DarkLayer.style.display = "none";
+
+    UserLastTimeOnlineDisplay.style.display = "none";
+    SendMessage_Btn.style.display = "none";
+    AddFriend_Or_Friend_btn.style.display = "none";
+
+    userInfoName.textContent = localStorage.getItem("UserName");
+    UserID_display.textContent = "User ID: " + localStorage.getItem("PlayerID");
+    if (localStorage.getItem("UserQuote")) UserQuote.textContent = localStorage.getItem("UserQuote");
+    userInfoOnlineMatchesWon.textContent = localStorage.getItem("onlineMatches-won");
+    userInfoSkillpoints.textContent = localStorage.getItem("ELO");
+
+    if (localStorage.getItem("userInfoClass") == "empty") { // user has standard skin
+        userInfoIcon.classList = "userInfo-Icon userInfoEditable";
+        userInfoIcon.textContent = localStorage.getItem("UserIcon");
+        userInfoIcon.style.color = localStorage.getItem("UserInfoColor");
+
+    } else { // user has advanced skin
+        userInfoIcon.classList = "userInfo-Icon userInfoEditable " + localStorage.getItem("userInfoClass");
+        userInfoIcon.textContent = null;
+        userInfoIcon.style.color = "var(--font-color)";
+    };
+
+    // if user is in lobby or in online game
+    if (personal_GameData.currGameID != null || running) {
+        userInfoPopUp.style.display = "none";
+    };
+};
+
+// try to close user info pop up through event clicks f.ex
+const TryToCloseUserInfoPopUp = () => {
     OpenedPopUp_WhereAlertPopUpNeeded = false;
 
     if (!UserIsOnProfileFromOtherPlayer) { // user was on his own profile
         if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
             localStorage.getItem('UserIcon') == null) {
 
-            if (!UserIsOnProfileFromOtherPlayer) DarkLayer.style.display = 'none';
+            if (!UserIsOnProfileFromOtherPlayer && personal_GameData.currGameID == null || running) { DarkLayer.style.display = 'none' } else if (personal_GameData.currGameID != null) {
+                DarkLayer.style.display = "block";
+            };
             if (!UserIsOnProfileFromOtherPlayer) userInfoPopUp.style.display = 'none';
 
             if (userInfoIcon.textContent !== "") {
@@ -2766,40 +2852,12 @@ userInfoCloseBtn.addEventListener('click', () => {
 
         // if player visited profile from other player
     } else if (UserIsOnProfileFromOtherPlayer) {
-        UserIsOnProfileFromOtherPlayer = false;
-        userInfoPopUp.style.zIndex = "10001";
-
-        UserID_OfCurrentVisitedProfile = undefined;
-        UserName_OfCurrentVisitedProfile = undefined;
-
-        editUserProfileBtn.style.display = "initial";
-        UserQuoteSubmitBtn.style.display = "block";
-        FriendsList_Btn.style.display = "flex";
-        SearchUser_Btn.style.display = "flex";
-        GetMessage_Btn.style.display = "flex";
-        DarkLayer.style.display = "block";
-
-        UserLastTimeOnlineDisplay.style.display = "none";
-        SendMessage_Btn.style.display = "none";
-        AddFriend_Or_Friend_btn.style.display = "none";
-
-        userInfoName.textContent = localStorage.getItem("UserName");
-        UserID_display.textContent = "User ID: " + localStorage.getItem("PlayerID");
-        if (localStorage.getItem("UserQuote")) UserQuote.textContent = localStorage.getItem("UserQuote");
-        userInfoOnlineMatchesWon.textContent = localStorage.getItem("onlineMatches-won");
-        userInfoSkillpoints.textContent = localStorage.getItem("ELO");
-
-        if (localStorage.getItem("userInfoClass") == "empty") { // user has standard skin
-            userInfoIcon.classList = "userInfo-Icon userInfoEditable";
-            userInfoIcon.textContent = localStorage.getItem("UserIcon");
-            userInfoIcon.style.color = localStorage.getItem("UserInfoColor");
-
-        } else { // user has advanced skin
-            userInfoIcon.classList = "userInfo-Icon userInfoEditable " + localStorage.getItem("userInfoClass");
-            userInfoIcon.textContent = null;
-            userInfoIcon.style.color = "var(--font-color)";
-        };
+        CloseUserPopUpOfOtherPlayer();
     };
+};
+
+userInfoCloseBtn.addEventListener('click', () => {
+    TryToCloseUserInfoPopUp();
 });
 
 editUserProfileBtn.addEventListener('click', () => {
@@ -3030,7 +3088,7 @@ function ItemAnimation(item, destination_position, fromMap, mapItem, fromSecondT
 
 // click on X-btn to trade 1 x with 5 elo points
 XBtn.addEventListener('click', () => {
-    if (localStorage.getItem('ItemX') >= 5) {
+    if (localStorage.getItem('ItemX') >= 1) {
         DarkLayer.style.display = 'block';
         tradeX_PopUp.style.display = 'flex';
     };
@@ -3046,7 +3104,7 @@ tradeX_ConfirmBtn.addEventListener('click', () => {
     let SkillPoints = parseInt(localStorage.getItem('ELO'));
 
     SkillPoints = SkillPoints + 5;
-    X = X - 5;
+    X = X - 1;
 
     localStorage.setItem('ELO', SkillPoints);
     localStorage.setItem('ItemX', X);
@@ -3056,6 +3114,9 @@ tradeX_ConfirmBtn.addEventListener('click', () => {
 
     DarkLayer.style.display = 'none';
     tradeX_PopUp.style.display = 'none';
+
+    // for Xp Journey
+    CheckIfUserCanGetReward();
 });
 
 // alert pop up

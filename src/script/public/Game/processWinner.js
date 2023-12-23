@@ -33,11 +33,6 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
 
         // Check win
         if (cellE == undefined && cellD != undefined) { // if pattern with 4 blocks
-
-            // if (cellA == "" || cellB == "" || cellC == "" || cellD == "") { // Check win for a 4 block pattern combination
-            //     continue;
-            // };
-
             // check when player is check
             if (cellA == cellB && cellB == cellC && cellD == "" && EleOf_D.textContent == "" && EleOf_D.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
                 cellA == cellB && cellB == cellD && cellC == "" && EleOf_C.textContent == "" && EleOf_C.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
@@ -123,11 +118,6 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             };
 
         } else if (cellD != undefined && cellE != undefined) { // Check win for a 5 block pattern combination
-
-            // if (cellA == "" || cellB == "" || cellC == "" || cellD == "" || cellE == "") {
-            //     continue
-            // };
-
             // check when player is check
             if (cellA == cellB && cellB == cellC && cellC == cellD && cellE == "" && EleOf_E.textContent == "" && EleOf_E.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
                 cellA == cellB && cellB == cellC && cellC == cellE && cellD == "" && EleOf_D.textContent == "" && EleOf_D.className != "cell death-cell" && cellA != "" && EleOf_A.textContent != "" ||
@@ -253,7 +243,7 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
 
 // process result of game: if a sub game round is won 
 function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points, fromRestart, fromClick) {
-    killPlayerClocks();
+    killPlayerClocks(false);
     // Choose winner
     chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points);
 
@@ -274,18 +264,11 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
             }, 600);
         };
 
-        // Ultimate Game Win Check for fields where you only can play 1 round!!! 3x3, 4x4, 5x5 Ignore this if it is not this case
-        // rounds_played++;
-        // if (curr_field == 'Small Price' && rounds_played == 1 || curr_field == 'Thunder Advanture' && rounds_played == 1 || curr_field == 'Quick Death' && rounds_played == 1) {
-        //     Call_UltimateWin(WinCombination);
-        //     return;
-        // };
-
         // Change player things. execute this everytime
         setTimeout(() => {
             (!inAdvantureMode) ? processResult_continueGame(fromRestart, fromClick, true): processResult_continueGame();
         }, 600);
-    }, 1200);
+    }, 2200);
 };
 
 // process result: advanture mode (special)
@@ -471,10 +454,85 @@ function processResult_continueGame(fromRestart, fromClick, won) {
     };
 };
 
+// when user win, from the field icons float to his name ot the left
+const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
+    let icon;
+    let iconIsAdvanced;
+    let destination;
+
+    // init icon
+    if (player1_won && !player2_won) { // player 1 icons
+        if (PlayerData[1].AdvancedSkin != "cell empty") {
+            icon = `${PlayerData[1].AdvancedSkin.split(" ")[1]}  ${PlayerData[1].AdvancedSkin.split(" ")[2]}`;
+            iconIsAdvanced = true;
+
+        } else {
+            icon = PlayerData[1].PlayerForm;
+            iconIsAdvanced = false;
+        };
+        destination = namePlayer1.getBoundingClientRect();
+
+    } else if (!player1_won && player2_won) { // player 2 icons
+        if (PlayerData[2].AdvancedSkin != "cell empty") {
+            icon = `${PlayerData[2].AdvancedSkin.split(" ")[1]}  ${PlayerData[2].AdvancedSkin.split(" ")[2]}`;
+            iconIsAdvanced = true;
+
+        } else {
+            icon = PlayerData[2].PlayerForm;
+            iconIsAdvanced = false;
+        };
+        destination = namePlayer2.getBoundingClientRect();
+    };
+
+    // where the floating items should float? What's the destination?
+    const AnimateTo = (destination, span) => {
+        try {
+            span.style.top = destination.top + "px";
+            span.style.bottom = destination.bottom + "px";
+            span.style.left = destination.left + "px";
+            span.style.right = destination.right + "px";
+            span.style.opacity = "0";
+        } catch (error) {
+            span.remove();
+            return;
+        }
+    };
+
+    // init item
+    const InitItem = (icon, iconIsAdvanced, StartPos) => {
+        let span = document.createElement("span");
+        (iconIsAdvanced) ? span.classList = icon: span.textContent = icon; // if icon is advanced. modify classlist otherwise text
+        span.classList.add("floating-item");
+        span.style.transition = "opacity 1.9s linear, top 1.5s ease-in-out, bottom 1.5s ease-in-out, left 1.5s ease-in-out, right 1.5s ease-in-out";
+        // position
+        span.style.fontSize = "28px";
+        span.style.position = "absolute";
+        span.style.animation = "1.9s SmallToBigToSmallQuickly ease-in-out";
+        span.style.zIndex = "10001";
+        span.style.top = StartPos.top + "px";
+        span.style.bottom = StartPos.bottom + "px";
+        span.style.left = StartPos.left + "px";
+        span.style.right = StartPos.right + "px";
+
+        document.body.appendChild(span);
+
+        setTimeout(() => {
+            AnimateTo(destination, span);
+
+            setTimeout(() => {
+                span.remove();
+            }, 2000);
+        }, 100);
+    };
+
+    InitItem(icon, iconIsAdvanced, StartPos);
+};
+
 // choose sub winner
 function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points) {
     CheckmateWarnText.style.display = 'none';
     WinCombination.forEach(Ele => {
+        FloatingIconAnimation(Player1_won, Player2_won, Ele.getBoundingClientRect(), WinCombination.length);
         Ele.classList.add('about-to-die-cell');
     });
 
@@ -499,10 +557,10 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
                 // player plays boss level
                 if (current_selected_level == 10) {
-                    eyeGot_HP_Damage(450);
+                    eyeGot_HP_Damage(Math.floor(Math.random() * (499 - 370 + 1)) + 370); // random damage on eye between 370-499
 
                 } else if (current_selected_level == 9) {
-                    sunGot_HP_Damage(500);
+                    sunGot_HP_Damage(Math.floor(Math.random() * (699 - 370 + 1)) + 370); // random damage on eye between 370-699
                 };
             };
 
@@ -562,11 +620,14 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 // call Ultimate Game Win Function
 function Call_UltimateWin(WinCombination) {
     CheckmateWarnText.style.display = "none" // just small bug fix nothing special
-    chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
-    giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
+    removeAccessToAnything();
+
+    console.log("you are here in call ultimate win")
 
     if (WinCombination == undefined) {
+        console.log("The win combi is undefined")
         setTimeout(() => {
+            console.log(score_Player1_numb, score_Player2_numb);
             running = false;
             if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
                 UltimateGameWin(true, false);
@@ -596,6 +657,177 @@ function Call_UltimateWin(WinCombination) {
     };
 };
 
+// ultimate game win start animation
+const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
+    setTimeout(() => {
+        cellGrid.classList.add('Invisible');
+        statusText.classList.add('Invisible');
+        GameFieldHeaderUnderBody.style.display = 'none';
+        statusText.style.display = 'block';
+
+        // restart Game counter
+        let i = 5;
+        var counter = setInterval(() => {
+            if (!stopStatusTextInterval) {
+                // in Advanture mode or in online mode
+                if (inAdvantureMode || curr_mode == GameMode[2].opponent) {
+                    statusText.textContent = `Leave level...`;
+
+                } else if (!inAdvantureMode && curr_mode != GameMode[2].opponent) { // not in advanture and not in online mode
+                    statusText.textContent = `New game starting...`;
+                };
+                statusText.classList.remove('Invisible');
+                i--;
+                if (i <= -1) {
+                    clearInterval(counter);
+                    counter = null;
+
+                    // not advanture mode
+                    if (!inAdvantureMode) {
+                        // in online mode
+                        if (curr_mode == GameMode[2].opponent) {
+                            // admin leaves game and this info all player get
+                            if (personal_GameData.role == "admin") {
+                                UserleavesGame();
+                            };
+                            DarkLayer.style.display = "block";
+
+                            // in offline mode
+                        } else if (curr_mode != GameMode[2].opponent) {
+                            restartGame();
+                        };
+
+                        // in advanture mode
+                    } else {
+                        if (player1_won) { // user won and conquered the level
+                            UserleavesGame(true, current_selected_level);
+                        } else {
+                            UserleavesGame();
+                        };
+                    };
+                };
+            } else {
+                GameFieldHeaderUnderBody.style.display = 'flex';
+                clearInterval(counter);
+                counter = null;
+            };
+        }, 1000);
+    }, 3000);
+};
+
+// first player did ultimate win
+const FirstPlayerUltimateWin = (player1_won, player2_won) => {
+    // Display win text in the proper way
+    if (!inAdvantureMode) {
+        UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it `;
+
+    } else if (inAdvantureMode || curr_mode == GameMode[1].opponent) {
+        UltimateWinText.textContent = `You conquered it `;
+
+        // if user beat level 10 - boss level
+        if (current_selected_level == 10) {
+            UltimateWinText.textContent = `You have conquered the evil `;
+
+            // additional img svg
+            let img = document.createElement('img');
+            let br = document.createElement('br');
+            img.src = "./assets/game/laurels-trophy.svg";
+            img.width = "300";
+            img.height = "300";
+            UltimateWinText.appendChild(br);
+            UltimateWinText.appendChild(img);
+
+            setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+        };
+    };
+
+    // additional img. If player is not it level 10 , this default img gets created
+    if (current_selected_level != 10) {
+        // additional img svg
+        let img = document.createElement('img');
+        let br = document.createElement('br');
+        img.src = "./assets/game/holy-grail.svg";
+        img.width = "300";
+        img.height = "300";
+        UltimateWinText.appendChild(br);
+        UltimateWinText.appendChild(img);;
+
+        setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+    };
+
+    // set skill points
+    if (curr_mode == GameMode[1].opponent) { // KI 
+        if (inAdvantureMode) {
+            let conquered_mapLevel = JSON.parse(localStorage.getItem('unlocked_mapLevels'))[current_selected_level][0];
+            if (!conquered_mapLevel) setNew_SkillPoints(20);
+        };
+    };
+
+    if (!inAdvantureMode) {
+        player1_won = false;
+        player2_won = false;
+    };
+};
+
+// first player did ultimate win
+const SecondPlayerUltimateWin = (player1_won, player2_won) => {
+    if (inAdvantureMode) {
+        UltimateWinText.textContent = `You have lost `;
+
+        // additional img svg
+        let img = document.createElement('img');
+        let br = document.createElement('br');
+        img.src = "./assets/game/bleeding-eye.svg";
+        img.width = "300";
+        img.height = "300";
+        UltimateWinText.appendChild(br);
+        UltimateWinText.appendChild(img);
+
+        setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+
+    } else {
+        // Display win text in the proper way
+        UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it`;
+
+        // additional img svg
+        let img = document.createElement('img');
+        let br = document.createElement('br');
+        img.src = "./assets/game/holy-grail.svg";
+        img.width = "300";
+        img.height = "300";
+        UltimateWinText.appendChild(br);
+        UltimateWinText.appendChild(img);
+
+        setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+    };
+
+    if (!inAdvantureMode) {
+        player1_won = false;
+        player2_won = false;
+    };
+};
+
+// tie ultiamte win
+const GG_UltimateWin = (player1_won, player2_won) => {
+    UltimateWinText.textContent = `GG Well played!`;
+
+    // additional img svg
+    let img = document.createElement('img');
+    let br = document.createElement('br');
+    img.src = "./assets/game/holy-grail.svg";
+    img.width = "300";
+    img.height = "300";
+    UltimateWinText.appendChild(br);
+    UltimateWinText.appendChild(img);
+
+    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+
+    if (!inAdvantureMode) {
+        player1_won = false;
+        player2_won = false;
+    };
+};
+
 // Ultimate Game Win
 function UltimateGameWin(player1_won, player2_won, WinCombination) {
     // Online or offline mode
@@ -605,334 +837,170 @@ function UltimateGameWin(player1_won, player2_won, WinCombination) {
         return;
 
     } else {
-
-        // so the user can't leave during the win animation
-        leaveGame_btn.removeEventListener('click', UserleavesGame);
-        restartBtn.removeEventListener('click', restartGame);
-        restartBtn.removeEventListener('click', restartGame);
-        giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
-        leaveGame_btn.style.color = '#56565659';
-        restartBtn.style.color = '#56565659';
-        statusText.style.display = 'none';
-        setTimeout(() => {
-            leaveGame_btn.addEventListener('click', UserleavesGame);
-            restartBtn.addEventListener('click', restartGame);
-            giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
-            leaveGame_btn.style.color = 'var(--font-color)';
-            restartBtn.style.color = 'var(--font-color)';
-        }, 9000);
-
         // basic stuff
         stopStatusTextInterval = false;
-        cells.forEach(cell => {
-            single_CellBlock(cell, "fromMap");
-        });
+        cellGrid.style.opacity = "0";
+        UltimateWinTextArea.style.opacity = "0";
 
-        killPlayerClocks();
+        killPlayerClocks(true);
         clearInterval(gameCounter);
+        gameCounter = null;
 
         score_Player1_numb = 0;
         score_Player2_numb = 0;
 
-        setTimeout(() => {
-            cellGrid.classList.add('Invisible');
-            statusText.classList.add('Invisible');
-            GameFieldHeaderUnderBody.style.display = 'none';
-            statusText.style.display = 'block';
-
-            // restart Game counter
-            let i = 4;
-            var counter = setInterval(() => {
-                if (!stopStatusTextInterval) {
-                    // in Advanture mode and not
-                    if (!inAdvantureMode) {
-                        statusText.textContent = `New game in ${i}`;
-                    } else {
-                        statusText.textContent = `Leave level in ${i}`;
-                    };
-
-                    statusText.classList.remove('Invisible');
-                    i--;
-                    if (i <= -1) {
-                        clearInterval(counter);
-                        counter = null;
-
-                        if (!inAdvantureMode) {
-                            restartGame();
-                        } else {
-                            if (player1_won) { // user won and conquered the level
-                                UserleavesGame(true, current_selected_level);
-                            } else {
-                                UserleavesGame();
-                            };
-                        };
-                    };
-                } else {
-                    GameFieldHeaderUnderBody.style.display = 'flex';
-                    clearInterval(counter);
-                    counter = null;
-                };
-            }, 1000);
-        }, 3000);
+        UltimateGameWinFirstAnimation(player1_won, player2_won)
 
         setTimeout(() => {
             cellGrid.style.display = 'none';
             UltimateWinTextArea.style.display = 'flex';
             if (player1_won && !player2_won) { // player 1 won (user)
 
-                // Display win text in the proper way
-                if (!inAdvantureMode) {
-                    UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it `;
-
-                } else if (inAdvantureMode || curr_mode == GameMode[1].opponent) {
-                    UltimateWinText.textContent = `You conquered it `;
-
-                    // if user beat level 10 - boss level
-                    if (current_selected_level == 10) {
-                        UltimateWinText.textContent = `You have conquered the evil `;
-
-                        // additional img svg
-                        let img = document.createElement('img');
-                        let br = document.createElement('br');
-                        img.src = "./assets/game/laurels-trophy.svg";
-                        img.width = "300";
-                        img.height = "300";
-                        UltimateWinText.appendChild(br);
-                        UltimateWinText.appendChild(img);
-                    };
-                };
-
-                // additional img. If player is not it level 10 , this default img gets created
-                if (current_selected_level != 10) {
-                    // additional img svg
-                    let img = document.createElement('img');
-                    let br = document.createElement('br');
-                    img.src = "./assets/game/holy-grail.svg";
-                    img.width = "300";
-                    img.height = "300";
-                    UltimateWinText.appendChild(br);
-                    UltimateWinText.appendChild(img);
-                };
-
-                // set skill points
-                if (curr_mode == GameMode[1].opponent) { // KI 
-                    if (inAdvantureMode) {
-                        let conquered_mapLevel = JSON.parse(localStorage.getItem('unlocked_mapLevels'))[current_selected_level][0];
-                        if (!conquered_mapLevel) setNew_SkillPoints(20);
-                    };
-                };
-
-                if (!inAdvantureMode) {
-                    player1_won = false;
-                    player2_won = false;
-                };
+                FirstPlayerUltimateWin(player1_won, player2_won);
 
             } else if (player2_won && !player1_won) { // player 2 won (user)
 
-                if (inAdvantureMode) {
-                    UltimateWinText.textContent = `You have lost `;
+                SecondPlayerUltimateWin(player1_won, player2_won);
 
-                    // additional img svg
-                    let img = document.createElement('img');
-                    let br = document.createElement('br');
-                    img.src = "./assets/game/bleeding-eye.svg";
-                    img.width = "300";
-                    img.height = "300";
-                    UltimateWinText.appendChild(br);
-                    UltimateWinText.appendChild(img);
+            } else if (player1_won && player2_won) { // GG tie
 
-                } else {
-                    // Display win text in the proper way
-                    UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it`;
-
-                    // additional img svg
-                    let img = document.createElement('img');
-                    let br = document.createElement('br');
-                    img.src = "./assets/game/holy-grail.svg";
-                    img.width = "300";
-                    img.height = "300";
-                    UltimateWinText.appendChild(br);
-                    UltimateWinText.appendChild(img);
-                };
-
-                if (!inAdvantureMode) {
-                    player1_won = false;
-                    player2_won = false;
-                };
-
-            } else if (player1_won && player2_won) {
-                UltimateWinText.textContent = `GG Well played!`;
-
-                // additional img svg
-                let img = document.createElement('img');
-                let br = document.createElement('br');
-                img.src = "./assets/game/holy-grail.svg";
-                img.width = "300";
-                img.height = "300";
-                UltimateWinText.appendChild(br);
-                UltimateWinText.appendChild(img);
-
-                if (!inAdvantureMode) {
-                    player1_won = false;
-                    player2_won = false;
-                };
+                GG_UltimateWin(player1_won, player2_won);
             };
         }, 2000);
     };
 };
 
+// player 1 won online game
+const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
+    // Display win text in the proper way
+    if (personal_GameData.role == 'admin') {
+        UltimateWinText.textContent = `You won it `;
+
+        // continue with normal code
+        let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
+        console.log(wins_storage)
+        wins_storage = wins_storage + 1;
+        localStorage.setItem('onlineMatches-won', wins_storage);
+        console.log(wins_storage)
+
+    } else {
+        UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it `;
+    };
+
+    // additional img svg
+    let img = document.createElement('img');
+    let br = document.createElement('br');
+    img.src = "./assets/game/holy-grail.svg";
+    img.width = "300";
+    img.height = "300";
+    UltimateWinText.appendChild(br);
+    UltimateWinText.appendChild(img);
+
+    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+
+    if (curr_mode == GameMode[2].opponent) { // online friend 
+        // only the user which is the winner in this case, earns skill points
+        if (personal_GameData.role == 'admin') {
+            setNew_SkillPoints(10);
+        };
+        if (personal_GameData.role == 'user') {
+            minus_SkillPoints(5);
+        };
+    };
+    if (curr_mode == GameMode[1].opponent) { // KI 
+        setNew_SkillPoints(1);
+    };
+};
+
+// player 2 won online game
+const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
+    // Display win text in the proper way
+    if (personal_GameData.role == 'user') {
+        UltimateWinText.textContent = `You won it `;
+
+        // continue with normal code
+        let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
+        console.log(wins_storage)
+        wins_storage = wins_storage + 1;
+        localStorage.setItem('onlineMatches-won', wins_storage);
+        console.log(wins_storage)
+
+    } else {
+        UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it `;
+    };
+    // additional img svg
+    let img = document.createElement('img');
+    let br = document.createElement('br');
+    img.src = "./assets/game/holy-grail.svg";
+    img.width = "300";
+    img.height = "300";
+    UltimateWinText.appendChild(br);
+    UltimateWinText.appendChild(img);
+
+    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+
+    if (curr_mode == GameMode[2].opponent) { // online friend
+        // only the user which is the winner in this case, earns skill points
+        if (personal_GameData.role == 'user') {
+            setNew_SkillPoints(10);
+        };
+
+        if (personal_GameData.role == 'admin') {
+            minus_SkillPoints(5);
+        };
+    };
+};
+
+// tie in online game 
+const OnlineGame_UltimateWin_GG = (player1_won, player2_won) => {
+    console.log(player1_won, player2_won)
+    UltimateWinText.textContent = `GG Well played `;
+    // additional img svg
+    let img = document.createElement('img');
+    let br = document.createElement('br');
+    img.src = "./assets/game/bleeding-eye.svg";
+    img.width = "300";
+    img.height = "300";
+    UltimateWinText.appendChild(br);
+    UltimateWinText.appendChild(img);
+
+    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+};
+
 // the admin called the ultimate game win
 // this message recieve all clients
 socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
+    console.log("finally, you are in global ultimate win");
+
     // basic stuff
     stopStatusTextInterval = false;
-    cells.forEach(cell => {
-        single_CellBlock(cell);
-    });
+    cellGrid.style.opacity = "0";
+    UltimateWinTextArea.style.opacity = "0";
 
-    // so the user can't leave during the win animation
-    leaveGame_btn.removeEventListener('click', UserleavesGame);
-    restartBtn.removeEventListener('click', restartGame);
-    giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
-    leaveGame_btn.style.color = '#56565659';
-    restartBtn.style.color = '#56565659';
-    statusText.style.display = 'none';
-    setTimeout(() => {
-        leaveGame_btn.addEventListener('click', UserleavesGame);
-        restartBtn.addEventListener('click', restartGame);
-        leaveGame_btn.style.color = 'var(--font-color)';
-        giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
-        GiveUp_btn.style.color = "#56565659";
-        restartBtn.style.color = 'var(--font-color)';
-    }, 9000);
-
+    killPlayerClocks(true);
     clearInterval(gameCounter);
+    gameCounter = null;
 
     score_Player1_numb = 0;
     score_Player2_numb = 0;
 
-    setTimeout(() => {
-        cellGrid.classList.add('Invisible');
-        statusText.classList.add('Invisible');
-        GameFieldHeaderUnderBody.style.display = 'none';
-        statusText.style.display = 'block';
+    UltimateGameWinFirstAnimation(player1_won, player2_won);
 
-        // restart Game counter
-        let i = 4;
-        var counter = setInterval(() => {
-            if (!stopStatusTextInterval) {
-                statusText.textContent = `leave game in ${i}`;
-                statusText.classList.remove('Invisible');
-                i--;
-                if (i <= -1) {
-                    clearInterval(counter);
-                    counter = null;
-                    // leave game after win and return to lobby
-                    if (personal_GameData.role == "admin") UserleavesGame();
-                };
-            } else {
-                GameFieldHeaderUnderBody.style.display = 'flex';
-                clearInterval(counter);
-                counter = null;
-            };
-        }, 1000);
-    }, 3000);
+    console.log(player1_won, player2_won);
 
-    console.log(player1_won, player2_won)
     setTimeout(() => {
         cellGrid.style.display = 'none';
         UltimateWinTextArea.style.display = 'flex';
         if (player1_won && !player2_won) { // player 1 won (admin)
-
-            // Display win text in the proper way
-            if (personal_GameData.role == 'admin') {
-                UltimateWinText.textContent = `You won it `;
-
-                // continue with normal code
-                let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-                console.log(wins_storage)
-                wins_storage = wins_storage + 1;
-                localStorage.setItem('onlineMatches-won', wins_storage);
-                console.log(wins_storage)
-
-            } else {
-                UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it `;
-            };
-
-            // additional img svg
-            let img = document.createElement('img');
-            let br = document.createElement('br');
-            img.src = "./assets/game/holy-grail.svg";
-            img.width = "300";
-            img.height = "300";
-            UltimateWinText.appendChild(br);
-            UltimateWinText.appendChild(img);
-
-            if (curr_mode == GameMode[2].opponent) { // online friend 
-                // only the user which is the winner in this case, earns skill points
-                if (personal_GameData.role == 'admin') {
-                    setNew_SkillPoints(10);
-                };
-                if (personal_GameData.role == 'user') {
-                    minus_SkillPoints(5);
-                };
-            };
-            if (curr_mode == GameMode[1].opponent) { // KI 
-                setNew_SkillPoints(1);
-            };
-            return
+            OnlineGame_UltimateWin_Player1(player1_won, player2_won);
+            return;
 
         } else if (player2_won && !player1_won) { // player 2 won (user)
-            // Display win text in the proper way
-            if (personal_GameData.role == 'user') {
-                UltimateWinText.textContent = `You won it `;
-
-                // continue with normal code
-                let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-                console.log(wins_storage)
-                wins_storage = wins_storage + 1;
-                localStorage.setItem('onlineMatches-won', wins_storage);
-                console.log(wins_storage)
-
-            } else {
-                UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it `;
-            };
-            // additional img svg
-            let img = document.createElement('img');
-            let br = document.createElement('br');
-            img.src = "./assets/game/holy-grail.svg";
-            img.width = "300";
-            img.height = "300";
-            UltimateWinText.appendChild(br);
-            UltimateWinText.appendChild(img);
-
-            if (curr_mode == GameMode[2].opponent) { // online friend
-                // only the user which is the winner in this case, earns skill points
-                if (personal_GameData.role == 'user') {
-                    setNew_SkillPoints(10);
-                };
-
-                if (personal_GameData.role == 'admin') {
-                    minus_SkillPoints(5);
-                };
-            };
-            if (curr_mode == GameMode[1].opponent) { // KI 
-                setNew_SkillPoints(1);
-            };
+            OnlineGame_UltimateWin_Player2(player1_won, player2_won);
             return;
 
         } else if (player1_won && player2_won) {
-            console.log(player1_won, player2_won)
-            UltimateWinText.textContent = `GG Well played `;
-            // additional img svg
-            let img = document.createElement('img');
-            let br = document.createElement('br');
-            img.src = "./assets/game/bleeding-eye.svg";
-            img.width = "300";
-            img.height = "300";
-            UltimateWinText.appendChild(br);
-            UltimateWinText.appendChild(img);
-
+            OnlineGame_UltimateWin_GG(player1_won, player2_won);
             return;
         };
     }, 2000);
@@ -945,12 +1013,18 @@ function setNew_SkillPoints(plus) {
     let ELO_point = 0;
 
     // extra animation addition
+    ELO_Points_AddIcon.style.display = "block";
     ELO_Points_AddIcon.style.transition = 'none';
     ELO_Points_AddIcon.style.opacity = '1';
     ELO_Points_AddIcon.textContent = `+${plus}`;
     setTimeout(() => {
-        ELO_Points_AddIcon.style.transition = 'all 2.15s ease-out';
+        ELO_Points_AddIcon.style.transition = 'all 2.35s ease-out';
         ELO_Points_AddIcon.style.opacity = '0';
+        ELO_Points_AddIcon.style.display = "none";
+
+        setTimeout(() => {
+            ELO_Points_AddIcon.style.display = "none";
+        }, 2750);
     }, 700);
 
     // skill points N + additional_N
@@ -991,12 +1065,17 @@ function minus_SkillPoints(minus) {
     let ELO_point = 0;
 
     // extra animation addition
+    ELO_Points_AddIcon.style.display = "block";
     ELO_Points_AddIcon.style.transition = 'none';
     ELO_Points_AddIcon.style.opacity = '1';
     ELO_Points_AddIcon.textContent = `-${minus}`;
     setTimeout(() => {
         ELO_Points_AddIcon.style.transition = 'all 1.35s ease-out';
         ELO_Points_AddIcon.style.opacity = '0';
+
+        setTimeout(() => {
+            ELO_Points_AddIcon.style.display = "none";
+        }, 1750);
     }, 700);
 
     // skill points N + additional_N
