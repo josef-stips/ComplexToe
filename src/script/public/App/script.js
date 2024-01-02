@@ -383,6 +383,43 @@ let Lobby_XPlayerNameDisplay = document.querySelectorAll(".Lobby_XPlayerNameDisp
 let Lobby_ThirdPlayer_Wrapper = document.querySelector(".Lobby_ThirdPlayer_Wrapper");
 let Lobby_FirstPlayer_Wrapper = document.querySelector(".Lobby_FirstPlayer_Wrapper");
 let Lobby_SecondPlayer_Wrapper = document.querySelector(".Lobby_SecondPlayer_Wrapper");
+let ChooseFieldDisplay = document.querySelector(".ChooseField-display");
+let CreateLevelScene = document.querySelector(".CreateLevelScene");
+// create level etc. elements
+let CreateLevel_helpPopUp = document.querySelector(".CreateLevel_helpPopUp");
+let CreateLevel_HelpPopUpCloseBtn = document.querySelector(".CreateLevel_HelpPopUpCloseBtn");
+let CreateLevel_leaveSceneBtn = document.querySelector(".CreateLevel_leaveSceneBtn");
+let ShowLevelListBtn = document.querySelector(".ShowLevelListBtn");
+let ShowWorkbenchBtn = document.querySelector(".ShowWorkbenchBtn");
+let CreateLevel_Title = document.querySelector(".CreateLevel_Title");
+let CreateLevelHelpButton = document.querySelector(".CreateLevelHelpButton");
+let RedoChangeBtn = document.querySelector(".RedoChangeBtn");
+let UndoChangeBtn = document.querySelector(".UndoChangeBtn");
+let CreateLevel_Workbench = document.querySelector(".CreateLevel_Workbench");
+let LevelMusicDisplay = document.querySelector(".LevelMusicDisplay");
+let levelBackgroundColor_ColorDisplay1 = document.querySelector(".levelBackgroundColor_ColorDisplay1");
+let levelBackgroundColor_HexDisplay1 = document.querySelector(".levelBackgroundColor_HexDisplay1");
+let levelBackgroundColor_ColorDisplay2 = document.querySelector(".levelBackgroundColor_ColorDisplay2");
+let levelBackgroundColor_HexDisplay2 = document.querySelector(".levelBackgroundColor_HexDisplay2");
+let levelRequiredPointsToWinDisplay = document.querySelector(".levelRequiredPointsToWinDisplay");
+let levelPlayerClockDisplay = document.querySelector(".levelPlayerClockDisplay");
+let LevelIconDisplay = document.querySelector(".LevelIconDisplay");
+let workbench_LevelName_Display = document.querySelector(".workbench_LevelName_Display");
+let workbench_cellGrid = document.querySelector(".workbench_cellGrid");
+let workbench_LevelFieldSize_Display = document.querySelector(".workbench_LevelFieldSize_Display");
+let worbench_LevelStatus = document.querySelector(".worbench_LevelStatus");
+let CreateLevel_LevelList = document.querySelector(".CreateLevel_LevelList");
+let LevelList_list = document.querySelector(".LevelList_list");
+let SaveLevelBtn = document.querySelector(".SaveLevelBtn");
+let PlayLevelBtn = document.querySelector(".PlayLevelBtn");
+let PlayLevelBtn_ListBtn = document.querySelector(".PlayLevelBtn_ListBtn");
+let EditLevelBtn_ListBtn = document.querySelector(".EditLevelBtn_ListBtn");
+let RemoveLevelBtn = document.querySelector(".RemoveLevelBtn");
+let PublishLevelBtn = document.querySelector(".PublishLevelBtn");
+let unpublishLevelBtn = document.querySelector(".unpublishLevelBtn");
+// select all caret elements
+let ChangeSetting_leftCaret_All = document.querySelectorAll(".ChangeSetting_leftCaret");
+let ChangeSetting_rightCaret_All = document.querySelectorAll(".ChangeSetting_rightCaret");
 
 bodyBGIMG.forEach(e => e.style.display = "none");
 
@@ -414,7 +451,7 @@ let GameMode = {
     1: {
         "opponent": "KI", // You play against a KI if your offline or you want to get better
         "icon": "fa-solid fa-robot",
-        "description": "Training arena"
+        "description": "Play against a bot" // the "create level mode" was originally a Ki mode but the advanture map replaced it
     },
     2: {
         "opponent": "OnlineFriend", // Guy you send a link to so you can play with him together
@@ -426,6 +463,11 @@ let GameMode = {
         "icon": "fa-solid fa-computer",
         "description": "Play with a friend on same computer"
     },
+    4: {
+        "opponent": "CreateLevel",
+        "icon": "",
+        "description": "Create Level",
+    }
 };
 
 let Fields = {
@@ -1417,8 +1459,40 @@ settFullscreenBtn.addEventListener('click', () => {
     };
 });
 
+// Dark layer animation
+const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
+    return new Promise((resolve) => {
+        // animation
+        DarkLayer.style.backgroundColor = 'black';
+        DarkLayer.style.display = 'block';
+        DarkLayer.style.transition = 'opacity 0.1s ease-in';
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.opacity = '1';
+            setTimeout(() => {
+                undisplay_Element.style.display = 'none';
+                Display_Element.style.display = 'flex';
+            }, 100);
+        }, 500);
+
+        setTimeout(() => {
+            DarkLayer.style.opacity = '0';
+
+            resolve();
+
+            setTimeout(() => {
+                DarkLayer.style.display = 'none';
+                DarkLayer.style.transition = 'none';
+                DarkLayer.style.opacity = '1';
+                DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+            }, 400);
+        }, 900);
+    });
+};
+
 // add click sound to gameMode Cards and animation
-Allbtns.forEach(btn => {
+Allbtns.forEach((btn) => {
     if (btn.classList.contains("mainCard")) {
 
         btn.addEventListener('click', (card) => { // event listener for online card
@@ -1433,30 +1507,7 @@ Allbtns.forEach(btn => {
                 // audio
                 playBtn_Audio();
 
-                // animation
-                DarkLayer.style.backgroundColor = 'black';
-                DarkLayer.style.display = 'block';
-                DarkLayer.style.transition = 'opacity 0.1s ease-in';
-                DarkLayer.style.opacity = '0';
-
-                setTimeout(() => {
-                    DarkLayer.style.opacity = '1';
-                    setTimeout(() => {
-                        gameModeCards_Div.style.display = 'none';
-                        gameModeFields_Div.style.display = 'flex';
-                    }, 100);
-                }, 100);
-
-                setTimeout(() => {
-                    DarkLayer.style.opacity = '0';
-
-                    setTimeout(() => {
-                        DarkLayer.style.display = 'none';
-                        DarkLayer.style.transition = 'none';
-                        DarkLayer.style.opacity = '1';
-                        DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-                    }, 400);
-                }, 400);
+                DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
             };
         });
 
@@ -1465,30 +1516,8 @@ Allbtns.forEach(btn => {
             // audio
             playBtn_Audio();
 
-            // animation
-            DarkLayer.style.backgroundColor = 'black';
-            DarkLayer.style.display = 'block';
-            DarkLayer.style.transition = 'opacity 0.1s ease-in';
-            DarkLayer.style.opacity = '0';
-
-            setTimeout(() => {
-                DarkLayer.style.opacity = '1';
-                setTimeout(() => {
-                    gameModeCards_Div.style.display = 'none';
-                    gameModeFields_Div.style.display = 'flex';
-                }, 100);
-            }, 100);
-
-            setTimeout(() => {
-                DarkLayer.style.opacity = '0';
-
-                setTimeout(() => {
-                    DarkLayer.style.display = 'none';
-                    DarkLayer.style.transition = 'none';
-                    DarkLayer.style.opacity = '1';
-                    DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-                }, 400);
-            }, 400);
+            // create level or play offline on same computer
+            (btn.classList.contains("create")) ? DarkLayerAnimation(CreateLevelScene, gameModeCards_Div): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
         });
     };
 });
@@ -1502,29 +1531,7 @@ fieldsArea_back_btn.addEventListener('click', () => {
     CheckTreasureCanBeOpened();
 
     // animation
-    DarkLayer.style.backgroundColor = 'black';
-    DarkLayer.style.display = 'block';
-    DarkLayer.style.transition = 'opacity 0.1s ease-in';
-    DarkLayer.style.opacity = '0';
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '1';
-        setTimeout(() => {
-            gameModeCards_Div.style.display = 'flex';
-            gameModeFields_Div.style.display = 'none';
-        }, 100);
-    }, 100);
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '0';
-
-        setTimeout(() => {
-            DarkLayer.style.display = 'none';
-            DarkLayer.style.transition = 'none';
-            DarkLayer.style.opacity = '1';
-            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-        }, 400);
-    }, 400);
+    DarkLayerAnimation(gameModeCards_Div, gameModeFields_Div);
 
     CheckForMessages(); // Check for messages in database
     CheckForFriendRequests(); // check for friend requests
@@ -1535,23 +1542,22 @@ fieldsArea_back_btn.addEventListener('click', () => {
 
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
-    curr_mode = GameMode[1].opponent;
+    curr_mode = GameMode[4].opponent;
+
+    // pause music in create level mode
+    PauseMusic();
+
+    // User entered create level mode
+    let NewField = new NewLevel();
+    NewField.Init();
+
+    // bug fix if user was in advanced mode:
     goToAdvancedFields.style.display = 'none';
-
-    // visibility for Ki Fields and GameMode fields
-    ThreexThree_Field.style.display = 'flex';
-    ForxFor_Field.style.display = 'flex';
-    FivexFive_Field.style.display = 'flex';
-    TenxTen_Field.style.display = 'flex';
-    FifTeenxFifTeen_Field.style.display = 'none';
-    TwentyxTwentyField.style.display = 'none';
-    // Display Game Mode Description
-    GameModeDisplay.textContent = GameMode[1].description;
-
-    // bug fix:
     goToAdvancedFields.classList = "fa-solid fa-caret-down";
     secondTierModes.style.marginBottom = "0";
     isInAdvancedGameModes = false;
+    // other thing
+    ChooseFieldDisplay.style.opacity = "0";
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
@@ -1567,6 +1573,8 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
     TwentyxTwentyField.style.display = 'flex';
     // Display Game Mode Description
     GameModeDisplay.textContent = GameMode[2].description;
+
+    ChooseFieldDisplay.style.opacity = "1";
 });
 
 gameMode_OneVsOne_card.addEventListener('click', () => {
@@ -1582,6 +1590,8 @@ gameMode_OneVsOne_card.addEventListener('click', () => {
     TwentyxTwentyField.style.display = 'flex';
     // Display Game Mode Description
     GameModeDisplay.textContent = GameMode[3].description;
+
+    ChooseFieldDisplay.style.opacity = "1";
 });
 
 // field-cards click event

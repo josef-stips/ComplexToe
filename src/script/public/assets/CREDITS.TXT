@@ -17,4 +17,73 @@ Note: The file is edited. Only the first bit of the sound is there.
 
 ----------------------------------------
 
+btn-click_2.mp3 (costum name) Sound is used as standard click sound on buttons and this sound effect is obtained from https://www.zapsplat.com
 
+boss_theme.mp3 (Music which cames up when user enters boss mode in game) : Music: Final Boss by Myuu. Video Link: https://www.youtube.com/watch?v=ihqOJsFVQ7c
+
+The following articles are under this credit: music by Karl Casey @ White Bat Audio
+(the file names are costum and are not the original music names)
+
+Ground_destroyer.mp3
+Impossible_survival.mp3
+Long_Funeral.mp3
+March_into_fire.mp3
+Merciful_slaughter.mp3
+Quick_Death.mp3
+Tunnel_of_truth.mp3
+
+------------ Credits for icons from Game-icons.net ------------
+
+asteroid by Delapouite under CC BY 3.0
+bamboo-fountain by Delapouite under CC BY 3.0
+battered-axe by Lorc under CC BY 3.0
+battle-axe by Lorc under CC BY 3.0
+caldera by Lorc under CC BY 3.0
+Entangled typhoon by Lorc under CC BY 3.0
+Stalactite by Delapouite under CC BY 3.0
+Lightning shout by Lorc under CC BY 3.0
+Waterfall by Lorc under CC BY 3.0
+big-gear by Delapouite under CC BY 3.0
+black-book by Willdabeast under CC BY 3.0
+bleeding-eye by Lorc under CC BY 3.0
+book-cover by Delapouite under CC BY 3.0
+camping-tent by Delapouite under CC BY 3.0
+cave-entrance by Delapouite under CC BY 3.0
+crenel-crown by Delapouite under CC BY 3.0
+crossed-swords by Lorc under CC BY 3.0
+crystal-bars by Lorc under CC BY 3.0
+crystal-eye by Lorc under CC BY 3.0
+diamond-hilt by Delapouite under CC BY 3.0
+dragon-head by Lorc under CC BY 3.0
+egyptian-bird by Delapouite under CC BY 3.0
+fangs by Lorc under CC BY 3.0
+fire-iris by Delapouite under CC BY 3.0
+gluttonous-smile by Lorc under CC BY 3.0
+hobbit-door by Delapouite under CC BY 3.0
+holy-grail by Lorc under CC BY 3.0
+horned-skull by Lorc under CC BY 3.0
+laurels-trophy by Delapouite under CC BY 3.0
+linden-leaf by Lorc under CC BY 3.0
+lock-spy by Delapouite under CC BY 3.0
+locked-chest by Lorc under CC BY 3.0
+minerals by Delapouite under CC BY 3.0
+ore by Lorc under CC BY 3.0
+pentagram-rose by Lorc under CC BY 3.0
+piercing-sword by Lorc under CC BY 3.0
+pine-tree by Delapouite under CC BY 3.0
+scroll-unfurled by Lorc under CC BY 3.0
+semi-closed-eye by Lorc under CC BY 3.0
+shattered-sword by Lorc under CC BY 3.0
+shiny-iris by Lorc under CC BY 3.0
+spell by Delapouite under CC BY 3.0
+stone-crafting by Lorc under CC BY 3.0
+sunken-eye by Lorc under CC BY 3.0
+tied-scroll by Lorc under CC BY 3.0
+treasure-map by Lorc under CC BY 3.0
+tribal-mask by Delapouite under CC BY 3.0
+warlock-eye by Delapouite under CC BY 3.0
+warlord-helmet by Caro Asercion under CC BY 3.0
+wax-tablet by Delapouite under CC BY 3.0
+willow-tree by Caro Asercion under CC BY 3.0
+winged-sword by Lorc under CC BY 3.0
+wolf-head by Lorc under CC BY 3.0

@@ -118,8 +118,8 @@ XPJourneyBtn.addEventListener('click', () => {
             }
         };
 
-        // reset scroll of overflow scroll div side wrapper
-        JourneyInnerSideWrapper.scrollTop = 0;
+        // set scroll of overflow scroll div side wrapper to current XP
+        JourneyInnerSideWrapper.scrollTop = CurrentPoint_Element.offsetTop - (CurrentPoint_Element.offsetTop / 10);
 
         ClickPoint(CurrentPoint_Element, CurrentPoint);
         playBtn_Audio_3();

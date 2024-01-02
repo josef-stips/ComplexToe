@@ -14,7 +14,7 @@
 
     <!-- server -->
     <link rel="stylesheet" href="index.css" />
-    <audio id="bg_audio" src="assets/bg_music.m4a"></audio>
+    <audio id="bg_audio" src="assets/Maps/BGmusic2.m4a"></audio>
     <audio id="coinsSound" src="assets/coins.mp3"></audio>
     <audio id="btn_click_1" src="assets/increase_elo.mp3"></audio>
     <audio src="assets/Picked Coin Echo.wav" id="btn_click3"></audio>
@@ -41,6 +41,7 @@
     <script src="./libraries/smtp.js"></script>
 
     <script defer src="App/script.js"></script>
+    <script defer src="Game/CreateGame.js"></script>
     <script defer src="App/features/OnlineSocialUser.js"></script>
     <script defer src="App/SkinLogic.js"></script>
     <script defer src="App/features/Treasure.js"></script>
@@ -160,7 +161,7 @@
                         </div>
 
                         <div class="lobby-cards-header-right">
-                            <i id="store-icon" class="fa-solid fa-store"></i>
+                            <img height="40" width="40" src="assets/game/camping-tent.svg" style="transform: rotate(90deg);" id="store-icon" draggable="false">
                             <img id="treasure-icon" width="31" height="31" src="assets/game/locked-chest.svg" draggable="false">
                             <img id="treasure-icon-2" width="31" height="31" src="assets/game/locked-chest.svg" draggable="false">
                         </div>
@@ -172,11 +173,11 @@
                         </div>
 
                         <!-- Card #1 -->
-                        <div class="gameMode-card btn" id="gameMode-KI-card">
+                        <div class="gameMode-card btn create" id="gameMode-KI-card">
 
                             <div class="card-header">
                                 <div class="card-circle">
-                                    <img width="44px" height="44px" src="assets/game/battered-axe.svg" class="BotIcon">
+                                    <img width="44px" height="44px" src="assets/game/stone-crafting.svg" class="BotIcon">
                                 </div>
                             </div>
 
@@ -336,7 +337,7 @@
                     </div>
 
                     <div class="fields-header-title">
-                        <h1 class="GameMode-display">Play online with a friend</h1>
+                        <h1 class="GameMode-display">some text generated here</h1>
                         <h1 class="ChooseField-display">Choose a field!</h1>
                     </div>
 
@@ -2313,6 +2314,207 @@
 
                 </div>
             </div>
+
+            <!-- create level scenery -->
+            <dv class="CreateLevelScene">
+
+                <!-- header -->
+                <div class="CreateLevel_header">
+
+                    <div class="CreateLevel_headerLeft">
+
+                        <!-- if in work bench mode (user creates level) -->
+                        <span class="CreateLevel_leaveSceneBtn CreateLevelSceneButton"> <i class="fa-solid fa-arrow-left"></i> Back to Lobby </span>
+                        <span class="ShowLevelListBtn SwitchSceneBtn CreateLevelSceneButton"> <i class="fa-solid fa-bars"></i> Show Level list </span>
+
+                        <!-- if in level list mode -->
+                        <span class="ShowWorkbenchBtn SwitchSceneBtn CreateLevelSceneButton"> <i class="fa-solid fa-screwdriver-wrench"></i> Back to Workbench </span>
+
+                    </div>
+
+                    <div class="CreateLevel_headerMiddle">
+                        <h1 class="CreateLevel_Title">Workbench </h1>
+                    </div>
+
+                    <div class="CreateLevel_headerRight">
+                        <i class="fa-solid fa-rotate-left CreateLevelSceneButton UndoChangeBtn"></i>
+                        <i class="fa-solid fa-rotate-left CreateLevelSceneButton RedoChangeBtn" style="transform: scaleX(-1);"></i>
+                        <i class="CreateLevelSceneButton CreateLevelHelpButton">Help</i>
+                    </div>
+                </div>
+
+                <!-- main scenery contains the level list and workbench the user can switch between through header button .SwitchSceneBtn -->
+                <div class="CreateLevel_main">
+                    <!-- workbench scene -->
+                    <div class="CreateLevel_Workbench">
+
+                        <div class="Workbench_main">
+
+                            <div class="workbenchMain_left">
+                                <div class="workbenchLevelSettingsListWrapper">
+                                    <ul class="workbenchLevelSettingsList">
+
+                                        <!-- bg music -->
+                                        <li class="workbenchFieldSettingItem">
+                                            <span>Background Music</span>
+                                            <div>
+                                                <i for="bgmusic" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
+
+                                                <span from="bgmusic" class="LevelMusicDisplay"></span>
+
+                                                <i for="bgmusic" class="fa-solid fa-caret-right ChangeSetting_rightCaret"></i>
+                                            </div>
+                                        </li>
+
+                                        <!-- bg color 1 gardient -->
+                                        <li class="workbenchFieldSettingItem">
+                                            <span>Background Color 1</span>
+
+                                            <div class="SwitchSettingWrapper">
+                                                <i for="bgcolor1" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
+
+                                                <span class="LevelBackgroundColorDisplay">
+                                                    <div from="bgcolor1" class="levelBackgroundColor_ColorDisplay1"></div> 
+                                                    <span from="bgcolor1" class="levelBackgroundColor_HexDisplay1">#000000 </span>
+                                                </span>
+
+                                                <i for="bgcolor1" class="fa-solid fa-caret-right ChangeSetting_rightCaret"></i>
+                                            </div>
+                                        </li>
+
+                                        <!-- bg color 2 for gardient -->
+                                        <li class="workbenchFieldSettingItem">
+                                            <span>Background Color 2</span>
+
+                                            <div class="SwitchSettingWrapper">
+                                                <i for="bgcolor2" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
+
+                                                <span class="LevelBackgroundColorDisplay">
+                                                    <div from="bgcolor2" class="levelBackgroundColor_ColorDisplay2"> </div> 
+                                                    <span from="bgcolor2" class="levelBackgroundColor_HexDisplay2">#000000 </span>
+                                                </span>
+
+                                                <i for="bgcolor2" class="fa-solid fa-caret-right ChangeSetting_rightCaret"></i>
+                                            </div>
+                                        </li>
+
+                                        <!-- required points to win game -->
+                                        <li class="workbenchFieldSettingItem">
+                                            <span>Required points to win</span>
+
+                                            <div class="SwitchSettingWrapper">
+                                                <i for="requiredpoints" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
+
+                                                <span from="requiredpoints" class="levelRequiredPointsToWinDisplay" contenteditable="true" spellcheck="false">10</span>
+
+                                                <i for="requiredpoints" class="fa-solid fa-caret-right ChangeSetting_rightCaret"></i>
+                                            </div>
+                                        </li>
+
+                                        <!-- player timer -->
+                                        <li class="workbenchFieldSettingItem">
+                                            <span>Player move clock</span>
+
+                                            <div class="SwitchSettingWrapper">
+                                                <i for="playertimer" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
+
+                                                <span from="playertimer" class="levelPlayerClockDisplay">30 sec.</span>
+
+                                                <i for="playertimer" class="fa-solid fa-caret-right ChangeSetting_rightCaret"></i>
+                                            </div>
+                                        </li>
+
+                                        <!-- level icon -->
+                                        <li class="workbenchFieldSettingItem">
+                                            <span>Level Icon for field</span>
+
+                                            <div class="SwitchSettingWrapper">
+                                                <i for="levelicon" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
+
+                                                <img from="levelicon" src="assets/game/battered-axe.svg" width="32" height="32" class="LevelIconDisplay">
+
+                                                <i for="levelicon" class="fa-solid fa-caret-right ChangeSetting_rightCaret"></i>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="workbenchMain_middle">
+
+                                <div class="workbenchMiddle_top">
+                                    <h1 contenteditable="true" class="workbench_LevelName_Display" spellcheck="false">Your level name</h1>
+                                </div>
+
+                                <div class="workbenchMiddle_main">
+                                    <i for="cellgrid" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
+
+                                    <div from="cellgrid" class="workbench_cellGrid">
+                                        <!-- cell grid generated by javascript CreateGame.js class function -->
+                                    </div>
+
+                                    <i for="cellgrid" class="fa-solid fa-caret-right ChangeSetting_rightCaret"></i>
+                                </div>
+
+                                <div class="workbenchMiddle_footer">
+                                    <span class="workbench_LevelFieldSize_Display">20x20</span>
+                                </div>
+
+                            </div>
+
+                            <div class="workbenchMain_right">
+                                <div class="workbench_AllowedPatternsContainerWrapper">
+                                    <i class="fa-solid fa-caret-up"></i>
+
+                                    <ul class="workbench_AllowedPatternsList">
+                                        <!-- put here the allowed patterns -->
+                                    </ul>
+
+                                    <i class="fa-solid fa-caret-down"></i>
+                                </div>
+
+                                <div class="worbench_LevelStatusWrapper">
+                                    <span>
+                                        <p style="font-size: var(--Text-font-size);">Status:</p>
+                                        <span class="worbench_LevelStatus">unpublished</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="Workbench_footer">
+                            <span class="CreateLevelSceneButton SaveLevelBtn">Save Level</span>
+                            <span class="CreateLevelSceneButton PlayLevelBtn">Play Level</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Level list scene -->
+                    <div class="CreateLevel_LevelList">
+
+                        <div class="LevelList_main">
+                            <ul class="LevelList_list">
+                                <!-- generate by javascript CreateGame.js class function -->
+                            </ul>
+                        </div>
+
+                        <div class="LevelList_footer">
+                            <span class="CreateLevelSceneButton PlayLevelBtn_ListBtn">Play Level</span>
+                            <span class="CreateLevelSceneButton EditLevelBtn_ListBtn">Edit Level</span>
+                            <!-- If level is published remove it also from server! -->
+                            <span class="CreateLevelSceneButton RemoveLevelBtn">Remove Level</span>
+
+                            <!-- if level is unpublished or not -->
+                            <span class="CreateLevelSceneButton PublishLevelBtn">Publish Level</span>
+                            <!-- Player has to play an complete a level to publish it -->
+
+                            <span class="CreateLevelSceneButton unpublishLevelBtn">Unpublish Level</span>
+                            <!-- Level is published. remove it from server -->
+                        </div>
+                    </div>
+                </div>
+            </dv>
         </div>
 
         <div class="lobby-footer">
@@ -5026,19 +5228,20 @@
             <div class="mapLevelDisplay-mainInnerWrapper">
 
                 <div class="MapLevelPreview_UserData">
-                    <label for="MapLevel_NameInput">Set your name</label>
+                    <label for="MapLevel_NameInput" style="color: goldenrod;">Set your name</label>
                     <input id="MapLevel_NameInput" class="SetPlayerName-input" placeholder="Your name" type="text">
 
-                    <label for="MapLevel_IconInput" id="MapLevel_SetIconLabel">Set your icon</label>
+                    <label for="MapLevel_IconInput" id="MapLevel_SetIconLabel" style="color: goldenrod;">Set your icon</label>
                     <input id="MapLevel_IconInput" class="SetPlayerName-input" placeholder="Your icon" type="text">
 
                     <span class="SkinInputDisplay">Your current selected skin <span class="SkinInputDisplay-skin"></span> is your icon.</span>
 
                     <hr align="center" width="90%">
 
-                    <span class="mapLevel_ModeDisplay">Mode: ???</span>
+                    <span style="color: goldenrod;">Mode: </span>
+                    <span class="mapLevel_ModeDisplay"></span>
 
-                    <span>Requirements:</span>
+                    <span style="color: goldenrod;">Requirements:</span>
                     <ul>
                         <li class="LevelOverview_requirement"></li>
                         <li class="LevelOverview_requirement"></li>
@@ -5051,13 +5254,13 @@
                 <div class="MapLevelPreview_LevelData">
                     <ul class="MapLevelPreview_LevelDataList">
                         <li>
-                            <span>Difficulty</span>
-                            <i class="fa-solid fa-child"></i>
+                            <span style="color: goldenrod;">Difficulty</span>
+                            <img src="assets/game/egyptian-bird.svg" width="35" height="35" style="transform: rotate(90deg);">
                             <div class="difficulty-bar">
                                 <div class="fill"></div>
                                 <div class="fill2"></div>
                             </div>
-                            <i class="fa-solid fa-skull"></i>
+                            <img src="assets/game/horned-skull.svg" width="35" height="35" style="transform: rotate(90deg);">
                         </li>
 
                         <li>
@@ -5065,7 +5268,7 @@
                         </li>
 
                         <li class="mapLevel_Description mapLevel_column">
-                            <span>Level describtion:</span>
+                            <span style="color: goldenrod;">Level describtion:</span>
                             <span class="mapLevel_Description_Text mapLevel_column_text">
                                 
                             </span>
@@ -5076,7 +5279,7 @@
                         </li>
 
                         <li class="mapLevel_AllowedPatterns mapLevel_column">
-                            <span>Allowed patterns:</span>
+                            <span style="color: goldenrod;">Allowed patterns:</span>
                             <span class="mapLevel_AllowedPatterns_Text mapLevel_column_text">
                                 <!-- default text -->
                                 All patterns are allowed
@@ -5088,7 +5291,7 @@
                         </li>
 
                         <li>
-                            <span>max. amount of moves:</span>
+                            <span style="color: goldenrod;">max. amount of moves:</span>
                             <span class="MaxAmountOfMoves"></span>
                         </li>
 
@@ -5097,7 +5300,7 @@
                         </li>
 
                         <li>
-                            <span>Level conquered:</span>
+                            <span style="color: goldenrod;">Level conquered:</span>
                             <span class="conquered_MapLevel_Display"></span>
                         </li>
 
@@ -5106,7 +5309,7 @@
                         </li>
 
                         <li>
-                            <span>Boss:</span>
+                            <span style="color: goldenrod;">Boss:</span>
                             <span class="BossIn_MapLevel_Display"></span>
                         </li>
 
@@ -5117,7 +5320,7 @@
 
         <div class="mapLevelDisplay-footer">
             <div></div>
-            <button class="startMapLevelBtn">Try level</button>
+            <button class="startMapLevelBtn">Start</button>
         </div>
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
@@ -5376,6 +5579,22 @@
             <div class="DeleteFriendOption_Yes">Yes</div>
             <div class="DeleteFriendOption_NotYet">Not yet</div>
         </div>
+    </div>
+
+    <!-- create level help pop up -->
+    <div class="CreateLevel_helpPopUp">
+        <div class="CreateLevelHelpHeader">
+            <i class="fa-solid fa-question"></i>
+
+            <i class="fa-solid fa-x CreateLevel_HelpPopUpCloseBtn"></i>
+        </div>
+
+        <div class="CreateLevelHelpPopUpMain">
+            <!-- text for user with images maybe -->
+            <p>
+            </p>
+        </div>
+
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">

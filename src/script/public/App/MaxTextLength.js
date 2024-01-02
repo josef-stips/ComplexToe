@@ -582,6 +582,74 @@ UserSetPointsToWinGameInput.addEventListener("input", function(event) {
     };
 });
 
+levelRequiredPointsToWinDisplay.addEventListener("input", (event) => {
+    const inputValue = event.target.textContent;
+    const validInput = inputValue.replace(/[^0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.textContent = validInput.trim();
+    };
+});
+
+levelRequiredPointsToWinDisplay.addEventListener('keydown', (event) => {
+    let len = event.target.textContent.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 3 && !hasSelection || event.key === "Enter" || event.key === "spacebar") {
+        event.preventDefault();
+        return false;
+    };
+});
+
+workbench_LevelName_Display.addEventListener("input", (event) => {
+    const inputValue = event.target.textContent;
+    const validInput = inputValue.replace(/[^A-Za-z\s]/g, "");
+
+    if (inputValue !== validInput) {
+        event.target.textContent = validInput;
+
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.setStart(workbench_LevelName_Display.firstChild, event.target.firstChild.length);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    };
+});
+
+workbench_LevelName_Display.addEventListener('keydown', (event) => {
+    let len = event.target.textContent.length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 25 && !hasSelection || event.key === "Enter") {
+        event.preventDefault();
+        return false;
+    };
+});
+
 input3.addEventListener("input", function(event) {
     const inputValue = event.target.value;
     const validInput = inputValue.replace(/[^0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben

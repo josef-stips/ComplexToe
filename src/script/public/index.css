@@ -12,6 +12,9 @@
     --floating-x-range: -142vh;
     --locked-field: #2e2e2e;
     --BossMode-fieldcircleMargin: 60px;
+    --button-font-size: 17px;
+    --Text-font-size: 22.5px;
+    --max-cellGrid-size: 585px;
 }
 
 .dark-mode {
@@ -540,7 +543,7 @@ img {
 .lobby-main-sec {
     color: var(--font-color);
     display: block;
-    height: 85%;
+    height: 80%;
     width: 100%;
     display: flex;
     align-items: center;
@@ -681,8 +684,7 @@ img {
 .gameMode-card:hover {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
-    width: 90.7%;
-    height: 40.7%;
+    height: 46%;
 }
 
 .mainCard {
@@ -694,8 +696,7 @@ img {
 .mainCard:hover {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
-    width: 100.7%;
-    height: 50.7%;
+    height: 56%;
 }
 
 .card-header {
@@ -707,7 +708,7 @@ img {
 }
 
 .BotIcon {
-    font-size: 28px;
+    font-size: 55px;
 }
 
 .card-circle {
@@ -1177,7 +1178,7 @@ img {
 
 .music-bars {
     height: 100%;
-    width: 50%;
+    width: 30%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -1185,7 +1186,7 @@ img {
 
 .music-bars-2 {
     height: 100%;
-    width: 50%;
+    width: 30%;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -1200,7 +1201,7 @@ img {
 
 .lobby-footer-text {
     font-size: 20px;
-    margin-bottom: 1em;
+    margin-bottom: 1.75em;
     width: 10%;
     height: 100%;
     display: flex;
@@ -2889,13 +2890,18 @@ label h3 {
     font-size: 50px;
 }
 
+#store-icon {
+    margin-top: -0.20em;
+    pointer-events: all !important;
+    cursor: pointer;
+}
+
 #treasure-icon {
     /* if treasure is availible */
     /* animation: treasure_availible 1s infinite; */
     animation: none;
     pointer-events: all !important;
     cursor: pointer;
-    fill: red !important;
 }
 
 #treasure-icon-2 {
@@ -2939,7 +2945,7 @@ label h3 {
     right: 0;
     left: 0;
     width: 70%;
-    height: 60%;
+    height: 65%;
     border: 2px solid var(--font-color);
     color: var(--font-color);
     border-radius: 40px;
@@ -3533,8 +3539,8 @@ label h3 {
     left: 0;
     right: 0;
     margin: auto auto auto auto;
-    width: 60%;
-    height: 60%;
+    width: 75%;
+    height: 75%;
     border: 3px solid var(--font-color);
     border-radius: 40px;
     background-color: var(--bg-app-color);
@@ -3609,11 +3615,12 @@ label h3 {
     height: 65%;
     width: 35%;
     margin: 0 1em 0 0;
-    border-radius: 15px;
+    border-radius: none !important;
     outline: none;
-    border: 2.5px solid;
-    font-size: 22px;
-    font-weight: 500;
+    border: none !important;
+    font-size: 45px;
+    letter-spacing: 8px;
+    font-weight: 600;
     margin: 0 0.75em 0.5em 0;
     padding: 10px;
     cursor: pointer;
@@ -3621,6 +3628,8 @@ label h3 {
     justify-content: center;
     transition: all 0.2s ease-out;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0) !important;
+    color: white;
 }
 
 .startMapLevelBtn:hover {
@@ -5143,6 +5152,281 @@ label h3 {
 }
 
 
+/* create level pop up */
+
+.CreateLevelScene {
+    display: none;
+    flex-direction: column;
+    width: 97.5%;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.CreateLevel_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 10%;
+}
+
+.CreateLevel_main {
+    height: 90%;
+    width: 100%;
+}
+
+.CreateLevel_Workbench {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.CreateLevel_headerLeft {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    gap: 1em;
+    justify-content: start;
+    flex-direction: row;
+}
+
+.CreateLevel_headerMiddle {
+    height: 100%;
+}
+
+.CreateLevel_headerRight {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    gap: 1em;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.Workbench_main {
+    position: relative;
+    height: 90%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.CreateLevel_Title {
+    font-size: 40px;
+}
+
+.Workbench_footer {
+    display: flex;
+    border-top: 2px solid;
+    padding: 15px 15px 0 15px;
+    gap: 1em;
+}
+
+
+/* Pop-up und Benutzeroberfläche */
+
+.CreateLevelSceneButton {
+    padding: 10px 25px;
+    border: 2px white solid;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    width: max-content;
+    height: max-content;
+    background-color: #0000007d;
+    transition: border 0.1s ease-in-out;
+    font-size: var(--button-font-size);
+}
+
+.CreateLevelSceneButton:hover {
+    cursor: pointer;
+    border-color: goldenrod;
+    transition: border 0.1s ease-in-out;
+}
+
+.CreateLevel_helpPopUp {
+    display: none;
+}
+
+.workbenchLevelSettingsList {
+    font-size: var(--Text-font-size);
+    flex-direction: column;
+    display: flex;
+    gap: 1em;
+}
+
+.workbenchFieldSettingItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+    align-items: center;
+    justify-content: center;
+}
+
+.CreateLevel_HelpPopUpCloseBtn {}
+
+.CreateLevel_leaveSceneBtn {}
+
+.ShowLevelListBtn {}
+
+.ShowWorkbenchBtn {}
+
+.CreateLevelHelpButton {}
+
+.RedoChangeBtn {}
+
+.UndoChangeBtn {}
+
+
+/* Einstellungsanzeigen */
+
+.SwitchSettingWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.LevelBackgroundColorDisplay {
+    display: flex;
+    gap: 0.25em;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.ChangeSetting_leftCaret {
+    transition: color 0.1s ease-in-out;
+}
+
+.ChangeSetting_leftCaret:hover {
+    cursor: pointer;
+    color: goldenrod;
+    transition: border 0.1s ease-in-out;
+}
+
+.ChangeSetting_rightCaret {
+    transition: color 0.1s ease-in-out;
+}
+
+.ChangeSetting_rightCaret:hover {
+    cursor: pointer;
+    color: goldenrod;
+    transition: color 0.1s ease-in-out;
+}
+
+.levelBackgroundColor_ColorDisplay1 {
+    padding: 7.5px;
+    border: 1px solid white;
+    background-color: #ffc0cb;
+}
+
+.levelBackgroundColor_ColorDisplay2 {
+    padding: 7.5px;
+    border: 1px solid white;
+    background-color: #ffc0cb;
+}
+
+.workbenchMiddle_main {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+}
+
+.workbenchMain_left {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.workbenchMain_right {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.workbenchMain_middle {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    gap: 1em;
+}
+
+.workbenchMain_middle [for="cellgrid"] {
+    font-size: 35px;
+}
+
+.levelRequiredPointsToWinDisplay {
+    outline: none;
+}
+
+
+/* Arbeitsbereich */
+
+.workbench_LevelName_Display {
+    outline: none;
+    padding: 0 85px;
+}
+
+.workbench_cellGrid {
+    display: grid;
+    min-height: var(--max-cellGrid-size);
+    min-width: var(--max-cellGrid-size);
+}
+
+.workbench_LevelFieldSize_Display {
+    font-size: var(--Text-font-size);
+}
+
+.worbench_LevelStatusWrapper span {
+    display: flex;
+    flex-direction: row;
+    gap: 0.7em;
+}
+
+.worbench_LevelStatus {
+    padding: 0 0 10px 0;
+    font-size: var(--Text-font-size);
+}
+
+
+/* Level-Liste und Bedienelemente */
+
+.CreateLevel_LevelList {}
+
+.LevelList_list {}
+
+.SaveLevelBtn {}
+
+.PlayLevelBtn {}
+
+.PlayLevelBtn_ListBtn {}
+
+.EditLevelBtn_ListBtn {}
+
+.RemoveLevelBtn {}
+
+.PublishLevelBtn {}
+
+.unpublishLevelBtn {}
+
+
 /* Animations */
 
 @keyframes animatedBorder_gold {
@@ -5530,6 +5814,9 @@ label h3 {
         --floating-x-range: -129.5vh;
         --floating-gem-range: -142.5vh;
         --BossMode-fieldcircleMargin: 90px;
+        --button-font-size: 12.5px;
+        --Text-font-size: 17.5px;
+        --max-cellGrid-size: 442.5px;
     }
     .skinShop-SkinColors {
         gap: 1em;

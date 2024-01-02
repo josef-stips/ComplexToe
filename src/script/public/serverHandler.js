@@ -393,6 +393,9 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     // sound
     playBtn_Audio_2();
 
+    // remove any pop up display
+    CloseOnlinePopUps(true);
+
     // XP Journey reward
     CheckIfUserCanGetReward();
 

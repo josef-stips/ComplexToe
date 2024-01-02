@@ -860,19 +860,19 @@ function UserGivesUp(user_role) {
             // make the score the same
             score_Player1_numb = Infinity;
             score_Player2_numb = -Infinity;
-            Call_UltimateWin();
+            Call_UltimateWin(undefined, true);
 
         } else if (score_Player1_numb == score_Player2_numb) {
             // score is already the same but make it the same 
             score_Player1_numb = Infinity;
             score_Player2_numb = Infinity;
-            Call_UltimateWin();
+            Call_UltimateWin(undefined, true);
 
         } else if (score_Player1_numb < score_Player2_numb) {
             // if the admin has less points than user, the user wins obviously
             score_Player1_numb = -Infinity;
             score_Player2_numb = Infinity;
-            Call_UltimateWin();
+            Call_UltimateWin(undefined, true);
         };
 
     } else if (user_role == "user") {
@@ -881,19 +881,19 @@ function UserGivesUp(user_role) {
             // make the score the same
             score_Player1_numb = -Infinity;
             score_Player2_numb = Infinity;
-            Call_UltimateWin();
+            Call_UltimateWin(undefined, true);
 
         } else if (score_Player2_numb == score_Player1_numb) {
             // score is already the same but make it the same 
             score_Player1_numb = Infinity;
             score_Player2_numb = Infinity;
-            Call_UltimateWin();
+            Call_UltimateWin(undefined, true);
 
         } else if (score_Player2_numb < score_Player1_numb) {
             // if the user has less points than admin, the admin wins obviously
             score_Player1_numb = Infinity;
             score_Player2_numb = -Infinity;
-            Call_UltimateWin();
+            Call_UltimateWin(undefined, true);
         };
     };
 };

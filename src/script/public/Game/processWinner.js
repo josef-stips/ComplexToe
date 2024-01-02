@@ -503,7 +503,6 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
         let span = document.createElement("span");
         (iconIsAdvanced) ? span.classList = icon: span.textContent = icon; // if icon is advanced. modify classlist otherwise text
         span.classList.add("floating-item");
-        span.style.transition = "opacity 1.9s linear, top 1.5s ease-in-out, bottom 1.5s ease-in-out, left 1.5s ease-in-out, right 1.5s ease-in-out";
         // position
         span.style.fontSize = "28px";
         span.style.position = "absolute";
@@ -518,6 +517,7 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
 
         setTimeout(() => {
             AnimateTo(destination, span);
+            span.style.transition = "opacity 0.5s linear, top 1.5s ease-in-out, bottom 1.5s ease-in-out, left 1.5s ease-in-out, right 1.5s ease-in-out";
 
             setTimeout(() => {
                 span.remove();
@@ -531,11 +531,13 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
 // choose sub winner
 function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points) {
     CheckmateWarnText.style.display = 'none';
+    // animation
+    FloatingIconAnimation(Player1_won, Player2_won, WinCombination[0].getBoundingClientRect(), WinCombination.length);
     WinCombination.forEach(Ele => {
-        FloatingIconAnimation(Player1_won, Player2_won, Ele.getBoundingClientRect(), WinCombination.length);
         Ele.classList.add('about-to-die-cell');
     });
 
+    // processing
     setTimeout(() => {
         if (Player1_won == true) {
             statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
@@ -618,7 +620,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 };
 
 // call Ultimate Game Win Function
-function Call_UltimateWin(WinCombination) {
+function Call_UltimateWin(WinCombination, UserGivesUp) {
     CheckmateWarnText.style.display = "none" // just small bug fix nothing special
     removeAccessToAnything();
 
@@ -630,13 +632,13 @@ function Call_UltimateWin(WinCombination) {
             console.log(score_Player1_numb, score_Player2_numb);
             running = false;
             if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
-                UltimateGameWin(true, false);
+                UltimateGameWin(true, false, undefined, UserGivesUp);
                 return;
             } else if (score_Player1_numb < score_Player2_numb) { // Player 2 has won
-                UltimateGameWin(false, true);
+                UltimateGameWin(false, true, undefined, UserGivesUp);
                 return;
             } else if (score_Player1_numb == score_Player2_numb) { // Tie
-                UltimateGameWin(true, true);
+                UltimateGameWin(true, true, undefined, UserGivesUp);
                 return;
             };
         }, 600);
@@ -644,13 +646,13 @@ function Call_UltimateWin(WinCombination) {
         setTimeout(() => {
             running = false;
             if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
-                UltimateGameWin(true, false, WinCombination);
+                UltimateGameWin(true, false, WinCombination, UserGivesUp);
                 return;
             } else if (score_Player1_numb < score_Player2_numb) { // Player 2 has won
-                UltimateGameWin(false, true, WinCombination);
+                UltimateGameWin(false, true, WinCombination, UserGivesUp);
                 return;
             } else if (score_Player1_numb == score_Player2_numb) { // Tie
-                UltimateGameWin(true, true, WinCombination);
+                UltimateGameWin(true, true, WinCombination, UserGivesUp);
                 return;
             };
         }, 600);
@@ -829,11 +831,11 @@ const GG_UltimateWin = (player1_won, player2_won) => {
 };
 
 // Ultimate Game Win
-function UltimateGameWin(player1_won, player2_won, WinCombination) {
+function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) {
     // Online or offline mode
     if (curr_mode == GameMode[2].opponent) { // in online mode
         // send message to server
-        if (personal_GameData.role == "admin") socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won, WinCombination]);
+        if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won, WinCombination]);
         return;
 
     } else {

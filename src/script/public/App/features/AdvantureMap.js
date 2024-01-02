@@ -290,7 +290,7 @@ MapLevelBtns.forEach((item, k) => {
 
             // inner game mode display
             let innerGameMode = unlocked_mapLevels[k + 1][9];
-            mapLevel_ModeDisplay.textContent = `Mode: ${innerGameMode}`;
+            mapLevel_ModeDisplay.textContent = `${innerGameMode}`;
 
             // if boss is availible in level
             let bossAvailible = unlocked_mapLevels[k + 1][10];
@@ -341,41 +341,19 @@ function conqueredLevels() {
 conqueredLevels();
 
 // planet
-planet.addEventListener('click', () => {
+planet.addEventListener('click', async() => {
     // bug fixes
     secondTierModes.style.marginBottom = "0";
     goToAdvancedFields.classList = "fa-solid fa-caret-down";
     bossModeIsActive = false;
 
-    bodyBGIMG.forEach(e => e.style.display = "none");
-
     // sound
     playBtn_Audio_2();
 
-    // style animation
-    DarkLayer.style.backgroundColor = 'black';
-    DarkLayer.style.display = 'block';
-    DarkLayer.style.transition = 'opacity 0.1s ease-in';
-    DarkLayer.style.opacity = '0';
+    // animation
+    await DarkLayerAnimation(AdvantureMap, gameModeCards_Div);
 
-    setTimeout(() => {
-        DarkLayer.style.opacity = '1';
-        setTimeout(() => {
-            AdvantureMap.style.display = 'flex';
-            gameModeCards_Div.style.display = 'none';
-        }, 100);
-    }, 100);
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '0';
-
-        setTimeout(() => {
-            DarkLayer.style.display = 'none';
-            DarkLayer.style.transition = 'none';
-            DarkLayer.style.opacity = '1';
-            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-        }, 400);
-    }, 400);
+    bodyBGIMG.forEach(e => e.style.display = "none");
 
     inAdvantureMode = true;
 
@@ -389,38 +367,13 @@ AdvantureMapBackbtn.addEventListener('click', () => {
     // XP Journey
     CheckIfUserCanGetReward();
 
-    // style animation
-    DarkLayer.style.backgroundColor = 'black';
-    DarkLayer.style.display = 'block';
-    DarkLayer.style.transition = 'opacity 0.1s ease-in';
-    DarkLayer.style.opacity = '0';
-
-    setTimeout(() => {
-        DarkLayer.style.opacity = '1';
-        setTimeout(() => {
-            AdvantureMap.style.display = 'none';
-            gameModeCards_Div.style.display = 'flex';
-        }, 100);
-
-        // bug fix
+    // animation
+    DarkLayerAnimation(gameModeCards_Div, AdvantureMap).then(() => {
         bodyBGIMG.forEach(e => e.style.display = "block");
-    }, 100);
 
-    setTimeout(() => {
-        DarkLayer.style.opacity = '0';
-
-        setTimeout(() => {
-            DarkLayer.style.display = 'none';
-            DarkLayer.style.transition = 'none';
-            DarkLayer.style.opacity = '1';
-            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-        }, 400);
-    }, 400);
-
-    inAdvantureMode = false;
-
-
-    playGameTheme();
+        inAdvantureMode = false;
+        playGameTheme();
+    });
 });
 
 // close button for single level overview pop up

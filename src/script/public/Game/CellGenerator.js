@@ -4,6 +4,8 @@
 let WinConditions = [];
 let options = [];
 
+let cellSize;
+
 // Creates the TicTacToe Field
 function CreateField() {
     cellGrid.textContent = null;
@@ -25,6 +27,13 @@ function generateCell(index) {
         playBtn_Audio_2();
     });
 
+    let Cell = ConfigureCellSize(cell, xCell_Amount);
+
+    cellGrid.appendChild(Cell);
+};
+
+// configure cell size 
+const ConfigureCellSize = (cell, xCell_Amount) => {
     // configure cell size
     if (xCell_Amount == 5) {
         cell.style.width = "10.4vh";
@@ -53,8 +62,8 @@ function generateCell(index) {
         cell.style.fontSize = "100px";
 
     } else if (xCell_Amount == 4) {
-        cell.style.width = "12.4vh";
-        cell.style.height = "12.4vh";
+        cell.style.width = "auto";
+        cell.style.height = "auto";
         cell.style.fontSize = "88px";
 
         // Advanced Game Boards
@@ -74,7 +83,7 @@ function generateCell(index) {
         cell.style.fontSize = "var(--font-size-for-40x40-field)";
     };
 
-    cellGrid.appendChild(cell);
+    return cell;
 };
 
 // Generates an 2-dimensional array with all possible win combination for a 10x10 field
