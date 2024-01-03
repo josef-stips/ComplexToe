@@ -2357,7 +2357,7 @@
                                         <!-- bg music -->
                                         <li class="workbenchFieldSettingItem">
                                             <span>Background Music</span>
-                                            <div>
+                                            <div class="BGMusicSettingSelectionWrapper">
                                                 <i for="bgmusic" class="fa-solid fa-caret-left ChangeSetting_leftCaret"></i>
 
                                                 <span from="bgmusic" class="LevelMusicDisplay"></span>
@@ -2465,13 +2465,734 @@
 
                             <div class="workbenchMain_right">
                                 <div class="workbench_AllowedPatternsContainerWrapper">
-                                    <i class="fa-solid fa-caret-up"></i>
+                                    <i class="fa-solid fa-caret-up AllowedPatternsContainer_ScrollBtn" scroll-type="up"></i>
 
                                     <ul class="workbench_AllowedPatternsList">
                                         <!-- put here the allowed patterns -->
+
+                                        <!-- 4x4 Field -->
+                                        <div class="CreateLevel_4x4_AllowedPatterns">
+
+                                            <div class="setPatternWrapper hor_4x4">
+                                                <div class="PatternGrid_4x4 hor_4x4">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+
+                                                <i for-pattern="hor_4x4" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper vert_4x4">
+                                                <div class="PatternGrid_4x4 vert_4x4">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+
+                                                <i for-pattern="vert_4x4" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper dia1_4x4">
+                                                <div class="PatternGrid_4x4 dia1_4x4">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+
+                                                <i for-pattern="dia1_4x4" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper dia2_4x4">
+                                                <div class="PatternGrid_4x4 dia2_4x4">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+
+                                                <i for-pattern="dia2_4x4" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="CreateLevel_5x5_AllowedPatterns">
+                                            <div class="setPatternWrapper hor_5x5">
+                                                <div class="SetPatternGrid hor_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+
+                                                <i for-pattern="hor_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper vert_5x5">
+                                                <div class="SetPatternGrid vert_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+
+                                                <i for-pattern="vert_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper dia_5x5">
+                                                <div class="SetPatternGrid dia_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="dia_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper dia2_5x5">
+                                                <div class="SetPatternGrid dia2_5x5">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="dia2_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper L1_5x5">
+                                                <div class="SetPatternGrid L1_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="L1_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper L2_5x5">
+                                                <div class="SetPatternGrid L2_5x5">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="L2_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper L3_5x5">
+                                                <div class="SetPatternGrid L3_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="L3_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper L4_5x5">
+                                                <div class="SetPatternGrid L4_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="L4_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper W1_5x5">
+                                                <div class="SetPatternGrid W1_5x5">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="W1_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper W2_5x5">
+                                                <div class="SetPatternGrid W2_5x5">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="W2_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper W4_5x5">
+                                                <div class="SetPatternGrid W4_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="W4_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper W3_5x5">
+                                                <div class="SetPatternGrid W3_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="W3_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper star_5x5">
+                                                <div class="SetPatternGrid star_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="star_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper diamond_5x5">
+                                                <div class="SetPatternGrid diamond_5x5">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="diamond_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper branch1_5x5">
+                                                <div class="SetPatternGrid branch1_5x5">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="branch1_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper branch2_5x5">
+                                                <div class="SetPatternGrid branch2_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="branch2_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper branch3_5x5">
+                                                <div class="SetPatternGrid branch3_5x5">
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="branch3_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper branch4_5x5">
+                                                <div class="SetPatternGrid branch4_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="branch4_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper special1_5x5">
+                                                <div class="SetPatternGrid special1_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="special1_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+
+                                            <div class="setPatternWrapper special2_5x5">
+                                                <div class="SetPatternGrid special2_5x5">
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini">X</div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                    <div class="miniCellMini"></div>
+                                                </div>
+                                                <i for-pattern="special2_5x5" class="fa-regular fa-square-check Workbench_togglePatternBtn" active="true"></i>
+                                            </div>
+                                        </div>
+
                                     </ul>
 
-                                    <i class="fa-solid fa-caret-down"></i>
+                                    <i class="fa-solid fa-caret-down AllowedPatternsContainer_ScrollBtn" scroll-type="down"></i>
                                 </div>
 
                                 <div class="worbench_LevelStatusWrapper">
@@ -2595,6 +3316,126 @@
     <!-- dark layer over the app -->
     <div class="dark-layer">
 
+    </div>
+
+    <!-- credits pop up -->
+    <div class="Credits">
+        <div class="Credits_header">
+            <i class="fa-solid fa-x Credits_closeBtn"></i>
+        </div>
+
+        <div class="Credits_main">
+            <h2>Title:</h2>
+            <p>Picked Coin Echo</p>
+
+            <h2>Author:</h2>
+            <p>NenadSimic</p>
+
+            <h2>URL:</h2>
+            <p><a target="_blank" href="https://opengameart.org/content/picked-coin-echo">https://opengameart.org/content/picked-coin-echo</a></p>
+
+            <h2>License(s):</h2>
+            <ul>
+                <li>CC-BY 3.0 (<a target="blank" href="http://creativecommons.org/licenses/by/3.0/legalcode">http://creativecommons.org/licenses/by/3.0/legalcode</a>)</li>
+            </ul>
+
+            <h2>File(s):</h2>
+            <ul>
+                <li>Picked Coin Echo.wav</li>
+                <li>Note: The file is edited. Only the first bit of the sound is there.</li>
+            </ul>
+
+            <hr width="100%">
+
+            <br>
+            <p>btn-click_2.mp3 (custom name) Sound is used as standard click sound on buttons and this sound effect is obtained from <a target="_blank" href="https://www.zapsplat.com">https://www.zapsplat.com</a></p>
+            <br>
+            <p>boss_theme.mp3 (Music which comes up when user enters boss mode in game): Music: Final Boss by Myuu. Video Link: <a target="_blank" href="https://www.youtube.com/watch?v=ihqOJsFVQ7c">https://www.youtube.com/watch?v=ihqOJsFVQ7c</a></p>
+            <br>
+
+            <hr width="100%">
+
+            <h3>The following articles are under this credit: </h3>
+            <h4>music by Karl Casey @ White Bat Audio</h4>
+
+            <br>
+
+            <ul>
+                <li>Ground_destroyer.mp3</li>
+                <li>Impossible_survival.mp3</li>
+                <li>Long_Funeral.mp3</li>
+                <li>March_into_fire.mp3</li>
+                <li>Merciful_slaughter.mp3</li>
+                <li>Quick_Death.mp3</li>
+                <li>Tunnel_of_truth.mp3</li>
+            </ul>
+            <br>
+            <p>(the file names are custom and are not the original music names)</p>
+
+            <hr width="100%">
+
+            <h2>Credits for icons from Game-icons.net</h2>
+
+            <ul>
+                <li>asteroid by Delapouite under CC BY 3.0</li>
+                <li>bamboo-fountain by Delapouite under CC BY 3.0</li>
+                <li>battered-axe by Lorc under CC BY 3.0</li>
+                <li>battle-axe by Lorc under CC BY 3.0</li>
+                <li>caldera by Lorc under CC BY 3.0</li>
+                <li>Entangled typhoon by Lorc under CC BY 3.0</li>
+                <li>Stalactite by Delapouite under CC BY 3.0</li>
+                <li>Lightning shout by Lorc under CC BY 3.0</li>
+                <li>Waterfall by Lorc under CC BY 3.0</li>
+                <li>big-gear by Delapouite under CC BY 3.0</li>
+                <li>black-book by Willdabeast under CC BY 3.0</li>
+                <li>bleeding-eye by Lorc under CC BY 3.0</li>
+                <li>book-cover by Delapouite under CC BY 3.0</li>
+                <li>camping-tent by Delapouite under CC BY 3.0</li>
+                <li>cave-entrance by Delapouite under CC BY 3.0</li>
+                <li>crenel-crown by Delapouite under CC BY 3.0</li>
+                <li>crossed-swords by Lorc under CC BY 3.0</li>
+                <li>crystal-bars by Lorc under CC BY 3.0</li>
+                <li>crystal-eye by Lorc under CC BY 3.0</li>
+                <li>diamond-hilt by Delapouite under CC BY 3.0</li>
+                <li>dragon-head by Lorc under CC BY 3.0</li>
+                <li>egyptian-bird by Delapouite under CC BY 3.0</li>
+                <li>fangs by Lorc under CC BY 3.0</li>
+                <li>fire-iris by Delapouite under CC BY 3.0</li>
+                <li>gluttonous-smile by Lorc under CC BY 3.0</li>
+                <li>hobbit-door by Delapouite under CC BY 3.0</li>
+                <li>holy-grail by Lorc under CC BY 3.0</li>
+                <li>horned-skull by Lorc under CC BY 3.0</li>
+                <li>laurels-trophy by Delapouite under CC BY 3.0</li>
+                <li>linden-leaf by Lorc under CC BY 3.0</li>
+                <li>lock-spy by Delapouite under CC BY 3.0</li>
+                <li>locked-chest by Lorc under CC BY 3.0</li>
+                <li>minerals by Delapouite under CC BY 3.0</li>
+                <li>ore by Lorc under CC BY 3.0</li>
+                <li>pentagram-rose by Lorc under CC BY 3.0</li>
+                <li>piercing-sword by Lorc under CC BY 3.0</li>
+                <li>pine-tree by Delapouite under CC BY 3.0</li>
+                <li>scroll-unfurled by Lorc under CC BY 3.0</li>
+                <li>semi-closed-eye by Lorc under CC BY 3.0</li>
+                <li>shattered-sword by Lorc under CC BY 3.0</li>
+                <li>shiny-iris by Lorc under CC BY 3.0</li>
+                <li>spell by Delapouite under CC BY 3.0</li>
+                <li>stone-crafting by Lorc under CC BY 3.0</li>
+                <li>sunken-eye by Lorc under CC BY 3.0</li>
+                <li>tied-scroll by Lorc under CC BY 3.0</li>
+                <li>treasure-map by Lorc under CC BY 3.0</li>
+                <li>tribal-mask by Delapouite under CC BY 3.0</li>
+                <li>warlock-eye by Delapouite under CC BY 3.0</li>
+                <li>warlord-helmet by Caro Asercion under CC BY 3.0</li>
+                <li>wax-tablet by Delapouite under CC BY 3.0</li>
+                <li>willow-tree by Caro Asercion under CC BY 3.0</li>
+                <li>winged-sword by Lorc under CC BY 3.0</li>
+                <li>wolf-head by Lorc under CC BY 3.0</li>
+            </ul>
+
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
     <!-- Set player names pop up for normal modes -->
@@ -5591,10 +6432,39 @@
 
         <div class="CreateLevelHelpPopUpMain">
             <!-- text for user with images maybe -->
-            <p>
-            </p>
+            <ol type="1">
+                <li>You can create as many levels as you want in the <b>workbench</b></li>
+                <li>On the left there are settings for the level, in the middle you can change the field size and level name and on the right you can toggle <b>all</b> possible winning combinations</li>
+                <li>Everything set up? Now you can simply play the level by tapping the button below <b>"Play Level"</b> or save it without playing by using the button <b>"Save Level"</b></li>
+                <li>Where are my levels? Click on the button <b>"Show Level list"</b> to see all your saved levels. You can save a level and continue building on it later when you have time, or... rather touching a tree?</li>
+                <li>Saw that you can publish a level, but how? You have to beat the level to publish it so your 'friends' know it's possible. Simply click the <b style="color: lawngreen;">publish level</b> button after beating it.</li>
+                <li>If you leave without saving your progress on the level you're building, it will be <b style="color: red;">deleted</b>.</li>
+                <li>You can <b>search</b> for levels from other players.</li>
+                <li><img src="assets/game/lock-spy.svg" width="32" height="32"></li>
+                <li>If you've found a <b>bug</b> or have <b>update ideas</b>, please let me know by emailing me!</li>
+                <li>still scrolling?</li>
+                <li><img src="assets/game/lock-spy.svg" width="32" height="32"></li>
+                <li>too much time?</li>
+                <li>or social interaction difficulties?</li>
+                <li>You can't re-edit a level once it's <b style="color: lawngreen;">published</b></li>
+                <li>Once the level is <b>saved</b>, the history will be deleted, and actions cannot be <b style="color: red;">undone</b></li>
+            </ol>
         </div>
 
+    </div>
+
+    <!-- save level warning -->
+    <div class="saveLevelWarning">
+        <div class="saveLevelWarning_main">
+            <div class="saveLevel_mainInnerWrapper">
+                Do you want to save the level? All changes will be <b>deleted</b>.
+            </div>
+
+            <div class="saveLevel_bottomInnerWrapper">
+                <span class="saveLevelBtn CreateLevelSceneButton">Save</span>
+                <span class="NotSaveLevelBtn CreateLevelSceneButton">Don't care</span>
+            </div>
+        </div>
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">

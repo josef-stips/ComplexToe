@@ -650,6 +650,15 @@ workbench_LevelName_Display.addEventListener('keydown', (event) => {
     };
 });
 
+// bug fix
+levelRequiredPointsToWinDisplay.addEventListener("keydown", (event) => {
+    let len = event.target.textContent.trim().length;
+    if (len === 1 && event.key == "Backspace" || len === 1 && event.key == "Delete") {
+        event.preventDefault();
+        return false;
+    };
+});
+
 input3.addEventListener("input", function(event) {
     const inputValue = event.target.value;
     const validInput = inputValue.replace(/[^0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben

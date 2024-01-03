@@ -417,6 +417,16 @@ let EditLevelBtn_ListBtn = document.querySelector(".EditLevelBtn_ListBtn");
 let RemoveLevelBtn = document.querySelector(".RemoveLevelBtn");
 let PublishLevelBtn = document.querySelector(".PublishLevelBtn");
 let unpublishLevelBtn = document.querySelector(".unpublishLevelBtn");
+let BGMusicSettingSelectionWrapper = document.querySelector(".BGMusicSettingSelectionWrapper");
+let NotSaveLevelBtn_FromWarning = document.querySelector(".NotSaveLevelBtn");
+let saveLevelBtn_FromWarning = document.querySelector(".saveLevelBtn");
+let saveLevelWarning = document.querySelector(".saveLevelWarning");
+let CreateLevel_4x4_AllowedPatterns = document.querySelector(".CreateLevel_4x4_AllowedPatterns");
+let CreateLevel_5x5_AllowedPatterns = document.querySelector(".CreateLevel_5x5_AllowedPatterns");
+let Workbench_togglePatternBtn = document.querySelectorAll(".Workbench_togglePatternBtn");
+let AllowedPatternsContainer_ScrollBtn = document.querySelectorAll(".AllowedPatternsContainer_ScrollBtn");
+let Credits = document.querySelector(".Credits");
+let Credits_closeBtn = document.querySelector(".Credits_closeBtn");
 // select all caret elements
 let ChangeSetting_leftCaret_All = document.querySelectorAll(".ChangeSetting_leftCaret");
 let ChangeSetting_rightCaret_All = document.querySelectorAll(".ChangeSetting_rightCaret");
@@ -449,19 +459,19 @@ let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
 // important data
 let GameMode = {
     1: {
-        "opponent": "KI", // You play against a KI if your offline or you want to get better
+        "opponent": "KI", // This KI Mode doesn't exists as a mode anymore but as an info for advanture mode
         "icon": "fa-solid fa-robot",
-        "description": "Play against a bot" // the "create level mode" was originally a Ki mode but the advanture map replaced it
+        "description": "Create a level" // the "create level mode" was originally a Ki mode but the advanture map replaced it
     },
     2: {
         "opponent": "OnlineFriend", // Guy you send a link to so you can play with him together
         "icon": "fa-solid fa-user-group",
-        "description": "Play online with your friend"
+        "description": "Play online"
     },
     3: {
         "opponent": "ComputerFriend", // Guy on same computer
         "icon": "fa-solid fa-computer",
-        "description": "Play with a friend on same computer"
+        "description": "Play offline"
     },
     4: {
         "opponent": "CreateLevel",
@@ -1540,6 +1550,7 @@ fieldsArea_back_btn.addEventListener('click', () => {
     CheckIfUserCanGetReward();
 });
 
+let NewCreativeLevel;
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
     curr_mode = GameMode[4].opponent;
@@ -1549,7 +1560,8 @@ gameMode_KI_card.addEventListener('click', () => {
 
     // User entered create level mode
     let NewField = new NewLevel();
-    NewField.Init();
+    NewCreativeLevel = NewField;
+    NewCreativeLevel.Init();
 
     // bug fix if user was in advanced mode:
     goToAdvancedFields.style.display = 'none';
@@ -1680,8 +1692,11 @@ Settings_MailBtn.addEventListener('click', () => {
 });
 
 Settings_CreditsBtn.addEventListener('click', () => {
-    DarkLayer.style.display = "block";
+    Credits.style.display = "flex";
+});
 
+Credits_closeBtn.addEventListener("click", () => {
+    Credits.style.display = "none";
 });
 
 // Enter Game

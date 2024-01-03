@@ -15,6 +15,7 @@
     --button-font-size: 17px;
     --Text-font-size: 22.5px;
     --max-cellGrid-size: 585px;
+    --CreateLevel-ScrollContainerHeight-max: 650px;
 }
 
 .dark-mode {
@@ -189,7 +190,7 @@ img {
 }
 
 .ComplexToe-Field {
-    height: 80%;
+    height: auto;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -207,7 +208,7 @@ img {
 
 .GameFieldHeader-upperBody {
     height: 70%;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }
@@ -252,11 +253,11 @@ img {
 
 #cellGrid {
     display: none;
-    max-width: 100%;
-    justify-content: center;
-    margin: 0 auto;
+    margin: -15px auto;
     opacity: 1;
     transition: all 0.5s ease-out, opacity 1s ease-in-out;
+    min-width: var(--max-cellGrid-size);
+    min-height: var(--max-cellGrid-size);
 }
 
 .cellGrid-alert {
@@ -278,6 +279,8 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: auto;
+    height: auto;
 }
 
 .about-to-die-cell {
@@ -684,7 +687,7 @@ img {
 .gameMode-card:hover {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
-    height: 46%;
+    transform: scale(1.05);
 }
 
 .mainCard {
@@ -696,7 +699,7 @@ img {
 .mainCard:hover {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
-    height: 56%;
+    transform: scale(1.05);
 }
 
 .card-header {
@@ -774,7 +777,7 @@ img {
 
 .card-miniBord-mini {
     display: grid;
-    max-width: 30px;
+    /* max-width: 30px; */
     justify-content: center;
     align-items: center;
     grid-template-columns: repeat(5, auto);
@@ -932,21 +935,10 @@ img {
     cursor: pointer;
 }
 
-.NxN-field:hover::before {
-    content: "";
-    position: absolute;
-    width: calc(100% + 1px);
-    height: calc(100% + 1px);
-    border: 4px solid transparent;
-    border-radius: 30px;
-    animation: animatedBorder 1.25s linear infinite;
-}
-
 .NxN-field:hover {
+    transform: scale(1.025);
     transition: all 0.1s ease-in-out;
     cursor: pointer;
-    width: 76%;
-    height: 95%;
 }
 
 .NxN-field-card-header {
@@ -1031,6 +1023,7 @@ img {
 }
 
 #TenxTen_MiniBoard {
+    background: rgba(255, 127, 80, 0.075);
     grid-template-columns: repeat(10, auto);
 }
 
@@ -1041,6 +1034,7 @@ img {
 }
 
 #FivexFive_MiniBoard {
+    background: rgba(255, 127, 80, 0.034);
     grid-template-columns: repeat(5, auto);
 }
 
@@ -1051,6 +1045,7 @@ img {
 }
 
 #FifTeenxFifTeen_MiniBoard {
+    background: rgba(220, 20, 60, 0.075);
     grid-template-columns: repeat(15, auto);
 }
 
@@ -1062,6 +1057,7 @@ img {
 }
 
 #TwentyxTwenty_MiniBoard {
+    background-color: rgba(70, 131, 180, 0.075);
     grid-template-columns: repeat(20, auto);
 }
 
@@ -1073,6 +1069,7 @@ img {
 }
 
 #random_MiniBoard {
+    background: linear-gradient(rgba(233, 150, 122, 0.192), rgba(70, 131, 180, 0.219));
     grid-template-columns: repeat(10, auto);
 }
 
@@ -1082,7 +1079,25 @@ img {
     height: 1.8vh;
 }
 
+#random_Field {
+    border-image: linear-gradient(45deg, steelblue, darksalmon) 30;
+    border-radius: 20px;
+}
+
+#fortyxforty {
+    border-image: linear-gradient(45deg, #F44336, #E91E63) 30;
+}
+
+#thirtyxthirty {
+    border-image: linear-gradient(45deg, #9E9E9E, #4CAF50)30;
+}
+
+#twentyfivextwentyfive {
+    border-image: linear-gradient(45deg, #FF9800, #FF5722)30;
+}
+
 #fortyxforty_MiniBoard {
+    background: linear-gradient(rgba(244, 67, 54, 0.082), rgba(233, 30, 98, 0.103));
     grid-template-columns: repeat(25, auto);
 }
 
@@ -1095,6 +1110,7 @@ img {
 
 #thirtyxthirty_MiniBoard {
     grid-template-columns: repeat(20, auto);
+    background: linear-gradient(rgba(158, 158, 158, 0.082), rgba(76, 175, 79, 0.068));
 }
 
 #thirtyxthirty_MiniBoard .miniCellMini {
@@ -1112,6 +1128,7 @@ img {
 }
 
 #twentyfivextwentyfive_MiniBoard {
+    background: linear-gradient(rgba(255, 153, 0, 0.103), rgba(255, 86, 34, 0.082));
     grid-template-columns: repeat(15, auto);
 }
 
@@ -1126,18 +1143,22 @@ img {
 }
 
 #FivexFive_Field {
+    border-color: darksalmon;
     transition: all 0.1s ease-out;
 }
 
 #TenxTen_Field {
+    border-color: coral;
     transition: all 0.1s ease-out;
 }
 
 #FifTeenxFifTeen_Field {
+    border-color: crimson;
     transition: all 0.1s ease-out;
 }
 
-#TwentyxTwenty_Field {
+#TwentyxTwentyField {
+    border-color: steelblue;
     transition: all 0.1s ease-out;
 }
 
@@ -1573,6 +1594,11 @@ img {
 .SetPatternGrid {
     display: grid;
     grid-template-columns: repeat(5, auto);
+}
+
+.PatternGrid_4x4 {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
 }
 
 .setPatternWrapper {
@@ -5168,11 +5194,11 @@ label h3 {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 10%;
+    height: max-content;
 }
 
 .CreateLevel_main {
-    height: 90%;
+    height: 100%;
     width: 100%;
 }
 
@@ -5207,7 +5233,7 @@ label h3 {
 
 .Workbench_main {
     position: relative;
-    height: 90%;
+    height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
@@ -5250,7 +5276,75 @@ label h3 {
 }
 
 .CreateLevel_helpPopUp {
+    width: 60%;
+    height: 60%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 2px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
     display: none;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 25px;
+    z-index: 10006;
+    border-radius: 25px;
+    align-items: center;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.CreateLevel_HelpPopUpCloseBtn {
+    transition: color 0.1s ease-in-out;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.CreateLevel_HelpPopUpCloseBtn:hover {
+    transition: color 0.1s ease-in-out;
+    color: goldenrod;
+}
+
+.CreateLevelHelpHeader {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid white;
+}
+
+.CreateLevelHelpHeader i {
+    font-size: var(--button-font-size);
+}
+
+.CreateLevelHelpHeader i:first-child {
+    margin: 0 0 0 15px;
+}
+
+.CreateLevelHelpPopUpMain {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    margin: 10px 0 0 0;
+    padding: 0 10px 40px 10px;
+    overflow: scroll;
+    text-align: left;
+}
+
+.CreateLevelHelpPopUpMain ol {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.CreateLevelHelpPopUpMain ol li {
+    list-style: inherit !important;
 }
 
 .workbenchLevelSettingsList {
@@ -5268,19 +5362,55 @@ label h3 {
     justify-content: center;
 }
 
-.CreateLevel_HelpPopUpCloseBtn {}
+.workbench_AllowedPatternsContainerWrapper {
+    margin: 10px 0 0 0;
+}
 
-.CreateLevel_leaveSceneBtn {}
+.CreateLevel_5x5_AllowedPatterns {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    overflow: scroll;
+    height: var(--CreateLevel-ScrollContainerHeight-max);
+}
 
-.ShowLevelListBtn {}
+.CreateLevel_5x5_AllowedPatterns>div>div {
+    background-color: #0000001c;
+}
 
-.ShowWorkbenchBtn {}
+.CreateLevel_5x5_AllowedPatterns>div {
+    gap: 15px !important;
+}
 
-.CreateLevelHelpButton {}
+.CreateLevel_4x4_AllowedPatterns {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    overflow: scroll;
+    height: var(--CreateLevel-ScrollContainerHeight-max);
+}
 
-.RedoChangeBtn {}
+.CreateLevel_4x4_AllowedPatterns>div>div {
+    background-color: #0000001c;
+}
 
-.UndoChangeBtn {}
+.CreateLevel_4x4_AllowedPatterns>div {
+    gap: 15px !important;
+}
+
+.Workbench_togglePatternBtn {
+    cursor: pointer;
+}
+
+.AllowedPatternsContainer_ScrollBtn {
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.AllowedPatternsContainer_ScrollBtn:hover {
+    transition: transform 0.1s ease-in-out;
+    transform: scale(1.1);
+}
 
 
 /* Einstellungsanzeigen */
@@ -5334,7 +5464,7 @@ label h3 {
 .workbenchMiddle_main {
     display: flex;
     flex-direction: row;
-    gap: 1em;
+    gap: 0.5em;
     align-items: center;
     justify-content: center;
 }
@@ -5405,16 +5535,18 @@ label h3 {
     font-size: var(--Text-font-size);
 }
 
+.workbenchMiddle_top {
+    font-size: var(--button-font-size);
+}
+
 
 /* Level-Liste und Bedienelemente */
 
-.CreateLevel_LevelList {}
+.RedoChangeBtn {
+    display: none;
+}
 
 .LevelList_list {}
-
-.SaveLevelBtn {}
-
-.PlayLevelBtn {}
 
 .PlayLevelBtn_ListBtn {}
 
@@ -5425,6 +5557,112 @@ label h3 {
 .PublishLevelBtn {}
 
 .unpublishLevelBtn {}
+
+
+/* save level warning pop up */
+
+.saveLevelWarning {
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 2px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 25px;
+    z-index: 10006;
+    border-radius: 25px;
+    align-items: center;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.saveLevel_mainInnerWrapper {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.saveLevel_bottomInnerWrapper {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5em;
+    padding: 5px;
+}
+
+
+/* credits pop up */
+
+.Credits {
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 2px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 25px;
+    z-index: 10006;
+    border-radius: 25px;
+    align-items: center;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.Credits_closeBtn {
+    cursor: pointer;
+    transition: color 0.1 ease-in-out;
+}
+
+.Credits_closeBtn:hover {
+    transition: color 0.1 ease-in-out;
+    color: goldenrod;
+}
+
+.Credits_header {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-right: 20px;
+    font-size: 15px;
+}
+
+.Credits_main {
+    display: flex;
+    padding: 10px 0 0 10px;
+    justify-content: start;
+    align-items: start;
+    overflow: scroll;
+    height: 95%;
+    width: 95%;
+    text-align: start;
+    flex-direction: column;
+    font-size: smaller;
+}
+
+.Credits_main a {
+    color: rgb(133, 133, 133);
+}
 
 
 /* Animations */
@@ -5817,6 +6055,7 @@ label h3 {
         --button-font-size: 12.5px;
         --Text-font-size: 17.5px;
         --max-cellGrid-size: 442.5px;
+        --CreateLevel-ScrollContainerHeight-max: 450px;
     }
     .skinShop-SkinColors {
         gap: 1em;

@@ -14,7 +14,7 @@ function CreateField() {
         generateCell(i);
     };
     // css
-    cellGrid.style.gridTemplateColumns = `repeat(${xCell_Amount}, auto)`;
+    cellGrid.style.gridTemplateColumns = `repeat(${xCell_Amount}, 1fr)`;
 };
 
 // Generates a cell for the field
@@ -36,50 +36,32 @@ function generateCell(index) {
 const ConfigureCellSize = (cell, xCell_Amount) => {
     // configure cell size
     if (xCell_Amount == 5) {
-        cell.style.width = "10.4vh";
-        cell.style.height = "10.4vh";
         cell.style.fontSize = "79px";
 
     } else if (xCell_Amount == 10) {
-        cell.style.width = "5vh";
-        cell.style.height = "5vh";
         cell.style.fontSize = "47px";
 
     } else if (xCell_Amount == 15) {
-        cell.style.width = "3.05vh";
-        cell.style.height = "3.05vh";
         cell.style.fontSize = "24px";
 
     } else if (xCell_Amount == 20) {
-        cell.style.width = "2.34vh";
-        cell.style.height = "2.34vh";
         cell.style.fontSize = "20.5px";
 
         // KI specified Game Boards
     } else if (xCell_Amount == 3) {
-        cell.style.width = "12.4vh";
-        cell.style.height = "12.4vh";
         cell.style.fontSize = "100px";
 
     } else if (xCell_Amount == 4) {
-        cell.style.width = "auto";
-        cell.style.height = "auto";
         cell.style.fontSize = "88px";
 
         // Advanced Game Boards
     } else if (xCell_Amount == 25) {
-        cell.style.width = "1.75vh";
-        cell.style.height = "1.75vh";
         cell.style.fontSize = "13.5px";
 
     } else if (xCell_Amount == 30) {
-        cell.style.width = "1.4vh";
-        cell.style.height = "1.4vh";
         cell.style.fontSize = "11px";
 
     } else if (xCell_Amount == 40) {
-        cell.style.width = "var(--width-for-40x40-field)";
-        cell.style.height = "var(--width-for-40x40-field)";
         cell.style.fontSize = "var(--font-size-for-40x40-field)";
     };
 
