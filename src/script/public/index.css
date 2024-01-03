@@ -5546,24 +5546,143 @@ label h3 {
     display: none;
 }
 
-.LevelList_list {}
+.CreateLevel_LevelList {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    height: 100%;
+}
 
-.PlayLevelBtn_ListBtn {}
+.LevelList_main {
+    display: flex;
+    width: 100%;
+    height: 90%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
 
-.EditLevelBtn_ListBtn {}
+.AddLevelBtn {
+    position: absolute;
+    font-size: 30px;
+    font-weight: 600;
+    bottom: 20%;
+    right: 15%;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out, border-color 0.1s ease-in-out;
+    align-self: flex-end;
+}
 
-.RemoveLevelBtn {}
+.AddLevelBtn:hover {
+    border-color: goldenrod;
+    transition: transform 0.1s ease-in-out, border-color 0.1s ease-in-out;
+    transform: scale(1.1);
+}
 
-.PublishLevelBtn {}
+.AddCircleBtnStyle {
+    padding: 10px;
+    border-radius: 100px;
+    border: 3px solid white;
+}
 
-.unpublishLevelBtn {}
+.LevelList_footer {
+    width: inherit;
+    height: 5%;
+    display: flex;
+    padding: 20px 0 0 0;
+    border-top: 2px solid white;
+    flex-direction: row;
+}
+
+.Levellist_footer_left {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    gap: 1em;
+    justify-content: start;
+    align-items: start;
+}
+
+.Levellist_footer_right {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    gap: 1em;
+    justify-content: end;
+    align-items: start;
+}
+
+.LevelList_list {
+    width: 50%;
+    height: 80%;
+    border: 3px solid goldenrod;
+    display: grid;
+    overflow: scroll;
+    flex-direction: column
+}
+
+.ReplaceText_Levellist {
+    display: none;
+    align-self: center;
+}
+
+.Level_InLevelList {
+    width: 100%;
+    height: 90px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1em;
+    border-bottom: 2px solid goldenrod;
+    font-size: 30px;
+    padding: 0 0 0 10px;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.LevelIconWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 10px 10px 10px;
+    border-radius: 100px;
+    border: 2px solid white;
+}
+
+.LevelList_BG1 {
+    position: absolute;
+    transform: rotate(-90deg);
+    top: 0;
+    bottom: 0;
+    left: 5%;
+    margin: auto 0 auto 0;
+    width: 200px;
+    height: 200px;
+}
+
+.LevelList_BG2 {
+    position: absolute;
+    transform: rotate(90deg);
+    top: 0;
+    bottom: 0;
+    right: 5%;
+    margin: auto 0 auto 0;
+    width: 200px;
+    height: 200px;
+}
+
+.CurrentSelectedLevel_Display {
+    position: absolute;
+    top: 19.5%;
+    left: 27.5%;
+    font-size: 25px;
+}
 
 
 /* save level warning pop up */
 
 .saveLevelWarning {
     width: 40%;
-    height: 40%;
+    height: 30%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -5574,13 +5693,25 @@ label h3 {
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
+    gap: 3em;
     color: white;
     font-size: 25px;
     z-index: 10006;
     border-radius: 25px;
     align-items: center;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.saveLevelWarning_main {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5em;
+    flex-direction: column;
+    font-size: var(--Text-font-size);
 }
 
 .saveLevel_mainInnerWrapper {
@@ -5600,6 +5731,20 @@ label h3 {
     justify-content: center;
     gap: 1.5em;
     padding: 5px;
+}
+
+.saveLevelWarning_header {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.closeSaveLevelWarning {
+    margin: 10px 20px 0 0;
+    font-size: var(--button-font-size);
+    cursor: pointer;
 }
 
 
@@ -6095,5 +6240,25 @@ label h3 {
         width: 1.2vh;
         height: 1.2vh;
         font-size: 8px;
+    }
+    .LevelList_BG1 {
+        position: absolute;
+        transform: rotate(-90deg);
+        top: 0;
+        bottom: 0;
+        left: 5%;
+        margin: auto 0 auto 0;
+        width: 100px;
+        height: 100px;
+    }
+    .LevelList_BG2 {
+        position: absolute;
+        transform: rotate(90deg);
+        top: 0;
+        bottom: 0;
+        right: 5%;
+        margin: auto 0 auto 0;
+        width: 100px;
+        height: 100px;
     }
 }

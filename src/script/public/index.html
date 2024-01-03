@@ -2471,7 +2471,7 @@
                                         <!-- put here the allowed patterns -->
 
                                         <!-- 4x4 Field -->
-                                        <div class="CreateLevel_4x4_AllowedPatterns">
+                                        <div class="CreateLevel_4x4_AllowedPatterns" style="display: none;">
 
                                             <div class="setPatternWrapper hor_4x4">
                                                 <div class="PatternGrid_4x4 hor_4x4">
@@ -3215,24 +3215,43 @@
                     <div class="CreateLevel_LevelList">
 
                         <div class="LevelList_main">
+
+                            <span class="CurrentSelectedLevel_Display">selected level: </span>
+
                             <ul class="LevelList_list">
+                                <!-- <li class="Level_InLevelList">
+                                    <span>Your level name</span>
+                                    <span class="LevelIconWrapper"><img src="assets/game/fangs.svg" width="32" height="32"></span>
+                                </li> -->
+
+
                                 <!-- generate by javascript CreateGame.js class function -->
+                                <h2 class="ReplaceText_Levellist">There are no levels yet. Create a level by clicking <i style="font-size: 16px;" class="fa-solid fa-plus AddCircleBtnStyle"></i></h2>
                             </ul>
+
+                            <i class="fa-solid fa-plus AddLevelBtn AddCircleBtnStyle"></i>
                         </div>
 
                         <div class="LevelList_footer">
-                            <span class="CreateLevelSceneButton PlayLevelBtn_ListBtn">Play Level</span>
-                            <span class="CreateLevelSceneButton EditLevelBtn_ListBtn">Edit Level</span>
-                            <!-- If level is published remove it also from server! -->
-                            <span class="CreateLevelSceneButton RemoveLevelBtn">Remove Level</span>
+                            <div class="Levellist_footer_left">
+                                <span class="CreateLevelSceneButton PlayLevelBtn_ListBtn">Play Level</span>
+                                <span class="CreateLevelSceneButton EditLevelBtn_ListBtn">Edit Level</span>
+                                <!-- If level is published remove it also from server! -->
+                                <span class="CreateLevelSceneButton RemoveLevelBtn">Remove Level</span>
+                            </div>
 
-                            <!-- if level is unpublished or not -->
-                            <span class="CreateLevelSceneButton PublishLevelBtn">Publish Level</span>
-                            <!-- Player has to play an complete a level to publish it -->
+                            <div class="Levellist_footer_right">
+                                <!-- if level is unpublished or not -->
+                                <span class="CreateLevelSceneButton PublishLevelBtn">Publish Level</span>
+                                <!-- Player has to play an complete a level to publish it -->
 
-                            <span class="CreateLevelSceneButton unpublishLevelBtn">Unpublish Level</span>
-                            <!-- Level is published. remove it from server -->
+                                <span class="CreateLevelSceneButton unpublishLevelBtn">Unpublish Level</span>
+                                <!-- Level is published. remove it from server -->
+                            </div>
                         </div>
+
+                        <img class="LevelList_BG1" src="assets/game/winged-sword.svg" width="370" height="370">
+                        <img class="LevelList_BG2" src="assets/game/winged-sword.svg" width="370" height="370">
                     </div>
                 </div>
             </dv>
@@ -6455,9 +6474,12 @@
 
     <!-- save level warning -->
     <div class="saveLevelWarning">
+        <div class="saveLevelWarning_header">
+            <i class="fa-solid fa-x closeSaveLevelWarning"></i>
+        </div>
         <div class="saveLevelWarning_main">
             <div class="saveLevel_mainInnerWrapper">
-                Do you want to save the level? All changes will be <b>deleted</b>.
+                Do you want to save the level? All changes will be&nbsp;<b>deleted</b>.
             </div>
 
             <div class="saveLevel_bottomInnerWrapper">

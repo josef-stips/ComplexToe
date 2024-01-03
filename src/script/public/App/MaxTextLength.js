@@ -620,12 +620,16 @@ workbench_LevelName_Display.addEventListener("input", (event) => {
     if (inputValue !== validInput) {
         event.target.textContent = validInput;
 
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.setStart(workbench_LevelName_Display.firstChild, event.target.firstChild.length);
-        range.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(range);
+        try {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.setStart(workbench_LevelName_Display.firstChild, event.target.firstChild.length);
+            range.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        } catch (error) {
+
+        };
     };
 });
 

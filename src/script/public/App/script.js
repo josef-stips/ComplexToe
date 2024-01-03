@@ -427,6 +427,11 @@ let Workbench_togglePatternBtn = document.querySelectorAll(".Workbench_togglePat
 let AllowedPatternsContainer_ScrollBtn = document.querySelectorAll(".AllowedPatternsContainer_ScrollBtn");
 let Credits = document.querySelector(".Credits");
 let Credits_closeBtn = document.querySelector(".Credits_closeBtn");
+let AddLevelBtn = document.querySelector(".AddLevelBtn");
+let ReplaceText_Levellist = document.querySelector(".ReplaceText_Levellist");
+let CurrentSelectedLevel_Display = document.querySelector(".CurrentSelectedLevel_Display");
+let closeSaveLevelWarning = document.querySelector(".closeSaveLevelWarning");
+let saveLevelWarnText = document.querySelector(".saveLevel_mainInnerWrapper");
 // select all caret elements
 let ChangeSetting_leftCaret_All = document.querySelectorAll(".ChangeSetting_leftCaret");
 let ChangeSetting_rightCaret_All = document.querySelectorAll(".ChangeSetting_rightCaret");
@@ -1507,6 +1512,9 @@ Allbtns.forEach((btn) => {
 
         btn.addEventListener('click', (card) => { // event listener for online card
 
+            // audio
+            playBtn_Audio();
+
             // the main card is the play online card which the player can only play if he has an online account
             if (!localStorage.getItem("UserName")) {
                 AlertText.textContent = "Create an account to play online";
@@ -1514,9 +1522,6 @@ Allbtns.forEach((btn) => {
                 alertPopUp.style.display = "flex";
 
             } else {
-                // audio
-                playBtn_Audio();
-
                 DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
             };
         });
@@ -1527,10 +1532,25 @@ Allbtns.forEach((btn) => {
             playBtn_Audio();
 
             // create level or play offline on same computer
-            (btn.classList.contains("create")) ? DarkLayerAnimation(CreateLevelScene, gameModeCards_Div): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
+            (btn.classList.contains("create")) ? CreateLevelScene_CheckIn(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
         });
     };
 });
+
+// check in for create level scene
+const CreateLevelScene_CheckIn = () => {
+    // The user should have an account to be able to create an online level
+    if (!localStorage.getItem("UserName")) {
+        AlertText.textContent = "Create an account to create online level";
+        DarkLayer.style.display = "block";
+        alertPopUp.style.display = "flex";
+
+    } else {
+        // audio
+        playBtn_Audio();
+        DarkLayerAnimation(CreateLevelScene, gameModeCards_Div);
+    };
+};
 
 // event listener
 
