@@ -222,6 +222,9 @@ const RemoveEventListeners = () => {
 Lobby_closeBtn.addEventListener('click', () => {
     RemoveEventListeners();
 
+    // if player played in online created level
+    PlayingInCreatedLevel = false;
+
     // server
     socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
         // Do things after room was killed
@@ -308,7 +311,9 @@ const DarkLayerAfterGameAnimation = () => {
             GameField.style.display = 'none';
 
             if (!inAdvantureMode) {
-                gameModeFields_Div.style.display = 'flex';
+                // if player created a lobby from the create level scene and leaves the game, he should spawn there where he left. The same for normal card level
+                (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+
             } else {
                 AdvantureMap.style.display = 'flex';
             };
@@ -332,6 +337,8 @@ const UserLeftGameInOnlineMode = () => {
     // user left the game
     // Many things are happening in server.js on this emit
     socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
+        ChangeGameBG(undefined, undefined, true);
+
         // only if the user that left is not the admin
         if (personal_GameData.role == 'user' || personal_GameData.role == "blocker") {
             // Do things after room was killed
@@ -372,7 +379,7 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
         } else {
             // for floating level item animation in map
             conqueredLevels();
-        }
+        };
     }, 200);
 
     // play music
@@ -399,8 +406,10 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     // XP Journey reward
     CheckIfUserCanGetReward();
 
+    ChangeGameBG(undefined, undefined, true);
+
     if (personal_GameData.role == "admin") {
-        gameModeFields_Div.style.display = "flex";
+        (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
         GameField.style.display = "none";
 
     } else {
@@ -781,11 +790,13 @@ socket.on('killed_game', () => {
     GameField.style.display = 'none';
     // enter lobby
     OnlineGame_Lobby.style.display = 'flex';
-    gameModeFields_Div.style.display = 'flex';
+    (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
     Lobby_GameCode_display.style.userSelect = 'text';
     // close pop ups if there where any open
     CloseOnlinePopUps();
     DarkLayer.style.display = "block";
+
+    ChangeGameBG(undefined, undefined, true);
 
     running = false;
     // clear timer and stuff to prevent bugs
@@ -793,7 +804,7 @@ socket.on('killed_game', () => {
 
     // play music
     PauseMusic();
-    CreateMusicBars(audio); // error because javascript is as weird as usual 
+    CreateMusicBars(audio);
 });
 
 // Admin created the game and now waits for the second player
@@ -916,8 +927,9 @@ socket.on('INFORM_user_left_game', () => {
     running = false;
     // for the admin and blocker, they are in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == "blocker") {
+        ChangeGameBG(undefined, undefined, true);
         // display right things
-        gameModeFields_Div.style.display = 'flex';
+        (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
         DarkLayer.style.display = 'block';
@@ -946,7 +958,8 @@ socket.on('INFORM_blocker_left_game', () => {
     running = false;
     // for the admin, he is in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == 'user') {
-        gameModeFields_Div.style.display = 'flex';
+        ChangeGameBG(undefined, undefined, true);
+        (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
         DarkLayer.style.display = 'block';
@@ -969,9 +982,10 @@ socket.on('INFORM_admin_left_room', () => {
     personal_GameData.EnterOnlineGame = false;
 
     // some things
+    ChangeGameBG(undefined, undefined, true);
     OnlineGame_Lobby.style.display = 'none';
     GameField.style.display = 'none';
-    gameModeFields_Div.style.display = 'flex';
+    (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
     SetPlayerNamesPopUp.style.display = 'none';
     CloseOnlinePopUps();
     DarkLayer.style.display = 'block';
@@ -989,6 +1003,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // simple things
     CloseOnlinePopUps(true);
     OnlineGame_Lobby.style.display = "none";
+    CreateLevelScene.style.display = "none";
 
     // better user experience, you can call them bug fixes:
     ChatMain.textContent = null;
@@ -1025,7 +1040,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     allowedPatternsFromUser = allowed_patterns; // make it global for single user
     // required points to win a game
     let required_points_to_win = parseInt(Lobby_PointsToWin.textContent);
-    console.log(required_points_to_win);
+    console.log(required_points_to_win, " You entered online mode lel");
 
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,

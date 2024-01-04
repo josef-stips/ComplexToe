@@ -495,7 +495,7 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
         } catch (error) {
             span.remove();
             return;
-        }
+        };
     };
 
     // init item
@@ -517,7 +517,10 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
 
         setTimeout(() => {
             AnimateTo(destination, span);
-            span.style.transition = "opacity 0.5s linear, top 1.5s ease-in-out, bottom 1.5s ease-in-out, left 1.5s ease-in-out, right 1.5s ease-in-out";
+
+            setTimeout(() => {
+                span.style.transition = "opacity 2s ease-out, top 1.5s ease-in-out, bottom 1.5s ease-in-out, left 1.5s ease-in-out, right 1.5s ease-in-out";
+            }, 1000);
 
             setTimeout(() => {
                 span.remove();

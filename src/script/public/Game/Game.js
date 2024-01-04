@@ -83,6 +83,10 @@ let PlayerIsAllowedToSetTwoTimes = false;
 
 let UserClicksNTimesInARow = 0;
 
+// only availible in costum user levels
+let bgcolor1 = "";
+let bgcolor2 = "";
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves) {
@@ -249,6 +253,8 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     gameModeFields_Div.style.display = 'none';
     CheckmateWarnText.style.display = 'none';
     OnlineChat_btn.style.display = "none";
+    CloseOnlinePopUps(true);
+    CreateLevelScene.style.display = "none";
 
     // close pop ups if there is any on
     CloseOnlinePopUps(true);
@@ -300,6 +306,9 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         restartBtn.style.color = 'var(font-color)';
         addAccessToAnything("TimerEnded");
 
+        // if exists
+        ChangeGameBG(bgcolor1, bgcolor2);
+
     } else { // Is in online mode
         // Make sure that the user is not allowed to reload the game
 
@@ -342,6 +351,9 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         addAccesOnlineMode("TimerEnded");
 
         OnlineChat_btn.style.display = "block";
+
+        // change background color of game. This signal goes only from the admin
+        socket.emit("ChangeBGColor", personal_GameData.currGameID, bgcolor1, bgcolor2);
     };
 
     if (inAdvantureMode) {
@@ -363,6 +375,13 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     };
 
     (curr_mode == GameMode[2].opponent) ? GameFieldHeaderUnderBody.style.display = "none": GameFieldHeaderUnderBody.style.display = "flex";
+
+    // static width and height from cells
+    let cellWidth = cellGrid.children[0].getBoundingClientRect().width;
+    [...cellGrid.children].forEach(cell => {
+        cell.style.width = `${cellWidth - 1}px`;
+        cell.style.height = `${cellWidth - 1}px`;
+    });
 
     // Init Player 
     initializePlayers(OnlineGameDataArray);
@@ -516,6 +535,23 @@ function initializePlayers(OnlineGameDataArray) {
 socket.on('display_GlobalGameTimer', timer => {
     GameField_TimeMonitor.textContent = `${timer} s.`;
 });
+
+// Only availible in user created levels
+socket.on("GetBgcolors", (bg1, bg2) => {
+    ChangeGameBG(bg1, bg2);
+});
+
+// Change backgroundColor
+const ChangeGameBG = (bg1, bg2, reset) => {
+    if (PlayingInCreatedLevel && reset == undefined || personal_GameData.role == "user" && personal_GameData.currGameID != null && reset == undefined) {
+        Lobby.style.background = `linear-gradient(45deg, ${bg1}, ${bg2})`;
+        lobbyHeader.style.backgroundColor = "unset";
+
+    } else if (reset || reset && personal_GameData.role == "user" && personal_GameData.currGameID != null) {
+        Lobby.style.background = `unset`;
+        lobbyHeader.style.backgroundColor = "#15171a";
+    };
+};
 
 // user clicked some cell
 let lastCellIndex_Clicked = 0;

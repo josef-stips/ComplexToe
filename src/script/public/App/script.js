@@ -432,9 +432,20 @@ let ReplaceText_Levellist = document.querySelector(".ReplaceText_Levellist");
 let CurrentSelectedLevel_Display = document.querySelector(".CurrentSelectedLevel_Display");
 let closeSaveLevelWarning = document.querySelector(".closeSaveLevelWarning");
 let saveLevelWarnText = document.querySelector(".saveLevel_mainInnerWrapper");
-// select all caret elements
+let workbench_levelID_display = document.querySelector(".workbench_levelID_display");
+let LevelList_createDateDisplay = document.querySelector(".LevelList_createDateDisplay");
+let LevelList_PublishStatusDisplay = document.querySelector(".LevelList_PublishStatusDisplay");
 let ChangeSetting_leftCaret_All = document.querySelectorAll(".ChangeSetting_leftCaret");
 let ChangeSetting_rightCaret_All = document.querySelectorAll(".ChangeSetting_rightCaret");
+let removeLevelBtnYes = document.querySelector(".removeLevelBtnYes");
+let removeLevelBtnNo = document.querySelector(".removeLevelBtnNo");
+let removeWarning = document.querySelector(".removeWarning");
+let closeDeleteWarning = document.querySelector(".closeDeleteWarning");
+let ChooseBetweenModesPopUp = document.querySelector(".ChooseBetweenModesPopUp");
+let chooseModeCloseBtn = document.querySelector(".chooseModeCloseBtn");
+let OfflineModeBtn = document.querySelector(".OfflineModeBtn");
+let OnlineModeBtn = document.querySelector(".OnlineModeBtn");
+let Lobby = document.querySelector(".Lobby");
 
 bodyBGIMG.forEach(e => e.style.display = "none");
 
@@ -718,6 +729,9 @@ let personal_GameData = {
 let thirdPlayer_required = false;
 
 let socket;
+
+// check if admin created a lobby based on a self created game from the game cards or on a costum level which a user can create and publish to the server
+let PlayingInCreatedLevel = false;
 
 // Request friends from database and take action
 const RequestFriendsListFromDatabase = async() => {
@@ -1583,6 +1597,8 @@ gameMode_KI_card.addEventListener('click', () => {
     NewCreativeLevel = NewField;
     NewCreativeLevel.Init();
 
+    InitCreateLevelScene();
+
     // bug fix if user was in advanced mode:
     goToAdvancedFields.style.display = 'none';
     goToAdvancedFields.classList = "fa-solid fa-caret-down";
@@ -1797,63 +1813,13 @@ function Click_NxN(f) {
         };
     };
 
-    SetClockList.style.display = 'flex';
-    SetGameModeList.style.display = 'flex';
-    Player1_IconInput.style.color = 'black';
-    SetAllowedPatternsWrapper.style.display = 'display';
-    UserSetPointsToWinGameInput.style.display = "block";
-    Player1_IconInput.style.display = "block";
-    document.querySelector(`[for="Player1_IconInput"]`).style.display = "block";
-    SetAllowedPatternsWrapper.style.display = "flex";
-    SetGameData_Label[2].style.display = "block";
-
-    // warn text for online game mode
-    OnlineGame_NameWarnText[0].style.display = 'none';
-    OnlineGame_NameWarnText[0].style.display = 'none';
-
-    // for skins in online mode
-    SkinInputDisplay.style.display = 'none';
+    UserClicksNxNDefaultSettings();
 
     // reset previously made changes by the user
     resetUserChoosedAllowedPatterns();
 
     if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
-
-        SetPlayerNamesPopUp.style.display = 'flex';
-        DarkLayer.style.display = 'block';
-        Player2_NameInput.style.display = 'block';
-        Player2_IconInput.style.display = 'block';
-        Player1_IconInput.style.display = 'block';
-
-        curr_name1 = null;
-        curr_name2 = null;
-        curr_field_ele = target;
-
-        // Initialize Inputs from pop up
-        DisableGameModeItems();
-        DisablePlayerClockItems();
-        Player1_NameInput.value = "";
-        Player2_NameInput.value = "";
-        Player1_IconInput.value = "X";
-        Player2_IconInput.value = "O";
-
-        // default data
-        Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
-        if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
-            Player1_IconInput.style.color = "black";
-        };
-
-        if (localStorage.getItem('UserName')) {
-            Player1_NameInput.value = localStorage.getItem('UserName');
-            Player1_IconInput.value = localStorage.getItem('UserIcon');
-        };
-
-        if (localStorage.getItem('userInfoClass') != "empty") {
-            Player1_IconInput.style.display = 'none';
-            SkinInputDisplay.style.display = 'block';
-
-            SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
-        };
+        UserClicksOfflineModeCard(target);
     };
 
     if (curr_mode == GameMode[1].opponent) { // KI Mode
@@ -1881,11 +1847,13 @@ function Click_NxN(f) {
 
     if (curr_mode == GameMode[2].opponent) { // Online Game mode
 
+        console.log(target, target.getAttribute("field"))
+
         if (target.getAttribute('field') == "25x25" && localStorage.getItem('onlineMatches-won') >= 5 ||
             target.getAttribute('field') == "30x30" && localStorage.getItem('onlineMatches-won') >= 10 ||
             target.getAttribute('field') == "40x40" && localStorage.getItem('onlineMatches-won') >= 30 ||
             target.getAttribute('field') == "20x20" || target.getAttribute('field') == "15x15" || target.getAttribute('field') == "10x10" ||
-            target.getAttribute('field') == "5x5") {
+            target.getAttribute('field') == "5x5" && localStorage.getItem('onlineMatches-won') >= -1) {
 
             curr_field_ele = target;
 
@@ -1903,6 +1871,81 @@ function Click_NxN(f) {
                 Player1_IconInput.value = localStorage.getItem('UserIcon');
             };
         };
+    };
+};
+
+const UserClicksNxNDefaultSettings = (readonly) => {
+    Player1_IconInput.style.color = 'black';
+    Player1_IconInput.style.display = "block";
+
+    // warn text for online game mode
+    OnlineGame_NameWarnText[0].style.display = 'none';
+    OnlineGame_NameWarnText[0].style.display = 'none';
+
+    // for skins in online mode
+    SkinInputDisplay.style.display = 'none';
+
+    if (readonly) {
+        SetAllowedPatternsWrapper.style.display = 'none';
+        SetGameModeList.style.display = 'none';
+        SetGameData_Label[2].style.display = "none";
+        document.querySelector(`[for="Player1_IconInput"]`).style.display = "none";
+        document.querySelector(`[for="Player1_ClockInput"]`).style.display = "none";
+        document.querySelector(".SetGameData_Label").style.display = "none";
+        document.querySelector(".SetPlayerNames-IconInput").style.marginTop = "2em";
+        document.querySelector(".SetPlayerNames-InputArea").style.gap = "1.3em";
+        UserSetPointsToWinGameInput.style.display = "none";
+        SetClockList.style.display = 'none';
+
+    } else if (readonly == undefined) {
+        SetAllowedPatternsWrapper.style.display = 'flex';
+        SetGameModeList.style.display = 'flex';
+        SetGameData_Label[2].style.display = "block";
+        document.querySelector(`[for="Player1_IconInput"]`).style.display = "block";
+        document.querySelector(`[for="Player1_ClockInput"]`).style.display = "block";
+        document.querySelector(".SetGameData_Label").style.display = "block";
+        document.querySelector(".SetPlayerNames-IconInput").style.marginTop = "0";
+        document.querySelector(".SetPlayerNames-InputArea").style.gap = "0.9em";
+        UserSetPointsToWinGameInput.style.display = "block";
+        SetClockList.style.display = 'flex';
+    };
+};
+
+const UserClicksOfflineModeCard = (target) => {
+    SetPlayerNamesPopUp.style.display = 'flex';
+    DarkLayer.style.display = 'block';
+    Player2_NameInput.style.display = 'block';
+    Player2_IconInput.style.display = 'block';
+    Player1_IconInput.style.display = 'block';
+
+    curr_name1 = null;
+    curr_name2 = null;
+    curr_field_ele = target;
+
+    // Initialize Inputs from pop up
+    DisableGameModeItems();
+    DisablePlayerClockItems();
+    Player1_NameInput.value = "";
+    Player2_NameInput.value = "";
+    Player1_IconInput.value = "X";
+    Player2_IconInput.value = "O";
+
+    // default data
+    Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
+    if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
+        Player1_IconInput.style.color = "black";
+    };
+
+    if (localStorage.getItem('UserName')) {
+        Player1_NameInput.value = localStorage.getItem('UserName');
+        Player1_IconInput.value = localStorage.getItem('UserIcon');
+    };
+
+    if (localStorage.getItem('userInfoClass') != "empty") {
+        Player1_IconInput.style.display = 'none';
+        SkinInputDisplay.style.display = 'block';
+
+        SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
     };
 };
 
@@ -1963,12 +2006,12 @@ function Click_single_NxN(e) {
 // From the Confirm Button of the "create game button" in the SetUpGameData Window
 // User set all the game data for the game and his own player data. The confirm button calls this function
 // Room gets created and the creater gets joined in "index.js"
-function UserCreateRoom() {
+function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequired, PointsToWinGame, patterns) {
     let Check = SetGameData_CheckConfirm();
     // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
     if (Player1_NameInput.value != "" &&
         Player1_IconInput.value != "" &&
-        Check[0] == true && Check[1] == true) {
+        Check[0] == true && Check[1] == true || readOnlyLevel) {
         // server
         let fieldIndex = curr_field_ele.getAttribute('index');
         let fieldTitle = curr_field_ele.getAttribute('title');
@@ -1976,11 +2019,21 @@ function UserCreateRoom() {
         let xyCell_Amount = Fields[fieldIndex].xyCellAmount;
 
         if (localStorage.getItem('userInfoClass') == "empty") { // user doesn't use an advanced skin => everything's normal
-            curr_form1 = Player1_IconInput.value.toUpperCase();
+            curr_form1 = UserName.toUpperCase() || Player1_IconInput.value.toUpperCase();
 
         } else { // user uses an advanced skin => change things
             curr_form1 = "fontawesome"; // later it will check if it has this value and do the required things
         };
+
+        // set data: either extern data or intern data
+        if (Data1) Check[2] = Data1;
+        if (Data2) Check[3] = Data2;
+        if (UserName) Player1_NameInput.value = UserName;
+        if (thirdplayerRequired) thirdPlayer_required = thirdplayerRequired;
+        if (PointsToWinGame) UserSetPointsToWinGameInput.value = PointsToWinGame;
+        if (patterns) allowedPatternsFromUser = patterns;
+
+        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame)
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
@@ -2042,6 +2095,15 @@ function UserCreateRoom() {
                 };
             });
         });
+
+        // admin and no player is allowed to change the data from the level
+        if (readOnlyLevel) {
+            SwitchCaret.forEach(caret => {
+                caret.style.display = 'none';
+            });
+            togglePatternBtnLobby.forEach(el => el.style.display = "none");
+            Lobby_PointsToWin.contentEditable = false;
+        };
 
     } else {
         return;
@@ -2141,6 +2203,16 @@ function SetPlayerData_ConfirmEvent() {
     } else { // computer mode
 
         let Check = SetGameData_CheckConfirm();
+
+        // check if this is user created level
+        if (PlayingInCreatedLevel) {
+            Check[0] = true;
+            Check[1] = true;
+            Check[2] = NewCreativeLevel.Settings.playertimer[NewCreativeLevel.selectedLevel[3]];
+            Check[3] = "Boneyard";
+            UserSetPointsToWinGameInput.value = NewCreativeLevel.selectedLevel[2];
+            allowedPatternsFromUser = NewCreativeLevel.selectedLevel[6];
+        };
 
         // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
         if (Player1_NameInput.value != "" && Player2_NameInput.value != "" && Player1_NameInput.value != Player2_NameInput.value &&

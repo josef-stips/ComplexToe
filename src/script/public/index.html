@@ -2439,6 +2439,9 @@
 
                                     </ul>
                                 </div>
+
+                                <!-- position absolute -->
+                                <div class="workbench_levelID_display">ID </div>
                             </div>
 
                             <div class="workbenchMain_middle">
@@ -3216,20 +3219,30 @@
 
                         <div class="LevelList_main">
 
-                            <span class="CurrentSelectedLevel_Display">selected level: </span>
+                            <div style="width: 100%;
+                            height: 90%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-direction: column;">
+                                <span class="CurrentSelectedLevel_Display">selected level: </span>
 
-                            <ul class="LevelList_list">
-                                <!-- <li class="Level_InLevelList">
-                                    <span>Your level name</span>
-                                    <span class="LevelIconWrapper"><img src="assets/game/fangs.svg" width="32" height="32"></span>
-                                </li> -->
+                                <ul class="LevelList_list">
+                                    <h2 class="ReplaceText_Levellist">There are no levels yet. Create a level by clicking <i style="font-size: 16px;" class="fa-solid fa-plus AddCircleBtnStyle"></i></h2>
+                                </ul>
+                            </div>
 
-
-                                <!-- generate by javascript CreateGame.js class function -->
-                                <h2 class="ReplaceText_Levellist">There are no levels yet. Create a level by clicking <i style="font-size: 16px;" class="fa-solid fa-plus AddCircleBtnStyle"></i></h2>
-                            </ul>
+                            <div style="    width: 100%;
+                            height: max-content;
+                            display: flex;
+                            justify-content: space-between;
+                            margin: 0 0 5px 0;height: 10%;align-items: end;">
+                                <div class="LevelList_createDateDisplay">creation date </div>
+                                <div class="LevelList_PublishStatusDisplay">published</div>
+                            </div>
 
                             <i class="fa-solid fa-plus AddLevelBtn AddCircleBtnStyle"></i>
+
                         </div>
 
                         <div class="LevelList_footer">
@@ -6479,13 +6492,65 @@
         </div>
         <div class="saveLevelWarning_main">
             <div class="saveLevel_mainInnerWrapper">
-                Do you want to save the level? All changes will be&nbsp;<b>deleted</b>.
+                Do you want to save the level? The changes might be&nbsp;<b>lost</b>.
             </div>
 
             <div class="saveLevel_bottomInnerWrapper">
                 <span class="saveLevelBtn CreateLevelSceneButton">Save</span>
                 <span class="NotSaveLevelBtn CreateLevelSceneButton">Don't care</span>
             </div>
+        </div>
+    </div>
+
+    <!-- remove warning pop up -->
+    <div class="removeWarning">
+        <div class="saveLevelWarning_header">
+            <i class="fa-solid fa-x closeDeleteWarning" style="font-size: var(--Text-font-size);
+            margin: 15px 15px 0 0;"></i>
+        </div>
+        <div class="saveLevelWarning_main">
+            <div class="saveLevel_mainInnerWrapper">
+                Sure you want to delete this&nbsp;<b>level?</b>.
+            </div>
+
+            <div class="saveLevel_bottomInnerWrapper">
+                <span class="removeLevelBtnYes CreateLevelSceneButton">Yes</span>
+                <span class="removeLevelBtnNo CreateLevelSceneButton">No</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- choose between modes pop up -->
+    <div class="ChooseBetweenModesPopUp">
+        <div class="ini_onlineGame_header">
+
+            <div class="OnlineGameHeader-right onlineGame-header-cont">
+                <div></div>
+            </div>
+
+            <div class="OnlineGameHeader-center onlineGame-header-cont">
+                <h1>Choose an option</h1>
+            </div>
+
+            <div class="OnlineGameHeader-right onlineGame-header-cont">
+                <i class="fa-solid fa-x chooseModeCloseBtn"></i>
+            </div>
+
+        </div>
+
+        <div class="ini_onlineGame_main">
+
+            <div class="onlineGame_main-btn OfflineModeBtn">
+                <p>Offline Mode</p>
+            </div>
+
+            <div class="onlineGame_main-btn OnlineModeBtn">
+                <p>Online Mode</p>
+            </div>
+        </div>
+
+        <div class="ini_onlineGame_footer">
+
         </div>
     </div>
 

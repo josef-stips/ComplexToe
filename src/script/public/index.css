@@ -273,7 +273,7 @@ img {
 }
 
 .cell {
-    border: 2px solid white;
+    border: 1px solid white;
     box-shadow: 0 0 0 2px;
     cursor: pointer;
     display: flex;
@@ -891,6 +891,10 @@ img {
     justify-content: center;
     align-items: center;
     position: relative;
+}
+
+.NxN-field>div {
+    pointer-events: none;
 }
 
 .locked-icon_25 {
@@ -2228,8 +2232,8 @@ label h3 {
 /* Lobby Info pop up */
 
 .Lobby_GameInfo_PopUp {
-    width: 50%;
-    height: 50%;
+    width: 55%;
+    height: 55%;
     top: 0;
     bottom: 0;
     left: 0;
@@ -5539,6 +5543,14 @@ label h3 {
     font-size: var(--button-font-size);
 }
 
+.workbench_levelID_display {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: auto auto 10px 10px;
+    font-size: var(--Text-font-size);
+}
+
 
 /* Level-Liste und Bedienelemente */
 
@@ -5556,10 +5568,11 @@ label h3 {
 .LevelList_main {
     display: flex;
     width: 100%;
-    height: 90%;
-    justify-content: center;
+    min-height: 65vh;
+    max-height: 65vh;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .AddLevelBtn {
@@ -5614,14 +5627,14 @@ label h3 {
 
 .LevelList_list {
     width: 50%;
-    height: 80%;
+    height: 100%;
     border: 3px solid goldenrod;
-    display: grid;
     overflow: scroll;
     flex-direction: column
 }
 
 .ReplaceText_Levellist {
+    margin-top: 50px;
     display: none;
     align-self: center;
 }
@@ -5630,13 +5643,12 @@ label h3 {
     width: 100%;
     height: 90px;
     display: flex;
-    justify-content: start;
     align-items: center;
-    gap: 1em;
     border-bottom: 2px solid goldenrod;
     font-size: 30px;
     padding: 0 0 0 10px;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
 
 .LevelIconWrapper {
@@ -5671,10 +5683,38 @@ label h3 {
 }
 
 .CurrentSelectedLevel_Display {
-    position: absolute;
-    top: 19.5%;
-    left: 27.5%;
-    font-size: 25px;
+    font-size: var(--Text-font-size);
+    width: 50%;
+    display: flex;
+    margin: 0 0 10px 0;
+}
+
+.LevelListItem_InnerWrapper1 {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+}
+
+.LevelListItem_InnerWrapper2 {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    justify-content: end;
+    font-size: 20px;
+    margin: 0 25px 5px 0;
+}
+
+.LevelList_PublishStatusDisplay {
+    font-size: var(--Text-font-size);
+}
+
+.LevelList_createDateDisplay {
+    font-size: var(--Text-font-size);
 }
 
 
@@ -5748,6 +5788,32 @@ label h3 {
 }
 
 
+/* remove level warning pop up */
+
+.removeWarning {
+    width: 40%;
+    height: 30%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 2px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    gap: 3em;
+    color: white;
+    font-size: 25px;
+    z-index: 10006;
+    border-radius: 25px;
+    align-items: center;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+
 /* credits pop up */
 
 .Credits {
@@ -5807,6 +5873,38 @@ label h3 {
 
 .Credits_main a {
     color: rgb(133, 133, 133);
+}
+
+
+/* choose between modes */
+
+.ChooseBetweenModesPopUp {
+    display: none;
+    z-index: 10000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+}
+
+.chooseModeCloseBtn {
+    cursor: pointer;
+    transition: all 0.1 ease-in-out;
+    font-size: var(--Text-font-size);
+    margin: 10px 10px 0 0;
+}
+
+.chooseModeCloseBtn:hover {
+    transition: all 0.1 ease-in-out;
+    color: goldenrod;
+    transform: scale(1.05);
 }
 
 
@@ -6234,7 +6332,7 @@ label h3 {
         font-size: 16px;
     }
     .Lobby_AllowedPatternsScrollContainer {
-        width: 33em;
+        width: 25em;
     }
     .SetPatternGridLobby .miniCellMini {
         width: 1.2vh;
