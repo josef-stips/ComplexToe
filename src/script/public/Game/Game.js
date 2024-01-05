@@ -374,6 +374,13 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         AdvantureMode_SpellDisplay.style.display = "none";
     };
 
+    if (PlayingInCreatedLevel) {
+        chooseWinnerWindowBtn.style.display = "none";
+
+    } else if (curr_mode == GameMode[3].opponent) {
+        chooseWinnerWindowBtn.style.display = "block";
+    };
+
     (curr_mode == GameMode[2].opponent) ? GameFieldHeaderUnderBody.style.display = "none": GameFieldHeaderUnderBody.style.display = "flex";
 
     // static width and height from cells

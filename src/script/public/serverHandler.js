@@ -359,7 +359,7 @@ const UserLeftGameInOnlineMode = () => {
         if (bossModeIsActive) {
             CreateMusicBars(boss_theme);
         } else {
-            CreateMusicBars(audio); // error because javascript is as weird as usual
+            if (!PlayingInCreatedLevel) CreateMusicBars(audio);
         };
     });
 };
@@ -390,7 +390,7 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
         if (inAdvantureMode) {
             CreateMusicBars(mapSound);
         } else {
-            CreateMusicBars(audio); // error because javascript is as weird as usual
+            if (!PlayingInCreatedLevel) CreateMusicBars(audio);
         };
     };
 };
@@ -804,7 +804,7 @@ socket.on('killed_game', () => {
 
     // play music
     PauseMusic();
-    CreateMusicBars(audio);
+    if (!PlayingInCreatedLevel) CreateMusicBars(audio);
 });
 
 // Admin created the game and now waits for the second player
@@ -941,7 +941,7 @@ socket.on('INFORM_user_left_game', () => {
 
         // play music
         PauseMusic();
-        CreateMusicBars(audio); // error because javascript is weird language   
+        if (!PlayingInCreatedLevel) CreateMusicBars(audio);
     };
 });
 
@@ -969,7 +969,7 @@ socket.on('INFORM_blocker_left_game', () => {
 
         // play music
         PauseMusic();
-        CreateMusicBars(audio); // error because javascript is weird language
+        if (!PlayingInCreatedLevel) CreateMusicBars(audio);
     };
 });
 

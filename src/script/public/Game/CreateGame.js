@@ -52,12 +52,12 @@ class NewLevel {
             },
             "bgmusic": {
                 0: "no bg music",
-                1: "assets/Maps/Ground_destroyer.mp3",
-                2: "assets/Maps/Impossible_survival.mp3",
-                3: "assets/Maps/Long_funeral.mp3",
-                4: "assets/Maps/March_into_fire.mp3",
+                1: "assets/Maps/Quick_Death.mp3",
+                2: "assets/Maps/March_into_fire.mp3",
+                3: "assets/Maps/Long_Funeral.mp3",
+                4: "assets/Maps/Impossible_survival.mp3",
                 5: "assets/Maps/Merciful_slaughter.mp3",
-                6: "assets/Maps/Quick_Death.mp3",
+                6: "assets/Maps/Ground_destroyer.mp3",
                 7: "assets/Maps/Tunnel_of_truth.mp3",
             },
             "allowedpatterns": {
@@ -106,17 +106,24 @@ class NewLevel {
         // which action should be done after the user hit an option in the save warning pop up?
         // Does he originally wanted to leave or go to the level list
         this.ActionAfterSaveOrNotSaveButton = "leave";
+
+        // Is the player in searching mode ?
+        this.Searching = false;
     };
 
     // Init new Level
-    Init = () => {
+    Init = (DisplayWorkbench) => {
         // check for localstorage object
         if (!localStorage.getItem("SavedLevels")) {
             localStorage.setItem("SavedLevels", "{}");
         };
 
         // Display workbench and undisplay level list
-        this.StartWorkbench();
+        if (!DisplayWorkbench) {
+            this.StartLevelList();
+        } else {
+            this.StartWorkbench();
+        };
         // Init current settings
         this.InitCurrentSettings(this.CurrentSelectedSetting.bgmusic, this.CurrentSelectedSetting.bgcolor1, this.CurrentSelectedSetting.bgcolor2,
             this.CurrentSelectedSetting.requiredpoints, this.CurrentSelectedSetting.playertimer, this.CurrentSelectedSetting.levelicon, this.CurrentSelectedSetting.cellgrid,
@@ -216,7 +223,7 @@ class NewLevel {
     };
 
     // display workbench
-    StartWorkbench = () => {
+    StartWorkbench = (DisplayWorkbench) => {
         CreateLevel_Workbench.style.display = "flex";
         CreateLevel_LevelList.style.display = "none";
 
@@ -225,6 +232,15 @@ class NewLevel {
 
         CreateLevel_Title.textContent = "Workbench";
         UndoChangeBtn.style.display = "block";
+
+        SearchLevelsBtn.style.display = "none";
+        CloseSearchLevelsBtn.style.display = "none";
+        SearchLevelInputWrapper.style.display = "none";
+        CreateLevel_Title.style.display = "block";
+
+        PlayLevelBtn.style.display = "none";
+
+        this.CloseSearch(false);
 
         if (this.CurrentSelectedSetting.id == 0) {
             workbench_levelID_display.textContent = "ID none";
@@ -240,42 +256,53 @@ class NewLevel {
     };
 
     // display level list
-    StartLevelList = () => {
+    StartLevelList = (Display, DisplayList) => {
         // get levels user created
-        try {
-            socket.emit("RequestLevels", localStorage.getItem("PlayerID"), levels => {
-                console.log(levels);
+        if (DisplayList == undefined) {
+            try {
+                socket.emit("RequestLevels", localStorage.getItem("PlayerID"), levels => {
+                    if (levels.length <= 0) { // no levels
+                        ReplaceText_Levellist.style.display = "block";
 
-                if (levels.length <= 0) { // no levels
-                    ReplaceText_Levellist.style.display = "block";
+                    } else { // create level display
+                        ReplaceText_Levellist.style.display = "none";
+                        LevelList_list.textContent = null;
 
-                } else { // create level display
-                    ReplaceText_Levellist.style.display = "none";
-                    LevelList_list.textContent = null;
+                        console.log(levels);
 
-                    // create every single level
-                    levels.forEach(level => {
-                        this.AddLevelToList(level);
-                    });
-                };
+                        // create every single level
+                        levels.forEach(level => {
+                            this.AddLevelToList(level);
+                        });
+                    };
+                });
 
-            });
-
-        } catch (error) {
-            console.log(error);
-            AlertText.textContent = "Levels could not be loaded! Something is wrong...";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            } catch (error) {
+                console.log(error);
+                AlertText.textContent = "Levels could not be loaded! Something is wrong...";
+                DarkLayer.style.display = "block";
+                alertPopUp.style.display = "flex";
+            };
         };
 
-        CreateLevel_LevelList.style.display = "flex";
-        CreateLevel_Workbench.style.display = "none";
+        if (Display == false) {
+            UndoChangeBtn.style.display = "block";
+            SearchLevelsBtn.style.display = "none";
+            CreateLevel_LevelList.style.display = "none";
+            CreateLevel_Workbench.style.display = "flex";
+            ShowLevelListBtn.style.display = "flex";
+            ShowWorkbenchBtn.style.display = "none";
+            CreateLevel_Title.textContent = "Workbench";
 
-        ShowLevelListBtn.style.display = "none";
-        ShowWorkbenchBtn.style.display = "flex";
-
-        CreateLevel_Title.textContent = "Your created Levels";
-        UndoChangeBtn.style.display = "none";
+        } else {
+            UndoChangeBtn.style.display = "none";
+            SearchLevelsBtn.style.display = "block";
+            CreateLevel_LevelList.style.display = "flex";
+            CreateLevel_Workbench.style.display = "none";
+            ShowLevelListBtn.style.display = "none";
+            ShowWorkbenchBtn.style.display = "flex";
+            CreateLevel_Title.textContent = "Your created Levels";
+        };
 
         LevelList_PublishStatusDisplay.style.display = "none";
         LevelList_createDateDisplay.style.display = "none";
@@ -349,28 +376,49 @@ class NewLevel {
         img.height = "32";
 
         li.addEventListener("click", () => {
+            console.log(level, level.CreatorBeatIt);
+
             this.selectedLevel = [parseInt(level.bg1), parseInt(level.bg2), level.required_points, level.player_timer, parseInt(level.icon), parseInt(level.bg_music), JSON.parse(level.pattern), level.field, level.level_name, level.level_status,
                 true, level.id, level.publish_date, level.CreatorBeatIt, level.creation_date
             ];
             CurrentSelectedLevel_Display.textContent = `selected level: ${this.selectedLevel[8]} - ID ${this.selectedLevel[11]}`;
 
-            LevelList_PublishStatusDisplay.style.display = "block";
+            if (!this.Searching) LevelList_PublishStatusDisplay.style.display = "block";
             LevelList_createDateDisplay.style.display = "block";
 
             if (level.level_status == 0) {
                 // Display publish level buttons right
-                PublishLevelBtn.style.display = "block";
-                unpublishLevelBtn.style.display = "none";
+                if (!this.Searching) {
+                    PublishLevelBtn.style.display = "block";
+                    unpublishLevelBtn.style.display = "none";
+
+                    EditLevelBtn_ListBtn.style.display = "block";
+                    RemoveLevelBtn.style.display = "block";
+                } else {
+                    PublishLevelBtn.style.display = "none";
+                    unpublishLevelBtn.style.display = "none";
+                };
 
                 LevelList_PublishStatusDisplay.textContent = "unpublished";
                 LevelList_PublishStatusDisplay.style.color = "rgb(255, 152, 0)";
 
             } else {
                 // Display publish level buttons right
-                PublishLevelBtn.style.display = "none";
-                unpublishLevelBtn.style.display = "block";
+                if (!this.Searching) {
+                    PublishLevelBtn.style.display = "none";
+                    unpublishLevelBtn.style.display = "block";
+                } else {
+                    PublishLevelBtn.style.display = "none";
+                    unpublishLevelBtn.style.display = "none";
+                };
 
-                LevelList_PublishStatusDisplay.textContent = `published - ${level.publish_date}`;
+                EditLevelBtn_ListBtn.style.display = "none";
+                RemoveLevelBtn.style.display = "none";
+
+                const dateParts = JSON.parse(level.publish_date).split("T")[0].split("-");
+                const formattedDate = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
+
+                LevelList_PublishStatusDisplay.textContent = `published - ${formattedDate}`;
                 LevelList_PublishStatusDisplay.style.color = "lawngreen";
             };
 
@@ -598,14 +646,14 @@ class NewLevel {
         curr_field_ele = DataFields[FieldSize];
 
         switch (mode) {
-            case 0:
+            case 0: // offline mode
                 curr_mode = GameMode[3].opponent;
 
-                UserClicksNxNDefaultSettings(true); // true: player can only change his name and icon 
+                UserClicksNxNDefaultSettings(true); // true: player can only change his name and icon  
                 UserClicksOfflineModeCard(curr_field_ele);
                 break;
 
-            case 1:
+            case 1: // online mode
                 curr_mode = GameMode[2].opponent;
 
                 // initialize game with given data and start game
@@ -621,16 +669,172 @@ class NewLevel {
             delete DataFields['40x40'];
         };
     };
+
+    // search for levels functionality
+    OpenSearch = () => {
+        CreateLevel_Title.style.display = "none";
+        SearchLevelInputWrapper.style.display = "flex";
+
+        SearchLevelInput.focus();
+
+        LevelList_list.textContent = null;
+
+        EditLevelBtn_ListBtn.style.display = "none";
+        RemoveLevelBtn.style.display = "none";
+        PublishLevelBtn.style.display = "none";
+        LevelList_PublishStatusDisplay.style.display = "none";
+
+        this.selectedLevel = undefined;
+        this.Searching = true;
+
+        this.StartLevelList(undefined, false); // false : Don't display list of player's created levels
+
+        SearchLevelsBtn.style.display = "none";
+        CloseSearchLevelsBtn.style.display = "block";
+    };
+
+    CloseSearch = (ShowLevelList) => {
+        CreateLevel_Title.style.display = "block";
+        SearchLevelInputWrapper.style.display = "none";
+
+        SearchLevelsBtn.style.display = "block";
+        CloseSearchLevelsBtn.style.display = "none";
+
+        SearchLevelInput.value = null;
+
+        EditLevelBtn_ListBtn.style.display = "block";
+        RemoveLevelBtn.style.display = "block";
+        PublishLevelBtn.style.display = "block";
+        LevelList_PublishStatusDisplay.style.display = "block";
+
+        this.selectedLevel = undefined;
+        this.Searching = false;
+
+        this.StartLevelList(ShowLevelList); // false : Don't display the level list tab itself but just refresh its content
+    };
+
+    RequestLevelSearchResults = (text) => {
+        try {
+            socket.emit("RequestOnlineLevels", text, levels => {
+                this.DisplayLevelSearchResults(levels);
+            });
+
+        } catch (error) {
+            AlertText.textContent = "Something went wrong!";
+            DarkLayer.style.display = "block";
+            alertPopUp.style.display = "flex";
+        };
+    };
+
+    DisplayLevelSearchResults = (levels) => {
+        LevelList_list.textContent = null;
+
+        // no level found
+        if (levels.length <= 0) {
+            let p = document.createElement("p");
+            p.textContent = "No level found";
+            p.style.margin = "50px 0 0 0";
+            p.style.fontSize = "40px";
+            p.style.fontWeight = "600";
+
+            LevelList_list.appendChild(p);
+
+        } else { // levels exist
+            levels.forEach(level => {
+                this.AddLevelToList(level);
+            });
+        };
+    };
+
+    // User beat his own level and verified it. now it is ready to publish
+    verified = () => {
+        try {
+            socket.emit("UserVerifiedLevel", this.selectedLevel[11], confirmationStatus => {
+                this.selectedLevel[13] = confirmationStatus;
+            });
+
+        } catch (error) {
+            AlertText.textContent = "Something went wrong! Level could not be verified...";
+            DarkLayer.style.display = "block";
+            alertPopUp.style.display = "flex";
+        };
+    };
 };
 
 // initialize general scene
 const InitCreateLevelScene = () => {
+    // User wants to publish a level 
+    PublishLevelBtn.addEventListener("click", () => {
+        if (NewCreativeLevel.selectedLevel[13] == 1 && NewCreativeLevel.selectedLevel[9] == 0) { // Creator of level beat it which means he has the right to publish the level
+            try {
+                socket.emit("PublishLevel", NewCreativeLevel.selectedLevel[11], cb => {
+                    // refresh page
+                    let NewField = new NewLevel();
+                    NewCreativeLevel = NewField;
+                    NewCreativeLevel.Init();
+
+                    AlertText.textContent = "Level is successfully published";
+                    alertPopUp.style.display = "flex";
+                    DarkLayer.style.display = "block";
+                });
+            } catch (error) {
+                console.log(error);
+                AlertText.textContent = "Something went wrong! Level could not be published. Try it again later";
+                alertPopUp.style.display = "flex";
+                DarkLayer.style.display = "block";
+            };
+
+        } else if (NewCreativeLevel.selectedLevel[9] == 0) {
+            AlertText.textContent = "You have to conquer the level to publish it";
+            alertPopUp.style.display = "flex";
+            DarkLayer.style.display = "block";
+        };
+    });
+
+    unpublishLevelBtn.addEventListener("click", () => {
+        if (NewCreativeLevel.selectedLevel[9] == 1) { // Creator of level beat it which means he has the right to publish the level
+            try {
+                socket.emit("UnpublishLevel", NewCreativeLevel.selectedLevel[11], cb => {
+                    // refresh page
+                    let NewField = new NewLevel();
+                    NewCreativeLevel = NewField;
+                    NewCreativeLevel.Init();
+
+                    AlertText.textContent = "Level is successfully unpublished";
+                    alertPopUp.style.display = "flex";
+                    DarkLayer.style.display = "block";
+                });
+            } catch (error) {
+                console.log(error);
+                AlertText.textContent = "Something went wrong! Level could not be unpublished. Try it again later";
+                alertPopUp.style.display = "flex";
+                DarkLayer.style.display = "block";
+            };
+        };
+    });
+
+    // Search Level click event 
+    SearchLevelsBtn.addEventListener("click", () => {
+        NewCreativeLevel.OpenSearch();
+    });
+
+    CloseSearchLevelsBtn.addEventListener("click", () => {
+        NewCreativeLevel.CloseSearch();
+    });
+
+    SearchLevelInput.addEventListener("keyup", (e) => {
+        if (e.key == "Enter") {
+            e.preventDefault();
+            NewCreativeLevel.RequestLevelSearchResults(SearchLevelInput.value);
+        };
+    });
+
     // start event listener
     EditLevelBtn_ListBtn.addEventListener('click', () => {
         console.log(NewCreativeLevel);
 
         if (NewCreativeLevel.selectedLevel == undefined) {
-            AlertText.textContent = "select a level to edit it";
+            AlertText.textContent = "select a level to edit";
             alertPopUp.style.display = "flex";
             DarkLayer.style.display = "block";
 
@@ -641,7 +845,7 @@ const InitCreateLevelScene = () => {
                 NewCreativeLevel.selectedLevel[7], NewCreativeLevel.selectedLevel[8], NewCreativeLevel.selectedLevel[9], NewCreativeLevel.selectedLevel[10], NewCreativeLevel.selectedLevel[11],
                 NewCreativeLevel.selectedLevel);
             NewCreativeLevel = NewField;
-            NewCreativeLevel.Init();
+            NewCreativeLevel.Init(true);
 
         } else if (NewCreativeLevel.selectedLevel != undefined && NewCreativeLevel.selectedLevel[9] == 1) { // level is published, can't be edited
             AlertText.textContent = "You can't edit a level once it's published";
@@ -745,7 +949,7 @@ const InitCreateLevelScene = () => {
         // User started new level
         let NewField = new NewLevel();
         NewCreativeLevel = NewField;
-        NewCreativeLevel.Init();
+        NewCreativeLevel.Init(true); // true : Display work bench
     });
 
     // remove event listener
@@ -806,7 +1010,7 @@ const InitCreateLevelScene = () => {
             DarkLayer.style.display = "block";
 
         } else {
-            AlertText.textContent = "Select a level to remove it";
+            AlertText.textContent = "Select a level to remove";
             DarkLayer.style.display = "block";
             alertPopUp.style.display = "flex";
         };
@@ -820,10 +1024,10 @@ const InitCreateLevelScene = () => {
     removeLevelBtnYes.addEventListener("click", () => {
         try {
             socket.emit("RemoveLevel", NewCreativeLevel.selectedLevel[11], cb => {
-                NewCreativeLevel.StartLevelList();
-
-                NewCreativeLevel.selectedLevel = undefined;
-                CurrentSelectedLevel_Display.textContent = "selected level: ";
+                // refresh page
+                let NewField = new NewLevel();
+                NewCreativeLevel = NewField;
+                NewCreativeLevel.Init();
 
                 removeWarning.style.display = "none";
                 DarkLayer.style.display = "none";
@@ -850,7 +1054,7 @@ const InitCreateLevelScene = () => {
             });
 
         } else {
-            AlertText.textContent = "Select a level to play it";
+            AlertText.textContent = "Select a level to play";
             DarkLayer.style.display = "block";
             alertPopUp.style.display = "flex";
         };

@@ -267,8 +267,8 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
         // Change player things. execute this everytime
         setTimeout(() => {
             (!inAdvantureMode) ? processResult_continueGame(fromRestart, fromClick, true): processResult_continueGame();
-        }, 600);
-    }, 2200);
+        }, 1000);
+    }, 2000);
 };
 
 // process result: advanture mode (special)
@@ -491,7 +491,9 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
             span.style.bottom = destination.bottom + "px";
             span.style.left = destination.left + "px";
             span.style.right = destination.right + "px";
-            span.style.opacity = "0";
+            setTimeout(() => {
+                span.style.opacity = "0";
+            }, 250);
         } catch (error) {
             span.remove();
             return;
@@ -517,10 +519,7 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
 
         setTimeout(() => {
             AnimateTo(destination, span);
-
-            setTimeout(() => {
-                span.style.transition = "opacity 2s ease-out, top 1.5s ease-in-out, bottom 1.5s ease-in-out, left 1.5s ease-in-out, right 1.5s ease-in-out";
-            }, 1000);
+            span.style.transition = "opacity 2s ease-out, top 1.5s ease-in-out, bottom 1.5s ease-in-out, left 1.5s ease-in-out, right 1.5s ease-in-out";
 
             setTimeout(() => {
                 span.remove();
@@ -627,8 +626,6 @@ function Call_UltimateWin(WinCombination, UserGivesUp) {
     CheckmateWarnText.style.display = "none" // just small bug fix nothing special
     removeAccessToAnything();
 
-    console.log("you are here in call ultimate win")
-
     if (WinCombination == undefined) {
         console.log("The win combi is undefined")
         setTimeout(() => {
@@ -676,10 +673,30 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
             if (!stopStatusTextInterval) {
                 // in Advanture mode or in online mode
                 if (inAdvantureMode || curr_mode == GameMode[2].opponent) {
-                    statusText.textContent = `Leave level...`;
+                    if (PlayingInCreatedLevel) { // Player played user created level
+                        if (NewCreativeLevel.selectedLevel[9] == 0) {
+                            statusText.textContent = `It's conquered! Level is ready to publish`;
+
+                        } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                            statusText.textContent = `Leave level...`;
+                        };
+
+                    } else { // user played standard card level from game
+                        statusText.textContent = `Leave level...`;
+                    };
 
                 } else if (!inAdvantureMode && curr_mode != GameMode[2].opponent) { // not in advanture and not in online mode
-                    statusText.textContent = `New game starting...`;
+                    if (PlayingInCreatedLevel) { // Player played user created level
+                        if (NewCreativeLevel.selectedLevel[9] == 0) {
+                            statusText.textContent = `You beat it! Level is ready to publish`;
+
+                        } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                            statusText.textContent = `New game starting...`;
+                        };
+
+                    } else { // user played standard card level from game
+                        statusText.textContent = `New game starting...`;
+                    };
                 };
                 statusText.classList.remove('Invisible');
                 i--;
@@ -691,15 +708,42 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
                     if (!inAdvantureMode) {
                         // in online mode
                         if (curr_mode == GameMode[2].opponent) {
-                            // admin leaves game and this info all player get
-                            if (personal_GameData.role == "admin") {
-                                UserleavesGame();
+                            if (PlayingInCreatedLevel) { // Player played user created level
+                                if (NewCreativeLevel.selectedLevel[9] == 0) {
+                                    // admin leaves game and this info all player get
+                                    if (personal_GameData.role == "admin") {
+                                        UserleavesGame();
+                                        NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                                    };
+                                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                                    // admin leaves game and this info all player get
+                                    if (personal_GameData.role == "admin") {
+                                        UserleavesGame();
+                                    };
+                                };
+
+                            } else { // user played standard card level from game
+                                // admin leaves game and this info all player get
+                                if (personal_GameData.role == "admin") {
+                                    UserleavesGame();
+                                };
                             };
                             DarkLayer.style.display = "block";
 
                             // in offline mode
                         } else if (curr_mode != GameMode[2].opponent) {
-                            restartGame();
+                            if (PlayingInCreatedLevel) { // Player played user created level
+                                if (NewCreativeLevel.selectedLevel[9] == 0) {
+                                    NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                                    UserleavesGame();
+
+                                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                                    restartGame();
+                                };
+
+                            } else { // user played standard card level from game
+                                restartGame();
+                            };
                         };
 
                         // in advanture mode
@@ -860,15 +904,12 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             cellGrid.style.display = 'none';
             UltimateWinTextArea.style.display = 'flex';
             if (player1_won && !player2_won) { // player 1 won (user)
-
                 FirstPlayerUltimateWin(player1_won, player2_won);
 
             } else if (player2_won && !player1_won) { // player 2 won (user)
-
                 SecondPlayerUltimateWin(player1_won, player2_won);
 
-            } else if (player1_won && player2_won) { // GG tie
-
+            } else if (player1_won && player2_won) { // GG
                 GG_UltimateWin(player1_won, player2_won);
             };
         }, 2000);

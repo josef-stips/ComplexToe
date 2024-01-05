@@ -123,6 +123,27 @@ SearchBar_placeholderText.addEventListener('keydown', event => {
     };
 });
 
+SearchLevelInput.addEventListener("keydown", () => {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 25 && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
 Player1_NameInput.addEventListener('keydown', function(event) {
     let len = event.target.value.trim().length;
     let hasSelection = false;

@@ -446,6 +446,10 @@ let chooseModeCloseBtn = document.querySelector(".chooseModeCloseBtn");
 let OfflineModeBtn = document.querySelector(".OfflineModeBtn");
 let OnlineModeBtn = document.querySelector(".OnlineModeBtn");
 let Lobby = document.querySelector(".Lobby");
+let SearchLevelsBtn = document.querySelector(".SearchLevelsBtn");
+let SearchLevelInputWrapper = document.querySelector(".SearchLevelInputWrapper");
+let SearchLevelInput = document.querySelector(".SearchLevelInput");
+let CloseSearchLevelsBtn = document.querySelector(".CloseSearchLevelsBtn");
 
 bodyBGIMG.forEach(e => e.style.display = "none");
 
@@ -1887,12 +1891,12 @@ const UserClicksNxNDefaultSettings = (readonly) => {
 
     if (readonly) {
         SetAllowedPatternsWrapper.style.display = 'none';
-        SetGameModeList.style.display = 'none';
-        SetGameData_Label[2].style.display = "none";
-        document.querySelector(`[for="Player1_IconInput"]`).style.display = "none";
+        // SetGameModeList.style.display = 'none';
+        // SetGameData_Label[2].style.display = "none";
+        // document.querySelector(`[for="Player1_IconInput"]`).style.display = "none";
         document.querySelector(`[for="Player1_ClockInput"]`).style.display = "none";
         document.querySelector(".SetGameData_Label").style.display = "none";
-        document.querySelector(".SetPlayerNames-IconInput").style.marginTop = "2em";
+        // document.querySelector(".SetPlayerNames-IconInput").style.marginTop = "2em";
         document.querySelector(".SetPlayerNames-InputArea").style.gap = "1.3em";
         UserSetPointsToWinGameInput.style.display = "none";
         SetClockList.style.display = 'none';
@@ -2207,9 +2211,7 @@ function SetPlayerData_ConfirmEvent() {
         // check if this is user created level
         if (PlayingInCreatedLevel) {
             Check[0] = true;
-            Check[1] = true;
             Check[2] = NewCreativeLevel.Settings.playertimer[NewCreativeLevel.selectedLevel[3]];
-            Check[3] = "Boneyard";
             UserSetPointsToWinGameInput.value = NewCreativeLevel.selectedLevel[2];
             allowedPatternsFromUser = NewCreativeLevel.selectedLevel[6];
         };
@@ -2236,7 +2238,13 @@ function SetPlayerData_ConfirmEvent() {
 
             // play theme music 
             PauseMusic();
-            CreateMusicBars(Fields[fieldIndex].theme_name);
+            if (PlayingInCreatedLevel) {
+                if (NewCreativeLevel.selectedLevel[5] != 0) {
+                    CreateMusicBars(document.querySelector(`[src="${NewCreativeLevel.Settings["bgmusic"][NewCreativeLevel.selectedLevel[5]]}"]`));
+                };
+            } else {
+                CreateMusicBars(Fields[fieldIndex].theme_name);
+            };
 
         } else {
             return;
@@ -2337,7 +2345,12 @@ gameInfo_btn.addEventListener('click', () => {
         });
 
         // how to win text
-        HowToWinText.textContent = `Get ${Lobby_PointsToWin.textContent} points or score more points than your opponent if he gives up.`;
+        if (PlayingInCreatedLevel) {
+            HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points or score more points than your opponent if he gives up.`;
+
+        } else {
+            HowToWinText.textContent = `Get ${Lobby_PointsToWin.textContent} points or score more points than your opponent if he gives up.`;
+        };
 
     } else { // in advanture mode
         // display for 5x5 fields and higher

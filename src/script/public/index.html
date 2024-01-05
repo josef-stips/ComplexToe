@@ -2334,11 +2334,22 @@
 
                     <div class="CreateLevel_headerMiddle">
                         <h1 class="CreateLevel_Title">Workbench </h1>
+
+                        <!-- in search mode -->
+                        <div class="SearchLevelInputWrapper">
+                            <div class="SearchBar_leftWrapper">
+                                <i class="fa-solid fa-search SearchBar_searchIcon" style="margin: 0 0 0 30px;"></i>
+                            </div>
+                            <input class="SearchLevelInput" type="text" placeholder="search a level by its name">
+                        </div>
                     </div>
 
                     <div class="CreateLevel_headerRight">
                         <i class="fa-solid fa-rotate-left CreateLevelSceneButton UndoChangeBtn"></i>
                         <i class="fa-solid fa-rotate-left CreateLevelSceneButton RedoChangeBtn" style="transform: scaleX(-1);"></i>
+
+                        <i class="fa-solid fa-x CreateLevelSceneButton CloseSearchLevelsBtn"></i>
+                        <i class="fa-solid fa-magnifying-glass CreateLevelSceneButton SearchLevelsBtn"></i>
                         <i class="CreateLevelSceneButton CreateLevelHelpButton">Help</i>
                     </div>
                 </div>
@@ -3591,8 +3602,8 @@
             </div>
 
             <div class="SetAllowedPatternsWrapper">
-                <h2 style="text-align: start;position: absolute;top: 50px;">Set allowed patterns</h2>
-                <h4 style="text-align: start;position: absolute;top: 80px;">random <i class="fa-regular fa-square RandomAllowedWinCombinations_Btn" activated="false"></i></h4>
+                <h2>Set allowed patterns</h2>
+                <h4>random <i class="fa-regular fa-square RandomAllowedWinCombinations_Btn" activated="false"></i></h4>
                 <!-- 5x5 Field and everything above -->
                 <div class="setPatternWrapper hor">
                     <div class="SetPatternGrid hor">
