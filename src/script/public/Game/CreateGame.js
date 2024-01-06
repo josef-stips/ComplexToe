@@ -343,7 +343,7 @@ class NewLevel {
         };
     };
 
-    AddLevelToList = (level) => {
+    AddLevelToList = (level, correspondPlayer) => {
         let li = document.createElement("li");
         li.classList = "Level_InLevelList";
 
@@ -365,10 +365,49 @@ class NewLevel {
 
         let div1 = document.createElement("div");
         let div2 = document.createElement("div");
+
+        let InnerP = document.createElement("p");
+        InnerP.textContent = `Level ID: 0${level.id}`;
+
         div1.classList = "LevelListItem_InnerWrapper1";
         div2.classList = "LevelListItem_InnerWrapper2";
 
-        div2.textContent = `Level ID: 0${level.id}`;
+        // Display from which player the level is. User can also click on the name of player to look at this profile
+        if (correspondPlayer) {
+            let InnerSpan = document.createElement("span");
+            let PlayerNameP = document.createElement("p");
+            InnerSpan.textContent = `from `;
+            PlayerNameP.textContent = `${correspondPlayer.player_name}`;
+            PlayerNameP.classList = "Level_PlayerName";
+
+            let player = correspondPlayer;
+            let player_name = player.player_name;
+            let player_id = player.player_id;
+            let player_icon = player.player_icon;
+            let playerInfoClass = player.playerInfoClass;
+            let playerInfoColor = player.playerInfoColor;
+            let quote = player.quote;
+            let onlineGamesWon = player.onlineGamesWon;
+            let XP = player.XP;
+            let currentUsedSkin = player.currentUsedSkin;
+            let last_connection = player.last_connection;
+
+            // click event
+            PlayerNameP.addEventListener("click", () => {
+                DarkLayer.style.display = "block";
+                if (player_id != localStorage.getItem("PlayerID")) { // User clicks on other players profile
+                    ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+
+                } else { // User clicks on his own profile
+                    OpenOwnUserProfile();
+                };
+            });
+
+            div2.appendChild(InnerSpan);
+            div2.appendChild(PlayerNameP);
+        };
+
+        div2.appendChild(InnerP);
 
         let img = document.createElement("img");
         img.src = this.Settings.levelicon[parseInt(level.icon)];
@@ -656,9 +695,12 @@ class NewLevel {
             case 1: // online mode
                 curr_mode = GameMode[2].opponent;
 
-                // initialize game with given data and start game
-                UserCreateRoom(true, this.Settings.playertimer[this.selectedLevel[3]], "Boneyard", localStorage.getItem("UserName"), false,
-                    this.selectedLevel[2], this.selectedLevel[6]); // create lobby with data from current selected level. the user can't change anything
+                UserClicksNxNDefaultSettings(true); // true: player can only change his name and icon  
+                InitGameDataForPopUp(false);
+
+                // // initialize game with given data and start game
+                // UserCreateRoom(true, this.Settings.playertimer[this.selectedLevel[3]], "Boneyard", localStorage.getItem("UserName"), false,
+                //     this.selectedLevel[2], this.selectedLevel[6]); // create lobby with data from current selected level. the user can't change anything
                 break;
         };
 
@@ -691,6 +733,22 @@ class NewLevel {
 
         SearchLevelsBtn.style.display = "none";
         CloseSearchLevelsBtn.style.display = "block";
+
+        try {
+            socket.emit("DisplayAllOnlineLevel", ((levels, players) => {
+                console.log(levels, players);
+                if (levels.length >= 1) {
+                    levels.forEach((level, index) => {
+                        console.log(level, index, players[index][0])
+
+                        this.AddLevelToList(level, players[index][0]);
+                    });
+                };
+            }));
+
+        } catch (error) {
+            console.log(error);
+        };
     };
 
     CloseSearch = (ShowLevelList) => {

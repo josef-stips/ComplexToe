@@ -641,6 +641,40 @@ const DisplayXPlayer = (x, name, color, icon, IsIconAdvanced, AdminName) => {
     };
 };
 
+let RandomTextN = -1;
+// random text
+const RandomTextOnAlert = (n) => {
+    switch (n) {
+        case 0:
+            AlertText.textContent = "You want to click on something huh?";
+            break;
+
+        case 1:
+            AlertText.textContent = "There is no way you will do it";
+            break;
+
+        case 2:
+            AlertText.textContent = "...";
+            break;
+
+        case 3:
+            AlertText.textContent = "Still trying?";
+            break;
+
+        case 4:
+            AlertText.textContent = "Good ambition. But for what price?";
+            break;
+
+        case 5:
+            AlertText.textContent = "You want some cookies?";
+            break;
+
+        case 6:
+            AlertText.textContent = "You should rater beat the unknown";
+            break;
+    };
+};
+
 // player wants to click on other player profiles in the lobby or mid online game
 const EventListenerForXPlayer = (x) => {
     let player_display;
@@ -683,6 +717,17 @@ const EventListenerForXPlayer = (x) => {
                 } catch (error) {
                     console.log(error);
                 };
+
+            } else if (player == null) {
+                // Text to troll user
+                RandomTextN++;
+                RandomTextOnAlert(RandomTextN);
+
+                if (RandomTextN >= 6) RandomTextN = -1;
+
+                OpenedPopUp_WhereAlertPopUpNeeded = true;
+                alertPopUp.style.display = "flex";
+                DarkLayer.style.display = "block";
             };
         });
 

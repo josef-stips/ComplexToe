@@ -53,7 +53,7 @@ onmessage = (data) => {
     let KIBoardOrigin = data.data[8];
     let blockages = data.data[9];
 
-    // console.log(WinConditions, options, player_board.toString(2), ki_board.toString(2), chunk, max_depth, PlayerData, blockages.toString(2))
+    console.log(WinConditions, options, player_board.toString(2), ki_board.toString(2), chunk, max_depth, PlayerData, blockages.toString(2))
 
     tt.init();
 
@@ -170,7 +170,7 @@ onmessage = (data) => {
             };
 
             if (alpha >= beta) return ttEntry.bestScore
-        };
+        }
 
         if (isMaximazing) {
             let bestScore = -Infinity;

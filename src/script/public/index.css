@@ -16,6 +16,7 @@
     --Text-font-size: 22.5px;
     --max-cellGrid-size: 585px;
     --CreateLevel-ScrollContainerHeight-max: 650px;
+    --max-responsive-scale: scale(1);
 }
 
 .dark-mode {
@@ -404,6 +405,7 @@ img {
     justify-content: center;
     gap: 0.9em;
     margin-top: -0.2em;
+    transform: var(--max-responsive-scale);
 }
 
 .AppTitle-div {
@@ -441,6 +443,7 @@ img {
     border-radius: 50px;
     background-color: rgb(17, 19, 22);
     margin: 0 0 0 1%;
+    transform: var(--max-responsive-scale);
 }
 
 .ELO-Points-div div {
@@ -777,10 +780,10 @@ img {
 
 .card-miniBord-mini {
     display: grid;
-    /* max-width: 30px; */
     justify-content: center;
     align-items: center;
     grid-template-columns: repeat(5, auto);
+    transform: var(--max-responsive-scale);
 }
 
 .card-footer {
@@ -2629,6 +2632,7 @@ label h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 1%;
 }
 
 .userInfo-main {
@@ -2868,11 +2872,18 @@ label h3 {
 .UserGivesData_Input {
     outline: none;
     font-size: 25px;
-    border-radius: 20px;
-    font-weight: 500;
+    font-weight: 600;
+    margin: 0 0 0 0.5em;
+    width: 55%;
     height: 20%;
-    width: 80%;
+    border: none;
+    border-bottom: 2px white solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    background: unset;
+    color: white;
 }
 
 
@@ -4189,32 +4200,39 @@ label h3 {
 
 .ChatMessage {
     outline: none;
-    border: 2px solid var(--font-color);
-    transition: all 0.1s ease-in-out;
-    color: #121518;
-    border-radius: 20px;
-    width: 85%;
-    height: 40%;
-    margin: 0 0 0 30px;
+    font-size: 25px;
+    font-weight: 600;
+    margin: 0 0 0 0.5em;
+    padding: 0 0 10px 0;
+    width: 100%;
+    height: 20%;
+    border: none;
+    border-bottom: 2px white solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    font-size: 23px;
+    background: unset;
+    color: white;
 }
 
 .Submit_chatMessageBtn {
     outline: none;
     color: #121518;
-    border: 2px solid var(--font-color);
+    border: 2px solid white;
     border-radius: 20px;
     font-weight: 400;
     margin-right: 35px;
     padding: 5px 20px 5px 20px;
     font-size: 30px;
     cursor: pointer;
+    background: unset;
+    font-weight: 600;
+    color: white;
 }
 
 .Submit_chatMessageBtn:hover {
     transition: all 0.1s ease-in-out;
-    color: var(--hover-item);
     border: 2px solid var(--hover-item);
 }
 
@@ -5728,6 +5746,7 @@ label h3 {
     justify-content: end;
     font-size: 20px;
     margin: 0 25px 5px 0;
+    gap: 1em;
 }
 
 .LevelList_PublishStatusDisplay {
@@ -5736,6 +5755,16 @@ label h3 {
 
 .LevelList_createDateDisplay {
     font-size: var(--Text-font-size);
+}
+
+.Level_PlayerName {
+    cursor: pointer;
+    transition: color 0.1 ease-in-out;
+}
+
+.Level_PlayerName:hover {
+    transition: color 0.1 ease-in-out;
+    color: goldenrod;
 }
 
 
@@ -6351,6 +6380,7 @@ label h3 {
         --Text-font-size: 17.5px;
         --max-cellGrid-size: 442.5px;
         --CreateLevel-ScrollContainerHeight-max: 450px;
+        --max-responsive-scale: scale(0.85);
     }
     .skinShop-SkinColors {
         gap: 1em;

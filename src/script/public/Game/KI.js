@@ -418,6 +418,12 @@ function KI_Action() {
         return;
     };
 
+    // look for win combinations the player can do based on his previous made moves
+    // These win combinations are more likely to be attempted by the player and
+    // the KI can block the cells where a win is possible so the player has to choose 
+    // and think of a different winning combination 
+    let CommonWinCombinations = CalculateCommonWinningCombinations(lastCellIndex_Clicked);
+
     if (result[0] == true) { // if player can win with one move left KI has to place there
         placeAtInstantWinForOpponent(result);
 
@@ -439,6 +445,36 @@ function KI_Action() {
 // win conditions in bit version
 let WinConds;
 
+// look for the obvious win combinations and return them
+const CalculateCommonWinningCombinations = (cellIndex) => { // last cell the user clicked
+    // create big bitboards
+    let bigboards = InitBigboards(options); // 0 : ki_board, 1 : player_board, 2 : blockages
+
+    // init bit-based win conditions
+    WinConds = convertToBinary(WinConditions);
+
+    let Combis = [];
+
+    console.log(WinConds);
+
+    // // set icon for player in every cell and look if he would win
+    // for (let i = BigInt(0); i < options.length; i++) {
+
+    //     if ( (((bigboards[1] >> i) & BigInt(1)) === BigInt(0)) ) {
+    //         // set for second player and check win
+    //         bigboards[1] |= (BigInt(1) << i)
+    //         let result = minimax_checkWinner(bigboards[1])
+    //         bigboards[1] &= ~(BigInt(1) << i)
+
+    //         toString(1)
+
+    //         if (result === PlayerData[1].PlayerForm) {
+    //             return [true, i]
+    //         }
+    //     }
+    // }
+};
+
 // if the opponent of the KI (player [you]) can beat it in just one move, the KI does not have to do calculations with the minimax algorithm 
 // but just place the icon on that right cell
 const lookForInstantWin = () => {
@@ -450,7 +486,7 @@ const lookForInstantWin = () => {
 
     // set icon for player in every cell and look if he would win
     for (let i = BigInt(0); i < options.length; i++) {
-        // console.log(cells[i].classList.length, val[i], val, i)
+        // and operator for big int with 1
         if ((((bigboards[0] >> i) & BigInt(1)) === BigInt(0)) &&
             (((bigboards[1] >> i) & BigInt(1)) === BigInt(0)) &&
             (((bigboards[2] >> i) & BigInt(1)) === BigInt(0))) {
@@ -649,7 +685,7 @@ function minimax_checkWinner(Player_B) { // give player big bit boards (type Big
     for (let i = 0; i < WinConds.length; i++) {
         let pattern = WinConds[i];
 
-        if (tie == 0) { tie = evaluatingTie(pattern, Player_B) }
+        if (tie == 0) tie = evaluatingTie(pattern, Player_B)
 
         if ((Player_B & pattern) == pattern) {
             winner = PlayerData[1].PlayerForm
@@ -668,7 +704,7 @@ function minimax_checkWinner_KI(KI_B) { // give ki big bit boards (type BigInt)
     for (let i = 0; i < WinConds.length; i++) {
         let pattern = WinConds[i];
 
-        if (tie == 0) { tie = evaluatingTie(pattern, KI_B) }
+        if (tie == 0) tie = evaluatingTie(pattern, KI_B)
 
         if ((KI_B & pattern) == pattern) {
             winner = PlayerData[2].PlayerForm

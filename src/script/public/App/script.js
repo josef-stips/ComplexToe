@@ -1861,20 +1861,24 @@ function Click_NxN(f) {
 
             curr_field_ele = target;
 
-            // Initialize Inputs from pop up
-            DarkLayer.style.display = 'block';
-            OnlineGame_iniPopUp.style.display = 'flex';
-            Player2_NameInput.style.display = 'none';
-            Player2_IconInput.style.display = 'none';
-            Player1_NameInput.style.height = '50%';
-            Player1_IconInput.style.height = '50%';
-
-            // default data
-            if (localStorage.getItem('UserName')) {
-                Player1_NameInput.value = localStorage.getItem('UserName');
-                Player1_IconInput.value = localStorage.getItem('UserIcon');
-            };
+            InitGameDataForPopUp();
         };
+    };
+};
+
+const InitGameDataForPopUp = (DisplayIniPopUp) => {
+    // Initialize Inputs from pop up
+    DarkLayer.style.display = 'block';
+    (DisplayIniPopUp == undefined) ? OnlineGame_iniPopUp.style.display = 'flex': SetPlayerNamesPopUp.style.display = 'flex';
+    Player2_NameInput.style.display = 'none';
+    Player2_IconInput.style.display = 'none';
+    Player1_NameInput.style.height = '50%';
+    Player1_IconInput.style.height = '50%';
+
+    // default data
+    if (localStorage.getItem('UserName')) {
+        Player1_NameInput.value = localStorage.getItem('UserName');
+        Player1_IconInput.value = localStorage.getItem('UserIcon');
     };
 };
 
@@ -1884,7 +1888,8 @@ const UserClicksNxNDefaultSettings = (readonly) => {
 
     // warn text for online game mode
     OnlineGame_NameWarnText[0].style.display = 'none';
-    OnlineGame_NameWarnText[0].style.display = 'none';
+    OnlineGame_NameWarnText[1].style.display = 'none';
+    BlockerCombat_OnlineGameWarnText.style.display = "none";
 
     // for skins in online mode
     SkinInputDisplay.style.display = 'none';
@@ -2012,10 +2017,14 @@ function Click_single_NxN(e) {
 // Room gets created and the creater gets joined in "index.js"
 function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequired, PointsToWinGame, patterns) {
     let Check = SetGameData_CheckConfirm();
+
+    // console.log(NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]]);
+
     // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
     if (Player1_NameInput.value != "" &&
         Player1_IconInput.value != "" &&
-        Check[0] == true && Check[1] == true || readOnlyLevel) {
+        Check[0] == true && Check[1] == true && !PlayingInCreatedLevel || PlayingInCreatedLevel &&
+        Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[1] == true && NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]]) {
         // server
         let fieldIndex = curr_field_ele.getAttribute('index');
         let fieldTitle = curr_field_ele.getAttribute('title');
@@ -2023,7 +2032,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         let xyCell_Amount = Fields[fieldIndex].xyCellAmount;
 
         if (localStorage.getItem('userInfoClass') == "empty") { // user doesn't use an advanced skin => everything's normal
-            curr_form1 = UserName.toUpperCase() || Player1_IconInput.value.toUpperCase();
+            curr_form1 = Player1_IconInput.value.toUpperCase();
 
         } else { // user uses an advanced skin => change things
             curr_form1 = "fontawesome"; // later it will check if it has this value and do the required things
@@ -2036,6 +2045,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         if (thirdplayerRequired) thirdPlayer_required = thirdplayerRequired;
         if (PointsToWinGame) UserSetPointsToWinGameInput.value = PointsToWinGame;
         if (patterns) allowedPatternsFromUser = patterns;
+        if (PlayingInCreatedLevel) Check[2] = NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]];
 
         console.log(UserSetPointsToWinGameInput.value, PointsToWinGame)
 
@@ -2198,10 +2208,15 @@ function SetPlayerData_ConfirmEvent() {
     if (curr_mode == GameMode[2].opponent) { // online mode
         // if user wants to enter an online game
         if (personal_GameData.EnterOnlineGame) {
+            console.log(personal_GameData.EnterOnlineGame)
             UserTriesToEnterOnlineGame();
 
         } else { // user wants to create an online game
-            UserCreateRoom();
+            if (PlayingInCreatedLevel) {
+                UserCreateRoom(true);
+            } else {
+                UserCreateRoom();
+            };
         };
 
     } else { // computer mode

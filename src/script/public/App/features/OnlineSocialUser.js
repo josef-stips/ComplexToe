@@ -106,7 +106,8 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
     UserLastTimeOnlineDisplay.style.display = "block";
     UserInfoCont.style.display = "flex";
 
-    (running) ? DarkLayer.style.display = "block": DarkLayer.style.display = "none";
+    // (running || NewCreativeLevel) ? DarkLayer.style.display = "block": DarkLayer.style.display = "none";
+    DarkLayer.style.display = "block";
 
     let date = new Date(last_connection);
     let options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };

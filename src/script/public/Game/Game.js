@@ -266,9 +266,11 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
 
     // Init game title,game icon and game info
     GameTitle.textContent = fieldTitle;
-    Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
     GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
     GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
+
+    SetGameFieldIconForCurrentField(parseInt(xCell_Amount), fieldIndex);
+    SetBGColorForCurrentField(parseInt(xCell_Amount));
 
     inAdvantureMode ? GameField_AveragePlayTimeDisplay.textContent = `ave. playtime is unknown` : GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
 
@@ -550,7 +552,7 @@ socket.on("GetBgcolors", (bg1, bg2) => {
 
 // Change backgroundColor
 const ChangeGameBG = (bg1, bg2, reset) => {
-    if (PlayingInCreatedLevel && reset == undefined || personal_GameData.role == "user" && personal_GameData.currGameID != null && reset == undefined) {
+    if (reset == undefined || personal_GameData.role == "user" && personal_GameData.currGameID != null && reset == undefined) {
         Lobby.style.background = `linear-gradient(45deg, ${bg1}, ${bg2})`;
         lobbyHeader.style.backgroundColor = "unset";
 
@@ -560,10 +562,125 @@ const ChangeGameBG = (bg1, bg2, reset) => {
     };
 };
 
+// the normal card level in complex toe als have bg colors to make them more unique etc.
+const SetBGColorForCurrentField = (xy) => {
+    console.log(xy)
+    switch (xy) {
+        case 5:
+            bgcolor1 = "#e9967a57";
+            bgcolor2 = "#bb634557";
+            break;
+
+        case 10:
+            bgcolor1 = "#ff7f5078";
+            bgcolor2 = "#bf5c3778";
+            break;
+
+        case 15:
+            bgcolor1 = "#e91e6352";
+            bgcolor2 = "#ed143d12";
+            break;
+
+        case 20:
+            bgcolor1 = "#5684ab61";
+            bgcolor2 = "#2e567861";
+            break;
+
+        case 25:
+            bgcolor1 = "#ff980024";
+            bgcolor2 = "#ff572261";
+            break;
+
+        case 30:
+            bgcolor1 = "#93cf954f";
+            bgcolor2 = "#4caf5063";
+            break;
+
+        case 40:
+            bgcolor1 = "#f436364a";
+            bgcolor2 = "#f436364a";
+            break;
+    };
+};
+
+// every card field has its own img icon or fontawesome icon
+const SetGameFieldIconForCurrentField = (xy, fieldIndex) => {
+    console.log(xy)
+    switch (xy) {
+        case 5:
+            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+            let img = document.createElement("img");
+            img.src = "./assets/game/warlord-helmet.svg";
+            img.width = "35";
+            img.height = "35";
+            img.style.margin = "7px 0 0 0";
+            img.style.transform = "rotate(90deg)";
+            Game_Upper_Field_Icon.appendChild(img);
+            Game_Upper_Field_Icon.classList = "";
+            break;
+
+        case 10:
+            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+            let img1 = document.createElement("img");
+            img1.src = "./assets/game/wolf-head.svg";
+            img1.width = "35";
+            img1.height = "35";
+            img1.style.margin = "7px 0 0 0";
+            Game_Upper_Field_Icon.appendChild(img1);
+            Game_Upper_Field_Icon.classList = "";
+            break;
+
+        case 15:
+            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+            let img3 = document.createElement("img");
+            img3.src = "./assets/game/shattered-sword.svg";
+            img3.width = "31";
+            img3.height = "31";
+            img3.style.margin = "7px 4px 0 0";
+            img3.style.transform = "scaleX(-1)";
+            Game_Upper_Field_Icon.appendChild(img3);
+            Game_Upper_Field_Icon.classList = "";
+            break;
+
+        case 20:
+            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+            let img2 = document.createElement("img");
+            img2.src = "./assets/game/dragon-head.svg";
+            img2.width = "35";
+            img2.height = "35";
+            img2.style.margin = "7px 0 0 0";
+            img2.style.transform = "rotate(90deg) scaleY(-1)";
+            Game_Upper_Field_Icon.appendChild(img2);
+            Game_Upper_Field_Icon.classList = "";
+            break;
+
+        case 25:
+            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+            Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
+            break;
+
+        case 30:
+            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+            Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
+            break;
+
+        case 40:
+            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+            let img4 = document.createElement("img");
+            img4.src = "./assets/game/semi-closed-eye.svg";
+            img4.width = "40";
+            img4.height = "40";
+            img4.style.margin = "2px 0 0 0";
+            Game_Upper_Field_Icon.appendChild(img4);
+            Game_Upper_Field_Icon.classList = "";
+            break;
+    };
+};
+
 // user clicked some cell
 let lastCellIndex_Clicked = 0;
 async function cellCicked() {
-    console.log(this.classList, MaxAmountOfMovesGameDisplay, running);
+    // console.log(this.classList, MaxAmountOfMovesGameDisplay, running);
     if (this.classList == "cell" && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
 
