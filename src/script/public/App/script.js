@@ -450,6 +450,7 @@ let SearchLevelsBtn = document.querySelector(".SearchLevelsBtn");
 let SearchLevelInputWrapper = document.querySelector(".SearchLevelInputWrapper");
 let SearchLevelInput = document.querySelector(".SearchLevelInput");
 let CloseSearchLevelsBtn = document.querySelector(".CloseSearchLevelsBtn");
+let GameFieldHeaderTitleWrapper = document.querySelector(".GameFieldHeader-upperBody");
 
 bodyBGIMG.forEach(e => e.style.display = "none");
 

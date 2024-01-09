@@ -65,7 +65,7 @@ function diagonale_Linie2_for5(n) {
 };
 
 // diagonales viereck aus 4 blöcken
-// [1,5,7,11] , [2,6,8,12], [3,7,9,13], [6, 10, 12, 16]
+// [1,5,7,11], [2,6,8,12], [3,7,9,13], [6, 10, 12, 16]
 function diagonales_viereck_for5(n) {
     let i = 1;
     for (let j = 1; j <= n; j++) {
@@ -78,7 +78,7 @@ function diagonales_viereck_for5(n) {
         subArray.push(i, i + 4, i + 6, i + 10);
         WinConditions.push(subArray);
 
-        if (i + 10 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i >= 13) {
             break;
         };
 

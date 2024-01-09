@@ -300,9 +300,8 @@ MapLevelBtns.forEach((item, k) => {
             let requirements = unlocked_mapLevels[k + 1][11];
             let requirement_amount = Object.keys(requirements).length;
 
-            requirement_amount == 0 ? LevelOverview_requirement[0].textContent = "No requirements" : console.log("requirements exist");
+            if (requirement_amount == 0) LevelOverview_requirement[0].textContent = "No requirements";
 
-            console.log(requirements, Object.keys(requirements))
             for (let i = 0; i < requirement_amount; i++) {
                 LevelOverview_requirement[i].textContent = `${requirements[Object.keys(requirements)[i]]} ${Object.keys(requirements)[i]}`;
             };

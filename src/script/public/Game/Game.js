@@ -564,7 +564,6 @@ const ChangeGameBG = (bg1, bg2, reset) => {
 
 // the normal card level in complex toe als have bg colors to make them more unique etc.
 const SetBGColorForCurrentField = (xy) => {
-    console.log(xy)
     switch (xy) {
         case 5:
             bgcolor1 = "#e9967a57";
@@ -605,7 +604,6 @@ const SetBGColorForCurrentField = (xy) => {
 
 // every card field has its own img icon or fontawesome icon
 const SetGameFieldIconForCurrentField = (xy, fieldIndex) => {
-    console.log(xy)
     switch (xy) {
         case 5:
             if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
@@ -684,7 +682,7 @@ async function cellCicked() {
     if (this.classList == "cell" && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
 
-        console.log(options[cellIndex]);
+        // console.log(options[cellIndex]);
 
         // check if cell is already drawn or the game is running
         if (options[cellIndex] != "" || !running) {

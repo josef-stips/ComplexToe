@@ -36,14 +36,14 @@ UseSpell_UseBtn.addEventListener('click', () => {
 const SpellsSpawnRate = () => {
     let spawnRate = 70 - JSON.parse(localStorage.getItem('unlocked_mapLevels'))[current_selected_level][3];
     let numberOfSpells = Math.floor(options.length * (spawnRate / 100));
-    console.log("Number of spells: ", numberOfSpells)
+    // console.log("Number of spells: ", numberOfSpells)
 
     for (let i = 0; i < numberOfSpells; i++) {
         const rndIndex = Math.floor(Math.random() * options.length);
         Bitboard_spells |= (BigInt(1) << BigInt(rndIndex));
     }
 
-    console.log(Bitboard_spells.toString(2));
+    // console.log(Bitboard_spells.toString(2));
 };
 
 // User found a cell
