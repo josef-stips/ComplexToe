@@ -477,6 +477,8 @@ let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
 let gameMode_TwoPlayerOnline_card = document.querySelector('#gameMode-TwoPlayerOnline-card');
 let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
 
+const getKeyByValue = (object, value) => { return Object.keys(object).find(key => object[key] === value) };
+
 // important data
 let GameMode = {
     1: {

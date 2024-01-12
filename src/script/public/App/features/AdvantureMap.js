@@ -465,8 +465,9 @@ function TryTo_StartMapLevel() {
             curr_name1 = MapLevel_NameInput.value;
             curr_name2 = 'The unknown'; // Bot
             curr_form1 = MapLevel_IconInput.value;
-            curr_form2 = 'Y' // Bot        
-            curr_innerGameMode = unlocked_mapLevels[current_selected_level][9];
+            curr_form2 = 'Y'; // Bot        
+            // curr_innerGameMode = unlocked_mapLevels[current_selected_level][9];
+            curr_innerGameMode = "Free Fight";
 
             initializeGame(curr_field_ele, undefined, undefined, allowed_patterns, unlocked_mapLevels[current_selected_level][2], required_amount_to_win, curr_innerGameMode, MaxAmountOfMoves);
 

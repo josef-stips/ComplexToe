@@ -79,7 +79,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                         // KI Mode
                         if (curr_mode == GameMode[1].opponent) {
                             if (inAdvantureMode) { // in advanture mode
-                                CheckmateWarnText.textContent = `The unknown can beat you with one move, ${PlayerData[1].PlayerName}`;
+                                CheckmateWarnText.textContent = ``;
 
                             } else { // not in advanture mode
                                 CheckmateWarnText.textContent = `The ${PlayerData[2].PlayerName} can beat you with one move, ${PlayerData[1].PlayerName}`;
@@ -164,7 +164,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                         // KI Mode
                         if (curr_mode == GameMode[1].opponent) {
                             if (inAdvantureMode) { // in advanture mode
-                                CheckmateWarnText.textContent = `The unknown can beat you with one move, ${PlayerData[1].PlayerName}`;
+                                CheckmateWarnText.textContent = ``;
 
                             } else { // not in advanture mode
                                 CheckmateWarnText.textContent = `The ${PlayerData[2].PlayerName} can beat you with one move, ${PlayerData[1].PlayerName}`;
@@ -538,6 +538,9 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
     WinCombination.forEach(Ele => {
         Ele.classList.add('about-to-die-cell');
     });
+
+    // for advanture mode
+    MovesAmount_PlayerAndKi = 0;
 
     // processing
     setTimeout(() => {

@@ -54,7 +54,7 @@ onmessage = (data) => {
     let KIBoardOrigin = data.data[8];
     let blockages = data.data[9];
 
-    // console.log(WinConditions, options, player_board.toString(2), ki_board.toString(2), chunk, max_depth, PlayerData, blockages.toString(2))
+    console.log(WinConditions, options, player_board.toString(2), ki_board.toString(2), chunk, max_depth, PlayerData, blockages.toString(2))
 
     tt.init();
 
@@ -185,7 +185,7 @@ onmessage = (data) => {
                     moves.push(k);
                 }
             }
-            moves.sort(compareMoves);
+            // moves.sort(compareMoves);
 
             for (let k = 0; k < moves.length; k++) {
                 let move = moves[k]
@@ -227,7 +227,7 @@ onmessage = (data) => {
                     moves.push(k);
                 }
             }
-            moves.sort(compareMoves).reverse()
+            // moves.sort(compareMoves).reverse()
 
             for (let k = 0; k < moves.length; k++) {
                 let move = moves[k]
@@ -269,16 +269,16 @@ onmessage = (data) => {
             if (tie == 0) { tie = evaluatingTie(board) }
 
             if ((player_board & board) == board) {
+                // console.log(winner);
                 winner = PlayerData[1].PlayerForm
                 break
 
             } else if ((ki_board & board) == board) {
+                // console.log(winner);
                 winner = PlayerData[2].PlayerForm
-                    // console.log(winner);
                 break
             }
         };
-
         return (winner == null && tie == 0) ? 'tie' : winner
     };
 };

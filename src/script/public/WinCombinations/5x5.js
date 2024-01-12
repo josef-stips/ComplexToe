@@ -422,7 +422,7 @@ function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
     all_patt.forEach(patt => {
         switch (patt) {
             // case "hor":
-            //     horizontale_Linie_for5(yCell_Amount * xCell_Amount);
+            //     horizontale_Linie_for5(5 * 5);
             //     break;
             //     // case "vert":
             //     //     vertikale_Linie_for5(yCell_Amount * xCell_Amount);
