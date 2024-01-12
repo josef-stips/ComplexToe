@@ -30,7 +30,6 @@
 
 body,
 html {
-    font-family: 'Rubik', sans-serif;
     user-select: none;
     text-align: center;
     width: 100%;
@@ -40,6 +39,9 @@ html {
     padding: 0;
     background-color: var(--bg-app-color);
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    /* font-family: 'Geologica', sans-serif; */
+    /* font-family: 'Josefin Sans', sans-serif; */
+    font-family: 'Rubik', sans-serif;
 }
 
 *::selection {
@@ -1001,12 +1003,13 @@ img {
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
-    font-weight: 600;
+    font-family: 'Geologica', sans-serif;
+    transition: opacity 0.5s ease-in-out;
+    font-weight: 700;
 }
 
 #UltimateWinText {
-    font-size: 70px;
+    font-size: 80px;
 }
 
 #ThreexThree_MiniBoard {
@@ -1485,12 +1488,14 @@ img {
 .SetPlayerName-input {
     height: max-content;
     width: 30%;
-    border-radius: 15px;
-    padding: 0.25em 1em 0.25em 1em;
+    padding: 0.25em 0 0.25em 0.5em;
     outline: none;
-    border: 2px solid black;
-    font-size: 15px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border: none;
+    font-size: 20px;
+    border-bottom: 2px solid white;
+    background: none;
+    color: white;
+    font-family: 'Geologica', sans-serif;
 }
 
 #Player1_IconInput {
@@ -2570,12 +2575,15 @@ label h3 {
 
 .animatedPop-ConBtn {
     margin: 0 1.5em 1em 0;
-    border: 2px solid black;
+    border: none;
     border-radius: 30px;
-    font-size: 17px;
+    font-weight: 500;
+    font-size: 20px;
     transition: all 0.1s ease-in;
     cursor: pointer;
     font-family: 'Geologica', sans-serif;
+    background: rgba(0, 0, 0, 0);
+    color: white;
 }
 
 .animatedPop-ConBtn:hover {
@@ -3977,6 +3985,10 @@ label h3 {
     flex-direction: row;
     justify-content: start;
     align-items: center;
+}
+
+.exploreditem_wrapper>img {
+    pointer-events: all;
 }
 
 .exploredItems_MainWrapper {

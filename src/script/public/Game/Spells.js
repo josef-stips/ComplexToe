@@ -37,12 +37,10 @@ const SpellsSpawnRate = () => {
     let spawnRate = 70 - JSON.parse(localStorage.getItem('unlocked_mapLevels'))[current_selected_level][3];
     let numberOfSpells = Math.floor(options.length * (spawnRate / 100));
     // console.log("Number of spells: ", numberOfSpells)
-
     for (let i = 0; i < numberOfSpells; i++) {
         const rndIndex = Math.floor(Math.random() * options.length);
         Bitboard_spells |= (BigInt(1) << BigInt(rndIndex));
     }
-
     // console.log(Bitboard_spells.toString(2));
 };
 
@@ -50,13 +48,11 @@ const SpellsSpawnRate = () => {
 const UserFoundSpell = (index) => {
     // delete spell on given index
     Bitboard_spells &= ~(BigInt(1) << BigInt(index));
-
     // add spell to store
     SpellsInStore++;
     setTimeout(() => {
         SpellAmountDisplay.textContent = SpellsInStore;
     }, 1550);
-
     // spell found animation
     SpellFoundAnimation(index);
 };
@@ -92,6 +88,5 @@ const SpellFoundAnimation = (index) => {
             img.remove();
         }, 1400);
     }, 100);
-
     document.body.appendChild(img);
 };

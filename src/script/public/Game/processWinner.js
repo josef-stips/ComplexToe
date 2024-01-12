@@ -541,6 +541,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
     // for advanture mode
     MovesAmount_PlayerAndKi = 0;
+    KI_play_mode = "defend";
 
     // processing
     setTimeout(() => {
@@ -597,7 +598,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
             if (inAdvantureMode) {
                 statusText.textContent = `the unknown just gained a point`;
                 if (score_Player2_numb >= points_to_win) {
-                    statusText.textContent = `You lost against the evil. Are you willing to you try again?`;
+                    statusText.textContent = `You lost against the evil. Are you willing to try again?`;
                     Player2_won = false;
                     Call_UltimateWin();
                     return;

@@ -305,7 +305,7 @@ function findValidMoves(board) {
 };
 
 // Find best index on the field
-const FindBestSpot = (Boardstate) => {
+const FindBestSpot = (Boardstate, SearchNewField) => {
     let board = Array.from(Boardstate);
     [...cells].forEach((el, i) => {
         if (el.classList.contains("death-cell")) board[i] = "%%";
@@ -319,7 +319,8 @@ const FindBestSpot = (Boardstate) => {
         };
     };
 
-    if (IconOnField) {
+    console.log(typeof SearchNewField);
+    if (IconOnField && typeof SearchNewField == "undefined") {
         return null;
 
     } else {
@@ -358,6 +359,10 @@ const FindBestSpot = (Boardstate) => {
     };
 };
 
+// worker amount 
+let completedWorkers = 0;
+let currentWorkers = 4;
+
 // KI sets O somewhere
 function KI_Action() {
     setTimeout(() => { // remove access to set for the player
@@ -379,6 +384,7 @@ function KI_Action() {
             // set final move from bot
             cells[finalMove].textContent = currentPlayer;
             options[finalMove] = currentPlayer;
+            InnerFieldData_Options[InnerFieldData_Indexes[finalMove]] = currentPlayer;
             // for color
             cells[finalMove].style.color = "gold";
 
@@ -415,8 +421,8 @@ function KI_Action() {
     } else {
 
         // worker variables
-        let completedWorkers = 0;
-        let currentWorkers = 4;
+        completedWorkers = 0;
+        currentWorkers = 4;
         let calculatedMoves = new Object();
 
         // initialize start time for worker 
@@ -450,17 +456,62 @@ function KI_Action() {
 
             console.log(options, InnerFieldOptions, InnerFieldData_Options, InnerFieldData_Indexes, InnerFieldData, blockages.toString(2), binaryWinConds.toString(2));
 
-            if (MovesAmount_PlayerAndKi > 8 || MovesAmount_PlayerAndKi < 4) {
+            if (MovesAmount_PlayerAndKi > 20 || MovesAmount_PlayerAndKi < 4) {
                 // create one worker for each chunk 
                 chunks.forEach((chunk, i) => {
-                    completedWorkers++;
                     workerFunction(
                         binaryWinConds, InnerFieldOptions, player_board, ki_board, PlayerData,
                         scores, max_depth, chunk, KIBoardOrigin, blockages, completedWorkers, currentWorkers, calculatedMoves, startTime, i, MixedField_Indexes);
                 });
             } else {
                 GenerateOriginWinConds().then(() => {
-                    PlayerCanWinIn2Moves(MixedField_Indexes);
+                    // create big bitboards
+                    let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
+                    // create big binary win conds
+                    let BinaryWinConds = convertToBinary(WinConditions);
+                    // check if player can win in 1 move 
+                    let result = lookForInstantWin();
+                    // check if ki can win in 2 moves or less
+                    let worker = new Worker("./Game/worker/2MovesAhead.js");
+                    // start worker
+                    worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, options]);
+                    // worker finished
+                    worker.onmessage = (worker_result) => {
+                        worker.terminate();
+
+                        let result_ki = worker_result.data;
+                        // If player can win in 2 moves: set at calculated index
+                        let index = 0;
+                        let BigField_Index = getKeyByValue(MixedField_Indexes, index);
+
+                        console.log(result, result_ki);
+
+                        // if player can't win in 1 move but ki can win in 2 moves, set move for attacking because it is more valuable
+                        if (!result[0] && result_ki) {
+                            // init. index
+                            index = MixedField_Indexes[result_ki];
+                            BigField_Index = Number(result_ki);
+                            // set final move from bot
+                            ki_board |= 1 << index;
+                            cells[BigField_Index].textContent = currentPlayer;
+                            options[BigField_Index] = currentPlayer;
+                            InnerFieldData_Options[index] = currentPlayer;
+                            // for color
+                            cells[BigField_Index].style.color = "gold";
+                            // change Player
+                            checkWinner();
+                            // player gets access to set again
+                            setTimeout(() => {
+                                cells.forEach(cell => {
+                                    cell.addEventListener('click', cellCicked);
+                                    cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+                                });
+                            }, 700);
+
+                        } else {
+                            PlayerCanWinIn2Moves(MixedField_Indexes);
+                        };
+                    };
                 });
             };
         };
@@ -481,7 +532,7 @@ const KI_aim_WinCombis = () => {
     // get bitboards for the game field
     let bitboards = InitBitboards(InnerFieldData_Options); // 1 : ki_board, 0 : player_board, 2 : blockages
 
-    console.log(bitboards, blockages, blockages.toString(2));
+    console.log(bitboards, blockages.toString(2), InnerFieldData_Options);
     console.log(WinConditions, binaryWinConds);
 
     if (all_good_win_combinations.length == 0) {
@@ -500,6 +551,7 @@ const KI_aim_WinCombis = () => {
             let index = currently_taken_combination[i];
 
             console.log(index, KI_lastCellIndex_Clicked, InnerFieldData_Indexes[KI_lastCellIndex_Clicked], current_combination_index, currently_taken_combination)
+            console.log(((bitboards[1] >> index) & 1), ((bitboards[0] >> index) & 1), ((blockages >> index) & 1))
 
             if (index != InnerFieldData_Indexes[KI_lastCellIndex_Clicked] &&
                 ((bitboards[1] >> index) & 1) === 0 &&
@@ -513,94 +565,25 @@ const KI_aim_WinCombis = () => {
         };
 
     } else {
-        let cond = currently_taken_combination;
-
-        console.log((bitboards[0] & cond), (blockages & cond), (bitboards[1] & cond));
-
-        if ((blockages & cond) == 0 && (bitboards[0] & cond) == 0) {
-
-            for (let i = currently_taken_combination.length - 1; i > 0; i--) {
-                let index = currently_taken_combination[i];
-
-                console.log(index, KI_lastCellIndex_Clicked, InnerFieldData_Indexes[KI_lastCellIndex_Clicked], current_combination_index, currently_taken_combination)
-
-                if (index != InnerFieldData_Indexes[KI_lastCellIndex_Clicked]) {
-                    current_combination_index = index;
-                    placeAtInstantWinForOpponent([true, getKeyByValue(InnerFieldData_Indexes, current_combination_index)]);
-                    break;
-                };
-            };
-
-        } else {
-            // all_good_win_combinations = all_good_win_combinations.filter(array => array != currently_taken_combination);
-            all_good_win_combinations = 0;
-
-            // look and add good win combis for the KI
-            for (let [i, cond] of binaryWinConds.entries()) {
-                console.log((bitboards[0] & cond), (blockages & cond), (bitboards[1] & cond));
-                // check if in the win combination is good and if there is no blockage
-                if ((bitboards[1] & cond) > 0 && (blockages & cond) == 0 && (bitboards[0] & cond) == 0) {
-                    all_good_win_combinations.push(WinConditions[i]);
-                };
-            };
-
-            if (all_good_win_combinations.length > 0) {
-                currently_taken_combination = all_good_win_combinations[0];
-
-                for (let i = currently_taken_combination.length - 1; i > 0; i--) {
-                    let index = currently_taken_combination[i];
-
-                    console.log(index, KI_lastCellIndex_Clicked, InnerFieldData_Indexes[KI_lastCellIndex_Clicked], current_combination_index, currently_taken_combination)
-
-                    if (index != InnerFieldData_Indexes[KI_lastCellIndex_Clicked] &&
-                        ((bitboards[0] >> i) & 1) === 0 &&
-                        ((blockages >> i) & 1) === 0
-                    ) {
-                        current_combination_index = index;
-                        placeAtInstantWinForOpponent([true, getKeyByValue(InnerFieldData_Indexes, current_combination_index)]);
-                        break;
-                    };
-                };
-
-            } else {
-                PlayerCanWinIn2Moves(InnerFieldData_Indexes);
-            };
-        };
+        PlayerCanWinIn2Moves(InnerFieldData_Indexes, true)
     };
-};
-
-// look for valid positions
-const getValidPositions = (cellIndex) => {
-    let WinCombis = [];
-    let positions = [];
-    let position = 0;
-
-    for (let i = 0; i < WinConditions.length; i++) {
-        let condition = WinConditions[i]; // array: [0,1,2,3]
-        let winCondPositions = WinConditions[i];
-
-        console.log(condition)
-        condition = condition.filter(index => index == cellIndex);
-        winCondPositions = winCondPositions.filter(index => index != cellIndex);
-        console.log(condition)
-
-        if (condition.length > 0) {
-            positions.push(condition[0]);
-            WinCombis.push(WinConditions[i]);
-            position = winCondPositions[2];
-        };
-    };
-
-    console.log(positions, WinCombis, position);
-    return [WinCombis, positions, position];
 };
 
 // check if player can win in 2 moves
-const lookForTwoMoveWin = () => {
+const lookForTwoMoveWin = (for_ki) => {
     // create big bitboards
     let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
     // init bit-based win conditions
     // WinConds = convertToBinary(WinConditions);
+    GenerateOriginWinConds();
+
+    let board;
+
+    if (for_ki) {
+        board = bigboards[0]; // look if ki can win in 2 moves
+    } else board = bigboards[1]; // look if player can win in 2 moves
+
+    console.log(for_ki, board.toString(2), WinConditions);
 
     for (let i = BigInt(0); i < options.length; i++) {
         // Überprüfe, ob die Zelle frei ist
@@ -610,12 +593,12 @@ const lookForTwoMoveWin = () => {
             ((bigboards[2] >> i) & BigInt(1)) === BigInt(0)
         ) {
             // Setze für den Spieler
-            bigboards[1] |= BigInt(1) << i;
+            board |= BigInt(1) << i;
 
-            let result = lookForInstantWin(bigboards[1]);
+            let result = lookForInstantWin(board);
 
             // Setze die Boards zurück, da der Zug des Spielers nicht zu einem Gewinn führt
-            bigboards[1] &= ~(BigInt(1) << i);
+            board &= ~(BigInt(1) << i);
 
             if (result[0] == true) {
                 let random = Math.floor(Math.random() * 2); // random number between 0 and 1
@@ -643,26 +626,32 @@ const lookForInstantWin = (BigBoard) => {
     WinConds = [];
     WinConds = convertToBinary(WinConditions);
 
-    let player_board;
+    let player_board; // ki board or player board
+    let winner; // ki or player icon
 
     if (BigBoard) {
-        player_board = BigBoard;
+        player_board = BigBoard; // ki
+        winner = PlayerData[2].PlayerForm;
+
     } else {
-        player_board = bigboards[1];
+        player_board = bigboards[1]; // player
+        winner = PlayerData[1].PlayerForm;
     };
+
+    // console.log(BigBoard.toString(2), winner, player_board);
 
     // set icon for player in every cell and look if he would win
     for (let i = BigInt(0); i < options.length; i++) {
         // and operator for big int with 1
         if ((((bigboards[0] >> i) & BigInt(1)) === BigInt(0)) &&
-            (((player_board >> i) & BigInt(1)) === BigInt(0)) &&
+            (((bigboards[1] >> i) & BigInt(1)) === BigInt(0)) &&
             (((bigboards[2] >> i) & BigInt(1)) === BigInt(0))) {
             // set for second player and check win
             player_board |= (BigInt(1) << i)
-            let result = minimax_checkWinner(player_board);
+            let result = minimax_checkWinner(player_board, winner);
             player_board &= ~(BigInt(1) << i)
 
-            if (result === PlayerData[1].PlayerForm) {
+            if (result === winner) {
                 return [true, i]
             }
         }
@@ -675,8 +664,11 @@ const placeAtInstantWinForOpponent = (result) => {
     // set final move from bot
     cells[result[1]].textContent = PlayerData[2].PlayerForm;
     options[result[1]] = PlayerData[2].PlayerForm;
+    InnerFieldData_Options[InnerFieldData_Indexes[result[1]]] = PlayerData[2].PlayerForm;
     // for color
     cells[result[1]].style.color = "gold";
+
+    console.log(InnerFieldData_Options, InnerFieldData_Indexes);
 
     // change Player
     checkWinner();
@@ -720,6 +712,7 @@ const KI_placeAtInstantWin = (result) => {
     // set final move from bot
     cells[result[1]].textContent = PlayerData[2].PlayerForm;
     options[result[1]] = PlayerData[2].PlayerForm;
+    InnerFieldData_Options[InnerFieldData_Indexes[result[1]]] = PlayerData[2].PlayerForm;
     // for color
     cells[result[1]].style.color = "gold";
 
@@ -798,15 +791,17 @@ let PreviousIsA_MinusOperation_SpecialCase = true;
 
 // worker tasks
 const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board, PlayerData,
-    scores, max_depth, chunk, KIBoardOrigin, blockages, completedWorkers, currentWorkers, calculatedMoves, startTime, i, MixedField_Indexes) => {
+    scores, max_depth, chunk, KIBoardOrigin, blockages, completedWorkers_param, currentWorkers, calculatedMoves, startTime, i, MixedField_Indexes) => {
     // create and start worker
-    let worker = new Worker('./Game/minimax.js');
+    let worker = new Worker('./Game/worker/minimax.js');
     worker.postMessage([WinConditions, InnerFieldOptions, player_board, ki_board, PlayerData,
         scores, max_depth, chunk, KIBoardOrigin, blockages
     ]);
 
     // workers respons
     worker.onmessage = (data) => { // calculated move from worker: move.data
+        worker.terminate();
+
         // save move in array to evaluate best moves from the workers
         calculatedMoves[data.data[0]] = data.data[1] // move with its score
 
@@ -814,6 +809,8 @@ const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board
 
         ki_board = KIBoardOrigin; // reset board to right stage
 
+        completedWorkers++;
+        console.log(completedWorkers, currentWorkers)
         if (completedWorkers === currentWorkers) { // all workers all done
             console.log(calculatedMoves);
             // Check wether value is not valid (-Infinity) and delete so
@@ -875,63 +872,45 @@ const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board
 };
 
 // look if the player can win in 2 moves
-const PlayerCanWinIn2Moves = (MixedField_Indexes, fromAttack) => {
+// fromKi_CheckPlayer: Ki is in attack mode, couldn't win in 2 moves, checks if player can win, player can't win so ki searches new place
+const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckPlayer) => {
     // If player can win in 2 moves: set at calculated index
     let index = 0;
-    let BigField_Index = getKeyByValue(MixedField_Indexes, index);
+    let BigField_Index = await getKeyByValue(MixedField_Indexes, index);
+
+    GenerateOriginWinConds();
+    // create big bitboards
+    let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
+    // create big binary win conds
+    let BinaryWinConds = convertToBinary(WinConditions);
+
+    // check if ki can win in 2 moves or less
+    let worker = new Worker("./Game/worker/2MovesAhead.js");
+    // start worker
+    worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, options]);
 
     // calcualte. returns false or index to set
-    let Calc_result = lookForTwoMoveWin(); // says wether the player can win in 2 moves
+    worker.onmessage = (worker_result) => {
+        worker.terminate();
+        // says wether the player can win in 2 moves
+        let Calc_result = worker_result.data;
+        console.log(Calc_result, fromAttack, fromKI_CheckPlayer);
 
-    if (Calc_result != false) {
-        // init. index
-        index = MixedField_Indexes[Calc_result];
-        BigField_Index = Number(Calc_result);
-        // Wait till normal win conds are generated
-        GenerateOriginWinConds().then(() => {
-            // set final move from bot
-            ki_board |= 1 << index;
-            cells[BigField_Index].textContent = currentPlayer;
-            options[BigField_Index] = currentPlayer;
-            InnerFieldData_Options[index] = currentPlayer;
-            // for color
-            cells[BigField_Index].style.color = "gold";
-            // change Player
-            checkWinner();
-            // player gets access to set again
-            setTimeout(() => {
-                cells.forEach(cell => {
-                    cell.addEventListener('click', cellCicked);
-                    cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
-                });
-            }, 700);
-        });
-
-    } else if (Calc_result == false && fromAttack == undefined) {
-        if (lastCellIndex_Clicked > 0) { SpecialCaseKIPlace(parseInt(lastCellIndex_Clicked) - 1) } else {
-            SpecialCaseKIPlace(parseInt(lastCellIndex_Clicked) + 1);
-            PreviousIsA_MinusOperation_SpecialCase = false
-        };
-    } else if (fromAttack) {
-        // if KI can place first it needs to find the best, that means the most open space, spot on the field
-        let finalMove;
-        finalMove = FindBestSpot(options); // return index
-
-        // if the KI is the first to place and the eval found the best index 
-        if (finalMove != null) {
-            setTimeout(() => {
+        if (Calc_result != false) {
+            // init. index
+            index = MixedField_Indexes[Calc_result];
+            BigField_Index = Number(Calc_result);
+            // Wait till normal win conds are generated
+            GenerateOriginWinConds().then(() => {
                 // set final move from bot
-                cells[finalMove].textContent = currentPlayer;
-                options[finalMove] = currentPlayer;
+                ki_board |= 1 << index;
+                cells[BigField_Index].textContent = currentPlayer;
+                options[BigField_Index] = currentPlayer;
+                InnerFieldData_Options[index] = currentPlayer;
                 // for color
-                cells[finalMove].style.color = "gold";
-
-                KI_lastCellIndex_Clicked = finalMove;
-                // set mode
-                KI_play_mode = "attack";
-
+                cells[BigField_Index].style.color = "gold";
+                // change Player
                 checkWinner();
-
                 // player gets access to set again
                 setTimeout(() => {
                     cells.forEach(cell => {
@@ -939,21 +918,95 @@ const PlayerCanWinIn2Moves = (MixedField_Indexes, fromAttack) => {
                         cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
                     });
                 }, 700);
-            }, 1000);
-            return;
+            });
+
+        } else if (Calc_result == false && fromAttack == undefined && fromKI_CheckPlayer == undefined) {
+            if (lastCellIndex_Clicked > 0) { SpecialCaseKIPlace(parseInt(lastCellIndex_Clicked) - 1) } else {
+                SpecialCaseKIPlace(parseInt(lastCellIndex_Clicked) + 1);
+                PreviousIsA_MinusOperation_SpecialCase = false
+            };
+
+        } else if (Calc_result == false && fromAttack == true && fromKI_CheckPlayer != true) {
+            // if ki cannot win in 2 moves because the player interrupted, check if player can win in 2 moves
+            // if player also can't win in 2 moves the ki searches for a new free space to attack on a different space 
+            PlayerCanWinIn2Moves(InnerFieldData_Indexes, undefined, true);
+
+        } else if (Calc_result == false && fromAttack == undefined && fromKI_CheckPlayer == true) {
+            // The KI should start something new through doing the following:
+            // 1. Search for potential win combinations on the field where there is already a beginning so the KI has not to start everything again
+            // 2. If there is no win combination => start a new field and try to attack again
+
+            // 1. Find potential
+            let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
+            GenerateOriginWinConds();
+            console.log(WinConditions);
+            let binaryWinConds = convertToBinary(WinConditions);
+            console.log(binaryWinConds, WinConditions, all_good_win_combinations);
+
+            // look and add good win combis for the KI
+            for (let [i, cond] of binaryWinConds.entries()) {
+                // console.log((bigboards[0] & BigInt(cond)), (BigInt(blockages) & BigInt(cond)), (bigboards[1] & BigInt(cond)));
+                // check if in the win combination is good and if there is no blockage
+                if ((bigboards[0] & BigInt(cond)) > BigInt(0) && (BigInt(blockages) & BigInt(cond)) == BigInt(0) && (bigboards[1] & BigInt(cond)) == BigInt(0)) {
+                    all_good_win_combinations.push(WinConditions[i]);
+
+                    console.log(WinConditions[i][0], i);
+
+                    if (options[WinConditions[i][0]] == "") {
+                        KI_move(WinConditions[i][0]);
+                        return;
+
+                    } else continue;
+                };
+            };
+
+            // search for new field and place new attack --------------------------------
+            // remove access to set for the player
+            setTimeout(() => {
+                cells.forEach(cell => {
+                    cell.removeEventListener('click', cellCicked);
+                    cell.style.cursor = 'default';
+                });
+            }, 700);
+            MovesAmount_PlayerAndKi++;
+
+            // if KI can place first it needs to find the best, that means the most open space, spot on the field
+            let finalMove;
+            finalMove = FindBestSpot(options, true); // return index
+
+            // if the KI is the first to place and the eval found the best index 
+            if (finalMove != null) {
+                KI_move(finalMove);
+                return;
+            };
         };
-
-        var InnerFieldData = RequestInnerField();
-        var InnerFieldOptions = InnerFieldData[1];
-        var MixedField_Indexes = InnerFieldData[2];
-
-        // initialize bitboards
-        let BitbordData = InitBitboards(InnerFieldData_Options);
-        let ki_board = BitbordData[0];
-        let player_board = BitbordData[1];
-
-        KI_aim_WinCombis();
     };
+};
+
+// normal move from ki
+const KI_move = (finalMove) => {
+    setTimeout(() => {
+        // set final move from bot
+        cells[finalMove].textContent = currentPlayer;
+        options[finalMove] = currentPlayer;
+        InnerFieldData_Options[InnerFieldData_Indexes[finalMove]] = currentPlayer;
+        // for color
+        cells[finalMove].style.color = "gold";
+
+        KI_lastCellIndex_Clicked = finalMove;
+        // set mode
+        KI_play_mode = "attack";
+
+        checkWinner();
+
+        // player gets access to set again
+        setTimeout(() => {
+            cells.forEach(cell => {
+                cell.addEventListener('click', cellCicked);
+                cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+            });
+        }, 700);
+    }, 1000);
 };
 
 // if minimax returns -1 for some reason
@@ -994,21 +1047,22 @@ const evaluatingTie = (pattern, Board) => {
 };
 
 // check if player has won
-function minimax_checkWinner(Player_B) { // give player big bit boards (type BigInt)
+function minimax_checkWinner(Player_B, winnerIcon) { // give player big bit boards (type BigInt)
     let winner = null;
     let tie = 0; // 1 || 0
 
+    // console.log(Player_B, winnerIcon, WinConds, WinConditions);
     for (let i = 0; i < WinConds.length; i++) {
         let pattern = WinConds[i];
+        // console.log(pattern.toString(2));
 
         if (tie == 0) tie = evaluatingTie(pattern, Player_B)
 
         if ((Player_B & pattern) == pattern) {
-            winner = PlayerData[1].PlayerForm
+            winner = winnerIcon
             break
         }
     }
-
     return (winner == null && tie == 0) ? 'tie' : winner;
 };
 

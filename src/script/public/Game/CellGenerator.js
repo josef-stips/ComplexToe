@@ -6,6 +6,13 @@ let options = [];
 
 let cellSize;
 
+let boundaries = [];
+
+// calculate boundaries to prevent winning condition glitches
+const CalculateBoundaries = () => {
+    for (let i = xCell_Amount; i < xCell_Amount * xCell_Amount; i = i + xCell_Amount) boundaries.push(i);
+};
+
 // Creates the TicTacToe Field
 function CreateField() {
     cellGrid.textContent = null;

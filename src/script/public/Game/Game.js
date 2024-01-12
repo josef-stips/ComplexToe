@@ -143,6 +143,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     };
 
     //Creates TicTacToe field etc.
+    CalculateBoundaries();
     CreateField();
     CreateWinConditions(xCell_Amount, Allowed_Patterns);
 
@@ -152,6 +153,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     blockages = 0b0;
 
     MovesAmount_PlayerAndKi = 0;
+    KI_play_mode = "defend";
 
     InnerFieldData_Indexes = {};
     InnerFieldData_Options = [];
@@ -844,6 +846,9 @@ function updateCell(index) {
 
         if (currentPlayer == PlayerData[1].PlayerForm) cells[index].style.color = localStorage.getItem('userInfoColor');
     };
+
+    // for advanture mode: bug fix
+    if (InnerFieldData_Options.length > 0) InnerFieldData_Options[InnerFieldData_Indexes[index]] = currentPlayer;
 
     MaxAmountOfMovesCount >= 1 && MaxAmountOfMovesCount != Infinity ? MaxAmountOfMovesCount-- : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
     MaxAmountOfMovesGameDisplay.textContent = `moves left: ${MaxAmountOfMovesCount}`;

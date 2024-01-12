@@ -14,7 +14,7 @@ function UnlockedMapLevel() {
                 ], 5, InnerGameModes[3], false, {},
                 40
             ], // level 1 is unlocked by default
-            2: [false, 2, "extinct happiness", 30, 20, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+            2: [false, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
                     "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2"
                 ],
                 ["Congrats on winning the first level in this deadly journey. But this is still only the beginning...",
@@ -22,7 +22,7 @@ function UnlockedMapLevel() {
                 ], 7, InnerGameModes[3], false, { 'keys': 10 },
                 100
             ],
-            3: [false, 6, "villain steps", 35, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+            3: [false, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
                     "W1", "W2", "W3", "W4", "star", "diamond", "branch1"
                 ],
                 ["With every level it gets more serious now. Keep your eyes open!",
@@ -30,7 +30,7 @@ function UnlockedMapLevel() {
                 ], 8, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
                 200
             ],
-            4: [false, 4, "traces of the eye", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+            4: [false, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
                     "W1", "W2", "W3", "W4", "star", "diamond", "branch1"
                 ],
                 ["You entered the really dangerous side of this journey now. Will you survive?",
@@ -38,7 +38,7 @@ function UnlockedMapLevel() {
                 ], 10, InnerGameModes[2], false, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
                 400
             ],
-            5: [false, 5, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+            5: [false, 25, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
                     "W1", "W2", "W3", "W4", "star", "diamond", "branch1"
                 ],
                 ["Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level.",
@@ -46,7 +46,7 @@ function UnlockedMapLevel() {
                 ], 11, InnerGameModes[3], false, { 'keys': 25, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
                 400
             ],
-            6: [false, 5, "wide forest", 65, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
+            6: [false, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
                     "W1", "W2", "W3"
                 ],
                 ["Most of the players here have already given up or lost their way. Do you really want to continue or give up?",
@@ -54,25 +54,25 @@ function UnlockedMapLevel() {
                 ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 1800, 'asteroids': 1, 'diamonds': 30 },
                 400
             ],
-            7: [false, 5, "silent cave", 75, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4"],
+            7: [false, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4"],
                 ["The playing field has become larger. More room for your frustration to spread.",
                     "To conquer this level you have to score 9 points against your enemy."
                 ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 2500, 'asteroids': 1, 'minerals': 2000 },
                 400
             ],
-            8: [false, 5, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2"],
+            8: [false, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2"],
                 ["Only the top 0.4% of players reached this level. Congratulations! But don't be too optimistic..",
                     "To conquer this level you have to score 13 points against your enemy."
                 ], 13, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 3, 'encrypted writings': 5 },
                 400
             ],
-            9: [false, 5, "Last step before death", 90, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1"],
+            9: [false, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1"],
                 ["This is the last step before you are never seen again. No one knows if you can do that.",
                     "To conquer this level you have to score 15 points against your enemy and defeat the evil star."
                 ], 15, InnerGameModes[3], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
                 400
             ],
-            10: [true, 5, "The eye", 100, 30, "fa-solid fa-skull", ["hor", "vert", "dia"],
+            10: [true, 55, "The eye", 100, 30, "fa-solid fa-skull", ["hor", "vert", "dia"],
                 ["Never before has a player come this far. The almighty eye is invincible and sees everything, so it will destroy you instantly.",
                     "To conquer this level you have to score 20 points and defeat the eye."
                 ], 20, InnerGameModes[3], true, { 'keys': 55, 'asteroids': 15, 'encrypted writings': 7, 'ores': 8000, 'abandoned eye': 1 },
