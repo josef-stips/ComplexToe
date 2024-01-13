@@ -87,6 +87,11 @@ let UserClicksNTimesInARow = 0;
 let bgcolor1 = "";
 let bgcolor2 = "";
 
+let showBGColor = true;
+
+// boss class
+let current_level_boss = null;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves) {
@@ -103,6 +108,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     } else {
         curr_field = Fields[fieldIndex].name;
     };
+
+    current_level_boss && current_level_boss.delete();
+    current_level_boss = null;
 
     // make max amount of moves global availible if it exists
     maxAmoOfMoves != undefined ? MaxAmountOfMovesCount = maxAmoOfMoves : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
@@ -220,7 +228,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // if in 40x40 field, generate its properties: eye
     // or level 10: eye boss, or level 9: sun boss
-    if (Fields[fieldIndex].size == "40x40" || current_selected_level == 10 && inAdvantureMode || current_selected_level == 9 && inAdvantureMode) {
+    if (Fields[fieldIndex].size == "40x40" || current_selected_level == 10 && inAdvantureMode || current_selected_level == 9 || current_selected_level == 4 &&
+        inAdvantureMode) {
         document.querySelector('#GameArea-FieldCircle').style.margin = "0 var(--BossMode-fieldcircleMargin) 0 0";
         lobbyFooterText.style.display = 'none';
 
@@ -239,6 +248,10 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
             eye_40.style.display = 'flex';
             sun_40.style.display = 'none';
             init_eye();
+
+        } else if (inAdvantureMode && current_selected_level == 4) {
+            current_level_boss = new StarEye();
+            current_level_boss.display();
         };
 
     } else {
@@ -551,53 +564,55 @@ socket.on("GetBgcolors", (bg1, bg2) => {
 
 // Change backgroundColor
 const ChangeGameBG = (bg1, bg2, reset) => {
-    if (reset == undefined || personal_GameData.role == "user" && personal_GameData.currGameID != null && reset == undefined) {
-        Lobby.style.background = `linear-gradient(45deg, ${bg1}, ${bg2})`;
-        lobbyHeader.style.backgroundColor = "unset";
-
-    } else if (reset || reset && personal_GameData.role == "user" && personal_GameData.currGameID != null) {
+    if (reset || reset && personal_GameData.role == "user" && personal_GameData.currGameID != null || localStorage.getItem("sett-ShowBGColor") == "false") {
         Lobby.style.background = `unset`;
         lobbyHeader.style.backgroundColor = "#15171a";
+
+    } else if (reset == undefined || personal_GameData.role == "user" && personal_GameData.currGameID != null && reset == undefined && localStorage.getItem("sett-ShowBGColor") == "true") {
+        Lobby.style.background = `linear-gradient(45deg, ${bg1}, ${bg2})`;
+        lobbyHeader.style.backgroundColor = "unset";
     };
 };
 
 // the normal card level in complex toe als have bg colors to make them more unique etc.
 const SetBGColorForCurrentField = (xy) => {
-    switch (xy) {
-        case 5:
-            bgcolor1 = "#e9967a57";
-            bgcolor2 = "#bb634557";
-            break;
+    if (localStorage.getItem("sett-ShowBGColor") == "true") {
+        switch (xy) {
+            case 5:
+                bgcolor1 = "#e9967a57";
+                bgcolor2 = "#bb634557";
+                break;
 
-        case 10:
-            bgcolor1 = "#ff7f5078";
-            bgcolor2 = "#bf5c3778";
-            break;
+            case 10:
+                bgcolor1 = "#ff7f5078";
+                bgcolor2 = "#bf5c3778";
+                break;
 
-        case 15:
-            bgcolor1 = "#e91e6352";
-            bgcolor2 = "#ed143d12";
-            break;
+            case 15:
+                bgcolor1 = "#e91e6352";
+                bgcolor2 = "#ed143d12";
+                break;
 
-        case 20:
-            bgcolor1 = "#5684ab61";
-            bgcolor2 = "#2e567861";
-            break;
+            case 20:
+                bgcolor1 = "#5684ab61";
+                bgcolor2 = "#2e567861";
+                break;
 
-        case 25:
-            bgcolor1 = "#ff980024";
-            bgcolor2 = "#ff572261";
-            break;
+            case 25:
+                bgcolor1 = "#ff980024";
+                bgcolor2 = "#ff572261";
+                break;
 
-        case 30:
-            bgcolor1 = "#93cf954f";
-            bgcolor2 = "#4caf5063";
-            break;
+            case 30:
+                bgcolor1 = "#93cf954f";
+                bgcolor2 = "#4caf5063";
+                break;
 
-        case 40:
-            bgcolor1 = "#f436364a";
-            bgcolor2 = "#f436364a";
-            break;
+            case 40:
+                bgcolor1 = "#f436364a";
+                bgcolor2 = "#f436364a";
+                break;
+        };
     };
 };
 

@@ -12,6 +12,8 @@ let theEye_theme = document.querySelector('#theEye_theme');
 let coinsSound = document.querySelector('#coinsSound');
 let btn_click3 = document.querySelector('#btn_click3');
 let mysticalSound = document.querySelector("#mysticalSound");
+let WarTheme1 = document.querySelector("#WarTheme1");
+let Shoot1 = document.querySelector("#Shoot1");
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -454,6 +456,15 @@ let SearchLevelInputWrapper = document.querySelector(".SearchLevelInputWrapper")
 let SearchLevelInput = document.querySelector(".SearchLevelInput");
 let CloseSearchLevelsBtn = document.querySelector(".CloseSearchLevelsBtn");
 let GameFieldHeaderTitleWrapper = document.querySelector(".GameFieldHeader-upperBody");
+let settColorfulBGinGame = document.querySelector("#sett-ColorfulBGinGame");
+// boss display in general
+let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
+let bossLifeCounter = document.querySelector(".bossLifeCounter");
+let bossBar_fill2 = document.querySelector(".bossBar_fill2");
+let bossLifeBar = document.querySelector(".bossLifeBar");
+let bossIMG_wrapper = document.querySelector(".bossIMG_wrapper");
+let boss = document.querySelector(".boss");
+let bossIMG = document.querySelector(".bossIMG");
 
 bodyBGIMG.forEach(e => e.style.display = "none");
 
@@ -481,6 +492,24 @@ let gameMode_TwoPlayerOnline_card = document.querySelector('#gameMode-TwoPlayerO
 let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
 
 const getKeyByValue = (object, value) => { return Object.keys(object).find(key => object[key] === value) };
+
+function getRandomIndexes(array, count) {
+    const result = [];
+    const arrayLength = array.length;
+
+    if (count >= arrayLength) {
+        return array.map((_, index) => index);
+    };
+
+    while (result.length < count) {
+        const randomIndex = Math.floor(Math.random() * arrayLength);
+
+        if (!result.includes(randomIndex)) {
+            result.push(randomIndex);
+        };
+    };
+    return result;
+};
 
 // important data
 let GameMode = {
@@ -860,6 +889,26 @@ const toggleFieldDataInGame = (setting) => {
         localStorage.setItem(setting, "false");
         sett_ShowGameDataInGame.classList = "fa-regular fa-square checkBox";
         sett_ShowGameDataInGame.setAttribute("marked", "false");
+    };
+};
+
+// toggle bg color in game
+const toggleShowBGColorInGame = (setting) => {
+    if (localStorage.getItem(setting) == "true") { // if setting is enabled
+        showBGColor = true;
+        bgcolor1 = "";
+        bgcolor2 = "";
+
+        localStorage.setItem(setting, "true");
+        settColorfulBGinGame.classList = "fa-regular fa-check-square checkBox";
+        settColorfulBGinGame.setAttribute("marked", "true");
+
+    } else if (localStorage.getItem(setting) == "false") {
+        showBGColor = false;
+
+        localStorage.setItem(setting, "false");
+        settColorfulBGinGame.classList = "fa-regular fa-square checkBox";
+        settColorfulBGinGame.setAttribute("marked", "false");
     };
 };
 
@@ -1445,6 +1494,9 @@ function checkForSettings() {
     if (localStorage.getItem('sett-ShowFieldData')) {
         toggleFieldDataInGame("sett-ShowFieldData");
     };
+    if (localStorage.getItem("sett-ShowBGColor")) {
+        toggleShowBGColorInGame("sett-ShowBGColor");
+    }
 
     if (localStorage.getItem('sett-DarkMode')) {
         // console.log(localStorage.getItem('sett-DarkMode'));
@@ -1706,6 +1758,8 @@ checkBox.forEach(box => {
             case "sett-ShowFieldData":
                 toggleFieldDataInGame(setting);
                 break;
+            case "sett-ShowBGColor":
+                toggleShowBGColorInGame(setting);
         };
     });
 });
@@ -2377,7 +2431,7 @@ gameInfo_btn.addEventListener('click', () => {
         // display for 5x5 fields and higher
         PatternGridThree.forEach(pattern => pattern.style.display = 'none');
         PatternGridFor.forEach(pattern => pattern.style.display = 'none');
-        PatternGridFive.forEach(pattern => pattern.style.display = 'grid');
+        PatternGridFive.forEach(pattern => pattern.style.display = 'none');
 
         let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
         let allowed_patterns = unlocked_mapLevels[current_selected_level][6]; // array
@@ -2387,10 +2441,9 @@ gameInfo_btn.addEventListener('click', () => {
             const patt = Children[i];
             let pattern_class = patt.classList[2];
 
-            if (allowed_patterns[i] == pattern_class) {
+            // console.log(patt, pattern_class, allowed_patterns[i], i);
+            if (allowed_patterns.includes(pattern_class)) {
                 patt.style.display = 'grid';
-            } else {
-                patt.style.display = 'none';
             };
         };
 
@@ -2854,8 +2907,12 @@ animatedPopConBtn.addEventListener('click', () => {
         playBtn_Audio_2();
 
         if (ContBtnCount == 0) {
-            animatedPopMain.querySelector('.newText').textContent = level_text[1];
-            ContBtnCount++;
+            try {
+                animatedPopMain.querySelector('.newText').textContent = level_text[1];
+                ContBtnCount++;
+            } catch (error) {
+                console.log(error);
+            };
 
         } else if (ContBtnCount == 1) {
             animatedPopMain.querySelector('.newText').textContent = "Click on the help button in the top left corner to see more information.";
@@ -2885,13 +2942,14 @@ animatedPopConBtn.addEventListener('click', () => {
                 setTimeout(() => {
                     animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
                     animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
-                    animatedPopMain.style.display = "block";
+                    animatedPopMain.style.display = "flex";
                     animatedPopUp.style.display = 'none';
                     DarkLayer.style.display = 'none';
                     DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
                     DarkLayer.style.transition = "background-color 1s ease-out";
                     animatedPopUp.style.opacity = "1";
-                }, 750);
+                    DarkLayer.style.opacity = "1";
+                }, 200);
             }, 500);
         };
     };

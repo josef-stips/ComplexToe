@@ -403,6 +403,12 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     // remove any pop up display
     CloseOnlinePopUps(true);
 
+    // if there was general boss, delete instance
+    if (current_level_boss) {
+        current_level_boss.delete();
+        current_level_boss = null;
+    };
+
     // XP Journey reward
     CheckIfUserCanGetReward();
 

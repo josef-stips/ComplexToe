@@ -514,6 +514,10 @@ function TryTo_StartMapLevel() {
         // play theme music 
         PauseMusic();
         switch (current_selected_level) {
+            case 4: // star eye (boss) level
+                CreateMusicBars(WarTheme1);
+                break;
+
             case 10: // last level
                 CreateMusicBars(theEye_theme);
                 break;

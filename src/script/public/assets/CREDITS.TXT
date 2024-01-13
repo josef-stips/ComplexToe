@@ -36,6 +36,48 @@ Copyright/Attribution Notice:
 File(s):
     * CleytonRX - Mystical Enigmatic Background Music.mp3
 
+---------------------------------------
+
+Title:
+    Collaboration / Sound Effects Shooting sounds 001
+
+Author:
+    jalastram
+
+URL:
+    https://opengameart.org/content/collaboration-sound-effects-shooting-sounds-001
+
+License(s):
+    * CC-BY 3.0 ( http://creativecommons.org/licenses/by/3.0/legalcode )
+
+Copyright/Attribution Notice:
+    Jesús Lastra
+
+File(s):
+    * Sound Effects Shooting sounds 001.zip
+Note:
+    From this package of sounds only one or a few are used
+
+----------------------------------------
+
+Title:
+    Epic Cinematic Emergency Scene
+
+Author:
+    ISAo
+
+URL:
+    https://opengameart.org/content/epic-cinematic-emergency-scene
+
+License(s):
+    * OGA-BY 3.0 ( http://static.opengameart.org/OGA-BY-3.0.txt )
+
+Copyright/Attribution Notice:
+    SOUND AIRYLUVS by ISAo https://airyluvs.com/
+
+File(s):
+    * dova_Dead end strike_master.mp3
+
 ----------------------------------------
 
 btn-click_2.mp3 (costum name) Sound is used as standard click sound on buttons and this sound effect is obtained from https://www.zapsplat.com
@@ -89,7 +131,6 @@ lock-spy by Delapouite under CC BY 3.0
 locked-chest by Lorc under CC BY 3.0
 minerals by Delapouite under CC BY 3.0
 ore by Lorc under CC BY 3.0
-pentagram-rose by Lorc under CC BY 3.0
 piercing-sword by Lorc under CC BY 3.0
 pine-tree by Delapouite under CC BY 3.0
 scroll-unfurled by Lorc under CC BY 3.0
@@ -109,3 +150,4 @@ willow-tree by Caro Asercion under CC BY 3.0
 winged-sword by Lorc under CC BY 3.0
 wolf-head by Lorc under CC BY 3.0
 cursed-star by Lorc under CC BY 3.0
+spikes-full by sbed under CC BY 3.0

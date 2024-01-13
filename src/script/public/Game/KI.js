@@ -414,7 +414,7 @@ function KI_Action() {
     let ki_board = BitbordData[0];
     let player_board = BitbordData[1];
 
-    if (KI_play_mode == "attack1") {
+    if (KI_play_mode == "attack" && MovesAmount_PlayerAndKi > 1) {
         KI_aim_WinCombis();
 
         // "defend"
@@ -776,7 +776,7 @@ const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board
             // Finally, find nearest key: The "best" index
             let NearestKey = findNearestKey(bestScoreIndexes, MixedField_Indexes[parseInt(lastCellIndex_Clicked)], bestScoreIndex, calculatedMoves);
             // Get key by value (key is index for cell options array)
-            let BestFinalMove = NearestKey || Object.values(calculatedMoves)[0];
+            let BestFinalMove = NearestKey /*|| Object.keys(calculatedMoves)[0]*/ ;
             let InnerField_BestFinalMove;
 
             console.log(bestScoreIndex, bestScoreIndexes, " Final Index: ", NearestKey, MixedField_Indexes[parseInt(lastCellIndex_Clicked)]);

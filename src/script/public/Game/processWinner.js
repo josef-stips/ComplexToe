@@ -367,7 +367,7 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
         case 9: // user have to score 15 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 4 && sun_HP <= 4100) { // Player won
+            if (score_Player1_numb >= 4 && sun_HP <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 15 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -378,7 +378,7 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
         case 10: // user have to score 20 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 4 && eye_HP <= 10000) { // Player won
+            if (score_Player1_numb >= 4 && eye_HP <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 20 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -506,7 +506,7 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
         (iconIsAdvanced) ? span.classList = icon: span.textContent = icon; // if icon is advanced. modify classlist otherwise text
         span.classList.add("floating-item");
         // position
-        span.style.fontSize = "28px";
+        span.style.fontSize = "35px";
         span.style.position = "absolute";
         span.style.animation = "1.9s SmallToBigToSmallQuickly ease-in-out";
         span.style.zIndex = "10001";
@@ -568,7 +568,10 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                     eyeGot_HP_Damage(Math.floor(Math.random() * (499 - 370 + 1)) + 370); // random damage on eye between 370-499
 
                 } else if (current_selected_level == 9) {
-                    sunGot_HP_Damage(Math.floor(Math.random() * (699 - 370 + 1)) + 370); // random damage on eye between 370-699
+                    sunGot_HP_Damage(Math.floor(Math.random() * (699 - 370 + 1)) + 370); // random damage on sun between 370-699
+
+                } else if (current_selected_level == 4) {
+                    current_level_boss.damage(Math.floor(Math.random() * (799 - 470 + 1)) + 470); // random damage 
                 };
             };
 

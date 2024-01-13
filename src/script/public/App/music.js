@@ -110,6 +110,12 @@ function playBtn_Audio_3() {
     btn_click3.play()
 };
 
+function play_Shoot1() {
+    // audio
+    Shoot1.volume = sfxVolume;
+    Shoot1.play();
+};
+
 function coinsSoundTrack() {
     // coins audio
     coinsSound.volume = sfxVolume;
