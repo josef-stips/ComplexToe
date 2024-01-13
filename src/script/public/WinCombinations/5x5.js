@@ -417,70 +417,68 @@ function W_4_for5(n) {
 };
 // Execute all algorithms
 function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
-    // console.log(all_patt)
-
     all_patt.forEach(patt => {
         switch (patt) {
-            // case "hor":
-            //     horizontale_Linie_for5(5 * 5);
-            //     break;
-            //     // case "vert":
-            //     //     vertikale_Linie_for5(yCell_Amount * xCell_Amount);
-            //     //     break;
-            // case "dia":
-            //     diagonale_Linie_for5(5 * 5);
-            //     break;
-            // case "dia2":
-            //     diagonale_Linie2_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "L1":
-            //     L_1_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "L2":
-            //     L_2_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "L3":
-            //     L_3_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "L4":
-            //     L_4_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "W1":
-            //     W_1_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "W2":
-            //     W_2_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "W3":
-            //     W_3_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "W4":
-            //     W_4_for5(yCell_Amount * xCell_Amount);
-            //     break;
-            // case "star":
-            //     stern_for5(yCell_Amount * xCell_Amount);
-            //     break;
+            case "hor":
+                horizontale_Linie_for5(5 * 5);
+                break;
+            case "vert":
+                vertikale_Linie_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "dia":
+                diagonale_Linie_for5(5 * 5);
+                break;
+            case "dia2":
+                diagonale_Linie2_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "L1":
+                L_1_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "L2":
+                L_2_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "L3":
+                L_3_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "L4":
+                L_4_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "W1":
+                W_1_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "W2":
+                W_2_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "W3":
+                W_3_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "W4":
+                W_4_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "star":
+                stern_for5(yCell_Amount * xCell_Amount);
+                break;
             case "diamond":
                 diagonales_viereck_for5(5 * 5);
                 break;
-                // case "branch1":
-                //     zweig_unten_for5(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "branch2":
-                //     zweig_oben_for5(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "branch3":
-                //     zweig_links_for5(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "branch4":
-                //     zweig_rechts_for5(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "special1":
-                //     block_mit_Ast_1_for5(yCell_Amount * xCell_Amount);
-                //     break;
-                // case "special2":
-                //     block_mit_Ast_2_for5(yCell_Amount * xCell_Amount);
-                //     break;
+            case "branch1":
+                zweig_unten_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "branch2":
+                zweig_oben_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "branch3":
+                zweig_links_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "branch4":
+                zweig_rechts_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "special1":
+                block_mit_Ast_1_for5(yCell_Amount * xCell_Amount);
+                break;
+            case "special2":
+                block_mit_Ast_2_for5(yCell_Amount * xCell_Amount);
+                break;
         };
     });
 };

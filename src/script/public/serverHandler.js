@@ -809,6 +809,7 @@ const CloseOnlinePopUps = (CloseDarkLayer) => {
     FriendsListPopUp.style.display = "none";
     MailPopUp.style.display = "none";
     MessagesPopUp.style.display = "none";
+    mapLevelOverview.style.display = "none";
 
     if (CloseDarkLayer) DarkLayer.style.display = "none";
 };

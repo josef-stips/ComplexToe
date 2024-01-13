@@ -414,7 +414,7 @@ function KI_Action() {
     let ki_board = BitbordData[0];
     let player_board = BitbordData[1];
 
-    if (KI_play_mode == "attack") {
+    if (KI_play_mode == "attack1") {
         KI_aim_WinCombis();
 
         // "defend"
@@ -456,7 +456,7 @@ function KI_Action() {
 
             console.log(options, InnerFieldOptions, InnerFieldData_Options, InnerFieldData_Indexes, InnerFieldData, blockages.toString(2), binaryWinConds.toString(2));
 
-            if (MovesAmount_PlayerAndKi > 20 || MovesAmount_PlayerAndKi < 4) {
+            if (MovesAmount_PlayerAndKi > 20 || MovesAmount_PlayerAndKi < 12) {
                 // create one worker for each chunk 
                 chunks.forEach((chunk, i) => {
                     workerFunction(
@@ -567,54 +567,6 @@ const KI_aim_WinCombis = () => {
     } else {
         PlayerCanWinIn2Moves(InnerFieldData_Indexes, true)
     };
-};
-
-// check if player can win in 2 moves
-const lookForTwoMoveWin = (for_ki) => {
-    // create big bitboards
-    let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
-    // init bit-based win conditions
-    // WinConds = convertToBinary(WinConditions);
-    GenerateOriginWinConds();
-
-    let board;
-
-    if (for_ki) {
-        board = bigboards[0]; // look if ki can win in 2 moves
-    } else board = bigboards[1]; // look if player can win in 2 moves
-
-    console.log(for_ki, board.toString(2), WinConditions);
-
-    for (let i = BigInt(0); i < options.length; i++) {
-        // Überprüfe, ob die Zelle frei ist
-        if (
-            ((bigboards[0] >> i) & BigInt(1)) === BigInt(0) &&
-            ((bigboards[1] >> i) & BigInt(1)) === BigInt(0) &&
-            ((bigboards[2] >> i) & BigInt(1)) === BigInt(0)
-        ) {
-            // Setze für den Spieler
-            board |= BigInt(1) << i;
-
-            let result = lookForInstantWin(board);
-
-            // Setze die Boards zurück, da der Zug des Spielers nicht zu einem Gewinn führt
-            board &= ~(BigInt(1) << i);
-
-            if (result[0] == true) {
-                let random = Math.floor(Math.random() * 2); // random number between 0 and 1
-
-                console.log(random, i, result[1]);
-                if (random == 0) {
-                    return i;
-
-                } else {
-                    return result[1];
-                };
-
-            } else continue;
-        }
-    }
-    return false;
 };
 
 // if the opponent of the KI (player [you]) can beat it in just one move, the KI does not have to do calculations with the minimax algorithm 
@@ -939,9 +891,7 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
             // 1. Find potential
             let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
             GenerateOriginWinConds();
-            console.log(WinConditions);
             let binaryWinConds = convertToBinary(WinConditions);
-            console.log(binaryWinConds, WinConditions, all_good_win_combinations);
 
             // look and add good win combis for the KI
             for (let [i, cond] of binaryWinConds.entries()) {
@@ -950,8 +900,7 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
                 if ((bigboards[0] & BigInt(cond)) > BigInt(0) && (BigInt(blockages) & BigInt(cond)) == BigInt(0) && (bigboards[1] & BigInt(cond)) == BigInt(0)) {
                     all_good_win_combinations.push(WinConditions[i]);
 
-                    console.log(WinConditions[i][0], i);
-
+                    // console.log(WinConditions[i][0], i);
                     if (options[WinConditions[i][0]] == "") {
                         KI_move(WinConditions[i][0]);
                         return;

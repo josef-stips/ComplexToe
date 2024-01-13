@@ -5,8 +5,7 @@ onmessage = (data) => {
     let BinaryWinConds = data.data[3];
     let PlayerData = data.data[4];
     let options = data.data[5];
-
-    console.log(for_ki, WinConditions, bigboards, BinaryWinConds, PlayerData, options);
+    // console.log(for_ki, WinConditions, bigboards, BinaryWinConds, PlayerData, options);
 
     // check if player has won
     function minimax_checkWinner(Player_B, winnerIcon) { // give player big bit boards (type BigInt)
@@ -54,7 +53,6 @@ onmessage = (data) => {
             player_board = bigboards[1]; // player
             winner = PlayerData[1].PlayerForm;
         };
-
         // console.log(BigBoard.toString(2), winner, player_board);
 
         // set icon for player in every cell and look if he would win
@@ -84,8 +82,7 @@ onmessage = (data) => {
             board = bigboards[0]; // look if ki can win in 2 moves
         } else board = bigboards[1]; // look if player can win in 2 moves
 
-        console.log(for_ki, board.toString(2), WinConditions);
-
+        // console.log(for_ki, board.toString(2), WinConditions);
         for (let i = BigInt(0); i < options.length; i++) {
             // Überprüfe, ob die Zelle frei ist
             if (
@@ -103,8 +100,7 @@ onmessage = (data) => {
 
                 if (result[0] == true) {
                     let random = Math.floor(Math.random() * 2); // random number between 0 and 1
-
-                    console.log(random, i, result[1]);
+                    // console.log(random, i, result[1]);
                     if (random == 0) {
                         postMessage(i);
 

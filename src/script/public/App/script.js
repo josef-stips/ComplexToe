@@ -11,6 +11,7 @@ let default_MapLevel_theme2 = document.querySelector('#default_MapLevel_theme2')
 let theEye_theme = document.querySelector('#theEye_theme');
 let coinsSound = document.querySelector('#coinsSound');
 let btn_click3 = document.querySelector('#btn_click3');
+let mysticalSound = document.querySelector("#mysticalSound");
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -279,6 +280,8 @@ let UserGivesData_closeBtn_ICON = document.querySelector('#UserGivesData_closeBt
 let UserGivesData_IconInput = document.querySelector('#UserGivesData_IconInput');
 let UserGivesData_NameInput = document.querySelector('#UserGivesData_NameInput');
 let BossIn_MapLevel_Display = document.querySelector('.BossIn_MapLevel_Display');
+let exploredItem_count = document.querySelector(".exploredItem_count");
+let exploreditem_wrapper = document.querySelectorAll(".exploreditem_wrapper");
 let exploredItems_bookBtn = document.querySelector('.exploredItems_bookBtn');
 let exploredItems_PopUp = document.querySelector('.exploredItems_PopUp');
 let exploredItems_main = document.querySelector('.exploredItems_main');
@@ -2859,17 +2862,37 @@ animatedPopConBtn.addEventListener('click', () => {
             ContBtnCount++;
 
         } else if (ContBtnCount == 2) {
-            DarkLayer.style.display = 'none';
-            animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
-            animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
+            animatedPopMain.querySelectorAll("h2")[0].style.display = "none";
+            animatedPopMain.querySelectorAll("h2")[1].style.display = "none";
             animatedPopMain.querySelector('.newText').remove();
-            animatedPopUp.style.display = 'none';
             ContBtnCount = 0;
 
             // Check if player unlocked one of these fields
             locked_25x25();
             locked_30x30();
             locked_40x40();
+
+            // fade out animation to epic dialog
+            animatedPopUp.style.opacity = "0";
+            document.querySelector(".DialogEye").style.opacity = "0";
+
+            setTimeout(() => {
+                DarkLayer.style.transition = "background-color 1s ease-out, opacity 0.5s ease-in-out";
+                DarkLayer.style.opacity = "0";
+
+                TryTo_StartMapLevel();
+
+                setTimeout(() => {
+                    animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
+                    animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
+                    animatedPopMain.style.display = "block";
+                    animatedPopUp.style.display = 'none';
+                    DarkLayer.style.display = 'none';
+                    DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
+                    DarkLayer.style.transition = "background-color 1s ease-out";
+                    animatedPopUp.style.opacity = "1";
+                }, 750);
+            }, 500);
         };
     };
 });

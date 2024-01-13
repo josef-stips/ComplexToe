@@ -181,8 +181,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     player3_can_set = false;
 
     // In the online game mode the curr_innerGameMode gets its right value in serverHandler.js
-    // GameData.InnerGameMode = curr_innerGameMode;
-    GameData.InnerGameMode = "Free Fight";
+    GameData.InnerGameMode = curr_innerGameMode;
 
     if (curr_mode != GameMode[1].opponent && !inAdvantureMode) { // If not in KI Mode and not in advanture mode
         // Inner game Mode
@@ -199,7 +198,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     } else if (curr_mode == GameMode[1].opponent && inAdvantureMode) { // If in advanture mode
         // in advanture mode every level has a presetted inner game mode the user can't change
-        // GameData.InnerGameMode = AdvantureLevel_InnerGameMode;
+        GameData.InnerGameMode = AdvantureLevel_InnerGameMode;
 
         // If the map level inner game mode is Boneyard
         if (GameData.InnerGameMode == InnerGameModes[1]) {
@@ -257,10 +256,8 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     OnlineChat_btn.style.display = "none";
     CloseOnlinePopUps(true);
     CreateLevelScene.style.display = "none";
-
     // close pop ups if there is any on
     CloseOnlinePopUps(true);
-
     // lobbyHeader.style.display = 'none';
 
     // in online mode: display give up button, in offline mode: display choose winner button

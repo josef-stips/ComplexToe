@@ -10,6 +10,7 @@ let boundaries = [];
 
 // calculate boundaries to prevent winning condition glitches
 const CalculateBoundaries = () => {
+    xCell_Amount = parseInt(xCell_Amount);
     for (let i = xCell_Amount; i < xCell_Amount * xCell_Amount; i = i + xCell_Amount) boundaries.push(i);
 };
 

@@ -135,3 +135,8 @@ function playMapTheme() {
     PauseMusic();
     CreateMusicBars(mapSound);
 };
+
+function playMysticalTheme() {
+    PauseMusic();
+    CreateMusicBars(mysticalSound);
+};
