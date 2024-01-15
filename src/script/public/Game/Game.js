@@ -318,7 +318,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
         restartBtn.style.color = 'var(font-color)';
-        addAccessToAnything("TimerEnded");
+        addAccessToAnything("TimerEnded", "fromBeginning");
 
         // if exists
         ChangeGameBG(bgcolor1, bgcolor2);
@@ -362,7 +362,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
             giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
             GiveUp_btn.style.display = 'none';
         };
-        addAccesOnlineMode("TimerEnded");
+        addAccesOnlineMode("TimerEnded", "fromBeginning");
 
         OnlineChat_btn.style.display = "block";
 
@@ -437,7 +437,7 @@ function initializePlayers(OnlineGameDataArray) {
             namePlayer1.appendChild(span);
 
         } else { // he uses normal skin with or with no color
-            namePlayer1.textContent = curr_name1 + ` (${PlayerData[1].PlayerForm})`;
+            namePlayer1.textContent = curr_name1 + ` - ${PlayerData[1].PlayerForm}`;
 
             // if previous span existed, remove it as a bug fix
             if (document.querySelector('.sideScore_TemporarySpan1')) {
@@ -455,7 +455,7 @@ function initializePlayers(OnlineGameDataArray) {
             namePlayer2.appendChild(span);
 
         } else { // he uses normal skin with or with no color
-            namePlayer2.textContent = curr_name2 + ` (${PlayerData[2].PlayerForm})`;
+            namePlayer2.textContent = curr_name2 + ` - ${PlayerData[2].PlayerForm}`;
 
             // if previous span existed, remove it as a bug fix
             if (document.querySelector('.sideScore_TemporarySpan2')) {
@@ -485,7 +485,7 @@ function initializePlayers(OnlineGameDataArray) {
             namePlayer1.appendChild(span);
 
         } else { // he uses normal skin with or with no color
-            namePlayer1.textContent = curr_name1 + ` (${PlayerData[1].PlayerForm})`;
+            namePlayer1.textContent = curr_name1 + ` - ${PlayerData[1].PlayerForm}`;
 
             // if previous span existed, remove it as a bug fix
             if (document.querySelector('.sideScore_TemporarySpan1')) {
@@ -494,7 +494,7 @@ function initializePlayers(OnlineGameDataArray) {
         };
 
         // player 2 uses a normal skin in offline mode (player 2 is wether a KI or an offline friend on local computer)
-        namePlayer2.textContent = curr_name2 + ` (${PlayerData[2].PlayerForm})`;
+        namePlayer2.textContent = curr_name2 + ` - ${PlayerData[2].PlayerForm}`;
 
         // set color of player icon
         namePlayer1.style.color = localStorage.getItem('userInfoColor');
@@ -594,8 +594,12 @@ const SetBGColorForCurrentField = (xy) => {
                 break;
 
             case 20:
-                bgcolor1 = "#5684ab61";
-                bgcolor2 = "#2e567861";
+                if (!inAdvantureMode) {
+                    bgcolor1 = "#5684ab61";
+                    bgcolor2 = "#2e567861";
+                } else if (inAdvantureMode) {
+                    Lobby.style.background = "linear-gradient(45deg, #ff572230, #ff980026)";
+                };
                 break;
 
             case 25:
@@ -604,8 +608,12 @@ const SetBGColorForCurrentField = (xy) => {
                 break;
 
             case 30:
-                bgcolor1 = "#93cf954f";
-                bgcolor2 = "#4caf5063";
+                if (!inAdvantureMode) {
+                    bgcolor1 = "#93cf954f";
+                    bgcolor2 = "#4caf5063";
+                } else if (inAdvantureMode) {
+                    Lobby.style.background = "linear-gradient(45deg, rgb(255 17 0 / 54%), rgb(255 191 0 / 42%))";
+                };
                 break;
 
             case 40:

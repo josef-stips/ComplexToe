@@ -8,61 +8,68 @@ let mapLevels = {
                                 "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"*/
         ],
         ["Here begins the journey to become king and defeat your greatest enemy. Do you really think you will survive this?",
-            "To conquer this level you have to score 5 points against your enemy."
-        ], 5, InnerGameModes[3], false, {},
+            "To conquer this level you have to score 5 points against the unknown."
+        ], 5, InnerGameModes[1], false, {},
         40
     ], // level 1 is unlocked by default
     2: [true, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["hor", "vert", "diamond"],
         ["Congrats on winning the first level in this deadly journey. But this is still only the beginning...",
-            "To conquer this level you have to score 7 points against your enemy."
+            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
         ], 7, InnerGameModes[3], false, { 'keys': 10 },
-        100
+        70
     ],
     3: [true, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["L1", "L2", "diamond"],
         ["With every level it gets more serious now. Keep your eyes open!",
-            "To conquer this level you have to score 8 points against your enemy."
+            "To conquer this level you have to score 8 points against the unknown. The unknown can beat you in less moves."
         ], 8, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
         200
     ],
     4: [true, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["W1", "W2", "branch1", "diamond"],
         ["You entered the really dangerous side of this journey now. Will you survive?",
-            "To conquer this level you have to score 10 points against your enemy."
-        ], 10, InnerGameModes[2], false, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
+            "To conquer this level you have to score 10 points against the unknown and defeat Oculum Solis. The unknown can beat you in less moves."
+        ], 10, InnerGameModes[2], true, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
         400
     ],
     5: [true, 25, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "W3", "W4", "star", "diamond"],
         ["Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level.",
-            "To conquer this level you have to score 11 points against your enemy."
+            "To conquer this level you have to score 11 points against the unknown. The unknown can beat you in less moves."
         ], 11, InnerGameModes[3], false, { 'keys': 25, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
         400
     ],
     6: [true, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["vert", "dia", "dia2"],
         ["Most of the players here have already given up or lost their way. Do you really want to continue or give up?",
-            "To conquer this level you have to score 7 points against your enemy."
+            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
         ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 1800, 'asteroids': 1, 'diamonds': 30 },
         400
     ],
     7: [true, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["hor", "L1", "L2", "L3", "L4"],
         ["The playing field has become larger. More room for your frustration to spread.",
-            "To conquer this level you have to score 9 points against your enemy."
+            "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves."
         ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 2500, 'asteroids': 1, 'minerals': 2000 },
         400
     ],
     8: [false, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2"],
         ["Only the top 0.4% of players reached this level. Congratulations! But don't be too optimistic..",
-            "To conquer this level you have to score 13 points against your enemy."
+            "To conquer this level you have to score 13 points against the unknown. The unknown can beat you in less moves."
         ], 13, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 3, 'encrypted writings': 5 },
         400
     ],
     9: [true, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1"],
         ["This is the last step before you are never seen again. No one knows if you can do that.",
-            "To conquer this level you have to score 15 points against your enemy and defeat the evil star."
+            "To conquer this level you have to score 15 points against the unknown and defeat Solara Zephyra. The unknown can beat you in less moves."
         ], 15, InnerGameModes[3], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
         400
     ],
     10: [true, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "diamond", "star"],
-        ["Never before has a player come this far. The almighty eye is invincible and sees everything, so it will destroy you instantly.",
-            "To conquer this level you have to score 20 points and defeat the eye."
+
+        [`Welcome, wanderer, who has forsaken the paths of light and ventured into darkness.`,
+
+            `Never before has a mortal like you skillfully traversed the path of shadows.`,
+            `hihihi...`,
+            `You may have believed this to be the pinnacle of your journey, but the truth is a shadow pointing towards unfathomable abysses...`,
+
+            `In the depths of my realm lies a labyrinth that harbors the unexplored terrors of darkness.Your courage may have brought you this far, but the question is: Are you ready to face the shadows that lurk beyond the visible darkness ? `,
+            "To conquer this level you have to score 20 points and defeat Oculus Irae. The unknown can beat you in less moves."
         ], 20, InnerGameModes[3], true, { 'keys': 55, 'asteroids': 15, 'encrypted writings': 7, 'ores': 8000, 'abandoned eye': 1 },
         400
     ],
@@ -81,6 +88,11 @@ const levelDescriptions = {
     9: "You stand on the brink of death. The final trials are the most challenging, but also the most crucial. Your survival now depends on your skills.",
     10: "You've made it to the Eye of the Unknown, the end boss of your journey. The ultimate battle between light and darkness awaits. Are you ready to become the evil to fight the evil?"
 };
+
+// developer script
+window.addEventListener('beforeunload', async(event) => {
+    localStorage.setItem('unlocked_mapLevels', '');
+});
 
 // Check for map level - initialize
 function UnlockedMapLevel() {
@@ -109,11 +121,15 @@ function init_exploredItems(index) {
     // if it doesn't exists already
     if (!ExploredItems) {
         localStorage.setItem('ExploredItems', JSON.stringify(explored_items));
-    };
+        exploredItem_count.textContent = `
+                You 've found 0`;
 
-    if (index != undefined) {
-        let indexCorrespondingElement = Object.keys(ExploredItems)[index];
-        exploredItem_count.textContent = `You've found ${ExploredItems[indexCorrespondingElement]}`;
+    } else {
+
+        if (index != undefined) {
+            let indexCorrespondingElement = Object.keys(ExploredItems)[index];
+            exploredItem_count.textContent = `You've found ${ExploredItems[indexCorrespondingElement]}`;
+        };
     };
 };
 init_exploredItems(0);
@@ -232,9 +248,6 @@ MapLevelBtns.forEach((item, k) => {
 
             // parse default data
             MapLevel_IconInput.style.color = localStorage.getItem('userInfoColor');
-            if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
-                MapLevel_IconInput.style.color = "black";
-            };
 
             if (localStorage.getItem('UserName')) {
                 MapLevel_NameInput.value = localStorage.getItem('UserName');
@@ -290,7 +303,8 @@ MapLevelBtns.forEach((item, k) => {
             let requirements = unlocked_mapLevels[k + 1][11];
             let requirement_amount = Object.keys(requirements).length;
 
-            if (requirement_amount == 0) LevelOverview_requirement[0].textContent = "No requirements";
+            LevelOverview_requirement[0].textContent = null;
+            (requirement_amount == 0) && (LevelOverview_requirement[0].textContent = "No requirements");
 
             for (let i = 0; i < requirement_amount; i++) {
                 LevelOverview_requirement[i].textContent = `${requirements[Object.keys(requirements)[i]]} ${Object.keys(requirements)[i]}`;
@@ -393,9 +407,6 @@ MapLevel_IconInput.addEventListener('input', (event) => {
     };
 
     MapLevel_IconInput.style.color = localStorage.getItem('userInfoColor');
-    if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
-        MapLevel_IconInput.style.color = "black";
-    };
 });
 
 // user clicks enter
@@ -414,11 +425,13 @@ MapLevel_IconInput.addEventListener('keyup', (event) => {
 
 // start map level button
 startMapLevelBtn.addEventListener('click', () => {
-    StartAdvantureLevelDialog(current_selected_level);
+    if (MapLevel_IconInput.value != "" && MapLevel_NameInput.value != "") {
+        StartAdvantureLevelDialog(current_selected_level);
+    };
 });
 
 // Epic Dialog before level start
-const StartAdvantureLevelDialog = (level_index) => {
+const StartAdvantureLevelDialog = (level_index, beat_advantureMap) => {
     let index = 0;
     mapLevels[level_index][8][index];
 
@@ -427,7 +440,7 @@ const StartAdvantureLevelDialog = (level_index) => {
     if (user_fulfills_requirements) {
         CloseOnlinePopUps();
         playMysticalTheme();
-        StartDialogAnimation();
+        StartDialogAnimation(beat_advantureMap);
 
         // black background
         DarkLayer.style.display = "block";
@@ -437,7 +450,7 @@ const StartAdvantureLevelDialog = (level_index) => {
 };
 
 // dialog starting animation
-const StartDialogAnimation = () => {
+const StartDialogAnimation = (beat_advantureMap) => {
     let img = document.createElement("img");
     document.body.appendChild(img);
 
@@ -460,7 +473,7 @@ const StartDialogAnimation = () => {
         img.style.bottom = "100px";
         img.style.animation = "floating-el ease-in-out 2.5s infinite";
         // start speech bubbles
-        level_startSpeechBubbles();
+        level_startSpeechBubbles(beat_advantureMap);
     });
 };
 
@@ -478,7 +491,7 @@ function TryTo_StartMapLevel() {
         mapLevelOverview.style.display = 'none';
         AdvantureMap.style.display = 'none';
         lobbyHeader.style.borderBottom = 'none';
-        document.querySelector(".DialogEye").remove();
+        document.querySelector(".DialogEye") && document.querySelector(".DialogEye").remove();
 
         // initialize game with the right values
         let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
@@ -514,6 +527,9 @@ function TryTo_StartMapLevel() {
         // play theme music 
         PauseMusic();
         switch (current_selected_level) {
+            case 9: // star eye (boss) level
+                CreateMusicBars(boss1);
+                break;
             case 4: // star eye (boss) level
                 CreateMusicBars(WarTheme1);
                 break;
@@ -664,13 +680,27 @@ function UserFulfill_RequirementsForLevel() {
 
 // when the user starts a level, speech bubbles occur
 // animation and initialization for speech bubbles
-function level_startSpeechBubbles() {
+let level_text;
+
+function level_startSpeechBubbles(beat_advantureMap) {
+    // advanture map epilog text
+    let Epilogue = [
+        `Wanderer, your journey was marked by toil and challenge. You fought your way through battles that shook the land, piercing the darkness with your determination. 
+        Yet, do you see that this is not the end?`,
+
+        `The darkness may be subsiding, but the memories of the battles will be forever engraved in the shadows of your journey.`,
+
+        `Many have paid the price for this path, and you are among the few who have survived the fateful dance with darkness. Your bravery has defeated the terrors of darkness, yet in the quiet of the epilogue, it becomes clear that every victory demands its toll.`,
+    ];
+
+    console.log("kek", beat_advantureMap);
     // animation
     animatedPopUp.style.display = 'block';
     animatedPopUp.style.animation = "popUp-POP 1s ease";
     // start text
     let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
-    let level_text = unlocked_mapLevels[current_selected_level][7];
+    level_text = !beat_advantureMap ? unlocked_mapLevels[current_selected_level][7] : Epilogue;
+    TextIsEpilogue = beat_advantureMap ? true : false;
 
     // new ini text
     let TextHead = document.createElement("h2");
@@ -743,6 +773,9 @@ function UserWon_AdvantureLevel(won_levelIndex) {
 
                     // update conquered map level display on level overview pop up
                     conquered_MapLevel_Display.textContent = "Yes";
+
+                    // Epilog for advanture mode
+                    StartAdvantureLevelDialog(current_selected_level, "beat_advantureMap");
                 };
 
                 // items

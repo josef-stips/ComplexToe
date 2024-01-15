@@ -276,11 +276,11 @@ function processResult_AdvantureMode(WinCombination) {
     // in advanture mode there are special win conditions for each level (10 levels)
     switch (current_selected_level) {
         case 1: // user have to score 5 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 5) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+                Call_UltimateWin(WinCombination, undefined, 5);
 
             } else { // No one won
                 processResult_continueGame();
@@ -288,11 +288,11 @@ function processResult_AdvantureMode(WinCombination) {
             break;
 
         case 2: // user have to score 7 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 7) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 7 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 5);
 
             } else { // No one won
                 processResult_continueGame();
@@ -300,11 +300,11 @@ function processResult_AdvantureMode(WinCombination) {
             break;
 
         case 3: // user have to score 8 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 8) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 8 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 4 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 4);
 
             } else { // No one won
                 processResult_continueGame();
@@ -312,77 +312,77 @@ function processResult_AdvantureMode(WinCombination) {
             break;
 
         case 4: // user have to score 10 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 10) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 10 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 4 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 4);
 
             } else { // No one won
                 processResult_continueGame();
             };
             break;
         case 5: // user have to score 11 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 11) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 11 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 5);
 
             } else { // No one won
                 processResult_continueGame();
             };
             break;
         case 6: // user have to score 7 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 7) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 7 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 5);
 
             } else { // No one won
                 processResult_continueGame();
             };
             break;
         case 7: // user have to score 9 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 9) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 9 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 1 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 1);
 
             } else { // No one won
                 processResult_continueGame();
             };
             break;
         case 8: // user have to score 13 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 2) { // Player won
+            if (score_Player1_numb >= 13) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 13 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 3 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 3);
 
             } else { // No one won
                 processResult_continueGame();
             };
             break;
         case 9: // user have to score 15 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 4 && sun_HP <= 0) { // Player won
+            if (score_Player1_numb >= 15 && sun_HP <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 15 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 5);
 
             } else { // No one won
                 processResult_continueGame();
             };
             break;
         case 10: // user have to score 20 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 4 && eye_HP <= 0) { // Player won
+            if (score_Player1_numb >= 20 && eye_HP <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
-            } else if (score_Player2_numb >= 20 || MaxAmountOfMovesCount <= 0) { // Bot won
-                Call_UltimateWin(WinCombination);
+            } else if (score_Player2_numb >= 3 || MaxAmountOfMovesCount <= 0) { // Bot won
+                Call_UltimateWin(WinCombination, undefined, 3);
 
             } else { // No one won
                 processResult_continueGame();
@@ -629,7 +629,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 };
 
 // call Ultimate Game Win Function
-function Call_UltimateWin(WinCombination, UserGivesUp) {
+function Call_UltimateWin(WinCombination, UserGivesUp, AdvantureMode_KI_pointsToWin) {
     CheckmateWarnText.style.display = "none" // just small bug fix nothing special
     removeAccessToAnything();
 

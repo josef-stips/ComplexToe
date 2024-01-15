@@ -50,7 +50,7 @@ function eye_attack() {
             eye_pos = null;
 
             // play soundeffect
-            eye_attack_soundeffect.volume = 0.095;
+            eye_attack_soundeffect.volume = sfxVolume;
             eye_attack_soundeffect.playbackRate = 1;
             eye_attack_soundeffect.play();
 
@@ -101,12 +101,14 @@ function eye_attack() {
                 The_eye.style.transition = "all 0.2s ease-in-out";
             }, 2500);
 
-            if (curr_mode != GameMode[2].opponent) { // in offline mode
-                // start attack interval again
+            // start attack interval again
+            if (curr_mode != GameMode[2].opponent) {
                 EyeAttackInterval();
-
-                addAccessToAnything();
             };
+
+            setTimeout(() => {
+                addAccessToAnything();
+            }, 2250);
         }, 3000); // Ändern Sie die Dauer der Vibration nach Bedarf
     };
 };
@@ -143,7 +145,7 @@ function EyeAttackInterval() {
             };
 
             // shortly before attack
-            if (minute <= 0 && second <= 5) {
+            if (minute <= 0 && second <= 3) {
                 removeAccessToAnything();
             };
 

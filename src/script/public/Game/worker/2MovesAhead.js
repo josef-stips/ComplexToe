@@ -6,6 +6,7 @@ onmessage = (data) => {
     let PlayerData = data.data[4];
     let options = data.data[5];
     // console.log(for_ki, WinConditions, bigboards, BinaryWinConds, PlayerData, options);
+    console.log(options)
 
     // check if player has won
     function minimax_checkWinner(Player_B, winnerIcon) { // give player big bit boards (type BigInt)
@@ -103,9 +104,11 @@ onmessage = (data) => {
                     // console.log(random, i, result[1]);
                     if (random == 0) {
                         postMessage(i);
+                        return;
 
                     } else {
                         postMessage(result[1]);
+                        return;
                     };
 
                 } else continue;

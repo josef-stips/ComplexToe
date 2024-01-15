@@ -80,6 +80,23 @@ File(s):
 
 ----------------------------------------
 
+Title:
+    Heroic Demise [Updated Version]
+
+Author:
+    Matthew Pablo
+
+URL:
+    https://opengameart.org/content/heroic-demise-updated-version
+
+License(s):
+    * CC-BY 3.0 ( http://creativecommons.org/licenses/by/3.0/legalcode )
+
+File(s):
+    * Heroic Demise (New).mp3
+
+----------------------------------------
+
 btn-click_2.mp3 (costum name) Sound is used as standard click sound on buttons and this sound effect is obtained from https://www.zapsplat.com
 
 boss_theme.mp3 (Music which cames up when user enters boss mode in game) : Music: Final Boss by Myuu. Video Link: https://www.youtube.com/watch?v=ihqOJsFVQ7c

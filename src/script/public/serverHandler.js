@@ -187,7 +187,6 @@ function EnterCodeName() {
 
         // default data
         Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
-        if (localStorage.getItem('userInfoColor') == "var(--font-color)") Player1_IconInput.style.color = "black";
 
         if (localStorage.getItem('UserName')) {
             Player1_NameInput.value = localStorage.getItem('UserName');

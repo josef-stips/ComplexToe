@@ -72,7 +72,7 @@ function removeAccessToAnything() {
 };
 
 // add excess to anything
-function addAccessToAnything(TimerEnded) {
+function addAccessToAnything(TimerEnded, fromBeginning) {
     globalChooseWinnerBtn.addEventListener('click', openChooseWinnerWindow);
     restartBtn.addEventListener('click', restartGame);
     leaveGame_btn.addEventListener('click', UserleavesGame);
@@ -80,10 +80,12 @@ function addAccessToAnything(TimerEnded) {
     leaveGame_btn.style.color = 'white';
     globalChooseWinnerBtn.style.color = 'white';
     restartBtn.style.color = 'white';
+
+    !fromBeginning && checkWinner();
 };
 
 // add excess to anything in online mode
-function addAccesOnlineMode(TimerEnded) {
+function addAccesOnlineMode(TimerEnded, fromBeginning) {
     // allowed to leave againW
     leaveGame_btn.addEventListener('click', UserleavesGame);
     leaveGame_btn.style.color = 'var(--font-color)';
@@ -97,6 +99,8 @@ function addAccesOnlineMode(TimerEnded) {
         restartBtn.addEventListener('click', restartGame);
         restartBtn.style.color = 'var(--font-color)';
     };
+
+    !fromBeginning && checkWinner();
 };
 
 // modify cellGrid for animation

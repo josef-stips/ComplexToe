@@ -14,6 +14,7 @@ let btn_click3 = document.querySelector('#btn_click3');
 let mysticalSound = document.querySelector("#mysticalSound");
 let WarTheme1 = document.querySelector("#WarTheme1");
 let Shoot1 = document.querySelector("#Shoot1");
+let boss1 = document.querySelector('#boss1');
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -748,7 +749,7 @@ let curr_KI_Level;
 
 // standard bg music volume
 let appVolume = 0.02;
-let sfxVolume = 0.02;
+let sfxVolume = 0.15;
 let bossModeIsActive = false;
 
 // server thing ----------------
@@ -1496,7 +1497,10 @@ function checkForSettings() {
     };
     if (localStorage.getItem("sett-ShowBGColor")) {
         toggleShowBGColorInGame("sett-ShowBGColor");
-    }
+
+    } else {
+        localStorage.setItem("sett-ShowBGColor", "true");
+    };
 
     if (localStorage.getItem('sett-DarkMode')) {
         // console.log(localStorage.getItem('sett-DarkMode'));
@@ -1892,9 +1896,7 @@ function Click_NxN(f) {
         DarkLayer.style.display = 'block';
         YourName_Input_KI_mode.value = "";
         Your_IconInput.value = "";
-        // display black if skin is white
-        (localStorage.getItem('userInfoColor') == "white" || localStorage.getItem('userInfoColor') == "var(--font-color)") ? Your_IconInput.style.color = "black":
-            Your_IconInput.style.color = localStorage.getItem('userInfoColor');
+        Your_IconInput.style.color = localStorage.getItem('userInfoColor');
         // other important data
         curr_name1 = null;
         curr_name2 = null;
@@ -1903,9 +1905,7 @@ function Click_NxN(f) {
         // default data
         if (localStorage.getItem('UserName')) {
             YourName_Input_KI_mode.value = localStorage.getItem('UserName');
-            // display black if skin is white
-            (localStorage.getItem('userInfoColor') == "white" || localStorage.getItem('userInfoColor') == "var(--font-color)") ? Your_IconInput.style.color = "black":
-                Your_IconInput.style.color = localStorage.getItem('userInfoColor');
+            Your_IconInput.style.color = localStorage.getItem('userInfoColor');
         };
     };
 
@@ -1943,7 +1943,7 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
 };
 
 const UserClicksNxNDefaultSettings = (readonly) => {
-    Player1_IconInput.style.color = 'black';
+    Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
     Player1_IconInput.style.display = "block";
 
     // warn text for online game mode
@@ -2001,9 +2001,6 @@ const UserClicksOfflineModeCard = (target) => {
 
     // default data
     Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
-    if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
-        Player1_IconInput.style.color = "black";
-    };
 
     if (localStorage.getItem('UserName')) {
         Player1_NameInput.value = localStorage.getItem('UserName');
@@ -2022,7 +2019,7 @@ const UserClicksOfflineModeCard = (target) => {
 function Click_single_NxN(e) {
     SetClockList.style.display = 'flex';
     SetGameModeList.style.display = 'flex';
-    Player1_IconInput.style.color = 'black'; // idk if this line is nessecary
+    Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
 
     // warn text for online game mode
     OnlineGame_NameWarnText[0].style.display = 'none';
@@ -2448,7 +2445,7 @@ gameInfo_btn.addEventListener('click', () => {
         };
 
         // how to win text
-        HowToWinText.textContent = unlocked_mapLevels[current_selected_level][7][1];
+        HowToWinText.textContent = unlocked_mapLevels[current_selected_level][7][unlocked_mapLevels[current_selected_level][7].length - 1];
     };
 });
 
@@ -2771,9 +2768,6 @@ function setUpOnlineGame(from) {
 
         // default data
         Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
-        if (localStorage.getItem('userInfoColor') == "var(--font-color)") {
-            Player1_IconInput.style.color = "black";
-        };
 
         if (localStorage.getItem('UserName')) {
             Player1_NameInput.value = localStorage.getItem('UserName');
@@ -2869,7 +2863,8 @@ goToAdvancedFields.addEventListener('click', () => {
     };
 });
 
-let ContBtnCount = 0;
+let ContBtnCount = 1;
+let TextIsEpilogue = false;
 animatedPopConBtn.addEventListener('click', () => {
     if (!inAdvantureMode) {
         playBtn_Audio_2();
@@ -2901,59 +2896,61 @@ animatedPopConBtn.addEventListener('click', () => {
             locked_40x40();
         };
     } else { // player is in advanture mode => other speech bubbles
-        let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
-        let level_text = unlocked_mapLevels[current_selected_level][7];
-
         playBtn_Audio_2();
-
-        if (ContBtnCount == 0) {
-            try {
-                animatedPopMain.querySelector('.newText').textContent = level_text[1];
-                ContBtnCount++;
-            } catch (error) {
-                console.log(error);
-            };
-
-        } else if (ContBtnCount == 1) {
-            animatedPopMain.querySelector('.newText').textContent = "Click on the help button in the top left corner to see more information.";
-            ContBtnCount++;
-
-        } else if (ContBtnCount == 2) {
-            animatedPopMain.querySelectorAll("h2")[0].style.display = "none";
-            animatedPopMain.querySelectorAll("h2")[1].style.display = "none";
-            animatedPopMain.querySelector('.newText').remove();
-            ContBtnCount = 0;
-
-            // Check if player unlocked one of these fields
-            locked_25x25();
-            locked_30x30();
-            locked_40x40();
-
-            // fade out animation to epic dialog
-            animatedPopUp.style.opacity = "0";
-            document.querySelector(".DialogEye").style.opacity = "0";
-
-            setTimeout(() => {
-                DarkLayer.style.transition = "background-color 1s ease-out, opacity 0.5s ease-in-out";
-                DarkLayer.style.opacity = "0";
-
-                TryTo_StartMapLevel();
-
-                setTimeout(() => {
-                    animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
-                    animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
-                    animatedPopMain.style.display = "flex";
-                    animatedPopUp.style.display = 'none';
-                    DarkLayer.style.display = 'none';
-                    DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
-                    DarkLayer.style.transition = "background-color 1s ease-out";
-                    animatedPopUp.style.opacity = "1";
-                    DarkLayer.style.opacity = "1";
-                }, 200);
-            }, 500);
-        };
+        // Intrologue (or epilogue when user beat last advanture level for his first time)
+        AdvantureModeLevelIntro();
     };
 });
+
+const AdvantureModeLevelIntro = () => {
+    if (ContBtnCount < level_text.length && level_text[ContBtnCount] != undefined) {
+        animatedPopMain.querySelector('.newText').textContent = level_text[ContBtnCount];
+        ContBtnCount++;
+
+    } else if (ContBtnCount == level_text.length && level_text[ContBtnCount] == undefined && !TextIsEpilogue) {
+        try {
+            ContBtnCount++;
+            animatedPopMain.querySelector('.newText').textContent = "Click on the help button in the top left corner to see more information.";
+        } catch (error) {
+            console.log(error);
+        };
+
+    } else if (ContBtnCount == level_text.length + 1 && level_text[ContBtnCount] == undefined && !TextIsEpilogue) {
+        // Check if player unlocked one of these fields
+        locked_25x25();
+        locked_30x30();
+        locked_40x40();
+
+        // fade out animation to epic dialog
+        animatedPopUp.style.opacity = "0";
+        document.querySelector(".DialogEye") && (document.querySelector(".DialogEye").style.opacity = "0");
+
+        setTimeout(() => {
+            animatedPopMain.querySelector('.newText') && animatedPopMain.querySelector('.newText').remove();
+            DarkLayer.style.transition = "background-color 1s ease-out, opacity 0.5s ease-in-out";
+            DarkLayer.style.opacity = "0";
+
+            TryTo_StartMapLevel();
+
+            setTimeout(() => {
+                animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
+                animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
+                animatedPopMain.style.display = "flex";
+                animatedPopUp.style.display = 'none';
+                DarkLayer.style.display = 'none';
+                DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
+                DarkLayer.style.transition = "background-color 1s ease-out";
+                animatedPopUp.style.opacity = "1";
+                DarkLayer.style.opacity = "1";
+            }, 200);
+        }, 500);
+
+        // Reset ContBtnCount for the next intro
+        ContBtnCount = 1;
+        TextIsEpilogue = false;
+        level_text = [];
+    };
+};
 
 // user wants to open his own user pop-up
 const OpenOwnUserProfile = () => {

@@ -47,7 +47,7 @@ function sun_attack() {
             sun_pos = null;
 
             // play soundeffect
-            eye_attack_soundeffect.volume = 0.095;
+            eye_attack_soundeffect.volume = sfxVolume;
             eye_attack_soundeffect.playbackRate = 3;
             eye_attack_soundeffect.play();
 
@@ -102,7 +102,7 @@ function sun_attack() {
 function SunAttackInterval() {
     if (!sunDied) {
         // random second value
-        let rnd = Math.floor(Math.random() * 15) + 10;
+        let rnd = Math.floor(Math.random() * 35) + 10;
 
         let minute = 0;
         let second = rnd;
@@ -135,7 +135,7 @@ function SunAttackInterval() {
                         // start attack interval again
                         SunAttackInterval();
 
-                        // bug fix: user can leave now and do anything
+                        // user can leave now and do anything
                         addAccessToAnything();
                     };
                 }, 1500);
