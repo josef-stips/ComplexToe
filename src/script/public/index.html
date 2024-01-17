@@ -15,6 +15,9 @@
     <!-- server -->
     <link rel="stylesheet" href="index.css" />
     <audio id="bg_audio" src="assets/Maps/BGmusic.m4a"></audio>
+    <audio id="rewardAudio" src="assets/Jingle 026.wav"></audio>
+    <audio id="gateOpenSound" src="assets/Gate_Open_00.mp3"></audio>
+    <audio id="LaughSound" src="assets/Laugh_Evil_00.mp3"></audio>
     <audio id="boss1" src="assets/Maps/Heroic Demise (New).mp3"></audio>
     <audio id="WarTheme1" src="assets/Maps/dova_Dead end strike_master.mp3"></audio>
     <audio id="mysticalSound" src="assets/Maps/mysticalTheme.mp3"></audio>
@@ -50,11 +53,13 @@
 
     <script defer src="App/script.js"></script>
     <script defer src="App/features/bosses/BossClass.js"></script>
+    <script defer src="App/features/Achievements.js"></script>
     <script defer src="Game/CreateGame.js"></script>
     <script defer src="App/features/OnlineSocialUser.js"></script>
     <script defer src="App/SkinLogic.js"></script>
     <script defer src="App/features/Treasure.js"></script>
     <script defer src="App/features/itemDropPropability.js"></script>
+    <script defer src="App/features/WorldOfTenebros.js"></script>
     <script defer src="App/features/AdvantureMap.js"></script>
     <script defer src="App/features/XPJourney.js"></script>
     <script defer src="App/features/bosses/eye.js"></script>
@@ -2321,12 +2326,14 @@
                         <i style="position: absolute;top: 15%;right: 60%;" class="mapItemIMG mapItem"><img src="./assets/game/tribal-mask.svg"></i>
                         <i style="position: absolute;top: 83%;right: 55%;" class="mapItemIMG mapItem"><img src="./assets/game/sunken-eye.svg"></i>
                         <i style="position: absolute;top: 55%;left: 60%;" class="mapItem mapItemIMG"><img src="./assets/game/caldera.svg"></i>
-                        <i style="position: absolute;top: 88%;right: 25%;" class="mapItem mapItemIMG"><img src="./assets/game/lock-spy.svg"></i>
+                        <i style="position: absolute;top: 88%;right: 25%;" class="mapItem mapItemIMG secret_lock"><img src="./assets/game/lock-spy.svg"></i>
                         <i style="position: absolute;top: 80%;right: 5%;" class="mapItemIMG mapItem"><img src="./assets/game/wolf-head.svg"></i>
                         <i style="position: absolute;top: 15%;right: 15%;" class="mapItem mapItemIMG"><img src="./assets/game/willow-tree.svg"></i>
 
                         <i style="position: absolute;top: 42%;right: 54%;" class="mapItem mapItemIMG"><img src="./assets/game/gluttonous-smile.svg"></i>
                         <i style="position: absolute;top: 61%;right: 10%;" class="mapItem mapItemIMG"><img src="./assets/game/book-cover.svg"></i>
+
+                        <i style="position: absolute;bottom: calc(0vh + 46px);right: 18%;" class="mapItem mapItemIMG secret_map_btn"><img width="70" height="70" src="./assets/game/dungeon-gate.svg"></i>
 
                         <!-- background icons -->
                         <img class="BG_mapIcons BGICON_1" src="assets/game/BG_icon_1.svg" width="500" height="500">
@@ -3519,6 +3526,10 @@
 
             <hr width="100%">
 
+            <span>Some sound effects are from Little Robot Sound Factory - <a target="blank" href="www.littlerobotsoundfactory.com">www.littlerobotsoundfactory.com</a></span>
+
+            <hr width="100%">
+
             <br>
             <p>btn-click_2.mp3 (custom name) Sound is used as standard click sound on buttons and this sound effect is obtained from <a target="_blank" href="https://www.zapsplat.com">https://www.zapsplat.com</a></p>
             <br>
@@ -3529,6 +3540,12 @@
 
             <h3>The following articles are under this credit: </h3>
             <h4>music by Karl Casey @ White Bat Audio</h4>
+
+            <hr width="100%">
+
+            <p>Some of the sounds and/or music was created by David McKee (VIRiX Dreamcore)</p>
+
+            <hr width="100%">
 
             <br>
 
@@ -3603,6 +3620,7 @@
                 <li>winged-sword by Lorc under CC BY 3.0</li>
                 <li>wolf-head by Lorc under CC BY 3.0</li>
                 <li>cursed-star by Lorc under CC BY 3.0</li>
+                <li>dungeon-gate by Delapouite under Cc BY 3.0</li>
             </ul>
 
         </div>
@@ -6452,6 +6470,11 @@
                 <div class="JourneyMainInner">
 
                 </div>
+
+                <!-- absolute element -->
+                <span class="AchievementsBtn">
+                    Achievements
+                </span>
             </div>
         </div>
 
@@ -6503,11 +6526,6 @@
 
         <div class="FriendsListMainWrapper">
             <div class="FriendsListInnerList">
-
-                <!-- <div class="Friend HoverBorderAni">
-                    <div class="FriendName">Josef</div>
-                    <div class="FriendIcon">F</div>
-                </div> -->
 
             </div>
         </div>
@@ -6693,6 +6711,35 @@
         <div class="ini_onlineGame_footer">
 
         </div>
+    </div>
+
+    <!-- achievements pop up -->
+    <div class="AchievementsPopUp">
+        <div class="Achievements_header">
+            <img src="assets/game/laurels-trophy.svg" width="32" height="32">
+            <i class="fa-solid fa-x AchievementsCloseBtn"></i>
+        </div>
+
+        <div class="Achievements_main">
+            <ul class="Achievements_list">
+
+                <!-- <li achievement_id="0" achievement_name="The Creator" achievement_rewards="{diamonds:100, keys:5, x:1, ore:500}">
+                    <h2>The Creator</h2>
+                    <div>
+                        <span achievement_reward_id="0">
+                            <img src="assets/game/crystal-bars.svg" widt="40" height="40">
+                            <p>100</p>
+                        </span>
+                    </div>
+                </li> -->
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- new achievement unlocked pop up -->
+    <div class="newAchievementUnlockedPopUp">
+
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">

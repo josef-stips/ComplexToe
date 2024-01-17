@@ -24,9 +24,14 @@ async function CreateMusicBars(Audio) {
     // volume animation
     globalAudio.volume = 0;
     count = 10
+    appVolume = Number(appVolume);
     let volumeInterval = setInterval(() => {
+        // console.log(globalAudio, globalAudio.volume, appVolume, count, appVolume / count);
         try {
-            globalAudio.volume = appVolume / count;
+            if (count >= 2) {
+                let newVolume = appVolume / count;
+                globalAudio.volume = parseFloat(newVolume);
+            };
 
             count = count - 2;
             if (count <= 0) {
@@ -34,7 +39,7 @@ async function CreateMusicBars(Audio) {
                 volumeInterval = null;
             };
         } catch (error) {
-            location.reload();
+            console.log(error);
         };
     }, 100);
 
@@ -145,4 +150,23 @@ function playMapTheme() {
 function playMysticalTheme() {
     PauseMusic();
     CreateMusicBars(mysticalSound);
+};
+
+function play_rewardSound() {
+    // reward/ achievement sound
+    rewardAudio.volume = sfxVolume;
+    rewardAudio.playbackRate = 0.9;
+    rewardAudio.play();
+};
+
+async function play_openGateSound() {
+    gateOpenSound.volume = sfxVolume;
+    gateOpenSound.playbackRate = 0.7;
+    gateOpenSound.play();
+};
+
+async function play_laughSound() {
+    LaughSound.volume = sfxVolume;
+    LaughSound.playbackRate = 0.7;
+    LaughSound.play();
 };

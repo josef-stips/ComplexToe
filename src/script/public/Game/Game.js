@@ -612,7 +612,7 @@ const SetBGColorForCurrentField = (xy) => {
                     bgcolor1 = "#93cf954f";
                     bgcolor2 = "#4caf5063";
                 } else if (inAdvantureMode) {
-                    Lobby.style.background = "linear-gradient(45deg, rgb(255 17 0 / 54%), rgb(255 191 0 / 42%))";
+                    Lobby.style.background = "linear-gradient(45deg, rgb(147 78 40 / 54%), rgb(151 44 27 / 56%))";
                 };
                 break;
 

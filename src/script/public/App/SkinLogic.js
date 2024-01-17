@@ -397,6 +397,15 @@ function buySkin(user_currency_amount, currency) {
         gemsIcon.textContent = new_user_currency_amount;
     };
 
+    // for achievements
+    let SkinsCopy = {...skins };
+    delete SkinsCopy["skin-default"];
+    let allFalse = Object.values(SkinsCopy).every(value => value === false);
+    // console.log(allFalse, skins, SkinsCopy);
+    if (allFalse && !localStorage.getItem("UserBoughtSkinForTheFirstTime")) {
+        Achievement.new(13);
+    };
+
     skins[selected_skin.name] = true;
     localStorage.setItem('Skins', JSON.stringify(skins));
 

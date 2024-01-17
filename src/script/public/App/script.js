@@ -15,6 +15,9 @@ let mysticalSound = document.querySelector("#mysticalSound");
 let WarTheme1 = document.querySelector("#WarTheme1");
 let Shoot1 = document.querySelector("#Shoot1");
 let boss1 = document.querySelector('#boss1');
+let rewardAudio = document.querySelector("#rewardAudio");
+let LaughSound = document.querySelector("#LaughSound");
+let gateOpenSound = document.querySelector("#gateOpenSound");
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -458,6 +461,13 @@ let SearchLevelInput = document.querySelector(".SearchLevelInput");
 let CloseSearchLevelsBtn = document.querySelector(".CloseSearchLevelsBtn");
 let GameFieldHeaderTitleWrapper = document.querySelector(".GameFieldHeader-upperBody");
 let settColorfulBGinGame = document.querySelector("#sett-ColorfulBGinGame");
+let Achievements_list = document.querySelector(".Achievements_list");
+let AchievementsCloseBtn = document.querySelector(".AchievementsCloseBtn");
+let AchievementsPopUp = document.querySelector(".AchievementsPopUp");
+let AchievementsBtn = document.querySelector(".AchievementsBtn");
+let newAchievementUnlockedPopUp = document.querySelector(".newAchievementUnlockedPopUp");
+let secret_map_btn = document.querySelector(".secret_map_btn");
+let secret_lock = document.querySelector(".secret_lock");
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
 let bossLifeCounter = document.querySelector(".bossLifeCounter");
@@ -510,6 +520,12 @@ function getRandomIndexes(array, count) {
         };
     };
     return result;
+};
+
+// pop up animation
+const DisplayPopUp_PopAnimation = (pop_up) => {
+    pop_up.style.display = "flex";
+    pop_up.style.animation = "popUp-POP 0.08s ease-in-out forwards";
 };
 
 // important data
@@ -1219,7 +1235,7 @@ function locked_25x25() {
                 Click_single_NxN(e);
             });
 
-        } else if (!localStorage.getItem('unlocked_25')) {
+        } else if (!localStorage.getItem('unlocked_25')) { // just unlocked, make cool animation
             localStorage.setItem('unlocked_25', "true");
             lockedIcon25.style.animation = "unlock_field 3s ease-in-out";
 
@@ -1287,6 +1303,9 @@ function locked_30x30() {
 
             // after the crazy ass animation:
             setTimeout(() => {
+                // for achievement
+                Achievement.new(2);
+
                 // bug fix
                 lockedIcon30.style.animation = 'unset';
                 lockedIcon30.style.display = 'none';
@@ -1347,6 +1366,9 @@ function locked_40x40() {
 
             // after the crazy ass animation:
             setTimeout(() => {
+                // for achievement
+                Achievement.new(3);
+
                 // bug fix
                 lockedIcon40.style.animation = 'unset';
                 lockedIcon40.style.display = 'none';
@@ -1653,25 +1675,27 @@ fieldsArea_back_btn.addEventListener('click', () => {
 let NewCreativeLevel;
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
-    curr_mode = GameMode[4].opponent;
+    if (localStorage.getItem("UserName")) {
+        curr_mode = GameMode[4].opponent;
 
-    // pause music in create level mode
-    PauseMusic();
+        // pause music in create level mode
+        PauseMusic();
 
-    // User entered create level mode
-    let NewField = new NewLevel();
-    NewCreativeLevel = NewField;
-    NewCreativeLevel.Init();
+        // User entered create level mode
+        let NewField = new NewLevel();
+        NewCreativeLevel = NewField;
+        NewCreativeLevel.Init();
 
-    InitCreateLevelScene();
+        InitCreateLevelScene();
 
-    // bug fix if user was in advanced mode:
-    goToAdvancedFields.style.display = 'none';
-    goToAdvancedFields.classList = "fa-solid fa-caret-down";
-    secondTierModes.style.marginBottom = "0";
-    isInAdvancedGameModes = false;
-    // other thing
-    ChooseFieldDisplay.style.opacity = "0";
+        // bug fix if user was in advanced mode:
+        goToAdvancedFields.style.display = 'none';
+        goToAdvancedFields.classList = "fa-solid fa-caret-down";
+        secondTierModes.style.marginBottom = "0";
+        isInAdvancedGameModes = false;
+        // other thing
+        ChooseFieldDisplay.style.opacity = "0";
+    };
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
@@ -2421,7 +2445,7 @@ gameInfo_btn.addEventListener('click', () => {
             HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points or score more points than your opponent if he gives up.`;
 
         } else {
-            HowToWinText.textContent = `Get ${Lobby_PointsToWin.textContent} points or score more points than your opponent if he gives up.`;
+            HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`;
         };
 
     } else { // in advanture mode
@@ -2865,10 +2889,13 @@ goToAdvancedFields.addEventListener('click', () => {
 
 let ContBtnCount = 1;
 let TextIsEpilogue = false;
-animatedPopConBtn.addEventListener('click', () => {
+let ClickedOnLastText = false; // Check if user skipped the last text
+animatedPopConBtn.addEventListener('click', animatedPopConBtn.fn = () => {
+    if (ContBtnCount == 2) ClickedOnLastText = false;
+
     if (!inAdvantureMode) {
         playBtn_Audio_2();
-        if (ContBtnCount == 0) {
+        if (ContBtnCount == 1) {
             let TextHead = document.createElement("h2");
             let newText = document.createTextNode("Each individual field has its own secret properties you have to discover... Will you survive?");
             TextHead.classList.add("newText")
@@ -2878,17 +2905,23 @@ animatedPopConBtn.addEventListener('click', () => {
             animatedPopMain.appendChild(TextHead);
             ContBtnCount++;
 
-        } else if (ContBtnCount == 1) {
+        } else if (ContBtnCount == 2) {
             animatedPopMain.querySelector('.newText').textContent = "You entered boss mode!";
             ContBtnCount++;
 
-        } else if (ContBtnCount == 2) {
+        } else if (ContBtnCount == 3 && !ClickedOnLastText) {
+            // this line is a bug fix
+            ClickedOnLastText = true;
+            // animation
             DarkLayer.style.display = 'none';
             animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
             animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
             animatedPopMain.querySelector('.newText').remove();
             animatedPopUp.style.display = 'none';
-            ContBtnCount = 0;
+            // Reset ContBtnCount for the next intro
+            ContBtnCount = 1;
+            TextIsEpilogue = false;
+            level_text = [];
 
             // Check if player unlocked one of these fields
             locked_25x25();
@@ -2903,6 +2936,10 @@ animatedPopConBtn.addEventListener('click', () => {
 });
 
 const AdvantureModeLevelIntro = () => {
+    if (ContBtnCount == 2) ClickedOnLastText = false;
+
+    console.log(ContBtnCount, level_text);
+
     if (ContBtnCount < level_text.length && level_text[ContBtnCount] != undefined) {
         animatedPopMain.querySelector('.newText').textContent = level_text[ContBtnCount];
         ContBtnCount++;
@@ -2915,11 +2952,15 @@ const AdvantureModeLevelIntro = () => {
             console.log(error);
         };
 
-    } else if (ContBtnCount == level_text.length + 1 && level_text[ContBtnCount] == undefined && !TextIsEpilogue) {
+    } else if (ContBtnCount == level_text.length + 1 && level_text[ContBtnCount] == undefined && !TextIsEpilogue && !ClickedOnLastText) {
+        // this line is a bug prevention
+        ClickedOnLastText = true;
         // Check if player unlocked one of these fields
         locked_25x25();
         locked_30x30();
         locked_40x40();
+
+        console.log(document.querySelector(".DialogEye"));
 
         // fade out animation to epic dialog
         animatedPopUp.style.opacity = "0";
@@ -2942,6 +2983,7 @@ const AdvantureModeLevelIntro = () => {
                 DarkLayer.style.transition = "background-color 1s ease-out";
                 animatedPopUp.style.opacity = "1";
                 DarkLayer.style.opacity = "1";
+                document.querySelector(".DialogEye").remove();
             }, 200);
         }, 500);
 
@@ -2949,6 +2991,43 @@ const AdvantureModeLevelIntro = () => {
         ContBtnCount = 1;
         TextIsEpilogue = false;
         level_text = [];
+
+    } else if (ContBtnCount == level_text.length && TextIsEpilogue && !ClickedOnLastText) {
+        // bug prevention
+        ClickedOnLastText = true;
+        // fade out animation to epic dialog
+        animatedPopUp.style.opacity = "0";
+        document.querySelector(".DialogEye") && (document.querySelector(".DialogEye").style.opacity = "0");
+
+        setTimeout(() => {
+            animatedPopMain.querySelector('.newText') && animatedPopMain.querySelector('.newText').remove();
+            DarkLayer.style.transition = "background-color 1s ease-out, opacity 0.5s ease-in-out";
+            DarkLayer.style.opacity = "0";
+
+            PauseMusic();
+            playMapTheme();
+
+            setTimeout(() => {
+                animatedPopMain.querySelectorAll("h2")[0].style.display = "block";
+                animatedPopMain.querySelectorAll("h2")[1].style.display = "block";
+                animatedPopMain.style.display = "flex";
+                animatedPopUp.style.display = 'none';
+                DarkLayer.style.display = 'none';
+                DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
+                DarkLayer.style.transition = "background-color 1s ease-out";
+                animatedPopUp.style.opacity = "1";
+                DarkLayer.style.opacity = "1";
+                document.querySelector(".DialogEye").remove();
+            }, 200);
+        }, 500);
+
+        // Reset ContBtnCount for the next intro
+        ContBtnCount = 1;
+        TextIsEpilogue = false;
+        level_text = [];
+
+        // items
+        UserFoundItems();
     };
 };
 
@@ -3110,7 +3189,7 @@ UserGivesData_NameInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
         e.preventDefault();
 
-        if (UserGivesData_NameInput.value != "") {
+        if (UserGivesData_NameInput.value != "" && UserGivesData_NameInput.value != "false") {
             UserGivesData_PopUp_name.style.display = "none";
             UserGivesData_PopUp_icon.style.display = "flex";
             UserGivesData_IconInput.focus();
@@ -3137,7 +3216,7 @@ UserGivesData_IconInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') {
         e.preventDefault();
 
-        if (UserGivesData_IconInput.value != "") {
+        if (UserGivesData_IconInput.value != "" && UserGivesData_IconInput.value != "false") {
             userIcon = UserGivesData_IconInput.value;
 
             // store data in storage
@@ -3354,6 +3433,8 @@ closeAlertPopUpBtn.addEventListener('click', () => {
     if (!XPJourneyMapOpen && UserID_OfCurrentVisitedProfile == undefined && !OpenedPopUp_WhereAlertPopUpNeeded) {
         DarkLayer.style.display = 'none';
     };
+
+    OpenedPopUp_WhereAlertPopUpNeeded = false;
 });
 
 // when player wants to create/start a game and passes the required data

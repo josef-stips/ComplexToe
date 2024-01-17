@@ -287,6 +287,13 @@ function UserGets_N_Items(n) {
             };
             break;
     };
+
+    // for achievements
+    if (exploredItems["encryptedWriting"] >= 10 && !localStorage.getItem("UserGot10EncryptedWritings")) {
+        Achievement.new(16);
+        localStorage.setItem("UserGot10EncryptedWritings", "true");
+    };
+
     // save ever changes in storage
     localStorage.setItem('ExploredItems', JSON.stringify(exploredItems));
     init_exploredItems();

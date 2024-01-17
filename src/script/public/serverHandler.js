@@ -298,37 +298,58 @@ const clearTimer = () => {
 };
 
 // after some player leaves game and is not the admin so it could be also an offline game, do animation etc.
-const DarkLayerAfterGameAnimation = () => {
-    DarkLayer.style.backgroundColor = 'black';
-    DarkLayer.style.display = 'block';
-    DarkLayer.style.transition = 'opacity 0.1s ease-in';
-    DarkLayer.style.opacity = '0';
+const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMode, wonLevel10) => {
+    return new Promise((resolve) => {
+        DarkLayer.style.backgroundColor = 'black';
+        DarkLayer.style.display = 'block';
 
-    setTimeout(() => {
-        DarkLayer.style.opacity = '1';
-        setTimeout(() => {
-            GameField.style.display = 'none';
+        let timeOut = 100;
 
-            if (!inAdvantureMode) {
-                // if player created a lobby from the create level scene and leaves the game, he should spawn there where he left. The same for normal card level
-                (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+        if (advantureModelevelIndex == 10) {
+            DarkLayer.style.transition = 'opacity 1.1s ease-in'
+            timeOut = 1100;
 
-            } else {
-                AdvantureMap.style.display = 'flex';
-            };
-        }, 100);
-    }, 100);
+        } else if (advantureModelevelIndex != 10) {
+            DarkLayer.style.transition = 'opacity 0.2s ease-in';
+            timeOut = 200;
+        };
 
-    setTimeout(() => {
+        console.log(timeOut, advantureModelevelIndex, UserWonAdvantureMode, wonLevel10);
+
         DarkLayer.style.opacity = '0';
 
         setTimeout(() => {
-            DarkLayer.style.display = 'none';
-            DarkLayer.style.transition = 'none';
             DarkLayer.style.opacity = '1';
-            DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-        }, 400);
-    }, 400);
+            setTimeout(() => {
+                GameField.style.display = 'none';
+
+                if (!inAdvantureMode) {
+                    // if player created a lobby from the create level scene and leaves the game, he should spawn there where he left. The same for normal card level
+                    (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+
+                } else {
+                    AdvantureMap.style.display = 'flex';
+                };
+                resolve();
+
+            }, timeOut);
+        }, 100);
+
+        if (advantureModelevelIndex != 10) {
+            setTimeout(() => {
+                DarkLayer.style.opacity = '0';
+
+                setTimeout(() => {
+                    DarkLayer.style.display = 'none';
+                    DarkLayer.style.transition = 'none';
+                    DarkLayer.style.opacity = '1';
+                    DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+
+                    resolve();
+                }, timeOut);
+            }, timeOut + 200);
+        };
+    });
 };
 
 // in online mode, some player left the game
@@ -396,9 +417,6 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
 
 // User leaves game on leave game btn event
 function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
-    // sound
-    playBtn_Audio_2();
-
     // remove any pop up display
     CloseOnlinePopUps(true);
 
@@ -417,19 +435,28 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
         (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
         GameField.style.display = "none";
 
+        // kill timers
+        clearTimer();
+
+        // If in online mode
+        if (curr_mode == GameMode[2].opponent) {
+            UserLeftGameInOnlineMode();
+        } else { // in offline mode
+            UserLeftGameInOfflineMode(userWonInAdvantureMode, LevelIndex_AdvantureMode);
+        };
+
     } else {
-        DarkLayerAfterGameAnimation();
-    };
+        DarkLayerAfterGameAnimation(LevelIndex_AdvantureMode, userWonInAdvantureMode, localStorage.getItem("completed_mapLevel10")).then(() => {
+            // kill timers
+            clearTimer();
 
-    // kill timers
-    clearTimer();
-
-    // If in online mode
-    if (curr_mode == GameMode[2].opponent) {
-        UserLeftGameInOnlineMode();
-
-    } else { // in offline mode
-        UserLeftGameInOfflineMode(userWonInAdvantureMode, LevelIndex_AdvantureMode);
+            // If in online mode
+            if (curr_mode == GameMode[2].opponent) {
+                UserLeftGameInOnlineMode();
+            } else { // in offline mode
+                UserLeftGameInOfflineMode(userWonInAdvantureMode, LevelIndex_AdvantureMode);
+            };
+        });
     };
 };
 

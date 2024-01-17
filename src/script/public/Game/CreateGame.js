@@ -809,6 +809,11 @@ class NewLevel {
         try {
             socket.emit("UserVerifiedLevel", this.selectedLevel[11], confirmationStatus => {
                 this.selectedLevel[13] = confirmationStatus;
+
+                if (!localStorage.getItem("UserVerifiedLevelForTheFirstTime")) {
+                    Achievement.new(14);
+                    localStorage.setItem("UserVerifiedLevelForTheFirstTime", "true");
+                };
             });
 
         } catch (error) {
@@ -826,7 +831,12 @@ const InitCreateLevelScene = () => {
         if (NewCreativeLevel.selectedLevel[13] == 1 && NewCreativeLevel.selectedLevel[9] == 0) { // Creator of level beat it which means he has the right to publish the level
             try {
                 socket.emit("PublishLevel", NewCreativeLevel.selectedLevel[11], cb => {
-                    // refresh page
+                    if (!localStorage.getItem("UserPublishedLevelForTheFirstTime")) {
+                        Achievement.new(15);
+                        localStorage.setItem("UserPublishedLevelForTheFirstTime", "true");
+                    };
+
+                    // refresh level instance
                     let NewField = new NewLevel();
                     NewCreativeLevel = NewField;
                     NewCreativeLevel.Init();

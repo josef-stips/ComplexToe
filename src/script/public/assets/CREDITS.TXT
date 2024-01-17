@@ -97,9 +97,19 @@ File(s):
 
 ----------------------------------------
 
+Some sound effects are from Little Robot Sound Factory - www.littlerobotsoundfactory.com
+
+----------------------------------------
+
 btn-click_2.mp3 (costum name) Sound is used as standard click sound on buttons and this sound effect is obtained from https://www.zapsplat.com
 
 boss_theme.mp3 (Music which cames up when user enters boss mode in game) : Music: Final Boss by Myuu. Video Link: https://www.youtube.com/watch?v=ihqOJsFVQ7c
+
+----------------------------------------
+
+Some of the sounds and/or music was created by David McKee (VIRiX Dreamcore)
+
+----------------------------------------
 
 The following articles are under this credit: music by Karl Casey @ White Bat Audio
 (the file names are costum and are not the original music names)
@@ -168,3 +178,4 @@ winged-sword by Lorc under CC BY 3.0
 wolf-head by Lorc under CC BY 3.0
 cursed-star by Lorc under CC BY 3.0
 spikes-full by sbed under CC BY 3.0
+dungeon-gate by Delapouite under Cc BY 3.0

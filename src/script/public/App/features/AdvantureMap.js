@@ -12,37 +12,37 @@ let mapLevels = {
         ], 5, InnerGameModes[1], false, {},
         40
     ], // level 1 is unlocked by default
-    2: [true, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["hor", "vert", "diamond"],
+    2: [false, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["hor", "vert", "diamond"],
         ["Congrats on winning the first level in this deadly journey. But this is still only the beginning...",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
         ], 7, InnerGameModes[3], false, { 'keys': 10 },
         70
     ],
-    3: [true, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["L1", "L2", "diamond"],
+    3: [false, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["L1", "L2", "diamond"],
         ["With every level it gets more serious now. Keep your eyes open!",
             "To conquer this level you have to score 8 points against the unknown. The unknown can beat you in less moves."
         ], 8, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
         200
     ],
-    4: [true, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["W1", "W2", "branch1", "diamond"],
+    4: [false, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["W1", "W2", "branch1", "diamond"],
         ["You entered the really dangerous side of this journey now. Will you survive?",
             "To conquer this level you have to score 10 points against the unknown and defeat Oculum Solis. The unknown can beat you in less moves."
         ], 10, InnerGameModes[2], true, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
         400
     ],
-    5: [true, 25, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "W3", "W4", "star", "diamond"],
+    5: [false, 25, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "W3", "W4", "star", "diamond"],
         ["Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level.",
             "To conquer this level you have to score 11 points against the unknown. The unknown can beat you in less moves."
         ], 11, InnerGameModes[3], false, { 'keys': 25, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
         400
     ],
-    6: [true, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["vert", "dia", "dia2"],
+    6: [false, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["vert", "dia", "dia2"],
         ["Most of the players here have already given up or lost their way. Do you really want to continue or give up?",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
         ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 1800, 'asteroids': 1, 'diamonds': 30 },
         400
     ],
-    7: [true, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["hor", "L1", "L2", "L3", "L4"],
+    7: [false, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["hor", "L1", "L2", "L3", "L4"],
         ["The playing field has become larger. More room for your frustration to spread.",
             "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves."
         ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 2500, 'asteroids': 1, 'minerals': 2000 },
@@ -54,13 +54,13 @@ let mapLevels = {
         ], 13, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 3, 'encrypted writings': 5 },
         400
     ],
-    9: [true, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1"],
+    9: [false, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1"],
         ["This is the last step before you are never seen again. No one knows if you can do that.",
             "To conquer this level you have to score 15 points against the unknown and defeat Solara Zephyra. The unknown can beat you in less moves."
         ], 15, InnerGameModes[3], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
         400
     ],
-    10: [true, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "diamond", "star"],
+    10: [false, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "diamond", "star"],
 
         [`Welcome, wanderer, who has forsaken the paths of light and ventured into darkness.`,
 
@@ -89,10 +89,12 @@ const levelDescriptions = {
     10: "You've made it to the Eye of the Unknown, the end boss of your journey. The ultimate battle between light and darkness awaits. Are you ready to become the evil to fight the evil?"
 };
 
+let just_beat_advantureMap = false;
+
 // developer script
-window.addEventListener('beforeunload', async(event) => {
-    localStorage.setItem('unlocked_mapLevels', '');
-});
+// window.addEventListener('beforeunload', async(event) => {
+//     localStorage.setItem('unlocked_mapLevels', '');
+// });
 
 // Check for map level - initialize
 function UnlockedMapLevel() {
@@ -330,7 +332,7 @@ function conqueredLevels() {
         let mapLevel_unlocked = localStorage.getItem(`completed_mapLevel${i - 1}`);
 
         // if it exists => user completed this level => do sutff
-        if (mapLevel_completed) { // update conquered map level display on level overview pop up
+        if (mapLevel_completed && i != 10) { // update conquered map level display on level overview pop up
             conquered_MapLevel_Display.textContent = "Yes";
             MapLevelBtns[i].style.animation = "none";
         };
@@ -426,20 +428,29 @@ MapLevel_IconInput.addEventListener('keyup', (event) => {
 // start map level button
 startMapLevelBtn.addEventListener('click', () => {
     if (MapLevel_IconInput.value != "" && MapLevel_NameInput.value != "") {
-        StartAdvantureLevelDialog(current_selected_level);
+        if (current_selected_level == 10 && localStorage.getItem("completed_mapLevel10") == "true") {
+            AlertText.textContent = "You cannot play the final fight twice. Oculus Irae left the advanture map to prepare for the last fight.";
+            alertPopUp.style.display = "flex";
+            DarkLayer.style.display = "block";
+            OpenedPopUp_WhereAlertPopUpNeeded = true;
+        } else {
+            StartAdvantureLevelDialog(current_selected_level);
+        };
     };
 });
 
 // Epic Dialog before level start
 const StartAdvantureLevelDialog = (level_index, beat_advantureMap) => {
     let index = 0;
-    mapLevels[level_index][8][index];
+    console.log(mapLevels[level_index][7][index], index, beat_advantureMap);
 
     // check wether user is allowed to play the level
     let user_fulfills_requirements = UserFulfill_RequirementsForLevel();
+    console.log(user_fulfills_requirements);
     if (user_fulfills_requirements) {
         CloseOnlinePopUps();
         playMysticalTheme();
+        // animation
         StartDialogAnimation(beat_advantureMap);
 
         // black background
@@ -461,7 +472,7 @@ const StartDialogAnimation = (beat_advantureMap) => {
     img.style.bottom = "-200px";
     img.style.left = "50px";
     img.style.margin = "auto auto 0 auto";
-    img.src = "./assets/game/warlock-eye.svg";
+    !localStorage.getItem("completed_mapLevel10") ? img.src = "./assets/game/warlock-eye.svg" : img.src = "./assets/game/spikes-full.svg";
     img.style.zIndex = "501";
     img.style.animation = "ObjectSlidesInScreenFromBottomLeft 1s ease-in-out forwards";
     img.style.transition = "all 0.5s ease-out";
@@ -491,7 +502,6 @@ function TryTo_StartMapLevel() {
         mapLevelOverview.style.display = 'none';
         AdvantureMap.style.display = 'none';
         lobbyHeader.style.borderBottom = 'none';
-        document.querySelector(".DialogEye") && document.querySelector(".DialogEye").remove();
 
         // initialize game with the right values
         let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
@@ -702,6 +712,8 @@ function level_startSpeechBubbles(beat_advantureMap) {
     level_text = !beat_advantureMap ? unlocked_mapLevels[current_selected_level][7] : Epilogue;
     TextIsEpilogue = beat_advantureMap ? true : false;
 
+    console.log(level_text, beat_advantureMap);
+
     // new ini text
     let TextHead = document.createElement("h2");
     let newText = document.createTextNode(level_text[0]);
@@ -715,6 +727,9 @@ function level_startSpeechBubbles(beat_advantureMap) {
 // user won advanture level and got back to the advanture map
 function UserWon_AdvantureLevel(won_levelIndex) {
     let nextLevel;
+
+    console.log(won_levelIndex, localStorage.getItem(`completed_mapLevel${won_levelIndex}`));
+
     switch (won_levelIndex) {
         default: // default: normal level
         // if level not conquered yet 
@@ -755,6 +770,11 @@ function UserWon_AdvantureLevel(won_levelIndex) {
 
                 // update conquered map level display on level overview pop up
                 conquered_MapLevel_Display.textContent = "Yes";
+
+                // for achievement 
+                if (won_levelIndex == 4) {
+                    Achievement.new(1);
+                };
             };
 
             // items
@@ -764,7 +784,6 @@ function UserWon_AdvantureLevel(won_levelIndex) {
         case 10: // boss level
             // if boss level not completed yet
                 if (!localStorage.getItem(`completed_mapLevel${won_levelIndex}`)) {
-
                     // localstorage things
                     localStorage.setItem(`completed_mapLevel${won_levelIndex}`, true);
 
@@ -775,11 +794,15 @@ function UserWon_AdvantureLevel(won_levelIndex) {
                     conquered_MapLevel_Display.textContent = "Yes";
 
                     // Epilog for advanture mode
-                    StartAdvantureLevelDialog(current_selected_level, "beat_advantureMap");
-                };
+                    StartAdvantureLevelDialog(current_selected_level, true); // true : user beat advanture map
 
-                // items
-            UserFoundItems();
+                    // for unlock the second advanture map 
+                    just_beat_advantureMap = true;
+
+                } else {
+                    // items
+                    UserFoundItems();
+                };
             break;
     };
 };
@@ -861,4 +884,10 @@ exploreditem_wrapper.forEach((item_wrapper, i) => {
 YouFound_OkBtn.addEventListener('click', () => {
     YouFoundItems_PopUp.style.display = "none"
     DarkLayer.style.display = "none";
+
+    if (just_beat_advantureMap) {
+        secret_world = new world_of_tenebros();
+        secret_world.unlock();
+        just_beat_advantureMap = false;
+    };
 });

@@ -206,7 +206,7 @@ function eyeGot_HP_Damage(damage) {
             playBtn_Audio_2();
 
             eye_HP = eye_HP - 1;
-            eyeLifeCounter.textContent = `${eye_HP}/${10000} HP`;
+            inAdvantureMode ? eyeLifeCounter.textContent = `${eye_HP}/${20000} HP` : eyeLifeCounter.textContent = `${eye_HP}/${10000} HP`;
         };
 
         // animation

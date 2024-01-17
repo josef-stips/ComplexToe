@@ -378,7 +378,7 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
         case 10: // user have to score 20 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 20 && eye_HP <= 0) { // Player won
+            if (score_Player1_numb >= 1 && eye_HP <= 2323230) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 3 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -678,6 +678,7 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
         let i = 5;
         var counter = setInterval(() => {
             if (!stopStatusTextInterval) {
+                i != 5 && (statusText.style.opacity = "1");
                 // in Advanture mode or in online mode
                 if (inAdvantureMode || curr_mode == GameMode[2].opponent) {
                     if (PlayingInCreatedLevel) { // Player played user created level
@@ -793,7 +794,13 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
             UltimateWinText.appendChild(br);
             UltimateWinText.appendChild(img);
 
-            setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
+            setTimeout(() => {
+                UltimateWinTextArea.style.opacity = "1";
+                if (!localStorage.getItem("completed_mapLevel10")) {
+                    // for achievement 
+                    Achievement.new(0);
+                };
+            }, 100);
         };
     };
 
@@ -896,6 +903,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
         // basic stuff
         stopStatusTextInterval = false;
         cellGrid.style.opacity = "0";
+        statusText.style.opacity = "0";
         UltimateWinTextArea.style.opacity = "0";
 
         killPlayerClocks(true);
@@ -1109,6 +1117,65 @@ function setNew_SkillPoints(plus) {
             i = 0
         };
     }, 200);
+
+    // for achievement
+    let onlineMatchesWon = parseInt(localStorage.getItem("onlineMatches-won"));
+    switch (onlineMatchesWon) {
+        case 1:
+            if (!localStorage.getItem("wonOnlineMatches_1")) {
+                Achievement.new(4);
+                localStorage.setItem("wonOnlineMatches_1", "true");
+            };
+            break;
+        case 5:
+            if (!localStorage.getItem("wonOnlineMatches_5")) {
+                Achievement.new(5);
+                localStorage.setItem("wonOnlineMatches_5", "true");
+            };
+            break;
+        case 25:
+            if (!localStorage.getItem("wonOnlineMatches_25")) {
+                Achievement.new(6);
+                localStorage.setItem("wonOnlineMatches_25", "true");
+            };
+            break;
+        case 70:
+            if (!localStorage.getItem("wonOnlineMatches_70")) {
+                Achievement.new(7);
+                localStorage.setItem("wonOnlineMatches_70", "true");
+            };
+            break;
+        case 120:
+            if (!localStorage.getItem("wonOnlineMatches_120")) {
+                Achievement.new(8);
+                localStorage.setItem("wonOnlineMatches_120", "true");
+            };
+            break;
+        case 200:
+            if (!localStorage.getItem("wonOnlineMatches_200")) {
+                Achievement.new(9);
+                localStorage.setItem("wonOnlineMatches_200", "true");
+            };
+            break;
+        case 400:
+            if (!localStorage.getItem("wonOnlineMatches_400")) {
+                Achievement.new(10);
+                localStorage.setItem("wonOnlineMatches_400", "true");
+            };
+            break;
+        case 500:
+            if (!localStorage.getItem("wonOnlineMatches_500")) {
+                Achievement.new(11);
+                localStorage.setItem("wonOnlineMatches_500", "true");
+            };
+            break;
+        case 5000:
+            if (!localStorage.getItem("wonOnlineMatches_5000")) {
+                Achievement.new(12);
+                localStorage.setItem("wonOnlineMatches_5000", "true");
+            };
+            break;
+    };
 };
 
 // Other player who loses gets -5 skill points
