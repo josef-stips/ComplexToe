@@ -11,8 +11,7 @@ treasureIcon.addEventListener('click', () => {
     if (localStorage.getItem('treasureIsAvailible') == "true") {
         openTreasure();
     } else {
-        treasureBoxTimerPopUp.style.display = 'flex';
-        DarkLayer.style.display = 'block';
+        DisplayPopUp_PopAnimation(treasureBoxTimerPopUp, "flex", true);
     };
 });
 
@@ -37,8 +36,7 @@ treasureIcon2.addEventListener('click', () => {
 
     treasureIcon2.style.animation = "none";
     if (OnlineMatchesWins < treasureOpenedOnWin + 5) {
-        DarkLayer.style.display = "block";
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         AlertText.textContent = `You need to win ${treasureOpenedOnWin + 5} online matches in total to unlock this treasure. You currently won ${OnlineMatchesWins}.`;
 
     } else {

@@ -89,7 +89,7 @@ XPJourneyBtn.addEventListener('click', () => {
         CheckIfUserCanGetReward();
 
     } else {
-        XP_Journey.style.display = "flex";
+        DisplayPopUp_PopAnimation(XP_Journey, "flex", true);
         DarkLayer.style.display = "block";
         XPJourneyMapOpen = true;
 
@@ -314,6 +314,6 @@ const Get_XPReward_Animation = (type, src, amount, element) => {
 
 // other events or things
 JourneyQuestionBtn.addEventListener('click', () => {
-    alertPopUp.style.display = "flex";
     AlertText.textContent = "You can earn XP from winning a game online or on the advanture map.";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 });

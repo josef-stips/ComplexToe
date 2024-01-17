@@ -21,7 +21,7 @@ socket.on('disconnect', reason => {
     console.log('reason: ' + reason);
 
     DarkLayer.style.display = "block";
-    alertPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "It looks like you're offline! Try to reconnect.";
     closeAlertPopUpBtn.style.display = "none";
     DarkLayer.style.zIndex = "93000";
@@ -31,7 +31,7 @@ socket.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
 
     DarkLayer.style.display = "block";
-    alertPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "It looks like you're offline! Try to reconnect.";
     closeAlertPopUpBtn.style.display = "none";
     DarkLayer.style.zIndex = "93000";
@@ -282,7 +282,7 @@ Lobby_startGame_btn.addEventListener('click', () => {
 
     } catch (error) {
         AlertText.textContent = "Uhm... Something went wrong.";
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
 });
 
@@ -417,6 +417,7 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
 
 // User leaves game on leave game btn event
 function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
+    running = false;
     // remove any pop up display
     CloseOnlinePopUps(true);
 
@@ -758,15 +759,14 @@ const EventListenerForXPlayer = (x) => {
                 if (RandomTextN >= 6) RandomTextN = -1;
 
                 OpenedPopUp_WhereAlertPopUpNeeded = true;
-                alertPopUp.style.display = "flex";
-                DarkLayer.style.display = "block";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             };
         });
 
 
     } catch (error) {
         AlertText.textContent = "Something went wrong. Is it your connection?";
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
 };
 
@@ -1313,8 +1313,7 @@ socket.on("RandomPlayerID_generated", id => {
 
 // online game chat button
 OnlineChat_btn.addEventListener('click', () => {
-    Chat_PopUp.style.display = "flex";
-    DarkLayer.style.display = "block";
+    DisplayPopUp_PopAnimation(Chat_PopUp, "flex", true);
 
     openedChat = true;
     recievedUnseenMessages = 0;

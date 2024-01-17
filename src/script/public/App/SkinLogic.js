@@ -5,7 +5,7 @@ storeIcon.addEventListener('click', () => {
     // set back to default
     if (localStorage.getItem('UserIcon')) {
         skinBigItem.textContent = localStorage.getItem('UserIcon');
-        skinShop.style.display = 'flex';
+        DisplayPopUp_PopAnimation(skinShop, "flex");
         RenderSkins();
 
     } else {

@@ -378,7 +378,7 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
         case 10: // user have to score 20 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 1 && eye_HP <= 2323230) { // Player won
+            if (score_Player1_numb >= 20 && eye_HP <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 3 || MaxAmountOfMovesCount <= 0) { // Bot won

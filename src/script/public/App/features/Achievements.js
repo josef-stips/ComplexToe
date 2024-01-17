@@ -175,7 +175,7 @@ class Achievements {
 
             listItem.addEventListener("click", () => {
                 AlertText.textContent = achievement.task;
-                alertPopUp.style.display = "flex";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                 OpenedPopUp_WhereAlertPopUpNeeded = true;
             });
 
@@ -418,7 +418,7 @@ Achievement.Init();
 AchievementsBtn.addEventListener("click", () => {
     XP_Journey.style.display = "none";
     Achievement.Init();
-    DisplayPopUp_PopAnimation(AchievementsPopUp);
+    DisplayPopUp_PopAnimation(AchievementsPopUp, "flex");
 });
 
 AchievementsCloseBtn.addEventListener("click", () => {

@@ -214,8 +214,7 @@ class NewLevel {
                 } catch (error) {
                     console.log(error);
                     AlertText.textContent = "Something went wrong!";
-                    DarkLayer.style.display = "block";
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     return false;
                 };
             };
@@ -281,7 +280,7 @@ class NewLevel {
                 console.log(error);
                 AlertText.textContent = "Levels could not be loaded! Something is wrong...";
                 DarkLayer.style.display = "block";
-                alertPopUp.style.display = "flex";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             };
         };
 
@@ -779,8 +778,7 @@ class NewLevel {
 
         } catch (error) {
             AlertText.textContent = "Something went wrong!";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     };
 
@@ -818,8 +816,7 @@ class NewLevel {
 
         } catch (error) {
             AlertText.textContent = "Something went wrong! Level could not be verified...";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     };
 };
@@ -842,20 +839,17 @@ const InitCreateLevelScene = () => {
                     NewCreativeLevel.Init();
 
                     AlertText.textContent = "Level is successfully published";
-                    alertPopUp.style.display = "flex";
-                    DarkLayer.style.display = "block";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                 });
             } catch (error) {
                 console.log(error);
                 AlertText.textContent = "Something went wrong! Level could not be published. Try it again later";
-                alertPopUp.style.display = "flex";
-                DarkLayer.style.display = "block";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             };
 
         } else if (NewCreativeLevel.selectedLevel[9] == 0) {
             AlertText.textContent = "You have to conquer the level to publish it";
-            alertPopUp.style.display = "flex";
-            DarkLayer.style.display = "block";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
 
@@ -869,14 +863,12 @@ const InitCreateLevelScene = () => {
                     NewCreativeLevel.Init();
 
                     AlertText.textContent = "Level is successfully unpublished";
-                    alertPopUp.style.display = "flex";
-                    DarkLayer.style.display = "block";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                 });
             } catch (error) {
                 console.log(error);
                 AlertText.textContent = "Something went wrong! Level could not be unpublished. Try it again later";
-                alertPopUp.style.display = "flex";
-                DarkLayer.style.display = "block";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             };
         };
     });
@@ -903,8 +895,7 @@ const InitCreateLevelScene = () => {
 
         if (NewCreativeLevel.selectedLevel == undefined) {
             AlertText.textContent = "select a level to edit";
-            alertPopUp.style.display = "flex";
-            DarkLayer.style.display = "block";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
         } else if (NewCreativeLevel.selectedLevel != undefined && NewCreativeLevel.selectedLevel[9] == 0) { // if user selected level and level is not published
             // User entered create level mode
@@ -917,8 +908,7 @@ const InitCreateLevelScene = () => {
 
         } else if (NewCreativeLevel.selectedLevel != undefined && NewCreativeLevel.selectedLevel[9] == 1) { // level is published, can't be edited
             AlertText.textContent = "You can't edit a level once it's published";
-            alertPopUp.style.display = "flex";
-            DarkLayer.style.display = "block";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
 
@@ -928,8 +918,7 @@ const InitCreateLevelScene = () => {
 
         } else {
             NewCreativeLevel.ActionAfterSaveOrNotSaveButton = "leave";
-            saveLevelWarning.style.display = "flex";
-            DarkLayer.style.display = "block";
+            DisplayPopUp_PopAnimation(saveLevelWarning, "flex", true);
         };
     });
 
@@ -940,8 +929,7 @@ const InitCreateLevelScene = () => {
 
         } else {
             NewCreativeLevel.ActionAfterSaveOrNotSaveButton = "list";
-            saveLevelWarning.style.display = "flex";
-            DarkLayer.style.display = "block";
+            DisplayPopUp_PopAnimation(saveLevelWarning, "flex", true);
         };
     });
 
@@ -951,8 +939,7 @@ const InitCreateLevelScene = () => {
 
     // Help Button
     CreateLevelHelpButton.addEventListener("click", () => {
-        CreateLevel_helpPopUp.style.display = "flex";
-        DarkLayer.style.display = "block";
+        DisplayPopUp_PopAnimation(CreateLevel_helpPopUp, "flex", true);
     });
 
     CreateLevel_HelpPopUpCloseBtn.addEventListener("click", () => {
@@ -966,8 +953,7 @@ const InitCreateLevelScene = () => {
         saveLevelWarning.style.display = "none";
         if (result == false) {
             AlertText.textContent = "Something went wrong!";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             console.log(result);
 
         } else {
@@ -1007,8 +993,7 @@ const InitCreateLevelScene = () => {
         if (result == false) {
             saveLevelWarning.style.display = "none";
             AlertText.textContent = "Something went wrong!";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             console.log(result);
         };
     });
@@ -1074,13 +1059,10 @@ const InitCreateLevelScene = () => {
     // remove level button
     RemoveLevelBtn.addEventListener("click", () => {
         if (NewCreativeLevel.selectedLevel != undefined) {
-            removeWarning.style.display = "flex";
-            DarkLayer.style.display = "block";
-
+            DisplayPopUp_PopAnimation(removeWarning, "flex", true);
         } else {
             AlertText.textContent = "Select a level to remove";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
 
@@ -1104,7 +1086,7 @@ const InitCreateLevelScene = () => {
         } catch (error) {
             console.log(error);
             AlertText.textContent = "something went wrong.";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
 
@@ -1117,26 +1099,21 @@ const InitCreateLevelScene = () => {
     PlayLevelBtn.addEventListener("click", () => {
         if (NewCreativeLevel.selectedLevel != undefined) {
             NewCreativeLevel.Save().then(() => {
-                ChooseBetweenModesPopUp.style.display = "flex";
-                DarkLayer.style.display = "block";
+                DisplayPopUp_PopAnimation(ChooseBetweenModesPopUp, "flex", true);
             });
 
         } else {
             AlertText.textContent = "Select a level to play";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
 
     PlayLevelBtn_ListBtn.addEventListener("click", () => {
         if (NewCreativeLevel.selectedLevel != undefined) {
-            ChooseBetweenModesPopUp.style.display = "flex";
-            DarkLayer.style.display = "block";
-
+            DisplayPopUp_PopAnimation(ChooseBetweenModesPopUp, "flex", true);
         } else {
             AlertText.textContent = "Select a level to play it";
-            DarkLayer.style.display = "block";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
 

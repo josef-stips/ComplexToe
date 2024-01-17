@@ -231,6 +231,10 @@ const CreateInnerField = (InnerField_Options, indexes, OriginIndex, from2MoveAhe
         TwoMoveAhead_InnerFieldData_Indexes = indexes;
         TwoMoveAhead_InnerFieldData_Options = NewOptions;
 
+        Object.keys(InnerFieldData_Indexes).map(Number).forEach(index => {
+            cells[index].style.backgroundColor = "#7fffd459";
+        });
+
         return NewOptions;
     };
 };
@@ -495,10 +499,10 @@ function KI_Action() {
             } else {
                 GenerateOriginWinConds().then(() => {
                     // short options so the worker has less work
-                    let opti = CreateInnerField([], {}, lastCellIndex_Clicked, true, 10);
-                    console.log("aidfhiasdofjdfjawü0gjawmijucnfpadhfpasuiodfjsfdfsdpfjdsfjskffjsdfsifsdiofjasdiofjsd ", options, opti);
+                    // let opti = CreateInnerField([], {}, lastCellIndex_Clicked, true, 10);
+                    // console.log("aidfhiasdofjdfjawü0gjawmijucnfpadhfpasuiodfjsfdfsdpfjdsfjskffjsdfsifsdiofjasdiofjsd ", options, opti);
                     // create big bitboards
-                    let bigboards = InitBigboards(opti); // 0: ki_board, 1: player_board, 2: blockages
+                    let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
                     // create big binary win conds
                     let BinaryWinConds = convertToBinary(WinConditions);
                     // check if player can win in 1 move 
@@ -506,7 +510,7 @@ function KI_Action() {
                     // check if ki can win in 2 moves or less
                     let worker = new Worker("./Game/worker/2MovesAhead.js");
                     // start worker
-                    worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, opti]);
+                    worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, options, Object.keys(TwoMoveAhead_InnerFieldData_Indexes).map(Number)]);
                     // worker finished
                     worker.onmessage = (worker_result) => {
                         worker.terminate();
@@ -902,23 +906,23 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
 
     GenerateOriginWinConds();
     // short options so the worker has less work
-    let opti = CreateInnerField([], {}, lastCellIndex_Clicked, true, 10);
-    console.log("aidfhiasdofjdfjawü0gjawmijucnfpadhfpasuiodfjsfdfsdpfjdsfjskffjsdfsifsdiofjasdiofjsd ", options, opti);
+    // let opti = CreateInnerField([], {}, lastCellIndex_Clicked, true, 10);
+    // console.log("aidfhiasdofjdfjawü0gjawmijucnfpadhfpasuiodfjsfdfsdpfjdsfjskffjsdfsifsdiofjasdiofjsd ", options, opti);
     // create big bitboards
-    let bigboards = InitBigboards(opti); // 0: ki_board, 1: player_board, 2: blockages
+    let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
     // create big binary win conds
     let BinaryWinConds = convertToBinary(WinConditions);
 
     // check if ki can win in 2 moves or less
     let worker = new Worker("./Game/worker/2MovesAhead.js");
     // start worker
-    worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, opti]);
+    worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, options, Object.keys(TwoMoveAhead_InnerFieldData_Indexes).map(Number)]);
 
     // calcualte. returns false or index to set
     worker.onmessage = (worker_result) => {
         worker.terminate();
         // says wether the player can win in 2 moves
-        let Calc_result = worker_result && getKeyByValue(TwoMoveAhead_InnerFieldData_Indexes, Number(worker_result.data));
+        let Calc_result = worker_result.data /*&& getKeyByValue(TwoMoveAhead_InnerFieldData_Indexes, Number(worker_result.data))*/ ;
         console.log(Calc_result, fromAttack, fromKI_CheckPlayer);
 
         if (Calc_result != false) {

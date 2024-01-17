@@ -523,9 +523,10 @@ function getRandomIndexes(array, count) {
 };
 
 // pop up animation
-const DisplayPopUp_PopAnimation = (pop_up) => {
-    pop_up.style.display = "flex";
-    pop_up.style.animation = "popUp-POP 0.08s ease-in-out forwards";
+const DisplayPopUp_PopAnimation = (pop_up, type, darkLayer) => {
+    pop_up.style.display = type;
+    pop_up.style.animation = "popUp-POP 0.2s ease-in-out forwards";
+    darkLayer && (DarkLayer.style.display = "block");
 };
 
 // important data
@@ -801,7 +802,7 @@ const RequestFriendsListFromDatabase = async() => {
         span.className = "ClickTextTo_SearchPlayersPopUp";
         span.addEventListener('click', () => {
             FriendsListPopUp.style.display = "none";
-            SearchPlayerPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(SearchPlayerPopUp, "flex", true);
         });
 
         FriendsListInnerList.textContent = null;
@@ -819,23 +820,23 @@ const RequestFriendsListFromDatabase = async() => {
 
 // about social activities
 const OpenGetMessagesPopUp = () => { // open user messages pop up
-    MessagesPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(MessagesPopUp, "flex", true);
 };
 
 const OpenFriendsListPopUp = async() => { // "try" to open friends list
     // try to open friendslist
     try {
         await RequestFriendsListFromDatabase();
-        FriendsListPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(FriendsListPopUp, "flex", true);
 
     } catch (error) {
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         AlertText.textContent = "something went wrong. Is it your connection?";
     };
 };
 
 const OpenSearchUserPopUp = () => { // open search pop up to search for users
-    SearchPlayerPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(SearchPlayerPopUp, "flex", true);
     FoundPlayer_List.textContent = "Do you even have any real friends?";
 };
 
@@ -845,17 +846,17 @@ const AddFriend_OpenPopUp = () => {
         socket.emit("SendFriendRequest", localStorage.getItem("PlayerID"), UserID_OfCurrentVisitedProfile, cb => {
             if (cb == false) {
                 AlertText.textContent = `You already sended a request to ${UserName_OfCurrentVisitedProfile}! Wait for his answer.`;
-                alertPopUp.style.display = "flex";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             } else if (cb == "FriendsNow") {
                 AlertText.textContent = `${UserName_OfCurrentVisitedProfile} also sended you a friend request! You are friends with him now.`;
-                alertPopUp.style.display = "flex";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             };
         });
 
     } catch (error) {
         console.log(error)
         AlertText.textContent = "Something went wrong! Is it your connection? hihihi...";
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
 };
 
@@ -1074,7 +1075,7 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
         console.log("error: ", error);
 
         DarkLayer.style.display = "block";
-        alertPopUp.style.display = "flex"
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         AlertText.textContent = "It looks like you're offline! Try to reconnect.";
         DarkLayer.style.zIndex = "93000";
 
@@ -1152,7 +1153,7 @@ function checkLoadingProgress() {
         console.log("error: " + error)
 
         DarkLayer.style.display = "block";
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         AlertText.textContent = "It looks like you're offline! Try to reconnect.";
         DarkLayer.style.zIndex = "93000";
 
@@ -1621,7 +1622,7 @@ Allbtns.forEach((btn) => {
             if (!localStorage.getItem("UserName")) {
                 AlertText.textContent = "Create an account to play online";
                 DarkLayer.style.display = "block";
-                alertPopUp.style.display = "flex";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
             } else {
                 DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
@@ -1645,7 +1646,7 @@ const CreateLevelScene_CheckIn = () => {
     if (!localStorage.getItem("UserName")) {
         AlertText.textContent = "Create an account to create online level";
         DarkLayer.style.display = "block";
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
     } else {
         // audio
@@ -1798,29 +1799,27 @@ settingsCloseBtn.addEventListener('click', () => {
 });
 
 headerSettBtn.addEventListener('click', () => {
-    settingsWindow.style.display = 'block';
-    DarkLayer.style.display = 'block';
+    DisplayPopUp_PopAnimation(settingsWindow, "block", true);
 });
 
 // settings important buttons: mail and credits
 Settings_MailBtn.addEventListener('click', () => {
     if (localStorage.getItem("UserName")) {
-        MailPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(MailPopUp, "flex", true);
         settingsWindow.style.display = "none";
-        DarkLayer.style.display = "block";
 
         localStorage.getItem("UserName") ? MailInput_Name.value = localStorage.getItem("UserName") : MailInput_Name.value = "";
         MailInput_Message.value = "";
         MailInput_Name.focus();
 
     } else {
-        alertPopUp.style.display = "flex"
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         AlertText.textContent = "Create an user account first";
     };
 });
 
 Settings_CreditsBtn.addEventListener('click', () => {
-    Credits.style.display = "flex";
+    DisplayPopUp_PopAnimation(Credits, "flex");
 });
 
 Credits_closeBtn.addEventListener("click", () => {
@@ -1851,22 +1850,19 @@ EnterGame();
 
 function click_locked_25() {
     locked_25x25();
-    alertPopUp.style.display = "flex";
-    DarkLayer.style.display = "block";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "You need to win 5 online matches to unlock this field";
 };
 
 function click_locked_30() {
     locked_30x30();
-    DarkLayer.style.display = "block";
-    alertPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "You need to win 10 online matches to unlock this field";
 };
 
 function click_locked_40() {
     locked_40x40();
-    DarkLayer.style.display = "block";
-    alertPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "You need to win 30 online matches to unlock this field";
 };
 
@@ -1916,8 +1912,7 @@ function Click_NxN(f) {
 
     if (curr_mode == GameMode[1].opponent) { // KI Mode
 
-        YourNamePopUp_KI_Mode.style.display = 'flex';
-        DarkLayer.style.display = 'block';
+        DisplayPopUp_PopAnimation(YourNamePopUp_KI_Mode, "flex", true);
         YourName_Input_KI_mode.value = "";
         Your_IconInput.value = "";
         Your_IconInput.style.color = localStorage.getItem('userInfoColor');
@@ -1952,8 +1947,7 @@ function Click_NxN(f) {
 
 const InitGameDataForPopUp = (DisplayIniPopUp) => {
     // Initialize Inputs from pop up
-    DarkLayer.style.display = 'block';
-    (DisplayIniPopUp == undefined) ? OnlineGame_iniPopUp.style.display = 'flex': SetPlayerNamesPopUp.style.display = 'flex';
+    (DisplayIniPopUp == undefined) ? DisplayPopUp_PopAnimation(OnlineGame_iniPopUp, "flex", true): DisplayPopUp_PopAnimation(SetPlayerNamesPopUp, "flex", true);
     Player2_NameInput.style.display = 'none';
     Player2_IconInput.style.display = 'none';
     Player1_NameInput.style.height = '50%';
@@ -2005,8 +1999,7 @@ const UserClicksNxNDefaultSettings = (readonly) => {
 };
 
 const UserClicksOfflineModeCard = (target) => {
-    SetPlayerNamesPopUp.style.display = 'flex';
-    DarkLayer.style.display = 'block';
+    DisplayPopUp_PopAnimation(SetPlayerNamesPopUp, "flex", true);
     Player2_NameInput.style.display = 'block';
     Player2_IconInput.style.display = 'block';
     Player1_IconInput.style.display = 'block';
@@ -2408,7 +2401,7 @@ YourName_KI_ModeCloseBtn.addEventListener('click', () => {
 // Game Info PopUp stuff
 gameInfo_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'flex';
-    GameInfoPopUp.style.display = 'flex';
+    DisplayPopUp_PopAnimation(GameInfoPopUp, "flex", true);
     GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
     // not in advanture mode
@@ -2725,7 +2718,7 @@ function Set_Light_Dark_Mode(from) {
     //         settDarkMode.setAttribute("marked", "true");
     //     };
     // };
-    alertPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     DarkLayer.style.display = "block";
     AlertText.textContent = "Do you really wanted to turn off the dark mode?!";
 };
@@ -2806,7 +2799,7 @@ function setUpOnlineGame(from) {
         };
 
     } else if (from == 'enter') {
-        OnlineGame_CodeName_PopUp.style.display = 'flex';
+        DisplayPopUp_PopAnimation(OnlineGame_CodeName_PopUp, "flex", true);
         // bug fix
         EnterGameCode_Input.value = null;
         OnlineGameLobby_alertText.style.display = 'none';
@@ -3034,9 +3027,8 @@ const AdvantureModeLevelIntro = () => {
 // user wants to open his own user pop-up
 const OpenOwnUserProfile = () => {
     OpenedPopUp_WhereAlertPopUpNeeded = true;
+    DisplayPopUp_PopAnimation(userInfoPopUp, "flex", true);
 
-    DarkLayer.style.display = 'block';
-    userInfoPopUp.style.display = 'flex';
     userInfoOnlineMatchesWon.textContent = JSON.parse(localStorage.getItem('onlineMatches-won'));
 
     if (localStorage.getItem('UserIcon') != null) {
@@ -3166,12 +3158,12 @@ userInfoCloseBtn.addEventListener('click', () => {
 });
 
 editUserProfileBtn.addEventListener('click', () => {
-    UserGivesData_PopUp_name.style.display = "flex";
+    DisplayPopUp_PopAnimation(UserGivesData_PopUp_name, "flex");
     UserGivesData_NameInput.focus();
 });
 
 CreateOnlineProfileBtn.addEventListener('click', () => {
-    UserGivesData_PopUp_name.style.display = "flex";
+    DisplayPopUp_PopAnimation(UserGivesData_PopUp_name, "flex");
     userInfoPopUp.style.display = "none";
     UserGivesData_NameInput.focus();
 });
@@ -3191,7 +3183,7 @@ UserGivesData_NameInput.addEventListener('keydown', e => {
 
         if (UserGivesData_NameInput.value != "" && UserGivesData_NameInput.value != "false") {
             UserGivesData_PopUp_name.style.display = "none";
-            UserGivesData_PopUp_icon.style.display = "flex";
+            DisplayPopUp_PopAnimation(UserGivesData_PopUp_icon, "flex");
             UserGivesData_IconInput.focus();
 
             userName = UserGivesData_NameInput.value;
@@ -3395,7 +3387,7 @@ function ItemAnimation(item, destination_position, fromMap, mapItem, fromSecondT
 XBtn.addEventListener('click', () => {
     if (localStorage.getItem('ItemX') >= 1) {
         DarkLayer.style.display = 'block';
-        tradeX_PopUp.style.display = 'flex';
+        DisplayPopUp_PopAnimation(tradeX_PopUp, "flex", true);
     };
 });
 
@@ -3420,7 +3412,7 @@ tradeX_ConfirmBtn.addEventListener('click', () => {
     DarkLayer.style.display = 'none';
     tradeX_PopUp.style.display = 'none';
 
-    // for Xp Journey
+    // for Xp Journey                          
     CheckIfUserCanGetReward();
 });
 
@@ -3430,7 +3422,7 @@ closeAlertPopUpBtn.addEventListener('click', () => {
     settingsWindow.style.display = 'none';
 
     // Don't disable dark background layer if player is on other pop up
-    if (!XPJourneyMapOpen && UserID_OfCurrentVisitedProfile == undefined && !OpenedPopUp_WhereAlertPopUpNeeded) {
+    if (UserID_OfCurrentVisitedProfile == undefined && !OpenedPopUp_WhereAlertPopUpNeeded) {
         DarkLayer.style.display = 'none';
     };
 
@@ -3652,8 +3644,8 @@ socket.on("Updated_AllowedPatterns", patternsArray => {
 });
 
 GameInfoLobby_btn.addEventListener('click', () => {
-    Lobby_GameInfo_PopUp.style.display = "flex";
-})
+    DisplayPopUp_PopAnimation(Lobby_GameInfo_PopUp, "flex", true);
+});
 
 CloseBtn_LobbyInfoPopUp.addEventListener('click', () => {
     Lobby_GameInfo_PopUp.style.display = "none";
@@ -3737,7 +3729,7 @@ async function SendMail(PlayerName, PlayerID, mailName, message) {
         })
         .then();
 
-    alertPopUp.style.display = "flex"
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "Email was successfully send to the developer. (He will probably never read it)";
     MailPopUp.style.display = "none";
 };
@@ -3766,7 +3758,7 @@ UserQuoteSubmitBtn.addEventListener('click', () => {
             socket.emit("UserSubmitsNewQuote", localStorage.getItem("UserQuote"), localStorage.getItem("PlayerID"));
 
         } catch (error) {
-            alertPopUp.style.display = "flex"
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             AlertText.textContent = "something gone wrong. Is it your connection?"
         };
     };

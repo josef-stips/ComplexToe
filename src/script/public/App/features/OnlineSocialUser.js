@@ -52,7 +52,7 @@ const RequestPlayer = () => {
 
         } catch (error) { // something went wrong with server request
             AlertText.textContent = "Ups! Something went wrong..";
-            alertPopUp.style.display = "flex";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     };
 };
@@ -87,7 +87,7 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
         console.log(error);
     };
 
-    userInfoPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(userInfoPopUp, "flex", true);
     userInfoPopUp.style.zIndex = "10005";
 
     UserID_OfCurrentVisitedProfile = player_id;
@@ -367,7 +367,7 @@ const DisplayFriendRequests = async(FriendRequests) => {
                         socket.emit("AcceptFriendRequest", id, localStorage.getItem("PlayerID"), cb => {
                             if (cb) {
                                 AlertText.textContent = `${name} is now your friend!`;
-                                alertPopUp.style.display = "flex";
+                                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
                                 v.remove();
 
@@ -387,7 +387,7 @@ const DisplayFriendRequests = async(FriendRequests) => {
 
                     } catch (error) {
                         AlertText.textContent = "Something went wrong...";
-                        alertPopUp.style.display = "flex";
+                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     };
                 });
 
@@ -416,7 +416,7 @@ const DisplayFriendRequests = async(FriendRequests) => {
 
                     } catch (error) {
                         AlertText.textContent = "Something went wrong...";
-                        alertPopUp.style.display = "block";
+                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     };
                 });
 
@@ -501,7 +501,7 @@ const CheckForMessages = () => {
 
                     // Display text message on click of the small element
                     div.addEventListener('click', (el) => {
-                        alertPopUp.style.display = "flex";
+                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                         AlertText.textContent = message[1];
 
                         // delete element from database
@@ -573,13 +573,13 @@ SendMessageToPlayer_Btn.addEventListener('click', () => {
                 if (cb) {
                     SendMessagePopUp.style.display = "none";
                     AlertText.textContent = `The message was successfully send to your friend ${cb}`;
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                 };
             });
         };
 
     } catch (error) {
         AlertText.textContent = "Something went wrong. Is it your connection?"
-        alertPopUp.style.display = "flex";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
 });

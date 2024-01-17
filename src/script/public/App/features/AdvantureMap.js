@@ -237,8 +237,7 @@ MapLevelBtns.forEach((item, k) => {
 
         // Check if level is unlocked
         if (unlocked_mapLevels[k + 1][0]) {
-            DarkLayer.style.display = 'block';
-            mapLevelOverview.style.display = 'flex';
+            DisplayPopUp_PopAnimation(mapLevelOverview, "flex", true);
             mapLevelTitle.textContent = unlocked_mapLevels[k + 1][2];
 
             // for better user experience
@@ -430,8 +429,7 @@ startMapLevelBtn.addEventListener('click', () => {
     if (MapLevel_IconInput.value != "" && MapLevel_NameInput.value != "") {
         if (current_selected_level == 10 && localStorage.getItem("completed_mapLevel10") == "true") {
             AlertText.textContent = "You cannot play the final fight twice. Oculus Irae left the advanture map to prepare for the last fight.";
-            alertPopUp.style.display = "flex";
-            DarkLayer.style.display = "block";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
             OpenedPopUp_WhereAlertPopUpNeeded = true;
         } else {
             StartAdvantureLevelDialog(current_selected_level);
@@ -578,7 +576,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 10 keys to try this level";
                 };
@@ -590,7 +588,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 15 keys, 400 ores and 200 minerals to try this level";
                 };
@@ -602,7 +600,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 20 keys, 1000 ores and 400 minerals to try this level";
                 };
@@ -614,7 +612,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 25 keys, 1200 ores, 400 minerals and 4 diamonds to try this level";
                 };
@@ -626,7 +624,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 30 keys, 1800 ores, 30 diamonds and 1 asteroid to try this level";
                 };
@@ -638,7 +636,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 40 keys, 2500 ores, 2000 minerals and 1 asteroid to try this level";
                 };
@@ -650,7 +648,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 45 keys, 4000 ores, 5 encrypted writings and 3 asteroids to try this level";
                 };
@@ -662,7 +660,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 50 keys, 5 encrypted writings and 3 asteroids to try this level";
                 };
@@ -675,7 +673,7 @@ function UserFulfill_RequirementsForLevel() {
                     return true;
 
                 } else {
-                    alertPopUp.style.display = "flex";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
                     AlertText.textContent = "You need 55 keys, 7 encrypted writings, 8000 ores, 15 asteroids and 1 abandoned eye to try this level";
                 };

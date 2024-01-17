@@ -6,8 +6,7 @@ let Bitboard_spells = BigInt(0);
 // user clicks on the spell icon
 AdvantureMode_SpellDisplay.addEventListener('click', () => {
     if (SpellsInStore > 0 && currentPlayer == PlayerData[1].PlayerForm && !PlayerIsAllowedToSetTwoTimes) { // if it is player's turn and he has at least 1 spell in storage
-        UseSpell_PopUp.style.display = "flex";
-        DarkLayer.style.display = "block";
+        DisplayPopUp_PopAnimation(UseSpell_PopUp, "flex", true);
     };
 });
 
@@ -19,7 +18,7 @@ UseSpell_CloseBtn.addEventListener('click', () => {
 
 UseSpell_Qbtn.addEventListener('click', () => {
     UseSpell_PopUp.style.display = "none";
-    alertPopUp.style.display = "flex";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "You have a question?";
 });
 

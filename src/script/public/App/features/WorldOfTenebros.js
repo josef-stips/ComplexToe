@@ -53,6 +53,5 @@ secret_world.check();
 
 secret_map_btn.addEventListener("click", () => {
     AlertText.textContent = "Coming soon...";
-    alertPopUp.style.display = "flex";
-    DarkLayer.style.display = "block"
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 });

@@ -5,6 +5,7 @@ onmessage = (data) => {
     let BinaryWinConds = data.data[3];
     let PlayerData = data.data[4];
     let options = data.data[5];
+    let BigInnerFieldIndexes = data.data[6];
     // console.log(for_ki, WinConditions, bigboards, BinaryWinConds, PlayerData, options);
     console.log(options)
 
@@ -91,6 +92,8 @@ onmessage = (data) => {
                 ((bigboards[1] >> i) & BigInt(1)) === BigInt(0) &&
                 ((bigboards[2] >> i) & BigInt(1)) === BigInt(0)
             ) {
+                // if (!BigInnerFieldIndexes.includes(i)) continue;
+
                 // Setze für den Spieler
                 board |= BigInt(1) << i;
 
