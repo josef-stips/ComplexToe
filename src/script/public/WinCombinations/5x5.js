@@ -416,17 +416,20 @@ function W_4_for5(n) {
     };
 };
 // Execute all algorithms
-function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
+function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns#
+    xCell_Amount = 5;
+    yCell_Amount = 5;
+
     all_patt.forEach(patt => {
         switch (patt) {
             case "hor":
-                horizontale_Linie_for5(5 * 5);
+                horizontale_Linie_for5(xCell_Amount * yCell_Amount);
                 break;
             case "vert":
                 vertikale_Linie_for5(yCell_Amount * xCell_Amount);
                 break;
             case "dia":
-                diagonale_Linie_for5(5 * 5);
+                diagonale_Linie_for5(xCell_Amount * yCell_Amount);
                 break;
             case "dia2":
                 diagonale_Linie2_for5(yCell_Amount * xCell_Amount);
@@ -459,7 +462,7 @@ function Create_5x5_WinCombis(all_patt) { // all_patt = allowed patterns
                 stern_for5(yCell_Amount * xCell_Amount);
                 break;
             case "diamond":
-                diagonales_viereck_for5(5 * 5);
+                diagonales_viereck_for5(xCell_Amount * yCell_Amount);
                 break;
             case "branch1":
                 zweig_unten_for5(yCell_Amount * xCell_Amount);

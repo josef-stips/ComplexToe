@@ -315,5 +315,6 @@ const Get_XPReward_Animation = (type, src, amount, element) => {
 // other events or things
 JourneyQuestionBtn.addEventListener('click', () => {
     AlertText.textContent = "You can earn XP from winning a game online or on the advanture map.";
+    OpenedPopUp_WhereAlertPopUpNeeded = true;
     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 });

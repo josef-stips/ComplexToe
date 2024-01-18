@@ -6091,7 +6091,6 @@ label h3 {
 /* achievements pop up */
 
 .AchievementsPopUp {
-    transform: scale(0);
     width: 60%;
     height: 60%;
     position: absolute;
@@ -6654,10 +6653,8 @@ label h3 {
 @keyframes popUp-POP {
     from {
         transform: scale(0);
-        display: none;
     }
     to {
-        display: flex;
         transform: scale(1);
     }
 }

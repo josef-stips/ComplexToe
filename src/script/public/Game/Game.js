@@ -92,6 +92,10 @@ let showBGColor = true;
 // boss class
 let current_level_boss = null;
 
+// The whole algorithm switches between different board sizes and win conditions
+// to prevent issues initialize an origin board_size 
+let board_size;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves) {
@@ -113,15 +117,19 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     current_level_boss = null;
 
     // make max amount of moves global availible if it exists
-    maxAmoOfMoves != undefined ? MaxAmountOfMovesCount = maxAmoOfMoves : MaxAmountOfMovesCount = MaxAmountOfMovesCount;
+    maxAmoOfMoves != undefined ? MaxAmountOfMovesCount = maxAmoOfMoves : MaxAmountOfMovesCount = Infinity;
 
     // The reqired amount to win a game (optional in normal games and normal in advanture mode)
     // console.log(required_amount_to_win);
     !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
+    console.log(Fields, fieldIndex)
+
     // set up x and y coordinate
-    xCell_Amount = Fields[fieldIndex].xyCellAmount;
-    yCell_Amount = Fields[fieldIndex].xyCellAmount;
+    xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+    yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+
+    board_size = xCell_Amount;
 
     // reset score
     score_Player1_numb = 0;

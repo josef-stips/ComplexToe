@@ -348,7 +348,9 @@ function W_4(n) {
 
 // Execute all algorithms
 function Create_10x10_WinCombis(all_patt) { // all_patt = allowed patterns
-    console.log(all_patt)
+    xCell_Amount = 10;
+    yCell_Amount = 10;
+
     all_patt.forEach(patt => {
         switch (patt) {
             case "hor":

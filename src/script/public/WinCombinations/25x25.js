@@ -338,6 +338,10 @@ function W_4_for25(n) {
 
 // Execute all algorithms
 function Create_25x25_WinCombis(all_patt) { // all_patt = allowed patterns
+    xCell_Amount = 25;
+    yCell_Amount = 25;
+    allPatt_KIMode_Copy = all_patt
+
     all_patt.forEach(patt => {
         switch (patt) {
             case "hor":

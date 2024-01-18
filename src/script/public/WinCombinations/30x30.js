@@ -339,6 +339,10 @@ function W_4_for30(n) {
 
 // Execute all algorithms
 function Create_30x30_WinCombis(all_patt) { // all_patt = allowed patterns
+    xCell_Amount = 30;
+    yCell_Amount = 30;
+    allPatt_KIMode_Copy = all_patt
+
     all_patt.forEach(patt => {
         switch (patt) {
             case "hor":

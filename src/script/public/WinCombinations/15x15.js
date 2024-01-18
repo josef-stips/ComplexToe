@@ -338,7 +338,9 @@ function W_4_for15(n) {
 
 // Execute all algorithms
 function Create_15x15_WinCombis(all_patt) { // all_patt = allowed patterns
-    console.log(all_patt)
+    xCell_Amount = 15;
+    yCell_Amount = 15;
+
     all_patt.forEach(patt => {
         switch (patt) {
             case "hor":

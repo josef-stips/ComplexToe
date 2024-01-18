@@ -338,6 +338,9 @@ function W_4_for40(n) {
 
 // Execute all algorithms
 function Create_40x40_WinCombis(all_patt) { // all_patt = allowed patterns
+    xCell_Amount = 40;
+    yCell_Amount = 40;
+
     all_patt.forEach(patt => {
         switch (patt) {
             case "hor":

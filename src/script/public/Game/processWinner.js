@@ -276,7 +276,7 @@ function processResult_AdvantureMode(WinCombination) {
     // in advanture mode there are special win conditions for each level (10 levels)
     switch (current_selected_level) {
         case 1: // user have to score 5 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 5) { // Player won
+            if (score_Player1_numb >= 3) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -629,9 +629,12 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 };
 
 // call Ultimate Game Win Function
-function Call_UltimateWin(WinCombination, UserGivesUp, AdvantureMode_KI_pointsToWin) {
+function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
     CheckmateWarnText.style.display = "none" // just small bug fix nothing special
-    removeAccessToAnything();
+
+    if (KI_won_points != undefined) {
+        score_Player2_numb = Infinity;
+    };
 
     if (WinCombination == undefined) {
         console.log("The win combi is undefined")
@@ -669,16 +672,17 @@ function Call_UltimateWin(WinCombination, UserGivesUp, AdvantureMode_KI_pointsTo
 // ultimate game win start animation
 const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
     setTimeout(() => {
+
         cellGrid.classList.add('Invisible');
         statusText.classList.add('Invisible');
         GameFieldHeaderUnderBody.style.display = 'none';
         statusText.style.display = 'block';
 
         // restart Game counter
-        let i = 5;
+        let i = 4;
         var counter = setInterval(() => {
             if (!stopStatusTextInterval) {
-                i != 5 && (statusText.style.opacity = "1");
+                i != 4 && (statusText.style.opacity = "1");
                 // in Advanture mode or in online mode
                 if (inAdvantureMode || curr_mode == GameMode[2].opponent) {
                     if (PlayingInCreatedLevel) { // Player played user created level
@@ -769,7 +773,7 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
                 counter = null;
             };
         }, 1000);
-    }, 3000);
+    }, 2000);
 };
 
 // first player did ultimate win
@@ -900,38 +904,44 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
         return;
 
     } else {
-        // basic stuff
-        stopStatusTextInterval = false;
-        cellGrid.style.opacity = "0";
-        statusText.style.opacity = "0";
-        UltimateWinTextArea.style.opacity = "0";
-
-        killPlayerClocks(true);
-        clearInterval(gameCounter);
-        gameCounter = null;
-
-        score_Player1_numb = 0;
-        score_Player2_numb = 0;
-
-        UltimateGameWinFirstAnimation(player1_won, player2_won)
-
         setTimeout(() => {
-            cellGrid.style.display = 'none';
-            UltimateWinTextArea.style.display = 'flex';
-            if (player1_won && !player2_won) { // player 1 won (user)
-                FirstPlayerUltimateWin(player1_won, player2_won);
+            // basic stuff
+            stopStatusTextInterval = false;
+            cellGrid.style.opacity = "0";
+            statusText.style.opacity = "0";
+            UltimateWinTextArea.style.opacity = "0";
 
-            } else if (player2_won && !player1_won) { // player 2 won (user)
-                SecondPlayerUltimateWin(player1_won, player2_won);
+            killPlayerClocks(true);
+            clearInterval(gameCounter);
+            gameCounter = null;
 
-            } else if (player1_won && player2_won) { // GG
-                GG_UltimateWin(player1_won, player2_won);
-            };
-        }, 2000);
+            score_Player1_numb = 0;
+            score_Player2_numb = 0;
+
+            // so the user can't leave while win animation
+            leaveGame_btn.removeEventListener('click', UserleavesGame);
+            leaveGame_btn.style.color = '#56565659';
+
+            UltimateGameWinFirstAnimation(player1_won, player2_won)
+
+            setTimeout(() => {
+                cellGrid.style.display = 'none';
+                UltimateWinTextArea.style.display = 'flex';
+                if (player1_won && !player2_won) { // player 1 won (user)
+                    FirstPlayerUltimateWin(player1_won, player2_won);
+
+                } else if (player2_won && !player1_won) { // player 2 won (user)
+                    SecondPlayerUltimateWin(player1_won, player2_won);
+
+                } else if (player1_won && player2_won) { // GG
+                    GG_UltimateWin(player1_won, player2_won);
+                };
+            }, 1000);
+        }, 1000);
     };
 };
 
-// player 1 won online game
+// player 1 won online gamef
 const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
     // Display win text in the proper way
     if (personal_GameData.role == 'admin') {

@@ -525,7 +525,7 @@ function getRandomIndexes(array, count) {
 // pop up animation
 const DisplayPopUp_PopAnimation = (pop_up, type, darkLayer) => {
     pop_up.style.display = type;
-    pop_up.style.animation = "popUp-POP 0.2s ease-in-out forwards";
+    pop_up.style.animation = "popUp-POP 0.2s ease-in-out";
     darkLayer && (DarkLayer.style.display = "block");
 };
 

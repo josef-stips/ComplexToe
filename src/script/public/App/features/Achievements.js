@@ -418,7 +418,7 @@ Achievement.Init();
 AchievementsBtn.addEventListener("click", () => {
     XP_Journey.style.display = "none";
     Achievement.Init();
-    DisplayPopUp_PopAnimation(AchievementsPopUp, "flex");
+    DisplayPopUp_PopAnimation(AchievementsPopUp, "flex", true);
 });
 
 AchievementsCloseBtn.addEventListener("click", () => {

@@ -3,28 +3,28 @@
 // 4: dificulty in procent 0-100, 5: field size 6: font-awesome-icon, 7: allowed,patterns, 8: speech bubble text, 9: required amount of points to win, 10: Inner Game Mode,
 // 11: Boss true or false, 12: requirements, 13: maximal amount of moves
 let mapLevels = {
-    1: [true, 0, "The beginning of agony", 20, 20, "fa-solid fa-skull", ["hor", "vert", "dia"
+    1: [true, 0, "The beginning of agony", 20, 20, "fa-solid fa-skull", ["diamond", "dia"
             /*, "dia2", "L1", "L2", "L3", "L4",
                                 "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"*/
         ],
         ["Here begins the journey to become king and defeat your greatest enemy. Do you really think you will survive this?",
-            "To conquer this level you have to score 5 points against the unknown."
-        ], 5, InnerGameModes[1], false, {},
-        40
+            "To conquer this level you have to score 2 points against the unknown."
+        ], 2, InnerGameModes[1], false, {},
+        20
     ], // level 1 is unlocked by default
-    2: [false, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["hor", "vert", "diamond"],
+    2: [true, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["dia2", "W3"],
         ["Congrats on winning the first level in this deadly journey. But this is still only the beginning...",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
         ], 7, InnerGameModes[3], false, { 'keys': 10 },
-        70
+        30
     ],
-    3: [false, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["L1", "L2", "diamond"],
+    3: [true, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["L1", "L2"],
         ["With every level it gets more serious now. Keep your eyes open!",
-            "To conquer this level you have to score 8 points against the unknown. The unknown can beat you in less moves."
-        ], 8, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
-        200
+            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
+        ], 7, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
+        30
     ],
-    4: [false, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["W1", "W2", "branch1", "diamond"],
+    4: [true, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["diamond"],
         ["You entered the really dangerous side of this journey now. Will you survive?",
             "To conquer this level you have to score 10 points against the unknown and defeat Oculum Solis. The unknown can beat you in less moves."
         ], 10, InnerGameModes[2], true, { 'keys': 20, 'ores': 1000, 'minerals': 400 },

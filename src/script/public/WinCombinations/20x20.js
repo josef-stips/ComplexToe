@@ -338,9 +338,8 @@ function W_4_for20(n) {
 
 // Execute all algorithms
 function Create_20x20_WinCombis(all_patt) { // all_patt = allowed patterns
-    // console.log(all_patt)
-
-    // Create_5x5_WinCombis(all_patt);
+    xCell_Amount = 20;
+    yCell_Amount = 20;
     allPatt_KIMode_Copy = all_patt
 
     all_patt.forEach(patt => {

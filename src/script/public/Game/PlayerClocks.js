@@ -56,7 +56,9 @@ function removeAccessToAnything() {
         cell.style.cursor = "default";
     });
 
-    if (player3_can_set) {
+    console.log(player3_can_set);
+
+    if (player3_can_set && !inAdvantureMode) {
         leaveGame_btn.addEventListener('click', UserleavesGame);
         restartBtn.addEventListener('click', restartGame);
         restartBtn.style.color = 'white';
