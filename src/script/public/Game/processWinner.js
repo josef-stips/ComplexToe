@@ -378,7 +378,7 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
         case 9:
-            if (score_Player1_numb >= points_to_win && sun_HP <= 0) { // Player won
+            if (score_Player1_numb >= points_to_win && current_level_boss.hp <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -389,7 +389,7 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
         case 10:
-            if (score_Player1_numb >= points_to_win && eye_HP <= 0) { // Player won
+            if (score_Player1_numb >= points_to_win && current_level_boss.hp <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 3 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -542,26 +542,7 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
 };
 
 // check and return wether the player beat the boss
-const advantureMap_beatBoss = () => {
-    switch (current_selected_level) {
-        case 4:
-            if (current_level_boss.hp <= 0) {
-                return true;
-            }
-            return false;
-        case 9:
-            if (sun_HP <= 0) {
-                return true;
-            }
-            return false;
-        case 10:
-            if (eye_HP <= 0) {
-                return true;
-            } else return false;
-        default:
-            return true;
-    };
-};
+const advantureMap_beatBoss = () => { return (current_level_boss.hp <= 0) ? true : false };
 
 // choose sub winner
 function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points) {
@@ -823,7 +804,7 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
     if (inAdvantureMode || curr_mode == GameMode[1].opponent) {
         // if user beat level 10 - boss level
         if (current_selected_level == 10) {
-            UltimateGameWinFirstAnimation("You have conquered the evil")
+            UltimateWinAnimation("You have conquered the evil");
 
             setTimeout(() => {
                 UltimateWinTextArea.style.opacity = "1";
@@ -1089,7 +1070,7 @@ function setNew_SkillPoints(plus) {
         ELO_Points_display.classList.add('ELO_ani');
 
         // sound
-        playBtn_Audio_2();
+        // playBtn_Audio_2();
 
         // logic
         ELO_point++;
@@ -1199,7 +1180,7 @@ function minus_SkillPoints(minus) {
         ELO_Points_display.classList.add('ELO_ani');
 
         // sound
-        playBtn_Audio_2();
+        // playBtn_Audio_2();
 
         // logic
         ELO_point--;

@@ -1322,7 +1322,7 @@ const NewWinCombisDuringGame = () => {
                     GameAnimation("New Winning Combinations!");
                 }
                 if (score_Player1_numb == 18) {
-                    allowedPatterns = ["W4", "W2"];
+                    allowedPatterns = ["W4", "W2", "diamond"];
                     GameAnimation("New Winning Combinations!");
                 };
                 break;

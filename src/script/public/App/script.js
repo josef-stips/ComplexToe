@@ -3024,6 +3024,7 @@ const AdvantureModeLevelIntro = () => {
 
         // items
         UserFoundItems();
+        CheckIfUserCanGetReward();
     };
 };
 

@@ -152,7 +152,7 @@ class Sun extends Boss {
 
 class Eye extends Boss {
     constructor() {
-        super("./assets/game/warlock-eye.svg", 70, "big_shoot", null, null, 8000);
+        super("./assets/game/warlock-eye.svg", 80, "big_shoot", null, null, 8000);
     };
 };
 

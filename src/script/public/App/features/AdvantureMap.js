@@ -36,7 +36,7 @@ let mapLevels = {
         ["Are you winning servant?", "Congrats on winning the previous boss fight.", "Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level. ",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 7, InnerGameModes[3], false, { 'keys': 35, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
-        45
+        55
     ],
     6: [true, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["L1", "L2"],
         ["What is wider?", "The forest or the field of skeletons of the previous player you're going to play on now?",
@@ -49,19 +49,19 @@ let mapLevels = {
         ["I hear steps behind me!", "Or just my fart", "...", "The playing field has become larger. More room for your frustration to spread.",
             "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point."
         ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 3500, 'asteroids': 1, 'minerals': 4000 },
-        30
+        50
     ],
     8: [true, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["branch2", "hor"],
         ["Arrg", "Only the top players reached this level. Congratulations! But don't be too optimistic..",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and will not get the point."
         ], 7, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 2, 'encrypted writings': 4 },
-        25
+        45
     ],
     9: [true, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["W2", "star"],
         ["hihihi... ", "This is the last step before you are never seen again. No one knows if you can do that.",
             "To conquer this level you have to score 21 points against the unknown and defeat Solara Zephyra. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 21, InnerGameModes[1], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
-        100
+        110
     ],
     10: [true, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "W4"],
 
@@ -72,8 +72,8 @@ let mapLevels = {
             `You may have believed this to be the pinnacle of your journey, but the truth is a shadow pointing towards unfathomable abysses...`,
 
             `In the depths of my realm lies a labyrinth that harbors the unexplored terrors of darkness.Your courage may have brought you this far, but the question is: Are you ready to face the shadows that lurk beyond the visible darkness ? `,
-            "To conquer this level you have to score 20 points and defeat Oculus Irae. The unknown can beat you in less moves."
-        ], 15, InnerGameModes[1], true, { 'keys': 55, 'asteroids': 5, 'encrypted writings': 6, 'ores': 7000, 'abandoned eye': 1 },
+            "To conquer this level you have to score 15 points and defeat Oculus Irae. The unknown can beat you in less moves."
+        ], 15, InnerGameModes[3], true, { 'keys': 55, 'asteroids': 5, 'encrypted writings': 6, 'ores': 7000, 'abandoned eye': 1 },
         90
     ],
 };
@@ -815,14 +815,9 @@ function UserWon_AdvantureLevel(won_levelIndex) {
                     // new XP
                     setNew_SkillPoints(Math.floor(Math.random() * 55 - 20) + 20);
 
-                } else {
-                    // items
-                    UserFoundItems();
                 };
             break;
     };
-
-    CheckIfUserCanGetReward();
 };
 
 // explored items book btn
