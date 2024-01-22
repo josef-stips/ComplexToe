@@ -13,17 +13,22 @@ class Boss {
     };
 
     display = () => {
+        boss.style.opacity = "1";
         boss.style.display = "flex";
         bossIMG.src = this.img;
         bossLifeCounter.textContent = `${this.hp}/${this.maxHP} HP`;
+        bossBar_fill2.style.width = `0`;
+        bossIMG.style.animation = "";
 
         this.start_attack_interval();
     };
 
     delete = () => {
-        boss.style.display = "none";
+        boss.style.display = "";
         bossIMG.src = "";
+        this.died = true;
 
+        bossIMG.removeEventListener("animationend", bossIMG.fn);
         document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 0";
         this.stop_attack_interval();
     };
@@ -32,13 +37,19 @@ class Boss {
         let index = this.attack_timer;
         this.interval =
             setInterval(() => {
-                index--;
-                if (index <= 5) bossIMG.style.animation = "";
-                if (index <= 0) {
+                if (!this.died) {
+                    index--;
+                    if (index <= 5) bossIMG.style.animation = "";
+                    if (index <= 0) {
+                        clearInterval(this.interval);
+                        this.interval = null;
+                        this.stop_attack_interval();
+                        this.attack(); // attack
+                    };
+
+                } else {
                     clearInterval(this.interval);
                     this.interval = null;
-                    this.stop_attack_interval();
-                    this.attack(); // attack
                 };
             }, 1000);
     };
@@ -49,24 +60,48 @@ class Boss {
     };
 
     attack = () => {
+        removeAccessToAnything();
+
         // start animation
-        bossIMG.style.animation = this.attack_animation;
-        // play attack sound
-        this.attack_sound.volume = sfxVolume;
-        this.attack_sound.play();
-        // start right attack
-        switch (this.attack_type) {
-            case "lock":
-                boss_attacks.boss_lock_attack()
-                    .then(this.start_attack_interval()); // after attack finished: start new attack timer
-                break;
+        if (this.attack_animation != null) {
+            bossIMG.style.animation = this.attack_animation;
         };
+
+        // play attack sound
+        if (this.attack_sound != null) {
+            this.attack_sound.volume = sfxVolume;
+            this.attack_sound.play();
+        };
+
+        // start right attack
+        boss_attacks[this.attack_type]() // attack_type = index of attack in boss_attack object
+            .then(() => {
+                // after attack finished: start new attack timer
+                this.start_attack_interval();
+
+                // user can leave now and do anything
+                addAccessToAnything(undefined, true, true);
+            });
     };
 
     damage = (damage) => {
+        let bossIsDeadNow = false;
+        let newHP = this.hp - damage
+
+        newHP < 0 && (bossIsDeadNow = true);
+        let percentage = 100 - ((newHP / this.maxHP) * 100);
+
         for (let counter = damage; counter > 0; counter--) {
             this.hp--;
-            bossLifeCounter.textContent = `${this.hp}/${this.maxHP} HP`;
+
+            if (!bossIsDeadNow) {
+                bossLifeCounter.textContent = `${this.hp}/${this.maxHP} HP`;
+                bossBar_fill2.style.width = `${percentage}%`;
+
+            } else {
+                bossLifeCounter.textContent = `${0}/${this.maxHP} HP`;
+                bossBar_fill2.style.width = `100%`;
+            };
         };
 
         // animation
@@ -88,13 +123,16 @@ class Boss {
     };
 
     death = () => {
-        bossIMG.style.animation = "boss_dies 1.5s ease-in-out forwards";
+        this.died = true;
+        bossIMG.style.animation = "boss_dies 1.5s ease-in-out";
 
-        bossIMG.addEventListener("animationend", () => {
-            setTimeout(() => {
-                this.died = true;
-                this.delete();
-            }, 50);
+        removeAccessToAnything();
+
+        bossIMG.addEventListener("animationend", bossIMG.fn = (e) => {
+            console.log(e);
+
+            this.delete();
+            addAccessToAnything();
         });
     };
 };
@@ -102,20 +140,70 @@ class Boss {
 // star eye -------------------------------------------------------
 class StarEye extends Boss {
     constructor() {
-        super("./assets/game/cursed-star.svg", 50, "lock", "StarEye_Attack 1s linear", Shoot1, 4000);
+        super("./assets/game/cursed-star.svg", 65, "boss_lock_attack", "StarEye_Attack 1s linear", Shoot1, 3000);
+    };
+};
+
+class Sun extends Boss {
+    constructor() {
+        super("./assets/game/spikes-full.svg", 110, "triple_shoot", null, null, 4000);
+    };
+};
+
+class Eye extends Boss {
+    constructor() {
+        super("./assets/game/warlock-eye.svg", 70, "big_shoot", null, null, 8000);
     };
 };
 
 // attacks
 const boss_attacks = {
+    // attack # 0
     boss_lock_attack: () => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             let Rnd_Indexes = getRandomIndexes(options, 30);
 
             Rnd_Indexes.forEach(index => {
                 single_CellBlock(cells[index]);
             });
 
+            resolve();
+        });
+    },
+
+    // attack # 1
+    triple_shoot: () => {
+        return new Promise(resolve => {
+            let attack_count = 0;
+            let attack_interval = setInterval(() => {
+                // attack process. if died = close process
+                if (!current_level_boss.died) {
+                    eye_attack_soundeffect.currentTime = 0;
+                    eye_attack_soundeffect.pause();
+
+                    attack_count++;
+                    sun_attack();
+
+                    if (attack_count >= 3) {
+                        clearInterval(attack_interval);
+                        attack_interval = null;
+
+                        resolve();
+                    };
+
+                } else {
+                    clearInterval(attack_interval);
+                    attack_interval = null;
+                };
+
+            }, 1500);
+        });
+    },
+
+    // attack # 2
+    big_shoot: () => {
+        return new Promise(resolve => {
+            eye_attack();
             resolve();
         });
     }

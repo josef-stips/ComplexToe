@@ -23,18 +23,18 @@ UseSpell_Qbtn.addEventListener('click', () => {
 });
 
 UseSpell_UseBtn.addEventListener('click', () => {
-    UseSpell_PopUp.style.display = "none";
-    DarkLayer.style.display = "none";
+    GameAnimation("You can set two times in a row now!").then(() => {
 
-    SpellsInStore--;
-    SpellAmountDisplay.textContent = SpellsInStore;
-    PlayerIsAllowedToSetTwoTimes = true;
+        SpellsInStore--;
+        SpellAmountDisplay.textContent = SpellsInStore;
+        PlayerIsAllowedToSetTwoTimes = true;
+    });
 });
 
 // add spells to the field
 const SpellsSpawnRate = () => {
     let spawnRate = 70 - JSON.parse(localStorage.getItem('unlocked_mapLevels'))[current_selected_level][3];
-    let numberOfSpells = Math.floor(options.length * (spawnRate / 300));
+    let numberOfSpells = Math.floor(options.length * (spawnRate / 400));
     console.log("Number of spells: ", numberOfSpells)
     for (let i = 0; i < numberOfSpells; i++) {
         const rndIndex = Math.floor(Math.random() * options.length);

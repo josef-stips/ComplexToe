@@ -6,9 +6,9 @@ let sunDied = false;
 
 // init. the sun boss when it appears
 function init_sun() {
-    // normally the eye has an different HP count than in advanture mode
+    // normally the sun has a different HP count than in advanture mode
     if (inAdvantureMode) {
-        sun_HP = 5000;
+        sun_HP = 4000;
     } else {
         sun_HP = 2000;
     };
@@ -22,87 +22,83 @@ function init_sun() {
     SunAttackInterval();
     // HP
     sunLifeCounter.textContent = `${sun_HP}/${sun_HP} HP`;
+    sunBar_fill2.style.width = `0`;
     // get position
     The_sun.getBoundingClientRect();
 };
 
 // eye attack
 function sun_attack() {
-    if (!sunDied) {
-        // bug fix
-        CloseOnlinePopUps(true);
+    // animation
+    // change sun position so it is vibrating
+    let sun_pos = setInterval(() => {
+        let first_pos = Math.random() * 15;
+        let second_pos = Math.random() * 15;
+
+        bossIMG.style.transform = `translate(${first_pos}px, ${second_pos}px)`;
+    }, 100);
+
+    // end of animation
+    setTimeout(() => {
+        clearInterval(sun_pos);
+        sun_pos = null;
+
+        // play soundeffect
+        eye_attack_soundeffect.volume = sfxVolume;
+        eye_attack_soundeffect.playbackRate = 3;
+        eye_attack_soundeffect.play();
+
+        // attack
+        sun_attckingBeam.style.display = "block";
+        sun_attckingBeam.style.opacity = "1";
 
         // animation
-        // change sun position so it is vibrating
-        let sun_pos = setInterval(() => {
-            let first_pos = Math.random() * 15;
-            let second_pos = Math.random() * 15;
+        bossIMG.style.animation = "rotate 0.4s linear";
+        bossIMG.style.transform = "rotate(1200)";
+        DarkLayer.style.display = "block";
+        DarkLayer.style.backgroundColor = "white";
 
-            The_sun.style.transform = `translate(${first_pos}px, ${second_pos}px)`;
+        setTimeout(() => {
+            bossIMG.style.transform = "scale(1)";
+            bossIMG.style.transition = "all 2s ease-in-out";
+
+            sun_attckingBeam.style.transition = "opacity 200ms linear";
+            sun_attckingBeam.style.opacity = "0";
+
+            DarkLayer.style.transition = "opacity 600ms linear";
+            DarkLayer.style.opacity = "0";
+
+            cellGrid.classList.remove('cellGrid_opacity');
+            cellGrid.classList.add('cellGrid-alert');
         }, 100);
 
-        // end of animation
         setTimeout(() => {
-            clearInterval(sun_pos);
-            sun_pos = null;
+            sun_attckingBeam.style.display = "none";
 
-            // play soundeffect
-            eye_attack_soundeffect.volume = sfxVolume;
-            eye_attack_soundeffect.playbackRate = 3;
-            eye_attack_soundeffect.play();
+            DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
+            DarkLayer.style.transition = "background-color 1s ease-out";
+            DarkLayer.style.display = "none";
+            DarkLayer.style.opacity = "1";
 
-            // attack
-            sun_attckingBeam.style.display = "block";
-            sun_attckingBeam.style.opacity = "1";
+            cellGrid.classList.remove('cellGrid-alert');
 
-            // animation
-            The_sun.style.animation = "rotate 0.4s linear";
-            The_sun.style.transform = "rotate(1200)";
-            DarkLayer.style.display = "block";
-            DarkLayer.style.backgroundColor = "white";
+            // damage on cellGrid
+            sunAttack_damage();
+        }, 500);
 
-            setTimeout(() => {
-                The_sun.style.transform = "scale(1)";
-                The_sun.style.transition = "all 2s ease-in-out";
+        setTimeout(() => {
+            bossIMG.style.transition = "all 0.2s ease-in-out";
+            bossIMG.style.animation = "none";
+        }, 1000);
 
-                sun_attckingBeam.style.transition = "opacity 200ms linear";
-                sun_attckingBeam.style.opacity = "0";
-
-                DarkLayer.style.transition = "opacity 600ms linear";
-                DarkLayer.style.opacity = "0";
-
-                cellGrid.classList.remove('cellGrid_opacity');
-                cellGrid.classList.add('cellGrid-alert');
-            }, 100);
-
-            setTimeout(() => {
-                sun_attckingBeam.style.display = "none";
-
-                DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
-                DarkLayer.style.transition = "background-color 1s ease-out";
-                DarkLayer.style.display = "none";
-                DarkLayer.style.opacity = "1";
-
-                cellGrid.classList.remove('cellGrid-alert');
-
-                // damage on cellGrid
-                sunAttack_damage();
-            }, 500);
-
-            setTimeout(() => {
-                The_sun.style.transition = "all 0.2s ease-in-out";
-                The_sun.style.animation = "none";
-            }, 1000);
-
-        }, 600); // Ändern Sie die Dauer der Vibration nach Bedarf
-    };
+    }, 600); // Ändern Sie die Dauer der Vibration nach Bedarf
 };
 
 // sun attack interval
 function SunAttackInterval() {
     if (!sunDied) {
         // random second value
-        let rnd = Math.floor(Math.random() * 35) + 10;
+        let rnd = Math.floor(Math.random() * 100) + 20;
 
         let minute = 0;
         let second = rnd;
@@ -136,16 +132,16 @@ function SunAttackInterval() {
                         SunAttackInterval();
 
                         // user can leave now and do anything
-                        addAccessToAnything();
+                        addAccessToAnything(undefined, true, true);
                     };
                 }, 1500);
                 return;
             };
 
-            // 30 seconds go by
+            // 59 seconds go by
             if (second <= 0) {
                 minute--;
-                second = 59;
+                second = 100;
             };
         }, 1000);
     };
@@ -176,13 +172,21 @@ function sunAttack_damage() {
 // user can defeat the sun through his patterns and if he clicks on the sun with the cursor
 // cursor damage: 1, pattern damage: 450 - 900
 function sunGot_HP_Damage(damage) {
+    let bossIsDeadNow = false;
+    let newHP = sun_HP - damage
+    newHP < 0 && (bossIsDeadNow = true);
+
     // if sun not died yet
     if (!sunDied) {
         for (let counter = damage; counter > 0; counter--) {
             playBtn_Audio_2();
 
             sun_HP = sun_HP - 1;
-            sunLifeCounter.textContent = `${sun_HP}/${5000} HP`;
+
+            !bossIsDeadNow ? sunLifeCounter.textContent = `${sun_HP}/${4000} HP` : sunLifeCounter.textContent = `${0}/${4000} HP`;;
+
+            let percentage = 100 - ((newHP / 4000) * 100);
+            !bossIsDeadNow ? sunBar_fill2.style.width = `${percentage}%` : sunBar_fill2.style.width = `100%`;
         };
 
         // animation
@@ -200,7 +204,7 @@ function sunGot_HP_Damage(damage) {
         }, 2000);
 
         // sun dies
-        if (sun_HP <= 4100) sunDies();
+        if (sun_HP <= 0) sunDies();
     };
 };
 
@@ -236,7 +240,7 @@ function sunDies() {
                 sun_40.style.display = "none";
                 document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 0";
 
-                if (score_Player1_numb >= 4) { // player fulfilled the first requirement to win this game, Now the sun also died so he won
+                if (score_Player1_numb >= points_to_win) { // player fulfilled the first requirement to win this game, Now the sun also died so he won
                     Call_UltimateWin();
                 };
             }, 800);

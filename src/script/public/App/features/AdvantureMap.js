@@ -4,63 +4,66 @@
 // 11: Boss true or false, 12: requirements, 13: maximal amount of moves
 let mapLevels = {
     1: [true, 0, "The beginning of agony", 20, 20, "fa-solid fa-skull", ["diamond", "dia"
-            /*, "dia2", "L1", "L2", "L3", "L4",
+            /*, "dia2", "L1", "L2", "L3", "L4", "hor"
                                 "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"*/
         ],
-        ["Here begins the journey to become king and defeat your greatest enemy. Do you really think you will survive this?",
-            "To conquer this level you have to score 2 points against the unknown."
-        ], 2, InnerGameModes[1], false, {},
-        20
+        ["U paused your Roblox game to be here?", "This is nothing for average explorer but for those who want to know the truth with all their heart", "Here begins the journey to become king and defeat the lord of darkness. Do you really think you will survive this?",
+            "To conquer this level you have to score 3 points against the unknown. And... It is a really rare case but.. sometimes your win combination will be not accepted and you don't get the point!"
+        ], 3, InnerGameModes[1], false, {},
+        40
     ], // level 1 is unlocked by default
-    2: [true, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["dia2", "W3"],
-        ["Congrats on winning the first level in this deadly journey. But this is still only the beginning...",
-            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
-        ], 7, InnerGameModes[3], false, { 'keys': 10 },
-        30
+    2: [true, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["dia2", "vert"],
+        ["Congrats on winning the first level in this deadly journey. But this is still only the beginning... The unknown is going to show his face soon but for now you must remember to stay focused!",
+            "To conquer this level you have to score 5 points against the unknown. The unknown can beat you in less moves. As you know, in some rare cases your win combination will be not accepted and you don't get the point!"
+        ], 5, InnerGameModes[3], false, { 'keys': 10 },
+        40
     ],
-    3: [true, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["L1", "L2"],
-        ["With every level it gets more serious now. Keep your eyes open!",
-            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
+    3: [true, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["diamond", "branch1"],
+        ["Some thoughts on becoming a Discord mod?", "Do not let your focus wander through the fog of the darkness", "With every level it gets more serious now. Keep your eyes open and your mouth closed!",
+            "The winning patterns that require five moves yield 3 more points than regular ones.",
+            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 7, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
         30
     ],
     4: [true, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["diamond"],
-        ["You entered the really dangerous side of this journey now. Will you survive?",
-            "To conquer this level you have to score 10 points against the unknown and defeat Oculum Solis. The unknown can beat you in less moves."
-        ], 10, InnerGameModes[2], true, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
-        400
+        ["The first three levels where too boring huh?",
+            "You entered the really dangerous side of this journey now. Will you survive?",
+            "To conquer this level you have to score 5 points against the unknown and defeat Oculum Solis. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+        ], 5, InnerGameModes[2], true, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
+        60
     ],
-    5: [false, 25, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "W3", "W4", "star", "diamond"],
-        ["Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level.",
-            "To conquer this level you have to score 11 points against the unknown. The unknown can beat you in less moves."
-        ], 11, InnerGameModes[3], false, { 'keys': 25, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
-        400
+    5: [true, 35, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia"],
+        ["Are you winning servant?", "Congrats on winning the previous boss fight.", "Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level. ",
+            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+        ], 7, InnerGameModes[3], false, { 'keys': 35, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
+        45
     ],
-    6: [false, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["vert", "dia", "dia2"],
-        ["Most of the players here have already given up or lost their way. Do you really want to continue or give up?",
-            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves."
-        ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 1800, 'asteroids': 1, 'diamonds': 30 },
-        400
+    6: [true, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["L1", "L2"],
+        ["What is wider?", "The forest or the field of skeletons of the previous player you're going to play on now?",
+            "Most of the players here have already given up or lost their way. Do you really want to continue or give up?", "btw. are you a discord mod?", "Anyway...",
+            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+        ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 2400, 'asteroids': 1, 'diamonds': 40 },
+        30
     ],
-    7: [false, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["hor", "L1", "L2", "L3", "L4"],
-        ["The playing field has become larger. More room for your frustration to spread.",
-            "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves."
-        ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 2500, 'asteroids': 1, 'minerals': 2000 },
-        400
+    7: [true, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["branch4", "star"],
+        ["I hear steps behind me!", "Or just my fart", "...", "The playing field has become larger. More room for your frustration to spread.",
+            "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point."
+        ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 3500, 'asteroids': 1, 'minerals': 4000 },
+        30
     ],
-    8: [false, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1", "L2"],
-        ["Only the top 0.4% of players reached this level. Congratulations! But don't be too optimistic..",
-            "To conquer this level you have to score 13 points against the unknown. The unknown can beat you in less moves."
-        ], 13, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 3, 'encrypted writings': 5 },
-        400
+    8: [true, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["branch2", "hor"],
+        ["Arrg", "Only the top players reached this level. Congratulations! But don't be too optimistic..",
+            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and will not get the point."
+        ], 7, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 2, 'encrypted writings': 4 },
+        25
     ],
-    9: [false, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["hor", "vert", "dia", "dia2", "L1"],
-        ["This is the last step before you are never seen again. No one knows if you can do that.",
-            "To conquer this level you have to score 15 points against the unknown and defeat Solara Zephyra. The unknown can beat you in less moves."
-        ], 15, InnerGameModes[3], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
-        400
+    9: [true, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["W2", "star"],
+        ["hihihi... ", "This is the last step before you are never seen again. No one knows if you can do that.",
+            "To conquer this level you have to score 21 points against the unknown and defeat Solara Zephyra. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+        ], 21, InnerGameModes[1], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
+        100
     ],
-    10: [false, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "diamond", "star"],
+    10: [true, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "W4"],
 
         [`Welcome, wanderer, who has forsaken the paths of light and ventured into darkness.`,
 
@@ -70,8 +73,8 @@ let mapLevels = {
 
             `In the depths of my realm lies a labyrinth that harbors the unexplored terrors of darkness.Your courage may have brought you this far, but the question is: Are you ready to face the shadows that lurk beyond the visible darkness ? `,
             "To conquer this level you have to score 20 points and defeat Oculus Irae. The unknown can beat you in less moves."
-        ], 20, InnerGameModes[3], true, { 'keys': 55, 'asteroids': 15, 'encrypted writings': 7, 'ores': 8000, 'abandoned eye': 1 },
-        400
+        ], 15, InnerGameModes[1], true, { 'keys': 55, 'asteroids': 5, 'encrypted writings': 6, 'ores': 7000, 'abandoned eye': 1 },
+        90
     ],
 };
 
@@ -305,6 +308,11 @@ MapLevelBtns.forEach((item, k) => {
             let requirement_amount = Object.keys(requirements).length;
 
             LevelOverview_requirement[0].textContent = null;
+            LevelOverview_requirement[1].textContent = null;
+            LevelOverview_requirement[2].textContent = null;
+            LevelOverview_requirement[3].textContent = null;
+            LevelOverview_requirement[4].textContent = null;
+
             (requirement_amount == 0) && (LevelOverview_requirement[0].textContent = "No requirements");
 
             for (let i = 0; i < requirement_amount; i++) {
@@ -499,7 +507,7 @@ function TryTo_StartMapLevel() {
         // html stuff
         mapLevelOverview.style.display = 'none';
         AdvantureMap.style.display = 'none';
-        lobbyHeader.style.borderBottom = 'none';
+        // lobbyHeader.style.borderBottom = 'none';
 
         // initialize game with the right values
         let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
@@ -608,49 +616,49 @@ function UserFulfill_RequirementsForLevel() {
                 return false;
 
             case 5:
-                if (localStorage.getItem('keys') >= 25 && exploredItems["minerals"] >= 400 && exploredItems["ore"] >= 1200 && exploredItems["diamonds"] >= 4) {
+                if (localStorage.getItem('keys') >= 35 && exploredItems["minerals"] >= 400 && exploredItems["ore"] >= 1200 && exploredItems["diamonds"] >= 4) {
                     return true;
 
                 } else {
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
-                    AlertText.textContent = "You need 25 keys, 1200 ores, 400 minerals and 4 diamonds to try this level";
+                    AlertText.textContent = "You need 35 keys, 1200 ores, 400 minerals and 4 diamonds to try this level";
                 };
 
                 return false;
 
             case 6:
-                if (localStorage.getItem('keys') >= 30 && exploredItems["ore"] >= 1800 && exploredItems["diamonds"] >= 30 && exploredItems["asteroid"] >= 1) {
+                if (localStorage.getItem('keys') >= 30 && exploredItems["ore"] >= 2400 && exploredItems["diamonds"] >= 40 && exploredItems["asteroid"] >= 1) {
                     return true;
 
                 } else {
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
-                    AlertText.textContent = "You need 30 keys, 1800 ores, 30 diamonds and 1 asteroid to try this level";
+                    AlertText.textContent = "You need 30 keys, 2400 ores, 40 diamonds and 1 asteroid to try this level";
                 };
 
                 return false;
 
             case 7:
-                if (localStorage.getItem('keys') >= 40 && exploredItems["ore"] >= 2500 && exploredItems["minerals"] >= 2000 && exploredItems["asteroid"] >= 1) {
+                if (localStorage.getItem('keys') >= 40 && exploredItems["ore"] >= 3500 && exploredItems["minerals"] >= 4000 && exploredItems["asteroid"] >= 1) {
                     return true;
 
                 } else {
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
-                    AlertText.textContent = "You need 40 keys, 2500 ores, 2000 minerals and 1 asteroid to try this level";
+                    AlertText.textContent = "You need 40 keys, 3500 ores, 4000 minerals and 1 asteroid to try this level";
                 };
 
                 return false;
 
             case 8:
-                if (localStorage.getItem('keys') >= 45 && exploredItems["ore"] >= 4000 && exploredItems["encryptedWriting"] >= 5 && exploredItems["asteroid"] >= 3) {
+                if (localStorage.getItem('keys') >= 45 && exploredItems["ore"] >= 4000 && exploredItems["encryptedWriting"] >= 5 && exploredItems["asteroid"] >= 2) {
                     return true;
 
                 } else {
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
-                    AlertText.textContent = "You need 45 keys, 4000 ores, 5 encrypted writings and 3 asteroids to try this level";
+                    AlertText.textContent = "You need 45 keys, 4000 ores, 5 encrypted writings and 2 asteroids to try this level";
                 };
 
                 return false;
@@ -668,14 +676,14 @@ function UserFulfill_RequirementsForLevel() {
                 return false;
 
             case 10:
-                if (localStorage.getItem('keys') >= 55 && exploredItems["encryptedWriting"] >= 7 && exploredItems["asteroid"] >= 15 &&
-                    exploredItems["ore"] >= 8000 && exploredItems["abandonedEye"] >= 1) {
+                if (localStorage.getItem('keys') >= 55 && exploredItems["encryptedWriting"] >= 6 && exploredItems["asteroid"] >= 5 &&
+                    exploredItems["ore"] >= 7000 && exploredItems["abandonedEye"] >= 1) {
                     return true;
 
                 } else {
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     mapLevelOverview.style.display = "none";
-                    AlertText.textContent = "You need 55 keys, 7 encrypted writings, 8000 ores, 15 asteroids and 1 abandoned eye to try this level";
+                    AlertText.textContent = "You need 55 keys, 6 encrypted writings, 7000 ores, 5 asteroids and 1 abandoned eye to try this level";
                 };
 
                 return false;
@@ -769,10 +777,17 @@ function UserWon_AdvantureLevel(won_levelIndex) {
                 // update conquered map level display on level overview pop up
                 conquered_MapLevel_Display.textContent = "Yes";
 
+                // new XP
+                setNew_SkillPoints(Math.floor(Math.random() * 15 - 5) + 5)
+
                 // for achievement 
                 if (won_levelIndex == 4) {
                     Achievement.new(1);
                 };
+
+            } else {
+                // new XP
+                setNew_SkillPoints(1);
             };
 
             // items
@@ -797,12 +812,17 @@ function UserWon_AdvantureLevel(won_levelIndex) {
                     // for unlock the second advanture map 
                     just_beat_advantureMap = true;
 
+                    // new XP
+                    setNew_SkillPoints(Math.floor(Math.random() * 55 - 20) + 20);
+
                 } else {
                     // items
                     UserFoundItems();
                 };
             break;
     };
+
+    CheckIfUserCanGetReward();
 };
 
 // explored items book btn

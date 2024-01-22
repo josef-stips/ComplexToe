@@ -18,6 +18,8 @@ let boss1 = document.querySelector('#boss1');
 let rewardAudio = document.querySelector("#rewardAudio");
 let LaughSound = document.querySelector("#LaughSound");
 let gateOpenSound = document.querySelector("#gateOpenSound");
+let sound1 = document.querySelector("#sound1");
+let battleAudio = document.querySelector("#battleAudio");
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -75,6 +77,7 @@ let loadingGame_ProcentDisplay = document.querySelector('.loadingGame_ProcentDis
 let loadingScreen = document.querySelector('.loadingScreen');
 let random_loadingText = document.querySelector('.random_loadingText');
 let lobbyFooterText = document.querySelector('.lobby-footer-text');
+let HeaderWrapper = document.querySelector(".header-body");
 
 let userInfoName = document.querySelector('.userInfo-Name');
 let userInfoIcon = document.querySelector('.userInfo-Icon');
@@ -178,7 +181,7 @@ let sun_40 = document.querySelector('.sun');
 let sunIMG_container = document.querySelector('.sunIMG_container');
 let The_sun = document.querySelector('.sunIMG');
 let sunLifeBar = document.querySelector('.sunLifeBar');
-let sunBar_fill2 = document.querySelector('.unBar_fill2');
+let sunBar_fill2 = document.querySelector('.sunBar_fill2');
 let sunLifeCounter = document.querySelector('.sunLifeCounter');
 let sun_attckingBeam = document.querySelector('.sun_attckingBeam');
 
@@ -2448,7 +2451,7 @@ gameInfo_btn.addEventListener('click', () => {
         PatternGridFive.forEach(pattern => pattern.style.display = 'none');
 
         let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
-        let allowed_patterns = unlocked_mapLevels[current_selected_level][6]; // array
+        let allowed_patterns = allowedPatterns;
         let Children = [...PatternGridFive];
 
         for (let i = 0; i < Children.length; i++) {

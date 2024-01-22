@@ -167,6 +167,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     ki_board = 0b0;
     player_board = 0b0;
     blockages = 0b0;
+    Bitboard_spells = BigInt(0b0);
 
     MovesAmount_PlayerAndKi = 0;
     KI_play_mode = "defend";
@@ -195,6 +196,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     running = true;
     player1_can_set = true;
     player3_can_set = false;
+
+    UltimateWinText.textContent = null;
 
     // In the online game mode the curr_innerGameMode gets its right value in serverHandler.js
     GameData.InnerGameMode = curr_innerGameMode;
@@ -243,19 +246,25 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
         // in advanture map on the last level with the eye boss
         if (inAdvantureMode && current_selected_level == 10) {
-            eye_40.style.display = 'flex';
-            sun_40.style.display = 'none';
-            init_eye();
+            // eye_40.style.display = 'flex';
+            // sun_40.style.display = 'none';
+            // init_eye();
+            current_level_boss = new Eye();
+            current_level_boss.display();
 
         } else if (inAdvantureMode && current_selected_level == 9) {
-            sun_40.style.display = 'flex';
-            eye_40.style.display = 'none';
-            init_sun();
+            // sun_40.style.display = 'flex';
+            // eye_40.style.display = 'none';
+            // init_sun();
+            current_level_boss = new Sun();
+            current_level_boss.display();
 
         } else if (Fields[fieldIndex].size == "40x40") {
-            eye_40.style.display = 'flex';
-            sun_40.style.display = 'none';
-            init_eye();
+            // eye_40.style.display = 'flex';
+            // sun_40.style.display = 'none';
+            // init_eye();
+            current_level_boss = new Eye();
+            current_level_boss.display();
 
         } else if (inAdvantureMode && current_selected_level == 4) {
             current_level_boss = new StarEye();
@@ -266,6 +275,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         lobbyFooterText.style.display = 'flex';
         sun_40.style.display = 'none';
         eye_40.style.display = 'none';
+        boss.style.display = "none";
         document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 0";
     };
 };
@@ -279,7 +289,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     CreateLevelScene.style.display = "none";
     // close pop ups if there is any on
     CloseOnlinePopUps(true);
-    // lobbyHeader.style.display = 'none';
+    HeaderWrapper.style.height = '7.5%';
 
     // in online mode: display give up button, in offline mode: display choose winner button
     curr_mode == GameMode[2].opponent ? globalChooseWinnerBtn = GiveUp_btn : globalChooseWinnerBtn = chooseWinnerWindowBtn;
@@ -574,11 +584,11 @@ socket.on("GetBgcolors", (bg1, bg2) => {
 const ChangeGameBG = (bg1, bg2, reset) => {
     if (reset || reset && personal_GameData.role == "user" && personal_GameData.currGameID != null || localStorage.getItem("sett-ShowBGColor") == "false") {
         Lobby.style.background = `unset`;
-        lobbyHeader.style.backgroundColor = "#15171a";
+        // lobbyHeader.style.backgroundColor = "#15171a";
 
     } else if (reset == undefined || personal_GameData.role == "user" && personal_GameData.currGameID != null && reset == undefined && localStorage.getItem("sett-ShowBGColor") == "true") {
         Lobby.style.background = `linear-gradient(45deg, ${bg1}, ${bg2})`;
-        lobbyHeader.style.backgroundColor = "unset";
+        // lobbyHeader.style.backgroundColor = "unset";
     };
 };
 
@@ -1116,21 +1126,24 @@ socket.on('Reload_GlobalGame', (Goptions) => {
 
 // Block used cells after a win
 function single_CellBlock(cell, fromMap) {
-    cell.className = "cell death-cell";
-    cell.style.cursor = "default";
-    cell.style.color = "white";
     // just different animation style
     if (fromMap == "fromMap") {
-        cell.style.animation = "destroyCell 2s forwards"; // Animation aktivieren
+        cell.style.animation = "destroyCell 2s forwards"
 
     } else {
         cell.style.animation = "blackenCell 2s forwards"; // Animation aktivieren
     };
 
+    cell.className = "cell death-cell";
+    cell.style.cursor = "default";
+    cell.style.color = "white";
+    cell.style.borderColor = "white";
+
+
     cell.removeEventListener('click', cellCicked);
-    setTimeout(() => {
-        cell.textContent = null;
-    }, 2000);
+    // setTimeout(() => {
+    cell.textContent = null;
+    // }, 2000);
 
     // Bug Fix
     if (curr_mode == GameMode[2].opponent) {
@@ -1141,6 +1154,206 @@ function single_CellBlock(cell, fromMap) {
     } else {
         CreateOptions("fromMap"); // local options
     };
+};
+
+// cool game animation
+const GameAnimation = (text, OnGameEnd) => {
+    return new Promise((resolve) => {
+        if (!document.body.querySelector(".WhiteLayer")) {
+            // remove access to anything and close all pop ups
+            removeAccessToAnything();
+
+            // play sound
+            if (OnGameEnd) {
+                playBattleEndTheme();
+
+            } else {
+                play_GameAnimationSound();
+            };
+
+            // create white layer
+            let layer = document.createElement("div");
+            layer.classList.add("WhiteLayer");
+            // create sword
+            let sword = document.createElement("img");
+            sword.classList.add("BigScreenSword");
+            sword.width = "500";
+            sword.height = "500";
+            sword.src = "assets/game/winged-sword.svg";
+            // create Text 
+            let Text = document.createElement("h1");
+            Text.textContent = text;
+
+            sword.addEventListener("animationend", () => {
+                sword.style.opacity = "0";
+
+                setTimeout(() => {
+                    sword.remove();
+                    Text.classList.add("BigScreenText");
+                    document.body.appendChild(Text);
+
+                    Text.addEventListener("animationend", () => {
+                        setTimeout(() => {
+                            layer.style.opacity = "0";
+                            Text.style.opacity = "0";
+
+                            setTimeout(() => {
+                                Text.remove();
+                                layer.remove();
+
+                                // add access to anything
+                                addAccessToAnything(undefined, true, true);
+
+                                resolve();
+                            }, 200);
+                        }, 1250);
+                    });
+                }, 200);
+            });
+
+            document.body.appendChild(sword);
+            document.body.appendChild(layer);
+
+        } else resolve();
+    });
+};
+
+// In KI mode: The unknown can place two times in a row
+const Check_KI_canSetTwoTimesInARow = (level_index) => { // level_index = current playing advanture map level
+    switch (level_index) {
+        case 3:
+            if (score_Player1_numb == 1) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+        case 4:
+            if (score_Player1_numb == 3) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+
+        case 5:
+            if (score_Player1_numb == 4) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+
+        case 6:
+            if (score_Player1_numb == 6 || score_Player1_numb == 9 || score_Player1_numb == 12) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+
+        case 7:
+            if (score_Player1_numb == 1 || score_Player1_numb == 5 || score_Player1_numb == 6 || score_Player1_numb == 8) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+
+        case 8:
+            if (score_Player1_numb == 3 || score_Player1_numb == 6 || score_Player1_numb == 9) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+
+        case 9:
+            if (score_Player1_numb == 3 || scorePlayer1 == 9 || score_Player1_numb == 6) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+
+        case 10:
+            if (score_Player1_numb == 3 || score_Player1_numb == 5 || score_Player1_numb == 8 ||
+                score_Player1_numb == 12 || score_Player1_numb == 14) {
+                KI_PlacesTwoTimesInARow();
+                return true;
+            };
+            break;
+    };
+    return false;
+};
+
+// Dynamically during the game: new winnin combinations
+const NewWinCombisDuringGame = () => {
+    if (inAdvantureMode) {
+        switch (current_selected_level) {
+            case 4:
+                if (score_Player1_numb == 4) {
+                    allowedPatterns = ["dia2", "vert"];
+                    GameAnimation("New Winning Combinations!");
+                };
+                break;
+
+            case 5:
+                if (score_Player1_numb == 6) {
+                    allowedPatterns = ["diamond", "branch1"];
+                    GameAnimation("New Winning Combinations!");
+                };
+                break;
+
+            case 7:
+                if (score_Player1_numb == 7) {
+                    allowedPatterns = ["branch1", "star"];
+                    GameAnimation("New Winning Combinations!");
+                }
+                if (score_Player1_numb == 4) {
+                    allowedPatterns = ["branch2", "star"];
+                    GameAnimation("New Winning Combinations!");
+                };
+                break;
+
+            case 8:
+                if (score_Player1_numb == 4) {
+                    allowedPatterns = ["L1", "L2"];
+                    GameAnimation("New Winning Combinations!");
+                };
+                break;
+
+            case 9:
+                if (score_Player1_numb == 15) {
+                    allowedPatterns = ["W4", "diamond"];
+                    GameAnimation("New Winning Combinations!");
+                }
+                if (score_Player1_numb == 18) {
+                    allowedPatterns = ["W4", "W2"];
+                    GameAnimation("New Winning Combinations!");
+                };
+                break;
+
+            case 10:
+                if (score_Player1_numb == 9) {
+                    allowedPatterns = ["diamond"];
+                    GameAnimation("New Winning Combinations!");
+                }
+                if (score_Player1_numb == 11) {
+                    allowedPatterns = ["vert", "W4"];
+                    GameAnimation("New Winning Combinations!");
+                }
+                if (score_Player1_numb == 13) {
+                    allowedPatterns = ["star", "W3"];
+                    GameAnimation("New Winning Combinations!");
+                };
+                break;
+        };
+        GenerateOriginWinConds();
+    };
+};
+
+// KI places two times in a row
+const KI_PlacesTwoTimesInARow = () => {
+    changePlayer();
+
+    Ki_canSetTwoTimesInARow = true;
+    GameAnimation("The unknown can set two times in a row!").then(() => {
+        KI_Action();
+    });
 };
 
 // additional change player function for online game mode

@@ -25,30 +25,27 @@ function init_eye() {
     };
     // HP
     eyeLifeCounter.textContent = `${eye_HP}/${eye_HP} HP`;
+    eyeBar_fill2.style.width = `0`;
     // get position
     The_eye.getBoundingClientRect();
 };
 
 // eye attack
 function eye_attack() {
-    if (!eyeDied) {
-        // bug fix
-        CloseOnlinePopUps(true);
+    // animation
+    // change eye position so it is vibrating
+    let eye_pos = setInterval(() => {
+        let first_pos = Math.random() * 15;
+        let second_pos = Math.random() * 15;
 
-        // animation
-        // change eye position so it is vibrating
-        let eye_pos = setInterval(() => {
-            let first_pos = Math.random() * 15;
-            let second_pos = Math.random() * 15;
+        bossIMG.style.transform = `translate(${first_pos}px, ${second_pos}px)`;
+    }, 100);
 
-            The_eye.style.transform = `translate(${first_pos}px, ${second_pos}px)`;
-        }, 100);
-
-        // end of animation
-        setTimeout(() => {
-            clearInterval(eye_pos);
-            eye_pos = null;
-
+    // end of animation
+    setTimeout(() => {
+        clearInterval(eye_pos);
+        eye_pos = null;
+        if (!current_level_boss.died) {
             // play soundeffect
             eye_attack_soundeffect.volume = sfxVolume;
             eye_attack_soundeffect.playbackRate = 1;
@@ -59,13 +56,13 @@ function eye_attack() {
             eye_attckingBeam.style.opacity = "1";
 
             // animation
-            The_eye.style.transform = "scale(1.2)";
+            bossIMG.style.transform = "scale(1.2)";
             DarkLayer.style.display = "block";
             DarkLayer.style.backgroundColor = "white";
 
             setTimeout(() => {
-                The_eye.style.transform = "scale(1)";
-                The_eye.style.transition = "all 2s ease-in-out";
+                bossIMG.style.transform = "scale(1)";
+                bossIMG.style.transition = "all 2s ease-in-out";
 
                 eye_attckingBeam.style.transition = "opacity 200ms linear";
                 eye_attckingBeam.style.opacity = "0";
@@ -98,19 +95,11 @@ function eye_attack() {
             }, 1000);
 
             setTimeout(() => {
-                The_eye.style.transition = "all 0.2s ease-in-out";
+                bossIMG.style.transition = "all 0.2s ease-in-out";
             }, 2500);
+        };
 
-            // start attack interval again
-            if (curr_mode != GameMode[2].opponent) {
-                EyeAttackInterval();
-            };
-
-            setTimeout(() => {
-                addAccessToAnything();
-            }, 2250);
-        }, 3000); // Ändern Sie die Dauer der Vibration nach Bedarf
-    };
+    }, 3000); // Ändern Sie die Dauer der Vibration nach Bedarf
 };
 
 // damage from eye attack on cell-grid
@@ -201,12 +190,21 @@ socket.on("EyeDamage", async(OptionsArray) => {
 // user can defeat the eye through his patterns and if he clicks on the eye with the cursor
 // cursor damage: 1, pattern damage: 450 - 900
 function eyeGot_HP_Damage(damage) {
+    let bossIsDeadNow = false;
+    let newHP = eye_HP - damage
+    newHP < 0 && (bossIsDeadNow = true);
+
     if (!eyeDied) {
         for (let counter = damage; counter > 0; counter--) {
             playBtn_Audio_2();
 
+            let maxHP = inAdvantureMode ? 20000 : 10000;
+
             eye_HP = eye_HP - 1;
-            inAdvantureMode ? eyeLifeCounter.textContent = `${eye_HP}/${20000} HP` : eyeLifeCounter.textContent = `${eye_HP}/${10000} HP`;
+            !bossIsDeadNow ? eyeLifeCounter.textContent = `${sun_HP}/${maxHP} HP` : eyeLifeCounter.textContent = `${0}/${maxHP} HP`;
+
+            let percentage = 100 - ((newHP / maxHP) * 100);
+            !bossIsDeadNow ? sunBar_fill2.style.width = `${percentage}%` : sunBar_fill2.style.width = `100%`;
         };
 
         // animation

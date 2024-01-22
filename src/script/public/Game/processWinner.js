@@ -245,9 +245,8 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
 function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points, fromRestart, fromClick) {
     killPlayerClocks(false);
     // Choose winner
-    chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points);
+    chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points).then((KI_CanSetASecondTime) => {
 
-    setTimeout(() => {
         // Make cells die effect
         if (curr_field != 'Small Price' || curr_field != 'Thunder Advanture') {
             setTimeout(() => {
@@ -264,19 +263,29 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
             }, 600);
         };
 
+        console.log(KI_CanSetASecondTime);
+
         // Change player things. execute this everytime
         setTimeout(() => {
-            (!inAdvantureMode) ? processResult_continueGame(fromRestart, fromClick, true): processResult_continueGame();
+            if (!inAdvantureMode) {
+                processResult_continueGame(fromRestart, fromClick, true)
+
+            } else {
+                if (KI_CanSetASecondTime != "KI_CanSetASecondTime") {
+                    processResult_continueGame();
+                };
+            };
         }, 1000);
-    }, 2000);
+
+    });
 };
 
 // process result: advanture mode (special)
 function processResult_AdvantureMode(WinCombination) {
     // in advanture mode there are special win conditions for each level (10 levels)
     switch (current_selected_level) {
-        case 1: // user have to score 5 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 3) { // Player won
+        case 1:
+            if (score_Player1_numb >= points_to_win) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -287,8 +296,8 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
 
-        case 2: // user have to score 7 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 7) { // Player won
+        case 2:
+            if (score_Player1_numb >= points_to_win) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -299,8 +308,8 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
 
-        case 3: // user have to score 8 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 8) { // Player won
+        case 3:
+            if (score_Player1_numb >= points_to_win) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 4 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -311,8 +320,10 @@ function processResult_AdvantureMode(WinCombination) {
             };
             break;
 
-        case 4: // user have to score 10 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 10) { // Player won
+        case 4:
+            console.log(current_level_boss, current_level_boss.hp);
+
+            if (score_Player1_numb >= points_to_win && current_level_boss.hp <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 4 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -322,8 +333,8 @@ function processResult_AdvantureMode(WinCombination) {
                 processResult_continueGame();
             };
             break;
-        case 5: // user have to score 11 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 11) { // Player won
+        case 5:
+            if (score_Player1_numb >= points_to_win) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -333,8 +344,8 @@ function processResult_AdvantureMode(WinCombination) {
                 processResult_continueGame();
             };
             break;
-        case 6: // user have to score 7 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 7) { // Player won
+        case 6:
+            if (score_Player1_numb >= points_to_win) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -344,8 +355,8 @@ function processResult_AdvantureMode(WinCombination) {
                 processResult_continueGame();
             };
             break;
-        case 7: // user have to score 9 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 9) { // Player won
+        case 7:
+            if (score_Player1_numb >= points_to_win) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 1 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -355,8 +366,8 @@ function processResult_AdvantureMode(WinCombination) {
                 processResult_continueGame();
             };
             break;
-        case 8: // user have to score 13 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 13) { // Player won
+        case 8:
+            if (score_Player1_numb >= points_to_win) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 3 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -366,8 +377,8 @@ function processResult_AdvantureMode(WinCombination) {
                 processResult_continueGame();
             };
             break;
-        case 9: // user have to score 15 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 15 && sun_HP <= 0) { // Player won
+        case 9:
+            if (score_Player1_numb >= points_to_win && sun_HP <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 5 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -377,8 +388,8 @@ function processResult_AdvantureMode(WinCombination) {
                 processResult_continueGame();
             };
             break;
-        case 10: // user have to score 20 points against the opponent (opponent: Bot)
-            if (score_Player1_numb >= 20 && eye_HP <= 0) { // Player won
+        case 10:
+            if (score_Player1_numb >= points_to_win && eye_HP <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
 
             } else if (score_Player2_numb >= 3 || MaxAmountOfMovesCount <= 0) { // Bot won
@@ -530,102 +541,131 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
     InitItem(icon, iconIsAdvanced, StartPos);
 };
 
+// check and return wether the player beat the boss
+const advantureMap_beatBoss = () => {
+    switch (current_selected_level) {
+        case 4:
+            if (current_level_boss.hp <= 0) {
+                return true;
+            }
+            return false;
+        case 9:
+            if (sun_HP <= 0) {
+                return true;
+            }
+            return false;
+        case 10:
+            if (eye_HP <= 0) {
+                return true;
+            } else return false;
+        default:
+            return true;
+    };
+};
+
 // choose sub winner
 function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points) {
-    CheckmateWarnText.style.display = 'none';
-    // animation
-    FloatingIconAnimation(Player1_won, Player2_won, WinCombination[0].getBoundingClientRect(), WinCombination.length);
-    WinCombination.forEach(Ele => {
-        Ele.classList.add('about-to-die-cell');
-    });
+    return new Promise((resolve) => {
+        CheckmateWarnText.style.display = 'none';
+        // animation
+        FloatingIconAnimation(Player1_won, Player2_won, WinCombination[0].getBoundingClientRect(), WinCombination.length);
+        WinCombination.forEach(Ele => {
+            Ele.classList.add('about-to-die-cell');
+        });
 
-    // for advanture mode
-    MovesAmount_PlayerAndKi = 0;
-    KI_play_mode = "defend";
+        // for advanture mode
+        MovesAmount_PlayerAndKi = 0;
+        KI_play_mode = "defend";
 
-    // processing
-    setTimeout(() => {
-        if (Player1_won == true) {
-            statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
-            score_Player1_numb = score_Player1_numb + 1 + extra_points;
-            scorePlayer1.textContent = score_Player1_numb;
+        // processing
+        setTimeout(() => {
+            if (Player1_won == true) {
+                statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
+                score_Player1_numb = score_Player1_numb + 1 + extra_points;
+                scorePlayer1.textContent = score_Player1_numb;
 
-            // player made a point in advanture mode
-            if (inAdvantureMode) {
-                statusText.textContent = `You just gained a point!`;
+                // player made a point in advanture mode
+                if (inAdvantureMode) {
+                    statusText.textContent = `You just gained a point!`;
+                    // If player passed the requirement to win the level
+                    if (score_Player1_numb >= points_to_win && advantureMap_beatBoss()) {
+                        Player1_won = false;
+                        running = false;
+                        processResult_AdvantureMode(WinCombination);
+                        return;
+                    };
 
-                // If player passed the requirement to win the level
-                if (score_Player1_numb >= points_to_win) {
-                    statusText.textContent = `Congrats! You scored ${points_to_win} points`;
+                    // player plays boss level
+                    if (current_selected_level == 10) {
+                        eyeGot_HP_Damage(Math.floor(Math.random() * (499 - 370 + 1)) + 370); // random damage on eye between 370-499
+
+                    } else if (current_selected_level == 9) {
+                        sunGot_HP_Damage(Math.floor(Math.random() * (699 - 370 + 1)) + 370); // random damage on sun between 370-699
+
+                    } else if (current_selected_level == 4) {
+                        current_level_boss.damage(Math.floor(Math.random() * (799 - 470 + 1)) + 470); // random damage 
+                    };
+
+                    NewWinCombisDuringGame();
+                    let result = Check_KI_canSetTwoTimesInARow(current_selected_level);
+
+                    result ? resolve("KI_CanSetASecondTime") : resolve();
+                    return;
+
+                } else if (score_Player1_numb >= points_to_win) {
                     Player1_won = false;
                     running = false;
                     Call_UltimateWin();
                     return;
                 };
 
-                // player plays boss level
-                if (current_selected_level == 10) {
-                    eyeGot_HP_Damage(Math.floor(Math.random() * (499 - 370 + 1)) + 370); // random damage on eye between 370-499
+                // other mode
+                if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+                    statusText.textContent = `You just gained a point!`;
 
-                } else if (current_selected_level == 9) {
-                    sunGot_HP_Damage(Math.floor(Math.random() * (699 - 370 + 1)) + 370); // random damage on sun between 370-699
-
-                } else if (current_selected_level == 4) {
-                    current_level_boss.damage(Math.floor(Math.random() * (799 - 470 + 1)) + 470); // random damage 
+                } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
+                    statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
                 };
-            };
 
-            if (score_Player1_numb >= points_to_win) {
                 Player1_won = false;
-                running = false;
-                Call_UltimateWin();
-                return;
-            };
+                resolve();
 
-            // other mode
-            if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
-                statusText.textContent = `You just gained a point!`;
+            } else if (Player2_won == true) {
+                statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
+                score_Player2_numb = score_Player2_numb + 1 + extra_points;
+                scorePlayer2.textContent = score_Player2_numb;
 
-            } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
-                statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
-            };
+                // the opponent made a point in advanture mode
+                if (inAdvantureMode) {
+                    statusText.textContent = `the unknown just gained a point`;
+                    if (score_Player2_numb >= points_to_win) {
+                        statusText.textContent = `You lost against the evil. Are you willing to try again?`;
+                        Player2_won = false;
+                        Call_UltimateWin();
+                        return;
+                    };
+                };
 
-            Player1_won = false;
-
-        } else if (Player2_won == true) {
-            statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
-            score_Player2_numb = score_Player2_numb + 1 + extra_points;
-            scorePlayer2.textContent = score_Player2_numb;
-
-            // the opponent made a point in advanture mode
-            if (inAdvantureMode) {
-                statusText.textContent = `the unknown just gained a point`;
                 if (score_Player2_numb >= points_to_win) {
-                    statusText.textContent = `You lost against the evil. Are you willing to try again?`;
                     Player2_won = false;
+                    running = false;
                     Call_UltimateWin();
                     return;
                 };
-            };
 
-            if (score_Player2_numb >= points_to_win) {
+                // other mode
+                if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
+                    statusText.textContent = `You just gained a point!`;
+
+                } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+                    statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
+                };
+
                 Player2_won = false;
-                running = false;
-                Call_UltimateWin();
-                return;
+                resolve();
             };
-
-            // other mode
-            if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
-                statusText.textContent = `You just gained a point!`;
-
-            } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
-                statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
-            };
-
-            Player2_won = false;
-        };
-    }, 1000);
+        }, 1000);
+    });
 };
 
 // call Ultimate Game Win Function
@@ -672,7 +712,6 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
 // ultimate game win start animation
 const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
     setTimeout(() => {
-
         cellGrid.classList.add('Invisible');
         statusText.classList.add('Invisible');
         GameFieldHeaderUnderBody.style.display = 'none';
@@ -778,25 +817,13 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
 
 // first player did ultimate win
 const FirstPlayerUltimateWin = (player1_won, player2_won) => {
+    let winText = !inAdvantureMode ? `${PlayerData[1].PlayerName} won it ` : "You conquered it";
+
     // Display win text in the proper way
-    if (!inAdvantureMode) {
-        UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it `;
-
-    } else if (inAdvantureMode || curr_mode == GameMode[1].opponent) {
-        UltimateWinText.textContent = `You conquered it `;
-
+    if (inAdvantureMode || curr_mode == GameMode[1].opponent) {
         // if user beat level 10 - boss level
         if (current_selected_level == 10) {
-            UltimateWinText.textContent = `You have conquered the evil `;
-
-            // additional img svg
-            let img = document.createElement('img');
-            let br = document.createElement('br');
-            img.src = "./assets/game/laurels-trophy.svg";
-            img.width = "300";
-            img.height = "300";
-            UltimateWinText.appendChild(br);
-            UltimateWinText.appendChild(img);
+            UltimateGameWinFirstAnimation("You have conquered the evil")
 
             setTimeout(() => {
                 UltimateWinTextArea.style.opacity = "1";
@@ -810,14 +837,8 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
 
     // additional img. If player is not it level 10 , this default img gets created
     if (current_selected_level != 10) {
-        // additional img svg
-        let img = document.createElement('img');
-        let br = document.createElement('br');
-        img.src = "./assets/game/holy-grail.svg";
-        img.width = "300";
-        img.height = "300";
-        UltimateWinText.appendChild(br);
-        UltimateWinText.appendChild(img);;
+        // win animation
+        UltimateWinAnimation(winText);
 
         setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
     };
@@ -839,31 +860,14 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
 // first player did ultimate win
 const SecondPlayerUltimateWin = (player1_won, player2_won) => {
     if (inAdvantureMode) {
-        UltimateWinText.textContent = `You have lost `;
-
-        // additional img svg
-        let img = document.createElement('img');
-        let br = document.createElement('br');
-        img.src = "./assets/game/bleeding-eye.svg";
-        img.width = "300";
-        img.height = "300";
-        UltimateWinText.appendChild(br);
-        UltimateWinText.appendChild(img);
+        // animation
+        UltimateWinAnimation(`You have lost`);
 
         setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 
     } else {
-        // Display win text in the proper way
-        UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it`;
-
-        // additional img svg
-        let img = document.createElement('img');
-        let br = document.createElement('br');
-        img.src = "./assets/game/holy-grail.svg";
-        img.width = "300";
-        img.height = "300";
-        UltimateWinText.appendChild(br);
-        UltimateWinText.appendChild(img);
+        // animation
+        UltimateWinAnimation(`${PlayerData[2].PlayerName} won it`);
 
         setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
     };
@@ -876,16 +880,8 @@ const SecondPlayerUltimateWin = (player1_won, player2_won) => {
 
 // tie ultiamte win
 const GG_UltimateWin = (player1_won, player2_won) => {
-    UltimateWinText.textContent = `GG Well played!`;
-
-    // additional img svg
-    let img = document.createElement('img');
-    let br = document.createElement('br');
-    img.src = "./assets/game/holy-grail.svg";
-    img.width = "300";
-    img.height = "300";
-    UltimateWinText.appendChild(br);
-    UltimateWinText.appendChild(img);
+    // animation
+    UltimateWinAnimation("GG Well played!");
 
     setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 
@@ -893,6 +889,18 @@ const GG_UltimateWin = (player1_won, player2_won) => {
         player1_won = false;
         player2_won = false;
     };
+};
+
+// display win text
+const UltimateWinAnimation = (winText) => {
+    GameAnimation(winText, true).then(() => { // true: says that the battle ended
+        UltimateWinText.textContent = null;
+        let img = document.createElement('img');
+        img.src = "./assets/game/holy-grail.svg";
+        img.width = "300";
+        img.height = "300";
+        UltimateWinText.appendChild(img);
+    });
 };
 
 // Ultimate Game Win
@@ -945,7 +953,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
     // Display win text in the proper way
     if (personal_GameData.role == 'admin') {
-        UltimateWinText.textContent = `You won it `;
+        UltimateWinAnimation(`You won it `);
 
         // continue with normal code
         let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
@@ -955,17 +963,8 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
         console.log(wins_storage)
 
     } else {
-        UltimateWinText.textContent = `${PlayerData[1].PlayerName} won it `;
+        UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
     };
-
-    // additional img svg
-    let img = document.createElement('img');
-    let br = document.createElement('br');
-    img.src = "./assets/game/holy-grail.svg";
-    img.width = "300";
-    img.height = "300";
-    UltimateWinText.appendChild(br);
-    UltimateWinText.appendChild(img);
 
     setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 
@@ -987,7 +986,7 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
 const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
     // Display win text in the proper way
     if (personal_GameData.role == 'user') {
-        UltimateWinText.textContent = `You won it `;
+        UltimateWinAnimation(`You won it `);
 
         // continue with normal code
         let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
@@ -997,16 +996,8 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
         console.log(wins_storage)
 
     } else {
-        UltimateWinText.textContent = `${PlayerData[2].PlayerName} won it `;
+        UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
     };
-    // additional img svg
-    let img = document.createElement('img');
-    let br = document.createElement('br');
-    img.src = "./assets/game/holy-grail.svg";
-    img.width = "300";
-    img.height = "300";
-    UltimateWinText.appendChild(br);
-    UltimateWinText.appendChild(img);
 
     setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 
@@ -1025,15 +1016,8 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
 // tie in online game 
 const OnlineGame_UltimateWin_GG = (player1_won, player2_won) => {
     console.log(player1_won, player2_won)
-    UltimateWinText.textContent = `GG Well played `;
-    // additional img svg
-    let img = document.createElement('img');
-    let br = document.createElement('br');
-    img.src = "./assets/game/bleeding-eye.svg";
-    img.width = "300";
-    img.height = "300";
-    UltimateWinText.appendChild(br);
-    UltimateWinText.appendChild(img);
+
+    UltimateWinAnimation(`GG Well played `);
 
     setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 };
@@ -1041,8 +1025,6 @@ const OnlineGame_UltimateWin_GG = (player1_won, player2_won) => {
 // the admin called the ultimate game win
 // this message recieve all clients
 socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
-    console.log("finally, you are in global ultimate win");
-
     // basic stuff
     stopStatusTextInterval = false;
     cellGrid.style.opacity = "0";

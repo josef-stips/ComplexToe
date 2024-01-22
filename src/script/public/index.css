@@ -382,15 +382,16 @@ img {
 
 .header-body {
     width: 100%;
-    height: 10%;
+    height: 9%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 0 2% 0;
 }
 
 .lobby-header {
     color: var(--font-color);
-    height: 85%;
+    height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
@@ -3324,6 +3325,9 @@ label h3 {
     z-index: 10010;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    transition: width 0.3s ease-out;
 }
 
 .eyeDamageDisplay {
@@ -3406,6 +3410,9 @@ label h3 {
     z-index: 10010;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    transition: width 0.3s ease-out;
 }
 
 
@@ -3461,6 +3468,9 @@ label h3 {
     z-index: 10010;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    transition: width 0.3s ease-out;
 }
 
 
@@ -6255,7 +6265,66 @@ label h3 {
 }
 
 
+/* game animation elements */
+
+.WhiteLayer {
+    background: rgba(255, 255, 255, 0.35);
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 500;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.BigScreenSword {
+    position: absolute;
+    margin: 0px auto auto auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: -500px;
+    z-index: 500;
+    animation: 1.5s ease-in 0s 1 normal forwards running ElementComesFromAboveTheScreen;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.BigScreenText {
+    transform: scale(0);
+    position: absolute;
+    margin: auto auto auto auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 60px;
+    transition: opacity 0.2s ease-in-out;
+    animation: 0.25s ease-in 0s 1 normal forwards running popUp-POP;
+    color: white;
+    height: min-content;
+    width: max-content;
+    text-shadow: 3px 3px #101214;
+}
+
+
 /* Animations */
+
+@keyframes ElementComesFromAboveTheScreen {
+    0% {
+        top: -500px;
+    }
+    5% {
+        top: 130px;
+    }
+    100% {
+        top: 260px;
+    }
+}
 
 @keyframes lockSpy_unlockAnimation {
     0% {

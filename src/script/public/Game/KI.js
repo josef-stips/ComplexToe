@@ -21,7 +21,9 @@ let KI_play_mode = "defend";
 
 let all_good_win_combinations = []; // 2D Array of all win combis the KI can instantly try with the first move
 let currently_taken_combination = []; // The KI chooses the first good win comb. and tries to fulfill it
-let current_combination_index = 0; // Number: The current index the KI chooses of the currently taken win combination
+let current_combination_index = 0; // Number: The current index the KI chooses of the currently taken win combination´
+
+let Ki_canSetTwoTimesInARow = false;
 
 // initialize bitboards
 const InitBitboards = (InnerFieldOptions) => {
@@ -494,7 +496,7 @@ function KI_Action() {
             let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
             // console.log(options, InnerFieldOptions, InnerFieldData_Options, InnerFieldData_Indexes, InnerFieldData, blockages.toString(2), binaryWinConds.toString(2));
 
-            if (MovesAmount_PlayerAndKi > 20 || MovesAmount_PlayerAndKi < 4) {
+            if (MovesAmount_PlayerAndKi > 20 || MovesAmount_PlayerAndKi < 3) {
                 // create one worker for each chunk 
                 chunks.forEach((chunk, i) => {
                     workerFunction(
@@ -524,9 +526,11 @@ function KI_Action() {
                     // check if ki can win in 2 moves or less
                     let worker = new Worker("./Game/worker/2MovesAhead.js");
                     // start worker
-                    worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options]);
+                    worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
                     // worker finished
                     worker.onmessage = (worker_result) => {
+                        console.log(worker_result.data, lastCellIndex_Clicked, InnerFieldData_Indexes[lastCellIndex_Clicked]);
+
                         worker.terminate();
 
                         // if player can't win in 1 move but ki can win in 2 moves, set move for attacking because it is more valuable
@@ -764,17 +768,27 @@ function copyPairsWithDuplicateValue(obj, targetValue) {
     return resultObj;
 };
 
-// for the best score evaluation: seperate pairs with similar value
 function findNearestKey(obj, target, bestScoreIndex, calculatedMoves) {
-    let keys = Object.keys(obj);
+    let zahlenArray = Object.keys(obj);
 
-    if (keys.length === 0) return parseInt(getKeyByValue(calculatedMoves, bestScoreIndex)); // Wenn das Objekt leer ist, gibt es keinen nähesten Key
+    if (zahlenArray.length === 0) return parseInt(getKeyByValue(calculatedMoves, bestScoreIndex));
 
-    // Sortiere die Keys basierend auf der Differenz zu target
-    keys.sort((a, b) => Math.abs(target - a) - Math.abs(target - b));
-    // Der erste Key nach der Sortierung hat die kleinste Differenz
-    return parseInt(keys[0]);
-};
+    // Überprüfen Sie jedes Element im Array, um die visuell nächste Zahl zu finden
+    let nahesteZahl = zahlenArray[0];
+    let kleinsterUnterschied = Math.abs(target - nahesteZahl);
+
+    for (let i = 1; i < zahlenArray.length; i++) {
+        let aktuellerUnterschied = Math.abs(target - zahlenArray[i]);
+
+        if (aktuellerUnterschied < kleinsterUnterschied) {
+            nahesteZahl = zahlenArray[i];
+            kleinsterUnterschied = aktuellerUnterschied;
+        }
+    }
+
+    console.log(target, Number(nahesteZahl));
+    return Number(nahesteZahl);
+}
 
 // a variable for special case in minimax algorithm where KI returns -1
 let PreviousIsA_MinusOperation_SpecialCase = true;
@@ -861,10 +875,12 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
         // check if ki can win in 2 moves or less
         let worker = new Worker("./Game/worker/2MovesAhead.js");
         // start worker
-        worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options]);
+        worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
 
         // calcualte. returns false or index
         worker.onmessage = (worker_result) => {
+            console.log(worker_result.data, fromAttack, fromKI_CheckPlayer);
+
             worker.terminate();
             // says wether the player can win in 2 moves
             if (worker_result.data != false) {
@@ -882,6 +898,29 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
                 ki_set(BigField_Index, index);
 
             } else if (worker_result.data == false && fromAttack == undefined && fromKI_CheckPlayer == undefined) {
+
+                // 1. Find potential
+                let bigboards = InitBigboards(options); // 0: ki_board, 1: player_board, 2: blockages
+                GenerateOriginWinConds();
+                let binaryWinConds_forPlayer = convertToBinary(WinConditions);
+
+                // look and add good win combis for the KI
+                for (let [i, cond] of binaryWinConds_forPlayer.entries()) {
+                    // console.log((bigboards[0] & BigInt(cond)), (BigInt(blockages) & BigInt(cond)), (bigboards[1] & BigInt(cond)));
+                    // check if in the win combination is good and if there is no blockage
+                    if ((bigboards[1] & BigInt(cond)) > BigInt(0) && (bigboards[2] & BigInt(cond)) == BigInt(0) && (bigboards[0] & BigInt(cond)) == BigInt(0)) {
+                        all_good_win_combinations.push(WinConditions[i]);
+
+                        // console.log(WinConditions[i][0], i, blockages.toString(2), bigboards[2].toString(2), ((bigboards[2] >> BigInt(WinConditions[i][0])) & BigInt(1)));
+                        if (options[WinConditions[i][0]] == "" && (((bigboards[2] >> BigInt(WinConditions[i][0])) & BigInt(1)) === BigInt(0))) {
+                            // console.log("sdfaifhndifjhasdfuiasdhflshdjifjasdlfjdf", WinConditions[i][0]);
+                            ki_set(Number(WinConditions[i][0]), Number(InnerFieldData_Indexes[WinConditions[i][0]]));
+                            return;
+
+                        } else continue;
+                    };
+                };
+
                 // call minimax
                 let calculatedMoves = new Object();
                 // initialize start time for worker 
@@ -939,25 +978,27 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
                     };
                 };
 
-                // search for new field and place new attack --------------------------------
-                // remove access to set for the player
-                setTimeout(() => {
-                    cells.forEach(cell => {
-                        cell.removeEventListener('click', cellCicked);
-                        cell.style.cursor = 'default';
-                    });
-                }, 700);
-                MovesAmount_PlayerAndKi++;
+                PlayerCanWinIn2Moves(InnerFieldData_Indexes, undefined, undefined);
 
-                // if KI can place first it needs to find the best, that means the most open space, spot on the field
-                let finalMove;
-                finalMove = FindBestSpot(options, true); // return index
+                // // search for new field and place new attack --------------------------------
+                // // remove access to set for the player
+                // setTimeout(() => {
+                //     cells.forEach(cell => {
+                //         cell.removeEventListener('click', cellCicked);
+                //         cell.style.cursor = 'default';
+                //     });
+                // }, 700);
+                // MovesAmount_PlayerAndKi++;
 
-                // if the KI is the first to place and the eval found the best index 
-                if (finalMove != null) {
-                    KI_move(finalMove);
-                    return;
-                };
+                // // if KI can place first it needs to find the best, that means the most open space, spot on the field
+                // let finalMove;
+                // finalMove = FindBestSpot(options, true); // return index
+
+                // // if the KI is the first to place and the eval found the best index 
+                // if (finalMove != null) {
+                //     KI_move(finalMove);
+                //     return;
+                // };
             };
         };
     });
@@ -1003,9 +1044,9 @@ const ki_set = (index, inner_field_index) => {
     // on bitboard
     ki_board |= 1 << inner_field_index;
     // on arrays and visual board
-    cells[index].textContent = currentPlayer;
-    options[index] = currentPlayer;
-    InnerFieldData_Options[inner_field_index] = currentPlayer;
+    cells[index].textContent = PlayerData[2].PlayerForm;
+    options[index] = PlayerData[2].PlayerForm;
+    InnerFieldData_Options[inner_field_index] = PlayerData[2].PlayerForm;
 
     // for color
     cells[index].style.color = "gold";
@@ -1013,17 +1054,37 @@ const ki_set = (index, inner_field_index) => {
     // update last clicked cell
     KI_lastCellIndex_Clicked = index;
 
-    GenerateOriginWinConds().then(() => {
-        // change Player
-        checkWinner();
+    console.log(Ki_canSetTwoTimesInARow);
 
-        // player gets access to set again
-        setTimeout(() => {
-            cells.forEach(cell => {
-                cell.addEventListener('click', cellCicked);
-                cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
-            });
-        }, 700);
+    GenerateOriginWinConds().then(() => {
+        if (Ki_canSetTwoTimesInARow) {
+
+            console.log("Ki places two times in a row dsfasdfsdfasdfs", Ki_canSetTwoTimesInARow);
+
+            // ki can set a second time
+            Ki_canSetTwoTimesInARow = false;
+            KI_Action();
+
+            console.log("Ki places two times in a row dsfasdfsdfasdfs lelellerlelleelelelel", Ki_canSetTwoTimesInARow);
+
+            return;
+
+        } else if (!Ki_canSetTwoTimesInARow) {
+            console.log("Ki changes players sdikasfjsdlkifdasklfahsjdf", Ki_canSetTwoTimesInARow);
+
+            // change Player
+            checkWinner();
+
+            // addAccessToAnything(undefined, true, true);
+
+            // player gets access to set again
+            setTimeout(() => {
+                cells.forEach(cell => {
+                    cell.addEventListener('click', cellCicked);
+                    cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+                });
+            }, 700);
+        };
     });
 };
 

@@ -5,8 +5,11 @@ onmessage = (data) => {
     let BinaryWinConds = data.data[3];
     let PlayerData = data.data[4];
     let options = data.data[5];
+    let player_lastCellIndexClicked = data.data[6];
     // console.log(for_ki, WinConditions, bigboards, BinaryWinConds, PlayerData, options);
     // console.log(options, WinConditions, BinaryWinConds, bigboards);
+
+    const nearestNumber = (mainNumb, numb1, numb2) => (Math.abs(mainNumb - numb1) < Math.abs(mainNumb - numb2)) ? numb1 : numb2;
 
     // check if player has won
     function minimax_checkWinner(Player_B, winnerIcon) { // give player big bit boards (type BigInt)
@@ -99,16 +102,10 @@ onmessage = (data) => {
                 board &= ~(BigInt(1) << i);
 
                 if (result[0] == true) {
-                    let random = Math.floor(Math.random() * 2); // random number between 0 and 1
-                    // console.log(random, i, result[1]);
-                    if (random == 0) {
-                        postMessage(i);
-                        return;
+                    let nearestIndex = nearestNumber(Number(player_lastCellIndexClicked), Number(i), Number(result[1]));
 
-                    } else {
-                        postMessage(result[1]);
-                        return;
-                    };
+                    console.log(i, Number(result[1]), Number(nearestIndex));
+                    postMessage(nearestIndex);
 
                 } else continue;
             }

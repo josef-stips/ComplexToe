@@ -29,7 +29,6 @@ class TMA_InnerField {
         // make data global in class instance
         this.indexes = indexes;
         this.options = options;
-
         // console.log(indexesBigField, indexes, options, this.indexes, this.options, this.blockages.toString(2));
 
         GenerateOriginWinConds(undefined);

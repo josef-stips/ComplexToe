@@ -152,6 +152,11 @@ function playMysticalTheme() {
     CreateMusicBars(mysticalSound);
 };
 
+function playBattleEndTheme() {
+    PauseMusic();
+    CreateMusicBars(battleAudio);
+};
+
 function play_rewardSound() {
     // reward/ achievement sound
     rewardAudio.volume = sfxVolume;
@@ -169,4 +174,11 @@ async function play_laughSound() {
     LaughSound.volume = sfxVolume;
     LaughSound.playbackRate = 0.7;
     LaughSound.play();
+};
+
+function play_GameAnimationSound() {
+    sound1.pause();
+    sound1.currentTime = 0;
+    sound1.volume = sfxVolume;
+    sound1.play();
 };

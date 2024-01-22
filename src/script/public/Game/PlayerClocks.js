@@ -74,7 +74,7 @@ function removeAccessToAnything() {
 };
 
 // add excess to anything
-function addAccessToAnything(TimerEnded, fromBeginning) {
+function addAccessToAnything(TimerEnded, fromBeginning, FromGameAnimation) {
     globalChooseWinnerBtn.addEventListener('click', openChooseWinnerWindow);
     restartBtn.addEventListener('click', restartGame);
     leaveGame_btn.addEventListener('click', UserleavesGame);
@@ -84,6 +84,15 @@ function addAccessToAnything(TimerEnded, fromBeginning) {
     restartBtn.style.color = 'white';
 
     !fromBeginning && checkWinner();
+
+    if (FromGameAnimation) {
+        running = true;
+        // player gets access to set again
+        cells.forEach(cell => {
+            cell.addEventListener('click', cellCicked);
+            cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+        });
+    };
 };
 
 // add excess to anything in online mode

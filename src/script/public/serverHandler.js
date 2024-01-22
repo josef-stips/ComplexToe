@@ -420,6 +420,8 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     running = false;
     // remove any pop up display
     CloseOnlinePopUps(true);
+    // header style
+    HeaderWrapper.style.height = '9%';
 
     // if there was general boss, delete instance
     if (current_level_boss) {
@@ -842,6 +844,8 @@ const CloseOnlinePopUps = (CloseDarkLayer) => {
     MailPopUp.style.display = "none";
     MessagesPopUp.style.display = "none";
     mapLevelOverview.style.display = "none";
+    UseSpell_PopUp.style.display = "none";
+    AchievementsPopUp.style.display = "none";
 
     if (CloseDarkLayer) DarkLayer.style.display = "none";
 };
