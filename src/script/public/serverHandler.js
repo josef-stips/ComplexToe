@@ -295,6 +295,10 @@ const clearTimer = () => {
     clearInterval(gameCounter);
     gameCounter = null;
     stopStatusTextInterval = true;
+
+    // kill boss instance 
+    current_level_boss.delete();
+    current_level_boss = null;
 };
 
 // after some player leaves game and is not the admin so it could be also an offline game, do animation etc.
@@ -422,6 +426,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     CloseOnlinePopUps(true);
     // header style
     HeaderWrapper.style.height = '9%';
+    lobbyFooter.style.background = "";
 
     // if there was general boss, delete instance
     if (current_level_boss) {

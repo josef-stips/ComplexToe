@@ -77,6 +77,7 @@ let loadingGame_ProcentDisplay = document.querySelector('.loadingGame_ProcentDis
 let loadingScreen = document.querySelector('.loadingScreen');
 let random_loadingText = document.querySelector('.random_loadingText');
 let lobbyFooterText = document.querySelector('.lobby-footer-text');
+let lobbyFooter = document.querySelector(".lobby-footer");
 let HeaderWrapper = document.querySelector(".header-body");
 
 let userInfoName = document.querySelector('.userInfo-Name');
@@ -1960,6 +1961,66 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
     if (localStorage.getItem('UserName')) {
         Player1_NameInput.value = localStorage.getItem('UserName');
         Player1_IconInput.value = localStorage.getItem('UserIcon');
+    };
+
+    console.log(curr_field_ele);
+
+    // User shouldn't play 40x40 field with 5 second player clock
+    if (curr_field_ele.getAttribute("field") == "40x40") {
+        document.querySelector("#SetClockListItem-5sec").style.display = "none";
+        delete PlayerClockData["5 seconds"];
+
+        LobbyDataSelections = {
+            "1": {
+                "1": "5x5",
+                "2": "10x10",
+                "3": "15x15",
+                "4": "20x20",
+                "5": "25x25",
+                "6": "30x30",
+                "7": "40x40"
+            },
+            "2": {
+                "1": "15 seconds",
+                "2": "30 seconds",
+                "3": "50 seconds",
+                "4": "70 seconds"
+            },
+            "3": {
+                "1": "Boneyard",
+                "2": "Blocker Combat",
+                "3": "Free Fight"
+            }
+        }
+
+    } else {
+        document.querySelector("#SetClockListItem-5sec").style.display = "block";
+        PlayerClockData["5 seconds"] = 5;
+        LobbyDataSelections["2"]["1"] = "5 seconds";
+
+        LobbyDataSelections = {
+            "1": {
+                "1": "5x5",
+                "2": "10x10",
+                "3": "15x15",
+                "4": "20x20",
+                "5": "25x25",
+                "6": "30x30",
+                "7": "40x40"
+            },
+            "2": {
+                "1": "5 seconds",
+                "2": "15 seconds",
+                "3": "30 seconds",
+                "4": "50 seconds",
+                "5": "70 seconds"
+            },
+            "3": {
+                "1": "Boneyard",
+                "2": "Blocker Combat",
+                "3": "Free Fight"
+            }
+        }
     };
 };
 

@@ -90,7 +90,7 @@ img {
 
 .Game {
     width: 95%;
-    height: 95%;
+    height: 99%;
     border-bottom: 3px solid;
     border-top: 3px solid;
     display: flex;
@@ -101,7 +101,7 @@ img {
 
 .GameArea {
     width: 100%;
-    height: 95%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -1206,6 +1206,7 @@ img {
 /* FOOTER */
 
 .lobby-footer {
+    /* background-color: ; */
     height: 10%;
     display: flex;
     flex-direction: row;
@@ -5404,7 +5405,7 @@ label h3 {
 }
 
 
-/* Pop-up und BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
+/* Pop-up und BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;

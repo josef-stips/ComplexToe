@@ -290,6 +290,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     // close pop ups if there is any on
     CloseOnlinePopUps(true);
     HeaderWrapper.style.height = '7.5%';
+    lobbyFooter.style.background = "#15171a";
 
     // in online mode: display give up button, in offline mode: display choose winner button
     curr_mode == GameMode[2].opponent ? globalChooseWinnerBtn = GiveUp_btn : globalChooseWinnerBtn = chooseWinnerWindowBtn;

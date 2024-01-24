@@ -8,7 +8,7 @@ function horizontale_Linie(n) {
         subArray.push(i, i + 1, i + 2, i + 3);
         WinConditions.push(subArray);
 
-        if (i + 3 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 3 >= (n - 1)) {
             break;
         };
     };
@@ -22,7 +22,7 @@ function vertikale_Linie(n) {
         subArray.push(i, i + 10, i + 20, i + 30);
         WinConditions.push(subArray);
 
-        if (i + 30 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 30 >= (n - 1)) {
             break;
         };
     };
@@ -36,10 +36,11 @@ function diagonale_Linie(n) {
         let subArray = [];
 
         for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
+
         subArray.push(i, i + 11, i + 22, i + 33);
         WinConditions.push(subArray);
 
-        if (i + 33 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 33 >= (n - 1)) {
             break;
         };
     };
@@ -49,14 +50,14 @@ function diagonale_Linie(n) {
 // diagonale linie #2
 // [3, 12, 21, 30]
 function diagonale_Linie2(n) {
-    for (let i = 3; i <= n; i++) {
+    for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary + 1 && (i = i + 3);
-        subArray.push(i, i + 9, i + 18, i + 27);
+        for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
+        subArray.push(i + 3, i + 12, i + 21, i + 30);
         WinConditions.push(subArray);
 
-        if (i + 27 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 30 + 3 >= (n - 1)) {
             break;
         };
     };
@@ -72,7 +73,7 @@ function diagonales_viereck(n) {
         subArray.push(i, i + 9, i + 11, i + 20);
         WinConditions.push(subArray);
 
-        if (i + 20 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 20 >= (n - 2)) {
             break;
         };
     };
@@ -84,11 +85,11 @@ function stern(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 2, i + 11, i + 20, i + 22);
         WinConditions.push(subArray);
 
-        if (i + 22 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 22 >= (n - 1)) {
             break;
         };
     };
@@ -101,12 +102,12 @@ function zweig_oben(n) {
     for (let i = 1; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary && (i = i + 3);
+        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
         subArray.push(i, i + 10, i + 20, i + 29, i + 31);
 
         WinConditions.push(subArray);
 
-        if (i + 31 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 31 >= (n - 1)) {
             break;
         };
     };
@@ -119,12 +120,12 @@ function zweig_unten(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 2, i + 11, i + 21, i + 31);
 
         WinConditions.push(subArray);
 
-        if (i + 31 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 31 >= (n - 2)) {
             break;
         };
     };
@@ -137,12 +138,12 @@ function zweig_rechts(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 2 && (i = i + 3);
+        for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
         subArray.push(i, i + 20, i + 11, i + 12, i + 13);
 
         WinConditions.push(subArray);
 
-        if (i + 20 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 20 >= (n - 4)) {
             break;
         };
     };
@@ -155,12 +156,12 @@ function zweig_links(n) {
     for (let i = 10; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 2 && (i = i + 3);
+        for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
         subArray.push(i, i + 1, i + 2, i - 7, i + 13);
 
         WinConditions.push(subArray);
 
-        if (i + 13 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 13 >= (n - 1)) {
             break;
         };
     };
@@ -173,12 +174,12 @@ function block_mit_Ast_1(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 1, i + 2, i + 10, i + 11);
 
         WinConditions.push(subArray);
 
-        if (i + 11 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 11 >= (n - 2)) {
             break;
         };
     };
@@ -191,12 +192,12 @@ function block_mit_Ast_2(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 1, i + 10, i + 11, i + 12);
 
         WinConditions.push(subArray);
 
-        if (i + 12 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 12 >= (n - 1)) {
             break;
         };
     };
@@ -209,12 +210,12 @@ function L_1(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 10, i + 20, i + 21, i + 22);
 
         WinConditions.push(subArray);
 
-        if (i + 22 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 22 >= (n - 1)) {
             break;
         };
     };
@@ -227,12 +228,12 @@ function L_2(n) {
     for (let i = 20; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 1, i + 2, i - 8, i - 18);
 
         WinConditions.push(subArray);
 
-        if (i + 2 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 2 >= (n - 1)) {
             break;
         };
     };
@@ -245,12 +246,12 @@ function L_3(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 1, i + 2, i + 10, i + 20);
 
         WinConditions.push(subArray);
 
-        if (i + 20 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 20 >= (n - 1)) {
             break;
         };
     };
@@ -263,12 +264,12 @@ function L_4(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 1, i + 2, i + 12, i + 22);
 
         WinConditions.push(subArray);
 
-        if (i + 22 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 22 >= (n - 3)) {
             break;
         };
     };
@@ -281,12 +282,12 @@ function W_1(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 1, i + 11, i + 12, i + 22);
 
         WinConditions.push(subArray);
 
-        if (i + 22 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 22 >= (n - 1)) {
             break;
         };
     };
@@ -299,12 +300,12 @@ function W_2(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
         subArray.push(i, i + 10, i + 11, i + 21, i + 22);
 
         WinConditions.push(subArray);
 
-        if (i + 22 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 22 >= (n - 1)) {
             break;
         };
     };
@@ -317,12 +318,12 @@ function W_3(n) {
     for (let i = 1; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
         subArray.push(i, i + 1, i + 9, i + 10, i + 19);
 
         WinConditions.push(subArray);
 
-        if (i + 19 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 19 >= (n - 3)) {
             break;
         };
     };
@@ -335,12 +336,12 @@ function W_4(n) {
     for (let i = 2; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary + 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary && (i = i + 2);
         subArray.push(i, i + 9, i + 10, i + 18, i + 19);
 
         WinConditions.push(subArray);
 
-        if (i + 19 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 19 >= (n - 1)) {
             break;
         };
     };

@@ -52,15 +52,15 @@ function diagonale_Linie_for20(n) {
 // diagonale linie aus 4 blöcken
 // diagonale linie #2
 function diagonale_Linie2_for20(n) {
-    for (let i = 3; i <= n; i++) {
+    for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary + 1 && (i = i + 3);
+        for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
 
-        subArray.push(i, i + 19, i + 38, i + 57);
+        subArray.push(i + 3, i + 22, i + 41, i + 60);
         WinConditions.push(subArray);
 
-        if (i + 57 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 60 + 3 >= (xCell_Amount * yCell_Amount - 1)) {
             break;
         };
     };
@@ -76,7 +76,7 @@ function diagonales_viereck_for20(n) {
         subArray.push(i, i + 19, i + 21, i + 40);
         WinConditions.push(subArray);
 
-        if (i + 40 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 40 >= (xCell_Amount * yCell_Amount - 2)) {
             break;
         };
     };
@@ -87,7 +87,7 @@ function stern_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 2, i + 21, i + 40, i + 42);
         WinConditions.push(subArray);
@@ -104,7 +104,7 @@ function zweig_oben_for20(n) {
     for (let i = 1; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary && (i = i + 3);
+        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
 
         subArray.push(i, i + 20, i + 40, i + 59, i + 61);
         WinConditions.push(subArray);
@@ -121,12 +121,12 @@ function zweig_unten_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 2, i + 21, i + 41, i + 61);
         WinConditions.push(subArray);
 
-        if (i + 61 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 61 >= (xCell_Amount * yCell_Amount - 2)) {
             break;
         };
     };
@@ -138,12 +138,12 @@ function zweig_rechts_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 2 && (i = i + 3);
+        for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
 
         subArray.push(i, i + 21, i + 22, i + 23, i + 40);
         WinConditions.push(subArray);
 
-        if (i + 40 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 40 >= (xCell_Amount * yCell_Amount - 4)) {
             break;
         };
     };
@@ -155,7 +155,7 @@ function zweig_links_for20(n) {
     for (let i = 20; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 2 && (i = i + 3);
+        for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
 
         subArray.push(i, i + 1, i + 2, i - 17, i + 23);
         WinConditions.push(subArray);
@@ -172,12 +172,12 @@ function block_mit_Ast_1_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 1, i + 2, i + 20, i + 21);
         WinConditions.push(subArray);
 
-        if (i + 21 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 21 >= (xCell_Amount * yCell_Amount - 2)) {
             break;
         };
     };
@@ -189,7 +189,7 @@ function block_mit_Ast_2_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 1, i + 20, i + 21, i + 22);
         WinConditions.push(subArray);
@@ -206,7 +206,7 @@ function L_1_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 20, i + 40, i + 41, i + 42);
         WinConditions.push(subArray);
@@ -223,7 +223,7 @@ function L_2_for20(n) {
     for (let i = 40; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 1, i + 2, i - 18, i - 38);
         WinConditions.push(subArray);
@@ -240,7 +240,7 @@ function L_3_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 1, i + 2, i + 20, i + 40);
         WinConditions.push(subArray);
@@ -257,12 +257,12 @@ function L_4_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 1, i + 2, i + 22, i + 42);
         WinConditions.push(subArray);
 
-        if (i + 42 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 42 >= (xCell_Amount * yCell_Amount - 3)) {
             break;
         };
     };
@@ -274,7 +274,7 @@ function W_1_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 1, i + 21, i + 22, i + 42);
         WinConditions.push(subArray);
@@ -291,7 +291,7 @@ function W_2_for20(n) {
     for (let i = 0; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
         subArray.push(i, i + 20, i + 21, i + 41, i + 42);
         WinConditions.push(subArray);
@@ -308,12 +308,12 @@ function W_3_for20(n) {
     for (let i = 1; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary && (i = i + 2);
+        for (let boundary of boundaries) i == boundary - 1 && (i = i + 2);
 
         subArray.push(i, i + 1, i + 19, i + 20, i + 39);
         WinConditions.push(subArray);
 
-        if (i + 39 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 39 >= (xCell_Amount * yCell_Amount - 3)) {
             break;
         };
     };
@@ -325,7 +325,7 @@ function W_4_for20(n) {
     for (let i = 2; i <= n; i++) {
         let subArray = [];
 
-        for (let boundary of boundaries) i == boundary + 1 && (i = i + 2);
+        for (let boundary of boundaries) i == boundary && (i = i + 2);
 
         subArray.push(i, i + 19, i + 20, i + 38, i + 39);
         WinConditions.push(subArray);
