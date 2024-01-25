@@ -2167,7 +2167,26 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         let fieldIndex = curr_field_ele.getAttribute('index');
         let fieldTitle = curr_field_ele.getAttribute('title');
 
-        let xyCell_Amount = Fields[fieldIndex].xyCellAmount;
+        if (fieldIndex == null || fieldTitle == null) {
+            CloseSetGameDataPopUp();
+
+            AlertText.textContent = "Try again..";
+            alertPopUp.style.display = "flex";
+            DarkLayer.style.display = "block";
+            return;
+        };
+
+        try {
+            var xyCell_Amount = Fields[fieldIndex].xyCellAmount;
+
+        } catch (error) {
+            CloseSetGameDataPopUp();
+
+            AlertText.textContent = "Try again..";
+            alertPopUp.style.display = "flex";
+            DarkLayer.style.display = "block";
+            return;
+        };
 
         if (localStorage.getItem('userInfoClass') == "empty") { // user doesn't use an advanced skin => everything's normal
             curr_form1 = Player1_IconInput.value.toUpperCase();
@@ -3155,7 +3174,19 @@ const CloseUserPopUpOfOtherPlayer = () => {
     FriendsList_Btn.style.display = "flex";
     SearchUser_Btn.style.display = "flex";
     GetMessage_Btn.style.display = "flex";
-    (!running) ? DarkLayer.style.display = "block": DarkLayer.style.display = "none";
+
+    console.log(running, personal_GameData.role);
+    if (!running) {
+        if (personal_GameData.currGameID != null) {
+            DarkLayer.style.display = "block";
+
+        } else {
+            DarkLayer.style.display = "block";
+        };
+
+    } else {
+        DarkLayer.style.display = "none"
+    };
 
     UserLastTimeOnlineDisplay.style.display = "none";
     SendMessage_Btn.style.display = "none";
@@ -3192,9 +3223,19 @@ const TryToCloseUserInfoPopUp = () => {
         if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
             localStorage.getItem('UserIcon') == null) {
 
-            if (!UserIsOnProfileFromOtherPlayer && personal_GameData.currGameID == null || running) { DarkLayer.style.display = 'none' } else if (personal_GameData.currGameID != null) {
-                DarkLayer.style.display = "block";
+            console.log(running, personal_GameData.role);
+            if (!running) {
+                if (personal_GameData.currGameID != null) {
+                    DarkLayer.style.display = "block";
+
+                } else {
+                    DarkLayer.style.display = "none";
+                };
+
+            } else {
+                DarkLayer.style.display = "none"
             };
+
             if (!UserIsOnProfileFromOtherPlayer) userInfoPopUp.style.display = 'none';
 
             if (userInfoIcon.textContent !== "") {

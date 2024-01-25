@@ -187,12 +187,6 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // set up restart button
     restartBtn.addEventListener('click', restartGame);
 
-    // Adds click event to every single cell and starts game
-    el_cells.forEach(cell => {
-        cell.addEventListener('click', cellCicked);
-        cell.style.cursor = "pointer";
-    });
-
     running = true;
     player1_can_set = true;
     player3_can_set = false;
@@ -291,6 +285,13 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     CloseOnlinePopUps(true);
     HeaderWrapper.style.height = '7.5%';
     lobbyFooter.style.background = "#15171a";
+    lobbyFooter.style.width = "100%";
+
+    // remove access to set
+    cells.forEach(cell => {
+        cell.removeEventListener('click', cellCicked);
+        cell.style.cursor = "default";
+    });
 
     // in online mode: display give up button, in offline mode: display choose winner button
     curr_mode == GameMode[2].opponent ? globalChooseWinnerBtn = GiveUp_btn : globalChooseWinnerBtn = chooseWinnerWindowBtn;
@@ -568,6 +569,12 @@ function initializePlayers(OnlineGameDataArray) {
     scores[PlayerData[1].PlayerForm] = -1;
     scores[PlayerData[2].PlayerForm] = 1;
     scores['tie'] = 0;
+
+    // Adds click event to every single cell and starts game
+    cells.forEach(cell => {
+        cell.addEventListener('click', cellCicked);
+        cell.style.cursor = "pointer";
+    });
 };
 
 // when the game starts, for all players in the game, 
@@ -835,6 +842,7 @@ socket.on('player_clicked', Goptions => {
         const element = options[i];
 
         if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] == "empty" && cells[i].classList.length == 1) {
+
             cells[i].style.color = Goptions[2];
             cells[i].classList.add('colored-cell');
 
@@ -940,6 +948,7 @@ socket.on('blockerCombat_action', Goptions => {
 
     // At the end: Continue the game 
     checkWinner(false, "fromClick");
+    player3_can_set = false;
 });
 
 async function changePlayer(from_restart, fromClick) {

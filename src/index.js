@@ -10,12 +10,12 @@ const createWindow = () => {
         height: 800,
         fullscreen: true,
         // icon: "/src/script/public/assets/images/icons/win/icon.ico",
-        autoHideMenuBar: false,
+        autoHideMenuBar: true,
         nodeIntegration: true,
         contextIsolation: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            devTools: true,
+            devTools: false,
         },
     });
 

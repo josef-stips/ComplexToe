@@ -578,10 +578,10 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
                     // player plays boss level
                     if (current_selected_level == 10) {
-                        eyeGot_HP_Damage(Math.floor(Math.random() * (499 - 370 + 1)) + 370); // random damage on eye between 370-499
+                        current_level_boss.damage(Math.floor(Math.random() * (499 - 370 + 1)) + 370); // random damage on eye between 370-499
 
                     } else if (current_selected_level == 9) {
-                        sunGot_HP_Damage(Math.floor(Math.random() * (699 - 370 + 1)) + 370); // random damage on sun between 370-699
+                        current_level_boss.damage(Math.floor(Math.random() * (699 - 370 + 1)) + 370); // random damage on sun between 370-699
 
                     } else if (current_selected_level == 4) {
                         current_level_boss.damage(Math.floor(Math.random() * (799 - 470 + 1)) + 470); // random damage 

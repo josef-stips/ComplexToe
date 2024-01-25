@@ -123,6 +123,7 @@ img {
 }
 
 #GameArea-FieldCircle {
+    transform: var(--max-responsive-scale);
     border: solid 6px red;
     animation: borderAnimation 5s linear infinite;
 }
@@ -322,7 +323,7 @@ img {
     width: 100%;
     font-size: 16px;
     font-weight: 500;
-    margin: 0 0 4px 0;
+    margin: 0 0 14px 0;
 }
 
 .FirstPlayer-time {
@@ -2468,7 +2469,6 @@ label h3 {
 }
 
 .LobbyGameDataSection {
-    margin: 0.35em 0 0 0;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -3474,6 +3474,11 @@ label h3 {
     transition: width 0.3s ease-out;
 }
 
+.DialogEye {
+    width: 350px;
+    height: 350px;
+}
+
 
 /* sun attacks */
 
@@ -4109,7 +4114,6 @@ label h3 {
     flex-direction: column;
     font-size: 20px;
     padding: 0 0 0 40px;
-    margin: 0 0 30px 0;
     max-height: 350px;
     min-height: 220px;
 }
@@ -6781,7 +6785,7 @@ label h3 {
         --Text-font-size: 17.5px;
         --max-cellGrid-size: 442.5px;
         --CreateLevel-ScrollContainerHeight-max: 450px;
-        --max-responsive-scale: scale(0.85);
+        --max-responsive-scale: scale(0.75);
     }
     .skinShop-SkinColors {
         gap: 1em;
@@ -6797,9 +6801,13 @@ label h3 {
     .mapCircle {
         font-size: 1v;
     }
-    .eyeIMG {
+    .bossIMG {
         width: 200px;
         height: 200px;
+    }
+    .DialogEye {
+        width: 250px;
+        height: 250px;
     }
     .loadScreen_main {
         font-size: 140px;

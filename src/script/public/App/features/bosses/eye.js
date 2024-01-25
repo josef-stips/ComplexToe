@@ -46,6 +46,7 @@ function eye_attack() {
         clearInterval(eye_pos);
         eye_pos = null;
         if (!current_level_boss.died) {
+            CreateOptions("fromMap");
             // play soundeffect
             eye_attack_soundeffect.volume = sfxVolume;
             eye_attack_soundeffect.playbackRate = 1;
@@ -159,7 +160,7 @@ function EyeAttackInterval() {
 socket.on("EyeAttackInterval", (eyeAttackInterval) => {
     eyeNextAttackTimer.textContent = `${0}:${eyeAttackInterval}`;
 
-    if (eyeAttackInterval >= 5) {
+    if (eyeAttackInterval <= 3) {
         removeAccessToAnything();
     };
 
@@ -171,6 +172,7 @@ socket.on("EyeAttackInterval", (eyeAttackInterval) => {
 });
 
 socket.on("EyeAttack", () => {
+    removeAccessToAnything();
     eyeNextAttackTimer.textContent = `0:0`;
     eye_attack();
 });
@@ -184,7 +186,7 @@ socket.on("EyeDamage", async(OptionsArray) => {
         };
     });
 
-    addAccesOnlineMode();
+    addAccesOnlineMode(true, true);
 });
 
 // user can defeat the eye through his patterns and if he clicks on the eye with the cursor

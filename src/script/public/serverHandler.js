@@ -247,9 +247,7 @@ Lobby_closeBtn.addEventListener('click', () => {
     locked_40x40();
 });
 
-// If user already entered a room and just needs to set up his player data, he can close the window with the "x" in the header
-// When he closes the window, he gets kicked out of the room
-SetPlayerNamesCloseBtn.addEventListener('click', () => {
+const CloseSetGameDataPopUp = () => {
     // in computer mode or in online mode but user wants to create a game
     SetPlayerNamesPopUp.style.display = 'none';
     DarkLayer.style.display = 'none';
@@ -265,6 +263,12 @@ SetPlayerNamesCloseBtn.addEventListener('click', () => {
             personal_GameData.EnterOnlineGame = false;
         });
     };
+};
+
+// If user already entered a room and just needs to set up his player data, he can close the window with the "x" in the header
+// When he closes the window, he gets kicked out of the room
+SetPlayerNamesCloseBtn.addEventListener('click', () => {
+    CloseSetGameDataPopUp();
 });
 
 // Only the admin can start the game, only for the admin this button is visible
@@ -297,8 +301,10 @@ const clearTimer = () => {
     stopStatusTextInterval = true;
 
     // kill boss instance 
-    current_level_boss.delete();
-    current_level_boss = null;
+    if (current_level_boss != null) {
+        current_level_boss.delete();
+        current_level_boss = null;
+    };
 };
 
 // after some player leaves game and is not the admin so it could be also an offline game, do animation etc.
@@ -344,7 +350,7 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
                 DarkLayer.style.opacity = '0';
 
                 setTimeout(() => {
-                    DarkLayer.style.display = 'none';
+                    DarkLayer.style.display = "none";
                     DarkLayer.style.transition = 'none';
                     DarkLayer.style.opacity = '1';
                     DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
@@ -358,6 +364,7 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
 
 // in online mode, some player left the game
 const UserLeftGameInOnlineMode = () => {
+    DarkLayer.style.display = "block";
     // user left the game
     // Many things are happening in server.js on this emit
     socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
@@ -881,8 +888,6 @@ socket.on('killed_game', () => {
     Lobby_GameCode_display.style.userSelect = 'text';
     // close pop ups if there where any open
     CloseOnlinePopUps();
-    DarkLayer.style.display = "block";
-
     ChangeGameBG(undefined, undefined, true);
 
     running = false;
@@ -892,6 +897,8 @@ socket.on('killed_game', () => {
     // play music
     PauseMusic();
     if (!PlayingInCreatedLevel) CreateMusicBars(audio);
+
+    DarkLayer.style.display = "block";
 });
 
 // Admin created the game and now waits for the second player
@@ -1019,7 +1026,6 @@ socket.on('INFORM_user_left_game', () => {
         (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
-        DarkLayer.style.display = 'block';
         // informative pop up for other players in lobby
         friendLeftGamePopUp.style.display = 'flex';
         friendLeft_text.textContent = 'Your friend left the game';
@@ -1029,6 +1035,8 @@ socket.on('INFORM_user_left_game', () => {
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
+
+        DarkLayer.style.display = 'block';
     };
 });
 
@@ -1049,7 +1057,6 @@ socket.on('INFORM_blocker_left_game', () => {
         (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
-        DarkLayer.style.display = 'block';
         friendLeftGamePopUp.style.display = 'flex';
         friendLeft_text.textContent = 'The blocker left the game';
         Lobby_GameCode_display.style.userSelect = 'text';
@@ -1057,6 +1064,8 @@ socket.on('INFORM_blocker_left_game', () => {
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
+
+        DarkLayer.style.display = 'block';
     };
 });
 

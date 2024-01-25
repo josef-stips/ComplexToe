@@ -37,7 +37,6 @@ async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, 
 
 // remove acccess to anything
 function removeAccessToAnything() {
-    running = false;
     globalChooseWinnerBtn.removeEventListener('click', openChooseWinnerWindow);
     restartBtn.removeEventListener('click', restartGame);
     leaveGame_btn.removeEventListener('click', UserleavesGame);
@@ -67,6 +66,7 @@ function removeAccessToAnything() {
 
         if (personal_GameData.role == "blocker") {
             cells.forEach(cell => {
+                cell.style.cursor = "cursor";
                 cell.addEventListener('click', cellCicked);
             });
         };
@@ -111,6 +111,13 @@ function addAccesOnlineMode(TimerEnded, fromBeginning) {
         restartBtn.style.color = 'var(--font-color)';
     };
 
+    running = true;
+    // player gets access to set again
+    cells.forEach(cell => {
+        cell.addEventListener('click', cellCicked);
+        cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+    });
+
     !fromBeginning && checkWinner();
 };
 
@@ -129,7 +136,7 @@ function initCellgrid() {
 function update1() {
     // In online mode, the admin sends an emit to the server so the server sends an emit
     // to all clients
-    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+    if (curr_mode == GameMode[2].opponent) {
 
     } else if (curr_mode != GameMode[2].opponent) {
         let Seconds = GameData.PlayerClock;
@@ -154,7 +161,7 @@ function update1() {
 function update2() {
     // In online mode, the admin sends an emit to the server so the server sends an emit
     // to all clients
-    if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
+    if (curr_mode == GameMode[2].opponent) {
 
     } else if (curr_mode != GameMode[2].opponent) {
         let Seconds = GameData.PlayerClock;
@@ -177,9 +184,52 @@ function update2() {
 };
 
 // from the server to all clients in online mode
-socket.on('playerTimer', (player1_timer, player2_timer) => {
+socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
     FirstPlayerTime.textContent = `${player1_timer} `;
     SecondPlayerTime.textContent = `${player2_timer}`;
+
+    if (running) {
+        if (currentPlayer == 1 && !player3_can_set) {
+            player1_can_set = true;
+
+            if (personal_GameData.role == "admin") {
+                addAccesOnlineMode(true, true);
+
+            } else {
+                // remove access to set
+                cells.forEach(cell => {
+                    cell.removeEventListener('click', cellCicked);
+                    cell.style.cursor = "default";
+                });
+            };
+
+        } else if (currentPlayer == 2 && !player3_can_set) {
+            player1_can_set = false;
+
+            if (personal_GameData.role == "user") {
+                addAccesOnlineMode(true, true);
+
+            } else {
+                // remove access to set
+                cells.forEach(cell => {
+                    cell.removeEventListener('click', cellCicked);
+                    cell.style.cursor = "default";
+                });
+            };
+
+        } else if (player3_can_set) {
+            if (personal_GameData.role == "blocker") {
+                addAccesOnlineMode(true, true);
+
+            } else {
+                // remove access to set
+                cells.forEach(cell => {
+                    cell.removeEventListener('click', cellCicked);
+                    cell.style.cursor = "default";
+                });
+            };
+        };
+    };
 
     // time is almost out, dangerous
     if (personal_GameData.role == 'admin') {
@@ -210,7 +260,7 @@ socket.on("EndOfPlayerTimer", () => {
         // make cell grid normal again
         initCellgrid();
 
-        addAccesOnlineMode("TimerEnded");
+        addAccesOnlineMode("TimerEnded", true);
 
         // now it's player two turn
         if (curr_mode == GameMode[2].opponent)(player1_can_set == true) ? player1_can_set = false : player1_can_set = true;
