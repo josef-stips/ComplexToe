@@ -2418,6 +2418,7 @@ label h3 {
 }
 
 .LobbyPlayerSection {
+    transform: var(--max-responsive-scale);
     margin: 0.35em 0 0 0;
     display: flex;
     align-items: center;

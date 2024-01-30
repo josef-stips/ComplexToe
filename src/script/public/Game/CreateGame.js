@@ -260,12 +260,15 @@ class NewLevel {
         if (DisplayList == undefined) {
             try {
                 socket.emit("RequestLevels", localStorage.getItem("PlayerID"), levels => {
+                    console.log(levels);
+
                     if (levels.length <= 0) { // no levels
+                        [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
                         ReplaceText_Levellist.style.display = "block";
 
                     } else { // create level display
                         ReplaceText_Levellist.style.display = "none";
-                        LevelList_list.textContent = null;
+                        [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
 
                         console.log(levels);
 

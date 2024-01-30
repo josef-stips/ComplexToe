@@ -1061,8 +1061,8 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
 
     // try to connect to server 
     try {
-        socket = io('http://localhost:3000', {
-            // path: "https://complextoeserveradmin.onrender.com",
+        socket = io("http://localhost:3000", {
+            // path: "http://localhost:3000",
             // transports: ['websocket'],
         });
         window.socket = socket;

@@ -1096,6 +1096,8 @@ socket.on('INFORM_admin_left_room', () => {
 
 // message to all clients that the game just started
 socket.on('StartGame', (RoomData) => { // RoomData
+    console.log(RoomData);
+
     // simple things
     CloseOnlinePopUps(true);
     OnlineGame_Lobby.style.display = "none";
@@ -1114,7 +1116,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // game data
     let FieldIndex = RoomData[0].fieldIndex;
     let FieldTitle = RoomData[0].fieldTitle;
-    let options = JSON.parse(RoomData[0].Fieldoptions);
+    let options = JSON.parse(RoomData[0].fieldoptions);
     let currInnerGameMode = RoomData[0].InnerGameMode;
     let PlayerTimer = RoomData[0].PlayerTimer;
     // player data
