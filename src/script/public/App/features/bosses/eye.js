@@ -21,7 +21,7 @@ function init_eye() {
         // start interval for attacking
         EyeAttackInterval();
     } else {
-        console.log("The server starts the eye attack interval in the databas as an event scheduler");
+        // console.log("The server starts the eye attack interval in the databas as an event scheduler");
     };
     // HP
     eyeLifeCounter.textContent = `${eye_HP}/${eye_HP} HP`;

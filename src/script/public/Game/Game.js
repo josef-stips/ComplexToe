@@ -123,7 +123,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // console.log(required_amount_to_win);
     !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
-    console.log(Fields, fieldIndex)
+    // console.log(Fields, fieldIndex)
 
     // set up x and y coordinate
     xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
@@ -483,7 +483,6 @@ function initializePlayers(OnlineGameDataArray) {
             };
         };
 
-        console.log(OnlineGameDataArray[10], OnlineGameDataArray[11]);
         // set color of player icon
         namePlayer1.style.color = OnlineGameDataArray[10];
         namePlayer2.style.color = OnlineGameDataArray[11];
@@ -903,7 +902,7 @@ function updateCell(index) {
 
 // the third player (blocker) can set
 function thirdPlayerSets() {
-    console.log(personal_GameData.role, running, player1_can_set, player3_can_set)
+    // console.log(personal_GameData.role, running, player1_can_set, player3_can_set)
     if (personal_GameData.role == "blocker") {
         // add blocker access to set
         cells.forEach(cell => {
@@ -1059,11 +1058,11 @@ function UserGivesUp(user_role) {
     DarkLayer.style.display = "none";
     GiveUpPopUp.style.display = "none";
 
-    console.log(user_role)
-    console.log(score_Player1_numb, score_Player2_numb)
-    console.log(score_Player1_numb > score_Player2_numb)
-    console.log(score_Player1_numb == score_Player2_numb)
-    console.log(score_Player1_numb < score_Player2_numb)
+    // console.log(user_role)
+    // console.log(score_Player1_numb, score_Player2_numb)
+    // console.log(score_Player1_numb > score_Player2_numb)
+    // console.log(score_Player1_numb == score_Player2_numb)
+    // console.log(score_Player1_numb < score_Player2_numb)
 
     if (user_role == "admin") {
         // if admin had more points than user but gives up

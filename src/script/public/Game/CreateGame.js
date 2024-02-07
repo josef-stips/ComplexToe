@@ -260,7 +260,7 @@ class NewLevel {
         if (DisplayList == undefined) {
             try {
                 socket.emit("RequestLevels", localStorage.getItem("PlayerID"), levels => {
-                    console.log(levels);
+                    // console.log(levels);
 
                     if (levels.length <= 0) { // no levels
                         [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
@@ -270,7 +270,7 @@ class NewLevel {
                         ReplaceText_Levellist.style.display = "none";
                         [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
 
-                        console.log(levels);
+                        // console.log(levels);
 
                         // create every single level
                         levels.forEach(level => {
@@ -417,7 +417,7 @@ class NewLevel {
         img.height = "32";
 
         li.addEventListener("click", () => {
-            console.log(level, level.CreatorBeatIt);
+            // console.log(level, level.CreatorBeatIt);
 
             this.selectedLevel = [parseInt(level.bg1), parseInt(level.bg2), level.required_points, level.player_timer, parseInt(level.icon), parseInt(level.bg_music), JSON.parse(level.pattern), level.field, level.level_name, level.level_status,
                 true, level.id, level.publish_date, level.CreatorBeatIt, level.creation_date
@@ -496,7 +496,7 @@ class NewLevel {
 
     // Init current settings on level
     InitCurrentSettings = (music, bg1, bg2, points, clock, icon, field, patterns, status, name, id) => {
-        console.log(music, bg1, bg2, points, clock, icon, field, patterns, status, name, id);
+        // console.log(music, bg1, bg2, points, clock, icon, field, patterns, status, name, id);
 
         // bg music 
         if (music !== undefined) {
@@ -738,10 +738,10 @@ class NewLevel {
 
         try {
             socket.emit("DisplayAllOnlineLevel", ((levels, players) => {
-                console.log(levels, players);
+                // console.log(levels, players);
                 if (levels.length >= 1) {
                     levels.forEach((level, index) => {
-                        console.log(level, index, players[index][0])
+                        // console.log(level, index, players[index][0])
 
                         this.AddLevelToList(level, players[index][0]);
                     });
@@ -894,7 +894,7 @@ const InitCreateLevelScene = () => {
 
     // start event listener
     EditLevelBtn_ListBtn.addEventListener('click', () => {
-        console.log(NewCreativeLevel);
+        // console.log(NewCreativeLevel);
 
         if (NewCreativeLevel.selectedLevel == undefined) {
             AlertText.textContent = "select a level to edit";
@@ -957,7 +957,7 @@ const InitCreateLevelScene = () => {
         if (result == false) {
             AlertText.textContent = "Something went wrong!";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-            console.log(result);
+            // console.log(result);
 
         } else {
             DarkLayer.style.display = "none";
@@ -997,7 +997,7 @@ const InitCreateLevelScene = () => {
             saveLevelWarning.style.display = "none";
             AlertText.textContent = "Something went wrong!";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-            console.log(result);
+            // console.log(result);
         };
     });
 

@@ -12,58 +12,58 @@ let mapLevels = {
         ], 3, InnerGameModes[1], false, {},
         40
     ], // level 1 is unlocked by default
-    2: [true, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["dia2", "vert"],
+    2: [false, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["dia2", "vert"],
         ["Congrats on winning the first level in this deadly journey. But this is still only the beginning... The unknown is going to show his face soon but for now you must remember to stay focused!",
             "To conquer this level you have to score 5 points against the unknown. The unknown can beat you in less moves. As you know, in some rare cases your win combination will be not accepted and you don't get the point!"
         ], 5, InnerGameModes[3], false, { 'keys': 10 },
         40
     ],
-    3: [true, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["diamond", "branch1"],
+    3: [false, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["diamond", "branch1"],
         ["Some thoughts on becoming a Discord mod?", "Do not let your focus wander through the fog of the darkness", "With every level it gets more serious now. Keep your eyes open and your mouth closed!",
             "The winning patterns that require five moves yield 3 more points than regular ones.",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 7, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
         30
     ],
-    4: [true, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["diamond"],
+    4: [false, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["diamond"],
         ["The first three levels where too boring huh?",
             "You entered the really dangerous side of this journey now. Will you survive?",
             "To conquer this level you have to score 5 points against the unknown and defeat Oculum Solis. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 5, InnerGameModes[2], true, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
         60
     ],
-    5: [true, 35, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia"],
+    5: [false, 35, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia"],
         ["Are you winning servant?", "Congrats on winning the previous boss fight.", "Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level. ",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 7, InnerGameModes[3], false, { 'keys': 35, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
         55
     ],
-    6: [true, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["L1", "L2"],
+    6: [false, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["L1", "L2"],
         ["What is wider?", "The forest or the field of skeletons of the previous player you're going to play on now?",
             "Most of the players here have already given up or lost their way. Do you really want to continue or give up?", "btw. are you a discord mod?", "Anyway...",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 2400, 'asteroids': 1, 'diamonds': 40 },
         30
     ],
-    7: [true, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["branch4", "star"],
+    7: [false, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["branch4", "star"],
         ["I hear steps behind me!", "Or just my fart", "...", "The playing field has become larger. More room for your frustration to spread.",
             "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point."
         ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 3500, 'asteroids': 1, 'minerals': 4000 },
         50
     ],
-    8: [true, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["branch2", "hor"],
+    8: [false, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["branch2", "hor"],
         ["Arrg", "Only the top players reached this level. Congratulations! But don't be too optimistic..",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and will not get the point."
         ], 7, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 2, 'encrypted writings': 4 },
         45
     ],
-    9: [true, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["W2", "star"],
+    9: [false, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["W2", "star"],
         ["hihihi... ", "This is the last step before you are never seen again. No one knows if you can do that.",
             "To conquer this level you have to score 21 points against the unknown and defeat Solara Zephyra. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 21, InnerGameModes[1], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
         110
     ],
-    10: [true, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "W4"],
+    10: [false, 55, "The eye", 100, 30, "fa-solid fa-skull", ["vert", "W4"],
 
         [`Welcome, wanderer, who has forsaken the paths of light and ventured into darkness.`,
 
@@ -448,11 +448,11 @@ startMapLevelBtn.addEventListener('click', () => {
 // Epic Dialog before level start
 const StartAdvantureLevelDialog = (level_index, beat_advantureMap) => {
     let index = 0;
-    console.log(mapLevels[level_index][7][index], index, beat_advantureMap);
+    // console.log(mapLevels[level_index][7][index], index, beat_advantureMap);
 
     // check wether user is allowed to play the level
     let user_fulfills_requirements = UserFulfill_RequirementsForLevel();
-    console.log(user_fulfills_requirements);
+    // console.log(user_fulfills_requirements);
     if (user_fulfills_requirements) {
         CloseOnlinePopUps();
         playMysticalTheme();
@@ -709,7 +709,6 @@ function level_startSpeechBubbles(beat_advantureMap) {
         `Many have paid the price for this path, and you are among the few who have survived the fateful dance with darkness. Your bravery has defeated the terrors of darkness, yet in the quiet of the epilogue, it becomes clear that every victory demands its toll.`,
     ];
 
-    console.log("kek", beat_advantureMap);
     // animation
     animatedPopUp.style.display = 'block';
     animatedPopUp.style.animation = "popUp-POP 1s ease";
@@ -717,8 +716,6 @@ function level_startSpeechBubbles(beat_advantureMap) {
     let unlocked_mapLevels = JSON.parse(localStorage.getItem('unlocked_mapLevels'));
     level_text = !beat_advantureMap ? unlocked_mapLevels[current_selected_level][7] : Epilogue;
     TextIsEpilogue = beat_advantureMap ? true : false;
-
-    console.log(level_text, beat_advantureMap);
 
     // new ini text
     let TextHead = document.createElement("h2");
@@ -734,7 +731,7 @@ function level_startSpeechBubbles(beat_advantureMap) {
 function UserWon_AdvantureLevel(won_levelIndex) {
     let nextLevel;
 
-    console.log(won_levelIndex, localStorage.getItem(`completed_mapLevel${won_levelIndex}`));
+    // console.log(won_levelIndex, localStorage.getItem(`completed_mapLevel${won_levelIndex}`));
 
     switch (won_levelIndex) {
         default: // default: normal level
@@ -845,7 +842,6 @@ exploreditem_wrapper.forEach((item_wrapper, i) => {
     item_wrapper.index = i;
     item_wrapper.addEventListener("click", function() {
         let i = item_wrapper.index;
-        console.log(i);
         switch (i) {
             case 0:
                 exploredItemTitle.textContent = "Ore";

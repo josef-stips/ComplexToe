@@ -1061,10 +1061,14 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
 
     // try to connect to server 
     try {
-        socket = io("http://localhost:3000", {
-            // path: "http://localhost:3000",
+        socket = io("http://139.144.180.23", {
+            // path: "http://139.144.180.23",
             // transports: ['websocket'],
         });
+        // socket = io("http://localhost:3000", {
+        //     // path: "http://localhost:3000",
+        //     // transports: ['websocket'],
+        // });
         window.socket = socket;
 
         socket.on('connect', () => {
@@ -1567,7 +1571,7 @@ const InitFullscreen = () => {
 InitFullscreen();
 
 settFullscreenBtn.addEventListener('click', () => {
-    console.log(localStorage.getItem('Fullscreen'))
+    // console.log(localStorage.getItem('Fullscreen'))
     if (localStorage.getItem('Fullscreen') == "false") {
         localStorage.setItem("Fullscreen", true);
         window.App.ToggleFullScreen(true);
@@ -1934,7 +1938,7 @@ function Click_NxN(f) {
 
     if (curr_mode == GameMode[2].opponent) { // Online Game mode
 
-        console.log(target, target.getAttribute("field"))
+        // console.log(target, target.getAttribute("field"))
 
         if (target.getAttribute('field') == "25x25" && localStorage.getItem('onlineMatches-won') >= 5 ||
             target.getAttribute('field') == "30x30" && localStorage.getItem('onlineMatches-won') >= 10 ||
@@ -1963,7 +1967,7 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
         Player1_IconInput.value = localStorage.getItem('UserIcon');
     };
 
-    console.log(curr_field_ele);
+    // console.log(curr_field_ele);
 
     // User shouldn't play 40x40 field with 5 second player clock
     if (curr_field_ele.getAttribute("field") == "40x40") {
@@ -2204,7 +2208,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         if (patterns) allowedPatternsFromUser = patterns;
         if (PlayingInCreatedLevel) Check[2] = NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]];
 
-        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame)
+        // console.log(UserSetPointsToWinGameInput.value, PointsToWinGame)
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
@@ -2292,7 +2296,7 @@ const UserTriesToEnterOnlineGame = () => {
     if (Player1_IconInput.value != "" && Player1_NameInput.value != "" && personal_GameData.role == "user" ||
         // or second condition: user joins as blocker so he only needs to pass his name
         Player1_NameInput.value != "" && personal_GameData.role == "blocker") {
-        console.log(personal_GameData.role)
+        // console.log(personal_GameData.role)
 
         socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim(),
             localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role
@@ -2365,7 +2369,7 @@ function SetPlayerData_ConfirmEvent() {
     if (curr_mode == GameMode[2].opponent) { // online mode
         // if user wants to enter an online game
         if (personal_GameData.EnterOnlineGame) {
-            console.log(personal_GameData.EnterOnlineGame)
+            // console.log(personal_GameData.EnterOnlineGame)
             UserTriesToEnterOnlineGame();
 
         } else { // user wants to create an online game
@@ -3014,7 +3018,7 @@ animatedPopConBtn.addEventListener('click', animatedPopConBtn.fn = () => {
 const AdvantureModeLevelIntro = () => {
     if (ContBtnCount == 2) ClickedOnLastText = false;
 
-    console.log(ContBtnCount, level_text);
+    // console.log(ContBtnCount, level_text);
 
     if (ContBtnCount < level_text.length && level_text[ContBtnCount] != undefined) {
         animatedPopMain.querySelector('.newText').textContent = level_text[ContBtnCount];
@@ -3036,7 +3040,7 @@ const AdvantureModeLevelIntro = () => {
         locked_30x30();
         locked_40x40();
 
-        console.log(document.querySelector(".DialogEye"));
+        // console.log(document.querySelector(".DialogEye"));
 
         // fade out animation to epic dialog
         animatedPopUp.style.opacity = "0";
@@ -3175,7 +3179,7 @@ const CloseUserPopUpOfOtherPlayer = () => {
     SearchUser_Btn.style.display = "flex";
     GetMessage_Btn.style.display = "flex";
 
-    console.log(running, personal_GameData.role);
+    // console.log(running, personal_GameData.role);
     if (!running) {
         if (personal_GameData.currGameID != null) {
             DarkLayer.style.display = "block";
@@ -3223,7 +3227,7 @@ const TryToCloseUserInfoPopUp = () => {
         if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||
             localStorage.getItem('UserIcon') == null) {
 
-            console.log(running, personal_GameData.role);
+            // console.log(running, personal_GameData.role);
             if (!running) {
                 if (personal_GameData.currGameID != null) {
                     DarkLayer.style.display = "block";

@@ -53,7 +53,6 @@ function UserFoundItems() {
 
 // Amount of different items the user gets
 function UserGets_N_Items(n) {
-    console.log(n)
     let exploredItems = JSON.parse(localStorage.getItem("ExploredItems"));
 
     let items = {
@@ -218,15 +217,12 @@ function UserGets_N_Items(n) {
                 let rare4 = isInRange(rarityForItems2, 9001, 30000); // propability for rare
                 let common4 = isInRange(rarityForItems2, 30001, 100000); // propability for common
 
-                console.log(i);
                 if (legendary4) {
                     foundItem_imgs[i].src = "assets/game/crystal-eye.svg";
                     foundItem_titles[i].textContent = items["legendary"];
                     FoundItemCount_Displays[i].textContent = 1;
 
                     exploredItems["abandonedEye"] = exploredItems["abandonedEye"] + 1;
-
-                    console.log("legendary", legendary4)
                 };
 
                 if (mystique4) {
@@ -247,8 +243,6 @@ function UserGets_N_Items(n) {
                         exploredItems["encryptedWriting"] = exploredItems["encryptedWriting"] + 1;
 
                     };
-
-                    console.log("mystiqu4", mystique4)
                 };
 
                 if (rare4) {
@@ -259,8 +253,6 @@ function UserGets_N_Items(n) {
                     FoundItemCount_Displays[i].textContent = amount;
 
                     exploredItems["diamonds"] = exploredItems["diamonds"] + amount;
-
-                    console.log("rare4", rare4)
                 };
 
                 if (common4) {
@@ -281,8 +273,6 @@ function UserGets_N_Items(n) {
 
                         exploredItems["ore"] = exploredItems["ore"] + amount;
                     };
-
-                    console.log("comomn4", common4)
                 };
             };
             break;

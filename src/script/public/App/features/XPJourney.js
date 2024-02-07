@@ -151,7 +151,7 @@ const CheckIfUserCanGetReward = () => {
                 RewardAt_PointValue = pointVal;
             };
             // if the user clicks now on the given btn, he collect's the reward and pop up does not open
-            console.log(Reward_WhichIsAvailible, RewardAt_PointValue)
+            // console.log(Reward_WhichIsAvailible, RewardAt_PointValue)
 
             nothingThere = false;
             return;
@@ -219,7 +219,7 @@ const UserGetsJourneyItems = (Items) => {
     for (let key in Items) {
         const element = Items[key]; // Amount of item , key is element name
 
-        console.log(key, element);
+        // console.log(key, element);
 
         if (key == "gems") {
             Get_XPReward_Animation(IconsForItems[key][0], IconsForItems[key][1], element / 10, key);

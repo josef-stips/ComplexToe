@@ -133,7 +133,7 @@ class Achievements {
 
     AchievementLockState = () => {
         let storage = localStorage.getItem("AchievementLockState");
-        console.log(storage);
+        // console.log(storage);
         if (!storage) {
             localStorage.setItem("AchievementLockState", JSON.stringify(this.unlocked));
 
@@ -239,7 +239,7 @@ class Achievements {
     new = (index) => {
         // Get all achievements which are not unlocked
         let requirements = Object.keys(this.unlocked).filter(idx => this.unlocked[idx] !== true).map(Number);
-        console.log(requirements);
+        // console.log(requirements);
 
         // this achievement is already done
         if (!requirements.includes(index)) return;

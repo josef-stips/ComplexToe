@@ -55,7 +55,7 @@ function removeAccessToAnything() {
         cell.style.cursor = "default";
     });
 
-    console.log(player3_can_set);
+    // console.log(player3_can_set);
 
     if (player3_can_set && !inAdvantureMode) {
         leaveGame_btn.addEventListener('click', UserleavesGame);
@@ -187,6 +187,8 @@ function update2() {
 socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
     FirstPlayerTime.textContent = `${player1_timer} `;
     SecondPlayerTime.textContent = `${player2_timer}`;
+
+    // console.log(player1_timer, player2_timer, currentPlayer);
 
     if (running) {
         if (currentPlayer == 1 && !player3_can_set) {

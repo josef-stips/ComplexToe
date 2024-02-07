@@ -529,14 +529,14 @@ function KI_Action() {
                     worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
                     // worker finished
                     worker.onmessage = (worker_result) => {
-                        console.log(worker_result.data, lastCellIndex_Clicked, InnerFieldData_Indexes[lastCellIndex_Clicked]);
+                        // console.log(worker_result.data, lastCellIndex_Clicked, InnerFieldData_Indexes[lastCellIndex_Clicked]);
 
                         worker.terminate();
 
                         // if player can't win in 1 move but ki can win in 2 moves, set move for attacking because it is more valuable
                         if (!result[0] && worker_result.data) {
 
-                            console.log(TMA_InnerField_instance.indexes, worker_result.data);
+                            // console.log(TMA_InnerField_instance.indexes, worker_result.data);
 
                             // resuklt_ki = index for big field
                             let result_ki = getKeyByValue(TMA_InnerField_instance.indexes, Number(worker_result.data));
@@ -544,8 +544,8 @@ function KI_Action() {
                             let index = MixedField_Indexes[result_ki];
                             BigField_Index = Number(result_ki);
 
-                            console.log("ki worker result: ", result, result_ki);
-                            console.log(index, BigField_Index);
+                            // console.log("ki worker result: ", result, result_ki);
+                            // console.log(index, BigField_Index);
 
                             ki_set(BigField_Index, index);
 
@@ -615,7 +615,7 @@ const KI_aim_WinCombis = () => {
     if (all_good_win_combinations.length == 0) {
         // look and add good win combis for the KI
         for (let [i, cond] of binaryWinConds.entries()) {
-            console.log((bitboards[0] & cond), (blockages & cond), (bitboards[1] & cond));
+            // console.log((bitboards[0] & cond), (blockages & cond), (bitboards[1] & cond));
             // check if in the win combination is good and if there is no blockage
             if ((bitboards[1] & cond) > 0 && (blockages & cond) == 0 && (bitboards[0] & cond) == 0) {
                 all_good_win_combinations.push(WinConditions[i]);
@@ -627,8 +627,8 @@ const KI_aim_WinCombis = () => {
         for (let i = currently_taken_combination.length - 1; i > 0; i--) {
             let index = currently_taken_combination[i];
 
-            console.log(index, KI_lastCellIndex_Clicked, InnerFieldData_Indexes[KI_lastCellIndex_Clicked], current_combination_index, currently_taken_combination)
-            console.log(((bitboards[1] >> index) & 1), ((bitboards[0] >> index) & 1), ((blockages >> index) & 1))
+            // console.log(index, KI_lastCellIndex_Clicked, InnerFieldData_Indexes[KI_lastCellIndex_Clicked], current_combination_index, currently_taken_combination)
+            // console.log(((bitboards[1] >> index) & 1), ((bitboards[0] >> index) & 1), ((blockages >> index) & 1))
 
             if (index != InnerFieldData_Indexes[KI_lastCellIndex_Clicked] &&
                 ((bitboards[1] >> index) & 1) === 0 &&
@@ -786,7 +786,6 @@ function findNearestKey(obj, target, bestScoreIndex, calculatedMoves) {
         }
     }
 
-    console.log(target, Number(nahesteZahl));
     return Number(nahesteZahl);
 }
 
@@ -809,7 +808,7 @@ const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board
         // save move in array to evaluate best moves from the workers
         calculatedMoves[data.data[0]] = data.data[1] // move with its score
 
-        console.log(`worker ${i} completed. result: ` + data.data[0], data.data[1]);
+        // console.log(`worker ${i} completed. result: ` + data.data[0], data.data[1]);
         ki_board = KIBoardOrigin; // reset board to right stage
 
         completedWorkers++;
@@ -834,7 +833,7 @@ const workerFunction = (WinConditions, InnerFieldOptions, player_board, ki_board
                 // time measurement
                 const endTime = performance.now();
                 const elapsedTime = endTime - startTime;
-                console.log(`Worker hat ${elapsedTime.toFixed(2)} Millisekunden gebraucht.`);
+                // console.log(`Worker hat ${elapsedTime.toFixed(2)} Millisekunden gebraucht.`);
 
                 // set final move from bot
                 ki_set(InnerField_BestFinalMove, BestFinalMove);
@@ -879,7 +878,7 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
 
         // calcualte. returns false or index
         worker.onmessage = (worker_result) => {
-            console.log(worker_result.data, fromAttack, fromKI_CheckPlayer);
+            // console.log(worker_result.data, fromAttack, fromKI_CheckPlayer);
 
             worker.terminate();
             // says wether the player can win in 2 moves
@@ -890,10 +889,10 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
                 let index = MixedField_Indexes[Calc_result];
                 let BigField_Index = Number(Calc_result);
 
-                console.log(TMA_InnerField_instance.indexes, worker_result.data);
+                // console.log(TMA_InnerField_instance.indexes, worker_result.data);
 
-                console.log("ki worker result: ", Calc_result, BigField_Index);
-                console.log(Calc_result, fromAttack, fromKI_CheckPlayer);
+                // console.log("ki worker result: ", Calc_result, BigField_Index);
+                // console.log(Calc_result, fromAttack, fromKI_CheckPlayer);
 
                 ki_set(BigField_Index, index);
 
@@ -1039,7 +1038,7 @@ const ki_set = (index, inner_field_index) => {
     index = Number(index);
     inner_field_index = Number(inner_field_index);
 
-    console.log("index:", index, "inner field index:", inner_field_index);
+    // console.log("index:", index, "inner field index:", inner_field_index);
 
     // on bitboard
     ki_board |= 1 << inner_field_index;
@@ -1054,28 +1053,21 @@ const ki_set = (index, inner_field_index) => {
     // update last clicked cell
     KI_lastCellIndex_Clicked = index;
 
-    console.log(Ki_canSetTwoTimesInARow);
+    // console.log(Ki_canSetTwoTimesInARow);
 
     GenerateOriginWinConds().then(() => {
         if (Ki_canSetTwoTimesInARow) {
-
-            console.log("Ki places two times in a row dsfasdfsdfasdfs", Ki_canSetTwoTimesInARow);
 
             // ki can set a second time
             Ki_canSetTwoTimesInARow = false;
             KI_Action();
 
-            console.log("Ki places two times in a row dsfasdfsdfasdfs lelellerlelleelelelel", Ki_canSetTwoTimesInARow);
-
             return;
 
         } else if (!Ki_canSetTwoTimesInARow) {
-            console.log("Ki changes players sdikasfjsdlkifdasklfahsjdf", Ki_canSetTwoTimesInARow);
 
             // change Player
             checkWinner();
-
-            // addAccessToAnything(undefined, true, true);
 
             // player gets access to set again
             setTimeout(() => {

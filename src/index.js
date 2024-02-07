@@ -10,12 +10,12 @@ const createWindow = () => {
         height: 800,
         fullscreen: true,
         // icon: "/src/script/public/assets/images/icons/win/icon.ico",
-        autoHideMenuBar: false,
+        autoHideMenuBar: true,
         nodeIntegration: true,
         contextIsolation: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            devTools: true,
+            devTools: false,
         },
     });
 
@@ -26,10 +26,10 @@ const createWindow = () => {
     // load content
     mainWindow.loadFile(path.join(__dirname, 'script/public/index.html'));
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 };
 
-// Menu.setApplicationMenu(null);
+Menu.setApplicationMenu(null);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

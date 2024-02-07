@@ -87,7 +87,7 @@ const InitGameInfoForUserEntersLobby = () => {
 
     // so the user sees the current allowed win patterns
     socket.emit("Request_AllowedPatterns", personal_GameData.currGameID, cb => { // cb: array with all names of the allowed patterns
-        console.log(cb);
+        // console.log(cb);
         // abstract data from the originall array with the names of all win patterns and copy it to own array
         allowedPatternsFromUser = cb;
         // blur all patterns
@@ -133,7 +133,7 @@ const InitGameInfoForUserEntersLobby = () => {
 function EnterCodeName() {
     if (EnterGameCode_Input.value != null && EnterGameCode_Input.value != '' && EnterGameCode_Input.value != undefined) {
         // server stuff
-        console.log(EnterGameCode_Input.value.trim());
+        // console.log(EnterGameCode_Input.value.trim());
 
         socket.emit('TRY_enter_room', EnterGameCode_Input.value.trim(), message => {
 
@@ -143,7 +143,7 @@ function EnterCodeName() {
                 personal_GameData.currGameID = message[1]; // the game id
 
                 // if he joined as blocker, his role is blocker, otherwise his role is user
-                console.log(message[5]);
+                // console.log(message[5]);
 
                 if (message[5] == "thirdplayer") {
                     // set role
@@ -324,7 +324,7 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
             timeOut = 200;
         };
 
-        console.log(timeOut, advantureModelevelIndex, UserWonAdvantureMode, wonLevel10);
+        // console.log(timeOut, advantureModelevelIndex, UserWonAdvantureMode, wonLevel10);
 
         DarkLayer.style.opacity = '0';
 
@@ -404,7 +404,7 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
         };
 
         // user won a level in advanture mode
-        console.log(inAdvantureMode, userWonInAdvantureMode, LevelIndex_AdvantureMode)
+        // console.log(inAdvantureMode, userWonInAdvantureMode, LevelIndex_AdvantureMode)
         if (inAdvantureMode && userWonInAdvantureMode == true) {
             UserWon_AdvantureLevel(LevelIndex_AdvantureMode);
         } else {
@@ -741,10 +741,10 @@ const EventListenerForXPlayer = (x) => {
     };
 
     try {
-        console.log(player_display, player_display.getAttribute("LobbyPlayerName"), personal_GameData.currGameID);
+        // console.log(player_display, player_display.getAttribute("LobbyPlayerName"), personal_GameData.currGameID);
 
         socket.emit("ClickOnProfile", player_display.getAttribute("LobbyPlayerName"), personal_GameData.currGameID, player => { // name of player to click on and the lobby id
-            console.log(player);
+            // console.log(player);
 
             if (player) {
                 try {
@@ -903,7 +903,7 @@ socket.on('killed_game', () => {
 
 // Admin created the game and now waits for the second player
 socket.on('Admin_Created_And_Joined', message => {
-    console.log(message);
+    // console.log(message);
 
     // set in database the "inGame" status to current game id
     socket.emit("setPlayerInRoomStatus", localStorage.getItem("PlayerID"), personal_GameData.currGameID);
@@ -1096,7 +1096,7 @@ socket.on('INFORM_admin_left_room', () => {
 
 // message to all clients that the game just started
 socket.on('StartGame', (RoomData) => { // RoomData
-    console.log(RoomData);
+    // console.log(RoomData);
 
     // simple things
     CloseOnlinePopUps(true);
@@ -1138,7 +1138,6 @@ socket.on('StartGame', (RoomData) => { // RoomData
     allowedPatternsFromUser = allowed_patterns; // make it global for single user
     // required points to win a game
     let required_points_to_win = parseInt(Lobby_PointsToWin.textContent);
-    console.log(required_points_to_win, " You entered online mode lel");
 
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
@@ -1281,8 +1280,6 @@ socket.on('ChangeGameData', (display, SpecificData, Selection) => {
             break;
     };
 
-    console.log(personal_GameData.currGameID, xyCell_Amount, curr_innerGameMode, curr_selected_PlayerClock, fieldIndex, fieldTitle);
-
     if (personal_GameData.role == "admin") // update global propertys !only admin can do it to prevent stupid ass bugs dude
         socket.emit('updateGameData', personal_GameData.currGameID, xyCell_Amount, curr_innerGameMode, curr_selected_PlayerClock, fieldIndex, fieldTitle);
 
@@ -1327,7 +1324,7 @@ socket.on('CheckIfPlayerAlreadyExists', () => {
 
 // server generates random player id if he is the first time in this game
 socket.on("RandomPlayerID_generated", id => {
-    console.log(id)
+    // console.log(id)
     localStorage.setItem("PlayerID", id);
 });
 

@@ -104,7 +104,7 @@ onmessage = (data) => {
                 if (result[0] == true) {
                     let nearestIndex = nearestNumber(Number(player_lastCellIndexClicked), Number(i), Number(result[1]));
 
-                    console.log(i, Number(result[1]), Number(nearestIndex));
+                    // console.log(i, Number(result[1]), Number(nearestIndex));
                     postMessage(nearestIndex);
 
                 } else continue;

@@ -59,7 +59,7 @@ const RequestPlayer = () => {
 
 // Player clicks on other player when he searched him or he is in his lobby f.e
 const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection) => {
-    console.log(player_name, player_id);
+    // console.log(player_name, player_id);
 
     // check if player is friends with searched and displayed player
     try {
@@ -467,7 +467,6 @@ const CheckForMessages = () => {
                 Messages_InnerWrapper.textContent = "There are no messages for you yet."
 
             } else { // messages are availible
-                console.log(cb);
                 let messagesArray = JSON.parse(cb);
                 let AmountOfMessages = messagesArray.length;
                 // global scope variable

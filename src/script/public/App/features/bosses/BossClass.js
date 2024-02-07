@@ -129,8 +129,6 @@ class Boss {
         removeAccessToAnything();
 
         bossIMG.addEventListener("animationend", bossIMG.fn = (e) => {
-            console.log(e);
-
             this.delete();
             addAccessToAnything();
         });

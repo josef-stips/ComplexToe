@@ -12,7 +12,7 @@ class TMA_InnerField {
     };
 
     create = () => {
-        console.log(this.origin_index, this.cell_amount);
+        // console.log(this.origin_index, this.cell_amount);
 
         // calculate indexes for big field. type: Array
         let indexesBigField = this.calculate_boundaries(this.origin_index);
