@@ -542,7 +542,10 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
 };
 
 // check and return wether the player beat the boss
-const advantureMap_beatBoss = () => { return (current_level_boss.hp <= 0) ? true : false };
+// if no boss, return true
+const advantureMap_beatBoss = () => {
+    return (current_level_boss != undefined) ? ((current_level_boss.hp <= 0) ? true : false) : true
+};
 
 // choose sub winner
 function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points) {

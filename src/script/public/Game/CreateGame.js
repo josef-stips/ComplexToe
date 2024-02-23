@@ -4,6 +4,7 @@ class NewLevel {
         "hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
         "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"
     ], cellgrid = 4, name = "Your level name", status = 0, isSaved = true, id = 0, selectedLevel = undefined) {
+
         this.PossibleColors = {
             0: "#ffffff00",
             1: "#6a676780",
@@ -252,6 +253,9 @@ class NewLevel {
             this.InitCurrentSettings(this.selectedLevel[5], this.selectedLevel[0], this.selectedLevel[1], this.selectedLevel[2], this.selectedLevel[3], this.selectedLevel[4],
                 this.selectedLevel[7], this.selectedLevel[6], this.selectedLevel[9], this.selectedLevel[8], this.selectedLevel[11]);
         };
+
+        // level music preview stuff
+        CheckForBGmusic();
     };
 
     // display level list
@@ -597,6 +601,8 @@ class NewLevel {
                     // save in history
                     this.SaveInHistory(forSetting, this.CurrentSelectedSetting[forSetting] + 1);
                 };
+
+                CheckForBGmusic();
             });
         });
 
@@ -623,6 +629,8 @@ class NewLevel {
                     // save in history
                     this.SaveInHistory(forSetting, this.CurrentSelectedSetting[forSetting] - 1);
                 };
+
+                CheckForBGmusic();
             });
         });
 
@@ -821,6 +829,33 @@ class NewLevel {
             AlertText.textContent = "Something went wrong! Level could not be verified...";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
+    };
+
+    // user opens bg music preview for current bg music selected
+    music_preview = () => {
+        if (this.CurrentSelectedSetting.bgmusic > 0) {
+            let music_src = this.Settings.bgmusic[this.CurrentSelectedSetting.bgmusic];
+
+            console.log(music_src);
+
+            // select audio src element and add current music file as source to it
+            let audio_src_el = MusicPreviewAudioSlider.children[0]
+            audio_src_el.src = "";
+            audio_src_el.src = music_src;
+
+            MusicPreviewAudioSlider.load();
+
+            // init. title of sound
+            MusicPreviewPopUp_title.textContent = music_src.replace(/^.*\/|\.[^.]*$/g, '');
+        };
+    };
+
+    stop_music_preview = () => {
+        let audio_src_el = MusicPreviewAudioSlider.children[0]
+        audio_src_el.src = "";
+
+        MusicPreviewAudioSlider.pause()
+        MusicPreviewAudioSlider.currentTime = 0;
     };
 };
 
@@ -1132,9 +1167,36 @@ const InitCreateLevelScene = () => {
     OfflineModeBtn.addEventListener("click", () => {
         NewCreativeLevel.startGame(0);
     });
+
+    CreateLevel_musicPreviewBtn.addEventListener("click", () => {
+        DisplayPopUp_PopAnimation(CreateLevel_MusicPreviewPopUp, "flex", true);
+
+        NewCreativeLevel.music_preview();
+    });
+
+    MusicPreview_closeBtn.addEventListener("click", () => {
+        CreateLevel_MusicPreviewPopUp.style.display = "none";
+        DarkLayer.style.display = "none";
+
+        NewCreativeLevel.stop_music_preview();
+    });
 };
 
 // leave create level scene
 const LeaveCreateLevelScene = () => {
     window.location.reload();
+};
+
+// check wether user has selected a song for the level or not
+const CheckForBGmusic = () => {
+    let music_status = NewCreativeLevel.CurrentSelectedSetting.bgmusic;
+
+    console.log(music_status);
+
+    if (music_status >= 1) {
+        CreateLevel_musicPreviewBtn.style.display = "flex";
+
+    } else {
+        CreateLevel_musicPreviewBtn.style.display = "none";
+    };
 };

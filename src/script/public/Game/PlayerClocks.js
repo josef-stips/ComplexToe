@@ -287,7 +287,7 @@ function EndOfPlayerTimer() {
         initCellgrid();
 
         // add access to anything, user is restricted
-        addAccessToAnything("TimerEnded");
+        addAccessToAnything("TimerEnded", true, true);
 
         // continue game
         checkWinner();

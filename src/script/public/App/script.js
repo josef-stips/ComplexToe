@@ -472,6 +472,11 @@ let AchievementsBtn = document.querySelector(".AchievementsBtn");
 let newAchievementUnlockedPopUp = document.querySelector(".newAchievementUnlockedPopUp");
 let secret_map_btn = document.querySelector(".secret_map_btn");
 let secret_lock = document.querySelector(".secret_lock");
+let CreateLevel_musicPreviewBtn = document.querySelector(".CreateLevel_musicPreviewBtn");
+let CreateLevel_MusicPreviewPopUp = document.querySelector(".CreateLevel_MusicPreviewPopUp");
+let MusicPreview_closeBtn = document.querySelector(".MusicPreview_closeBtn");
+let MusicPreviewPopUp_title = document.querySelector(".MusicPreviewPopUp_title");
+let MusicPreviewAudioSlider = document.querySelector(".MusicPreviewAudioSlider");
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
 let bossLifeCounter = document.querySelector(".bossLifeCounter");
