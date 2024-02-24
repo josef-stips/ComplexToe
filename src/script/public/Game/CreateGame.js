@@ -1180,6 +1180,50 @@ const InitCreateLevelScene = () => {
 
         NewCreativeLevel.stop_music_preview();
     });
+
+    CreateLevel_CreateOwnStuff_btn.addEventListener("click", () => {
+        let container = document.querySelector(`.tab_container[content_container="1"]`);
+
+        deactivateTabs();
+        default_tab_content_view(container); // target container where all the tab content displays
+
+        DisplayPopUp_PopAnimation(CreateOwnStuffPopUp, "flex", true);
+    });
+
+    tabContainer1_closeBtn.addEventListener("click", () => {
+        CreateOwnStuffPopUp.style.display = "none";
+        DarkLayer.style.display = "none";
+    });
+
+    tabs.forEach((tab, i) => {
+        tab.addEventListener("click", () => {
+            deactivateTabs();
+
+            tab.setAttribute("active_tap", true);
+
+            // indicate container to display tab content
+            let target_container_index = tab.getAttribute("target_container");
+            let target_container = document.querySelector(`[content_container="${target_container_index}"]`);
+
+            // indicate tab content to display in container
+            let content_index = tab.getAttribute("content");
+            let content_el = document.querySelector(`[tab_content="${target_container_index}${content_index}"]`);
+
+            activateTabContent(target_container, content_el);
+        });
+    });
+
+    CreateCostumField_btn.addEventListener("click", () => {
+        CreateOwnStuffPopUp.style.display = "none";
+
+        DisplayPopUp_PopAnimation(createCostumField_popUp, "flex", true);
+    });
+
+    CreateCostumPattern_btn.addEventListener("click", () => {
+        CreateOwnStuffPopUp.style.display = "none";
+
+        DisplayPopUp_PopAnimation(createCostumPattern_popUp, "flex", true);
+    });
 };
 
 // leave create level scene
@@ -1191,12 +1235,52 @@ const LeaveCreateLevelScene = () => {
 const CheckForBGmusic = () => {
     let music_status = NewCreativeLevel.CurrentSelectedSetting.bgmusic;
 
-    console.log(music_status);
-
     if (music_status >= 1) {
         CreateLevel_musicPreviewBtn.style.display = "flex";
 
     } else {
         CreateLevel_musicPreviewBtn.style.display = "none";
     };
+};
+
+// deactivate all tabs
+const deactivateTabs = () => {
+    tabs.forEach((tab, i) => {
+        tab.setAttribute("active_tap", false);
+    });
+};
+
+// undisplay all content in a tab content container
+const deactivateTabContent = (container) => {
+    let all_tab_contents = container.querySelectorAll(".tab_content");
+
+    all_tab_contents.forEach((tab, i) => {
+        tab.style.display = "none";
+    });
+};
+
+// activate one tab content
+// container = content container where the tab content displays
+// content = conent element to display
+const activateTabContent = (container, content) => {
+    deactivateTabContent(container);
+
+    content.style.display = "flex";
+};
+
+// default tab conent preview
+const default_tab_content_view = (container) => {
+    let all_tab_contents = container.querySelectorAll(".tab_content");
+    // get index of targeted container
+    let container_index = container.getAttribute("content_container");
+    // search for first tab btn in the targeted tab container
+    let tab_btn_el = document.querySelectorAll(`.tab[target_container="${container_index}"]`)[0];
+
+    // undisplay every tab content
+    deactivateTabContent(container);
+
+    // display first content of targeted container
+    all_tab_contents[0].style.display = "flex";
+    // activate first tap btn
+    tab_btn_el.setAttribute("active_tap", true);
 };
