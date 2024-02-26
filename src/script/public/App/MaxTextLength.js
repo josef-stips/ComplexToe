@@ -715,3 +715,103 @@ UserQuote.addEventListener('keydown', (event) => {
         return false;
     };
 });
+
+[createCostumField_xInput, createCostumField_yInput].forEach(input => {
+    // prevention of unallowed keys
+    input.addEventListener('keydown', function(event) {
+        if (!isNumericKey(event.key) && !isAllowedKey(event.key)) {
+            event.preventDefault();
+
+        } else if (isLengthExceeded(input) && !isAllowedKey(event.key)) {
+            event.preventDefault();
+
+        } else { // everything's right
+            // generateField_preview(parseInt(createCostumField_xInput.textContent), parseInt(createCostumField_yInput.textContent));
+        };
+    });
+
+    input.addEventListener('keyup', function(event) {
+        // check difference between the two dimensions x and y
+        let x = parseInt(createCostumField_xInput.textContent);
+        let y = parseInt(createCostumField_yInput.textContent);
+
+        if (parseInt(input.textContent) > 30) {
+            input.textContent = "30";
+        };
+
+        if (!isAllowedKey(event.key) && isNumericKey(event.key)) {
+            generateField_preview(parseInt(createCostumField_xInput.textContent), parseInt(createCostumField_yInput.textContent), createCostumField_Field);
+        };
+    });
+
+    // Eventlistener for focus loss
+    input.addEventListener('blur', function() {
+        // check difference between the two dimensions x and y
+        let x = parseInt(createCostumField_xInput.textContent);
+        let y = parseInt(createCostumField_yInput.textContent);
+
+        // true: difference is too high. false: it is okay
+        let difference = (y / x) > (1.5) ? true : false;
+
+        console.log((y / x));
+
+        // other
+        const number = parseInt(input.textContent.trim());
+
+        if (input.textContent.trim() === '' && number > 30) {
+            input.textContent = '5';
+
+            generateField_preview(parseInt(createCostumField_xInput.textContent), parseInt(createCostumField_yInput.textContent), createCostumField_Field);
+
+        } else {
+            if (isNaN(number) || number > 30 || number <= 0) {
+                input.textContent = '5';
+
+                generateField_preview(parseInt(createCostumField_xInput.textContent), parseInt(createCostumField_yInput.textContent), createCostumField_Field);
+            }
+        }
+    });
+});
+
+createCostumPattern_title.addEventListener("keydown", (event) => {
+    const allowedCharacters = /^[a-zA-Z]*$/; // Nur Buchstaben erlauben
+    const maxLength = 10; // Maximale Anzahl von Zeichen
+    const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']; // Erlaubte Tasten
+
+    // Überprüfen, ob die gedrückte Taste ein Buchstabe ist
+    if (!event.key.match(allowedCharacters)) {
+        // Verhindern, dass nicht-erlaubte Zeichen eingegeben werden
+        event.preventDefault();
+    }
+
+    // Überprüfen, ob die gedrückte Taste eine manipulierende Taste ist (Enter, Backspace, etc.)
+    if (event.key === "Enter" || allowedKeys.includes(event.key)) {
+        // Verhindern, dass manipulierende Tasten verwendet werden
+        event.preventDefault();
+    }
+
+    // Überprüfen, ob die Leertaste gedrückt wurde
+    // if (event.key === " ") {
+    //     // Verhindern, dass die Leertaste verwendet wird
+    //     event.preventDefault();
+    // }
+
+    // Überprüfen, ob die maximale Anzahl von Zeichen erreicht ist
+    if (createCostumPattern_title.textContent.length >= maxLength && event.key !== "Backspace") {
+        // Verhindern, dass weitere Zeichen hinzugefügt werden
+        event.preventDefault();
+    }
+});
+
+function isNumericKey(key) {
+    return /^\d$/.test(key);
+}
+
+function isAllowedKey(key) {
+    // allowed keys: Pfeiltasten, Entf, Rücktaste, Strg, Alt, Umschalt
+    return ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete', 'Backspace', 'Control', 'Alt', 'Shift'].includes(key);
+}
+
+function isLengthExceeded(input) {
+    return input.textContent.length >= 2;
+}

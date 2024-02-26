@@ -6446,7 +6446,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid goldenrod;
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6486,14 +6486,14 @@ label h3 {
 }
 
 .tab[active_tap="true"] {
-    border: 3px solid rgba(255, 217, 0, 0.37);
+    border: 3px solid goldenrod;
     color: white;
 }
 
 .tab_container_header {
     width: 100%;
     height: 7.5%;
-    border-bottom: 2px solid rgba(255, 217, 0, 0.37);
+    border-bottom: 2px solid goldenrod;
     display: flex;
     align-items: center;
     justify-content: end;
@@ -6507,7 +6507,7 @@ label h3 {
 
 .tabContainer1_closeBtn:hover {
     transition: color 0.15s ease-out;
-    color: rgba(255, 217, 0, 0.37);
+    color: goldenrod;
 }
 
 .tab_container {
@@ -6523,22 +6523,153 @@ label h3 {
 }
 
 .tab_content {
-    padding: 25px 0 0 25px;
+    flex-direction: column;
+    align-items: center;
 }
 
 
 /* create costum field pop up */
 
 .createCostumField_popUp {
-    width: 55%;
-    height: 50%;
+    width: 85%;
+    height: 80%;
     position: absolute;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid goldenrod;
+    background-color: var(--bg-app-color);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    font-size: 25px;
+    z-index: 10006;
+    border-radius: 25px;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+    justify-content: space-between;
+}
+
+.createCostumHeader {
+    width: 95%;
+    height: 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    border-bottom: 2px solid goldenrod;
+}
+
+.createCostumMain {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 10px 0 0 0;
+}
+
+.createCostumField_Mainfooter {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+    justify-content: center;
+}
+
+.createCostumField_footer {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+    justify-content: end;
+}
+
+.CreateField_createField_btn {
+    margin: 0 25px 25px 0;
+}
+
+.createCostumField_Field {
+    display: grid;
+    min-height: calc(var(--max-cellGrid-size) - 150px);
+    min-width: calc(var(--max-cellGrid-size) - 150px);
+}
+
+p.createCostumField_xInput,
+p.createCostumField_yInput {
+    text-decoration: underline;
+    outline: none;
+}
+
+.createCostum_closeBtn {
+    cursor: pointer;
+    transition: color 0.15s ease-out;
+}
+
+.createCostum_closeBtn:hover {
+    transition: color 0.15s ease-out;
+    color: goldenrod;
+}
+
+.createCostumField_Field_wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    overflow-y: scroll;
+    width: 90%;
+    max-height: 48vh;
+}
+
+.createCostumField_Field_wrapper::-webkit-scrollbar {
+    width: 20px;
+    height: 100px;
+    background-color: #121518;
+    cursor: pointer;
+}
+
+.createCostumField_Field_wrapper::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    color: white;
+    background: white;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.createCostumField_title {
+    outline: none;
+}
+
+.createCostum_helpBtn {
+    cursor: pointer;
+    transition: color 0.15s ease-out;
+}
+
+.createCostum_helpBtn:hover {
+    color: goldenrod;
+    transition: color 0.15s ease-out;
+}
+
+
+/* create costum pattern pop up */
+
+.createCostumPattern_popUp {
+    width: 85%;
+    height: 80%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 2px solid goldenrod;
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6550,30 +6681,54 @@ label h3 {
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-.createCostumHeader {}
+.createCostumPattern_Field {
+    display: grid;
+    min-height: calc(var(--max-cellGrid-size) - 150px);
+    min-width: calc(var(--max-cellGrid-size) - 150px);
+}
 
+.CreatePattern_createPattern_btn {
+    margin: 0 25px 25px 0;
+}
 
-/* create costum pattern pop up */
+.createCostumPattern_main {
+    justify-content: center !important;
+    gap: 1em;
+}
 
-.createCostumPattern_popUp {
-    width: 55%;
-    height: 50%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
-    background-color: var(--bg-app-color);
-    display: none;
+.createCostumPattern_title {
+    outline: none;
+    padding: 3px 30px 3px 30px;
+    background-color: rgba(255, 255, 255, 0.055);
+}
+
+.costum_patterns_overview {
+    display: grid;
+    gap: 2em;
+    width: 95%;
+    height: 45vh;
+    overflow-y: scroll;
+    grid-template-columns: repeat(auto-fit, minmax(min(25%, 100%), 1fr));
+}
+
+.costumPatternsOverview_gridWrapper {
+    overflow-y: unset !important;
     flex-direction: column;
-    align-items: center;
-    color: white;
-    font-size: 25px;
-    z-index: 10006;
-    border-radius: 25px;
-    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.preview_cell {
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.small_createCostumField_Field {
+    display: grid;
+    min-height: 10px;
+    min-width: 10px;
+}
+
+.preview_pattern_title {
+    margin: 0 0 10px 0;
 }
 
 

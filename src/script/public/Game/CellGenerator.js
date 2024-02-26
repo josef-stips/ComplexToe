@@ -45,7 +45,7 @@ function generateCell(index) {
 const ConfigureCellSize = (cell, xCell_Amount) => {
     // configure cell size
     if (xCell_Amount == 5) {
-        cell.style.fontSize = "79px";
+        cell.style.fontSize = "76px";
 
     } else if (xCell_Amount == 10) {
         cell.style.fontSize = "47px";
@@ -72,6 +72,7 @@ const ConfigureCellSize = (cell, xCell_Amount) => {
 
     } else if (xCell_Amount == 40) {
         cell.style.fontSize = "var(--font-size-for-40x40-field)";
+
     };
 
     return cell;
