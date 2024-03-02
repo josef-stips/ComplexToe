@@ -6,7 +6,7 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let n = Fieldx * Fieldy;
 
     // pattern in its origin form
-    let structure = PatternStructureAsOrigin(PatternStructure);
+    let structure = PatternStructureAsOrigin(boundaries, PatternStructure, Fieldx);
 
     // get pattern length to get through field boundaries
     let lastIndex = Number(NearestIndexToBoundary(boundaries, structure));
@@ -41,31 +41,73 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
 // the user can draw every pattern he likes on a 5x5 field
 // For the pattern to be used in the right way by the game, the indexes should all have the minimum possible number
 // Ex. [7, 13, 18, 22] -> [0, 6, 11, 15]
-const PatternStructureAsOrigin = (Structure) => {
+const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
     // sort structure. small first biggest at the end
     let PatternStructure = Structure.sort((a, b) => a - b);
 
     // ascertain the first number of the structure
-    let firstIndex = PatternStructure[0];
+    let firstIndex = NearestIndexToPreviousBoundary(boundaries, Structure);
+    let boundary = findLowerBoundary(firstIndex, boundaries, Fieldx);
+    let steps = boundary - firstIndex;
 
     if (firstIndex == 0) {
         // pattern is already on its origin
         return PatternStructure;
 
     } else {
-        // copy of unmodified structure
-        let pattern = [...PatternStructure];
+        PatternStructure = PatternStructure.map(index => {
+            return index - steps;
+        });
 
-        // every index minus the smallest position
-        pattern = pattern.map(index => index = index - firstIndex);
-
-        // return updated structure
-        return pattern;
+        return PatternStructure;
     };
 };
 
 // ascertain the nearest index to the boundaries
 const NearestIndexToBoundary = (boundaries, structure) => {
+    console.log(structure, boundaries);
+
+    // Create an object to store pairs of index and corresponding boundary
+    const indexBoundaryPairs = {};
+
+    // For each index in the index array
+    structure.forEach(index => {
+        // Loop through the boundaries array to find the corresponding range
+        for (let i = 0; i < boundaries.length; i++) {
+            // If the index exactly matches a boundary
+            if (index === boundaries[i]) {
+                indexBoundaryPairs[index] = boundaries[i + 1];
+                break;
+            }
+            // If the index is within the current boundary
+            else if (index > boundaries[i] && index < boundaries[i + 1]) {
+                // Store the pair in the object
+                indexBoundaryPairs[index] = boundaries[i + 1];
+                break; // Exit the loop once the range is found
+            };
+        };
+    });
+
+    // Compare the difference between the pairs and find the smallest difference
+    let minDifference = Infinity;
+    let minDifferenceIndex = null;
+    let minDifferenceBoundary = null;
+
+    Object.entries(indexBoundaryPairs).forEach(([index, boundary]) => {
+        const difference = Math.abs(index - boundary);
+        if (difference < minDifference) {
+
+            minDifference = difference;
+            minDifferenceIndex = index;
+            minDifferenceBoundary = boundary;
+        };
+    });
+
+    return minDifferenceIndex;
+};
+
+// ascertain the nearest index to the previous boundaries
+const NearestIndexToPreviousBoundary = (boundaries, structure) => {
     console.log(structure, boundaries);
 
     // Create an object to store pairs of index and corresponding boundary
