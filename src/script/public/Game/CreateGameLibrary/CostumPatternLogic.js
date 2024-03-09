@@ -18,7 +18,7 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let stopCommand;
 
     if (lastIndexBoundary > 5) {
-        stepsOnIllegalBoundary = (lastIndexBoundary - lastIndex) + 1;
+        stepsOnIllegalBoundary = (lastIndex - (lastIndexBoundary - 5));
         stopCommand = (n - stepsOnIllegalBoundary) - 1;
 
     } else {
