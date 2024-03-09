@@ -12,32 +12,35 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let lastIndexData = NextBoundaryNearestIndex(boundaries, structure);
     let lastIndex = lastIndexData[0];
     let lastIndexBoundary = lastIndexData[1];
+
     // steps to go on boundary overshoot
-    let stepsOnIllegalBoundary = lastIndex;
-    // when to stop win combination generating 
-    let stopGeneratingIndex = (n - stepsOnIllegalBoundary);
+    let stepsOnIllegalBoundary;
+    let stopCommand;
 
-    let ll = lastIndexBoundary - lastIndex
-    let ww = Number(NextBoundaryNearestIndex(boundaries, [structure[structure.length - 1]])) - structure[structure.length - 1]
+    if (lastIndexBoundary > 5) {
+        stepsOnIllegalBoundary = (lastIndexBoundary - lastIndex) + 1;
+        stopCommand = (n - stepsOnIllegalBoundary) - 1;
 
-    let result = ll - ww;
-    console.log(result, ll, ww);
+    } else {
+
+        stepsOnIllegalBoundary = lastIndex;
+
+        stopCommand = (n - stepsOnIllegalBoundary) - 1;
+    };
 
     // nearest index to the left side of the 5x5 field and its corresponding boundary
     let yData = XboundaryNearestIndex(1, boundaries, structure);
     let y = yData[0];
     let by = yData[1];
 
-    console.log("yData: ", n, y, by);
-
-    let stopCommand = (n + y) - 1
+    console.log(y, "ydata: ", yData);
 
     console.log(`
         structure : ${structure},
         lastIndex : ${lastIndex},
         lastIndexBoundary : ${lastIndexBoundary},
         stepsOnIllegalBoundary : ${stepsOnIllegalBoundary},
-        stopGeneratingIndex : ${stopGeneratingIndex}
+        stopCommand: ${stopCommand}
     `);
 
     // generate pattern and push it to the official win patterns library
@@ -45,8 +48,6 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
         let pattern = []
 
         // check for boundary overshoot
-        // for (let boundary of boundaries) i + stepsOnIllegalBoundary == boundary && (i = i + stepsOnIllegalBoundary);
-
         for (let boundary of boundaries) i + stepsOnIllegalBoundary == boundary && (i = i + stepsOnIllegalBoundary);
 
         // generate new pattern structure
@@ -54,16 +55,12 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
             pattern.push(index + i);
         });
 
-        // stop generating
-        // console.log(pattern[pattern.length - 1], 5 - (pattern[pattern.length - 1] - findLowerBoundary(pattern[pattern.length - 1], boundaries)), (pattern[pattern.length - 1] - findLowerBoundary(pattern[pattern.length - 1], boundaries)));
-
-        console.log("stop command: ", stopCommand, pattern[pattern.length - 1])
-
+        console.log(pattern[pattern.length - 1], n, n - 1, stopCommand);
+        // stop generating. last field boundary touched
+        if (pattern[pattern.length - 1] > n - 1) break;
 
         // push win combination to win combination list
         WinConditions.push(pattern);
-
-        if (pattern[pattern.length - 1] >= stopCommand) break;
     };
 
     console.log(WinConditions);
@@ -91,15 +88,15 @@ const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
     let rowSteps = y - by;
     let steps = bx + rowSteps;
 
-    console.log(`
-        x : ${x},
-        bx : ${bx},
-        yData : ${yData},
-        y : ${y},
-        by : ${by},
-        rowSteps : ${rowSteps},
-        steps : ${steps}
-    `);
+    // console.log(`
+    //     x : ${x},
+    //     bx : ${bx},
+    //     yData : ${yData},
+    //     y : ${y},
+    //     by : ${by},
+    //     rowSteps : ${rowSteps},
+    //     steps : ${steps}
+    // `);
 
     PatternStructure = PatternStructure.map(index => {
         return index - steps;
@@ -116,8 +113,7 @@ const XboundaryNearestIndex = (boundaryType, boundaries, structure) => { // boun
     structure.forEach(index => {
         for (let i = 0; i < boundaries.length; i++) {
             const boundary = boundaries[i];
-
-            console.log(index, boundary);
+            // console.log(index, boundary);
 
             if (index < boundary) {
                 indexBoundaryPairs[index] = boundaries[i - boundaryType];
@@ -154,8 +150,7 @@ const NextBoundaryNearestIndex = (boundaries, structure) => {
     structure.forEach(index => {
         for (let i = boundaries.length - 1; i >= 0; i--) {
             const boundary = boundaries[i];
-
-            console.log(index, boundary);
+            // console.log(index, boundary);
 
             if (index >= boundary) {
                 indexBoundaryPairs[index] = boundaries[i + 1];
@@ -164,7 +159,7 @@ const NextBoundaryNearestIndex = (boundaries, structure) => {
         };
     });
 
-    console.log(indexBoundaryPairs)
+    // console.log(indexBoundaryPairs)
 
     // find index which is nearest to its lower boundary
     let bestDiff = Infinity;
