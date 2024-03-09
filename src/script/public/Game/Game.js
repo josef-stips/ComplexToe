@@ -163,6 +163,12 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     CreateField();
     CreateWinConditions(xCell_Amount, Allowed_Patterns);
 
+    // user costum patterns are only availible in user costum levels
+    if (NewCreativeLevel) {
+        // check and initialize user costum patterns
+        NewCreativeLevel_GenerateCostumPatterns();
+    };
+
     // for KI Mode
     ki_board = 0b0;
     player_board = 0b0;

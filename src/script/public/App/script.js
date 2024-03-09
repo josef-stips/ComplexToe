@@ -507,6 +507,8 @@ let KEYicon_skinShop = document.querySelector(".KEYicon_skinShop");
 let xIcon_skinShop = document.querySelector(".xIcon_skinShop");
 let gemsIcon_skinShop = document.querySelector(".gemsIcon_skinShop");
 let shopGuideText = document.querySelector(".shopGuideText");
+let costum_patterns_overview_from_level = document.querySelector(".costum_patterns_overview_from_level");
+let PatternGridWrapper = document.querySelector(".PatternGrid-Wrapper");
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
 let bossLifeCounter = document.querySelector(".bossLifeCounter");
@@ -1099,14 +1101,14 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
 
     // try to connect to server 
     try {
-        socket = io("http://139.144.180.23", {
-            // path: "http://139.144.180.23",
-            // transports: ['websocket'],
-        });
-        // socket = io("http://localhost:3000", {
-        //     // path: "http://localhost:3000",
+        // socket = io("http://139.144.180.23", {
+        //     // path: "http://139.144.180.23",
         //     // transports: ['websocket'],
         // });
+        socket = io("http://localhost:3000", {
+            // path: "http://localhost:3000",
+            // transports: ['websocket'],
+        });
         window.socket = socket;
 
         socket.on('connect', () => {
@@ -2561,6 +2563,10 @@ gameInfo_btn.addEventListener('click', () => {
         // how to win text
         if (PlayingInCreatedLevel) {
             HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points or score more points than your opponent if he gives up.`;
+
+            setTimeout(() => {
+                NewCreativeLevel_DisplayCostumPatternsInGamePopUp();
+            }, 100);
 
         } else {
             HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`;

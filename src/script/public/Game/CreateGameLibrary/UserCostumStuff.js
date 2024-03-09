@@ -207,12 +207,14 @@ const Display_CostumPatterns = () => {
     Object.keys(patterns).forEach(pattName => {
         let pattStructure = patterns[pattName];
 
-        createPattern_preview(pattName, pattStructure);
+        createPattern_preview(pattName, pattStructure, costum_patterns_overview, "personal");
     });
+
+    NewCreativeLevel.InitCostumPatterns(NewCreativeLevel.CurrentSelectedSetting.costumPatterns);
 };
 
 // create pattern preview element
-const createPattern_preview = (patternName, patternStructure) => {
+const createPattern_preview = (patternName, patternStructure, parent, rights, special_class) => {
     // create elements
     const gridWrapper = document.createElement("div");
     const grid = document.createElement("div");
@@ -233,6 +235,7 @@ const createPattern_preview = (patternName, patternStructure) => {
     headerWrapper.classList.add("headerWrapper");
     editItemsWrapper.classList.add("editItemsWrapper");
     grid.setAttribute("costum_pattern_name", patternName.replace(" ", "_"));
+    special_class != undefined && gridWrapper.setAttribute(special_class, "true");
 
     pen.className = "fa-solid fa-pen item";
     bin.className = "fa-solid fa-trash item";
@@ -290,16 +293,21 @@ const createPattern_preview = (patternName, patternStructure) => {
     });
 
     // append to document
-    costum_patterns_overview.appendChild(gridWrapper);
+    parent.appendChild(gridWrapper);
     headerWrapper.appendChild(flexDiv);
     headerWrapper.appendChild(title);
     headerWrapper.appendChild(editItemsWrapper)
     gridWrapper.appendChild(headerWrapper);
     gridWrapper.appendChild(grid);
 
-    editItemsWrapper.appendChild(pen);
-    editItemsWrapper.appendChild(bin);
-    editItemsWrapper.appendChild(checkBox);
+    if (rights == "personal") {
+        editItemsWrapper.appendChild(pen);
+        editItemsWrapper.appendChild(bin);
+        editItemsWrapper.appendChild(checkBox);
+
+    } else if (rights == "level") {
+
+    };
 
     setTimeout(() => {
         // give static height/ scale whatever
@@ -361,6 +369,8 @@ const toggleCustomPatternInNewLevel = (box, structure, name) => {
         // pattern in level logic
         NewCreativeLevel.toggle_costum_pattern("add", name, structure);
     };
+
+    NewCreativeLevel.InitCostumPatterns(NewCreativeLevel.CurrentSelectedSetting.costumPatterns);
 };
 
 // check if user drawed a costum pattern
