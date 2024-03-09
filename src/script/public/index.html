@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="index.css" />
     <audio id="battleAudio" src="assets/Maps/battle.mp3"></audio>
     <audio id="bg_audio" src="assets/Maps/BGmusic.m4a"></audio>
+    <audio id="ShopTheme" src="assets/Maps/a_small_fire_will_do.wav"></audio>
     <audio id="rewardAudio" src="assets/Jingle 026.wav"></audio>
     <audio id="sound1" src="assets/Sound1.wav"></audio>
     <audio id="gateOpenSound" src="assets/Gate_Open_00.mp3"></audio>
@@ -3639,6 +3640,8 @@
                 <li>wolf-head by Lorc under CC BY 3.0</li>
                 <li>cursed-star by Lorc under CC BY 3.0</li>
                 <li>dungeon-gate by Delapouite under CC BY 3.0</li>
+                <li>direction-sign by Delapouite under CC BY 3.0</li>
+                <li>deku-tree by Delapouite under CC BY 3.0</li>
             </ul>
 
         </div>
@@ -6170,61 +6173,130 @@
     <!-- skin shop -->
     <div class="skin-shop">
         <div class="skin-shop-header">
-            <img style="margin-left: 20px;" src="assets/game/tribal-mask.svg" width="27" height="27">
-            <h2>Skin shop</h2>
-            <i class="fa-solid fa-x skinShopCloseBtn"></i>
+            <h1 class="skinUserNameDisplay">User name</h1>
         </div>
 
         <div class="skin-shop-main">
             <div class="skinshop-main-innerWrapper">
                 <div class="skin-shop-skin-preview">
+
+                    <div class="CurrencySkinShopDisplay">
+                        <div class="lobby-header-icon-innerWrapper Gem_Wrapper">
+                            <i title="diamants" class="fa-solid fa-gem"></i>
+                            <span class="gemsIcon_skinShop">250</span>
+                        </div>
+
+                        <div class="lobby-header-icon-innerWrapper XICON_Wrapper">
+                            <i title="X" class="fa-solid fa-x XBtn"></i>
+                            <span class="xIcon_skinShop">3</span>
+                        </div>
+
+                        <div class="lobby-header-icon-innerWrapper KEYICON_Wrapper">
+                            <i title="key" class="fa-solid fa-key KeyBtn"></i>
+                            <span class="KEYicon_skinShop">20</span>
+                        </div>
+                    </div>
+
                     <div class="skinBigItem">X</div>
+
+                    <div class="shopGuide">
+                        <img src="assets/game/deku-tree.svg" width="250" height="250">
+                    </div>
+
+                    <div class="shopGuide">
+                        <div style="width: 250px;height:250px;">
+
+                        </div>
+                        <h2 class="shopGuideText">Hey guy!</h2>
+                    </div>
+
                     <div class="skin-footer">
-                        <div class="skin-footer-left">
-                            <span class="sideline-price">price:</span>
-                            <div class="skin-price-display">&nbsp;?</div>
+                        <div class="skin-shop-preview-header">
+                            <img src="assets/game/direction-sign.svg" width="100" height="100" class="skinShopCloseBtn" draggable="false" title="back">
                         </div>
 
-                        <span class="BuySkinError">You can't buy this skin yet!</span>
+                        <div class="skinShopTabWrapper">
+                            <div class="tab skinShopTab" active_tap="true" content="1" target_container="0">Player skins</div>
+                            <div class="tab skinShopTab" content="2" target_container="1">Grid designs</div>
 
-                        <div class="skin-footer-right">
-                            <button class="use-skin-button">
-                                use
-                            </button>
-                            <button class="buy-skin-button">
-                                buy
-                            </button>
+                        </div>
+
+                        <div class="skinFooterText">
+                            <span class="BuySkinError">You can't buy this skin yet!</span>
+
+                            <div class="skin-footer-left">
+                                <span class="sideline-price">price:</span>
+                                <div class="skin-price-display">&nbsp;?</div>
+                            </div>
+
+                            <div class="skin-footer-right">
+                                <button class="use-skin-button">
+                                    use
+                                </button>
+                                <button class="buy-skin-button">
+                                    buy
+                                </button>
+                            </div>
                         </div>
                     </div>
+
                 </div>
-                <div class="skin-shop-skin-selection">
-                    <h2>Skin colors</h2>
-                    <div class="skinShop-SkinColors">
-                        <div class="skin-to-select skin-default" name="skin-default" skin-type="skin-color" item-type="0" price="0" skin-color="var(--font-color)">X</div>
-                        <div class="skin-to-select skin-blue" name="skin-blue" skin-type="skin-color" item-type="gem" price="100" skin-color="rgb(30, 77, 138)">X</div>
-                        <div class="skin-to-select skin-green" name="skin-green" skin-type="skin-color" item-type="gem" price="100" skin-color="rgb(38, 138, 38)">X</div>
-                        <div class="skin-to-select skin-purple" name="skin-purple" skin-type="skin-color" item-type="gem" price="150" skin-color="rgb(128, 14, 128)">X</div>
-                        <div class="skin-to-select skin-lightBlue" name="skin-lightBlue" skin-type="skin-color" item-type="gem" price="200" skin-color="rgb(133, 190, 209)">X</div>
-                        <div class="skin-to-select skin-lightGreen" name="skin-lightGreen" skin-type="skin-color" item-type="gem" price="200" skin-color="rgb(132, 221, 132)">X</div>
-                        <div class="skin-to-select skin-pink" name="skin-pink" skin-type="skin-color" item-type="gem" price="250" skin-color="rgb(228, 163, 174)">X</div>
-                        <div class="skin-to-select skin-yellow" name="skin-yellow" skin-type="skin-color" item-type="gem" price="200" skin-color="yellow">X</div>
-                        <div class="skin-to-select skin-orange" name="skin-orange" skin-type="skin-color" item-type="gem" price="150" skin-color="orangered">X</div>
-                        <div class="skin-to-select skin-teal" name="skin-teal" skin-type="skin-color" item-type="gem" price="400" skin-color="teal">X</div>
-                        <div class="skin-to-select skin-red" name="skin-red" skin-type="skin-color" item-type="gem" price="500" skin-color="red">X</div>
+
+                <div class="skinSelectionWrapper">
+
+                    <div class="skin-shop-skin-selection skinShop_tab_content" tab_content="21">
+                        <h1>Skin colors</h1>
+                        <div class="skinShop-SkinColors">
+                            <div class="skin-to-select skin-default" name="skin-default" skin-type="skin-color" item-type="0" price="0" skin-color="var(--font-color)">X</div>
+                            <div class="skin-to-select skin-blue" name="skin-blue" skin-type="skin-color" item-type="gem" price="100" skin-color="rgb(30, 77, 138)">X</div>
+                            <div class="skin-to-select skin-green" name="skin-green" skin-type="skin-color" item-type="gem" price="100" skin-color="rgb(38, 138, 38)">X</div>
+                            <div class="skin-to-select skin-purple" name="skin-purple" skin-type="skin-color" item-type="gem" price="150" skin-color="rgb(128, 14, 128)">X</div>
+                            <div class="skin-to-select skin-lightBlue" name="skin-lightBlue" skin-type="skin-color" item-type="gem" price="200" skin-color="rgb(133, 190, 209)">X</div>
+                            <div class="skin-to-select skin-lightGreen" name="skin-lightGreen" skin-type="skin-color" item-type="gem" price="200" skin-color="rgb(132, 221, 132)">X</div>
+                            <div class="skin-to-select skin-pink" name="skin-pink" skin-type="skin-color" item-type="gem" price="250" skin-color="rgb(228, 163, 174)">X</div>
+                            <div class="skin-to-select skin-yellow" name="skin-yellow" skin-type="skin-color" item-type="gem" price="200" skin-color="yellow">X</div>
+                            <div class="skin-to-select skin-orange" name="skin-orange" skin-type="skin-color" item-type="gem" price="150" skin-color="orangered">X</div>
+                            <div class="skin-to-select skin-teal" name="skin-teal" skin-type="skin-color" item-type="gem" price="400" skin-color="teal">X</div>
+                            <div class="skin-to-select skin-red" name="skin-red" skin-type="skin-color" item-type="gem" price="500" skin-color="red">X</div>
+
+                            <div class="skin-to-select skin-goldenrod" name="skin-goldenrod" skin-type="skin-color" item-type="gem" price="500" skin-color="goldenrod">X</div>
+                            <div class="skin-to-select skin-darkslateblue" name="skin-darkslateblue" skin-type="skin-color" item-type="x" price="1" skin-color="darkslateblue">X</div>
+                            <div class="skin-to-select skin-silver" name="skin-silver" skin-type="skin-color" item-type="x" price="3" skin-color="silver">X</div>
+                            <div class="skin-to-select skin-olive" name="skin-olive" skin-type="skin-color" item-type="gem" price="750" skin-color="olive">X</div>
+                            <div class="skin-to-select skin-mediumpurple" name="skin-mediumpurple" skin-type="skin-color" item-type="gem" price="100" skin-color="mediumpurple">X</div>
+
+                            <div class="skin-to-select skin-crimson" name="skin-crimson" skin-type="skin-color" item-type="gem" price="300" skin-color="crimson">X</div>
+                            <div class="skin-to-select skin-lightslategrey" name="skin-lightslategrey" skin-type="skin-color" item-type="gem" price="700" skin-color="lightslategrey">X</div>
+                            <div class="skin-to-select skin-rosybrown" name="skin-rosybrown" skin-type="skin-color" item-type="gem" price="750" skin-color="rosybrown">X</div>
+                            <div class="skin-to-select skin-tomato" name="skin-tomato" skin-type="skin-color" item-type="gem" price="500" skin-color="tomato">X</div>
+
+                        </div>
+                        <h1 style="margin-top: 1em;">Advanced skins</h1>
+                        <div class="skinShop-AdvancedSkins">
+                            <div><i name="chess-rook" skin-type="skin" price="1" item-type="x" class="fa-solid fa-chess-rook skin-to-select"></i></div>
+                            <div><i name="chess-queen" skin-type="skin" price="5" item-type="x" class="fa-solid fa-chess-queen skin-to-select"></i></div>
+                            <div><i name="chess-pawn" skin-type="skin" price="4" item-type="x" class="fa-solid fa-chess-pawn skin-to-select"></i></div>
+                            <div><i name="chess-knight" skin-type="skin" price="5" item-type="x" class="fa-solid fa-chess-knight skin-to-select"></i></div>
+                            <div><i name="chess-king" skin-type="skin" price="5" item-type="x" class="fa-solid fa-chess-king skin-to-select"></i></div>
+                            <div><i name="jedi" skin-type="skin" price="7" item-type="x" class="fa-solid fa-jedi skin-to-select"></i></div>
+                            <div><i name="fish" skin-type="skin" price="2" item-type="x" class="fa-solid fa-fish skin-to-select"></i></div>
+                            <div><i name="crown" skin-type="skin" price="5" item-type="x" class="fa-solid fa-crown skin-to-select"></i></div>
+                            <div><i name="spaghetti-monster-flying" skin-type="skin" price="12" item-type="x" class="fa-solid fa-spaghetti-monster-flying skin-to-select"></i></div>
+                            <div><i name="hand-fist" skin-type="skin" price="1000" item-type="gem" class="fa-solid fa-hand-fist skin-to-select"></i></div>
+
+                            <div><i name="heart" skin-type="skin" price="250" item-type="gem" class="fa-solid fa-heart skin-to-select"></i></div>
+                            <div><i name="bug" skin-type="skin" price="2000" item-type="gem" class="fa-solid fa-bug skin-to-select"></i></div>
+                            <div><i name="handshake" skin-type="skin" price="3" item-type="x" class="fa-solid fa-handshake skin-to-select"></i></div>
+                            <div><i name="thumbs-up" skin-type="skin" price="3" item-type="x" class="fa-solid fa-thumbs-up skin-to-select"></i></div>
+                            <div><i name="face-smile" skin-type="skin" price="500" item-type="gem" class="fa-solid fa-face-smile skin-to-select"></i></div>
+
+                        </div>
                     </div>
-                    <h2 style="margin-top: 1em;">Advanced skins</h2>
-                    <div class="skinShop-AdvancedSkins">
-                        <div><i name="chess-rook" skin-type="skin" price="1" item-type="x" class="fa-solid fa-chess-rook skin-to-select"></i></div>
-                        <div><i name="chess-queen" skin-type="skin" price="5" item-type="x" class="fa-solid fa-chess-queen skin-to-select"></i></div>
-                        <div><i name="chess-pawn" skin-type="skin" price="4" item-type="x" class="fa-solid fa-chess-pawn skin-to-select"></i></div>
-                        <div><i name="chess-knight" skin-type="skin" price="5" item-type="x" class="fa-solid fa-chess-knight skin-to-select"></i></div>
-                        <div><i name="chess-king" skin-type="skin" price="5" item-type="x" class="fa-solid fa-chess-king skin-to-select"></i></div>
-                        <div><i name="jedi" skin-type="skin" price="7" item-type="x" class="fa-solid fa-jedi skin-to-select"></i></div>
-                        <div><i name="fish" skin-type="skin" price="2" item-type="x" class="fa-solid fa-fish skin-to-select"></i></div>
-                        <div><i name="crown" skin-type="skin" price="5" item-type="x" class="fa-solid fa-crown skin-to-select"></i></div>
-                        <div><i name="spaghetti-monster-flying" skin-type="skin" price="12" item-type="x" class="fa-solid fa-spaghetti-monster-flying skin-to-select"></i></div>
-                        <div><i name="hand-fist" skin-type="skin" price="1000" item-type="gem" class="fa-solid fa-hand-fist skin-to-select"></i></div>
+
+                    <div class="CellGridColorSelectionWrapper skinShop_tab_content" tab_content="22">
+                        <h1>This feature is availible soon</h1>
                     </div>
+
                 </div>
             </div>
         </div>

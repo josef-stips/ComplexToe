@@ -157,6 +157,16 @@ function playBattleEndTheme() {
     CreateMusicBars(battleAudio);
 };
 
+function playShopTheme() {
+    PauseMusic();
+
+    CreateMusicBars(ShopTheme);
+
+    setTimeout(() => {
+        globalAudio.volume = appVolume * 3
+    }, 500);
+};
+
 function play_rewardSound() {
     // reward/ achievement sound
     rewardAudio.volume = sfxVolume;

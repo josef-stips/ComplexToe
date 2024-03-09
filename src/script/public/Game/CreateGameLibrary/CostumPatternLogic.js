@@ -18,30 +18,15 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let stopCommand;
 
     if (lastIndexBoundary > 5) {
+
         stepsOnIllegalBoundary = (lastIndex - (lastIndexBoundary - 5));
         stopCommand = (n - stepsOnIllegalBoundary) - 1;
 
     } else {
 
         stepsOnIllegalBoundary = lastIndex;
-
         stopCommand = (n - stepsOnIllegalBoundary) - 1;
     };
-
-    // nearest index to the left side of the 5x5 field and its corresponding boundary
-    let yData = XboundaryNearestIndex(1, boundaries, structure);
-    let y = yData[0];
-    let by = yData[1];
-
-    console.log(y, "ydata: ", yData);
-
-    console.log(`
-        structure : ${structure},
-        lastIndex : ${lastIndex},
-        lastIndexBoundary : ${lastIndexBoundary},
-        stepsOnIllegalBoundary : ${stepsOnIllegalBoundary},
-        stopCommand: ${stopCommand}
-    `);
 
     // generate pattern and push it to the official win patterns library
     for (let i = 0; i < n; i++) {
@@ -55,7 +40,6 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
             pattern.push(index + i);
         });
 
-        console.log(pattern[pattern.length - 1], n, n - 1, stopCommand);
         // stop generating. last field boundary touched
         if (pattern[pattern.length - 1] > n - 1) break;
 

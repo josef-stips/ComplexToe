@@ -20,6 +20,7 @@ let LaughSound = document.querySelector("#LaughSound");
 let gateOpenSound = document.querySelector("#gateOpenSound");
 let sound1 = document.querySelector("#sound1");
 let battleAudio = document.querySelector("#battleAudio");
+let ShopTheme = document.querySelector("#ShopTheme");
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -501,6 +502,11 @@ let CreateField_createField_btn = document.querySelector(".CreateField_createFie
 let CreatePattern_createPattern_btn = document.querySelector(".CreatePattern_createPattern_btn");
 let costum_patterns_overview = document.querySelector(".costum_patterns_overview");
 let costum_field_overview = document.querySelector(".costum_field_overview");
+let skinUserNameDisplay = document.querySelector(".skinUserNameDisplay");
+let KEYicon_skinShop = document.querySelector(".KEYicon_skinShop");
+let xIcon_skinShop = document.querySelector(".xIcon_skinShop");
+let gemsIcon_skinShop = document.querySelector(".gemsIcon_skinShop");
+let shopGuideText = document.querySelector(".shopGuideText");
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
 let bossLifeCounter = document.querySelector(".bossLifeCounter");
@@ -561,6 +567,9 @@ const DisplayPopUp_PopAnimation = (pop_up, type, darkLayer) => {
     pop_up.style.animation = "popUp-POP 0.2s ease-in-out";
     darkLayer && (DarkLayer.style.display = "block");
 };
+
+// displays user name in a text element
+const displayUserName = (textEl) => textEl.textContent = localStorage.getItem("UserName");
 
 // important data
 let GameMode = {
@@ -1620,7 +1629,7 @@ const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
         // animation
         DarkLayer.style.backgroundColor = 'black';
         DarkLayer.style.display = 'block';
-        DarkLayer.style.transition = 'opacity 0.1s ease-in';
+        DarkLayer.style.transition = 'opacity 0.2s ease-in-out';
         DarkLayer.style.opacity = '0';
 
         setTimeout(() => {
@@ -1628,8 +1637,8 @@ const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
             setTimeout(() => {
                 undisplay_Element.style.display = 'none';
                 Display_Element.style.display = 'flex';
-            }, 100);
-        }, 500);
+            }, 250);
+        }, 100);
 
         setTimeout(() => {
             DarkLayer.style.opacity = '0';
@@ -1641,8 +1650,8 @@ const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
                 DarkLayer.style.transition = 'none';
                 DarkLayer.style.opacity = '1';
                 DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
-            }, 400);
-        }, 900);
+            }, 350);
+        }, 400);
     });
 };
 
