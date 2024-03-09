@@ -405,3 +405,12 @@ const checkCostumPatternInCurrentLevel = (patternName, patternStructure) => {
 
     } else return false;
 };
+
+// how many indexes the user should minimum draw
+const minimumIndexesRequiremement = amount => {
+    let indexesAmount = 0;
+
+    [...createCostumPattern_Field.children].forEach(cell => (cell.classList.contains("draw")) && indexesAmount++);
+
+    return (indexesAmount >= amount) ? true : false;
+};

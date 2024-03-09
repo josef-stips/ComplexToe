@@ -12,7 +12,12 @@ let boundaries = [];
 const CalculateBoundaries = () => {
     xCell_Amount = parseInt(xCell_Amount);
     boundaries = [];
+
+    boundaries.push(0);
+
     for (let i = xCell_Amount; i < xCell_Amount * xCell_Amount; i = i + xCell_Amount) boundaries.push(i);
+
+    boundaries.push(xCell_Amount * xCell_Amount);
 };
 
 // Creates the TicTacToe Field

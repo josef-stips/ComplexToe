@@ -8,31 +8,62 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     // pattern in its origin form
     let structure = PatternStructureAsOrigin(boundaries, PatternStructure, Fieldx);
 
-    // get pattern length to get through field boundaries
-    let lastIndex = Number(NearestIndexToBoundary(boundaries, structure));
-    let lastIndexBoundary = findLowerBoundary(lastIndex, boundaries, Fieldx);
-    let stepsOnIllegalBoundary = (lastIndex == Fieldx - 1 || lastIndex == 0) ? lastIndex : (lastIndex - lastIndexBoundary);
+    // last Index of boundary data 
+    let lastIndexData = NextBoundaryNearestIndex(boundaries, structure);
+    let lastIndex = lastIndexData[0];
+    let lastIndexBoundary = lastIndexData[1];
+    // steps to go on boundary overshoot
+    let stepsOnIllegalBoundary = lastIndex;
+    // when to stop win combination generating 
+    let stopGeneratingIndex = (n - stepsOnIllegalBoundary);
 
-    // literally the last index of the pattern minus the boundary steps
-    let lastAllowedPatternIndex = structure[structure.length - 1] - stepsOnIllegalBoundary;
+    let ll = lastIndexBoundary - lastIndex
+    let ww = Number(NextBoundaryNearestIndex(boundaries, [structure[structure.length - 1]])) - structure[structure.length - 1]
 
-    console.log(structure, " last Index lol: ", lastIndex, lastIndexBoundary, lastAllowedPatternIndex, stepsOnIllegalBoundary);
+    let result = ll - ww;
+    console.log(result, ll, ww);
+
+    // nearest index to the left side of the 5x5 field and its corresponding boundary
+    let yData = XboundaryNearestIndex(1, boundaries, structure);
+    let y = yData[0];
+    let by = yData[1];
+
+    console.log("yData: ", n, y, by);
+
+    let stopCommand = (n + y) - 1
+
+    console.log(`
+        structure : ${structure},
+        lastIndex : ${lastIndex},
+        lastIndexBoundary : ${lastIndexBoundary},
+        stepsOnIllegalBoundary : ${stepsOnIllegalBoundary},
+        stopGeneratingIndex : ${stopGeneratingIndex}
+    `);
 
     // generate pattern and push it to the official win patterns library
     for (let i = 0; i < n; i++) {
         let pattern = []
 
+        // check for boundary overshoot
+        // for (let boundary of boundaries) i + stepsOnIllegalBoundary == boundary && (i = i + stepsOnIllegalBoundary);
+
         for (let boundary of boundaries) i + stepsOnIllegalBoundary == boundary && (i = i + stepsOnIllegalBoundary);
 
+        // generate new pattern structure
         structure.forEach(index => {
             pattern.push(index + i);
         });
 
-        if (pattern[pattern.length - 1] >= (n - (Math.abs(lastIndex - lastIndexBoundary))) - 1) break;
+        // stop generating
+        // console.log(pattern[pattern.length - 1], 5 - (pattern[pattern.length - 1] - findLowerBoundary(pattern[pattern.length - 1], boundaries)), (pattern[pattern.length - 1] - findLowerBoundary(pattern[pattern.length - 1], boundaries)));
 
+        console.log("stop command: ", stopCommand, pattern[pattern.length - 1])
+
+
+        // push win combination to win combination list
         WinConditions.push(pattern);
 
-        console.log(i + lastIndex, (n - (Math.abs(lastIndex - lastIndexBoundary))));
+        if (pattern[pattern.length - 1] >= stopCommand) break;
     };
 
     console.log(WinConditions);
@@ -49,169 +80,123 @@ const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
 
     console.log(PatternStructure);
 
-    // ascertain the first number of the structure
-    let firstIndex = NearestIndexToPreviousBoundary(boundaries, Structure, Fieldx);
-    let boundary = findCurrentBoundary(firstIndex, boundaries, Fieldx);
-    let previousBoundary = findLowerBoundary(PatternStructure[0], boundaries, Fieldx);
-    let stepsHorizontal = (boundary - firstIndex == 0) ? boundary - firstIndex : (boundary - firstIndex) - 1;
-    let steps = previousBoundary + stepsHorizontal;
+    // literally the first index of the pattern and its corresponding lower boundary
+    let x = Structure[0];
+    let bx = findLowerBoundary(x, boundaries);
+    // nearest index to the left side of the 5x5 field and its corresponding boundary
+    let yData = XboundaryNearestIndex(1, boundaries, PatternStructure);
+    let y = yData[0];
+    let by = yData[1];
+    // number to subtract from each index of pattern
+    let rowSteps = y - by;
+    let steps = bx + rowSteps;
 
-    console.log("first Index: ", firstIndex, steps, stepsHorizontal, previousBoundary, boundary);
+    console.log(`
+        x : ${x},
+        bx : ${bx},
+        yData : ${yData},
+        y : ${y},
+        by : ${by},
+        rowSteps : ${rowSteps},
+        steps : ${steps}
+    `);
 
-    if (firstIndex == 0) {
-        // pattern is already on its origin
-        return PatternStructure;
-
-    } else {
-        PatternStructure = PatternStructure.map(index => {
-            return index - steps;
-        });
-
-        return PatternStructure;
-    };
-};
-
-// ascertain the nearest index to the boundaries
-const NearestIndexToBoundary = (boundaries, structure) => {
-    console.log(structure, boundaries);
-
-    // Create an object to store pairs of index and corresponding boundary
-    const indexBoundaryPairs = {};
-
-    // For each index in the index array
-    structure.forEach(index => {
-        // Loop through the boundaries array to find the corresponding range
-        for (let i = 0; i < boundaries.length; i++) {
-            // If the index exactly matches a boundary
-            if (index === boundaries[i]) {
-                indexBoundaryPairs[index] = boundaries[i + 1] == undefined ? boundaries[i] : boundaries[i + 1];
-                break;
-            }
-            // If the index is within the current boundary
-            else if (index > boundaries[i] && index < boundaries[i + 1] || index < boundaries[i] && index > 0) {
-                // Store the pair in the object
-                indexBoundaryPairs[index] = boundaries[i];
-                break; // Exit the loop once the range is found
-            };
-
-            // if (index <= boundaries[i]) {
-            //     // Aktualisiere die niedrigere Grenze
-            //     indexBoundaryPairs[index] = boundaries[i + 1];
-
-            // };
-        };
+    PatternStructure = PatternStructure.map(index => {
+        return index - steps;
     });
 
-    console.log(" index boundary pairs: ", indexBoundaryPairs);
-
-    // Compare the difference between the pairs and find the smallest difference
-    let minDifference = Infinity;
-    let minDifferenceIndex = null;
-    let minDifferenceBoundary = null;
-
-    Object.entries(indexBoundaryPairs).forEach(([index, boundary]) => {
-        const difference = Math.abs(index - boundary);
-
-        console.log(index, " - ", boundary, " = ", difference);
-
-        if (difference < minDifference) {
-
-            minDifference = difference;
-            minDifferenceIndex = index;
-            minDifferenceBoundary = boundary;
-        };
-    });
-
-    return minDifferenceIndex;
+    return PatternStructure;
 };
 
 // ascertain the nearest index to the previous boundaries
-const NearestIndexToPreviousBoundary = (boundaries, structure, Fieldx) => {
-    let smallestDifference = -Infinity;
-    let bestIndex = null;
-    let bestIndexPossibleFound = false;
-    let bestBoundaryFoundOnIndex = null;
+const XboundaryNearestIndex = (boundaryType, boundaries, structure) => { // boundaryType = 1 (lower boundary of index) || 0 (current boundary of index)
+    let indexBoundaryPairs = {};
 
-    // Durchlaufe die Indexe im Array
-    structure.forEach(number => {
-        let lowerBoundary = boundaries[0];
+    // find corresponding boundary to index
+    structure.forEach(index => {
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i];
 
-        // Durchlaufe die Grenzwerte im Boundaries-Array
-        for (let i = boundaries.length - 1; i >= 0; i--) {
-            // Wenn die Zahl zwischen dem aktuellen Grenzwert und dem vorherigen liegt
-            if (number <= boundaries[i]) {
-                // Aktualisiere die niedrigere Grenze
-                lowerBoundary = boundaries[i];
+            console.log(index, boundary);
 
+            if (index < boundary) {
+                indexBoundaryPairs[index] = boundaries[i - boundaryType];
+                return;
             };
-
-            console.log(number, boundaries[i], i, boundaries, lowerBoundary)
-
-            // if (number > boundaries[i]) {
-            //     if (number != bestBoundaryFoundOnIndex) {
-            //         lowerBoundary = boundaries[i];
-            //         bestBoundaryFoundOnIndex = number;
-
-            //     } else {};
-            // };
-        };
-
-        // Berechne die Differenz zwischen der niedrigeren Grenze und dem Index
-        const difference = lowerBoundary - number;
-        console.log(lowerBoundary, " - ", number, " = ", difference);
-
-        // Aktualisiere die kleinste Differenz, falls die aktuelle Differenz kleiner ist
-        if ((difference > smallestDifference || difference == 0) && !bestIndexPossibleFound) {
-            smallestDifference = difference;
-            bestIndex = number;
-
-            if (difference == 0) bestIndexPossibleFound = true;
         };
     });
 
-    return bestIndex;
-};
+    console.log(indexBoundaryPairs)
 
-const findLowerBoundary = (number, boundaries, FieldX) => {
-    let lowerBoundary = boundaries[0];
+    // find index which is nearest to its lower boundary
+    let bestDiff = Infinity;
+    let bestIndex = null;
+    let bestBoundary = null;
 
-    // loop boundaries
-    for (let i = boundaries.length - 1; i >= 0; i--) {
-        // if number lies between current an previous value
-        if (number <= boundaries[i]) {
-            // update lower bound
-            // if lower bound is at its lowest: return boundary. else: return previous bound. To prevent an undefined value
-            lowerBoundary = (boundaries[i] == FieldX) ? boundaries[i] : boundaries[i - 1];
+    for (let [index, boundary] of Object.entries(indexBoundaryPairs)) {
+        let diff = index - boundary;
 
+        if (diff < bestDiff) {
+            bestDiff = diff;
+            bestIndex = index;
+            bestBoundary = boundary;
         };
-
-        // if (number > boundaries[i]) {
-        //     lowerBoundary = boundaries[i];
-        //     return lowerBoundary;
-        // };
     };
 
-    return lowerBoundary;
+    // console.log(bestDiff, bestIndex, bestBoundary)
+    return [Number(bestIndex), Number(bestBoundary)];
 };
 
-const findCurrentBoundary = (number, boundaries, FieldX) => {
-    let lowerBoundary = boundaries[0];
+const NextBoundaryNearestIndex = (boundaries, structure) => {
+    let indexBoundaryPairs = {};
 
-    // loop boundaries
-    for (let i = boundaries.length - 1; i >= 0; i--) {
-        // if number lies between current an previous value
-        if (number <= boundaries[i]) {
-            // update lower bound
-            // if lower bound is at its lowest: return boundary. else: return previous bound. To prevent an undefined value
-            lowerBoundary = boundaries[i];
+    // find corresponding boundary to index
+    structure.forEach(index => {
+        for (let i = boundaries.length - 1; i >= 0; i--) {
+            const boundary = boundaries[i];
 
+            console.log(index, boundary);
+
+            if (index >= boundary) {
+                indexBoundaryPairs[index] = boundaries[i + 1];
+                return;
+            };
         };
+    });
 
-        // if (number > boundaries[i]) {
-        //     lowerBoundary = boundaries[i];
-        //     return lowerBoundary;
-        // };
+    console.log(indexBoundaryPairs)
+
+    // find index which is nearest to its lower boundary
+    let bestDiff = Infinity;
+    let bestIndex = null;
+    let bestBoundary = null;
+
+    for (let [index, boundary] of Object.entries(indexBoundaryPairs)) {
+        let diff = boundary - index;
+
+        if (diff < bestDiff) {
+            bestDiff = diff;
+            bestIndex = index;
+            bestBoundary = boundary;
+        };
     };
 
-    return lowerBoundary;
+    // console.log(bestDiff, bestIndex, bestBoundary)
+    return [Number(bestIndex), Number(bestBoundary)];
+};
+
+// input one index and boundary list, returns lower boundary of index 
+const findLowerBoundary = (index, boundaries) => {
+    let lowerBoundary = null;
+
+    for (let i = 0; i < boundaries.length; i++) {
+        const boundary = boundaries[i];
+
+        if (index < boundary) {
+            lowerBoundary = boundaries[i - 1];
+            return lowerBoundary;
+        };
+    };
+
+    return;
 };

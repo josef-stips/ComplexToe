@@ -1310,18 +1310,19 @@ const InitCreateLevelScene = () => {
     CreatePattern_createPattern_btn.addEventListener("click", () => {
         let drawed = checkUserDrawnPattern();
         let existsInGame = checkCostumPatternAlreadyInGame();
+        let minimumIndexesRequiremementCheck = minimumIndexesRequiremement(3);
 
-        console.log(drawed, createCostumPattern_title.textContent)
+        console.log(drawed, createCostumPattern_title.textContent, minimumIndexesRequiremementCheck)
 
         // user must provide costum name and atleast one drawed pattern
-        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame) {
+        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck) {
 
             createNewCostumPattern();
 
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
-            AlertText.textContent = "Draw your new pattern and provide a costum name for it.";
+            AlertText.textContent = "Draw your new pattern and provide a costum name for it. Draw minimum on 3 cells.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
