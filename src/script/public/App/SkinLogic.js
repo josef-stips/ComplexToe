@@ -554,11 +554,10 @@ const displaySkinShopCurrency = () => {
 
     [...skinShopTabs].forEach((tab, i) => {
         tab.addEventListener("click", () => {
-            let index = Number(tab.getAttribute("target_container"));
-
+            // close all tabs first of all
             closeAllTabViews([...skinShopContent]);
 
-            displayTabContentViewX([...skinShopContent], index);
+            displayTabContentViewX([...skinShopContent], i);
 
             // active status of tab element
             [...skinShopTabs].forEach(tab1 => {

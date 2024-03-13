@@ -222,21 +222,27 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     const headerWrapper = document.createElement("div");
     const flexDiv = document.createElement("div");
     const editItemsWrapper = document.createElement("div");
+
     // items
     const pen = document.createElement("i");
     const bin = document.createElement("i");
     let checkBox = document.createElement("i");
 
+    // items for level "that means like readonly" rights
+    const bin2 = document.createElement("i");
+
+    bin2.className = "fa-solid fa-trash item";
+
     // add attributes and style
+    gridWrapper.setAttribute("costum_pattern_name", patternName.replace(" ", "_"));
     gridWrapper.classList.add("createCostumField_Field_wrapper");
     gridWrapper.classList.add("costumPatternsOverview_gridWrapper");
     grid.classList.add("small_createCostumField_Field");
     title.classList.add("preview_pattern_title");
     headerWrapper.classList.add("headerWrapper");
     editItemsWrapper.classList.add("editItemsWrapper");
-    grid.setAttribute("costum_pattern_name", patternName.replace(" ", "_"));
     special_class != undefined && gridWrapper.setAttribute(special_class, "true");
-
+    checkBox.title = `use pattern in ${NewCreativeLevel.CurrentSelectedSetting.name}`;
     pen.className = "fa-solid fa-pen item";
     bin.className = "fa-solid fa-trash item";
 
@@ -281,7 +287,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
 
     // event listener
     pen.addEventListener("click", function name() {
-        editCostumWrapper(patternStructure.map(i => i = Number(i)), patternName);
+        editCostumWrapper(checkBox, patternStructure.map(i => i = Number(i)), patternName);
     });
 
     bin.addEventListener("click", function name() {
@@ -290,6 +296,20 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
 
     checkBox.addEventListener("click", function name() {
         toggleCustomPatternInNewLevel(checkBox, patternStructure.map(i => i = Number(i)), patternName);
+    });
+
+    bin2.addEventListener("click", function name() {
+        checkBox.click();
+
+        // if this element exists deactivate its status
+        let CorrespondingPattenStoragePattern = document.querySelector(`[costum_pattern_name="${patternName}"][right="personal"]`);
+
+        if (CorrespondingPattenStoragePattern) {
+            let checkBox_ofLevel = CorrespondingPattenStoragePattern.children[0].children[2].children[2];
+
+            checkBox_ofLevel.className = "fa-regular fa-square item";
+            checkBox_ofLevel.setAttribute("activated", "false");
+        };
     });
 
     // append to document
@@ -305,8 +325,12 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
         editItemsWrapper.appendChild(bin);
         editItemsWrapper.appendChild(checkBox);
 
-    } else if (rights == "level") {
+        gridWrapper.setAttribute("right", "personal");
 
+    } else if (rights == "level") {
+        editItemsWrapper.appendChild(bin2);
+
+        gridWrapper.setAttribute("right", "level");
     };
 
     setTimeout(() => {
@@ -329,25 +353,33 @@ const deleteCostumWrapper = (name) => {
 
     } else {
         OpenedPopUp_WhereAlertPopUpNeeded = true;
-        AlertText.textContent = "You can't delete a pattern which is used in this current level";
+        AlertText.textContent = "You can't delete a pattern which is used in this level.";
         DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
 };
 
 // edit costum wrapper
-const editCostumWrapper = (structure, name) => {
-    CreateCostumPattern_btn.click();
-    createCostumPattern_title.textContent = name;
+const editCostumWrapper = (pattern_check, structure, name) => {
+    if (pattern_check.getAttribute("activated") == "false") {
 
-    [...createCostumPattern_Field.children].forEach((val, i) => {
-        if (!structure.includes(i)) {
-            return;
+        CreateCostumPattern_btn.click();
+        createCostumPattern_title.textContent = name;
 
-        } else {
+        [...createCostumPattern_Field.children].forEach((val, i) => {
+            if (!structure.includes(i)) {
+                return;
 
-            createField_updateCell(i, createCostumPattern_Field);
-        };
-    });
+            } else {
+
+                createField_updateCell(i, createCostumPattern_Field);
+            };
+        });
+
+    } else if (pattern_check.getAttribute("activated") == "true") {
+        AlertText.textContent = "You can't edit a pattern which is used in this level.";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        OpenedPopUp_WhereAlertPopUpNeeded = true;
+    };
 };
 
 // toggle, if costum pattern should be used as pattern in new create level from user
@@ -392,6 +424,7 @@ const checkUserDrawnPattern = () => {
 // check if the costum pattern the user wants to create is already a normal win pattern in the game
 const checkCostumPatternAlreadyInGame = () => {
     const cells = [...createCostumPattern_Field.children];
+
     // output data
     let indexes = [];
 
@@ -402,10 +435,18 @@ const checkCostumPatternAlreadyInGame = () => {
         };
     });
 
-    let InGamePatterns = [...allowedPatternsFromUser];
+    // take pattern drawn by the user to its origin field indexes
+    xCell_Amount = 5;
+    CalculateBoundaries();
+    let OriginPattern = PatternStructureAsOrigin(boundaries, indexes.map(i => Number(i)), xCell_Amount);
+    let InGamePatterns = OfficialGamePatterns;
 
-    // if pattern matches a pattern already existing in game, return true   
+    console.log(InGamePatterns.find(pattern => pattern === OriginPattern));
 
+    // check if users pattern is already in game
+    return InGamePatterns.find(pattern => pattern.every((value, index) => value === OriginPattern[index])) !== undefined && true;
+
+    // if users pattern is not in the game, function returns undefined and test is completed successfully
 };
 
 // check if the costum pattern that being rendered in the costum pattern preview is in the current level

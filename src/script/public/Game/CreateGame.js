@@ -1304,12 +1304,18 @@ const InitCreateLevelScene = () => {
     });
 
     CreateLevel_CreateOwnStuff_btn.addEventListener("click", () => {
-        let container = document.querySelector(`.tab_container[content_container="1"]`);
+        let tab_index = 1;
+
+        let tab = document.querySelector(`.tab[target_container="${tab_index}"]`);
+        let container = document.querySelector(`.tab_container[content_container="${tab_index}"]`);
 
         deactivateTabs();
         default_tab_content_view(container); // target container where all the tab content displays
 
         DisplayPopUp_PopAnimation(CreateOwnStuffPopUp, "flex", true);
+
+        // activate tab element visualy
+        tab.setAttribute("active_tap", "true");
     });
 
     tabContainer1_closeBtn.addEventListener("click", () => {
@@ -1388,18 +1394,20 @@ const InitCreateLevelScene = () => {
         let drawed = checkUserDrawnPattern();
         let existsInGame = checkCostumPatternAlreadyInGame();
         let minimumIndexesRequiremementCheck = minimumIndexesRequiremement(3);
+        let CorrespondingPattenStoragePattern = document.querySelector(`[costum_pattern_name="${createCostumPattern_title.textContent}"][right="personal"]`);
 
-        console.log(drawed, createCostumPattern_title.textContent, minimumIndexesRequiremementCheck)
+        // console.log(drawed, createCostumPattern_title.textContent, minimumIndexesRequiremementCheck, existsInGame, " exists ?", CorrespondingPattenStoragePattern);
 
         // user must provide costum name and atleast one drawed pattern
-        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck) {
+        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck &&
+            !CorrespondingPattenStoragePattern) {
 
             createNewCostumPattern();
 
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
-            AlertText.textContent = "Draw your new pattern and provide a costum name for it. Draw minimum on 3 cells.";
+            AlertText.textContent = "Draw your new pattern and provide a new costum name for it. Draw minimum on 3 cells. You cannot draw a pattern already existing in the game.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });

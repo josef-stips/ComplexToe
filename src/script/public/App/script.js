@@ -788,6 +788,30 @@ let allowedPatternsFromUser = ["hor", "vert", "dia", "dia2", "L1", "L2", "L3", "
     "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"
 ];
 
+// patterns of all official win patterns such as "hor", "vert" ...
+let OfficialGamePatterns = [
+    [0, 1, 2, 3],
+    [0, 5, 10, 15],
+    [0, 6, 12, 18],
+    [3, 7, 11, 15],
+    [0, 5, 10, 11, 12],
+    [2, 7, 10, 11, 12],
+    [0, 1, 2, 5, 10],
+    [0, 1, 2, 7, 12],
+    [0, 1, 6, 7, 12],
+    [0, 5, 6, 11, 12],
+    [1, 2, 5, 6, 10],
+    [2, 6, 7, 10, 11],
+    [0, 2, 6, 10, 12],
+    [1, 5, 7, 11],
+    [0, 2, 6, 11, 16],
+    [1, 6, 11, 15, 17],
+    [3, 5, 6, 7, 13],
+    [0, 6, 7, 8, 10],
+    [0, 1, 2, 5, 6],
+    [0, 1, 5, 6, 7]
+];
+
 // everything about the online chat in online game mode
 let openedChat = false;
 let recievedUnseenMessages = 0;
