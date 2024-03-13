@@ -509,6 +509,14 @@ let gemsIcon_skinShop = document.querySelector(".gemsIcon_skinShop");
 let shopGuideText = document.querySelector(".shopGuideText");
 let costum_patterns_overview_from_level = document.querySelector(".costum_patterns_overview_from_level");
 let PatternGridWrapper = document.querySelector(".PatternGrid-Wrapper");
+let endGameStatsPopUp = document.querySelector(".endGameStatsPopUp");
+let continueGameBtn = document.querySelector(".continueGameBtn");
+let leaderboard_player1 = document.querySelector(".leaderboard_player1");
+let leaderboard_player2 = document.querySelector(".leaderboard_player2");
+let leaderboard_player1_score = document.querySelector(".leaderboard_player1_score");
+let leaderboard_player2_score = document.querySelector(".leaderboard_player2_score");
+let endGame_statusText = document.querySelector(".endGame_statusText");
+let endGameStats_playTime = document.querySelector(".endGameStats_playTime");
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
 let bossLifeCounter = document.querySelector(".bossLifeCounter");
@@ -2291,7 +2299,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         });
 
         // general stuff
-        OnlineGame_Lobby.style.display = 'flex';
+        DisplayPopUp_PopAnimation(OnlineGame_Lobby, "flex", true);
         SetPlayerNamesPopUp.style.display = 'none';
         Lobby_PointsToWin.contentEditable = "true";
 

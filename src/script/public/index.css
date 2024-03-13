@@ -346,20 +346,31 @@ img {
 
 .MaxAmountOfMovesGameDisplay {
     position: absolute;
-    left: 10%;
-    top: 62.5%;
     color: white;
     font-size: 24px;
+    right: 7.5%;
+    bottom: 10%;
+    padding: 10px;
+    background: var(--bg-app-color2);
+    border-radius: 20px;
+    border: 2px solid;
+    width: 200px;
 }
 
 .AdvantureMode_SpellDisplay {
-    display: none;
     flex-direction: row;
     position: absolute;
-    left: 14.5%;
-    top: 25%;
     color: white;
     font-size: 24px;
+    right: 20%;
+    bottom: 10%;
+    padding: 10px;
+    background: var(--bg-app-color2);
+    border-radius: 20px;
+    border: 2px solid;
+    width: 150px;
+    align-items: center;
+    justify-content: center;
 }
 
 .AdvantureMode_SpellDisplay:hover {
@@ -496,6 +507,17 @@ img {
 .XP_JourneyBtn:hover {
     transition: transform 0.15s ease-in-out;
     transform: scale(1.1);
+}
+
+#score-list {
+    background: var(--bg-app-color);
+    padding: 20px;
+    border-radius: 20px;
+    border: 3px solid white;
+}
+
+#score-list li:last-child {
+    margin-top: 0.5em;
 }
 
 
@@ -817,6 +839,7 @@ img {
     border-bottom: 2px solid;
     border-top: 2px solid;
     margin: 0 3em 0 3em;
+    box-shadow: inset 0 10px 10px -10px rgba(0, 0, 0, 0.5), inset 0 -10px 10px -10px rgba(0, 0, 0, 0.5);
 }
 
 .NxN-field-card-main {
@@ -1004,16 +1027,16 @@ img {
 }
 
 #UltimateWinTextArea {
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    opacity: 0;
+    height: max-content;
     font-family: 'Geologica', sans-serif;
     transition: opacity 0.3s ease-in-out;
     font-weight: 700;
+    margin-top: 2.5em;
 }
 
 #UltimateWinText {
@@ -1608,7 +1631,7 @@ img {
     height: min-content;
     width: 55%;
     padding: 20px 0 0 20px;
-    gap: 1em;
+    gap: 3em;
     font-size: calc(var(--button-font-size) - 12px);
 }
 
@@ -2321,8 +2344,8 @@ label h3 {
 /* Online Game Lobby */
 
 .OnlineGame_Lobby {
-    width: 85%;
-    height: 85%;
+    width: 100%;
+    height: 100%;
     top: 0;
     bottom: 0;
     left: 0;
@@ -2335,8 +2358,7 @@ label h3 {
     align-items: center;
     color: white;
     background-color: var(--bg-app-color);
-    border: 3px solid goldenrod;
-    border-radius: 30px;
+    border-radius: 0;
     z-index: 10000;
 }
 
@@ -2364,8 +2386,10 @@ label h3 {
 }
 
 #Lobby_closeBtn {
-    margin: 0.15em 1em 0 0;
+    pointer-events: all;
+    margin: 0 1em 0 0;
     transition: all 0.1s ease-out;
+    transform: scaleX(-1);
 }
 
 #Lobby_closeBtn:hover {
@@ -2408,6 +2432,7 @@ label h3 {
     outline: none;
     transition: all 0.15s ease-out;
     margin-right: 1em;
+    background-color: var(--bg-app-color2);
 }
 
 .Lobby_startGame_btn:hover {
@@ -2499,6 +2524,12 @@ label h3 {
 .SwitchCaret:hover {
     color: var(--hover-item);
     transition: 0.1s all ease-in-out;
+}
+
+.LobbyBottomRowWrapper {
+    position: absolute;
+    bottom: 14%;
+    left: 5%;
 }
 
 
@@ -6443,6 +6474,14 @@ label h3 {
 }
 
 .BigScreenText {
+    font-size: 60px;
+    color: white;
+    height: min-content;
+    width: max-content;
+    text-shadow: 3px 3px #101214;
+}
+
+.BigScreenText2 {
     transform: scale(0);
     position: absolute;
     margin: auto auto auto auto;
@@ -6904,6 +6943,82 @@ p.createCostumField_yInput {
 .item:hover {
     transition: color 0.15s ease-in-out;
     color: goldenrod;
+}
+
+
+/* end game stats pop up */
+
+.endGameStatsPopUp {
+    width: 75%;
+    height: 75%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 3px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
+    display: none;
+    flex-direction: column;
+    color: white;
+    font-size: 23px;
+    z-index: 10001;
+    border-radius: 25px;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.endGameStats_main {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.continueGameBtn {
+    background-color: var(--bg-app-color2);
+    font-size: 27.5px;
+    padding: 20px 40px 20px 40px;
+    border-radius: 20px;
+    border: 3px solid white;
+    transition: transform 0.15s ease-in-out;
+    text-align: center;
+}
+
+.continueGameBtn:hover {
+    transition: transform 0.15s ease-in-out;
+    transform: scale(1.075);
+    cursor: pointer;
+    /* animation: animatedBorder_gold 0.15s infinite; */
+}
+
+.endGameStatsLeaderBoardWrapper {
+    padding: 10px;
+    border-radius: 20px;
+    border: 3px solid #FF9800;
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    background-color: var(--bg-app-color2);
+}
+
+.endGameStats_LeaderBoard {
+    margin-top: 2em;
+    width: 75%;
+    font-size: 28.5px;
+}
+
+.endGameStats_LeaderBoard tr th {
+    padding: 0.5em;
+    font-size: larger;
+}
+
+.endGameStats_playTime {
+    position: absolute;
 }
 
 

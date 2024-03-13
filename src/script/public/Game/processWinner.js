@@ -693,110 +693,137 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
     };
 };
 
+// random win text
+const random_win_text = [
+    "I always knew he is going to make it...",
+    "GG",
+    "Revenge?",
+    "Got hacked?",
+    "Incredible",
+    "Awesome",
+    "What a game...",
+    "That was close",
+    "Luck or skill?",
+    "Clown powder",
+    "An intelligent move leads to a big win",
+    "Time to buy a new skin",
+    "Time to see some sun",
+];
+
+let endGame_player1Won = null;
+
 // ultimate game win start animation
 const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
+    let rnd = Math.floor(Math.random() * random_win_text.length - 1);
+    let rnd_text = random_win_text[rnd];
+
+    GameFieldHeaderUnderBody.style.display = 'none';
+
+    endGame_player1Won = player1_won;
+
     setTimeout(() => {
+
         cellGrid.classList.add('Invisible');
-        statusText.classList.add('Invisible');
-        GameFieldHeaderUnderBody.style.display = 'none';
-        statusText.style.display = 'block';
+        endGame_statusText.style.display = 'block';
 
-        // restart Game counter
-        let i = 4;
-        var counter = setInterval(() => {
-            if (!stopStatusTextInterval) {
-                i != 4 && (statusText.style.opacity = "1");
-                // in Advanture mode or in online mode
-                if (inAdvantureMode || curr_mode == GameMode[2].opponent) {
-                    if (PlayingInCreatedLevel) { // Player played user created level
-                        if (NewCreativeLevel.selectedLevel[9] == 0) {
-                            statusText.textContent = `It's conquered! Level is ready to publish`;
+        if (!stopStatusTextInterval) {
 
-                        } else if (NewCreativeLevel.selectedLevel[9] == 1) {
-                            statusText.textContent = `Leave level...`;
-                        };
+            // in Advanture mode or in online mode
+            if (inAdvantureMode || curr_mode == GameMode[2].opponent) {
 
-                    } else { // user played standard card level from game
-                        statusText.textContent = `Leave level...`;
+                if (PlayingInCreatedLevel) { // Player played user created level
+
+                    if (NewCreativeLevel.selectedLevel[9] == 0) {
+                        endGame_statusText.textContent = `It's conquered! Level is ready to publish`;
+
+                    } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                        endGame_statusText.textContent = rnd_text;
                     };
 
-                } else if (!inAdvantureMode && curr_mode != GameMode[2].opponent) { // not in advanture and not in online mode
-                    if (PlayingInCreatedLevel) { // Player played user created level
-                        if (NewCreativeLevel.selectedLevel[9] == 0) {
-                            statusText.textContent = `You beat it! Level is ready to publish`;
-
-                        } else if (NewCreativeLevel.selectedLevel[9] == 1) {
-                            statusText.textContent = `New game starting...`;
-                        };
-
-                    } else { // user played standard card level from game
-                        statusText.textContent = `New game starting...`;
-                    };
+                } else { // user played standard card level from game
+                    endGame_statusText.textContent = rnd_text;
                 };
-                statusText.classList.remove('Invisible');
-                i--;
-                if (i <= -1) {
-                    clearInterval(counter);
-                    counter = null;
 
-                    // not advanture mode
-                    if (!inAdvantureMode) {
-                        // in online mode
-                        if (curr_mode == GameMode[2].opponent) {
-                            if (PlayingInCreatedLevel) { // Player played user created level
-                                if (NewCreativeLevel.selectedLevel[9] == 0) {
-                                    // admin leaves game and this info all player get
-                                    if (personal_GameData.role == "admin") {
-                                        UserleavesGame();
-                                        NewCreativeLevel.verified(); // User beat his own created level and can publish it now
-                                    };
-                                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
-                                    // admin leaves game and this info all player get
-                                    if (personal_GameData.role == "admin") {
-                                        UserleavesGame();
-                                    };
-                                };
+            } else if (!inAdvantureMode && curr_mode != GameMode[2].opponent) { // not in advanture and not in online mode
 
-                            } else { // user played standard card level from game
-                                // admin leaves game and this info all player get
-                                if (personal_GameData.role == "admin") {
-                                    UserleavesGame();
-                                };
-                            };
-                            DarkLayer.style.display = "block";
+                if (PlayingInCreatedLevel) { // Player played user created level
+                    if (NewCreativeLevel.selectedLevel[9] == 0) {
+                        endGame_statusText.textContent = `You beat it! Level is ready to publish`;
 
-                            // in offline mode
-                        } else if (curr_mode != GameMode[2].opponent) {
-                            if (PlayingInCreatedLevel) { // Player played user created level
-                                if (NewCreativeLevel.selectedLevel[9] == 0) {
-                                    NewCreativeLevel.verified(); // User beat his own created level and can publish it now
-                                    UserleavesGame();
-
-                                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
-                                    restartGame();
-                                };
-
-                            } else { // user played standard card level from game
-                                restartGame();
-                            };
-                        };
-
-                        // in advanture mode
-                    } else {
-                        if (player1_won) { // user won and conquered the level
-                            UserleavesGame(true, current_selected_level);
-                        } else {
-                            UserleavesGame();
-                        };
+                    } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                        endGame_statusText.textContent = rnd_text;
                     };
+
+                } else { // user played standard card level from game
+                    endGame_statusText.textContent = rnd_text;
                 };
-            } else {
-                GameFieldHeaderUnderBody.style.display = 'flex';
-                clearInterval(counter);
-                counter = null;
             };
-        }, 1000);
+
+        } else {
+            GameFieldHeaderUnderBody.style.display = 'flex';
+        };
     }, 2000);
+};
+
+// user wants to continue after finishing a match
+continueGameBtn.addEventListener("click", () => {
+    continueGame();
+});
+
+// continue game after finished match
+const continueGame = () => {
+    endGameStatsPopUp.style.display = "none";
+
+    // not advanture mode
+    if (!inAdvantureMode) {
+        // in online mode
+        if (curr_mode == GameMode[2].opponent) {
+            if (PlayingInCreatedLevel) { // Player played user created level
+                if (NewCreativeLevel.selectedLevel[9] == 0) {
+                    // admin leaves game and this info all player get
+                    if (personal_GameData.role == "admin") {
+                        UserleavesGame();
+                        NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                    };
+                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                    // admin leaves game and this info all player get
+                    if (personal_GameData.role == "admin") {
+                        UserleavesGame();
+                    };
+                };
+
+            } else { // user played standard card level from game
+                // admin leaves game and this info all player get
+                if (personal_GameData.role == "admin") {
+                    UserleavesGame();
+                };
+            };
+            DarkLayer.style.display = "block";
+
+            // in offline mode
+        } else if (curr_mode != GameMode[2].opponent) {
+            if (PlayingInCreatedLevel) { // Player played user created level
+                if (NewCreativeLevel.selectedLevel[9] == 0) {
+                    NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                    UserleavesGame();
+
+                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                    restartGame();
+                };
+
+            } else { // user played standard card level from game
+                restartGame();
+            };
+        };
+
+        // in advanture mode
+    } else {
+        if (endGame_player1Won) { // user won and conquered the level
+            UserleavesGame(true, current_selected_level);
+        } else {
+            UserleavesGame();
+        };
+    };
 };
 
 // first player did ultimate win
@@ -810,7 +837,6 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
             UltimateWinAnimation("You have conquered the evil");
 
             setTimeout(() => {
-                UltimateWinTextArea.style.opacity = "1";
                 if (!localStorage.getItem("completed_mapLevel10")) {
                     // for achievement 
                     Achievement.new(0);
@@ -823,8 +849,6 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
     if (current_selected_level != 10) {
         // win animation
         UltimateWinAnimation(winText);
-
-        setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
     };
 
     // set skill points
@@ -847,13 +871,9 @@ const SecondPlayerUltimateWin = (player1_won, player2_won) => {
         // animation
         UltimateWinAnimation(`You have lost`);
 
-        setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
-
     } else {
         // animation
         UltimateWinAnimation(`${PlayerData[2].PlayerName} won it`);
-
-        setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
     };
 
     if (!inAdvantureMode) {
@@ -867,8 +887,6 @@ const GG_UltimateWin = (player1_won, player2_won) => {
     // animation
     UltimateWinAnimation("GG Well played!");
 
-    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
-
     if (!inAdvantureMode) {
         player1_won = false;
         player2_won = false;
@@ -877,13 +895,13 @@ const GG_UltimateWin = (player1_won, player2_won) => {
 
 // display win text
 const UltimateWinAnimation = (winText) => {
-    GameAnimation(winText, true).then(() => { // true: says that the battle ended
-        UltimateWinText.textContent = null;
-        let img = document.createElement('img');
-        img.src = "./assets/game/holy-grail.svg";
-        img.width = "300";
-        img.height = "300";
-        UltimateWinText.appendChild(img);
+    EndGameGameAnimation(winText, true).then(() => { // true: says that the battle ended
+        // UltimateWinText.textContent = null;
+        // let img = document.createElement('img');
+        // img.src = "./assets/game/holy-grail.svg";
+        // img.width = "300";
+        // img.height = "300";
+        // UltimateWinText.appendChild(img);
     });
 };
 
@@ -900,15 +918,10 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             // basic stuff
             stopStatusTextInterval = false;
             cellGrid.style.opacity = "0";
-            statusText.style.opacity = "0";
-            UltimateWinTextArea.style.opacity = "0";
 
             killPlayerClocks(true);
             clearInterval(gameCounter);
             gameCounter = null;
-
-            score_Player1_numb = 0;
-            score_Player2_numb = 0;
 
             // so the user can't leave while win animation
             leaveGame_btn.removeEventListener('click', UserleavesGame);
@@ -918,7 +931,6 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
             setTimeout(() => {
                 cellGrid.style.display = 'none';
-                UltimateWinTextArea.style.display = 'flex';
                 if (player1_won && !player2_won) { // player 1 won (user)
                     FirstPlayerUltimateWin(player1_won, player2_won);
 
@@ -941,16 +953,12 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
 
         // continue with normal code
         let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-        console.log(wins_storage)
         wins_storage = wins_storage + 1;
         localStorage.setItem('onlineMatches-won', wins_storage);
-        console.log(wins_storage)
 
     } else {
         UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
     };
-
-    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 
     if (curr_mode == GameMode[2].opponent) { // online friend 
         // only the user which is the winner in this case, earns skill points
@@ -974,16 +982,12 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
 
         // continue with normal code
         let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-        console.log(wins_storage)
         wins_storage = wins_storage + 1;
         localStorage.setItem('onlineMatches-won', wins_storage);
-        console.log(wins_storage)
 
     } else {
         UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
     };
-
-    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 
     if (curr_mode == GameMode[2].opponent) { // online friend
         // only the user which is the winner in this case, earns skill points
@@ -1002,8 +1006,6 @@ const OnlineGame_UltimateWin_GG = (player1_won, player2_won) => {
     console.log(player1_won, player2_won)
 
     UltimateWinAnimation(`GG Well played `);
-
-    setTimeout(() => UltimateWinTextArea.style.opacity = "1", 100);
 };
 
 // the admin called the ultimate game win
@@ -1012,7 +1014,6 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
     // basic stuff
     stopStatusTextInterval = false;
     cellGrid.style.opacity = "0";
-    UltimateWinTextArea.style.opacity = "0";
 
     killPlayerClocks(true);
     clearInterval(gameCounter);
@@ -1027,7 +1028,6 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
 
     setTimeout(() => {
         cellGrid.style.display = 'none';
-        UltimateWinTextArea.style.display = 'flex';
         if (player1_won && !player2_won) { // player 1 won (admin)
             OnlineGame_UltimateWin_Player1(player1_won, player2_won);
             return;
@@ -1050,19 +1050,19 @@ function setNew_SkillPoints(plus) {
     let ELO_point = 0;
 
     // extra animation addition
-    ELO_Points_AddIcon.style.display = "block";
-    ELO_Points_AddIcon.style.transition = 'none';
-    ELO_Points_AddIcon.style.opacity = '1';
-    ELO_Points_AddIcon.textContent = `+${plus}`;
-    setTimeout(() => {
-        ELO_Points_AddIcon.style.transition = 'all 2.35s ease-out';
-        ELO_Points_AddIcon.style.opacity = '0';
-        ELO_Points_AddIcon.style.display = "none";
+    // ELO_Points_AddIcon.style.display = "block";
+    // ELO_Points_AddIcon.style.transition = 'none';
+    // ELO_Points_AddIcon.style.opacity = '1';
+    // ELO_Points_AddIcon.textContent = `+${plus}`;
+    // setTimeout(() => {
+    //     ELO_Points_AddIcon.style.transition = 'all 2.35s ease-out';
+    //     ELO_Points_AddIcon.style.opacity = '0';
+    //     ELO_Points_AddIcon.style.display = "none";
 
-        setTimeout(() => {
-            ELO_Points_AddIcon.style.display = "none";
-        }, 2750);
-    }, 700);
+    //     setTimeout(() => {
+    //         ELO_Points_AddIcon.style.display = "none";
+    //     }, 2750);
+    // }, 700);
 
     // skill points N + additional_N
     let i = 0
@@ -1161,18 +1161,18 @@ function minus_SkillPoints(minus) {
     let ELO_point = 0;
 
     // extra animation addition
-    ELO_Points_AddIcon.style.display = "block";
-    ELO_Points_AddIcon.style.transition = 'none';
-    ELO_Points_AddIcon.style.opacity = '1';
-    ELO_Points_AddIcon.textContent = `-${minus}`;
-    setTimeout(() => {
-        ELO_Points_AddIcon.style.transition = 'all 1.35s ease-out';
-        ELO_Points_AddIcon.style.opacity = '0';
+    // ELO_Points_AddIcon.style.display = "block";
+    // ELO_Points_AddIcon.style.transition = 'none';
+    // ELO_Points_AddIcon.style.opacity = '1';
+    // ELO_Points_AddIcon.textContent = `-${minus}`;
+    // setTimeout(() => {
+    //     ELO_Points_AddIcon.style.transition = 'all 1.35s ease-out';
+    //     ELO_Points_AddIcon.style.opacity = '0';
 
-        setTimeout(() => {
-            ELO_Points_AddIcon.style.display = "none";
-        }, 1750);
-    }, 700);
+    //     setTimeout(() => {
+    //         ELO_Points_AddIcon.style.display = "none";
+    //     }, 1750);
+    // }, 700);
 
     // skill points N + additional_N
     let i = 0

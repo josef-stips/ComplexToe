@@ -278,6 +278,10 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         boss.style.display = "none";
         document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 0";
     };
+
+    // play theme music 
+    PauseMusic();
+    CreateMusicBars(Fields[fieldIndex].theme_name);
 };
 
 function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves) {
@@ -292,6 +296,9 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     HeaderWrapper.style.height = '7.5%';
     lobbyFooter.style.background = "#15171a";
     lobbyFooter.style.width = "100%";
+
+    leaderboard_player1_score.textContent = "0";
+    leaderboard_player2_score.textContent = "0";
 
     // remove access to set
     cells.forEach(cell => {
@@ -561,8 +568,6 @@ function initializePlayers(OnlineGameDataArray) {
             statusText.textContent = `Your turn`;
         };
     };
-
-    UltimateWinTextArea.style.display = 'none';
 
     // deprive user of its right to choose the winner
     if (personal_GameData.role == 'user' && curr_mode == GameMode[2].opponent) {
@@ -1171,6 +1176,70 @@ function single_CellBlock(cell, fromMap) {
     };
 };
 
+// cool end game animation
+const EndGameGameAnimation = (text, OnGameEnd) => {
+    return new Promise((resolve) => {
+        if (!document.body.querySelector(".WhiteLayer")) {
+            // remove access to anything and close all pop ups
+            removeAccessToAnything();
+
+            // play sound
+            if (OnGameEnd) {
+                playBattleEndTheme();
+
+            } else {
+                play_GameAnimationSound();
+            };
+
+            // create white layer
+            let layer = document.createElement("div");
+            layer.classList.add("WhiteLayer");
+
+            // create sword
+            let sword = document.createElement("img");
+            sword.classList.add("BigScreenSword");
+            sword.width = "500";
+            sword.height = "500";
+            sword.src = "assets/game/winged-sword.svg";
+
+            // create Text 
+            UltimateWinText.classList.add("BigScreenText");
+            UltimateWinText.textContent = text;
+
+            sword.addEventListener("animationend", () => {
+                sword.style.opacity = "0";
+
+                setTimeout(() => {
+                    layer.style.opacity = "0";
+                    sword.remove();
+
+                    setTimeout(() => {
+                        layer.remove();
+
+                        // add access to anything
+                        addAccessToAnything(undefined, true, true);
+
+                        resolve();
+                    }, 200);
+
+                    // display end game pop up
+                    DisplayPopUp_PopAnimation(endGameStatsPopUp, "flex", true);
+
+                    // display end game leaderboard
+                    EndGame_Leaderboard();
+
+                    // show play time
+                    displayPlayTime();
+                }, 200);
+            });
+
+            document.body.appendChild(sword);
+            document.body.appendChild(layer);
+
+        } else resolve();
+    });
+};
+
 // cool game animation
 const GameAnimation = (text, OnGameEnd) => {
     return new Promise((resolve) => {
@@ -1204,7 +1273,7 @@ const GameAnimation = (text, OnGameEnd) => {
 
                 setTimeout(() => {
                     sword.remove();
-                    Text.classList.add("BigScreenText");
+                    Text.classList.add("BigScreenText2");
                     document.body.appendChild(Text);
 
                     Text.addEventListener("animationend", () => {
@@ -1231,6 +1300,63 @@ const GameAnimation = (text, OnGameEnd) => {
 
         } else resolve();
     });
+};
+
+// display end game leader board
+const EndGame_Leaderboard = () => {
+    leaderboard_player1.textContent = PlayerData[1].PlayerName;
+    leaderboard_player2.textContent = PlayerData[2].PlayerName;
+
+    function scorePlayer1() {
+        let i = 0;
+
+        return new Promise(done => {
+            let interval = setInterval(() => {
+                if (i >= score_Player1_numb) {
+                    clearInterval(interval);
+                    interval = null;
+
+                    done();
+                    return;
+                };
+
+                i++;
+                leaderboard_player1_score.textContent = i;
+                playBtn_Audio_2();
+
+            }, 100);
+        });
+    };
+
+    function scorePlayer2() {
+        let i = 0;
+
+        return new Promise(done => {
+            let interval = setInterval(() => {
+                if (i >= score_Player2_numb) {
+                    clearInterval(interval);
+                    interval = null;
+
+                    done();
+                    return;
+                };
+
+                i++;
+                leaderboard_player2_score.textContent = i;
+                playBtn_Audio_2();
+
+            }, 100);
+        });
+    };
+
+    setTimeout(() => {
+        scorePlayer1().then(scorePlayer2);
+    }, 750);
+};
+
+// display play time
+function displayPlayTime() {
+    endGameStats_playTime.textContent = `Playtime: ${GameField_TimeMonitor.textContent}`;
 };
 
 // In KI mode: The unknown can place two times in a row

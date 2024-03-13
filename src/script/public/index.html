@@ -1930,6 +1930,16 @@
                     </div>
 
                     <div class="GameArea">
+
+                        <!-- position absolute -->
+                        <div class="MaxAmountOfMovesGameDisplay"></div>
+
+                        <div class="AdvantureMode_SpellDisplay">
+                            Items:
+                            <img src="assets/game/spell.svg" width="25" height="25">
+                            <span class="SpellAmountDisplay"></span>
+                        </div>
+
                         <!-- #1 -->
                         <div class="GameArea-SideInfo">
 
@@ -1997,14 +2007,6 @@
 
                             </div>
 
-                            <!-- position absolute -->
-                            <div class="MaxAmountOfMovesGameDisplay"></div>
-
-                            <div class="AdvantureMode_SpellDisplay">
-                                <img src="assets/game/spell.svg">
-                                <span class="SpellAmountDisplay"></span>
-                            </div>
-
                         </div>
 
                         <!-- #2 -->
@@ -2028,9 +2030,6 @@
                             <div class="ComplexToe-Field">
                                 <div id="cellGrid">
                                     <!-- javascript generates the required amount of cells -->
-                                </div>
-                                <div id="UltimateWinTextArea">
-                                    <span id="UltimateWinText"></span>
                                 </div>
                             </div>
 
@@ -5944,7 +5943,6 @@
     <div class="OnlineGame_Lobby">
         <div class="Lobby_header">
             <span class="Lobby_GameCode_display">Game Code: 13123</span>
-            <i class="fa-solid fa-x" id="Lobby_closeBtn"></i>
         </div>
 
         <div class="Lobby_main">
@@ -5984,7 +5982,11 @@
                     <span class="Lobby_thirdPlayerNameDisplay Lobby_XPlayerNameDisplay">Player 3</span>
 
                 </div>
+            </div>
 
+            <!-- position absolute -->
+            <div class="LobbyBottomRowWrapper">
+                <img src="assets/game/direction-sign.svg" width="100" height="100" id="Lobby_closeBtn" draggable="false" title="back">
             </div>
         </div>
 
@@ -6987,6 +6989,55 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- end game stats pop up -->
+    <div class="endGameStatsPopUp">
+        <div class="endGameStats_header">
+
+        </div>
+
+        <div class="endGameStats_main">
+            <div id="UltimateWinTextArea">
+                <span id="UltimateWinText"></span>
+            </div>
+
+            <div class="endGame_statusText">
+                <p>
+                    statusText
+                </p>
+            </div>
+
+            <div class="endGameStatsLeaderBoardWrapper">
+                <table class="endGameStats_LeaderBoard">
+                    <tr>
+                        <th>Player 1</th>
+                        <th>Player 2</th>
+                    </tr>
+
+                    <tr>
+                        <td class="leaderboard_player1">Josef</td>
+                        <td class="leaderboard_player2">Basti</td>
+                    </tr>
+
+                    <tr>
+                        <td class="leaderboard_player1_score">0</td>
+                        <td class="leaderboard_player2_score">0</td>
+                    </tr>
+                </table>
+
+                <div class="endGameStats_playTime">
+                    Playtime: NaN
+                </div>
+            </div>
+
+            <div class="continueGameBtn">
+                Continue
+            </div>
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">
