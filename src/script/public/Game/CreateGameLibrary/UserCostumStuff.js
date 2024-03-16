@@ -27,6 +27,9 @@ const activateTabContent = (container, content) => {
         case "12":
             Display_CostumPatterns();
             break;
+        case "11":
+            Display_CostumFields();
+            break;
     };
 };
 
@@ -42,7 +45,9 @@ const default_tab_content_view = (container) => {
     deactivateTabContent(container);
 
     // display first content of targeted container
+    Display_CostumFields();
     all_tab_contents[0].style.display = "flex";
+
     // activate first tap btn
     tab_btn_el.setAttribute("active_tap", true);
 };
@@ -143,9 +148,51 @@ const createField_updateCell = (i, parentGrid, fromPreview) => {
 
 // user wants to create new field
 const createNewCostumField = () => {
-    let x = createCostumField_xInput.textContent;
-    let y = createCostumField_yInput.textContent;
+    let x = Number(createCostumField_xInput.textContent);
+    let y = Number(createCostumField_yInput.textContent);
+    let name = createCostumField_title.textContent.trim();
 
+    // save field in storage
+    let storage = localStorage.getItem("CostumFields");
+
+    if (!storage) {
+        localStorage.setItem("CostumFields", "{}");
+
+        let newStorage = JSON.parse(localStorage.getItem("CostumFields"));
+
+        newStorage[name] = {
+
+            "name": name,
+            "x": x,
+            "y": y,
+        };
+
+        localStorage.setItem("CostumFields", JSON.stringify(newStorage));
+
+    } else {
+        let parsedStorage = JSON.parse(storage);
+
+        parsedStorage[name] = {
+
+            "name": name,
+            "x": x,
+            "y": y,
+        };
+
+        localStorage.setItem("CostumFields", JSON.stringify(parsedStorage));
+    };
+
+    // generate field
+    createPattern_preview(name, [], costum_field_overview, "personal", undefined, x, "scroll", undefined, y);
+
+    // html stuff
+    createCostumField_popUp.style.display = "none";
+    DisplayPopUp_PopAnimation(CreateOwnStuffPopUp, "flex", true);
+
+    setTimeout(() => {
+        // display updated patterns storage
+        Display_CostumFields();
+    }, 250);
 };
 
 // user wants to create new pattern
@@ -153,7 +200,7 @@ const createNewCostumField = () => {
 const createNewCostumPattern = () => {
     // input data
     let cells = [...createCostumPattern_Field.children];
-    let pattern_title = createCostumPattern_title.textContent;
+    let pattern_title = createCostumPattern_title.textContent.trim();
     // output data
     let indexes = [];
 
@@ -194,14 +241,14 @@ const createNewCostumPattern = () => {
     }, 250);
 };
 
-// displays all patterns stored in localstorage in "own fields" tab container 
+// displays all patterns stored in localstorage in "own patterns" tab container 
 const Display_CostumPatterns = () => {
     let patterns = JSON.parse(localStorage.getItem("CostumPatterns"));
 
-    console.log(patterns);
-
     // delete previous content
     costum_patterns_overview.textContent = null;
+
+    if (Object.keys(patterns).length <= 0) costum_patterns_overview.textContent = "No costum patterns are created yet.";
 
     // creates pattern html element from an object
     Object.keys(patterns).forEach(pattName => {
@@ -213,8 +260,29 @@ const Display_CostumPatterns = () => {
     NewCreativeLevel.InitCostumPatterns(NewCreativeLevel.CurrentSelectedSetting.costumPatterns);
 };
 
+// displays all fields stored in localstorage in "own fields" tab container 
+const Display_CostumFields = () => {
+    let fields = JSON.parse(localStorage.getItem("CostumFields"));
+
+    // delete previous content
+    costum_field_overview.textContent = null;
+
+    if (Object.keys(fields).length <= 0) costum_field_overview.textContent = "No costum fields are created yet.";
+
+    // creates pattern html element from an object
+    Object.keys(fields).forEach(key => {
+        let name = fields[key]["name"];
+        let x = fields[key]["x"];
+        let y = fields[key]["y"];
+
+        createPattern_preview(name, [], costum_field_overview, "personal", undefined, x, "scroll", undefined, y, "field");
+    });
+
+    NewCreativeLevel.InitCostumField(NewCreativeLevel.CurrentSelectedSetting.costumField);
+};
+
 // create pattern preview element
-const createPattern_preview = (patternName, patternStructure, parent, rights, special_class) => {
+const createPattern_preview = (patternName, patternStructure, parent, rights, special_class, gridRows = 5, Yscroll, Xscroll, y = 5, gridType) => {
     // create elements
     const gridWrapper = document.createElement("div");
     const grid = document.createElement("div");
@@ -230,87 +298,23 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
 
     // items for level "that means like readonly" rights
     const bin2 = document.createElement("i");
-
     bin2.className = "fa-solid fa-trash item";
 
-    // add attributes and style
-    gridWrapper.setAttribute("costum_pattern_name", patternName.replace(" ", "_"));
-    gridWrapper.classList.add("createCostumField_Field_wrapper");
-    gridWrapper.classList.add("costumPatternsOverview_gridWrapper");
-    grid.classList.add("small_createCostumField_Field");
-    title.classList.add("preview_pattern_title");
-    headerWrapper.classList.add("headerWrapper");
-    editItemsWrapper.classList.add("editItemsWrapper");
-    special_class != undefined && gridWrapper.setAttribute(special_class, "true");
-    checkBox.title = `use pattern in ${NewCreativeLevel.CurrentSelectedSetting.name}`;
-    pen.className = "fa-solid fa-pen item";
-    bin.className = "fa-solid fa-trash item";
-
-    // set attributes and style
-    costum_patterns_overview.setAttribute("costum_pattern_name", patternName);
-
-    flexDiv.style.width = "10%";
-    checkBox.style.fontSize = "larger";
-    grid.style.gridTemplateColumns = `repeat(5, 1fr)`;
-    title.textContent = patternName;
+    // add classes, attributes and style to the pattern grid
+    createPattern_addAttributes(gridWrapper, patternName, grid, title, headerWrapper,
+        editItemsWrapper, special_class, checkBox, pen, bin, costum_patterns_overview, gridRows, flexDiv);
 
     // check if pattern is in current level being edited
-    let patternIsInCurrentCreativeLevel = checkCostumPatternInCurrentLevel(patternName, patternStructure);
-
-    if (patternIsInCurrentCreativeLevel) {
-        checkBox.className = "fa-regular fa-square-check item";
-        checkBox.setAttribute("activated", "true");
-
-    } else {
-        checkBox.className = "fa-regular fa-square item";
-        checkBox.setAttribute("activated", "false");
-    };
-
-    checkBox.setAttribute("corresponding_pattern", `${patternName}_box`)
+    createPattern_checkPatternInLevel(checkBox, patternName, patternStructure, gridType);
 
     // create basic 5x5 grid 
-    new Array(25).fill("").forEach(i => {
-        let cell = document.createElement("div");
-        cell.classList.add("preview_cell");
-        cell.classList.add("cell");
-
-        grid.appendChild(cell);
-    });
-
-    // draw structure on grid
-    patternStructure.forEach(i => {
-        let index = parseInt(i);
-
-        // console.log(index, i, grid, grid.children[index]);
-        createField_updateCell(index, grid, "preview_cell");
-    });
+    createPattern_createGrid(patternStructure, gridRows, y, grid);
 
     // event listener
-    pen.addEventListener("click", function name() {
-        editCostumWrapper(checkBox, patternStructure.map(i => i = Number(i)), patternName);
-    });
+    createPattern_eventListener(pen, bin, checkBox, bin2, patternStructure, patternName, gridType, Number(gridRows), Number(y));
 
-    bin.addEventListener("click", function name() {
-        deleteCostumWrapper(patternName);
-    });
-
-    checkBox.addEventListener("click", function name() {
-        toggleCustomPatternInNewLevel(checkBox, patternStructure.map(i => i = Number(i)), patternName);
-    });
-
-    bin2.addEventListener("click", function name() {
-        checkBox.click();
-
-        // if this element exists deactivate its status
-        let CorrespondingPattenStoragePattern = document.querySelector(`[costum_pattern_name="${patternName}"][right="personal"]`);
-
-        if (CorrespondingPattenStoragePattern) {
-            let checkBox_ofLevel = CorrespondingPattenStoragePattern.children[0].children[2].children[2];
-
-            checkBox_ofLevel.className = "fa-regular fa-square item";
-            checkBox_ofLevel.setAttribute("activated", "false");
-        };
-    });
+    // scroll
+    createPattern_scrollgrid(gridWrapper, grid, Yscroll, Xscroll);
 
     // append to document
     parent.appendChild(gridWrapper);
@@ -331,13 +335,154 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
         editItemsWrapper.appendChild(bin2);
 
         gridWrapper.setAttribute("right", "level");
+
     };
 
     setTimeout(() => {
         // give static height/ scale whatever
         StaticCellScale(grid);
-    }, 100);
+    }, 250);
 };
+
+// add classes, attributes and style to the pattern grid
+const createPattern_addAttributes = (gridWrapper, patternName, grid, title, headerWrapper,
+    editItemsWrapper, special_class, checkBox, pen, bin, costum_patterns_overview, gridRows, flexDiv) => {
+    // add attributes and style
+    gridWrapper.setAttribute("costum_pattern_name", patternName.replace(" ", "_"));
+    gridWrapper.classList.add("createCostumField_Field_wrapper");
+    gridWrapper.classList.add("costumPatternsOverview_gridWrapper");
+    grid.classList.add("small_createCostumField_Field");
+    title.classList.add("preview_pattern_title");
+    headerWrapper.classList.add("headerWrapper");
+    editItemsWrapper.classList.add("editItemsWrapper");
+    special_class != undefined && gridWrapper.setAttribute(special_class, "true");
+    checkBox.title = `use pattern in ${NewCreativeLevel.CurrentSelectedSetting.name}`;
+    pen.className = "fa-solid fa-pen item";
+    bin.className = "fa-solid fa-trash item";
+
+    // set attributes and style
+    costum_patterns_overview.setAttribute("costum_pattern_name", patternName);
+
+    flexDiv.style.width = "10%";
+    checkBox.style.fontSize = "larger";
+    grid.style.gridTemplateColumns = `repeat(${gridRows}, 1fr)`;
+    title.textContent = patternName;
+};
+
+// check if this pattern exists in the current creative level
+const createPattern_checkPatternInLevel = (checkBox, patternName, patternStructure, gridType) => {
+    let patternIsInCurrentCreativeLevel = gridType != "field" ? checkCostumPatternInCurrentLevel(patternName, patternStructure) : checkCostumFieldInCurrentLevel(patternName);
+
+    if (patternIsInCurrentCreativeLevel) {
+        checkBox.className = "fa-regular fa-square-check item";
+        checkBox.setAttribute("activated", "true");
+
+    } else {
+        checkBox.className = "fa-regular fa-square item";
+        checkBox.setAttribute("activated", "false");
+    };
+
+    if (gridType == "field") {
+        checkBox.setAttribute("corresponding_field", `${patternName}_box`);
+
+    } else {
+        checkBox.setAttribute("corresponding_pattern", `${patternName}_box`);
+
+    };
+};
+
+// create grid and grid pattern if exists to the grid
+const createPattern_createGrid = (patternStructure, gridRows, y, grid) => {
+    new Array(gridRows * y).fill("").forEach(i => {
+        let cell = document.createElement("div");
+        cell.classList.add("preview_cell");
+        cell.classList.add("cell");
+
+        grid.appendChild(cell);
+    });
+
+    // draw structure on grid
+    patternStructure.forEach(i => {
+        let index = parseInt(i);
+
+        // console.log(index, i, grid, grid.children[index]);
+        createField_updateCell(index, grid, "preview_cell");
+    });
+};
+
+// create event listener for grid elements
+const createPattern_eventListener = (pen, bin, checkBox, bin2, patternStructure, patternName, gridType, x, y) => {
+    pen.addEventListener("click", () => {
+        if (gridType == "field") {
+            editCostumField(checkBox, patternName, x, y);
+
+        } else {
+            editCostumWrapper(checkBox, patternStructure.map(i => Number(i)), patternName);
+
+        };
+    });
+
+    bin.addEventListener("click", () => {
+        if (gridType == "field") {
+            deleteCostumField(patternName);
+
+        } else {
+            deleteCostumWrapper(patternName);
+
+        };
+    });
+
+    checkBox.addEventListener("click", () => {
+
+        if (gridType == "field") {
+            toggleCostumFieldInNewLevel(checkBox, patternName, x, y);
+
+        } else {
+            toggleCustomPatternInNewLevel(checkBox, patternStructure.map(i => Number(i)), patternName);
+
+        };
+    });
+
+    bin2.addEventListener("click", () => {
+        checkBox.click();
+
+        let name = patternName.replace(" ", "_");
+
+        // If this element exists, deactivate its status
+        let correspondingPatternStoragePattern = document.querySelector(`[costum_pattern_name="${name}"][right="personal"]`);
+
+        if (correspondingPatternStoragePattern) {
+            let checkBoxOfLevel = correspondingPatternStoragePattern.children[0].children[2].children[2];
+
+            console.log(checkBoxOfLevel);
+
+            checkBoxOfLevel.className = "fa-regular fa-square item";
+            checkBoxOfLevel.setAttribute("activated", "false");
+        };
+    });
+};
+
+// wether the grid should be scrollable 
+const createPattern_scrollgrid = (gridWrapper, grid, Yscroll, Xscroll) => {
+    if (Yscroll === "scroll") {
+        gridWrapper.style.overflowY = "scroll";
+        grid.style.gridAutoRows = "min-content";
+    };
+
+    if (Xscroll === "scroll") {
+        gridWrapper.style.overflowX = "scroll";
+        grid.style.gridAutoRows = "min-content";
+    };
+
+    if (Yscroll === undefined) {
+        gridWrapper.style.overflowY = "unset";
+    };
+
+    if (Xscroll === undefined) {
+        gridWrapper.style.overflowX = "unset";
+    };
+};
+
 
 // delete costum wrapper
 const deleteCostumWrapper = (name) => {
@@ -358,11 +503,30 @@ const deleteCostumWrapper = (name) => {
     };
 };
 
+// delete costum field
+const deleteCostumField = (name) => {
+    if (!NewCreativeLevel.is_field_in_level(name)) {
+        // get storage
+        let fieldStorage = JSON.parse(localStorage.getItem("CostumFields"));
+        // delete from storage
+        delete fieldStorage[name];
+        // update storage
+        localStorage.setItem("CostumFields", JSON.stringify(fieldStorage));
+        // update html
+        Display_CostumFields();
+
+    } else {
+        OpenedPopUp_WhereAlertPopUpNeeded = true;
+        AlertText.textContent = "You can't delete a field which is used in this level.";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    };
+};
+
 // edit costum wrapper
 const editCostumWrapper = (pattern_check, structure, name) => {
     if (pattern_check.getAttribute("activated") == "false") {
 
-        CreateCostumPattern_btn.click();
+        CreateCostumPattern_btn.click(); // open create pattern pop up
         createCostumPattern_title.textContent = name;
 
         [...createCostumPattern_Field.children].forEach((val, i) => {
@@ -382,10 +546,27 @@ const editCostumWrapper = (pattern_check, structure, name) => {
     };
 };
 
-// toggle, if costum pattern should be used as pattern in new create level from user
-const toggleCustomPatternInNewLevel = (box, structure, name) => {
-    console.log(structure, name);
+// edit costum field
+const editCostumField = (field_check, name, x, y) => {
+    if (field_check.getAttribute("activated") == "false") {
 
+        CreateCostumField_btn.click(); // open create field pop up
+
+        createCostumField_title.textContent = name;
+        createCostumField_xInput.textContent = x;
+        createCostumField_yInput.textContent = y;
+
+        generateField_preview(x, y, createCostumField_Field);
+
+    } else if (field_check.getAttribute("activated") == "true") {
+        AlertText.textContent = "You can't edit a field which is used in this level.";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        OpenedPopUp_WhereAlertPopUpNeeded = true;
+    };
+};
+
+// toggle wether costum pattern should be used as pattern in new create level from user
+const toggleCustomPatternInNewLevel = (box, structure, name) => {
     // box logic
     if (box.getAttribute("activated") == "true") {
         box.setAttribute("activated", "false");
@@ -403,6 +584,37 @@ const toggleCustomPatternInNewLevel = (box, structure, name) => {
     };
 
     NewCreativeLevel.InitCostumPatterns(NewCreativeLevel.CurrentSelectedSetting.costumPatterns);
+};
+
+// toggle wether costum field should be used as main field in the new creative level
+const toggleCostumFieldInNewLevel = (box, name, x, y) => {
+    // box logic
+    if (box.getAttribute("activated") == "true") {
+        box.setAttribute("activated", "false");
+        box.className = "fa-regular fa-square item";
+
+        // field in level logic
+        NewCreativeLevel.toggle_costum_field("remove", name, x, y);
+
+    } else {
+        // uncheck all chechboxes 
+        let AllFieldBoxes = document.querySelectorAll(`[corresponding_field]`);
+
+        [...AllFieldBoxes].map((box => {
+
+            box.setAttribute("activated", "false");
+            box.className = "fa-regular fa-square item"
+        }));
+
+        // activate that one box
+        box.setAttribute("activated", "true");
+        box.className = "fa-regular fa-square-check item";
+
+        // field in level logic
+        NewCreativeLevel.toggle_costum_field("add", name, x, y);
+    };
+
+    NewCreativeLevel.InitCostumField(NewCreativeLevel.CurrentSelectedSetting.costumField);
 };
 
 // check if user drawed a costum pattern
@@ -441,10 +653,10 @@ const checkCostumPatternAlreadyInGame = () => {
     let OriginPattern = PatternStructureAsOrigin(boundaries, indexes.map(i => Number(i)), xCell_Amount);
     let InGamePatterns = OfficialGamePatterns;
 
-    console.log(InGamePatterns.find(pattern => pattern === OriginPattern));
+    // console.log(InGamePatterns.find(pattern => OriginPattern.every((value, index) => value === pattern[index])));
 
     // check if users pattern is already in game
-    return InGamePatterns.find(pattern => pattern.every((value, index) => value === OriginPattern[index])) !== undefined && true;
+    return InGamePatterns.find(pattern => OriginPattern.every((value, index) => value === pattern[index])) !== undefined && true;
 
     // if users pattern is not in the game, function returns undefined and test is completed successfully
 };
@@ -457,7 +669,16 @@ const checkCostumPatternInCurrentLevel = (patternName, patternStructure) => {
     } else return false;
 };
 
-// how many indexes the user should minimum draw
+// check if the costum field that being rendered in the costum pattern preview is in the current level
+const checkCostumFieldInCurrentLevel = (fieldName) => {
+    if (NewCreativeLevel.is_field_in_level(fieldName)) {
+        return true;
+
+    } else return false;
+};
+
+
+// how many indexes the user should minimum draw on costum pattern creation
 const minimumIndexesRequiremement = amount => {
     let indexesAmount = 0;
 

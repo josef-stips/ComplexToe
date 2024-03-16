@@ -3,7 +3,7 @@ class NewLevel {
     constructor(bgcolor1 = 0, bgcolor2 = 0, requiredpoints = 10, playertimer = 2, icon = 7, bgmusic = 0, allowedpatterns = [
         "hor", "vert", "dia", "dia2", "L1", "L2", "L3", "L4",
         "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"
-    ], cellgrid = 4, name = "Your level name", status = 0, isSaved = true, id = 0, selectedLevel = undefined, costumPatterns = {}) {
+    ], cellgrid = 4, name = "Your level name", status = 0, isSaved = true, id = 0, selectedLevel = undefined, costumPatterns = {}, costumField = {}) {
 
         this.PossibleColors = {
             0: "#ffffff00",
@@ -94,13 +94,19 @@ class NewLevel {
             "id": id,
 
             "costumPatterns": costumPatterns,
-            // how this array looks like:
+            // how this object looks like:
             // { 
             //     patternName: {
             //         name: patternName,
             //         structure: [0,1,2,3,4]
             //     }
             // }
+
+            "costumField": costumField,
+            // example:
+            // name: "costumFieldNameFromUser",
+            // x: 5,
+            // y: 5
         };
 
         // on every input the player does to the affection of the current level has to be recognized and saved in the history
@@ -137,7 +143,8 @@ class NewLevel {
         // Init current settings
         this.InitCurrentSettings(this.CurrentSelectedSetting.bgmusic, this.CurrentSelectedSetting.bgcolor1, this.CurrentSelectedSetting.bgcolor2,
             this.CurrentSelectedSetting.requiredpoints, this.CurrentSelectedSetting.playertimer, this.CurrentSelectedSetting.levelicon, this.CurrentSelectedSetting.cellgrid,
-            this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id, this.CurrentSelectedSetting.costumPatterns);
+            this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id,
+            this.CurrentSelectedSetting.costumPatterns, this.CurrentSelectedSetting.costumField);
 
         // Init carets
         this.InitInput();
@@ -171,7 +178,8 @@ class NewLevel {
             // Refresh current settings
             this.InitCurrentSettings(this.CurrentSelectedSetting.bgmusic, this.CurrentSelectedSetting.bgcolor1, this.CurrentSelectedSetting.bgcolor2,
                 this.CurrentSelectedSetting.requiredpoints, this.CurrentSelectedSetting.playertimer, this.CurrentSelectedSetting.levelicon, this.CurrentSelectedSetting.cellgrid,
-                this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id, this.CurrentSelectedSetting.costumPatterns);
+                this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id,
+                this.CurrentSelectedSetting.costumPatterns, this.CurrentSelectedSetting.costumField);
         };
     };
 
@@ -216,6 +224,7 @@ class NewLevel {
                             this.selectedLevel[9] = this.CurrentSelectedSetting.status
                             this.selectedLevel[11] = this.CurrentSelectedSetting.id
                             this.selectedLevel[15] = this.CurrentSelectedSetting.costumPatterns
+                            this.selectedLevel[16] = this.CurrentSelectedSetting.costumField
                         };
 
                         this.history = {};
@@ -263,11 +272,14 @@ class NewLevel {
         if (this.selectedLevel != undefined) {
 
             this.InitCurrentSettings(this.selectedLevel[5], this.selectedLevel[0], this.selectedLevel[1], this.selectedLevel[2], this.selectedLevel[3], this.selectedLevel[4],
-                this.selectedLevel[7], this.selectedLevel[6], this.selectedLevel[9], this.selectedLevel[8], this.selectedLevel[11], this.selectedLevel[15]);
+                this.selectedLevel[7], this.selectedLevel[6], this.selectedLevel[9], this.selectedLevel[8], this.selectedLevel[11], this.selectedLevel[15], this.selectedLevel[16]);
         };
 
         // level music preview stuff
         CheckForBGmusic();
+
+        // costum field from user stuff
+        this.drawCostumUserField();
     };
 
     // display level list
@@ -434,7 +446,7 @@ class NewLevel {
             // console.log(level, level.CreatorBeatIt, level.costum_patterns);
 
             this.selectedLevel = [parseInt(level.bg1), parseInt(level.bg2), level.required_points, level.player_timer, parseInt(level.icon), parseInt(level.bg_music), JSON.parse(level.pattern), level.field, level.level_name, level.level_status,
-                true, level.id, level.publish_date, level.CreatorBeatIt, level.creation_date, JSON.parse(level.costum_patterns)
+                true, level.id, level.publish_date, level.CreatorBeatIt, level.creation_date, JSON.parse(level.costum_patterns), JSON.parse(level.costum_field)
             ];
 
             CurrentSelectedLevel_Display.textContent = `selected level: ${this.selectedLevel[8]} - ID ${this.selectedLevel[11]}`;
@@ -510,7 +522,7 @@ class NewLevel {
     };
 
     // Init current settings on level
-    InitCurrentSettings = (music, bg1, bg2, points, clock, icon, field, patterns, status, name, id, costumPatterns) => {
+    InitCurrentSettings = (music, bg1, bg2, points, clock, icon, field, patterns, status, name, id, costumPatterns, costumField) => {
         // console.log(music, bg1, bg2, points, clock, icon, field, patterns, status, name, id, costumPatterns);
 
         // bg music 
@@ -584,6 +596,10 @@ class NewLevel {
         if (costumPatterns !== undefined) {
             this.CurrentSelectedSetting.costumPatterns = costumPatterns;
         };
+        // set costum field
+        if (costumField !== undefined) {
+            this.CurrentSelectedSetting.costumField = costumField;
+        };
     };
 
     // Init Carets of workbench 
@@ -611,7 +627,8 @@ class NewLevel {
                     // refresh settings
                     this.InitCurrentSettings(this.CurrentSelectedSetting.bgmusic, this.CurrentSelectedSetting.bgcolor1, this.CurrentSelectedSetting.bgcolor2,
                         this.CurrentSelectedSetting.requiredpoints, this.CurrentSelectedSetting.playertimer, this.CurrentSelectedSetting.levelicon, this.CurrentSelectedSetting.cellgrid,
-                        this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id, this.CurrentSelectedSetting.costumPatterns);
+                        this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id,
+                        this.CurrentSelectedSetting.costumPatterns, this.CurrentSelectedSetting.costumField);
 
                     // save in history
                     this.SaveInHistory(forSetting, this.CurrentSelectedSetting[forSetting] + 1);
@@ -639,7 +656,8 @@ class NewLevel {
                     // refresh settings
                     this.InitCurrentSettings(this.CurrentSelectedSetting.bgmusic, this.CurrentSelectedSetting.bgcolor1, this.CurrentSelectedSetting.bgcolor2,
                         this.CurrentSelectedSetting.requiredpoints, this.CurrentSelectedSetting.playertimer, this.CurrentSelectedSetting.levelicon, this.CurrentSelectedSetting.cellgrid,
-                        this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id, this.CurrentSelectedSetting.costumPatterns);
+                        this.CurrentSelectedSetting.allowedpatterns, this.CurrentSelectedSetting.status, this.CurrentSelectedSetting.name, this.CurrentSelectedSetting.id,
+                        this.CurrentSelectedSetting.costumPatterns, this.CurrentSelectedSetting.costumField);
 
                     // save in history
                     this.SaveInHistory(forSetting, this.CurrentSelectedSetting[forSetting] - 1);
@@ -702,6 +720,29 @@ class NewLevel {
 
             createPattern_preview(pattern, index[pattern]["structure"].map(i => Number(i)), costum_patterns_overview_from_level, "level");
         };
+    };
+
+    // init costum field display on costum field ui 
+    // It can be only ONE costum field selected for a costum level
+    InitCostumField = (costumField) => {
+        console.log(costumField);
+
+        if (Object.keys(costumField).length <= 0) {
+            costumFieldCurrentLevelGrid.textContent = "No costum field is used in this current level.";
+            SelectedCostumFieldText.style.display = "none";
+            return;
+
+        } else {
+            costumFieldCurrentLevelGrid.textContent = null;
+            SelectedCostumFieldText.style.display = "block";
+        };
+
+        // create costum field
+        let x = costumField["x"];
+        let y = costumField["y"];
+        let name = costumField["name"];
+
+        createPattern_preview(name, [], costumFieldCurrentLevelGrid, "level", undefined, x, "scroll", undefined, y, "field");
     };
 
     // init and start game with given game data
@@ -922,16 +963,72 @@ class NewLevel {
         console.log(this.CurrentSelectedSetting.costumPatterns);
     };
 
+    // toggle costum field in creative level
+    toggle_costum_field = (method, fieldName, x, y) => {
+        console.log(method);
+
+        // toggle field in meta data of this level
+        if (method == "add") {
+            // add field to object
+
+            this.CurrentSelectedSetting.costumField = {
+                "name": fieldName,
+                "x": x,
+                "y": y
+            }
+
+        } else if (method == "remove") {
+            // delete field from object
+            this.CurrentSelectedSetting.costumField = {};
+        };
+
+        this.SaveInHistory("costumField", this.CurrentSelectedSetting.costumField);
+
+        console.log(this.CurrentSelectedSetting.costumField);
+    };
+
     // check if pattern exists in the level storage 
     // if a pattern exists in a level it means it is used in the level
     is_pattern_in_level = (patternName) => {
         let patternInMetaData = this.CurrentSelectedSetting.costumPatterns[patternName];
 
-        // if pattern could not be found for some reason
+        // if pattern could not be found
         if (!patternInMetaData) {
             return false;
 
-        } else return true;
+        } else return true; // found
+    };
+
+    // check if costum field from user exists in the level storage
+    // if pattern exists it means it is used as the main field in the level
+    is_field_in_level = (fieldName) => {
+        let fieldInMetaData = this.CurrentSelectedSetting.costumField["name"] == fieldName;
+
+        // if field could not be found
+        if (!fieldInMetaData) {
+            return false;
+
+        } else return true; // found
+    };
+
+    // draw costum user field the user selected as field for the level on main ui of new creative level ui
+    drawCostumUserField = () => {
+        if (Object.keys(this.CurrentSelectedSetting.costumField).length <= 0) {
+            return;
+
+        } else {
+            toggleCellGridCarets("none");
+
+            this.GenerateField(this.CurrentSelectedSetting.costumField["x"]);
+        };
+    };
+
+    // display default cell grid preview
+    drawDefaultFields = () => {
+        toggleCellGridCarets("flex");
+
+        let fieldCoord = this.Settings.cellgrid[this.CurrentSelectedSetting.cellgrid];
+        this.GenerateField(fieldCoord);
     };
 };
 
@@ -970,7 +1067,7 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
         for (const [pattern, index] of Object.entries(patterns)) {
             console.log(pattern, index);
 
-            let structure = index[pattern]["structure"]
+            let structure = index[pattern]["structure"];
             let xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
 
             console.log(structure, xCellAmount);
@@ -1062,7 +1159,7 @@ const InitCreateLevelScene = () => {
             let NewField = new NewLevel(NewCreativeLevel.selectedLevel[0], NewCreativeLevel.selectedLevel[1], NewCreativeLevel.selectedLevel[2],
                 NewCreativeLevel.selectedLevel[3], NewCreativeLevel.selectedLevel[4], NewCreativeLevel.selectedLevel[5], NewCreativeLevel.selectedLevel[6],
                 NewCreativeLevel.selectedLevel[7], NewCreativeLevel.selectedLevel[8], NewCreativeLevel.selectedLevel[9], NewCreativeLevel.selectedLevel[10], NewCreativeLevel.selectedLevel[11],
-                NewCreativeLevel.selectedLevel, NewCreativeLevel.selectedLevel[15]);
+                NewCreativeLevel.selectedLevel, NewCreativeLevel.selectedLevel[15], NewCreativeLevel.selectedLevel[16]);
             NewCreativeLevel = NewField;
             NewCreativeLevel.Init(true);
 
@@ -1321,6 +1418,13 @@ const InitCreateLevelScene = () => {
     tabContainer1_closeBtn.addEventListener("click", () => {
         CreateOwnStuffPopUp.style.display = "none";
         DarkLayer.style.display = "none";
+
+        if (Object.keys(NewCreativeLevel.CurrentSelectedSetting.costumField).length <= 0) {
+            NewCreativeLevel.drawDefaultFields();
+
+        } else {
+            NewCreativeLevel.drawCostumUserField()
+        };
     });
 
     tabs.forEach((tab, i) => {
@@ -1387,7 +1491,17 @@ const InitCreateLevelScene = () => {
     });
 
     CreateField_createField_btn.addEventListener("click", () => {
-        createNewCostumField();
+        let sameCoord = createCostumField_xInput.textContent == createCostumField_yInput.textContent;
+
+        if (createCostumField_title.textContent != "field name" && sameCoord) {
+            createNewCostumField();
+
+        } else {
+            OpenedPopUp_WhereAlertPopUpNeeded = true;
+
+            AlertText.textContent = "Build your new field and provide a costum name for it. The x and y axes should be the same.";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        };
     });
 
     CreatePattern_createPattern_btn.addEventListener("click", () => {
@@ -1399,18 +1513,18 @@ const InitCreateLevelScene = () => {
         // console.log(drawed, createCostumPattern_title.textContent, minimumIndexesRequiremementCheck, existsInGame, " exists ?", CorrespondingPattenStoragePattern);
 
         // user must provide costum name and atleast one drawed pattern
-        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck &&
-            !CorrespondingPattenStoragePattern) {
+        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck) {
 
             createNewCostumPattern();
 
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
-            AlertText.textContent = "Draw your new pattern and provide a new costum name for it. Draw minimum on 3 cells. You cannot draw a pattern already existing in the game.";
+            AlertText.textContent = "Draw your new pattern and provide a custom name for it. Minimum drawing on 3 cells is required. It can be drawn up to 5 cells. You cannot use a pattern already existing in the game.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
+
 };
 
 // leave create level scene
@@ -1428,4 +1542,10 @@ const CheckForBGmusic = () => {
     } else {
         CreateLevel_musicPreviewBtn.style.display = "none";
     };
+};
+
+// toggle cell grid carets
+const toggleCellGridCarets = (method) => {
+    let cellGridCarets = document.querySelectorAll(`[for="cellgrid"]`);
+    [...cellGridCarets].map(caret => caret.style.display = method);
 };

@@ -717,8 +717,22 @@ UserQuote.addEventListener('keydown', (event) => {
 });
 
 [createCostumField_xInput, createCostumField_yInput].forEach(input => {
-    // prevention of unallowed keys
+
     input.addEventListener('keydown', function(event) {
+
+        // navigation with keys
+        if (input == createCostumField_xInput) {
+            if (event.key == "Enter" || event.key == "ArrowRight") {
+                createCostumField_yInput.focus();
+            };
+
+        } else if (input == createCostumField_yInput) {
+            if (event.key == "Enter" || event.key == "ArrowLeft") {
+                createCostumField_xInput.focus();
+            };
+        };
+
+        // prevention of unallowed keys
         if (!isNumericKey(event.key) && !isAllowedKey(event.key)) {
             event.preventDefault();
 
@@ -774,27 +788,77 @@ UserQuote.addEventListener('keydown', (event) => {
 });
 
 createCostumPattern_title.addEventListener("keydown", (event) => {
-    const allowedCharacters = /^[a-zA-Z0-9]*$/; // Nur Buchstaben erlaubeni
-    const maxLength = 10; // Maximale Anzahl von Zeichen
-    const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', "Backspace"]; // Erlaubte Tasten
+    let len = event.target.textContent.length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
 
-    // Überprüfen, ob die gedrückte Taste ein Buchstabe ist
-    if (!event.key.match(allowedCharacters) && !event.which == 32) {
-        // Verhindern, dass nicht-erlaubte Zeichen eingegeben werden
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 15 && !hasSelection && event.key != "Enter") {
         event.preventDefault();
-    }
+        return false;
+    };
 
-    // Überprüfen, ob die gedrückte Taste eine manipulierende Taste ist
+    // if (event.code === "Space") {
+    //     event.preventDefault();
+    // };
+});
+
+createCostumPattern_title.addEventListener("keyup", (event) => {
+    let inputValue = createCostumField_title.textContent;
+    const validInput = inputValue.replace(/[^0-9a-zA-Z\s]/g, "");
+
+    if (inputValue !== validInput) {
+        event.target.textContent = validInput;
+    };
+});
+
+
+createCostumField_title.addEventListener("keydown", (event) => {
+    let len = event.target.textContent.length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 15 && !hasSelection && event.key != "Enter") {
+        event.preventDefault();
+        return false;
+    };
+
     if (event.key === "Enter") {
-        // Verhindern, dass manipulierende Tasten verwendet werden
         event.preventDefault();
-    }
+        createCostumField_xInput.focus();
+    };
 
-    // Überprüfen, ob die maximale Anzahl von Zeichen erreicht ist
-    if (createCostumPattern_title.textContent.length >= maxLength && event.key !== "Backspace" && !allowedKeys.includes(event.key)) {
-        // Verhindern, dass weitere Zeichen hinzugefügt werden
-        event.preventDefault();
-    }
+    // if (event.code === "Space") {
+    //     event.preventDefault();
+    // };
+});
+
+createCostumField_title.addEventListener("keyup", (event) => {
+    let inputValue = createCostumField_title.textContent;
+    const validInput = inputValue.replace(/[^0-9a-zA-Z\s]/g, "");
+
+    if (inputValue !== validInput) {
+        event.target.textContent = validInput;
+    };
 });
 
 function isNumericKey(key) {

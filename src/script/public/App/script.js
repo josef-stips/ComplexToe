@@ -517,6 +517,8 @@ let leaderboard_player1_score = document.querySelector(".leaderboard_player1_sco
 let leaderboard_player2_score = document.querySelector(".leaderboard_player2_score");
 let endGame_statusText = document.querySelector(".endGame_statusText");
 let endGameStats_playTime = document.querySelector(".endGameStats_playTime");
+let costumFieldCurrentLevelGrid = document.querySelector(".costumFieldCurrentLevelGrid");
+let SelectedCostumFieldText = document.querySelector(".SelectedCostumFieldText");
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
 let bossLifeCounter = document.querySelector(".bossLifeCounter");

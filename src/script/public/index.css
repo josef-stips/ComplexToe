@@ -5494,9 +5494,10 @@ label h3 {
 .CreateLevelScene {
     display: none;
     flex-direction: column;
-    width: 97.5%;
+    width: 100%;
     height: 100%;
     justify-content: space-between;
+    align-items: center;
 }
 
 .CreateLevel_header {
@@ -5504,7 +5505,7 @@ label h3 {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 97.5%;
     height: 50%;
     min-height: 10%;
 }
@@ -5519,6 +5520,7 @@ label h3 {
     flex-direction: column;
     height: 100%;
     width: 100%;
+    align-items: center;
 }
 
 .CreateLevel_headerLeft {
@@ -5548,9 +5550,10 @@ label h3 {
 .Workbench_main {
     position: relative;
     height: 100%;
-    width: 100%;
+    width: 97.5%;
     display: flex;
     align-items: center;
+    justify-content: center;
     justify-content: space-between;
 }
 
@@ -5563,6 +5566,8 @@ label h3 {
     border-top: 2px solid;
     padding: 15px 15px 0 15px;
     gap: 1em;
+    align-self: flex-start;
+    width: 100%;
 }
 
 .PlayLevelBtn {
@@ -5578,7 +5583,7 @@ label h3 {
 }
 
 
-/* create level Benutzeroberfläche */
+/* create level BenutzeroberflÃ¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;
@@ -5941,6 +5946,7 @@ label h3 {
     gap: 1em;
     justify-content: start;
     align-items: start;
+    padding-left: 20px;
 }
 
 .Levellist_footer_right {
@@ -6618,13 +6624,14 @@ label h3 {
     border: 2px solid goldenrod;
     background-color: var(--bg-app-color);
     display: none;
-    flex-direction: column;
-    align-items: center;
+    /* flex-direction: column; */
+    /* align-items: center; */
     color: white;
     font-size: 25px;
     z-index: 10006;
     border-radius: 25px;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+    /* justify-content: center; */
 }
 
 .createStuff_upper_tabs_header {
@@ -6682,8 +6689,6 @@ label h3 {
 .tab_container {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
 }
 
 .CreateLevel_CreateOwnStuff_btn {
@@ -6694,6 +6699,7 @@ label h3 {
 .tab_content {
     flex-direction: column;
     align-items: center;
+    height: 100%;
 }
 
 
@@ -6789,10 +6795,10 @@ p.createCostumField_yInput {
 
 .createCostumField_Field_wrapper {
     display: flex;
-    justify-content: center;
-    overflow-y: scroll;
-    width: 20vh;
-    height: max-content;
+    justify-content: flex-start;
+    width: 100%;
+    height: 300px;
+    padding: 0 20px 0 0;
 }
 
 .createCostumField_Field_wrapper::-webkit-scrollbar {
@@ -6823,6 +6829,66 @@ p.createCostumField_yInput {
 .createCostum_helpBtn:hover {
     color: goldenrod;
     transition: color 0.15s ease-out;
+}
+
+.costum_field_overview {
+    display: grid;
+    gap: 2em;
+    width: 95%;
+    height: 500px;
+    overflow-y: scroll;
+    grid-template-columns: repeat(auto-fit, 250px);
+    row-gap: 2em;
+    padding: 30px;
+    align-items: start;
+    justify-content: center;
+}
+
+.createCostumField_title {
+    outline: none;
+    padding: 3px 30px 3px 30px;
+    background-color: rgba(255, 255, 255, 0.055);
+}
+
+.costum_pattern_ui {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 2% 0 0 0;
+    flex-direction: row;
+}
+
+.costum_field_ui {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    margin: 2% 0 0 0;
+}
+
+.costum_ui_column {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    flex-direction: column;
+    border-top: 2px solid goldenrod;
+    padding: 1% 0 0 0;
+}
+
+.CostumFieldInCurrentLevelGridWrapper {
+    display: grid;
+    gap: 2em;
+    width: 95%;
+    height: 45vh;
+    overflow-y: scroll;
+    grid-template-columns: repeat(auto-fit, 250px);
+    row-gap: 2em;
+    padding: 30px;
+    justify-content: center;
+}
+
+.costumFieldCurrentLevelGrid {
+    height: inherit;
 }
 
 
@@ -6874,28 +6940,28 @@ p.createCostumField_yInput {
     display: grid;
     gap: 2em;
     width: 95%;
-    height: 25vh;
+    height: 50vh;
     overflow-y: scroll;
     grid-template-columns: repeat(auto-fit, 250px);
     row-gap: 2em;
-    border-top: 2px solid goldenrod;
     padding: 30px;
+    justify-content: center;
 }
 
 .costum_patterns_overview_from_level {
     display: grid;
     gap: 2em;
     width: 95%;
-    height: 25vh;
+    height: 50vh;
     overflow-y: scroll;
     grid-template-columns: repeat(auto-fit, 250px);
     row-gap: 2em;
-    border-top: 2px solid goldenrod;
     padding: 30px;
+    justify-content: center;
 }
 
 .costumPatternsOverview_gridWrapper {
-    overflow-y: unset !important;
+    /* overflow-y: unset !important; */
     flex-direction: column;
 }
 
@@ -6907,6 +6973,7 @@ p.createCostumField_yInput {
 .small_createCostumField_Field {
     display: grid;
     width: 100%;
+    height: 100%;
 }
 
 .preview_pattern_title {
@@ -6917,7 +6984,6 @@ p.createCostumField_yInput {
     display: flex;
     flex-direction: row;
     width: 100%;
-    height: 20%;
     justify-content: space-between;
     align-items: end;
     margin-bottom: 3%;
