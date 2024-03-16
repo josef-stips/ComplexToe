@@ -1311,20 +1311,26 @@ const EndGame_Leaderboard = () => {
         let i = 0;
 
         return new Promise(done => {
-            let interval = setInterval(() => {
-                if (i >= score_Player1_numb) {
-                    clearInterval(interval);
-                    interval = null;
+            if (score_Player1_numb == Infinity) {
+                leaderboard_player1_score.textContent = "Won";
+                done();
 
-                    done();
-                    return;
-                };
+            } else {
+                let interval = setInterval(() => {
+                    if (i >= score_Player1_numb) {
+                        clearInterval(interval);
+                        interval = null;
 
-                i++;
-                leaderboard_player1_score.textContent = i;
-                playBtn_Audio_2();
+                        done();
+                        return;
+                    };
 
-            }, 100);
+                    i++;
+                    leaderboard_player1_score.textContent = i;
+                    playBtn_Audio_2();
+
+                }, 100);
+            };
         });
     };
 
@@ -1332,20 +1338,26 @@ const EndGame_Leaderboard = () => {
         let i = 0;
 
         return new Promise(done => {
-            let interval = setInterval(() => {
-                if (i >= score_Player2_numb) {
-                    clearInterval(interval);
-                    interval = null;
+            if (score_Player2_numb == Infinity) {
+                leaderboard_player2_score.textContent = "Won";
+                done()
 
-                    done();
-                    return;
-                };
+            } else {
+                let interval = setInterval(() => {
+                    if (i >= score_Player2_numb) {
+                        clearInterval(interval);
+                        interval = null;
 
-                i++;
-                leaderboard_player2_score.textContent = i;
-                playBtn_Audio_2();
+                        done();
+                        return;
+                    };
 
-            }, 100);
+                    i++;
+                    leaderboard_player2_score.textContent = i;
+                    playBtn_Audio_2();
+
+                }, 100);
+            };
         });
     };
 

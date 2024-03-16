@@ -1175,6 +1175,9 @@ function checkLoadingProgress() {
         CreateMusicBars(audio);
         bodyBGIMG.forEach(e => e.style.display = "block");
 
+        // start random icons on screen
+        randomItemsOnScreen();
+
     } else {
         setTimeout(() => {
             checkLoadingProgress();
@@ -1274,6 +1277,67 @@ function AppInit() {
     DisplayUserID();
 
     return 10;
+};
+
+// random items on screen the user can click to remove and gain something if lucky
+const randomItemsOnScreen = () => {
+    let x = innerWidth * (4 / 8);
+    let y = innerHeight * (4 / 8);
+
+    console.log("x", x, "y", y);
+
+    setInterval(() => {
+        let item = document.createElement("i");
+        const skinType = Math.floor(Math.random() * 2);
+        const rndLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+        const rndSkin = Math.floor(Math.random() * 15) + 19;
+        const rndColor = Math.floor(Math.random() * 20);
+        const rndX = Math.floor(Math.random() * x);
+        const rndY = Math.floor(Math.random() * y);
+
+        item.addEventListener("click", function anonymous() {
+            RandomIconClick(item);
+        });
+
+        item.style.cursor = "pointer";
+        item.style.animation = "5s fadeInOnRandomPopItem";
+        item.style.position = "absolute";
+        item.style.fontSize = "40px";
+        item.style.zIndex = "0";
+        item.style.padding = "15px";
+
+        switch (skinType) {
+            case 0:
+                item.textContent = rndLetter.toUpperCase();
+                item.style.color = skins_display[Object.keys(skins_display)[rndColor]];
+                break;
+
+            case 1:
+                item.className = skins_display[Object.keys(skins_display)[rndSkin]];
+                item.style.color = "white";
+                break;
+        };
+
+        console.log(window.getComputedStyle(gameModeCards_Div).getPropertyValue("display"));
+        if (window.getComputedStyle(gameModeCards_Div).getPropertyValue("display") === "flex") {
+            document.body.appendChild(item);
+        };
+
+        setTimeout(() => {
+            item.style.top = `${rndY}px`;
+            item.style.left = `${rndX}px`;
+        }, 250);
+
+        item.addEventListener("animationend", () => {
+            item.remove();
+        });
+    }, 5000);
+};
+
+// click event on random icon
+const RandomIconClick = (item) => {
+    playBtn_Audio()
+    item.remove();
 };
 
 // create 40x40 mini-board for lobby preview
@@ -3964,4 +4028,4 @@ UserQuote.addEventListener('keydown', (e) => {
 
 UserQuote.addEventListener('mousedown', function(event) {
     event.preventDefault(); // Verhindert die Auswahl beim Klicken
-});
+})
