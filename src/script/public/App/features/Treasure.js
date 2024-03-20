@@ -186,6 +186,8 @@ function CheckTreasure() {
     if (localStorage.getItem('UserOpenedTreasureOnceInHisLife') != "true") {
         localStorage.setItem('UserOpenedTreasureOnceInHisLife', 'false');
         treasureIsAvailible();
+
+        DailyChallenge.new_available();
         return;
     };
 
@@ -199,6 +201,8 @@ function CheckTreasure() {
     // user is not the first time in the game
     if (localStorage.getItem('treasureIsAvailible') == "true") {
         treasureIsAvailible();
+
+        DailyChallenges.new_available();
     };
 };
 
@@ -251,21 +255,29 @@ function updateCountdownValue(h, m, s) {
 };
 
 function updateValues(sec, min, hour) {
-    // for better user experience
+    // for better user experience in treasure pop up and challenges pop up
     if (hour <= 9) {
         hours.textContent = `0${hour}`;
+        DailyChallenges_TimeRemaining_Hours.textContent = `0${hour}`;
+
     } else {
         hours.textContent = hour;
+        DailyChallenges_TimeRemaining_Hours.textContent = `${hour}`;
     };
     if (min <= 9) {
         minutes.textContent = `0${min}`;
+        DailyChallenges_TimeRemaining_Minutes.textContent = `0${min}`;
+
     } else {
         minutes.textContent = min;
+        DailyChallenges_TimeRemaining_Minutes.textContent = `${min}`;
     };
     if (sec <= 9) {
         seconds.textContent = `0${sec}`;
+        DailyChallenges_TimeRemaining_Seconds.textContent = `0${sec}`;
     } else {
         seconds.textContent = sec;
+        DailyChallenges_TimeRemaining_Seconds.textContent = `${sec}`;
     };
 };
 
@@ -282,6 +294,8 @@ socket.on('availible-treasure', () => {
         TreasureCountdown = null;
     };
     treasureIsAvailible();
+
+    localStorage.setItem("newChallengesAreAvailable", "true");
 });
 
 // message from server that the treasure can't be opened now

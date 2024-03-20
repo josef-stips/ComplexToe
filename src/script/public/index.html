@@ -89,6 +89,7 @@
     <script defer src="Game/KI.js"></script>
     <script defer src="App/MaxTextLength.js"></script>
     <script defer src="App/input.js"></script>
+    <script defer src="App/features/DailyChallenges.js"></script>
 </head>
 
 <body>
@@ -158,7 +159,15 @@
             <div class="gameModes-cards">
 
                 <div class="gameModes-cards-Left">
-                    <img draggable="false" class="planet" src="assets/game/treasure-map.svg" height="57px" width="57px">
+                    <div class="homeLobby-iconBtn planet">
+                        <img draggable="false" src="assets/game/treasure-map.svg" height="32px" width="32px">
+                    </div>
+                    <div class="homeLobby-iconBtn lobbyBtn1">
+                        <img draggable="false" src="assets/game/tied-scroll.svg" height="32px" width="32px">
+                    </div>
+                    <div class="homeLobby-iconBtn lobbyBtn2">
+                        <img draggable="false" src="assets/game/sword-in-stone.svg" height="32px" width="32px">
+                    </div>
                 </div>
 
                 <div class="gameModes-cards-Main">
@@ -3641,6 +3650,7 @@
                 <li>dungeon-gate by Delapouite under CC BY 3.0</li>
                 <li>direction-sign by Delapouite under CC BY 3.0</li>
                 <li>deku-tree by Delapouite under CC BY 3.0</li>
+                <li>sword-in-stone by lorc under CC BY 3.0</li>
             </ul>
 
         </div>
@@ -6907,7 +6917,7 @@
                             </div>
 
                             <div class="SelectedCostumFieldText">
-                                This selected field is the field for the level. It cannot be changes or be replaced by default fields <br> until you remove it from the level by clicking <i class="fa-solid fa-trash"></i>.
+                                This selected field is the field for the level. It cannot be changed or be replaced by default fields <br> until you remove it from the level by clicking <i class="fa-solid fa-trash"></i>.
                             </div>
                         </div>
 
@@ -7068,6 +7078,109 @@
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
         <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <!-- daily challenges pop up -->
+    <div class="DailyChallenges_PopUp">
+        <div class="DailyChallenges_header">
+            <i class="fa-solid fa-arrow-left DailyChallenges_backBtn basicPopUpBtn"></i>
+
+            <i class="fa-solid fa-question-circle basicPopUpBtn DailyChallengesQuestionBtn"></i>
+        </div>
+        <div class="DailyChallenges_main">
+
+            <div class="DailyChallenges_mainUpperWrapper">
+                <div class="DailyChallenges_mainUpperWrapper_left">
+                    New Challenges in &nbsp;
+                    <p class="DailyChallenges_TimeRemaining">
+                        <div class="DailyChallenges_TimeRemaining_Hours">00</div>
+                        :
+                        <div class="DailyChallenges_TimeRemaining_Minutes">00</div>
+                        :
+                        <div class="DailyChallenges_TimeRemaining_Seconds">00</div>
+                    </p>
+                </div>
+
+                <div class="DailyChallenges_mainUpperWrapper_center">
+                    <h1>Daily Challenges</h1>
+                </div>
+
+                <div class="DailyChallenges_mainUpperWrapper_right">
+
+                </div>
+            </div>
+
+            <div class="ChallengeBoxWrapper">
+
+                <div class="ChallengeBox" challenge-box-index="0" completed="false">
+
+                    <div class="ChallengeBox_header">
+                        <h2 class="ChallengeBoxTitle">Get 3 online wins</h2>
+
+                    </div>
+
+                    <div class="ChallengeBox_main">
+                        <p class="ChallengeBox_progressText">Progress: 0/3</p>
+
+                        <p class="ChallengeBox_priceTextWrapper">
+                            Price: 0 <i class="fa-solid fa-gem"></i>
+                        </p>
+                    </div>
+
+                    <div class="DailyChallengeBox_footerWrapper">
+                        <!-- position absolute -->
+                        <div class="DailyChallengeClaimBtn" box-to-claim-index="0">
+                            Claim!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ChallengeBox" challenge-box-index="1" completed="false">
+                    <div class="ChallengeBox_header">
+                        <h2 class="ChallengeBoxTitle">Conquer the boss on level 4 of the advanture map</h2>
+
+                    </div>
+
+                    <div class="ChallengeBox_main">
+                        <p class="ChallengeBox_progressText">Progress: 0/1</p>
+
+                        <p class="ChallengeBox_priceTextWrapper">
+                            Price: 100 <i class="fa-solid fa-gem"></i>
+                        </p>
+                    </div>
+
+                    <div class="DailyChallengeBox_footerWrapper">
+                        <!-- position absolute -->
+                        <div class="DailyChallengeClaimBtn" box-to-claim-index="1">
+                            Claim!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ChallengeBox" challenge-box-index="2" completed="false">
+                    <div class="ChallengeBox_header">
+                        <h2 class="ChallengeBoxTitle">Get 10 XP</h2>
+
+                    </div>
+
+                    <div class="ChallengeBox_main">
+                        <p class="ChallengeBox_progressText">Progress: 0/10</p>
+
+                        <p class="ChallengeBox_priceTextWrapper">
+                            Price: 100 <i class="fa-solid fa-gem"></i>
+                        </p>
+                    </div>
+
+                    <div class="DailyChallengeBox_footerWrapper">
+                        <!-- position absolute -->
+                        <div class="DailyChallengeClaimBtn" box-to-claim-index="2">
+                            Claim!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;" width="450" height="450">

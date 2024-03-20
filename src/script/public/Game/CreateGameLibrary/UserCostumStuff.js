@@ -320,11 +320,17 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     parent.appendChild(gridWrapper);
     headerWrapper.appendChild(flexDiv);
     headerWrapper.appendChild(title);
+
+    if (special_class != "ingame_preview") {
+        gridWrapper.appendChild(headerWrapper);
+    };
+
     headerWrapper.appendChild(editItemsWrapper)
-    gridWrapper.appendChild(headerWrapper);
+
     gridWrapper.appendChild(grid);
 
     if (rights == "personal") {
+
         editItemsWrapper.appendChild(pen);
         editItemsWrapper.appendChild(bin);
         editItemsWrapper.appendChild(checkBox);
@@ -332,10 +338,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
         gridWrapper.setAttribute("right", "personal");
 
     } else if (rights == "level") {
-        editItemsWrapper.appendChild(bin2);
-
         gridWrapper.setAttribute("right", "level");
-
     };
 
     setTimeout(() => {

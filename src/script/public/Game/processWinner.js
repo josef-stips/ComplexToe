@@ -778,6 +778,8 @@ const continueGame = () => {
     if (!inAdvantureMode) {
         // in online mode
         if (curr_mode == GameMode[2].opponent) {
+
+
             if (PlayingInCreatedLevel) { // Player played user created level
                 if (NewCreativeLevel.selectedLevel[9] == 0) {
                     // admin leaves game and this info all player get
@@ -1011,36 +1013,34 @@ const OnlineGame_UltimateWin_GG = (player1_won, player2_won) => {
 // the admin called the ultimate game win
 // this message recieve all clients
 socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
-    // basic stuff
-    stopStatusTextInterval = false;
-    cellGrid.style.opacity = "0";
-
-    killPlayerClocks(true);
-    clearInterval(gameCounter);
-    gameCounter = null;
-
-    score_Player1_numb = 0;
-    score_Player2_numb = 0;
-
-    UltimateGameWinFirstAnimation(player1_won, player2_won);
-
-    console.log(player1_won, player2_won);
-
     setTimeout(() => {
-        cellGrid.style.display = 'none';
-        if (player1_won && !player2_won) { // player 1 won (admin)
-            OnlineGame_UltimateWin_Player1(player1_won, player2_won);
-            return;
+        // basic stuff
+        stopStatusTextInterval = false;
+        cellGrid.style.opacity = "0";
 
-        } else if (player2_won && !player1_won) { // player 2 won (user)
-            OnlineGame_UltimateWin_Player2(player1_won, player2_won);
-            return;
+        killPlayerClocks(true);
+        clearInterval(gameCounter);
+        gameCounter = null;
 
-        } else if (player1_won && player2_won) {
-            OnlineGame_UltimateWin_GG(player1_won, player2_won);
-            return;
-        };
-    }, 2000);
+        // so the user can't leave while win animation
+        leaveGame_btn.removeEventListener('click', UserleavesGame);
+        leaveGame_btn.style.color = '#56565659';
+
+        UltimateGameWinFirstAnimation(player1_won, player2_won)
+
+        setTimeout(() => {
+            cellGrid.style.display = 'none';
+            if (player1_won && !player2_won) { // player 1 won (user)
+                OnlineGame_UltimateWin_Player1(player1_won, player2_won);
+
+            } else if (player2_won && !player1_won) { // player 2 won (user)
+                OnlineGame_UltimateWin_Player2(player1_won, player2_won);
+
+            } else if (player1_won && player2_won) { // GG
+                OnlineGame_UltimateWin_GG(player1_won, player2_won);
+            };
+        }, 1000);
+    }, 1000);
 });
 
 // Update skill points for player after a successful game

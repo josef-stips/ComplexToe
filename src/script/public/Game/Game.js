@@ -98,7 +98,7 @@ let board_size;
 
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
-function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves) {
+function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords) {
     // Define field data for game
     // If online game set online game data, if not set normal data
     let fieldIndex = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[0] : field.getAttribute('index');
@@ -123,11 +123,20 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // console.log(required_amount_to_win);
     !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
-    // console.log(Fields, fieldIndex)
+    console.log(Fields, fieldIndex, costumCoords);
 
-    // set up x and y coordinate
-    xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
-    yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+    // set up x and y coordinates
+    if (costumCoords[0] != undefined) {
+        // set user costum level coordinates
+        xCell_Amount = costumCoords[0];
+        yCell_Amount = costumCoords[1]
+
+    } else {
+        xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+        yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+    };
+
+    console.log(xCell_Amount, yCell_Amount);
 
     board_size = xCell_Amount;
 

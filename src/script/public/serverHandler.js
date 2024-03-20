@@ -1139,10 +1139,14 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // required points to win a game
     let required_points_to_win = parseInt(Lobby_PointsToWin.textContent);
 
+    // user costum coord in new creative level
+    let costumX;
+    let costumY;
+
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
         PlayerTimer, player1_advancedIcon, player2_advancedIcon, player1_SkinColor, player2_SkinColor, player3_name
-    ], allowed_patterns, undefined, required_points_to_win);
+    ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY]);
 
     // play theme music 
     PauseMusic();

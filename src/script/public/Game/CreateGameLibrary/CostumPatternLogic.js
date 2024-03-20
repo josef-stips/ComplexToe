@@ -47,19 +47,19 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
         WinConditions.push(pattern);
     };
 
-    console.log(WinConditions);
+    // console.log(WinConditions);
 };
 
 // the user can draw every pattern he likes on a 5x5 field
 // For the pattern to be used in the right way by the game, the indexes should all have the minimum possible number
 // Ex. [7, 13, 18, 22] -> [0, 6, 11, 15]
 const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
-    console.log(boundaries, Structure, Fieldx)
+    // console.log(boundaries, Structure, Fieldx)
 
     // sort structure. small first biggest at the end
     let PatternStructure = Structure.sort((a, b) => a - b);
 
-    console.log(PatternStructure);
+    // console.log(PatternStructure);
 
     // literally the first index of the pattern and its corresponding lower boundary
     let x = Structure[0];
@@ -106,7 +106,7 @@ const XboundaryNearestIndex = (boundaryType, boundaries, structure) => { // boun
         };
     });
 
-    console.log(indexBoundaryPairs)
+    // console.log(indexBoundaryPairs)
 
     // find index which is nearest to its lower boundary
     let bestDiff = Infinity;

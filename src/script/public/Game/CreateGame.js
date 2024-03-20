@@ -599,6 +599,7 @@ class NewLevel {
         // set costum field
         if (costumField !== undefined) {
             this.CurrentSelectedSetting.costumField = costumField;
+            this.drawCostumUserField();
         };
     };
 

@@ -519,6 +519,21 @@ let endGame_statusText = document.querySelector(".endGame_statusText");
 let endGameStats_playTime = document.querySelector(".endGameStats_playTime");
 let costumFieldCurrentLevelGrid = document.querySelector(".costumFieldCurrentLevelGrid");
 let SelectedCostumFieldText = document.querySelector(".SelectedCostumFieldText");
+let lobbyBtn1 = document.querySelector(".lobbyBtn1");
+let lobbyBtn2 = document.querySelector(".lobbyBtn2");
+let DailyChallenges_PopUp = document.querySelector(".DailyChallenges_PopUp");
+let ChallengeBox = document.querySelectorAll(".ChallengeBox");
+let DailyChallengeClaimBtns = document.querySelectorAll(".DailyChallengeClaimBtn");
+let ChallengeBoxTitles = document.querySelectorAll(".ChallengeBoxTitle");
+let ChallengeBox_progressText = document.querySelectorAll(".ChallengeBox_progressText");
+let ChallengeBox_priceTextWrapper = document.querySelectorAll(".ChallengeBox_priceTextWrapper");
+let DailyChallenges_TimeRemaining = document.querySelector(".DailyChallenges_TimeRemaining");
+let DailyChallengesQuestionBtn = document.querySelector(".DailyChallengesQuestionBtn");
+let DailyChallenges_backBtn = document.querySelector(".DailyChallenges_backBtn");
+let DailyChallenges_TimeRemaining_Hours = document.querySelector(".DailyChallenges_TimeRemaining_Hours");
+let DailyChallenges_TimeRemaining_Minutes = document.querySelector(".DailyChallenges_TimeRemaining_Minutes");
+let DailyChallenges_TimeRemaining_Seconds = document.querySelector(".DailyChallenges_TimeRemaining_Seconds");
+
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
 let bossLifeCounter = document.querySelector(".bossLifeCounter");
@@ -1281,57 +1296,57 @@ function AppInit() {
 
 // random items on screen the user can click to remove and gain something if lucky
 const randomItemsOnScreen = () => {
-    let x = innerWidth * (4 / 8);
-    let y = innerHeight * (4 / 8);
+    if (localStorage.getItem("sett-Secret") == "true") {
+        let x = innerWidth * (1 / 2);
+        let y = innerHeight * (1 / 2);
 
-    console.log("x", x, "y", y);
+        setInterval(() => {
+            let item = document.createElement("i");
+            const skinType = Math.floor(Math.random() * 2);
+            const rndLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+            const rndSkin = Math.floor(Math.random() * 15) + 19;
+            const rndColor = Math.floor(Math.random() * 20);
+            const rndX = Math.floor(Math.random() * x);
+            const rndY = Math.floor(Math.random() * y);
 
-    setInterval(() => {
-        let item = document.createElement("i");
-        const skinType = Math.floor(Math.random() * 2);
-        const rndLetter = String.fromCharCode(97 + Math.floor(Math.random() * 26));
-        const rndSkin = Math.floor(Math.random() * 15) + 19;
-        const rndColor = Math.floor(Math.random() * 20);
-        const rndX = Math.floor(Math.random() * x);
-        const rndY = Math.floor(Math.random() * y);
+            item.addEventListener("click", function anonymous() {
+                RandomIconClick(item);
+            });
 
-        item.addEventListener("click", function anonymous() {
-            RandomIconClick(item);
-        });
+            item.style.cursor = "pointer";
+            item.style.animation = "5s fadeInOnRandomPopItem";
+            item.style.position = "absolute";
+            item.style.fontSize = "40px";
+            item.style.zIndex = "0";
+            item.style.padding = "15px";
 
-        item.style.cursor = "pointer";
-        item.style.animation = "5s fadeInOnRandomPopItem";
-        item.style.position = "absolute";
-        item.style.fontSize = "40px";
-        item.style.zIndex = "0";
-        item.style.padding = "15px";
+            switch (skinType) {
+                case 0:
+                    item.textContent = rndLetter.toUpperCase();
+                    item.style.color = skins_display[Object.keys(skins_display)[rndColor]];
+                    break;
 
-        switch (skinType) {
-            case 0:
-                item.textContent = rndLetter.toUpperCase();
-                item.style.color = skins_display[Object.keys(skins_display)[rndColor]];
-                break;
+                case 1:
+                    item.className = skins_display[Object.keys(skins_display)[rndSkin]];
+                    item.style.color = "white";
+                    break;
+            };
 
-            case 1:
-                item.className = skins_display[Object.keys(skins_display)[rndSkin]];
-                item.style.color = "white";
-                break;
-        };
+            console.log(window.getComputedStyle(gameModeCards_Div).getPropertyValue("display"));
+            if (window.getComputedStyle(gameModeCards_Div).getPropertyValue("display") === "flex") {
+                document.body.appendChild(item);
+            };
 
-        console.log(window.getComputedStyle(gameModeCards_Div).getPropertyValue("display"));
-        if (window.getComputedStyle(gameModeCards_Div).getPropertyValue("display") === "flex") {
-            document.body.appendChild(item);
-        };
+            setTimeout(() => {
+                item.style.top = `${rndY}px`;
+                item.style.left = `${rndX}px`;
+            }, 250);
 
-        setTimeout(() => {
-            item.style.top = `${rndY}px`;
-            item.style.left = `${rndX}px`;
-        }, 250);
-
-        item.addEventListener("animationend", () => {
-            item.remove();
-        });
-    }, 5000);
+            item.addEventListener("animationend", () => {
+                item.remove();
+            });
+        }, 5000);
+    };
 };
 
 // click event on random icon
@@ -2522,12 +2537,26 @@ function SetPlayerData_ConfirmEvent() {
 
         let Check = SetGameData_CheckConfirm();
 
+        // costum x and y
+        let costumX;
+        let costumY;
+
         // check if this is user created level
         if (PlayingInCreatedLevel) {
             Check[0] = true;
             Check[2] = NewCreativeLevel.Settings.playertimer[NewCreativeLevel.selectedLevel[3]];
             UserSetPointsToWinGameInput.value = NewCreativeLevel.selectedLevel[2];
             allowedPatternsFromUser = NewCreativeLevel.selectedLevel[6];
+
+            // set up x and y coordinates. case: default field is choosen
+            if (NewCreativeLevel.selectedLevel[16] == {}) {
+                costumX = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+                costumY = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+
+            } else {
+                costumX = NewCreativeLevel.selectedLevel[16]["x"];
+                costumY = NewCreativeLevel.selectedLevel[16]["y"];
+            };
         };
 
         // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
@@ -2548,7 +2577,7 @@ function SetPlayerData_ConfirmEvent() {
             curr_selected_PlayerClock = Check[2]; // Player Clock
 
             DarkLayer.style.display = 'none';
-            initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value);
+            initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
 
             // play theme music 
             PauseMusic();
@@ -2556,6 +2585,7 @@ function SetPlayerData_ConfirmEvent() {
                 if (NewCreativeLevel.selectedLevel[5] != 0) {
                     CreateMusicBars(document.querySelector(`[src="${NewCreativeLevel.Settings["bgmusic"][NewCreativeLevel.selectedLevel[5]]}"]`));
                 };
+
             } else {
                 CreateMusicBars(Fields[fieldIndex].theme_name);
             };
@@ -4028,4 +4058,11 @@ UserQuote.addEventListener('keydown', (e) => {
 
 UserQuote.addEventListener('mousedown', function(event) {
     event.preventDefault(); // Verhindert die Auswahl beim Klicken
+})
+
+// lobby btns
+
+lobbyBtn2.addEventListener("click", () => {
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    AlertText.textContent = "This feature is availible soon";
 })
