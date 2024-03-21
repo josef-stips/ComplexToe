@@ -337,8 +337,9 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
 
     // choose winner button
     chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
-    // // give up button
-    giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) }); // give up online game button close pop up btn on Yes request: User actually gives up
+    // give up button
+    giveUp_Yes_btn.removeEventListener('click', giveUp_Yes_btn.fn);
+    giveUp_Yes_btn.addEventListener('click', giveUp_Yes_btn.fn = function() { UserGivesUp(personal_GameData.role) }); // give up online game button close pop up btn on Yes request: User actually gives up
 
     // initialize display of the choose winner buttons, they will be modified later during game in certain events
     chooseWinnerWindowBtn.style.display = "none";
@@ -401,7 +402,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         } else if (personal_GameData.role == 'blocker') {
             restartBtn.style.color = '#56565659';
             restartBtn.removeEventListener('click', restartGame);
-            giveUp_Yes_btn.removeEventListener('click', function() { UserGivesUp(personal_GameData.role) });
+            giveUp_Yes_btn.removeEventListener('click', giveUp_Yes_btn.fn);
             GiveUp_btn.style.display = 'none';
         };
         addAccesOnlineMode("TimerEnded", "fromBeginning");
@@ -1078,53 +1079,23 @@ function UserGivesUp(user_role) {
     DarkLayer.style.display = "none";
     GiveUpPopUp.style.display = "none";
 
-    // console.log(user_role)
-    // console.log(score_Player1_numb, score_Player2_numb)
-    // console.log(score_Player1_numb > score_Player2_numb)
-    // console.log(score_Player1_numb == score_Player2_numb)
-    // console.log(score_Player1_numb < score_Player2_numb)
+    console.log(user_role)
+    console.log(score_Player1_numb, score_Player2_numb)
+    console.log(score_Player1_numb > score_Player2_numb)
+    console.log(score_Player1_numb == score_Player2_numb)
+    console.log(score_Player1_numb < score_Player2_numb)
 
     if (user_role == "admin") {
-        // if admin had more points than user but gives up
-        if (score_Player1_numb > score_Player2_numb) {
-            // make the score the same
-            score_Player1_numb = Infinity;
-            score_Player2_numb = -Infinity;
-            Call_UltimateWin(undefined, true);
-
-        } else if (score_Player1_numb == score_Player2_numb) {
-            // score is already the same but make it the same 
-            score_Player1_numb = Infinity;
-            score_Player2_numb = Infinity;
-            Call_UltimateWin(undefined, true);
-
-        } else if (score_Player1_numb < score_Player2_numb) {
-            // if the admin has less points than user, the user wins obviously
-            score_Player1_numb = -Infinity;
-            score_Player2_numb = Infinity;
-            Call_UltimateWin(undefined, true);
-        };
+        // if admin had more points than user but gives up -> user wins nevertheless
+        score_Player1_numb = -Infinity;
+        score_Player2_numb = Infinity;
+        Call_UltimateWin(undefined, true);
 
     } else if (user_role == "user") {
-        // if admin had more points than user but gives up
-        if (score_Player2_numb > score_Player1_numb) {
-            // make the score the same
-            score_Player1_numb = -Infinity;
-            score_Player2_numb = Infinity;
-            Call_UltimateWin(undefined, true);
-
-        } else if (score_Player2_numb == score_Player1_numb) {
-            // score is already the same but make it the same 
-            score_Player1_numb = Infinity;
-            score_Player2_numb = Infinity;
-            Call_UltimateWin(undefined, true);
-
-        } else if (score_Player2_numb < score_Player1_numb) {
-            // if the user has less points than admin, the admin wins obviously
-            score_Player1_numb = Infinity;
-            score_Player2_numb = -Infinity;
-            Call_UltimateWin(undefined, true);
-        };
+        // if admin had more points than user but gives up -> admin wins nevertheless
+        score_Player1_numb = Infinity;
+        score_Player2_numb = -Infinity;
+        Call_UltimateWin(undefined, true);
     };
 };
 

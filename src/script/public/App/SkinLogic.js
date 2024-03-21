@@ -8,16 +8,16 @@ storeIcon.addEventListener('click', () => {
         DisplayPopUp_PopAnimation(skinShop, "flex");
         RenderSkins();
 
+        displayUserName(skinUserNameDisplay);
+        displaySkinShopCurrency();
+
+        playShopTheme();
+        ShopGuideTextInterval();
+
     } else {
         alertPopUp.style.display = 'flex';
         AlertText.textContent = "Create an user account first";
     };
-
-    displayUserName(skinUserNameDisplay);
-    displaySkinShopCurrency();
-
-    playShopTheme();
-    ShopGuideTextInterval();
 });
 
 skinShopCloseBtn.addEventListener('click', () => {

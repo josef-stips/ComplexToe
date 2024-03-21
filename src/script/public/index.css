@@ -323,7 +323,6 @@ img {
     width: 100%;
     font-size: 16px;
     font-weight: 500;
-    margin: 0 0 14px 0;
 }
 
 .FirstPlayer-time {
@@ -4428,9 +4427,9 @@ label h3 {
 /* chat pop up */
 
 .Chat {
-    width: 80%;
-    height: 70%;
-    border: 3px solid;
+    width: 85%;
+    height: 80%;
+    border: 3px solid goldenrod;
     border-radius: 30px;
     background-color: var(--bg-app-color);
     z-index: 1000;
@@ -5024,8 +5023,8 @@ label h3 {
 /* search player pop up */
 
 .SearchPlayerPopUp {
-    width: 70%;
-    height: 70%;
+    width: 80%;
+    height: 80%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -5125,8 +5124,8 @@ label h3 {
 /* friendslist pop up */
 
 .FriendsListPopUp {
-    width: 70%;
-    height: 70%;
+    width: 80%;
+    height: 80%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -5207,8 +5206,8 @@ label h3 {
 /* messages from online people pop up */
 
 .MessagesPopUp {
-    width: 70%;
-    height: 70%;
+    width: 80%;
+    height: 80%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -5612,7 +5611,7 @@ label h3 {
 }
 
 
-/* create level BenutzeroberflÃƒÂ¤che */
+/* create level BenutzeroberflÃƒÆ’Ã‚Â¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;
@@ -7284,6 +7283,11 @@ p.createCostumField_yInput {
 
 
 /* Animations */
+
+@keyframes placeholder_animation {
+    from {}
+    to {}
+}
 
 @keyframes fadeInOnRandomPopItem {
     0% {

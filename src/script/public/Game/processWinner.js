@@ -553,9 +553,12 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
         CheckmateWarnText.style.display = 'none';
         // animation
         FloatingIconAnimation(Player1_won, Player2_won, WinCombination[0].getBoundingClientRect(), WinCombination.length);
+
+        // win pattern stuff
         WinCombination.forEach(Ele => {
             Ele.classList.add('about-to-die-cell');
         });
+        // console.log([...WinCombination]);
 
         // for advanture mode
         MovesAmount_PlayerAndKi = 0;
@@ -578,6 +581,8 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                         processResult_AdvantureMode(WinCombination);
                         return;
                     };
+
+                    recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
 
                     // player plays boss level
                     if (current_selected_level == 10) {
@@ -606,6 +611,8 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 // other mode
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                     statusText.textContent = `You just gained a point!`;
+
+                    recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
 
                 } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
@@ -641,6 +648,8 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `You just gained a point!`;
 
+                    recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
+
                 } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                     statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
                 };
@@ -661,9 +670,9 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
     };
 
     if (WinCombination == undefined) {
-        console.log("The win combi is undefined")
         setTimeout(() => {
             console.log(score_Player1_numb, score_Player2_numb);
+
             running = false;
             if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
                 UltimateGameWin(true, false, undefined, UserGivesUp);
@@ -676,6 +685,7 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
                 return;
             };
         }, 600);
+
     } else {
         setTimeout(() => {
             running = false;
@@ -912,7 +922,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
     // Online or offline mode
     if (curr_mode == GameMode[2].opponent) { // in online mode
         // send message to server
-        if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won, WinCombination]);
+        if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won, WinCombination, score_Player1_numb, score_Player2_numb]);
         return;
 
     } else {
@@ -949,26 +959,22 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
 // player 1 won online gamef
 const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
-    // Display win text in the proper way
-    if (personal_GameData.role == 'admin') {
-        UltimateWinAnimation(`You won it `);
-
-        // continue with normal code
-        let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-        wins_storage = wins_storage + 1;
-        localStorage.setItem('onlineMatches-won', wins_storage);
-
-    } else {
-        UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
-    };
-
     if (curr_mode == GameMode[2].opponent) { // online friend 
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'admin') {
             setNew_SkillPoints(10);
+
+            UltimateWinAnimation(`You won it `);
+
+            // continue with normal code
+            let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
+            wins_storage = wins_storage + 1;
+            localStorage.setItem('onlineMatches-won', wins_storage);
         };
+
         if (personal_GameData.role == 'user') {
             minus_SkillPoints(5);
+            UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
         };
     };
     if (curr_mode == GameMode[1].opponent) { // KI 
@@ -978,27 +984,22 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
 
 // player 2 won online game
 const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
-    // Display win text in the proper way
-    if (personal_GameData.role == 'user') {
-        UltimateWinAnimation(`You won it `);
-
-        // continue with normal code
-        let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-        wins_storage = wins_storage + 1;
-        localStorage.setItem('onlineMatches-won', wins_storage);
-
-    } else {
-        UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
-    };
-
     if (curr_mode == GameMode[2].opponent) { // online friend
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'user') {
             setNew_SkillPoints(10);
+
+            UltimateWinAnimation(`You won it `);
+
+            // continue with normal code
+            let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
+            wins_storage = wins_storage + 1;
+            localStorage.setItem('onlineMatches-won', wins_storage);
         };
 
         if (personal_GameData.role == 'admin') {
             minus_SkillPoints(5);
+            UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
         };
     };
 };
@@ -1012,7 +1013,7 @@ const OnlineGame_UltimateWin_GG = (player1_won, player2_won) => {
 
 // the admin called the ultimate game win
 // this message recieve all clients
-socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
+socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score) => {
     setTimeout(() => {
         // basic stuff
         stopStatusTextInterval = false;
@@ -1025,6 +1026,10 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination) => {
         // so the user can't leave while win animation
         leaveGame_btn.removeEventListener('click', UserleavesGame);
         leaveGame_btn.style.color = '#56565659';
+
+        // set score from server
+        score_Player1_numb = player1_score;
+        score_Player2_numb = player2_score;
 
         UltimateGameWinFirstAnimation(player1_won, player2_won)
 
@@ -1159,6 +1164,9 @@ function setNew_SkillPoints(plus) {
 function minus_SkillPoints(minus) {
     let old_Elo = parseInt(localStorage.getItem('ELO'));
     let ELO_point = 0;
+
+    console.log(old_Elo, minus);
+    if (old_Elo < minus) return;
 
     // extra animation addition
     // ELO_Points_AddIcon.style.display = "block";

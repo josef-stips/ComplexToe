@@ -78,7 +78,7 @@ function addAccessToAnything(TimerEnded, fromBeginning, FromGameAnimation) {
     globalChooseWinnerBtn.addEventListener('click', openChooseWinnerWindow);
     restartBtn.addEventListener('click', restartGame);
     leaveGame_btn.addEventListener('click', UserleavesGame);
-    giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
+    // giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
     leaveGame_btn.style.color = 'white';
     globalChooseWinnerBtn.style.color = 'white';
     restartBtn.style.color = 'white';
@@ -103,7 +103,7 @@ function addAccesOnlineMode(TimerEnded, fromBeginning) {
     // in online mode this button is to capitulate
     chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
     globalChooseWinnerBtn.style.color = 'var(--font-color)';
-    giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
+    // giveUp_Yes_btn.addEventListener('click', function() { UserGivesUp(personal_GameData.role) });
 
     // only admin can restart game
     if (personal_GameData.role == 'admin') {

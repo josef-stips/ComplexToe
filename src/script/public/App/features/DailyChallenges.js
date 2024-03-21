@@ -152,24 +152,43 @@ class DailyChallenges {
                 max_progress: 1,
             }
         };
+
+        this.Last24HoursUsedPatterns = localStorage.getItem("Last24HoursUsedPatterns");
     };
 
-    init = () => {};
+    init = () => {
+        CheckTreasure(); // see in Treasure.js
+        this.check_challenges();
+    };
 
     display = () => {
         DisplayPopUp_PopAnimation(DailyChallenges_PopUp, "flex", true);
-
-        this.check_challenges();
     };
 
     check_challenges = () => {
         if (localStorage.getItem("newChallengesAreAvailable") == "true") {
             localStorage.setItem("newChallengesAreAvailable", "false");
 
-            new_challenges();
+            this.new_challenges();
 
         } else if (localStorage.getItem("newChallengesAreAvailable") == "false") {
-            return;
+            // check for the existing challenges
+            let challenge_storage = localStorage.getItem("CurrentDailyChallenges");
+
+            console.log(challenge_storage);
+
+            if (challenge_storage == null) {
+                localStorage.setItem("CurrentDailyChallenges", "{}");
+
+            } else {
+                this.new_challenges_animation(JSON.parse(challenge_storage), true);
+            };
+
+        } else if (localStorage.getItem("newChallengesAreAvailable") == null) { // not in storage. player is the first time in the game
+            localStorage.setItem("newChallengesAreAvailable", "true");
+
+            // recall itself
+            this.check_challenges();
         };
     };
 
@@ -193,23 +212,37 @@ class DailyChallenges {
 
         console.log(updated_challenges);
 
+        // call animation and refresh ui
         this.new_challenges_animation(updated_challenges);
+
+        // save in storage
+        localStorage.setItem("CurrentDailyChallenges", JSON.stringify(updated_challenges));
     };
 
-    new_challenges_animation = (challenges) => {
+    new_challenges_animation = (challenges, standard_ani) => {
         ChallengeBox.forEach((box, i) => {
-            box.style.animation = "opacity_div 1.5s reverse";
-            box.style.animationFillMode = "forwards";
+            let delay = 0;
+            if (!standard_ani) {
+                box.style.animation = "opacity_div 1.5s reverse";
+                box.style.animationFillMode = "forwards";
+                delay = 500;
+            };
 
-            box.addEventListener("animationend", () => {
+            const onAnimationEnd = () => {
                 this.init_new_challenge(box, challenges[i]);
 
                 setTimeout(() => {
                     box.style.animation = "new_challenge 1s ease-in-out forwards";
-                }, 500);
-            }, { once: true }); // remove after first animation
+                }, delay);
+
+                box.removeEventListener("animationend", onAnimationEnd);
+            };
+
+            box.addEventListener("animationend", onAnimationEnd, { once: true });
+            standard_ani && onAnimationEnd();
         });
     };
+
 
     init_new_challenge = (box, challenge) => {
         let title = box.querySelector(".ChallengeBoxTitle");
@@ -249,14 +282,21 @@ class DailyChallenges {
     new_available = () => {
         console.log("New challenges are available!");
     };
+
+    // add win pattern just used by the player to the localstorage and runtime storage
+    add_recently_pattern = () => {
+        this.Last24HoursUsedPatterns
+    };
 };
 
-let DailyChallenge = new DailyChallenges();
+let DailyChallenge = new DailyChallenges(localStorage.getItem("CurrentDailyChallenges"));
+DailyChallenge.init();
 
 // events
 
 lobbyBtn1.addEventListener("click", () => {
     DailyChallenge.display();
+    playBtn_Audio_2();
 });
 
 DailyChallengesQuestionBtn.addEventListener("click", () => {

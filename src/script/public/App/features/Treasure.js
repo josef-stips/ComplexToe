@@ -1,5 +1,4 @@
-// to initialize
-CheckTreasure();
+// all the treasure functionality gets initalized in DailyChallenges.js with the CheckTreasure function call 
 // Interval which sends a request to server every second
 let IntervalTillNextTreasure = null;
 // treasure countdown
@@ -202,7 +201,7 @@ function CheckTreasure() {
     if (localStorage.getItem('treasureIsAvailible') == "true") {
         treasureIsAvailible();
 
-        DailyChallenges.new_available();
+        DailyChallenge.new_available();
     };
 };
 

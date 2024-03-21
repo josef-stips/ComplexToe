@@ -533,6 +533,7 @@ let DailyChallenges_backBtn = document.querySelector(".DailyChallenges_backBtn")
 let DailyChallenges_TimeRemaining_Hours = document.querySelector(".DailyChallenges_TimeRemaining_Hours");
 let DailyChallenges_TimeRemaining_Minutes = document.querySelector(".DailyChallenges_TimeRemaining_Minutes");
 let DailyChallenges_TimeRemaining_Seconds = document.querySelector(".DailyChallenges_TimeRemaining_Seconds");
+let userInfo_MostUsedPattern = document.querySelector(".userInfo_MostUsedPattern");
 
 // boss display in general
 let boss_attckingBeam = document.querySelector(".boss_attckingBeam");
@@ -1288,8 +1289,8 @@ function AppInit() {
     ComputerFriend_Card_DescriptionDisplay.textContent = GameMode[3].description;
 
     checkForSettings();
-
     DisplayUserID();
+    localItems();
 
     return 10;
 };
@@ -1702,6 +1703,44 @@ function checkForSettings() {
     if (localStorage.getItem('onlineMatches-won')) {
         // console.log(localStorage.getItem('onlineMatches-won'));
     };
+};
+
+function localItems() {
+    // 100 recently used pattern from user
+    Init_RecentUsedPatterns();
+};
+
+// 100 recently used pattern from user
+function Init_RecentUsedPatterns() {
+    // storage things
+    let RecentUsedPatternsStorageObject = localStorage.getItem("100RecentUsedPatterns");
+
+    if (RecentUsedPatternsStorageObject == null) {
+        localStorage.setItem("100RecentUsedPatterns", "{}");
+        userInfo_MostUsedPattern.textContent = "-";
+
+    } else if (RecentUsedPatternsStorageObject) {
+        // parse
+        let recentUsedPatterns = JSON.parse(RecentUsedPatternsStorageObject);
+        let PatternNames = Object.keys(recentUsedPatterns);
+
+        if (PatternNames.length > 0) {
+            const mostCommonPattern = arr => arr.reduce((a, b, i, PatternNames) => (PatternNames.filter(v => v === a).length >= PatternNames.filter(v => v === b).length ? a : b));
+            console.log(mostCommonPattern);
+
+            userInfo_MostUsedPattern.textContent = mostCommonPattern;
+        } else {
+
+            userInfo_MostUsedPattern.textContent = "-";
+        };
+    };
+};
+
+// player made a point with a win combination
+const recentUsedPattern_add = (els_list) => {
+    let indexes = els_list.map(el => parseInt(el.getAttribute("cell-index")));
+
+    console.log(indexes);
 };
 
 const InitFullscreen = () => {
@@ -3370,7 +3409,7 @@ const CloseUserPopUpOfOtherPlayer = () => {
 
     userInfoName.textContent = localStorage.getItem("UserName");
     UserID_display.textContent = "User ID: " + localStorage.getItem("PlayerID");
-    if (localStorage.getItem("UserQuote")) UserQuote.textContent = localStorage.getItem("UserQuote");
+    (localStorage.getItem("UserQuote")) ? UserQuote.textContent = localStorage.getItem("UserQuote"): UserQuote.textContent = null;
     userInfoOnlineMatchesWon.textContent = localStorage.getItem("onlineMatches-won");
     userInfoSkillpoints.textContent = localStorage.getItem("ELO");
 
@@ -4065,4 +4104,5 @@ UserQuote.addEventListener('mousedown', function(event) {
 lobbyBtn2.addEventListener("click", () => {
     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     AlertText.textContent = "This feature is availible soon";
+    playBtn_Audio_2();
 })
