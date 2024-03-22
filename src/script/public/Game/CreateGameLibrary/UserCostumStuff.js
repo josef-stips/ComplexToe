@@ -359,7 +359,7 @@ const createPattern_addAttributes = (gridWrapper, patternName, grid, title, head
     headerWrapper.classList.add("headerWrapper");
     editItemsWrapper.classList.add("editItemsWrapper");
     special_class != undefined && gridWrapper.setAttribute(special_class, "true");
-    checkBox.title = `use pattern in ${NewCreativeLevel.CurrentSelectedSetting.name}`;
+    NewCreativeLevel && (checkBox.title = `use pattern in ${NewCreativeLevel.CurrentSelectedSetting.name}`);
     pen.className = "fa-solid fa-pen item";
     bin.className = "fa-solid fa-trash item";
 
@@ -666,18 +666,22 @@ const checkCostumPatternAlreadyInGame = () => {
 
 // check if the costum pattern that being rendered in the costum pattern preview is in the current level
 const checkCostumPatternInCurrentLevel = (patternName, patternStructure) => {
-    if (NewCreativeLevel.is_pattern_in_level(patternName)) {
-        return true;
+    if (NewCreativeLevel) {
+        if (NewCreativeLevel.is_pattern_in_level(patternName)) {
+            return true;
 
-    } else return false;
+        } else return false;
+    };
 };
 
 // check if the costum field that being rendered in the costum pattern preview is in the current level
 const checkCostumFieldInCurrentLevel = (fieldName) => {
-    if (NewCreativeLevel.is_field_in_level(fieldName)) {
-        return true;
+    if (NewCreativeLevel) {
+        if (NewCreativeLevel.is_field_in_level(fieldName)) {
+            return true;
 
-    } else return false;
+        } else return false;
+    };
 };
 
 

@@ -841,27 +841,6 @@ const SetClickOnProfileListeners = (fromAdmin) => {
     };
 };
 
-// close all in game pop ups the user can open in lobby or online game
-const CloseOnlinePopUps = (CloseDarkLayer) => {
-    GameInfoPopUp.style.display = "none";
-    settingsWindow.style.display = "none";
-    TryToCloseUserInfoPopUp();
-    Lobby_GameInfo_PopUp.style.display = "none";
-    XP_Journey.style.display = "none";
-    Chat_PopUp.style.display = "none";
-    GiveUpPopUp.style.display = "none";
-    ChooseWinner_popUp.style.display = "none";
-    SearchPlayerPopUp.style.display = "none";
-    FriendsListPopUp.style.display = "none";
-    MailPopUp.style.display = "none";
-    MessagesPopUp.style.display = "none";
-    mapLevelOverview.style.display = "none";
-    UseSpell_PopUp.style.display = "none";
-    AchievementsPopUp.style.display = "none";
-
-    if (CloseDarkLayer) DarkLayer.style.display = "none";
-};
-
 // This message goes to all users in a room and gets callen when the admin of the room leaves it
 socket.on('killed_room', () => {
     // server

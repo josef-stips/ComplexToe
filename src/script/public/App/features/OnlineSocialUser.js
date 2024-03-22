@@ -1,13 +1,6 @@
 // This script is all about the social interactions the user can make through user search, friends and online messages etc.
 // the functions of the main function of the three main buttons are in script.js
 
-// Search Player elements
-let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');
-let SearchBar_searchIcon = document.querySelector('.SearchBar_searchIcon');
-let SearchBar_placeholderText = document.querySelector('.SearchBar_placeholderText');
-let closeSearchPlayer_Btn = document.querySelector('.closeSearchPlayer_Btn');
-let FoundPlayer_List = document.querySelector('.FoundPlayer_List');
-
 // User profile social buttons
 let UserID_OfCurrentVisitedProfile; // number
 let UserName_OfCurrentVisitedProfile; // String
