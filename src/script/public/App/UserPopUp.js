@@ -3,6 +3,8 @@ const OpenOwnUserProfile = () => {
     OpenedPopUp_WhereAlertPopUpNeeded = true;
     DisplayPopUp_PopAnimation(userInfoPopUp, "flex", true);
 
+    Init_RecentUsedPatterns();
+
     userInfoOnlineMatchesWon.textContent = JSON.parse(localStorage.getItem('onlineMatches-won'));
 
     if (localStorage.getItem('UserIcon') != null) {

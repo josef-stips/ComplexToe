@@ -169,7 +169,7 @@ function playShopTheme() {
 
 function play_rewardSound() {
     // reward/ achievement sound
-    rewardAudio.volume = sfxVolume;
+    rewardAudio.volume = sfxVolume - (1 / 3 * sfxVolume);
     rewardAudio.playbackRate = 0.9;
     rewardAudio.play();
 };

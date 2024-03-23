@@ -7206,6 +7206,11 @@ p.createCostumField_yInput {
     border: 3px solid goldenrod;
 }
 
+.ChallengeBox[claimed="true"] {
+    border: 3px solid grey;
+    color: grey;
+}
+
 .basicPopUpBtn {
     cursor: pointer;
     transition: color 0.15s ease-in-out;
@@ -7281,6 +7286,13 @@ p.createCostumField_yInput {
     transform: scale(1.05);
 }
 
+.ChallengeBox[claimed="true"] .DailyChallengeClaimBtn {
+    border: 3px solid grey;
+    color: grey;
+    animation: unset;
+    cursor: default;
+}
+
 
 /* official patterns */
 
@@ -7352,6 +7364,18 @@ p.createCostumField_yInput {
 
 
 /* Animations */
+
+@keyframes blue_color_fade {
+    0% {
+        color: white;
+    }
+    50% {
+        color: royalblue;
+    }
+    100% {
+        color: grey;
+    }
+}
 
 @keyframes placeholder_animation {
     from {}

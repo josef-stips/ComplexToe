@@ -198,6 +198,7 @@ const CloseOnlinePopUps = (CloseDarkLayer) => {
     UseSpell_PopUp.style.display = "none";
     AchievementsPopUp.style.display = "none";
     endGameStatsPopUp.style.display = "none";
+    OfficialWinPatternsPopUp.style.display = "none";
 
     if (CloseDarkLayer) DarkLayer.style.display = "none";
 };

@@ -127,10 +127,15 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // set up x and y coordinates
     if (costumCoords) {
+
         if (costumCoords[0] != undefined) {
             // set user costum level coordinates
             xCell_Amount = costumCoords[0];
-            yCell_Amount = costumCoords[1]
+            yCell_Amount = costumCoords[1];
+
+        } else {
+            xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+            yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
         };
 
     } else {

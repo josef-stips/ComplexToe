@@ -152,15 +152,15 @@ function zweig_rechts_for20(n) {
 // zweig #2 nach links gerichtet
 // zweig -> linie aus 3 blöcken und 2 blöcke am ende der linie die diagonal von einander weggehen (5 Block muster)
 function zweig_links_for20(n) {
-    for (let i = 20; i <= n; i++) {
+    for (let i = 3; i <= n; i++) {
         let subArray = [];
 
         for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
 
-        subArray.push(i, i + 1, i + 2, i - 17, i + 23);
+        subArray.push(i, i + 17, i + 18, i + 19, i + 40);
         WinConditions.push(subArray);
 
-        if (i + 23 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 40 >= (xCell_Amount * yCell_Amount - 1)) {
             break;
         };
     };

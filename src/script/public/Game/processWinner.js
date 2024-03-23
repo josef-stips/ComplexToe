@@ -582,8 +582,6 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                         return;
                     };
 
-                    recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
-
                     // player plays boss level
                     if (current_selected_level == 10) {
                         current_level_boss.damage(Math.floor(Math.random() * (499 - 370 + 1)) + 370); // random damage on eye between 370-499
@@ -604,11 +602,11 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 } else if (score_Player1_numb >= points_to_win) {
                     Player1_won = false;
                     running = false;
-                    Call_UltimateWin();
+                    Call_UltimateWin(WinCombination);
                     return;
                 };
 
-                // other mode
+                // online mode
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                     statusText.textContent = `You just gained a point!`;
 
@@ -617,6 +615,11 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
                 };
+
+                // this commented code is only for test purposes
+                // if (curr_mode == GameMode[3].opponent) { // computer mode/ offline mode against a friend
+                //     recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
+                // };
 
                 Player1_won = false;
                 resolve();
@@ -632,7 +635,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                     if (score_Player2_numb >= points_to_win) {
                         statusText.textContent = `You lost against the evil. Are you willing to try again?`;
                         Player2_won = false;
-                        Call_UltimateWin();
+                        Call_UltimateWin(WinCombination);
                         return;
                     };
                 };
@@ -640,11 +643,11 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 if (score_Player2_numb >= points_to_win) {
                     Player2_won = false;
                     running = false;
-                    Call_UltimateWin();
+                    Call_UltimateWin(WinCombination);
                     return;
                 };
 
-                // other mode
+                // online mode
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `You just gained a point!`;
 
@@ -657,6 +660,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 Player2_won = false;
                 resolve();
             };
+
         }, 1000);
     });
 };
@@ -788,7 +792,6 @@ const continueGame = () => {
     if (!inAdvantureMode) {
         // in online mode
         if (curr_mode == GameMode[2].opponent) {
-
 
             if (PlayingInCreatedLevel) { // Player played user created level
                 if (NewCreativeLevel.selectedLevel[9] == 0) {
@@ -946,6 +949,9 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                 if (player1_won && !player2_won) { // player 1 won (user)
                     FirstPlayerUltimateWin(player1_won, player2_won);
 
+                    // only for test purposes
+                    // WinCombination && recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
+
                 } else if (player2_won && !player1_won) { // player 2 won (user)
                     SecondPlayerUltimateWin(player1_won, player2_won);
 
@@ -958,7 +964,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 };
 
 // player 1 won online gamef
-const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
+const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination) => {
     if (curr_mode == GameMode[2].opponent) { // online friend 
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'admin') {
@@ -970,6 +976,8 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
             let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
             wins_storage = wins_storage + 1;
             localStorage.setItem('onlineMatches-won', wins_storage);
+
+            WinCombination && recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
         };
 
         if (personal_GameData.role == 'user') {
@@ -983,7 +991,7 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won) => {
 };
 
 // player 2 won online game
-const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
+const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination) => {
     if (curr_mode == GameMode[2].opponent) { // online friend
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'user') {
@@ -995,6 +1003,8 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
             let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
             wins_storage = wins_storage + 1;
             localStorage.setItem('onlineMatches-won', wins_storage);
+
+            WinCombination && recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
         };
 
         if (personal_GameData.role == 'admin') {
@@ -1005,9 +1015,7 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won) => {
 };
 
 // tie in online game 
-const OnlineGame_UltimateWin_GG = (player1_won, player2_won) => {
-    console.log(player1_won, player2_won)
-
+const OnlineGame_UltimateWin_GG = (player1_won, player2_won, WinCombination) => {
     UltimateWinAnimation(`GG Well played `);
 };
 
@@ -1036,13 +1044,13 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
         setTimeout(() => {
             cellGrid.style.display = 'none';
             if (player1_won && !player2_won) { // player 1 won (user)
-                OnlineGame_UltimateWin_Player1(player1_won, player2_won);
+                OnlineGame_UltimateWin_Player1(player1_won, player2_won, WinCombination);
 
             } else if (player2_won && !player1_won) { // player 2 won (user)
-                OnlineGame_UltimateWin_Player2(player1_won, player2_won);
+                OnlineGame_UltimateWin_Player2(player1_won, player2_won, WinCombination);
 
             } else if (player1_won && player2_won) { // GG
-                OnlineGame_UltimateWin_GG(player1_won, player2_won);
+                OnlineGame_UltimateWin_GG(player1_won, player2_won, WinCombination);
             };
         }, 1000);
     }, 1000);

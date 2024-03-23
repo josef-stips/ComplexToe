@@ -357,8 +357,7 @@ function InitOfficialPatterns_ToUI() {
     WinPatternsOverviewWrapper.textContent = null;
 
     for (const [key, val] of Object.entries(GamePatternsList)) {
-        console.log(key, val);
-
+        // console.log(key, val);
         createPattern_preview(key, val, WinPatternsOverviewWrapper, "level", undefined, 5, undefined, undefined, 5, undefined);
     };
 };
@@ -375,21 +374,21 @@ function Init_RecentUsedPatterns() {
 
     if (RecentUsedPatternsStorageObject == null) {
         localStorage.setItem("100RecentUsedPatterns", "{}");
+        localStorage.setItem("Last24HourUsedPatterns", "[]");
+
         userInfo_MostUsedPattern.textContent = "-";
 
     } else if (RecentUsedPatternsStorageObject) {
         // parse
         let recentUsedPatterns = JSON.parse(RecentUsedPatternsStorageObject);
-        let PatternNames = Object.keys(recentUsedPatterns);
+        let PatternNames = Object.values(recentUsedPatterns).map(el => el[0]);
 
         if (PatternNames.length > 0) {
-            const mostCommonPattern = arr => arr.reduce((a, b, i, PatternNames) => (PatternNames.filter(v => v === a).length >= PatternNames.filter(v => v === b).length ? a : b));
-            console.log(mostCommonPattern);
+            const mostCommonPattern = PatternNames.reduce((a, b, i, PatternNames) => (PatternNames.filter(v => v === a).length >= PatternNames.filter(v => v === b).length ? a : b));
 
             userInfo_MostUsedPattern.textContent = mostCommonPattern;
 
         } else {
-
             userInfo_MostUsedPattern.textContent = "-";
         };
     };
@@ -398,38 +397,107 @@ function Init_RecentUsedPatterns() {
 // player made a point with a win combination
 const recentUsedPattern_add = (els_list) => {
     // pattern index array like normal win pattern array
-    let indexes = els_list.map(el => parseInt(el.getAttribute("cell-index")));
+    let indexesOriginal = els_list.map(el => parseInt(el.getAttribute("cell-index")));
+    // console.log(boundaries, indexesOriginal, xCell_Amount);
+
+    // win pattern with origin indexes of a NxN field
+    let indexes = PatternStructureAsOrigin(boundaries, indexesOriginal, xCell_Amount);
+
     let is_official_pattern = false;
+
     // if pattern is not official, it cannot be added to the recent used pattern list
     let patternStorage = JSON.parse(localStorage.getItem("100RecentUsedPatterns"));
+
     // of this pattern its meta data
     let pattern_name;
     let pattern_indexes;
 
-    // check if this pattern is officical game pattern
-    for (const [key, val] in GamePatternsList.entries()) {
-        console.log(key, val);
+    // which patterns list (5, 10, 15, 20 etc.) to loop through
+    let Patternslist = LoopInPatternList(xCell_Amount);
 
-        if (val === indexes) {
+    // check if this pattern is officical game pattern
+    for (const [key, val] of Object.entries(Patternslist)) {
+        console.log(key, val, indexes);
+
+        if (JSON.stringify(val) === JSON.stringify(indexes)) {
             is_official_pattern = true;
             pattern_name = key;
             pattern_indexes = val;
-            return;
+            break;
+        };
+    };
+    // console.log(indexes, is_official_pattern, pattern_name, pattern_indexes);
+
+    // add just used win pattern to local storage
+    if (is_official_pattern) {
+        let origin_pattern_indexes = GamePatternsList[pattern_name]; // pattern indexes as origin 5x5
+        let patternStorageLength = Object.keys(patternStorage).length;
+
+        if (patternStorageLength > 0) {
+
+            if (patternStorageLength == 100) {
+                delete obj[Object.keys(patternStorage)[0]];
+
+                patternStorage[patternStorageLength] = [pattern_name, origin_pattern_indexes];
+
+            } else if (patternStorageLength < 100) {
+                patternStorage[patternStorageLength] = [pattern_name, origin_pattern_indexes];
+            };
+
+        } else {
+
+            patternStorage[0] = [pattern_name, origin_pattern_indexes];
         };
     };
 
-    console.log(indexes, is_official_pattern, pattern_name, pattern_indexes);
+    // save updated version in local storage
+    localStorage.setItem("100RecentUsedPatterns", JSON.stringify(patternStorage));
 
-    if (is_official_pattern) {
-        patternStorage[patternStorage.length + 1] = [pattern_name, pattern_indexes];
+    // add just used win pattern to daily challenge last 24 hour used patterns 
+    let last24HoursUsedPatterns = JSON.parse(localStorage.getItem("Last24HourUsedPatterns"));
+    last24HoursUsedPatterns.push(pattern_name);
+    localStorage.setItem("Last24HourUsedPatterns", JSON.stringify(last24HoursUsedPatterns));
+};
+
+// check which game patterns list to loop through
+function LoopInPatternList(x) {
+    let list;
+
+    switch (x) {
+        case 5:
+            list = GamePatternsList
+            break;
+
+        case 10:
+            list = GamePatternsList10
+            break;
+
+        case 15:
+            list = GamePatternsList15
+            break;
+
+        case 20:
+            list = GamePatternsList20
+            break;
+
+        case 25:
+            list = GamePatternsList25
+            break;
+
+        case 30:
+            list = GamePatternsList30
+            break;
+
+        case 40:
+            list = GamePatternsList40
+            break;
     };
 
-    // save updated version in local storage
-    localStorage.setItem("100RecentUsedPatterns", patternStorage);
+    return list;
 };
 
 // Set Light/Dark Mode
-function Set_Light_Dark_Mode(from) {
+function Set_Light_Dark_Mode(from) { // legacy code. do not use
     // if (localStorage.getItem('sett-DarkMode') == "true") { // dark mode is already on, switch to light mode
     //     document.body.classList.remove('dark-mode');
     //     localStorage.setItem('sett-DarkMode', false);

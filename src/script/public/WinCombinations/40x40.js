@@ -43,7 +43,7 @@ function diagonale_Linie_for40(n) {
         subArray.push(i, i + 41, i + 82, i + 123);
         WinConditions.push(subArray);
 
-        if (i + 88 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 123 >= (xCell_Amount * yCell_Amount - 1)) {
             break;
         };
     };
@@ -152,15 +152,15 @@ function zweig_rechts_for40(n) {
 // zweig #2 nach links gerichtet
 // zweig -> linie aus 3 blöcken und 2 blöcke am ende der linie die diagonal von einander weggehen (5 Block muster)
 function zweig_links_for40(n) {
-    for (let i = 20; i <= n; i++) {
+    for (let i = 3; i <= n; i++) {
         let subArray = [];
 
         for (let boundary of boundaries) i == boundary - 3 && (i = i + 3);
 
-        subArray.push(i, i + 1, i + 2, i - 37, i + 43);
+        subArray.push(i, i + 37, i + 38, i + 39, i + 80);
         WinConditions.push(subArray);
 
-        if (i + 43 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 80 >= (xCell_Amount * yCell_Amount - 1)) {
             break;
         };
     };

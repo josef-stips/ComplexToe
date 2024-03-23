@@ -221,15 +221,15 @@ function L_1_for30(n) {
 // L Block. 3 blöcke in eine horizontale richtung gefolgt von zwei liniaren Blöcken in eine vertikale Richtung
 // #2
 function L_2_for30(n) {
-    for (let i = 30; i <= n; i++) {
+    for (let i = 2; i <= n; i++) {
         let subArray = [];
 
         for (let boundary of boundaries) i == boundary - 2 && (i = i + 2);
 
-        subArray.push(i, i + 1, i + 2, i - 28, i - 58);
+        subArray.push(i, i + 30, i + 60, i + 59, i + 58);
         WinConditions.push(subArray);
 
-        if (i + 2 >= (xCell_Amount * yCell_Amount - 1)) {
+        if (i + 60 >= (xCell_Amount * yCell_Amount - 1)) {
             break;
         };
     };
