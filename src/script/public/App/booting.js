@@ -395,9 +395,11 @@ function Init_RecentUsedPatterns() {
 };
 
 // player made a point with a win combination
-const recentUsedPattern_add = (els_list) => {
+const recentUsedPattern_add = (els_list) => { // els_list = array with the cell indexes
+    console.log(els_list);
+
     // pattern index array like normal win pattern array
-    let indexesOriginal = els_list.map(el => parseInt(el.getAttribute("cell-index")));
+    let indexesOriginal = els_list;
     // console.log(boundaries, indexesOriginal, xCell_Amount);
 
     // win pattern with origin indexes of a NxN field

@@ -610,7 +610,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                     statusText.textContent = `You just gained a point!`;
 
-                    recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
+                    recentUsedPattern_add([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))); // add used pattern to recently used pattern list
 
                 } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
@@ -651,7 +651,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `You just gained a point!`;
 
-                    recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
+                    recentUsedPattern_add([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))); // add used pattern to recently used pattern list
 
                 } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                     statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
@@ -672,6 +672,8 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
     if (KI_won_points != undefined) {
         score_Player2_numb = Infinity;
     };
+
+    console.log("win combination: ", WinCombination);
 
     if (WinCombination == undefined) {
         setTimeout(() => {
@@ -924,8 +926,11 @@ const UltimateWinAnimation = (winText) => {
 function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) {
     // Online or offline mode
     if (curr_mode == GameMode[2].opponent) { // in online mode
+
         // send message to server
-        if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won, WinCombination, score_Player1_numb, score_Player2_numb]);
+        if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won,
+            JSON.stringify([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))), score_Player1_numb, score_Player2_numb
+        ]);
         return;
 
     } else {
@@ -968,16 +973,7 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
     if (curr_mode == GameMode[2].opponent) { // online friend 
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'admin') {
-            setNew_SkillPoints(10);
-
-            UltimateWinAnimation(`You won it `);
-
-            // continue with normal code
-            let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-            wins_storage = wins_storage + 1;
-            localStorage.setItem('onlineMatches-won', wins_storage);
-
-            WinCombination && recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
+            PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
         };
 
         if (personal_GameData.role == 'user') {
@@ -995,16 +991,7 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
     if (curr_mode == GameMode[2].opponent) { // online friend
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'user') {
-            setNew_SkillPoints(10);
-
-            UltimateWinAnimation(`You won it `);
-
-            // continue with normal code
-            let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
-            wins_storage = wins_storage + 1;
-            localStorage.setItem('onlineMatches-won', wins_storage);
-
-            WinCombination && recentUsedPattern_add([...WinCombination]); // add used pattern to recently used pattern list
+            PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
         };
 
         if (personal_GameData.role == 'admin') {
@@ -1019,6 +1006,50 @@ const OnlineGame_UltimateWin_GG = (player1_won, player2_won, WinCombination) => 
     UltimateWinAnimation(`GG Well played `);
 };
 
+// code to execute for the player who won in online game
+function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
+    setNew_SkillPoints(10);
+
+    UltimateWinAnimation(`You won it `);
+
+    // continue with normal code
+    let wins_storage = JSON.parse(localStorage.getItem('onlineMatches-won'));
+    wins_storage = wins_storage + 1;
+    localStorage.setItem('onlineMatches-won', wins_storage);
+
+    console.log("lelelellelelellele", WinCombination);
+
+    // all previous 100 patterns the player used
+    WinCombination && recentUsedPattern_add(WinCombination); // add used pattern to recently used pattern list
+
+    // add online win to "last 24 hours online wins" for daily challenges
+    let lastOnlineWins = parseInt(localStorage.getItem("Last24Hours_Won_OnlineGames"));
+    lastOnlineWins = lastOnlineWins + 1;
+    localStorage.setItem("Last24Hours_Won_OnlineGames", lastOnlineWins);
+
+    console.log("lelelellelelellele", lastOnlineWins);
+
+    console.log(GameData.InnerGameMode, InnerGameModes[1]);
+
+    // online win in specific mode
+    switch (GameData.InnerGameMode) {
+        case InnerGameModes[1]: // win in boneyard mode
+
+            let boneyard_onlineWins = parseInt(localStorage.getItem("Last24Hours_Won_OnlineGames_Boneyard"));
+            boneyard_onlineWins = boneyard_onlineWins + 1;
+            localStorage.setItem("Last24Hours_Won_OnlineGames_Boneyard", boneyard_onlineWins);
+
+            break;
+    };
+
+    // online win in specific player clock setting
+    if (GameData.PlayerClock == "5") {
+        let seconds5_onlineWins = parseInt(localStorage.getItem("Last24Hours_Won_5secondsPlayerClockOnlineGames"));
+        seconds5_onlineWins = seconds5_onlineWins + 1;
+        localStorage.setItem("Last24Hours_Won_5secondsPlayerClockOnlineGames", seconds5_onlineWins);
+    };
+};
+
 // the admin called the ultimate game win
 // this message recieve all clients
 socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score) => {
@@ -1027,7 +1058,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
         stopStatusTextInterval = false;
         cellGrid.style.opacity = "0";
 
-        killPlayerClocks(true);
+        killPlayerClocks(true, "stop");
         clearInterval(gameCounter);
         gameCounter = null;
 
@@ -1039,11 +1070,13 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
         score_Player1_numb = player1_score;
         score_Player2_numb = player2_score;
 
+        WinCombination = JSON.parse(WinCombination);
+
         UltimateGameWinFirstAnimation(player1_won, player2_won)
 
         setTimeout(() => {
             cellGrid.style.display = 'none';
-            if (player1_won && !player2_won) { // player 1 won (user)
+            if (player1_won && !player2_won) { // player 1 won (admin)
                 OnlineGame_UltimateWin_Player1(player1_won, player2_won, WinCombination);
 
             } else if (player2_won && !player1_won) { // player 2 won (user)

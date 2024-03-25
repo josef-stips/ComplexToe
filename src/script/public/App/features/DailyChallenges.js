@@ -1,9 +1,7 @@
 // script file for all daily challenges logic and functionality
 // countdown functionality is managed by Treasure.js
 class DailyChallenges {
-    constructor(CurrentChallenges) {
-
-        this.CurrentChallenges = CurrentChallenges;
+    constructor() {
 
         this.ChallengeTypes = {
             0: "online-win",
@@ -48,10 +46,10 @@ class DailyChallenges {
             },
             3: {
                 type: "diamonds",
-                title: "Get 500 diamonds.",
+                title: "Get 300 diamonds profit.",
                 price: 10,
                 price_type: "keys",
-                max_progress: 500,
+                max_progress: 300,
             },
             4: {
                 type: "patternL1",
@@ -61,7 +59,7 @@ class DailyChallenges {
                 max_progress: 1,
             },
             5: {
-                type: "patternSpecial1",
+                type: "patternspecial1",
                 title: "Win an online game with the special1 win pattern.",
                 price: 50,
                 price_type: "diamond",
@@ -82,35 +80,35 @@ class DailyChallenges {
                 max_progress: 1,
             },
             8: {
-                type: "patternStar",
+                type: "patternstar",
                 title: "Win an online game with the star win pattern.",
                 price: 75,
                 price_type: "diamond",
                 max_progress: 1,
             },
             9: {
-                type: "patternBranch1",
+                type: "patternbranch1",
                 title: "Win an online game with the branch1 win pattern.",
                 price: 25,
                 price_type: "diamond",
                 max_progress: 1,
             },
             10: {
-                type: "patternBranch2",
+                type: "patternbranch2",
                 title: "Win an online game with the branch2 win pattern.",
                 price: 15,
                 price_type: "diamond",
                 max_progress: 1,
             },
             11: {
-                type: "patternBranch3",
+                type: "patternbranch3",
                 title: "Win an online game with the branch3 win pattern.",
                 price: 15,
                 price_type: "diamond",
                 max_progress: 1,
             },
             12: {
-                type: "patternBranch4",
+                type: "patternbranch4",
                 title: "Win an online game with the branch4 win pattern.",
                 price: 25,
                 price_type: "diamond",
@@ -158,6 +156,8 @@ class DailyChallenges {
         this.Last24HoursOnlineGamesWon = localStorage.getItem("Last24Hours_Won_OnlineGames");
         this.Last24HoursOnlineGamesBoneyardWon = localStorage.getItem("Last24Hours_Won_OnlineGames_Boneyard");
         this.Last24HoursOnlineGamesWon_5secondsClock = localStorage.getItem("Last24Hours_Won_5secondsPlayerClockOnlineGames");
+
+        this.CurrentChallenges = localStorage.getItem("CurrentDailyChallenges");
     };
 
     init = () => {
@@ -168,6 +168,7 @@ class DailyChallenges {
     display = () => {
         DisplayPopUp_PopAnimation(DailyChallenges_PopUp, "flex", true);
         this.check_pattern_challenges();
+        ClaimBtnClickEvent();
     };
 
     check_challenges = () => {
@@ -182,7 +183,6 @@ class DailyChallenges {
 
             if (challenge_storage == null) {
                 localStorage.setItem("CurrentDailyChallenges", "{}");
-                localStorage.setItem("completedChallenges", JSON.stringify({ 0: "false", 1: "false", 2: "false" }));
 
             } else {
                 this.new_challenges_animation(JSON.parse(challenge_storage), true);
@@ -192,13 +192,14 @@ class DailyChallenges {
 
         } else if (localStorage.getItem("newChallengesAreAvailable") == null) { // not in storage. player is the first time in the game
             localStorage.setItem("newChallengesAreAvailable", "true");
+            localStorage.setItem("completedChallenges", JSON.stringify({ 0: "false", 1: "false", 2: "false" }));
 
             // reset stuff from previous challenges
             localStorage.setItem("Last24HourUsedPatterns", "[]");
-            localStorage.setItem("Last24HoursCollectedGems", "0");
-            localStorage.setItem("Last24Hours_Won_5secondsPlayerClockOnlineGames", "[]");
-            localStorage.setItem("Last24Hours_Won_OnlineGames", "[]");
-            localStorage.setItem("Last24Hours_Won_OnlineGames_Boneyard", "[]");
+            localStorage.setItem("Last24HoursCollectedGems", localStorage.getItem("GemsItem"));
+            localStorage.setItem("Last24Hours_Won_5secondsPlayerClockOnlineGames", "0");
+            localStorage.setItem("Last24Hours_Won_OnlineGames", "0");
+            localStorage.setItem("Last24Hours_Won_OnlineGames_Boneyard", "0");
 
             // recall itself
             this.check_challenges();
@@ -230,6 +231,7 @@ class DailyChallenges {
 
         // save in storage
         localStorage.setItem("CurrentDailyChallenges", JSON.stringify(updated_challenges));
+        this.CurrentChallenges = localStorage.getItem("CurrentDailyChallenges");
     };
 
     new_challenges_animation = (challenges, standard_ani) => {
@@ -301,53 +303,92 @@ class DailyChallenges {
         this.Last24HoursUsedPatterns = JSON.parse(localStorage.getItem("Last24HourUsedPatterns"));
         let currentChallenges = JSON.parse(this.CurrentChallenges);
 
-        let patternBasedChallengeType = [
-            "patternL1", // win one online game wih pattern
-            "patternspecial1", // win one online game wih pattern
-            "patternW1", // win one online game wih pattern
-            "patternW4", // win one online game wih pattern
-            "patternstar", // win one online game wih pattern
-            "patternbranch1", // win one online game wih pattern
-            "patternbranch2", // win one online game wih pattern
-            "patternbranch3", // win one online game wih pattern
-            "patternbranch4", // win one online game wih pattern
-        ];
-
         console.log(currentChallenges, this.Last24HoursUsedPatterns);
 
-        for (const [index, data] of Object.entries(currentChallenges)) {
+        // savety first
+        if (currentChallenges) {
+            // loop over current daily challenges and work with their challenge type and its meta data
+            for (const [index, data] of Object.entries(currentChallenges)) {
 
-            console.log(data["type"].replace("pattern", ""), data["type"]);
+                let prerequisite = data["type"].replace("pattern", "");
 
-            if (this.Last24HoursUsedPatterns.includes(data["type"].replace("pattern", ""))) {
-                console.log("match", currentChallenges[index]);
+                console.log(prerequisite, data["type"], this.Last24HoursUsedPatterns);
 
-                ChallengeBox[index].setAttribute("completed", "true");
-                ChallengeBox_progressText[index].textContent = "Progress: 1/1";
+                // check for pattern used once
+                if (this.Last24HoursUsedPatterns.includes(prerequisite)) {
+                    // console.log("match", currentChallenges[index]);
+
+                    ChallengeBox[index].setAttribute("completed", "true");
+                    ChallengeBox_progressText[index].textContent = "Progress: 1/1";
+                };
+
+                // check for pattern used multiple times in a row
+                if (prerequisite == "Same5" || prerequisite == "Same3") {
+                    // number to achieve
+                    const n = Number(prerequisite.replace("Same", ""));
+
+                    // pattern (element) in pattern array in row n (count)
+                    let count = lengthOfLastChain(this.Last24HoursUsedPatterns);
+                    // console.log(n, count);
+
+                    ChallengeBox_progressText[index].textContent = `Progress: ${count}/${n}`;
+
+                    if (count >= n) ChallengeBox[index].setAttribute("completed", "true");
+                };
+
+                // check for gems daily challenge
+                if (prerequisite == "diamonds") this.check_gems_challenges(data["max_progress"], index);
+
+                // check for online games won
+                if (prerequisite == "online-win") this.check_online_games_challenges(data["max_progress"], index);
+
+                // check for 5 seconds player clock online win
+                if (prerequisite == "online-win-5sec-2" || prerequisite == "online-win-5sec-1") this.check_online_games_5sec_challenges(data["max_progress"], index);
+
+                // check for online win in boneyard mode
+                if (prerequisite == "online-win-boneyard-5") this.check_online_games_boneyard_challenges(data["max_progress"], index);
             };
         };
-
-        // check if pattern is used multiple times
     };
 
     // check gem challenges
-    check_gems_challenges = () => {
+    check_gems_challenges = (diamonds_to_achieve, index) => {
+        let gemStamp = Number(localStorage.getItem("Last24HoursCollectedGems"));
+        let currentGems = Number(localStorage.getItem("GemsItem"));
+        let difference = currentGems - gemStamp;
 
+        ChallengeBox_progressText[index].textContent = `Progress: ${difference}/${diamonds_to_achieve}`;
+
+        (difference >= diamonds_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
     };
 
     // check online games won challenge
-    check_online_games_challenges = () => {
+    check_online_games_challenges = (wins_to_achieve, index) => {
+        let wins_achieved = Number(localStorage.getItem("Last24Hours_Won_OnlineGames"));
 
+        console.log(wins_achieved, index, wins_to_achieve);
+
+        ChallengeBox_progressText[index].textContent = `Progress: ${wins_achieved}/${wins_to_achieve}`;
+
+        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
     };
 
     // check online games won in boneyard challenge
-    check_online_games_boneyard_challenges = () => {
+    check_online_games_boneyard_challenges = (wins_to_achieve, index) => {
+        let wins_achieved = Number(localStorage.getItem("Last24Hours_Won_OnlineGames_Boneyard"));
 
+        ChallengeBox_progressText[index].textContent = `Progress: ${wins_achieved}/${wins_to_achieve}`;
+
+        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
     };
 
     // check online games won with 5 seconds player clock challenge
-    check_online_games_5sec_challenges = () => {
+    check_online_games_5sec_challenges = (wins_to_achieve, index) => {
+        let wins_achieved = Number(localStorage.getItem("Last24Hours_Won_5secondsPlayerClockOnlineGames"));
 
+        ChallengeBox_progressText[index].textContent = `Progress: ${wins_achieved}/${wins_to_achieve}`;
+
+        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
     };
 
     // player completed a challenge and clicked claim!
@@ -361,7 +402,7 @@ class DailyChallenges {
         this.completed_challenge_claim_animation(el, challenge_index);
 
         // music
-        play_rewardSound();
+        coinsSoundTrack();
 
         // get reward
         let currentChallenges = JSON.parse(this.CurrentChallenges);
@@ -385,7 +426,7 @@ class DailyChallenges {
                 currencyStorage = currencyStorage + reward_amount;
 
                 Xicon.textContent = currencyStorage;
-                XBtn.textContent = currencyStorage;
+                xIcon_skinShop.textContent = currencyStorage
                 break;
 
             case "keys":
@@ -403,7 +444,7 @@ class DailyChallenges {
 
     // dissapear animation
     completed_challenge_claim_animation = (el, i) => {
-        ChallengeBox_priceTextWrapper[i].style.animation = "blue_color_fade 3s ease-in-out forwards";
+        ChallengeBox_priceTextWrapper[i].style.animation = "blue_color_fade 1s ease-in-out forwards";
 
         ChallengeBox_priceTextWrapper[i].addEventListener("animationend", () => {
             ChallengeBox_priceTextWrapper[i].style.animation = "none";
@@ -436,7 +477,7 @@ class DailyChallenges {
     };
 };
 
-let DailyChallenge = new DailyChallenges(localStorage.getItem("CurrentDailyChallenges"));
+let DailyChallenge = new DailyChallenges();
 DailyChallenge.init();
 
 // events
@@ -457,10 +498,39 @@ DailyChallenges_backBtn.addEventListener("click", () => {
     DarkLayer.style.display = "none";
 });
 
-DailyChallengeClaimBtns.forEach((btn, i) => {
-    if (ChallengeBox[i].getAttribute("completed") == "true") {
-        btn.addEventListener("click", () => {
-            DailyChallenge.completed_challenge(ChallengeBox[i], i);
-        });
+// toggle/check claim button click event listener
+function ClaimBtnClickEvent() {
+    DailyChallengeClaimBtns.forEach((btn, i) => {
+        if (ChallengeBox[i].getAttribute("completed") == "true") {
+
+            btn.removeEventListener("click", btn.fn);
+
+            btn.addEventListener("click", btn.fn = () => {
+                DailyChallenge.completed_challenge(ChallengeBox[i], i);
+            });
+
+        } else if (ChallengeBox[i].getAttribute("completed") == "false") {
+            btn.removeEventListener("click", btn.fn);
+        };
+    });
+};
+
+// check if user used pattern n times in a row
+function lengthOfLastChain(array) {
+    if (array.length === 0) {
+        return 0; // Wenn das Array leer ist, ist die Länge der Kette 0
     };
-});
+
+    const lastElement = array[array.length - 1];
+    let chainLength = 1;
+
+    for (let i = array.length - 2; i >= 0; i--) {
+        if (array[i] === lastElement) {
+            chainLength++;
+        } else {
+            break; // Stoppt die Schleife, wenn ein anderes Element gefunden wird
+        };
+    };
+
+    return chainLength;
+};
