@@ -832,6 +832,7 @@ img {
 }
 
 .GameMode-fields {
+    position: relative;
     color: var(--font-color);
     width: 100%;
     height: 90%;
@@ -911,6 +912,8 @@ img {
     margin: 0 0 0 0.5em;
     font-size: 20px;
     transition: all 0.1s ease-out;
+    position: relative;
+    z-index: 1;
 }
 
 #fields-area-back-btn:hover {
@@ -930,6 +933,8 @@ img {
     justify-content: center;
     align-items: center;
     position: relative;
+    background: #191c1e;
+    z-index: 1;
 }
 
 .NxN-field>div {
@@ -964,13 +969,14 @@ img {
     flex-direction: row;
     justify-content: end;
     align-items: center;
+    position: relative;
 }
 
 #goTo-advancedFields {
     font-size: 19px;
     position: absolute;
     cursor: pointer;
-    bottom: 15%;
+    bottom: 70px;
 }
 
 #goTo-advancedFields:hover {
@@ -1000,12 +1006,15 @@ img {
 
 .GameMode-display {
     color: var(--font-color);
-    margin-bottom: 1em;
+    /* margin-bottom: 1em; */
 }
 
 .ChooseField-display {
     color: var(--font-color);
-    margin-bottom: 1em;
+    margin-top: 1em;
+    padding: 15px;
+    border: 2px solid darkgoldenrod;
+    border-radius: 40px;
 }
 
 .field-card-circle {
@@ -1227,6 +1236,11 @@ img {
 #TwentyxTwenty_Field:hover {
     cursor: pointer;
     transition: all 0.1s ease-in-out;
+}
+
+.GameModeFields_flowField {
+    position: absolute;
+    z-index: 0;
 }
 
 
@@ -5628,7 +5642,7 @@ label h3 {
 }
 
 
-/* create level BenutzeroberflÃƒÆ’Ã‚Â¤che */
+/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;
@@ -7393,6 +7407,19 @@ p.createCostumField_yInput {
 .officialWinPatternsOpenBtn:hover {
     border-color: goldenrod;
     transition: border-color 0.15s ease-in-out;
+}
+
+
+/* random online opponent */
+
+.SearchRandomOpponent_btn {
+    z-index: 1;
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto auto auto auto;
+    top: -55px;
 }
 
 

@@ -942,3 +942,9 @@ socket.on("Updated_AllowedPatterns", patternsArray => {
         });
     });
 });
+
+// random game opponent button
+SearchRandomOpponent_btn.addEventListener("click", () => {
+    AlertText.textContent = "this feature is availible soon";
+    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+});

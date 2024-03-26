@@ -539,6 +539,8 @@ let OfficialWinPatterns_closeBtn = document.querySelector(".OfficialWinPatterns_
 let OfficialWinPatternsPopUp = document.querySelector(".OfficialWinPatternsPopUp");
 let officialWinPatternsOpenBtn = document.querySelectorAll(".officialWinPatternsOpenBtn");
 let dailyChallenges_notifyBtn = document.querySelector(".dailyChallenges_notifyBtn");
+let GameModeFields_flowField = document.querySelector(".GameModeFields_flowField");
+let SearchRandomOpponent_btn = document.querySelector(".SearchRandomOpponent_btn");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

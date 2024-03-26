@@ -1801,3 +1801,75 @@ OfficialWinPatterns_closeBtn.addEventListener("click", () => {
     OfficialWinPatternsPopUp.style.display = "none";
     DarkLayer.style.display = "none";
 });
+
+// flow field in game field cards scene
+const canvas = GameModeFields_flowField;
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Das englische Alphabet in Großbuchstaben
+
+const circles = [];
+const numCircles = 4;
+
+// Erstelle zufällige Buchstaben-Kreise
+for (let i = 0; i < numCircles; i++) {
+    circles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 20 + 10, // Zufälliger Radius zwischen 10 und 30
+        speedX: Math.random() * 4 - 2, // Zufällige Geschwindigkeit in X-Richtung
+        speedY: Math.random() * 4 - 2, // Zufällige Geschwindigkeit in Y-Richtung
+        letter: letters.charAt(Math.floor(Math.random() * letters.length)), // Zufälliger Buchstabe aus dem Alphabet
+        visible: true // Sichtbarkeit des Buchstabens
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let circle of circles) {
+        if (circle.visible) {
+            // Text (Buchstabe) im Kreis zeichnen
+            ctx.fillStyle = 'white';
+            ctx.font = `${circle.radius}px Arial`; // Verwende die Kreisgröße als Schriftgröße
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(circle.letter, circle.x, circle.y);
+        }
+
+        // Kreisbewegung aktualisieren
+        circle.x += circle.speedX;
+        circle.y += circle.speedY;
+
+        // Randüberprüfung, um die Kreise im Canvas zu halten
+        if (circle.x < 0 || circle.x > canvas.width) {
+            circle.speedX *= -1;
+        }
+        if (circle.y < 0 || circle.y > canvas.height) {
+            circle.speedY *= -1;
+        }
+    }
+
+    requestAnimationFrame(draw);
+}
+
+// Überprüfe Mausklicks auf Buchstaben
+canvas.addEventListener('click', function(event) {
+    const mouseX = event.clientX - canvas.getBoundingClientRect().left;
+    const mouseY = event.clientY - canvas.getBoundingClientRect().top;
+
+    for (let circle of circles) {
+        // Berechne die Entfernung des Mausklicks zum Mittelpunkt des Kreises
+        const distance = Math.sqrt((mouseX - circle.x) ** 2 + (mouseY - circle.y) ** 2);
+
+        // Überprüfe, ob der Mausklick innerhalb des Kreises liegt
+        if (distance <= circle.radius) {
+            circle.visible = false; // Markiere den Buchstaben als unsichtbar
+        }
+    }
+});
+
+draw();
