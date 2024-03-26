@@ -394,6 +394,10 @@ function Init_RecentUsedPatterns() {
         };
     };
 
+    if (!mostCommonPattern) {
+        mostCommonPattern = "-";
+    };
+
     // return for productive module reasons
     return mostCommonPattern;
 };

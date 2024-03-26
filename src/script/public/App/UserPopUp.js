@@ -215,7 +215,7 @@ UserGivesData_IconInput.addEventListener('keydown', e => {
         e.preventDefault();
 
         if (UserGivesData_IconInput.value != "" && UserGivesData_IconInput.value != "false") {
-            userIcon = UserGivesData_IconInput.value;
+            userIcon = UserGivesData_IconInput.value.toUpperCase();
 
             // store data in storage
             submittedOfflineData();

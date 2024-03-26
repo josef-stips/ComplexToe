@@ -617,9 +617,9 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 };
 
                 // this commented code is only for test purposes
-                if (curr_mode == GameMode[3].opponent) { // computer mode/ offline mode against a friend
-                    recentUsedPattern_add([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))); // add used pattern to recently used pattern list
-                };
+                // if (curr_mode == GameMode[3].opponent) { // computer mode/ offline mode against a friend
+                //     recentUsedPattern_add([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))); // add used pattern to recently used pattern list
+                // };
 
                 Player1_won = false;
                 resolve();
