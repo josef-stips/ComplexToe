@@ -3751,6 +3751,7 @@ label h3 {
     transition: transform 0.15s ease-in-out, border-color 0.75s ease;
     cursor: pointer;
     z-index: 500;
+    position: relative;
 }
 
 .homeLobby-iconBtn:hover {
@@ -7291,6 +7292,22 @@ p.createCostumField_yInput {
     color: grey;
     animation: unset;
     cursor: default;
+}
+
+.dailyChallenges_notifyBtn {
+    display: none;
+    padding: 1px 12.5px;
+    background-color: red;
+    border-radius: 100px;
+    border: 1px solid white;
+    font-size: 22px;
+    position: absolute;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    top: -7.5px;
+    right: -12.5px;
 }
 
 

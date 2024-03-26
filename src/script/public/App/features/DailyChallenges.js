@@ -163,12 +163,23 @@ class DailyChallenges {
     init = () => {
         CheckTreasure(); // see in Treasure.js
         this.check_challenges();
+
+        // daily challenge notify
+        DailyChallenge.check();
     };
 
     display = () => {
         DisplayPopUp_PopAnimation(DailyChallenges_PopUp, "flex", true);
+        this.check();
+    };
+
+    check = () => {
         this.check_pattern_challenges();
         ClaimBtnClickEvent();
+    };
+
+    notify_btn = (command) => {
+        dailyChallenges_notifyBtn.style.display = command;
     };
 
     check_challenges = () => {
@@ -318,7 +329,7 @@ class DailyChallenges {
                 if (this.Last24HoursUsedPatterns.includes(prerequisite)) {
                     // console.log("match", currentChallenges[index]);
 
-                    ChallengeBox[index].setAttribute("completed", "true");
+                    ChallengeBox[index].getAttribute("claimed") == "false" && ChallengeBox[index].setAttribute("completed", "true");
                     ChallengeBox_progressText[index].textContent = "Progress: 1/1";
                 };
 
@@ -333,7 +344,7 @@ class DailyChallenges {
 
                     ChallengeBox_progressText[index].textContent = `Progress: ${count}/${n}`;
 
-                    if (count >= n) ChallengeBox[index].setAttribute("completed", "true");
+                    if (count >= n) ChallengeBox[index].getAttribute("claimed") == "false" && ChallengeBox[index].setAttribute("completed", "true");
                 };
 
                 // check for gems daily challenge
@@ -359,7 +370,7 @@ class DailyChallenges {
 
         ChallengeBox_progressText[index].textContent = `Progress: ${difference}/${diamonds_to_achieve}`;
 
-        (difference >= diamonds_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
+        (difference >= diamonds_to_achieve) && (ChallengeBox[index].getAttribute("claimed") == "false" && ChallengeBox[index].setAttribute("completed", "true"));
     };
 
     // check online games won challenge
@@ -370,7 +381,7 @@ class DailyChallenges {
 
         ChallengeBox_progressText[index].textContent = `Progress: ${wins_achieved}/${wins_to_achieve}`;
 
-        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
+        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].getAttribute("claimed") == "false" && ChallengeBox[index].setAttribute("completed", "true");
     };
 
     // check online games won in boneyard challenge
@@ -379,7 +390,7 @@ class DailyChallenges {
 
         ChallengeBox_progressText[index].textContent = `Progress: ${wins_achieved}/${wins_to_achieve}`;
 
-        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
+        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].getAttribute("claimed") == "false" && ChallengeBox[index].setAttribute("completed", "true");
     };
 
     // check online games won with 5 seconds player clock challenge
@@ -388,7 +399,7 @@ class DailyChallenges {
 
         ChallengeBox_progressText[index].textContent = `Progress: ${wins_achieved}/${wins_to_achieve}`;
 
-        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].setAttribute("completed", "true");
+        (wins_achieved >= wins_to_achieve) && ChallengeBox[index].getAttribute("claimed") == "false" && ChallengeBox[index].setAttribute("completed", "true");
     };
 
     // player completed a challenge and clicked claim!
@@ -464,6 +475,7 @@ class DailyChallenges {
                     box.setAttribute("claimed", "false");
                     DailyChallengeClaimBtns[i].style.pointerEvents = "all";
                     DailyChallengeClaimBtns[i].textContent = "Claim!";
+
                     break;
 
                 case "true":
@@ -471,6 +483,7 @@ class DailyChallenges {
                     box.setAttribute("completed", "false");
                     DailyChallengeClaimBtns[i].style.pointerEvents = "none";
                     DailyChallengeClaimBtns[i].textContent = "Completed!";
+
                     break;
             };
         });
@@ -499,7 +512,10 @@ DailyChallenges_backBtn.addEventListener("click", () => {
 });
 
 // toggle/check claim button click event listener
+// if challenge is completed user can earn reward and click claim!
 function ClaimBtnClickEvent() {
+    let count = 0;
+
     DailyChallengeClaimBtns.forEach((btn, i) => {
         if (ChallengeBox[i].getAttribute("completed") == "true") {
 
@@ -507,12 +523,25 @@ function ClaimBtnClickEvent() {
 
             btn.addEventListener("click", btn.fn = () => {
                 DailyChallenge.completed_challenge(ChallengeBox[i], i);
+
+                // daily challenge notify
+                DailyChallenge.check();
             });
+
+            // notification button
+            ChallengeBox[i].getAttribute("claimed") == "false" && DailyChallenge.notify_btn("flex");
 
         } else if (ChallengeBox[i].getAttribute("completed") == "false") {
             btn.removeEventListener("click", btn.fn);
+
+            count++
         };
     });
+
+    // no challenge is completed/ already accomplished
+    if (count >= 3) {
+        DailyChallenge.notify_btn("none");
+    };
 };
 
 // check if user used pattern n times in a row

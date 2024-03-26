@@ -994,6 +994,9 @@ fieldsArea_back_btn.addEventListener('click', () => {
 
     // for XP Journey
     CheckIfUserCanGetReward();
+
+    // daily challenge notify
+    DailyChallenge.check();
 });
 
 let NewCreativeLevel;

@@ -538,6 +538,7 @@ let WinPatternsOverviewWrapper = document.querySelector(".WinPatternsOverviewWra
 let OfficialWinPatterns_closeBtn = document.querySelector(".OfficialWinPatterns_closeBtn");
 let OfficialWinPatternsPopUp = document.querySelector(".OfficialWinPatternsPopUp");
 let officialWinPatternsOpenBtn = document.querySelectorAll(".officialWinPatternsOpenBtn");
+let dailyChallenges_notifyBtn = document.querySelector(".dailyChallenges_notifyBtn");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');
