@@ -156,13 +156,14 @@ userInfoCloseBtn.addEventListener('click', () => {
 });
 
 editUserProfileBtn.addEventListener('click', () => {
-    DisplayPopUp_PopAnimation(UserGivesData_PopUp_name, "flex");
+    TryToCloseUserInfoPopUp();
+    DisplayPopUp_PopAnimation(UserGivesData_PopUp_name, "flex", true);
     UserGivesData_NameInput.focus();
 });
 
 CreateOnlineProfileBtn.addEventListener('click', () => {
-    DisplayPopUp_PopAnimation(UserGivesData_PopUp_name, "flex");
     userInfoPopUp.style.display = "none";
+    DisplayPopUp_PopAnimation(UserGivesData_PopUp_name, "flex", true);
     UserGivesData_NameInput.focus();
 });
 
@@ -245,6 +246,7 @@ UserGivesData_closeBtn_NAME.addEventListener('click', () => { // for name
     userName = "";
     UserGivesData_NameInput.value = null;
     UserGivesData_PopUp_name.style.display = "none";
+    DarkLayer.style.display = "none";
 });
 
 // for icon 
@@ -253,6 +255,7 @@ UserGivesData_closeBtn_ICON.addEventListener('click', () => {
     UserGivesData_NameInput.value = null;
     UserGivesData_IconInput.value = null;
     UserGivesData_PopUp_icon.style.display = "none";
+    DarkLayer.style.display = "none";
 });
 
 // user submits his simple offline data

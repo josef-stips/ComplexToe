@@ -2942,6 +2942,10 @@ label h3 {
     color: white;
 }
 
+#UserGivesData_IconInput {
+    text-transform: uppercase;
+}
+
 
 /* treasure box pop up */
 
