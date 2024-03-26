@@ -45,8 +45,8 @@ function removeAccessToAnything() {
     globalChooseWinnerBtn.style.color = '#56565659';
     restartBtn.removeEventListener('click', restartGame);
     restartBtn.style.color = '#56565659';
-
-    CloseOnlinePopUps(true);
+    console.log("lol")
+        // CloseOnlinePopUps(true);
     GiveUpPopUp.style.display = "none";
 
     // remove access to set

@@ -60,7 +60,7 @@ class Boss {
     };
 
     attack = () => {
-        removeAccessToAnything();
+        gameCounter && removeAccessToAnything();
 
         // start animation
         if (this.attack_animation != null) {

@@ -844,17 +844,22 @@ const SetClickOnProfileListeners = (fromAdmin) => {
 
 // This message goes to all users in a room and gets callen when the admin of the room leaves it
 socket.on('killed_room', () => {
-    // server
-    personal_GameData.role = 'user';
-    personal_GameData.currGameID = null;
-    personal_GameData.EnterOnlineGame = false;
-
     // some things
     OnlineGame_Lobby.style.display = 'none';
     SetPlayerNamesPopUp.style.display = 'none';
     OnlineGameLobby_alertText.style.display = 'none';
 
     CloseOnlinePopUps(true);
+
+    if (personal_GameData.role != "admin") {
+        AlertText.textContent = "Admin killed the lobby.";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    };
+
+    // server
+    personal_GameData.role = 'user';
+    personal_GameData.currGameID = null;
+    personal_GameData.EnterOnlineGame = false;
 });
 
 // if they were in a game in the admin left the game
@@ -874,11 +879,20 @@ socket.on('killed_game', () => {
     // clear timer and stuff to prevent bugs
     clearTimer();
 
+    DarkLayer.style.display = "block";
+
+    // remove big screen text if there was one 
+    if (document.querySelector(".bigScreenText")) {
+        document.querySelector(".bigScreenText").remove();
+    };
+
+    // lobby footer remove background
+    lobbyFooter.style.background = "";
+    lobbyFooterText.style.display = 'flex';
+
     // play music
     PauseMusic();
     if (!PlayingInCreatedLevel) CreateMusicBars(audio);
-
-    DarkLayer.style.display = "block";
 });
 
 // Admin created the game and now waits for the second player
@@ -1012,11 +1026,14 @@ socket.on('INFORM_user_left_game', () => {
         // so user can select game code with mouse
         Lobby_GameCode_display.style.userSelect = 'text';
 
+        DarkLayer.style.display = 'block';
+
+        lobbyFooter.style.background = "";
+        lobbyFooterText.style.display = 'flex';
+
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
-
-        DarkLayer.style.display = 'block';
     };
 });
 
@@ -1041,11 +1058,14 @@ socket.on('INFORM_blocker_left_game', () => {
         friendLeft_text.textContent = 'The blocker left the game';
         Lobby_GameCode_display.style.userSelect = 'text';
 
+        DarkLayer.style.display = 'block';
+
+        lobbyFooter.style.background = "";
+        lobbyFooterText.style.display = 'flex';
+
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
-
-        DarkLayer.style.display = 'block';
     };
 });
 

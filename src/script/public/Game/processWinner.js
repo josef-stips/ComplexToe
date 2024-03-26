@@ -792,16 +792,19 @@ const continueGame = () => {
 
     // not advanture mode
     if (!inAdvantureMode) {
+
         // in online mode
         if (curr_mode == GameMode[2].opponent) {
 
             if (PlayingInCreatedLevel) { // Player played user created level
+
                 if (NewCreativeLevel.selectedLevel[9] == 0) {
                     // admin leaves game and this info all player get
                     if (personal_GameData.role == "admin") {
                         UserleavesGame();
                         NewCreativeLevel.verified(); // User beat his own created level and can publish it now
                     };
+
                 } else if (NewCreativeLevel.selectedLevel[9] == 1) {
                     // admin leaves game and this info all player get
                     if (personal_GameData.role == "admin") {
@@ -810,15 +813,29 @@ const continueGame = () => {
                 };
 
             } else { // user played standard card level from game
+
                 // admin leaves game and this info all player get
                 if (personal_GameData.role == "admin") {
                     UserleavesGame();
                 };
+
             };
             DarkLayer.style.display = "block";
 
+            // when user wants to leave from the game on game finished he must wait for the admin to leave the game
+            // But if user clicked "continue", a text aappears to wait for the admin
+            if (personal_GameData.role == "user") {
+
+                let bigText = document.createElement("h1");
+                bigText.classList.add("bigScreenText");
+                bigText.textContent = "Wait for the admin to continue.";
+
+                document.body.appendChild(bigText);
+            };
+
             // in offline mode
         } else if (curr_mode != GameMode[2].opponent) {
+
             if (PlayingInCreatedLevel) { // Player played user created level
                 if (NewCreativeLevel.selectedLevel[9] == 0) {
                     NewCreativeLevel.verified(); // User beat his own created level and can publish it now
@@ -835,6 +852,7 @@ const continueGame = () => {
 
         // in advanture mode
     } else {
+
         if (endGame_player1Won) { // user won and conquered the level
             UserleavesGame(true, current_selected_level);
         } else {
@@ -935,6 +953,10 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
     } else {
         setTimeout(() => {
+
+            console.log(current_level_boss);
+            current_level_boss && current_level_boss.stop_attack_interval();
+
             // basic stuff
             stopStatusTextInterval = false;
             cellGrid.style.opacity = "0";
@@ -1017,8 +1039,6 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
     wins_storage = wins_storage + 1;
     localStorage.setItem('onlineMatches-won', wins_storage);
 
-    console.log("lelelellelelellele", WinCombination);
-
     // all previous 100 patterns the player used
     WinCombination && recentUsedPattern_add(WinCombination); // add used pattern to recently used pattern list
 
@@ -1026,10 +1046,6 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
     let lastOnlineWins = parseInt(localStorage.getItem("Last24Hours_Won_OnlineGames"));
     lastOnlineWins = lastOnlineWins + 1;
     localStorage.setItem("Last24Hours_Won_OnlineGames", lastOnlineWins);
-
-    console.log("lelelellelelellele", lastOnlineWins);
-
-    console.log(GameData.InnerGameMode, InnerGameModes[1]);
 
     // online win in specific mode
     switch (GameData.InnerGameMode) {
@@ -1054,6 +1070,14 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
 // this message recieve all clients
 socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score) => {
     setTimeout(() => {
+
+        // to prevent bugs
+        if (current_level_boss) {
+            console.log(current_level_boss)
+            current_level_boss.died = true
+            current_level_boss.stop_attack_interval();
+        };
+
         // basic stuff
         stopStatusTextInterval = false;
         cellGrid.style.opacity = "0";
