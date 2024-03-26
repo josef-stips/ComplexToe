@@ -51,7 +51,7 @@ const RequestPlayer = () => {
 };
 
 // Player clicks on other player when he searched him or he is in his lobby f.e
-const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection) => {
+const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern) => {
     // console.log(player_name, player_id);
 
     // check if player is friends with searched and displayed player
@@ -125,6 +125,9 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
         userInfoIcon.textContent = null;
         userInfoIcon.style.color = "var(--font-color)";
     };
+
+    // users most used pattern
+    userInfo_MostUsedPattern.textContent = commonPattern;
 };
 
 // display requested player
@@ -142,13 +145,14 @@ const DisplayPlayerList = result => { // result: array containing objects
         let XP = player.XP;
         let currentUsedSkin = player.currentUsedSkin;
         let last_connection = player.last_connection;
+        let commonPattern = player.commonPattern;
 
         let div = document.createElement("div");
         div.classList = `FoundPlayer ${player_name}`;
         div.id = player_id;
 
         div.addEventListener('click', function anonymous() {
-            ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+            ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern);
         });
 
         let span1 = document.createElement("span"); // name of searched player
@@ -229,6 +233,7 @@ const GenerateFriendsList = async(FriendsList) => { // looks like this: id = [Fr
             let XP = player.XP;
             let currentUsedSkin = player.currentUsedSkin;
             let last_connection = player.last_connection;
+            let commonPattern = player.commonPattern;
 
             // create elements needed
             let MainWrapper = document.createElement("div");
@@ -256,7 +261,7 @@ const GenerateFriendsList = async(FriendsList) => { // looks like this: id = [Fr
 
 
             MainWrapper.addEventListener("click", () => {
-                ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+                ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern);
             });
 
             MainWrapper.appendChild(NameDiv);

@@ -371,6 +371,7 @@ function localItems() {
 function Init_RecentUsedPatterns() {
     // storage things
     let RecentUsedPatternsStorageObject = localStorage.getItem("100RecentUsedPatterns");
+    let mostCommonPattern;
 
     if (RecentUsedPatternsStorageObject == null) {
         localStorage.setItem("100RecentUsedPatterns", "{}");
@@ -384,7 +385,7 @@ function Init_RecentUsedPatterns() {
         let PatternNames = Object.values(recentUsedPatterns).map(el => el[0]);
 
         if (PatternNames.length > 0) {
-            const mostCommonPattern = PatternNames.reduce((a, b, i, PatternNames) => (PatternNames.filter(v => v === a).length >= PatternNames.filter(v => v === b).length ? a : b));
+            mostCommonPattern = PatternNames.reduce((a, b, i, PatternNames) => (PatternNames.filter(v => v === a).length >= PatternNames.filter(v => v === b).length ? a : b));
 
             userInfo_MostUsedPattern.textContent = mostCommonPattern;
 
@@ -392,6 +393,9 @@ function Init_RecentUsedPatterns() {
             userInfo_MostUsedPattern.textContent = "-";
         };
     };
+
+    // return for productive module reasons
+    return mostCommonPattern;
 };
 
 // player made a point with a win combination

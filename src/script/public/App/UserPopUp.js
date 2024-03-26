@@ -28,12 +28,14 @@ const OpenOwnUserProfile = () => {
         CreateOnlineProfileBtn.style.display = 'none';
         UserInfoCont.style.display = 'flex';
 
+        let mostUsedPattern = Init_RecentUsedPatterns();
+
         // Try to send data to the server
         try {
             socket.emit("SaveAllData", localStorage.getItem('UserName'), localStorage.getItem('UserIcon'),
                 localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), localStorage.getItem('UserQuote'),
                 JSON.parse(localStorage.getItem('onlineMatches-won')), localStorage.getItem('ELO'),
-                localStorage.getItem('current_used_skin'), localStorage.getItem("PlayerID"));
+                localStorage.getItem('current_used_skin'), localStorage.getItem("PlayerID"), mostUsedPattern);
 
         } catch (error) {
             console.log(error);
@@ -105,6 +107,11 @@ const CloseUserPopUpOfOtherPlayer = () => {
     if (personal_GameData.currGameID != null || running) {
         userInfoPopUp.style.display = "none";
     };
+
+    let commonPattern = Init_RecentUsedPatterns();
+
+    // users most used pattern
+    userInfo_MostUsedPattern.textContent = commonPattern;
 };
 
 // try to close user info pop up through event clicks f.ex
