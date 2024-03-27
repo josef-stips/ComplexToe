@@ -9,6 +9,7 @@ treasureIcon.addEventListener('click', () => {
     // check if treasure can be opened
     if (localStorage.getItem('treasureIsAvailible') == "true") {
         openTreasure();
+
     } else {
         DisplayPopUp_PopAnimation(treasureBoxTimerPopUp, "flex", true);
     };
@@ -117,6 +118,7 @@ function treasureIsAvailible() {
     // play animation
     treasureIcon.style.animation = "treasure_availible 1s infinite";
     treasureBoxTimerPopUp.style.display = "none";
+    DailyChallenges_PopUp.style.display = "none";
     DarkLayer.style.display = 'none';
 };
 

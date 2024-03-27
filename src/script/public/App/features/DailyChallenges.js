@@ -171,6 +171,7 @@ class DailyChallenges {
     display = () => {
         DisplayPopUp_PopAnimation(DailyChallenges_PopUp, "flex", true);
         this.check();
+        // this.check_challenges();
     };
 
     check = () => {
@@ -184,9 +185,24 @@ class DailyChallenges {
 
     check_challenges = () => {
         if (localStorage.getItem("newChallengesAreAvailable") == "true") {
-            localStorage.setItem("newChallengesAreAvailable", "false");
+            ChallengeBox.forEach((box, i) => {
+                box.setAttribute("completed", "false");
+                box.setAttribute("claimed", "false");
+
+                ClaimBtnClickEvent();
+            });
 
             this.new_challenges();
+
+            localStorage.setItem("newChallengesAreAvailable", "false");
+            localStorage.setItem("completedChallenges", JSON.stringify({ 0: "false", 1: "false", 2: "false" }));
+
+            // reset stuff from previous challenges
+            localStorage.setItem("Last24HourUsedPatterns", "[]");
+            localStorage.setItem("Last24HoursCollectedGems", localStorage.getItem("GemsItem"));
+            localStorage.setItem("Last24Hours_Won_5secondsPlayerClockOnlineGames", "0");
+            localStorage.setItem("Last24Hours_Won_OnlineGames", "0");
+            localStorage.setItem("Last24Hours_Won_OnlineGames_Boneyard", "0");
 
         } else if (localStorage.getItem("newChallengesAreAvailable") == "false") {
             // check for the existing challenges
@@ -497,6 +513,7 @@ DailyChallenge.init();
 
 lobbyBtn1.addEventListener("click", () => {
     DailyChallenge.display();
+    DailyChallenge.check_challenges();
     playBtn_Audio_2();
 });
 
