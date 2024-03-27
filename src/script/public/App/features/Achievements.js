@@ -193,6 +193,8 @@ class Achievements {
             i_abso.style.alignItems = "center";
             i_abso.style.color = "goldenrod";
 
+            i_abso.classList.add("achievement_check_icon");
+
             let img = document.createElement("img");
             img.src = achievement["img"];
             img.width = "80";
@@ -378,20 +380,18 @@ class Achievements {
         // get achievement with all its data
         let achievement = this.achievements[index];
         // get corresponding list element from achievements list to just add it to the pop up
-        let element = document.querySelector(` [achievement_id = "${index}"]
-                    `);
+        let element = document.querySelector(`[achievement_id="${index}"]`);
         let h2 = document.createElement("h2");
         h2.textContent = "Achievement unlocked!";
 
         newAchievementUnlockedPopUp.textContent = null;
         newAchievementUnlockedPopUp.appendChild(h2);
         newAchievementUnlockedPopUp.appendChild(element.cloneNode(true));
-        newAchievementUnlockedPopUp.querySelector(` [achievement_id = "${index}"]
-                    `).className = "newAchievementContent";
+        newAchievementUnlockedPopUp.querySelector(`[achievement_id="${index}"]`).className = "newAchievementContent";
 
         // delete img element from list element in achievement pop up + manipulate other things
         newAchievementUnlockedPopUp.querySelector("li").querySelector("img").remove();
-        newAchievementUnlockedPopUp.querySelector("li").querySelector("i").remove();
+        newAchievementUnlockedPopUp.querySelector("li").querySelector(".achievement_check_icon").remove();
         newAchievementUnlockedPopUp.querySelector("li").querySelector("div").style.display = "flex";
         newAchievementUnlockedPopUp.querySelector("li").querySelector("div").style.flexDirection = "column";
         newAchievementUnlockedPopUp.querySelector("li").querySelector("div").style.alignItems = "center";
@@ -411,6 +411,7 @@ class Achievements {
         }, 4000);
     };
 };
+
 let Achievement = new Achievements();
 Achievement.Init();
 
