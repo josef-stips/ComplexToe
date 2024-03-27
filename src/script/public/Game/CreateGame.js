@@ -719,7 +719,7 @@ class NewLevel {
         for (const [pattern, index] of Object.entries(costumPatterns)) {
             console.log(pattern, index);
 
-            createPattern_preview(pattern, index[pattern]["structure"].map(i => Number(i)), costum_patterns_overview_from_level, "level");
+            createPattern_preview(pattern, index[pattern]["structure"].map(i => Number(i)), costum_patterns_overview_from_level, "remove");
         };
     };
 
@@ -743,7 +743,7 @@ class NewLevel {
         let y = costumField["y"];
         let name = costumField["name"];
 
-        createPattern_preview(name, [], costumFieldCurrentLevelGrid, "level", undefined, x, "scroll", undefined, y, "field");
+        createPattern_preview(name, [], costumFieldCurrentLevelGrid, "remove", undefined, x, "scroll", undefined, y, "field");
     };
 
     // init and start game with given game data
@@ -959,8 +959,6 @@ class NewLevel {
             };
         };
 
-        this.SaveInHistory("costumPatterns", this.CurrentSelectedSetting.costumPatterns);
-
         console.log(this.CurrentSelectedSetting.costumPatterns);
     };
 
@@ -982,8 +980,6 @@ class NewLevel {
             // delete field from object
             this.CurrentSelectedSetting.costumField = {};
         };
-
-        this.SaveInHistory("costumField", this.CurrentSelectedSetting.costumField);
 
         console.log(this.CurrentSelectedSetting.costumField);
     };

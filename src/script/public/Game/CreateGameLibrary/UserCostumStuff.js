@@ -116,7 +116,7 @@ const createCell = (x, index, grid, eventListener) => {
 };
 
 // update cell. toggle its content
-const createField_updateCell = (i, parentGrid, fromPreview) => {
+const createField_updateCell = (i, parentGrid, fromPreview, cellClass = "cell") => {
     let userInfoClass = localStorage.getItem("userInfoClass");
     let userInfoColor = localStorage.getItem("userInfoColor");
     let UserIcon = localStorage.getItem("UserIcon");
@@ -126,7 +126,7 @@ const createField_updateCell = (i, parentGrid, fromPreview) => {
     // check if cell is empty or not
     if (cell.classList.contains("draw")) { // cell is full. empty it
         // reset cell
-        cell.className = `cell ${fromPreview}`;
+        cell.className = `${cellClass} ${fromPreview}`;
         cell.textContent = null;
         cell.style.color = "white";
 
@@ -134,7 +134,7 @@ const createField_updateCell = (i, parentGrid, fromPreview) => {
 
         // user uses advaned skin
         if (userInfoClass != "empty") {
-            cell.className = `cell ${fromPreview} ${userInfoClass}`;
+            cell.className = `${cellClass} ${fromPreview} ${userInfoClass}`;
 
         } else { // user uses normal color skin
 
@@ -248,16 +248,23 @@ const Display_CostumPatterns = () => {
     // delete previous content
     costum_patterns_overview.textContent = null;
 
-    if (Object.keys(patterns).length <= 0) costum_patterns_overview.textContent = "No costum patterns are created yet.";
+    if (patterns) {
+        if (Object.keys(patterns).length <= 0) costum_patterns_overview.textContent = "No costum patterns are created yet.";
 
-    // creates pattern html element from an object
-    Object.keys(patterns).forEach(pattName => {
-        let pattStructure = patterns[pattName];
+        // creates pattern html element from an object
+        Object.keys(patterns).forEach(pattName => {
+            let pattStructure = patterns[pattName];
 
-        createPattern_preview(pattName, pattStructure, costum_patterns_overview, "personal");
-    });
+            createPattern_preview(pattName, pattStructure, costum_patterns_overview, "personal");
+        });
 
-    NewCreativeLevel.InitCostumPatterns(NewCreativeLevel.CurrentSelectedSetting.costumPatterns);
+        NewCreativeLevel.InitCostumPatterns(NewCreativeLevel.CurrentSelectedSetting.costumPatterns);
+
+    } else {
+        costum_patterns_overview.textContent = "No costum patterns are created yet.";
+
+        NewCreativeLevel.InitCostumPatterns({});
+    };
 };
 
 // displays all fields stored in localstorage in "own fields" tab container 
@@ -267,18 +274,25 @@ const Display_CostumFields = () => {
     // delete previous content
     costum_field_overview.textContent = null;
 
-    if (Object.keys(fields).length <= 0) costum_field_overview.textContent = "No costum fields are created yet.";
+    if (fields) {
+        if (Object.keys(fields).length <= 0) costum_field_overview.textContent = "No costum fields are created yet.";
 
-    // creates pattern html element from an object
-    Object.keys(fields).forEach(key => {
-        let name = fields[key]["name"];
-        let x = fields[key]["x"];
-        let y = fields[key]["y"];
+        // creates pattern html element from an object
+        Object.keys(fields).forEach(key => {
+            let name = fields[key]["name"];
+            let x = fields[key]["x"];
+            let y = fields[key]["y"];
 
-        createPattern_preview(name, [], costum_field_overview, "personal", undefined, x, "scroll", undefined, y, "field");
-    });
+            createPattern_preview(name, [], costum_field_overview, "personal", undefined, x, "scroll", undefined, y, "field");
+        });
 
-    NewCreativeLevel.InitCostumField(NewCreativeLevel.CurrentSelectedSetting.costumField);
+        NewCreativeLevel.InitCostumField(NewCreativeLevel.CurrentSelectedSetting.costumField);
+
+    } else {
+        costum_field_overview.textContent = "No costum fields are created yet.";
+
+        NewCreativeLevel.InitCostumField({});
+    };
 };
 
 // create pattern preview element
@@ -308,7 +322,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     createPattern_checkPatternInLevel(checkBox, patternName, patternStructure, gridType);
 
     // create basic 5x5 grid 
-    createPattern_createGrid(patternStructure, gridRows, y, grid);
+    createPattern_createGrid(patternStructure, gridRows, y, grid, rights);
 
     // event listener
     createPattern_eventListener(pen, bin, checkBox, bin2, patternStructure, patternName, gridType, Number(gridRows), Number(y));
@@ -338,7 +352,14 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
         gridWrapper.setAttribute("right", "personal");
 
     } else if (rights == "level") {
+
         gridWrapper.setAttribute("right", "level");
+
+    } else if (rights == "remove") {
+
+        editItemsWrapper.appendChild(bin2);
+
+        gridWrapper.setAttribute("right", "remove");
     };
 
     setTimeout(() => {
@@ -370,6 +391,7 @@ const createPattern_addAttributes = (gridWrapper, patternName, grid, title, head
     checkBox.style.fontSize = "larger";
     grid.style.gridTemplateColumns = `repeat(${gridRows}, 1fr)`;
     title.textContent = patternName;
+    title.style.fontSize = "medium";
 };
 
 // check if this pattern exists in the current creative level
@@ -395,11 +417,13 @@ const createPattern_checkPatternInLevel = (checkBox, patternName, patternStructu
 };
 
 // create grid and grid pattern if exists to the grid
-const createPattern_createGrid = (patternStructure, gridRows, y, grid) => {
+const createPattern_createGrid = (patternStructure, gridRows, y, grid, rights) => {
+    let cellClass = rights == "level" ? "miniCellMini" : "cell";
+
     new Array(gridRows * y).fill("").forEach(i => {
         let cell = document.createElement("div");
         cell.classList.add("preview_cell");
-        cell.classList.add("cell");
+        cell.classList.add(cellClass);
 
         grid.appendChild(cell);
     });
@@ -409,7 +433,7 @@ const createPattern_createGrid = (patternStructure, gridRows, y, grid) => {
         let index = parseInt(i);
 
         // console.log(index, i, grid, grid.children[index]);
-        createField_updateCell(index, grid, "preview_cell");
+        createField_updateCell(index, grid, "preview_cell", cellClass);
     });
 };
 
@@ -482,7 +506,7 @@ const createPattern_scrollgrid = (gridWrapper, grid, Yscroll, Xscroll) => {
     };
 
     if (Xscroll === undefined) {
-        gridWrapper.style.overflowX = "unset";
+        gridWrapper.style.overflowX = "hidden";
     };
 };
 

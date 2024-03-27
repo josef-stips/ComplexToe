@@ -629,7 +629,7 @@ const ChangeGameBG = (bg1, bg2, reset) => {
 
 // the normal card level in complex toe als have bg colors to make them more unique etc.
 const SetBGColorForCurrentField = (xy) => {
-    if (localStorage.getItem("sett-ShowBGColor") == "true") {
+    if (localStorage.getItem("sett-ShowBGColor") == "true" && !NewCreativeLevel) {
         switch (xy) {
             case 5:
                 bgcolor1 = "#e9967a57";

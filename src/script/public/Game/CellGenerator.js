@@ -49,35 +49,13 @@ function generateCell(index) {
 // configure cell size 
 const ConfigureCellSize = (cell, xCell_Amount) => {
     // configure cell size
-    if (xCell_Amount == 5) {
-        cell.style.fontSize = "76px";
+    const maxGridSize = "var(--max-cellGrid-size)";
 
-    } else if (xCell_Amount == 10) {
-        cell.style.fontSize = "47px";
+    if (xCell_Amount <= 25) {
+        cell.style.fontSize = `calc((${maxGridSize} / ${xCell_Amount}) - 10px)`;
 
-    } else if (xCell_Amount == 15) {
-        cell.style.fontSize = "24px";
-
-    } else if (xCell_Amount == 20) {
-        cell.style.fontSize = "20.5px";
-
-        // KI specified Game Boards
-    } else if (xCell_Amount == 3) {
-        cell.style.fontSize = "100px";
-
-    } else if (xCell_Amount == 4) {
-        cell.style.fontSize = "88px";
-
-        // Advanced Game Boards
-    } else if (xCell_Amount == 25) {
-        cell.style.fontSize = "13.5px";
-
-    } else if (xCell_Amount == 30) {
-        cell.style.fontSize = "11px";
-
-    } else if (xCell_Amount == 40) {
-        cell.style.fontSize = "var(--font-size-for-40x40-field)";
-
+    } else {
+        cell.style.fontSize = `calc((${maxGridSize} / ${xCell_Amount}) - 5px)`;
     };
 
     return cell;

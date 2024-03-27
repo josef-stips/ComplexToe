@@ -17,6 +17,7 @@
     --max-cellGrid-size: 585px;
     --CreateLevel-ScrollContainerHeight-max: 650px;
     --max-responsive-scale: scale(1);
+    --maxCellSize: 425%;
 }
 
 .dark-mode {
@@ -7943,6 +7944,7 @@ p.createCostumField_yInput {
         --max-cellGrid-size: 442.5px;
         --CreateLevel-ScrollContainerHeight-max: 450px;
         --max-responsive-scale: scale(0.75);
+        --maxCellSize: 325%;
     }
     .skinShop-SkinColors {
         gap: 1em;
