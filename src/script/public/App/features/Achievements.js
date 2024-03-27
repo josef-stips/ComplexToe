@@ -391,7 +391,7 @@ class Achievements {
 
         // delete img element from list element in achievement pop up + manipulate other things
         newAchievementUnlockedPopUp.querySelector("li").querySelector("img").remove();
-        newAchievementUnlockedPopUp.querySelector("li").querySelector(".achievement_check_icon").remove();
+        newAchievementUnlockedPopUp.querySelector("li").querySelector(".achievement_check_icon") && newAchievementUnlockedPopUp.querySelector("li").querySelector(".achievement_check_icon").remove();
         newAchievementUnlockedPopUp.querySelector("li").querySelector("div").style.display = "flex";
         newAchievementUnlockedPopUp.querySelector("li").querySelector("div").style.flexDirection = "column";
         newAchievementUnlockedPopUp.querySelector("li").querySelector("div").style.alignItems = "center";

@@ -959,6 +959,8 @@ class NewLevel {
             };
         };
 
+        this.SaveInHistory("costumPatterns", this.CurrentSelectedSetting.costumPatterns);
+
         console.log(this.CurrentSelectedSetting.costumPatterns);
     };
 
@@ -980,6 +982,8 @@ class NewLevel {
             // delete field from object
             this.CurrentSelectedSetting.costumField = {};
         };
+
+        this.SaveInHistory("costumField", this.CurrentSelectedSetting.costumField);
 
         console.log(this.CurrentSelectedSetting.costumField);
     };
@@ -1030,8 +1034,16 @@ class NewLevel {
 };
 
 // add user costum pattern to win conditions
-const NewCreativeLevel_GenerateCostumPatterns = () => {
-    let patterns = NewCreativeLevel.selectedLevel[15];
+const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, costumXCoordFromThirdParty) => { // costumPatternsFromThirdParty : from database for online game
+    console.log(costumPatternsFromThirdParty, NewCreativeLevel);
+
+    let patterns;
+    if (NewCreativeLevel) {
+        patterns = NewCreativeLevel.selectedLevel[15];
+
+    } else {
+        patterns = costumPatternsFromThirdParty;
+    };
 
     if (patterns && NewCreativeLevel) {
         // generate
@@ -1040,6 +1052,20 @@ const NewCreativeLevel_GenerateCostumPatterns = () => {
 
             let structure = index[pattern]["structure"]
             let xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+
+            console.log(structure, xCellAmount);
+
+            CostumWinPattern(structure, xCellAmount, xCellAmount);
+        };
+
+    } else if (costumPatternsFromThirdParty) {
+
+        // generate
+        for (const [pattern, index] of Object.entries(patterns)) {
+            console.log(pattern, index);
+
+            let structure = index[pattern]["structure"]
+            let xCellAmount = costumXCoordFromThirdParty;
 
             console.log(structure, xCellAmount);
 

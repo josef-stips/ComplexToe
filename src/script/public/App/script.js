@@ -1020,6 +1020,8 @@ gameMode_KI_card.addEventListener('click', () => {
         goToAdvancedFields.classList = "fa-solid fa-caret-down";
         secondTierModes.style.marginBottom = "0";
         isInAdvancedGameModes = false;
+        bossModeIsActive = false;
+
         // other thing
         ChooseFieldDisplay.style.opacity = "0";
     };

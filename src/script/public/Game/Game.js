@@ -98,7 +98,8 @@ let board_size;
 
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
-function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords) {
+function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
+    CreativeLevel_from_onlineMode_costumPatterns) {
     // Define field data for game
     // If online game set online game data, if not set normal data
     let fieldIndex = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[0] : field.getAttribute('index');
@@ -180,9 +181,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     CreateWinConditions(xCell_Amount, Allowed_Patterns);
 
     // user costum patterns are only availible in user costum levels
-    if (NewCreativeLevel) {
+    if (NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns) {
         // check and initialize user costum patterns
-        NewCreativeLevel_GenerateCostumPatterns();
+        NewCreativeLevel_GenerateCostumPatterns(CreativeLevel_from_onlineMode_costumPatterns, costumCoords[0]);
     };
 
     // for KI Mode
@@ -679,74 +680,87 @@ const SetBGColorForCurrentField = (xy) => {
 
 // every card field has its own img icon or fontawesome icon
 const SetGameFieldIconForCurrentField = (xy, fieldIndex) => {
-    switch (xy) {
-        case 5:
-            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
-            let img = document.createElement("img");
-            img.src = "./assets/game/warlord-helmet.svg";
-            img.width = "35";
-            img.height = "35";
-            img.style.margin = "7px 0 0 0";
-            img.style.transform = "rotate(90deg)";
-            Game_Upper_Field_Icon.appendChild(img);
-            Game_Upper_Field_Icon.classList = "";
-            break;
+    if (!NewCreativeLevel) {
+        switch (xy) {
+            case 5:
+                if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+                let img = document.createElement("img");
+                img.src = "./assets/game/warlord-helmet.svg";
+                img.width = "35";
+                img.height = "35";
+                img.style.margin = "7px 0 0 0";
+                img.style.transform = "rotate(90deg)";
+                Game_Upper_Field_Icon.appendChild(img);
+                Game_Upper_Field_Icon.classList = "";
+                break;
 
-        case 10:
-            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
-            let img1 = document.createElement("img");
-            img1.src = "./assets/game/wolf-head.svg";
-            img1.width = "35";
-            img1.height = "35";
-            img1.style.margin = "7px 0 0 0";
-            Game_Upper_Field_Icon.appendChild(img1);
-            Game_Upper_Field_Icon.classList = "";
-            break;
+            case 10:
+                if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+                let img1 = document.createElement("img");
+                img1.src = "./assets/game/wolf-head.svg";
+                img1.width = "35";
+                img1.height = "35";
+                img1.style.margin = "7px 0 0 0";
+                Game_Upper_Field_Icon.appendChild(img1);
+                Game_Upper_Field_Icon.classList = "";
+                break;
 
-        case 15:
-            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
-            let img3 = document.createElement("img");
-            img3.src = "./assets/game/shattered-sword.svg";
-            img3.width = "31";
-            img3.height = "31";
-            img3.style.margin = "7px 4px 0 0";
-            img3.style.transform = "scaleX(-1)";
-            Game_Upper_Field_Icon.appendChild(img3);
-            Game_Upper_Field_Icon.classList = "";
-            break;
+            case 15:
+                if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+                let img3 = document.createElement("img");
+                img3.src = "./assets/game/shattered-sword.svg";
+                img3.width = "31";
+                img3.height = "31";
+                img3.style.margin = "7px 4px 0 0";
+                img3.style.transform = "scaleX(-1)";
+                Game_Upper_Field_Icon.appendChild(img3);
+                Game_Upper_Field_Icon.classList = "";
+                break;
 
-        case 20:
-            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
-            let img2 = document.createElement("img");
-            img2.src = "./assets/game/dragon-head.svg";
-            img2.width = "35";
-            img2.height = "35";
-            img2.style.margin = "7px 0 0 0";
-            img2.style.transform = "rotate(90deg) scaleY(-1)";
-            Game_Upper_Field_Icon.appendChild(img2);
-            Game_Upper_Field_Icon.classList = "";
-            break;
+            case 20:
+                if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+                let img2 = document.createElement("img");
+                img2.src = "./assets/game/dragon-head.svg";
+                img2.width = "35";
+                img2.height = "35";
+                img2.style.margin = "7px 0 0 0";
+                img2.style.transform = "rotate(90deg) scaleY(-1)";
+                Game_Upper_Field_Icon.appendChild(img2);
+                Game_Upper_Field_Icon.classList = "";
+                break;
 
-        case 25:
-            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
-            Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
-            break;
+            case 25:
+                if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+                Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
+                break;
 
-        case 30:
-            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
-            Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
-            break;
+            case 30:
+                if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+                Game_Upper_Field_Icon.classList = `${Fields[fieldIndex].icon} field-card-header-icon`;
+                break;
 
-        case 40:
-            if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
-            let img4 = document.createElement("img");
-            img4.src = "./assets/game/semi-closed-eye.svg";
-            img4.width = "40";
-            img4.height = "40";
-            img4.style.margin = "2px 0 0 0";
-            Game_Upper_Field_Icon.appendChild(img4);
-            Game_Upper_Field_Icon.classList = "";
-            break;
+            case 40:
+                if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+                let img4 = document.createElement("img");
+                img4.src = "./assets/game/semi-closed-eye.svg";
+                img4.width = "40";
+                img4.height = "40";
+                img4.style.margin = "2px 0 0 0";
+                Game_Upper_Field_Icon.appendChild(img4);
+                Game_Upper_Field_Icon.classList = "";
+                break;
+        };
+
+    } else {
+
+        if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+        let img5 = document.createElement("img");
+        img5.src = NewCreativeLevel.Settings.levelicon[NewCreativeLevel.selectedLevel[4]];
+        img5.width = "31";
+        img5.height = "31";
+        img5.style.margin = "4px 0 0 0";
+        Game_Upper_Field_Icon.appendChild(img5);
+        Game_Upper_Field_Icon.classList = "";
     };
 };
 

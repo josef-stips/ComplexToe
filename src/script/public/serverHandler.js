@@ -1113,6 +1113,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     clearTimer();
 
     // many data about the room from the database
+
     // game data
     let FieldIndex = RoomData[0].fieldIndex;
     let FieldTitle = RoomData[0].fieldTitle;
@@ -1139,14 +1140,23 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // required points to win a game
     let required_points_to_win = parseInt(Lobby_PointsToWin.textContent);
 
+    // user costum data (NewCreativeLevel stuff)
+
+    console.log(RoomData[0].costumPatterns, RoomData[0].costumField[0], RoomData[0].costumField[1]);
+
     // user costum coord in new creative level
-    let costumX;
-    let costumY;
+    let costumX = parseInt(JSON.parse(RoomData[0].costumField)[0]);
+    let costumY = parseInt(JSON.parse(RoomData[0].costumField)[1]);
+
+    // user costum created patterns
+    let costumPatterns = JSON.parse(RoomData[0].costumPatterns);
+
+    console.log(costumPatterns, costumX, costumY);
 
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
         PlayerTimer, player1_advancedIcon, player2_advancedIcon, player1_SkinColor, player2_SkinColor, player3_name
-    ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY]);
+    ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY], costumPatterns);
 
     // play theme music 
     PauseMusic();

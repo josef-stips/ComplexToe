@@ -363,6 +363,12 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             curr_form1 = "fontawesome"; // later it will check if it has this value and do the required things
         };
 
+        // costum x and y
+        let costumX;
+        let costumY;
+
+        let costumPatterns;
+
         // set data: either extern data or intern data
         if (Data1) Check[2] = Data1;
         if (Data2) Check[3] = Data2;
@@ -370,14 +376,37 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         if (thirdplayerRequired) thirdPlayer_required = thirdplayerRequired;
         if (PointsToWinGame) UserSetPointsToWinGameInput.value = PointsToWinGame;
         if (patterns) allowedPatternsFromUser = patterns;
-        if (PlayingInCreatedLevel) Check[2] = NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]];
 
-        // console.log(UserSetPointsToWinGameInput.value, PointsToWinGame)
+        if (PlayingInCreatedLevel) {
+            Check[2] = NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]];
+
+            // set up x and y coordinates. case: default field is choosen
+            if (NewCreativeLevel.selectedLevel[16] == {}) {
+                costumX = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+                costumY = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+
+            } else {
+                costumX = NewCreativeLevel.selectedLevel[16]["x"];
+                costumY = NewCreativeLevel.selectedLevel[16]["y"];
+            };
+
+            if (costumX == undefined || costumY == undefined) {
+                costumX = xyCell_Amount;
+                costumY = xyCell_Amount;
+            };
+
+            costumPatterns = NewCreativeLevel.selectedLevel[15];
+
+            allowedPatternsFromUser = NewCreativeLevel.selectedLevel[6];
+        };
+
+        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY);
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
-            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser
+            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns
         ], message => {
+
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
             Lobby_GameCode_display.style.userSelect = 'text';
 
