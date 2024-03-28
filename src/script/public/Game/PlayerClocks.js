@@ -46,7 +46,7 @@ function removeAccessToAnything() {
     restartBtn.removeEventListener('click', restartGame);
     restartBtn.style.color = '#56565659';
     // console.log("lol")
-    // CloseOnlinePopUps(true);
+    !current_level_boss && CloseOnlinePopUps(true);
     GiveUpPopUp.style.display = "none";
 
     // remove access to set
@@ -115,7 +115,13 @@ function addAccesOnlineMode(TimerEnded, fromBeginning) {
     // player gets access to set again
     cells.forEach(cell => {
         cell.addEventListener('click', cellCicked);
-        cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+
+        if (!cell.classList.contains("draw") && !cell.classList.contains("death-cell")) {
+            cell.style.cursor = 'pointer';
+
+        } else {
+            cell.style.cursor = 'default';
+        };
     });
 
     !fromBeginning && checkWinner();

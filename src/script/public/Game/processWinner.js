@@ -417,7 +417,13 @@ function processResult_continueGame(fromRestart, fromClick, won) {
                     // player gets access to set again
                     cells.forEach(cell => {
                         cell.addEventListener('click', cellCicked);
-                        cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+
+                        if (cell.classList.contains("draw") || cell.classList.contains("death-cell")) {
+                            cell.style.cursor = 'default';
+
+                        } else {
+                            cell.style.cursor = 'pointer';
+                        };
                     });
 
                     UserClicksNTimesInARow++;
@@ -441,6 +447,7 @@ function processResult_continueGame(fromRestart, fromClick, won) {
         }, 100);
 
     } else { // not in advanture mode
+
         // if in KI Mode and Player just setted his icon. Now it is KI's turn
         if (curr_mode == GameMode[1].opponent && !won) {
             setTimeout(() => {
@@ -947,7 +954,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
         // send message to server
         if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won,
-            JSON.stringify([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))), score_Player1_numb, score_Player2_numb
+            WinCombination ? JSON.stringify([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))) : undefined, score_Player1_numb, score_Player2_numb
         ]);
         return;
 
@@ -1094,7 +1101,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
         score_Player1_numb = player1_score;
         score_Player2_numb = player2_score;
 
-        WinCombination = JSON.parse(WinCombination);
+        WinCombination && (WinCombination = JSON.parse(WinCombination));
 
         UltimateGameWinFirstAnimation(player1_won, player2_won)
 

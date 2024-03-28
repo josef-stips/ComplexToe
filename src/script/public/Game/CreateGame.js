@@ -767,6 +767,9 @@ class NewLevel {
         bgcolor1 = this.PossibleColors[this.selectedLevel[0]];
         bgcolor2 = this.PossibleColors[this.selectedLevel[1]];
 
+        SetGameData_Label[2].style.display = "block";
+        SetGameModeList.style.display = "block";
+
         // set game data
         curr_field_ele = DataFields[FieldSize];
 
@@ -1076,7 +1079,13 @@ const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, c
 
 // show patterns in game info pop up
 const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
-    let patterns = NewCreativeLevel.selectedLevel[15];
+    let patterns;
+    if (NewCreativeLevel) {
+        patterns = NewCreativeLevel.selectedLevel[15];
+
+    } else {
+        patterns = creativeLevel_online_costumPatterns;
+    };
 
     // delete previous costum user cell grids 
     let previousCellGrids = document.querySelectorAll(`[ingame_preview="true"]`);
@@ -1098,6 +1107,20 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
             // show in game info pop up
             createPattern_preview(pattern, structure, PatternGridWrapper, "level", "ingame_preview");
         };
+
+    } else {
+        // generate
+        for (const [pattern, index] of Object.entries(patterns)) {
+            console.log(pattern, index);
+
+            let structure = index[pattern]["structure"];
+            let xCellAmount = costumXFromThirdParty;
+
+            console.log(structure, xCellAmount);
+
+            // show in game info pop up
+            createPattern_preview(pattern, structure, PatternGridWrapper, "level", "ingame_preview");
+        };
     };
 };
 
@@ -1105,31 +1128,43 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
 const InitCreateLevelScene = () => {
     // User wants to publish a level 
     PublishLevelBtn.addEventListener("click", () => {
-        if (NewCreativeLevel.selectedLevel[13] == 1 && NewCreativeLevel.selectedLevel[9] == 0) { // Creator of level beat it which means he has the right to publish the level
-            try {
-                socket.emit("PublishLevel", NewCreativeLevel.selectedLevel[11], cb => {
-                    if (!localStorage.getItem("UserPublishedLevelForTheFirstTime")) {
-                        Achievement.new(15);
-                        localStorage.setItem("UserPublishedLevelForTheFirstTime", "true");
+        try {
+            socket.emit("Check_UserVerifiedLevel", NewCreativeLevel.selectedLevel[11], cb => {
+
+                // if player beat it
+                if (cb) {
+                    try {
+                        socket.emit("PublishLevel", NewCreativeLevel.selectedLevel[11], cb => {
+                            if (!localStorage.getItem("UserPublishedLevelForTheFirstTime")) {
+                                Achievement.new(15);
+                                localStorage.setItem("UserPublishedLevelForTheFirstTime", "true");
+                            };
+
+                            // refresh level instance
+                            let NewField = new NewLevel();
+                            NewCreativeLevel = NewField;
+                            NewCreativeLevel.Init();
+
+                            AlertText.textContent = "Level is successfully published";
+                            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                        });
+
+                    } catch (error) {
+                        console.log(error);
+                        AlertText.textContent = "Something went wrong! Level could not be published. Try it again later";
+                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     };
 
-                    // refresh level instance
-                    let NewField = new NewLevel();
-                    NewCreativeLevel = NewField;
-                    NewCreativeLevel.Init();
-
-                    AlertText.textContent = "Level is successfully published";
+                } else {
+                    AlertText.textContent = "You have to conquer the level to publish it";
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-                });
-            } catch (error) {
-                console.log(error);
-                AlertText.textContent = "Something went wrong! Level could not be published. Try it again later";
-                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-            };
+                };
+            });
 
-        } else if (NewCreativeLevel.selectedLevel[9] == 0) {
-            AlertText.textContent = "You have to conquer the level to publish it";
+        } catch (error) {
+            AlertText.textContent = "Something went wrong.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+            return;
         };
     });
 

@@ -87,6 +87,15 @@ let UserClicksNTimesInARow = 0;
 let bgcolor1 = "";
 let bgcolor2 = "";
 
+let costumLevelIcon = "";
+
+let creativeLevel_online_costumPatterns;
+
+let costumXFromThirdParty;
+
+let PlayingInCreatedLevel_AsGuest = false;
+
+// player local storage setting 
 let showBGColor = true;
 
 // boss class
@@ -101,6 +110,7 @@ let board_size;
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
     CreativeLevel_from_onlineMode_costumPatterns) {
     // Define field data for game
+
     // If online game set online game data, if not set normal data
     let fieldIndex = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[0] : field.getAttribute('index');
     let fieldTitle = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[1] : field.getAttribute('title');
@@ -111,7 +121,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         fieldTitle = mapLevelName;
 
     } else {
-        curr_field = Fields[fieldIndex].name;
+        curr_field = CreativeLevel_from_onlineMode_costumPatterns ? fieldTitle : Fields[fieldIndex].name;
     };
 
     current_level_boss && current_level_boss.delete();
@@ -129,7 +139,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // set up x and y coordinates
     if (costumCoords) {
 
-        if (costumCoords[0] != undefined) {
+        console.log(costumCoords[0]);
+
+        if (costumCoords[0] != undefined && !isNaN(costumCoords[0])) {
             // set user costum level coordinates
             xCell_Amount = costumCoords[0];
             yCell_Amount = costumCoords[1];
@@ -184,6 +196,13 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     if (NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns) {
         // check and initialize user costum patterns
         NewCreativeLevel_GenerateCostumPatterns(CreativeLevel_from_onlineMode_costumPatterns, costumCoords[0]);
+
+        creativeLevel_online_costumPatterns = CreativeLevel_from_onlineMode_costumPatterns;
+        costumXFromThirdParty = costumCoords[0];
+
+        if (personal_GameData.role == "user") {
+            PlayingInCreatedLevel_AsGuest = true;
+        };
     };
 
     // for KI Mode
@@ -249,9 +268,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     Find_MaxDepth();
 
     if (onlineGame == 'OnlineMode') {
-        initializeDocument(field, fieldIndex, fieldTitle, true, OnlineGameDataArray, maxAmoOfMoves);
+        initializeDocument(field, fieldIndex, fieldTitle, true, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns);
     } else {
-        initializeDocument(field, fieldIndex, fieldTitle, false, OnlineGameDataArray, maxAmoOfMoves);
+        initializeDocument(field, fieldIndex, fieldTitle, false, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns);
     };
 
     // if in 40x40 field, generate its properties: eye
@@ -301,161 +320,144 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     CreateMusicBars(Fields[fieldIndex].theme_name);
 };
 
-function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves) {
+function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns) {
+    // Hide unnecessary elements
     GameField.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
     CheckmateWarnText.style.display = 'none';
     OnlineChat_btn.style.display = "none";
     CloseOnlinePopUps(true);
     CreateLevelScene.style.display = "none";
-    // close pop ups if there is any on
-    CloseOnlinePopUps(true);
     HeaderWrapper.style.height = '7.5%';
     lobbyFooter.style.background = "#15171a";
     lobbyFooter.style.width = "100%";
 
+    // Initialize leaderboard scores
     leaderboard_player1_score.textContent = "0";
     leaderboard_player2_score.textContent = "0";
 
-    // remove access to set
+    // Remove event listeners and set cursor to default for cells
     cells.forEach(cell => {
         cell.removeEventListener('click', cellCicked);
         cell.style.cursor = "default";
+
+        cell.addEventListener('mouseenter', function a() {
+            cell_mouseEnter(cell);
+        });
+
+        cell.addEventListener('mouseleave', function a() {
+            cell_mouseLeave(cell);
+        });
     });
 
-    // in online mode: display give up button, in offline mode: display choose winner button
+    // Set choose winner button based on game mode
     curr_mode == GameMode[2].opponent ? globalChooseWinnerBtn = GiveUp_btn : globalChooseWinnerBtn = chooseWinnerWindowBtn;
 
-    // Init game title,game icon and game info
+    // Initialize game title and info
     GameTitle.textContent = fieldTitle;
     GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
     GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
-
-    SetGameFieldIconForCurrentField(parseInt(xCell_Amount), fieldIndex);
+    SetGameFieldIconForCurrentField(parseInt(xCell_Amount), fieldIndex, CreativeLevel_from_onlineMode_costumPatterns);
     SetBGColorForCurrentField(parseInt(xCell_Amount));
-
     inAdvantureMode ? GameField_AveragePlayTimeDisplay.textContent = `ave. playtime is unknown` : GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
 
-    // cell grid things
+    // Display game grid
     cellGrid.style.display = 'grid';
     cellGrid.classList.remove('Invisible');
     cellGrid.classList.remove('cellGrid-alert');
     cellGrid.classList.add('cellGrid_opacity');
     cellGrid.style.opacity = "1";
 
-    // choose winner button
+    // Initialize choose winner and give up buttons
     chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
-    // give up button
     giveUp_Yes_btn.removeEventListener('click', giveUp_Yes_btn.fn);
-    giveUp_Yes_btn.addEventListener('click', giveUp_Yes_btn.fn = function() { UserGivesUp(personal_GameData.role) }); // give up online game button close pop up btn on Yes request: User actually gives up
-
-    // initialize display of the choose winner buttons, they will be modified later during game in certain events
+    giveUp_Yes_btn.addEventListener('click', giveUp_Yes_btn.fn = function() { UserGivesUp(personal_GameData.role) });
     chooseWinnerWindowBtn.style.display = "none";
     GiveUp_btn.style.display = "none";
     globalChooseWinnerBtn.style.display = "block";
 
-    // if in offline mode
+    // Initialize game elements based on mode
     if (!onlineMode) {
-        // How long the game is - Game Counter
+        // Offline mode
         let GameSeconds = 0;
         GameField_TimeMonitor.textContent = '0 s.';
-        clearInterval(gameCounter)
+        clearInterval(gameCounter);
         gameCounter = null;
         gameCounter = setInterval(() => {
             GameSeconds++;
             GameField_TimeMonitor.textContent = GameSeconds + ' s.';
         }, 1000);
-
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
         restartBtn.style.color = 'var(font-color)';
         addAccessToAnything("TimerEnded", "fromBeginning");
-
-        // if exists
         ChangeGameBG(bgcolor1, bgcolor2);
 
-    } else { // Is in online mode
-        // Make sure that the user is not allowed to reload the game
+    } else {
 
-        // The global game timer is by the admin
+        // Online mode
         if (personal_GameData.role == 'admin') {
-            // html stuff
             restartBtn.style.display = 'block';
             globalChooseWinnerBtn.style.display = 'block';
-            // How long the game is - Game Counter
             GameField_TimeMonitor.textContent = '0 s.';
             clearInterval(gameCounter);
             gameCounter = null;
-
             gameCounter = setInterval(() => {
-                // send message to server
-                // server sends message to all clients
                 socket.emit('globalTimer', personal_GameData.currGameID);
             }, 1000);
         };
 
-        // set up buttons for online game
         if (personal_GameData.role == 'user') {
             restartBtn.style.color = '#56565659';
             restartBtn.removeEventListener('click', restartGame);
             GiveUp_btn.style.color = 'var(--font-color)';
             GiveUp_btn.style.display = 'block';
-
         } else if (personal_GameData.role == 'admin') {
             restartBtn.style.color = 'var(--font-color)';
             restartBtn.addEventListener('click', restartGame);
             GiveUp_btn.style.color = 'var(--font-color)';
             GiveUp_btn.style.display = 'block';
-
         } else if (personal_GameData.role == 'blocker') {
             restartBtn.style.color = '#56565659';
             restartBtn.removeEventListener('click', restartGame);
             giveUp_Yes_btn.removeEventListener('click', giveUp_Yes_btn.fn);
             GiveUp_btn.style.display = 'none';
-        };
+        }
         addAccesOnlineMode("TimerEnded", "fromBeginning");
-
         OnlineChat_btn.style.display = "block";
-
-        // change background color of game. This signal goes only from the admin
         socket.emit("ChangeBGColor", personal_GameData.currGameID, bgcolor1, bgcolor2);
-    };
+    }
 
+    // Advanture mode settings
     if (inAdvantureMode) {
         restartBtn.style.display = 'none';
         globalChooseWinnerBtn.style.display = 'none';
-        // max amount of moves to set for player
         MaxAmountOfMovesGameDisplay.style.display = 'block';
         MaxAmountOfMovesGameDisplay.textContent = `moves left: ${maxAmoOfMoves}`;
-        // spell to place two times in a row
         AdvantureMode_SpellDisplay.style.display = "flex";
         SpellAmountDisplay.textContent = SpellsInStore;
-
     } else {
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
-        // advanture mode things
         MaxAmountOfMovesGameDisplay.style.display = 'none';
         AdvantureMode_SpellDisplay.style.display = "none";
     };
 
+    // Choose winner button display based on mode
     if (PlayingInCreatedLevel) {
         chooseWinnerWindowBtn.style.display = "none";
-
     } else if (curr_mode == GameMode[3].opponent) {
         chooseWinnerWindowBtn.style.display = "block";
     };
 
-    (curr_mode == GameMode[2].opponent) ? GameFieldHeaderUnderBody.style.display = "none": GameFieldHeaderUnderBody.style.display = "flex";
-
-    // static width and height from cells
+    // Adjust cell width and height
     let cellWidth = cellGrid.children[0].getBoundingClientRect().width;
     [...cellGrid.children].forEach(cell => {
         cell.style.width = `${cellWidth - 1}px`;
         cell.style.height = `${cellWidth - 1}px`;
     });
 
-    // Init Player 
+    // Initialize players
     initializePlayers(OnlineGameDataArray);
 };
 
@@ -605,6 +607,69 @@ function initializePlayers(OnlineGameDataArray) {
     });
 };
 
+// cell mouse enter
+function cell_mouseEnter(cell) {
+    let AdvancedSkin;
+
+    if (curr_mode == GameMode[2].opponent) { // online mode
+        AdvancedSkin = `cell ${localStorage.getItem("userInfoClass")}`;
+
+    } else {
+        AdvancedSkin = PlayerData[1].AdvancedSkin;
+    };
+
+    if (!cell.classList.contains("draw") && !cell.classList.contains("death-cell")) {
+
+        // Display player symbol or advanced skin
+        if (curr_mode != GameMode[3].opponent && AdvancedSkin != "cell empty") { // online mode | advanture mode
+            let str = AdvancedSkin;
+            let parts = str.split(" "); // Trennung anhand des Leerzeichens
+
+            let part1 = parts[0]; // Erster Teil des geteilten Strings
+            let part2 = parts[1]; // Zweiter Teil des geteilten Strings
+            let part3 = parts[2]; // Zweiter Teil des geteilten Strings
+
+            cell.classList.add(part1);
+            cell.classList.add(part2);
+            cell.classList.add(part3);
+
+        } else if (curr_mode == GameMode[3].opponent && currentPlayer != PlayerData[1].PlayerForm) { // offline mode and player 2 turn 
+
+            cell.textContent = currentPlayer;
+            cell.style.color = "white";
+
+        } else if (curr_mode == GameMode[3].opponent && currentPlayer == PlayerData[1].PlayerForm) { // offline mode and player 1 turn
+
+            if (currentPlayer == PlayerData[1].PlayerForm) {
+                let str = AdvancedSkin;
+                let parts = str.split(" "); // Trennung anhand des Leerzeichens
+
+                let part1 = parts[0]; // Erster Teil des geteilten Strings
+                let part2 = parts[1]; // Zweiter Teil des geteilten Strings
+                let part3 = parts[2]; // Zweiter Teil des geteilten Strings
+
+                cell.classList.add(part1);
+                cell.classList.add(part2);
+                cell.classList.add(part3);
+
+            } else {
+                cell.textContent = currentPlayer;
+                cell.style.color = localStorage.getItem('userInfoColor');
+            };
+        };
+    };
+};
+
+// cell mouse leave
+function cell_mouseLeave(cell) {
+    if (!cell.classList.contains("draw") && !cell.classList.contains("death-cell")) {
+
+        cell.textContent = '';
+        cell.className = "cell";
+        cell.style.color = "white";
+    };
+};
+
 // when the game starts, for all players in the game, 
 // the global game timer recieves the global timer from the server and displays it
 socket.on('display_GlobalGameTimer', timer => {
@@ -651,8 +716,9 @@ const SetBGColorForCurrentField = (xy) => {
                 if (!inAdvantureMode) {
                     bgcolor1 = "#5684ab61";
                     bgcolor2 = "#2e567861";
+
                 } else if (inAdvantureMode) {
-                    Lobby.style.background = "linear-gradient(45deg, #ff572230, #ff980026)";
+                    Lobby.style.background = "linear-gradient(45deg, #e9967a57, #bb634557)";
                 };
                 break;
 
@@ -665,8 +731,9 @@ const SetBGColorForCurrentField = (xy) => {
                 if (!inAdvantureMode) {
                     bgcolor1 = "#93cf954f";
                     bgcolor2 = "#4caf5063";
+
                 } else if (inAdvantureMode) {
-                    Lobby.style.background = "linear-gradient(45deg, rgb(147 78 40 / 54%), rgb(151 44 27 / 56%))";
+                    Lobby.style.background = "linear-gradient(45deg, rgba(147, 78, 40, 0.54), rgb(155 76 63 / 63%))";
                 };
                 break;
 
@@ -679,7 +746,7 @@ const SetBGColorForCurrentField = (xy) => {
 };
 
 // every card field has its own img icon or fontawesome icon
-const SetGameFieldIconForCurrentField = (xy, fieldIndex) => {
+const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
     if (!NewCreativeLevel) {
         switch (xy) {
             case 5:
@@ -762,13 +829,27 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex) => {
         Game_Upper_Field_Icon.appendChild(img5);
         Game_Upper_Field_Icon.classList = "";
     };
+
+    console.log(fromCreativeLevel);
+
+    // online game in creative level
+    if (fromCreativeLevel) {
+        if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+        let img5 = document.createElement("img");
+        img5.src = costumLevelIcon;
+        img5.width = "31";
+        img5.height = "31";
+        img5.style.margin = "4px 0 0 0";
+        Game_Upper_Field_Icon.appendChild(img5);
+        Game_Upper_Field_Icon.classList = "";
+    };
 };
 
 // user clicked some cell
 let lastCellIndex_Clicked = 0;
 async function cellCicked() {
     // console.log(this.classList, MaxAmountOfMovesGameDisplay, running);
-    if (this.classList == "cell" && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
+    if (!this.classList.contains("draw") && !this.classList.contains("death-cell") && MaxAmountOfMovesCount > 0 && running == true) { // cell is alive and useable
         const cellIndex = this.getAttribute("cell-index");
 
         // console.log(options[cellIndex]);
@@ -871,7 +952,7 @@ async function cellCicked() {
     };
 };
 
-// A message to all players that a player setted his form on a cell
+// A message to all players that a player placed his (form/icon/skin whatever you call it) on a cell
 // the update options event is in the server, here the options array gets copied
 socket.on('player_clicked', Goptions => {
     // update cell
@@ -882,17 +963,27 @@ socket.on('player_clicked', Goptions => {
     for (let i = 0; i < options.length; i++) {
         const element = options[i];
 
-        if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] == "empty" && cells[i].classList.length == 1) {
+        if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] == "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
 
             cells[i].style.color = Goptions[2];
             cells[i].classList.add('colored-cell');
 
             cells[i].textContent = element;
 
-        } else if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] != "empty" && cells[i].classList.length == 1) {
+            cells[i].className = cells[i].className.replace(PlayerData[1].AdvancedSkin, "");
+            cells[i].className = cells[i].className.replace(PlayerData[2].AdvancedSkin, "");
+
+            cells[i].style.opacity = "1";
+            cells[i].classList.add("draw");
+
+        } else if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] != "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
 
             cells[i].style.color = "var(--font-color)";
             cells[i].className = `cell ${Goptions[3]}`;
+            cells[i].textContent = "";
+
+            cells[i].style.opacity = "1";
+            cells[i].classList.add("draw");
         };
     };
 
@@ -928,12 +1019,23 @@ function updateCell(index) {
     // user uses an advanced skin
     if (PlayerData[1].AdvancedSkin != "cell empty" && currentPlayer == PlayerData[1].PlayerForm) {
         cells[index].className = `${PlayerData[1].AdvancedSkin}`;
+        cells[index].textContent = "";
 
     } else { // he uses normal skin
         cells[index].textContent = currentPlayer;
 
-        if (currentPlayer == PlayerData[1].PlayerForm) cells[index].style.color = localStorage.getItem('userInfoColor');
+        if (currentPlayer == PlayerData[1].PlayerForm) {
+            cells[index].style.color = localStorage.getItem('userInfoColor')
+
+        } else {
+            cells[index].style.color = "white";
+        };
+
+        cells[index].className = "cell";
     };
+
+    cells[index].style.opacity = "1";
+    cells[index].classList.add("draw");
 
     // for advanture mode: bug fix
     if (InnerFieldData_Options.length > 0) InnerFieldData_Options[InnerFieldData_Indexes[index]] = currentPlayer;
@@ -1040,7 +1142,7 @@ async function changePlayer(from_restart, fromClick) {
     cells = el_cells;
 
     el_cells.forEach(cell => {
-        if (cell.classList.length <= 1) {
+        if (!cell.classList.contains("draw") && !cell.classList.contains("death-cell")) {
             cell.addEventListener('click', cellCicked);
             cell.style.cursor = "pointer";
         };

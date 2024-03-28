@@ -13,7 +13,7 @@
     --locked-field: #2e2e2e;
     --BossMode-fieldcircleMargin: 60px;
     --button-font-size: 17px;
-    --Text-font-size: 22.5px;
+    --Text-font-size: 23.5px;
     --max-cellGrid-size: 585px;
     --CreateLevel-ScrollContainerHeight-max: 650px;
     --max-responsive-scale: scale(1);
@@ -286,6 +286,22 @@ img {
     justify-content: center;
     width: auto;
     height: auto;
+}
+
+.cell:hover {
+    opacity: 0.4;
+}
+
+.cell.draw:hover {
+    opacity: 1;
+}
+
+.cell.death-cell:hover {
+    opacity: 1;
+}
+
+.cell.about-to-die-cell:hover {
+    opacity: 1;
 }
 
 .about-to-die-cell {
@@ -6023,7 +6039,9 @@ label h3 {
     height: 100%;
     border: 3px solid goldenrod;
     overflow: scroll;
-    flex-direction: column
+    flex-direction: column-reverse;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .ReplaceText_Levellist {

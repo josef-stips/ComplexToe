@@ -112,11 +112,11 @@ let skins_display = {
     'crown': 'fa-solid fa-crown',
     'spaghetti-monster-flying': 'fa-solid fa-spaghetti-monster-flying',
     'hand-fist': 'fa-solid fa-hand-fist',
-    'heart': 'fa-solid fa-jedi',
-    'bug': 'fa-solid fa-fish',
-    'handshake': 'fa-solid fa-crown',
-    'thumbs-up': 'fa-solid fa-spaghetti-monster-flying',
-    'face-smile': 'fa-solid fa-hand-fist'
+    'heart': 'fa-solid fa-heart',
+    'bug': 'fa-solid fa-bug',
+    'handshake': 'fa-solid fa-handshake',
+    'thumbs-up': 'fa-solid fa-thumbs-up',
+    'face-smile': 'fa-solid fa-face-smile'
 };
 
 let current_used_skin = '';

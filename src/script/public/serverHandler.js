@@ -377,6 +377,8 @@ const UserLeftGameInOnlineMode = () => {
             personal_GameData.role = 'user';
             personal_GameData.currGameID = null;
             personal_GameData.EnterOnlineGame = false;
+
+            PlayingInCreatedLevel_AsGuest = false;
         };
 
         // remove "inGame" status from player
@@ -890,6 +892,8 @@ socket.on('killed_game', () => {
     lobbyFooter.style.background = "";
     lobbyFooterText.style.display = 'flex';
 
+    PlayingInCreatedLevel_AsGuest = false;
+
     // play music
     PauseMusic();
     if (!PlayingInCreatedLevel) CreateMusicBars(audio);
@@ -1031,6 +1035,8 @@ socket.on('INFORM_user_left_game', () => {
         lobbyFooter.style.background = "";
         lobbyFooterText.style.display = 'flex';
 
+        PlayingInCreatedLevel_AsGuest = false;
+
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
@@ -1062,6 +1068,8 @@ socket.on('INFORM_blocker_left_game', () => {
 
         lobbyFooter.style.background = "";
         lobbyFooterText.style.display = 'flex';
+
+        PlayingInCreatedLevel_AsGuest = false;
 
         // play music
         PauseMusic();
@@ -1135,14 +1143,14 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // initialize game
     curr_innerGameMode = currInnerGameMode;
     // allowed patterns
+
     let allowed_patterns = JSON.parse(RoomData[0].win_patterns); // array
     allowedPatternsFromUser = allowed_patterns; // make it global for single user
+
     // required points to win a game
     let required_points_to_win = parseInt(Lobby_PointsToWin.textContent);
 
     // user costum data (NewCreativeLevel stuff)
-
-    console.log(RoomData[0].costumPatterns, RoomData[0].costumField[0], RoomData[0].costumField[1]);
 
     // user costum coord in new creative level
     let costumX = parseInt(JSON.parse(RoomData[0].costumField)[0]);
@@ -1151,7 +1159,12 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // user costum created patterns
     let costumPatterns = JSON.parse(RoomData[0].costumPatterns);
 
-    console.log(costumPatterns, costumX, costumY);
+    // new creative level costum icon
+    let costumIcon = RoomData[0].costumIcon;
+
+    costumLevelIcon = costumIcon;
+
+    console.log(costumPatterns, costumX, costumY, costumIcon, costumLevelIcon);
 
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,

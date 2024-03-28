@@ -368,6 +368,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         let costumY;
 
         let costumPatterns;
+        let costumIcon;
 
         // set data: either extern data or intern data
         if (Data1) Check[2] = Data1;
@@ -398,13 +399,17 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             costumPatterns = NewCreativeLevel.selectedLevel[15];
 
             allowedPatternsFromUser = NewCreativeLevel.selectedLevel[6];
+
+            costumIcon = NewCreativeLevel.Settings.levelicon[NewCreativeLevel.selectedLevel[4]];
+
+            fieldTitle = NewCreativeLevel.selectedLevel[8];
         };
 
-        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY);
+        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon);
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
-            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns
+            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;

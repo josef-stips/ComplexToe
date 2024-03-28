@@ -1044,6 +1044,9 @@ const ki_set = (index, inner_field_index) => {
     ki_board |= 1 << inner_field_index;
     // on arrays and visual board
     cells[index].textContent = PlayerData[2].PlayerForm;
+    cells[index].className = "cell";
+    cells[index].style.opacity = "1";
+    cells[index].classList.add("draw");
     options[index] = PlayerData[2].PlayerForm;
     InnerFieldData_Options[inner_field_index] = PlayerData[2].PlayerForm;
 
@@ -1073,7 +1076,13 @@ const ki_set = (index, inner_field_index) => {
             setTimeout(() => {
                 cells.forEach(cell => {
                     cell.addEventListener('click', cellCicked);
-                    cell.classList.length <= 1 ? cell.style.cursor = 'pointer' : cell.style.cursor = 'default';
+
+                    if (cell.classList.contains("draw") || cell.classList.contains("death-cell")) {
+                        cell.style.cursor = 'default';
+
+                    } else {
+                        cell.style.cursor = 'pointer';
+                    };
                 });
             }, 700);
         };

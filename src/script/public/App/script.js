@@ -1165,7 +1165,13 @@ YourName_KI_ModeCloseBtn.addEventListener('click', () => {
 gameInfo_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'flex';
     DisplayPopUp_PopAnimation(GameInfoPopUp, "flex", true);
-    GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
+
+    if (!NewCreativeLevel) {
+        GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
+
+    } else if (NewCreativeLevel || PlayingInCreatedLevel_AsGuest) {
+        GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
+    };
 
     // not in advanture mode
     if (!inAdvantureMode) {
@@ -1197,15 +1203,16 @@ gameInfo_btn.addEventListener('click', () => {
         });
 
         // how to win text
-        if (PlayingInCreatedLevel) {
-            HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points or score more points than your opponent if he gives up.`;
+        if (PlayingInCreatedLevel || PlayingInCreatedLevel_AsGuest) {
+            NewCreativeLevel && (HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points or score more points than your opponent if he gives up.`);
+            !NewCreativeLevel && (HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`);
 
             setTimeout(() => {
                 NewCreativeLevel_DisplayCostumPatternsInGamePopUp();
             }, 100);
 
         } else {
-            HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`;
+            HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`
         };
 
     } else { // in advanture mode
