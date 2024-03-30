@@ -264,7 +264,7 @@ let GamePatternsList = {
 // 10x10 field
 let GamePatternsList10 = {
     "hor": [0, 1, 2, 3],
-    "vert": [0, 10, 15, 20],
+    "vert": [0, 10, 20, 30],
     "dia": [0, 11, 22, 33],
     "dia2": [3, 12, 21, 30],
     "L1": [0, 10, 20, 21, 22],
@@ -404,6 +404,30 @@ let GamePatternsList40 = {
     "special1": [0, 1, 2, 40, 41],
     "special2": [0, 1, 40, 41, 42]
 }
+
+let patternPoints = {
+    "hor": 1,
+    "vert": 1,
+    "dia": 1,
+    "dia2": 1,
+    "diamond": 1,
+    "L1": 2,
+    "L2": 2,
+    "L3": 2,
+    "L4": 2,
+    "star": 2,
+    "special1": 2,
+    "special2": 2,
+    "W1": 3,
+    "W2": 3,
+    "W3": 3,
+    "W4": 3,
+    "branch1": 3,
+    "branch2": 3,
+    "branch3": 3,
+    "branch4": 3,
+
+};
 
 // everything about the online chat in online game mode
 let openedChat = false;

@@ -402,6 +402,38 @@ function Init_RecentUsedPatterns() {
     return mostCommonPattern;
 };
 
+// find pattern name
+const FindPatternName = (els_list) => {
+    let indexesOriginal = els_list.map(el => Number(el.getAttribute("cell-index")));
+
+    let indexes = PatternStructureAsOrigin(boundaries, indexesOriginal, xCell_Amount);
+
+    let is_official_pattern = false;
+
+    // of this pattern its meta data
+    let pattern_name;
+    let pattern_indexes;
+
+    // which patterns list (5, 10, 15, 20 etc.) to loop through
+    let Patternslist = LoopInPatternList(xCell_Amount);
+
+    if (Patternslist) {
+        // check if this pattern is officical game pattern
+        for (const [key, val] of Object.entries(Patternslist)) {
+            // console.log(key, val, indexes);
+
+            if (JSON.stringify(val) === JSON.stringify(indexes)) {
+                is_official_pattern = true;
+                pattern_name = key;
+                pattern_indexes = val;
+                break;
+            };
+        };
+    };
+
+    return pattern_name;
+};
+
 // player made a point with a win combination
 const recentUsedPattern_add = (els_list) => { // els_list = array with the cell indexes
     console.log(els_list);
@@ -427,7 +459,7 @@ const recentUsedPattern_add = (els_list) => { // els_list = array with the cell 
 
     // check if this pattern is officical game pattern
     for (const [key, val] of Object.entries(Patternslist)) {
-        console.log(key, val, indexes);
+        // console.log(key, val, indexes);
 
         if (JSON.stringify(val) === JSON.stringify(indexes)) {
             is_official_pattern = true;

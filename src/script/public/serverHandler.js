@@ -7,10 +7,48 @@ socket.on('connect', () => {
     alertPopUp.style.display = "none";
     DarkLayer.style.zIndex = "500";
 
-    if (exploredItems_PopUp.style.display == "flex" || YouFoundItems_PopUp.style.display == "flex" || settingsWindow.style.display == "flex" || SetPlayerNamesPopUp.style.display == "flex" || YourNamePopUp_KI_Mode.style.display == "flex" || GameInfoPopUp.style.display == "flex" || ChooseWinner_popUp.style.display == "flex" || OnlineGame_iniPopUp.style.display == "flex" ||
-        OnlineGame_CodeName_PopUp.style.display == "flex" || friendLeftGamePopUp.style.display == "flex" || animatedPopUp.style.display == "block" || userInfoPopUp.style.display == "flex" || UserGivesData_PopUp_name.style.display == "flex" || UserGivesData_PopUp_icon.style.display == "flex" || treasureBoxTimerPopUp.style.display == "flex" ||
-        tradeX_PopUp.style.display == "flex" || Chat_PopUp.style.display == "flex" || GiveUpPopUp.style.display == "flex") {
+    if (exploredItems_PopUp.style.display == "flex" ||
+        YouFoundItems_PopUp.style.display == "flex" ||
+        settingsWindow.style.display == "flex" ||
+        SetPlayerNamesPopUp.style.display == "flex" ||
+        YourNamePopUp_KI_Mode.style.display == "flex" ||
+        GameInfoPopUp.style.display == "flex" ||
+        ChooseWinner_popUp.style.display == "flex" ||
+        OnlineGame_iniPopUp.style.display == "flex" ||
+        OnlineGame_CodeName_PopUp.style.display == "flex" ||
+        friendLeftGamePopUp.style.display == "flex" ||
+        animatedPopUp.style.display == "block" ||
+        userInfoPopUp.style.display == "flex" ||
+        UserGivesData_PopUp_name.style.display == "flex" ||
+        UserGivesData_PopUp_icon.style.display == "flex" ||
+        treasureBoxTimerPopUp.style.display == "flex" ||
+        Chat_PopUp.style.display == "flex" ||
+        GiveUpPopUp.style.display == "flex" ||
+        UseSpell_PopUp.style.display == "flex" ||
+        MailPopUp.style.display == "flex" ||
+        tradeX_PopUp.style.display == "flex" ||
+        XP_Journey.style.display == "flex" ||
+        SearchPlayerPopUp.style.display == "flex" ||
+        FriendsListPopUp.style.display == "flex" ||
+        MessagesPopUp.style.display == "flex" ||
+        SendMessagePopUp.style.display == "flex" ||
+        DeleteFriend_PopUp.style.display == "flex" ||
+        CreateLevel_helpPopUp.style.display == "flex" ||
+        saveLevelWarning.style.display == "flex" ||
+        removeWarning.style.display == "flex" ||
+        ChooseBetweenModesPopUp.style.display == "flex" ||
+        AchievementsPopUp.style.display == "flex" ||
+        CreateLevel_MusicPreviewPopUp.style.display == "flex" ||
+        CreateOwnStuffPopUp.style.display == "flex" ||
+        createCostumField_popUp.style.display == "flex" ||
+        createCostumPattern_popUp.style.display == "flex" ||
+        endGameStatsPopUp.style.display == "flex" ||
+        DailyChallenges_PopUp.style.display == "flex" ||
+        OfficialWinPatternsPopUp.style.display == "flex") {
+        // Your code to execute when any of the elements' style.display is "flex"
+
         DarkLayer.style.display = "block";
+
     } else {
         DarkLayer.style.display = "none";
     };

@@ -1177,7 +1177,7 @@ const InitCreateLevelScene = () => {
                     NewCreativeLevel = NewField;
                     NewCreativeLevel.Init();
 
-                    AlertText.textContent = "Level is successfully unpublished";
+                    AlertText.textContent = "Level is successfully unpublished. To publish it you have to beat the level again.";
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                 });
             } catch (error) {

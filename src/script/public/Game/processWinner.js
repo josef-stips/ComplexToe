@@ -5,7 +5,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
     // for minimax
     let winner = null;
     let WinCombination = [];
-    let extra_points = 0; // 2 additional points by a win pattern of 5 cells
+    let extra_points = 0; // n additional points by a win pattern of 5 cells
     let Grid = Array.from(cellGrid.children);
     let someoneIsCheck = false;
 
@@ -182,7 +182,6 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             if (cellA == cellB && cellB == cellC && cellC == cellD && cellD == cellE && cellA != "") {
                 winner = [cellA, EleOf_A.classList[2]]; // second value: false if the user uses a normal skin
                 roundWon = true;
-                extra_points = 2;
                 WinCombination.push(EleOf_A, EleOf_B, EleOf_C, EleOf_D, EleOf_E);
 
                 break;
@@ -194,23 +193,29 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             if (cellA != "" && cellA == cellB) {
                 winner = [cellA, EleOf_A.classList[2]]; // second value: false if the user uses a normal skin
                 roundWon = true;
-                extra_points = 1;
                 WinCombination.push(EleOf_A, EleOf_B);
             };
         };
     };
 
-    // if the cell pattern which won is an ADVANCED skin => check which player it belongs to
+    // when win pattern check to which player it belongs to to determine the winner
     if (winner != null) {
-        if (winner[1] != undefined) {
-            if (PlayerData[1].AdvancedSkin == WinCombination[0].className) { // the advanced skin win pattern belongs to PLayer 1
+
+        let winCellClassName = removeInvisibleChars(WinCombination[0].className.replace("draw", ""));
+        let player1AdvSkin = removeInvisibleChars(PlayerData[1].AdvancedSkin);
+        let player2AdvSkin = removeInvisibleChars(PlayerData[2].AdvancedSkin);
+
+        if (winner[1] != undefined) { // win pattern is advanced skin
+
+            if (player1AdvSkin == winCellClassName) { // the advanced skin win pattern belongs to PLayer 1
                 Player1_won = true;
 
-            } else if (PlayerData[2].AdvancedSkin == WinCombination[0].className) { // the advanced skin win pattern belongs to PLayer 2
+            } else if (player2AdvSkin == winCellClassName) { // the advanced skin win pattern belongs to PLayer 2
                 Player2_won = true;
             };
 
-        } else { // if the cell pattern which won is a NORMAL skin => check which player it belongs to
+        } else { // win pattern is normal letter skin
+
             if (PlayerData[1].PlayerForm == winner[0]) { // the normal skin pattern belongs to the first player
                 Player1_won = true;
 
@@ -219,12 +224,29 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             };
         };
     };
+
+    // init. extra_points based on pattern: points for pattern list
+    let pattern = WinCombination && FindPatternName([...WinCombination]);
+
+    if (pattern) {
+        extra_points = patternPoints[pattern];
+
+        console.log(extra_points, pattern, patternPoints);
+
+    } else {
+        extra_points = 1;
+    };
+
+    console.log(pattern, extra_points);
+
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);
 };
 
 function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick) {
     // check if there are still availible cells remaining
     let ava_cells = check_RemainingCells();
+
+    console.log(ava_cells);
 
     if (roundWon) { // someone won the round
         processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points, fromRestart, fromClick);
@@ -262,8 +284,6 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
                 ava_cells = check_RemainingCells();
             }, 600);
         };
-
-        console.log(KI_CanSetASecondTime);
 
         // Change player things. execute this everytime
         setTimeout(() => {
@@ -557,6 +577,7 @@ const advantureMap_beatBoss = () => {
 // choose sub winner
 function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points) {
     return new Promise((resolve) => {
+
         CheckmateWarnText.style.display = 'none';
         // animation
         FloatingIconAnimation(Player1_won, Player2_won, WinCombination[0].getBoundingClientRect(), WinCombination.length);
@@ -565,7 +586,6 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
         WinCombination.forEach(Ele => {
             Ele.classList.add('about-to-die-cell');
         });
-        // console.log([...WinCombination]);
 
         // for advanture mode
         MovesAmount_PlayerAndKi = 0;
@@ -575,7 +595,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
         setTimeout(() => {
             if (Player1_won == true) {
                 statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
-                score_Player1_numb = score_Player1_numb + 1 + extra_points;
+                score_Player1_numb = score_Player1_numb + extra_points;
                 scorePlayer1.textContent = score_Player1_numb;
 
                 // player made a point in advanture mode
@@ -633,7 +653,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
             } else if (Player2_won == true) {
                 statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
-                score_Player2_numb = score_Player2_numb + 1 + extra_points;
+                score_Player2_numb = score_Player2_numb + extra_points;
                 scorePlayer2.textContent = score_Player2_numb;
 
                 // the opponent made a point in advanture mode

@@ -105,10 +105,22 @@ let current_level_boss = null;
 // to prevent issues initialize an origin board_size 
 let board_size;
 
+let allGameData = [];
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
     CreativeLevel_from_onlineMode_costumPatterns) {
+
+    // to have all info globally
+    allGameData = [];
+
+    for (const i of arguments) {
+        allGameData.push(i);
+    };
+
+    console.log(allGameData);
+
     // Define field data for game
 
     // If online game set online game data, if not set normal data
@@ -121,7 +133,13 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         fieldTitle = mapLevelName;
 
     } else {
+
         curr_field = CreativeLevel_from_onlineMode_costumPatterns ? fieldTitle : Fields[fieldIndex].name;
+
+        // right creative level name in offline mode
+        if (curr_mode != GameMode[2].opponent && NewCreativeLevel) {
+            curr_field = NewCreativeLevel.selectedLevel[8];
+        };
     };
 
     current_level_boss && current_level_boss.delete();
@@ -268,9 +286,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     Find_MaxDepth();
 
     if (onlineGame == 'OnlineMode') {
-        initializeDocument(field, fieldIndex, fieldTitle, true, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns);
+        initializeDocument(field, fieldIndex, fieldTitle, true, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns, costumCoords);
     } else {
-        initializeDocument(field, fieldIndex, fieldTitle, false, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns);
+        initializeDocument(field, fieldIndex, fieldTitle, false, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns, costumCoords);
     };
 
     // if in 40x40 field, generate its properties: eye
@@ -320,7 +338,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     CreateMusicBars(Fields[fieldIndex].theme_name);
 };
 
-function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns) {
+function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns, costumCoords) {
     // Hide unnecessary elements
     GameField.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
@@ -354,9 +372,19 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     curr_mode == GameMode[2].opponent ? globalChooseWinnerBtn = GiveUp_btn : globalChooseWinnerBtn = chooseWinnerWindowBtn;
 
     // Initialize game title and info
-    GameTitle.textContent = fieldTitle;
-    GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
-    GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
+    if (CreativeLevel_from_onlineMode_costumPatterns || NewCreativeLevel) {
+        if (costumCoords[0] != undefined && !isNaN(costumCoords[0])) {
+
+            GameField_FieldSizeDisplay.textContent = `${costumCoords[0]}x${costumCoords[1]}`;
+            GameField_BlockAmountDisplay.textContent = `${costumCoords[0]*costumCoords[1]}`;
+        };
+
+    } else {
+        GameTitle.textContent = fieldTitle;
+        GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
+        GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
+    };
+
     SetGameFieldIconForCurrentField(parseInt(xCell_Amount), fieldIndex, CreativeLevel_from_onlineMode_costumPatterns);
     SetBGColorForCurrentField(parseInt(xCell_Amount));
     inAdvantureMode ? GameField_AveragePlayTimeDisplay.textContent = `ave. playtime is unknown` : GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
@@ -633,6 +661,11 @@ function cell_mouseEnter(cell) {
             cell.classList.add(part2);
             cell.classList.add(part3);
 
+        } else if (curr_mode != GameMode[3].opponent && AdvancedSkin == "cell empty") {
+
+            cell.textContent = localStorage.getItem("UserIcon");
+            cell.style.color = localStorage.getItem('userInfoColor');
+
         } else if (curr_mode == GameMode[3].opponent && currentPlayer != PlayerData[1].PlayerForm) { // offline mode and player 2 turn 
 
             cell.textContent = currentPlayer;
@@ -640,7 +673,7 @@ function cell_mouseEnter(cell) {
 
         } else if (curr_mode == GameMode[3].opponent && currentPlayer == PlayerData[1].PlayerForm) { // offline mode and player 1 turn
 
-            if (currentPlayer == PlayerData[1].PlayerForm) {
+            if (AdvancedSkin != "cell empty") {
                 let str = AdvancedSkin;
                 let parts = str.split(" "); // Trennung anhand des Leerzeichens
 
@@ -1152,7 +1185,7 @@ async function changePlayer(from_restart, fromClick) {
 // check remaining white cells
 function check_RemainingCells() {
     let availible_cells = [];
-    cells.forEach(cell => {
+    [...cellGrid.children].forEach(cell => {
         if (cell.classList.length <= 1 && cell.textContent == "") {
             availible_cells.push(cell);
         };
@@ -1173,11 +1206,7 @@ function restartGame() {
         cellGrid.classList.remove('cellGrid_opacity');
         changePlayer(true);
         setTimeout(() => {
-            NxN_field.forEach(field => {
-                if (field.getAttribute('title') == curr_field) {
-                    initializeGame(field, undefined, undefined, allowedPatterns);
-                };
-            });
+            initializeGame(allGameData[0], allGameData[1], allGameData[2], allGameData[3], allGameData[4], allGameData[5], allGameData[6], allGameData[7], allGameData[8], allGameData[9]);
 
             // bug fix
             restartTimeout();
@@ -1234,11 +1263,7 @@ socket.on('Reload_GlobalGame', (Goptions) => {
     cellGrid.classList.remove('cellGrid_opacity');
     changePlayer(true);
     setTimeout(() => {
-        NxN_field.forEach(field => {
-            if (field.getAttribute('title') == curr_field) {
-                initializeGame(field, 'OnlineMode', OnlineGameData, allowedPatterns);
-            };
-        });
+        initializeGame(allGameData[0], allGameData[1], allGameData[2], allGameData[3], allGameData[4], allGameData[5], allGameData[6], allGameData[7], allGameData[8], allGameData[9]);
 
         if (personal_GameData.role == 'admin') {
             // bug fix
