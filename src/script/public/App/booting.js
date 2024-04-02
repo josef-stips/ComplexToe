@@ -458,14 +458,16 @@ const recentUsedPattern_add = (els_list) => { // els_list = array with the cell 
     let Patternslist = LoopInPatternList(xCell_Amount);
 
     // check if this pattern is officical game pattern
-    for (const [key, val] of Object.entries(Patternslist)) {
-        // console.log(key, val, indexes);
+    if (Patternslist) {
+        for (const [key, val] of Object.entries(Patternslist)) {
+            // console.log(key, val, indexes);
 
-        if (JSON.stringify(val) === JSON.stringify(indexes)) {
-            is_official_pattern = true;
-            pattern_name = key;
-            pattern_indexes = val;
-            break;
+            if (JSON.stringify(val) === JSON.stringify(indexes)) {
+                is_official_pattern = true;
+                pattern_name = key;
+                pattern_indexes = val;
+                break;
+            };
         };
     };
     // console.log(indexes, is_official_pattern, pattern_name, pattern_indexes);

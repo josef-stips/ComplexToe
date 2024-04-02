@@ -1038,7 +1038,7 @@ class NewLevel {
 
 // add user costum pattern to win conditions
 const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, costumXCoordFromThirdParty) => { // costumPatternsFromThirdParty : from database for online game
-    console.log(costumPatternsFromThirdParty, NewCreativeLevel);
+    // console.log(costumPatternsFromThirdParty, NewCreativeLevel);
 
     let patterns;
     if (NewCreativeLevel) {
@@ -1051,11 +1051,19 @@ const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, c
     if (patterns && NewCreativeLevel) {
         // generate
         for (const [pattern, index] of Object.entries(patterns)) {
-            console.log(pattern, index);
+            // console.log(pattern, index);
 
-            let structure = index[pattern]["structure"]
-            let xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
-            // console.log(structure, xCellAmount);
+            let structure = index[pattern]["structure"];
+            let xCellAmount;
+
+            if (!isNaN(costumXCoordFromThirdParty)) {
+                xCellAmount = costumXCoordFromThirdParty;
+
+            } else {
+                xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+            };
+
+            console.log(structure, xCellAmount);
 
             CostumWinPattern(structure, xCellAmount, xCellAmount);
         };
@@ -1064,11 +1072,12 @@ const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, c
 
         // generate
         for (const [pattern, index] of Object.entries(patterns)) {
-            console.log(pattern, index);
+            // console.log(pattern, index);
 
             let structure = index[pattern]["structure"]
             let xCellAmount = costumXCoordFromThirdParty;
-            // console.log(structure, xCellAmount);
+
+            console.log(structure, xCellAmount);
 
             CostumWinPattern(structure, xCellAmount, xCellAmount);
         };
@@ -1177,6 +1186,11 @@ const InitCreateLevelScene = () => {
 
                     AlertText.textContent = "Level is successfully unpublished. To publish it you have to beat the level again.";
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+
+                    PlayLevelBtn_ListBtn.style.display = "flex";
+                    EditLevelBtn_ListBtn.style.display = "flex";
+                    RemoveLevelBtn.style.display = "flex";
+
                 });
             } catch (error) {
                 console.log(error);

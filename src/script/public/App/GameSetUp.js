@@ -857,11 +857,14 @@ function SetRandomAllowedWinCombinations(arr, numToRemove) {
 
     // display everything to none
     setPatternWrapper.forEach(e => {
-        e.style.display = 'none';
+
+        // if construction as bug prevention
+        !e.parentElement.parentElement.classList.contains("workbench_AllowedPatternsList") && (e.style.display = 'none');
         return;
     });
 
     [...setPatternWrapper].map(e => {
+
         allowedPatternsFromUser.forEach(p => {
             if (e.classList[1] == p) {
                 e.style.display = "flex";

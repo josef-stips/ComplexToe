@@ -275,7 +275,7 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
                 for (let cell of grid) {
                     // cells with normal skins => look if their textContent is a form, cells with advanced skins => look at their classList
                     // All cells that contain an advanced skin have 3 classNames (cell fa-solid fa-xxx)
-                    if (cell.textContent == PlayerData[1].PlayerForm || cell.textContent == PlayerData[2].PlayerForm || cell.classList.length >= 3) {
+                    if (cell.textContent == PlayerData[1].PlayerForm || cell.textContent == PlayerData[2].PlayerForm || cell.classList.length >= 3 && cell.classList.contains("draw")) {
                         single_CellBlock(cell);
                     };
                 };

@@ -65,33 +65,40 @@ const ConfigureCellSize = (cell, xCell_Amount) => {
 function CreateWinConditions(NxN, Allowed_Patterns) {
     WinConditions.length = 0;
 
-    if (NxN == 5) {
-        Create_5x5_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 5x5.js
+    let list = GamePatternsList;
+    let patterns = Allowed_Patterns.map(name => list[name]);
 
-    } else if (NxN == 10) {
-        Create_10x10_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 10x10.js
+    console.log(NxN, Allowed_Patterns, list, patterns);
 
-    } else if (NxN == 15) {
-        Create_15x15_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 15x15.js
+    patterns.forEach(pattern => CostumWinPattern(pattern, NxN, NxN));
 
-    } else if (NxN == 20) {
-        Create_20x20_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 20x20.js
+    // if (NxN == 5) {
+    //     Create_5x5_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 5x5.js
 
-    } else if (NxN == 25) {
-        Create_25x25_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 10x10.js
+    // } else if (NxN == 10) {
+    //     Create_10x10_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 10x10.js
 
-    } else if (NxN == 30) {
-        Create_30x30_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 15x15.js
+    // } else if (NxN == 15) {
+    //     Create_15x15_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 15x15.js
 
-    } else if (NxN == 40) {
-        Create_40x40_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 20x20.js
+    // } else if (NxN == 20) {
+    //     Create_20x20_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 20x20.js
 
-    } else if (NxN == 4) {
-        Create_4x4_WinCombis(); // use win comb algorithm executer from 15x15.js
+    // } else if (NxN == 25) {
+    //     Create_25x25_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 10x10.js
 
-    } else if (NxN == 3) {
-        Create_3x3_WinCombis(); // use win comb algorithm executer from 20x20.js
-    };
+    // } else if (NxN == 30) {
+    //     Create_30x30_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 15x15.js
+
+    // } else if (NxN == 40) {
+    //     Create_40x40_WinCombis(Allowed_Patterns); // use win comb algorithm executer from 20x20.js
+
+    // } else if (NxN == 4) {
+    //     Create_4x4_WinCombis(); // use win comb algorithm executer from 15x15.js
+
+    // } else if (NxN == 3) {
+    //     Create_3x3_WinCombis(); // use win comb algorithm executer from 20x20.js
+    // };
 };
 
 // Create Options that are live in the game  

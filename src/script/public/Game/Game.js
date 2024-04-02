@@ -156,7 +156,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // set up x and y coordinates
     if (costumCoords) {
-        // console.log(costumCoords[0]);
+        console.log(costumCoords[0], costumCoords);
 
         if (costumCoords[0] != undefined && !isNaN(costumCoords[0])) {
             // set user costum level coordinates
@@ -173,7 +173,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
     };
 
-    // console.log(xCell_Amount, yCell_Amount);
+    console.log(xCell_Amount, yCell_Amount);
 
     board_size = xCell_Amount;
 
