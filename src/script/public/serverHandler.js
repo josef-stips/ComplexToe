@@ -88,7 +88,9 @@ const InitStyleForUserEntersLobby = (message) => {
     Lobby_GameCode_display.textContent = `Game Code: ${message[1]}`;
     Lobby_InnerGameMode.textContent = `${message[4]}`;
     Lobby_PlayerClock.textContent = `${message[3]} seconds`;
-    Lobby_FieldSize.textContent = `${message[2]}x${message[2]}`;
+    Lobby_FieldSize.textContent = !JSON.parse(message[6])[0] ? `${message[2]}x${message[2]}` : `${JSON.parse(message[6])[0]}x${JSON.parse(message[6])[1]}`;
+
+    console.log(message[6]);
 
     // Just for style and better user experience
     EnterGameCode_Input.value = null;

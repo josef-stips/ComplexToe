@@ -214,6 +214,7 @@ let ClockListItemCheckMark_70sec_KI = document.querySelector('#ClockListItemChec
 let OnlineGame_iniPopUp = document.querySelector('.OnlineGame_iniPopUp');
 let onlineGame_closeBtn = document.querySelector('#onlineGame_closeBtn');
 
+let JoinGame_btn = document.querySelector(".JoinGame_btn");
 let BlockerCombat_OnlineGameWarnText = document.querySelector('.BlockerCombat_OnlineGameWarnText');
 let RandomAllowedWinCombinations_Btn = document.querySelector('.RandomAllowedWinCombinations_Btn');
 let UserSetPointsToWinGameInput = document.querySelector('.UserSetPointsToWinGameInput');

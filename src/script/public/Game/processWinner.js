@@ -214,8 +214,6 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                 Player2_won = true;
             };
 
-        } else { // win pattern is normal letter skin
-
             if (PlayerData[1].PlayerForm == winner[0]) { // the normal skin pattern belongs to the first player
                 Player1_won = true;
 
@@ -223,21 +221,21 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                 Player2_won = true;
             };
         };
+
+        // init. extra_points based on pattern: points for pattern list
+        let pattern = WinCombination && FindPatternName([...WinCombination]);
+
+        if (pattern) {
+            extra_points = patternPoints[pattern];
+
+            console.log(extra_points, pattern, patternPoints);
+
+        } else {
+            extra_points = 1;
+        };
+
+        // console.log(pattern, extra_points);
     };
-
-    // init. extra_points based on pattern: points for pattern list
-    let pattern = WinCombination && FindPatternName([...WinCombination]);
-
-    if (pattern) {
-        extra_points = patternPoints[pattern];
-
-        console.log(extra_points, pattern, patternPoints);
-
-    } else {
-        extra_points = 1;
-    };
-
-    // console.log(pattern, extra_points);
 
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);
 };
@@ -762,6 +760,8 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
 
     endGame_player1Won = player1_won;
 
+    console.log(player1_won, player2_won);
+
     setTimeout(() => {
 
         cellGrid.classList.add('Invisible');
@@ -774,10 +774,10 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
 
                 if (PlayingInCreatedLevel) { // Player played user created level
 
-                    if (NewCreativeLevel.selectedLevel[9] == 0) {
+                    if (NewCreativeLevel.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
                         endGame_statusText.textContent = `It's conquered! Level is ready to publish`;
 
-                    } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                    } else if (NewCreativeLevel.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
                         endGame_statusText.textContent = rnd_text;
                     };
 
@@ -788,10 +788,11 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
             } else if (!inAdvantureMode && curr_mode != GameMode[2].opponent) { // not in advanture and not in online mode
 
                 if (PlayingInCreatedLevel) { // Player played user created level
-                    if (NewCreativeLevel.selectedLevel[9] == 0) {
+                    if (NewCreativeLevel.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
+
                         endGame_statusText.textContent = `You beat it! Level is ready to publish`;
 
-                    } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                    } else if (NewCreativeLevel.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
                         endGame_statusText.textContent = rnd_text;
                     };
 
@@ -827,7 +828,7 @@ const continueGame = () => {
                     // admin leaves game and this info all player get
                     if (personal_GameData.role == "admin") {
                         UserleavesGame();
-                        NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                        score_Player1_numb != score_Player2_numb && NewCreativeLevel.verified(); // User beat his own created level and can publish it now
                     };
 
                 } else if (NewCreativeLevel.selectedLevel[9] == 1) {
@@ -863,7 +864,7 @@ const continueGame = () => {
 
             if (PlayingInCreatedLevel) { // Player played user created level
                 if (NewCreativeLevel.selectedLevel[9] == 0) {
-                    NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                    score_Player1_numb != score_Player2_numb && NewCreativeLevel.verified(); // User beat his own created level and can publish it now
                     UserleavesGame();
 
                 } else if (NewCreativeLevel.selectedLevel[9] == 1) {

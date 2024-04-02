@@ -512,7 +512,7 @@ class NewLevel {
         for (let i = 0; i < size * size; i++) {
             // create single cell
             let cell = document.createElement('div');
-            cell.classList = "cell";
+            cell.className = "cell createlevelscene_cell";
             cell.setAttribute('cell-index', i);
 
             workbench_cellGrid.appendChild(cell);

@@ -7,6 +7,7 @@ function Activate_PlayerClock(PlayerOne, PlayerTwo) {
 // kill all intervals
 async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, playerN_timer, playerInNumber) {
     if (curr_mode != GameMode[2].opponent) { // offline mode
+
         clearInterval(firstClock);
         clearInterval(secondClock);
         firstClock = null;
@@ -27,6 +28,7 @@ async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, 
             await socket.emit("stop_Players_timer", parseInt(personal_GameData.currGameID));
 
         } else if (command == "Reset&&Continue") {
+
             // send new request to display the current player times
             await socket.emit("Request_Players_timer", parseInt(personal_GameData.currGameID), playerN_timer_event, playerN_timer, playerInNumber, currentPlayer);
         };

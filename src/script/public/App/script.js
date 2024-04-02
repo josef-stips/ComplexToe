@@ -1066,6 +1066,9 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
     GameModeDisplay.textContent = GameMode[2].description;
 
     ChooseFieldDisplay.style.opacity = "1";
+
+    JoinGame_btn.style.display = "flex";
+    SearchRandomOpponent_btn.style.display = "flex";
 });
 
 gameMode_OneVsOne_card.addEventListener('click', () => {
@@ -1083,6 +1086,9 @@ gameMode_OneVsOne_card.addEventListener('click', () => {
     GameModeDisplay.textContent = GameMode[3].description;
 
     ChooseFieldDisplay.style.opacity = "1";
+
+    JoinGame_btn.style.display = "none";
+    SearchRandomOpponent_btn.style.display = "none";
 });
 
 // field-cards click event
@@ -1433,6 +1439,15 @@ CreateGame_btn.addEventListener('click', () => {
     OnlineGame_iniPopUp.style.display = 'none';
 
     setUpOnlineGame('create');
+});
+
+JoinGame_btn.addEventListener("click", () => {
+    UserClicksNxNDefaultSettings();
+
+    Player2_NameInput.style.display = "none";
+    Player2_IconInput.style.display = "none";
+
+    setUpOnlineGame('enter');
 });
 
 ChooseWinnerWindowCloseBtn.addEventListener('click', () => {

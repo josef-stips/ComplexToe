@@ -5,6 +5,7 @@
     --bg-gradient: rgb(255, 255, 255);
     --bg-gradient2: rgb(255, 255, 255);
     --bg-app-color2: #4b4e52;
+    --bg-app-color3: #1010107a;
     --width-for-goToAdvancedModes-btn: 1580px;
     --width-for-40x40-field: 1.2vh;
     --font-size-for-40x40-field: 11.5px;
@@ -24,6 +25,7 @@
     --font-color: rgba(255, 255, 255, 0.800);
     --bg-gradient: #333a41;
     --bg-gradient2: #32383f;
+    --bg-app-color3: #1010107a;
     --bg-app-color: #191c20;
     --bg-app-color2: #121518;
     --locked-field: rgb(255, 255, 255);
@@ -302,6 +304,10 @@ img {
 
 .cell.about-to-die-cell:hover {
     opacity: 1;
+}
+
+.cell.createlevelscene_cell {
+    pointer-events: none;
 }
 
 .about-to-die-cell {
@@ -735,7 +741,7 @@ img {
     position: relative;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     animation: animatedBorder 4s linear infinite;
-    background: var(--bg-app-color2);
+    background: var(--bg-app-color3);
     z-index: 400;
 }
 
@@ -885,7 +891,7 @@ img {
 }
 
 .first-tier-modes {
-    margin: 500px 0 0 0;
+    margin: 445px 0 0 0;
     width: 100%;
     height: 100%;
     display: flex;
@@ -905,6 +911,17 @@ img {
     gap: 3.5em;
     transition: all 2s ease-in-out;
     margin: 0 0 0 0;
+}
+
+.secondTierModeCardsTowerWrapper {
+    position: absolute;
+    margin: auto auto auto auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    margin-bottom: -0.5%;
+    width: max-content;
 }
 
 .GameMode-fields-header {
@@ -1053,6 +1070,15 @@ img {
 
 .test {
     color: rgba(150, 31, 31, 0.795);
+}
+
+.JoinGame_btn {
+    z-index: 1;
+    display: flex;
+    position: absolute;
+    left: 10%;
+    margin: auto auto auto auto;
+    top: -55px;
 }
 
 #UltimateWinTextArea {
@@ -5659,7 +5685,7 @@ label h3 {
 }
 
 
-/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¤che */
+/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;
@@ -7436,7 +7462,6 @@ p.createCostumField_yInput {
     display: flex;
     position: absolute;
     left: 0;
-    right: 0;
     margin: auto auto auto auto;
     top: -55px;
 }

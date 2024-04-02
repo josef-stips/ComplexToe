@@ -119,7 +119,10 @@ function Click_NxN(f) {
 
 const InitGameDataForPopUp = (DisplayIniPopUp) => {
     // Initialize Inputs from pop up
-    (DisplayIniPopUp == undefined) ? DisplayPopUp_PopAnimation(OnlineGame_iniPopUp, "flex", true): DisplayPopUp_PopAnimation(SetPlayerNamesPopUp, "flex", true);
+
+    // (DisplayIniPopUp == undefined) ? DisplayPopUp_PopAnimation(OnlineGame_iniPopUp, "flex", true): DisplayPopUp_PopAnimation(SetPlayerNamesPopUp, "flex", true); legacy code
+    DisplayPopUp_PopAnimation(SetPlayerNamesPopUp, "flex", true);
+
     Player2_NameInput.style.display = 'none';
     Player2_IconInput.style.display = 'none';
     Player1_NameInput.style.height = '50%';
@@ -439,7 +442,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         // initialize lobby display
         Lobby_InnerGameMode.textContent = `${Check[3]}`;
         Lobby_PlayerClock.textContent = `${Check[2]} seconds`;
-        Lobby_FieldSize.textContent = `${xyCell_Amount}x${xyCell_Amount}`;
+        Lobby_FieldSize.textContent = !PlayingInCreatedLevel ? `${xyCell_Amount}x${xyCell_Amount}` : `${costumX}x${costumY}`;
         Lobby_PointsToWin.textContent = UserSetPointsToWinGameInput.value;
 
         // initialize allowed patterns in lobby for the creator: admin

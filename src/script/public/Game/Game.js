@@ -83,6 +83,8 @@ let PlayerIsAllowedToSetTwoTimes = false;
 
 let UserClicksNTimesInARow = 0;
 
+let AllUsersClickedSum = 0;
+
 // only availible in costum user levels
 let bgcolor1 = "";
 let bgcolor2 = "";
@@ -249,6 +251,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     running = true;
     player1_can_set = true;
     player3_can_set = false;
+
+    AllUsersClickedSum = 0;
 
     UltimateWinText.textContent = null;
 
@@ -930,6 +934,8 @@ async function cellCicked() {
 
         } else { // some other mode - offline mode obviously
 
+            AllUsersClickedSum++;
+
             // so the user can't leave the game directly after he setted 
             leaveGame_btn.removeEventListener('click', UserleavesGame);
             leaveGame_btn.style.color = '#56565659';
@@ -946,7 +952,7 @@ async function cellCicked() {
                 SecondPlayerTime.style.color = 'var(--font-color)';
                 FirstPlayerTime.style.color = 'var(--font-color)';
 
-                if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
+                if (GameData.InnerGameMode == InnerGameModes[2] && AllUsersClickedSum % 2 == 0) { // blocker combat inner game mode
                     // Active Blocker blocks a cell
                     Activate_InteractiveBlocker();
 
@@ -958,7 +964,7 @@ async function cellCicked() {
                         checkWinner();
                     }, 1000);
 
-                } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
+                } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3] || AllUsersClickedSum % 2 != 0) { // If other inner game mode => just check winner
                     checkWinner();
                 };
 
@@ -973,7 +979,7 @@ async function cellCicked() {
                 if (foundSpell) UserFoundSpell(cellIndex);
 
                 // other
-                if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
+                if (GameData.InnerGameMode == InnerGameModes[2] && AllUsersClickedSum % 2 == 0) { // blocker combat inner game mode
                     // Active Blocker blocks a cell
                     Activate_InteractiveBlocker();
 
@@ -1025,8 +1031,10 @@ socket.on('player_clicked', Goptions => {
         };
     };
 
+    AllUsersClickedSum++;
+
     // Check which inner game mode is activated
-    if (GameData.InnerGameMode == InnerGameModes[2]) { // blocker combat inner game mode
+    if (GameData.InnerGameMode == InnerGameModes[2] && AllUsersClickedSum % 2 == 0) { // blocker combat inner game mode
         player1_can_set = Goptions[1];
 
         if (personal_GameData.role == "admin") {
@@ -1038,7 +1046,7 @@ socket.on('player_clicked', Goptions => {
         player3_can_set = true;
         thirdPlayerSets();
 
-    } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
+    } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3] && AllUsersClickedSum % 2 != 0) { // If other inner game mode => just check winner
         player1_can_set = Goptions[1];
 
         // check the winner
