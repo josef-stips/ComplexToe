@@ -237,7 +237,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
         extra_points = 1;
     };
 
-    console.log(pattern, extra_points);
+    // console.log(pattern, extra_points);
 
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);
 };
@@ -245,8 +245,6 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
 function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick) {
     // check if there are still availible cells remaining
     let ava_cells = check_RemainingCells();
-
-    console.log(ava_cells);
 
     if (roundWon) { // someone won the round
         processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points, fromRestart, fromClick);

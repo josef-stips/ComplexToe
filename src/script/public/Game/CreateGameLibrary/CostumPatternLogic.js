@@ -17,9 +17,9 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let stepsOnIllegalBoundary;
     let stopCommand;
 
-    if (lastIndexBoundary > 5) {
+    if (lastIndexBoundary > Fieldx) {
 
-        stepsOnIllegalBoundary = (lastIndex - (lastIndexBoundary - 5));
+        stepsOnIllegalBoundary = (lastIndex - (lastIndexBoundary - Fieldx));
         stopCommand = (n - stepsOnIllegalBoundary) - 1;
 
     } else {
@@ -27,6 +27,8 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
         stepsOnIllegalBoundary = lastIndex;
         stopCommand = (n - stepsOnIllegalBoundary) - 1;
     };
+
+    console.log(n, structure, lastIndexData, lastIndex, lastIndexBoundary, stepsOnIllegalBoundary, stopCommand, WinConditions);
 
     // generate pattern and push it to the official win patterns library
     for (let i = 0; i < n; i++) {
@@ -47,7 +49,7 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
         WinConditions.push(pattern);
     };
 
-    // console.log(WinConditions);
+    console.log(WinConditions);
 };
 
 // the user can draw every pattern he likes on a 5x5 field

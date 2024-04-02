@@ -119,7 +119,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         allGameData.push(i);
     };
 
-    console.log(allGameData);
+    // console.log(allGameData);
 
     // Define field data for game
 
@@ -152,12 +152,11 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // console.log(required_amount_to_win);
     !isNaN(required_amount_to_win) ? points_to_win = parseInt(required_amount_to_win) : points_to_win = points_to_win; // if parameter is a number
 
-    console.log(Fields, fieldIndex, costumCoords);
+    // console.log(Fields, fieldIndex, costumCoords);
 
     // set up x and y coordinates
     if (costumCoords) {
-
-        console.log(costumCoords[0]);
+        // console.log(costumCoords[0]);
 
         if (costumCoords[0] != undefined && !isNaN(costumCoords[0])) {
             // set user costum level coordinates
@@ -174,7 +173,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
     };
 
-    console.log(xCell_Amount, yCell_Amount);
+    // console.log(xCell_Amount, yCell_Amount);
 
     board_size = xCell_Amount;
 
@@ -373,13 +372,21 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
 
     // Initialize game title and info
     if (CreativeLevel_from_onlineMode_costumPatterns || NewCreativeLevel) {
+
         if (costumCoords[0] != undefined && !isNaN(costumCoords[0])) {
 
             GameField_FieldSizeDisplay.textContent = `${costumCoords[0]}x${costumCoords[1]}`;
             GameField_BlockAmountDisplay.textContent = `${costumCoords[0]*costumCoords[1]}`;
+
+        } else { // offline mode
+
+            GameTitle.textContent = fieldTitle;
+            GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
+            GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
         };
 
     } else {
+
         GameTitle.textContent = fieldTitle;
         GameField_FieldSizeDisplay.textContent = `${Fields[fieldIndex].size}`;
         GameField_BlockAmountDisplay.textContent = `${Fields[fieldIndex].blocks}`;
@@ -863,8 +870,6 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
         Game_Upper_Field_Icon.classList = "";
     };
 
-    console.log(fromCreativeLevel);
-
     // online game in creative level
     if (fromCreativeLevel) {
         if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
@@ -1230,12 +1235,6 @@ function restartTimeout() {
 function UserGivesUp(user_role) {
     DarkLayer.style.display = "none";
     GiveUpPopUp.style.display = "none";
-
-    console.log(user_role)
-    console.log(score_Player1_numb, score_Player2_numb)
-    console.log(score_Player1_numb > score_Player2_numb)
-    console.log(score_Player1_numb == score_Player2_numb)
-    console.log(score_Player1_numb < score_Player2_numb)
 
     if (user_role == "admin") {
         // if admin had more points than user but gives up -> user wins nevertheless

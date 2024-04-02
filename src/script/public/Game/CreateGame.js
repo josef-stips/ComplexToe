@@ -1055,8 +1055,7 @@ const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, c
 
             let structure = index[pattern]["structure"]
             let xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
-
-            console.log(structure, xCellAmount);
+            // console.log(structure, xCellAmount);
 
             CostumWinPattern(structure, xCellAmount, xCellAmount);
         };
@@ -1069,8 +1068,7 @@ const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, c
 
             let structure = index[pattern]["structure"]
             let xCellAmount = costumXCoordFromThirdParty;
-
-            console.log(structure, xCellAmount);
+            // console.log(structure, xCellAmount);
 
             CostumWinPattern(structure, xCellAmount, xCellAmount);
         };
@@ -1102,7 +1100,7 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
             let structure = index[pattern]["structure"];
             let xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
 
-            console.log(structure, xCellAmount);
+            // console.log(structure, xCellAmount);
 
             // show in game info pop up
             createPattern_preview(pattern, structure, PatternGridWrapper, "level", "ingame_preview");
@@ -1116,7 +1114,7 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
             let structure = index[pattern]["structure"];
             let xCellAmount = costumXFromThirdParty;
 
-            console.log(structure, xCellAmount);
+            // console.log(structure, xCellAmount);
 
             // show in game info pop up
             createPattern_preview(pattern, structure, PatternGridWrapper, "level", "ingame_preview");
@@ -1326,9 +1324,12 @@ const InitCreateLevelScene = () => {
     // toggle pattern 
     Workbench_togglePatternBtn.forEach(toggle_button => {
         toggle_button.addEventListener("click", toggle_button.fn = (e) => {
+
             let toggler = e.target;
             let state = toggler.getAttribute("active");
             let target = toggler.getAttribute("for-pattern").replace(/_4x4|_5x5/g, "");
+
+            console.log(toggler, state, target);
 
             switch (state) {
                 case "true":
@@ -1342,7 +1343,7 @@ const InitCreateLevelScene = () => {
                     break;
 
                 case "false":
-                    toggler.setAttribute("active", "false");
+                    toggler.setAttribute("active", "true");
                     toggler.classList.replace("fa-square", "fa-square-check");
 
                     NewCreativeLevel.SaveInHistory("allowedpatterns", NewCreativeLevel.CurrentSelectedSetting.allowedpatterns);
