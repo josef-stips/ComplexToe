@@ -8194,4 +8194,16 @@ p.createCostumField_yInput {
         width: 40%;
         height: 35%;
     }
+    .SelectedCostumFieldText {
+        font-size: 15px;
+    }
+    .SelectedCostumFieldText {
+        font-size: 30px;
+    }
+    .PatternsInStorageText {
+        font-size: 30px;
+    }
+    .PatternsUsedInTheLevelText {
+        font-size: 30px;
+    }
 }
