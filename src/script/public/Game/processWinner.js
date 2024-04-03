@@ -205,21 +205,18 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
         let player1AdvSkin = removeInvisibleChars(PlayerData[1].AdvancedSkin);
         let player2AdvSkin = removeInvisibleChars(PlayerData[2].AdvancedSkin);
 
-        if (winner[1] != undefined) { // win pattern is advanced skin
+        if (player1AdvSkin == winCellClassName) { // the advanced skin win pattern belongs to PLayer 1
+            Player1_won = true;
 
-            if (player1AdvSkin == winCellClassName) { // the advanced skin win pattern belongs to PLayer 1
-                Player1_won = true;
+        } else if (player2AdvSkin == winCellClassName) { // the advanced skin win pattern belongs to PLayer 2
+            Player2_won = true;
+        };
 
-            } else if (player2AdvSkin == winCellClassName) { // the advanced skin win pattern belongs to PLayer 2
-                Player2_won = true;
-            };
+        if (PlayerData[1].PlayerForm == winner[0]) { // the normal skin pattern belongs to the first player
+            Player1_won = true;
 
-            if (PlayerData[1].PlayerForm == winner[0]) { // the normal skin pattern belongs to the first player
-                Player1_won = true;
-
-            } else if (PlayerData[2].PlayerForm == winner[0]) {
-                Player2_won = true;
-            };
+        } else if (PlayerData[2].PlayerForm == winner[0]) {
+            Player2_won = true;
         };
 
         // init. extra_points based on pattern: points for pattern list

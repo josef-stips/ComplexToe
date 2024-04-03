@@ -1771,6 +1771,7 @@ CloseBtn_LobbyInfoPopUp.addEventListener('click', () => {
 GiveUp_btn.addEventListener('click', () => {
     DarkLayer.style.display = "block";
     GiveUpPopUp.style.display = "flex";
+    ChooseWinner_popUp.style.display = "none";
 });
 
 // give up online game button close pop up btn

@@ -411,12 +411,14 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
     giveUp_Yes_btn.removeEventListener('click', giveUp_Yes_btn.fn);
     giveUp_Yes_btn.addEventListener('click', giveUp_Yes_btn.fn = function() { UserGivesUp(personal_GameData.role) });
+
     chooseWinnerWindowBtn.style.display = "none";
     GiveUp_btn.style.display = "none";
     globalChooseWinnerBtn.style.display = "block";
 
     // Initialize game elements based on mode
     if (!onlineMode) {
+
         // Offline mode
         let GameSeconds = 0;
         GameField_TimeMonitor.textContent = '0 s.';
@@ -426,6 +428,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
             GameSeconds++;
             GameField_TimeMonitor.textContent = GameSeconds + ' s.';
         }, 1000);
+
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
         restartBtn.style.color = 'var(font-color)';
@@ -441,40 +444,52 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
             GameField_TimeMonitor.textContent = '0 s.';
             clearInterval(gameCounter);
             gameCounter = null;
+
             gameCounter = setInterval(() => {
                 socket.emit('globalTimer', personal_GameData.currGameID);
             }, 1000);
         };
 
-        if (personal_GameData.role == 'user') {
+        if (personal_GameData.role == 'user') { // view from second player
+
             restartBtn.style.color = '#56565659';
             restartBtn.removeEventListener('click', restartGame);
+
             GiveUp_btn.style.color = 'var(--font-color)';
             GiveUp_btn.style.display = 'block';
-        } else if (personal_GameData.role == 'admin') {
+
+        } else if (personal_GameData.role == 'admin') { // view from first player
+
             restartBtn.style.color = 'var(--font-color)';
             restartBtn.addEventListener('click', restartGame);
+
             GiveUp_btn.style.color = 'var(--font-color)';
             GiveUp_btn.style.display = 'block';
-        } else if (personal_GameData.role == 'blocker') {
+
+        } else if (personal_GameData.role == 'blocker') { // view from third player
+
             restartBtn.style.color = '#56565659';
             restartBtn.removeEventListener('click', restartGame);
+
             giveUp_Yes_btn.removeEventListener('click', giveUp_Yes_btn.fn);
             GiveUp_btn.style.display = 'none';
-        }
+        };
+
         addAccesOnlineMode("TimerEnded", "fromBeginning");
         OnlineChat_btn.style.display = "block";
         socket.emit("ChangeBGColor", personal_GameData.currGameID, bgcolor1, bgcolor2);
-    }
+    };
 
     // Advanture mode settings
     if (inAdvantureMode) {
+
         restartBtn.style.display = 'none';
         globalChooseWinnerBtn.style.display = 'none';
         MaxAmountOfMovesGameDisplay.style.display = 'block';
         MaxAmountOfMovesGameDisplay.textContent = `moves left: ${maxAmoOfMoves}`;
         AdvantureMode_SpellDisplay.style.display = "flex";
         SpellAmountDisplay.textContent = SpellsInStore;
+
     } else {
         restartBtn.style.display = 'block';
         globalChooseWinnerBtn.style.display = 'block';
@@ -483,10 +498,14 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     };
 
     // Choose winner button display based on mode
-    if (PlayingInCreatedLevel) {
+    if (PlayingInCreatedLevel || CreativeLevel_from_onlineMode_costumPatterns) {
+        globalChooseWinnerBtn.style.display = "none";
+        GiveUp_btn.style.display = "none";
         chooseWinnerWindowBtn.style.display = "none";
+
     } else if (curr_mode == GameMode[3].opponent) {
-        chooseWinnerWindowBtn.style.display = "block";
+
+        globalChooseWinnerBtn.style.display = "block";
     };
 
     // Adjust cell width and height
@@ -626,12 +645,6 @@ function initializePlayers(OnlineGameDataArray) {
         if (curr_mode == GameMode[1].opponent) {
             statusText.textContent = `Your turn`;
         };
-    };
-
-    // deprive user of its right to choose the winner
-    if (personal_GameData.role == 'user' && curr_mode == GameMode[2].opponent) {
-        chooseWinnerWindowBtn.style.color = '#56565659';
-        chooseWinnerWindowBtn.removeEventListener('click', openChooseWinnerWindow);
     };
 
     // Define minimax scores for KI Mode
@@ -1046,7 +1059,7 @@ socket.on('player_clicked', Goptions => {
         player3_can_set = true;
         thirdPlayerSets();
 
-    } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3] && AllUsersClickedSum % 2 != 0) { // If other inner game mode => just check winner
+    } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
         player1_can_set = Goptions[1];
 
         // check the winner
