@@ -286,17 +286,11 @@ function Click_single_NxN(e) {
 
         // Initialize Inputs from pop up
         DarkLayer.style.display = 'block';
-        OnlineGame_iniPopUp.style.display = 'flex';
+        DisplayPopUp_PopAnimation(SetPlayerNamesPopUp, "flex", true);
         Player2_NameInput.style.display = 'none';
         Player2_IconInput.style.display = 'none';
         Player1_NameInput.style.height = '50%';
         Player1_IconInput.style.height = '50%';
-
-        // default data
-        if (localStorage.getItem('UserName')) {
-            Player1_NameInput.value = localStorage.getItem('UserName');
-            Player1_IconInput.value = localStorage.getItem('UserIcon');
-        };
     };
 
     if (curr_mode == GameMode[3].opponent) { // Computer Friend Mode
@@ -318,6 +312,12 @@ function Click_single_NxN(e) {
         Player2_NameInput.value = "";
         Player1_IconInput.value = "X";
         Player2_IconInput.value = "O";
+    };
+
+    // default data
+    if (localStorage.getItem('UserName')) {
+        Player1_NameInput.value = localStorage.getItem('UserName');
+        Player1_IconInput.value = localStorage.getItem('UserIcon');
     };
 };
 

@@ -34,7 +34,7 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
         stopCommand = (n - stepsOnIllegalBoundary) - 1;
     };
 
-    console.log(n, structure, lastIndexData, lastIndex, lastIndexBoundary, stepsOnIllegalBoundary, stopCommand);
+    // console.log(n, structure, lastIndexData, lastIndex, lastIndexBoundary, stepsOnIllegalBoundary, stopCommand);
 
     // generate pattern and push it to the official win patterns library
     for (let i = 0; i < n; i++) {
@@ -55,7 +55,7 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
         WinConditions.push(pattern);
     };
 
-    console.log(WinConditions);
+    // console.log(WinConditions);
 };
 
 // the user can draw every pattern he likes on a 5x5 field
@@ -66,8 +66,7 @@ const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
 
     // sort structure. small first biggest at the end
     let PatternStructure = Structure.sort((a, b) => a - b);
-
-    console.log(PatternStructure, Fieldx);
+    // console.log(PatternStructure, Fieldx);
 
     // literally the first index of the pattern and its corresponding lower boundary
     let x = Structure[0];
@@ -80,26 +79,22 @@ const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
     let rowSteps = y - by;
     let steps = bx + rowSteps;
 
-    console.log(`
-        PatternStructure : ${PatternStructure},
-        x : ${x},
-        bx : ${bx},
-        yData : ${yData},
-        y : ${y},
-        by : ${by},
-        rowSteps : ${rowSteps},
-        steps : ${steps}
-    `);
+    // console.log(`
+    //     PatternStructure : ${PatternStructure},
+    //     x : ${x},
+    //     bx : ${bx},
+    //     yData : ${yData},
+    //     y : ${y},
+    //     by : ${by},
+    //     rowSteps : ${rowSteps},
+    //     steps : ${steps}
+    // `);
 
     PatternStructure = PatternStructure.map(index => {
         return index - steps;
     });
 
-    console.log(PatternStructure);
-
     if (Fieldx > 5) PatternStructure = structureAsNxNstructure(PatternStructure, Fieldx, boundaries);
-
-    console.log(PatternStructure);
 
     return PatternStructure;
 };
@@ -107,30 +102,17 @@ const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
 // user created structures are 5x5 field based. To generate win patterns from this pattern on fields bigger than 5x5,
 // rearange pattern to NxN
 const structureAsNxNstructure = (PatternStructure, Fieldx, Initboundaries) => {
-    // calculate Fieldx (ex. 10) minus 5 and add this difference to the index which is bigger than 4
-    let difference = Fieldx - 5;
-
-    console.log(difference)
 
     let structure = PatternStructure.map((index, i) => {
         let [lowerBoundary, BoundaryIndex] = findLowerBoundary(index, Initboundaries, true);
 
         let boundaryIndexDifference = index - lowerBoundary;
 
-        console.log(BoundaryIndex, index, boundaryIndexDifference);
-
         xCell_Amount = Fieldx;
         CalculateBoundaries();
 
-        console.log(boundaries);
-
         let newBoundaryIndex = boundaries[BoundaryIndex];
-
-        console.log(newBoundaryIndex);
-
         let newIndex = boundaryIndexDifference + newBoundaryIndex
-
-        console.log(newIndex);
 
         // replace 5x5 based index with rearranged index based on Fieldx 
         return newIndex;
@@ -223,8 +205,6 @@ const findLowerBoundary = (index, boundaries, findIndex) => {
 
         if (index < boundary) {
             lowerBoundary = boundaries[i - 1];
-
-            console.log(lowerBoundary, findIndex, i - 1);
 
             return !findIndex ? lowerBoundary : [lowerBoundary, i - 1];
         };

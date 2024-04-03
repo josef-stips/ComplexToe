@@ -439,6 +439,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
 
         // Online mode
         if (personal_GameData.role == 'admin') {
+
             restartBtn.style.display = 'block';
             globalChooseWinnerBtn.style.display = 'block';
             GameField_TimeMonitor.textContent = '0 s.';
@@ -491,14 +492,16 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         SpellAmountDisplay.textContent = SpellsInStore;
 
     } else {
+
         restartBtn.style.display = 'block';
-        globalChooseWinnerBtn.style.display = 'block';
+        personal_GameData.role != "blocker" ? globalChooseWinnerBtn.style.display = 'block' : globalChooseWinnerBtn.style.display = 'none';
         MaxAmountOfMovesGameDisplay.style.display = 'none';
         AdvantureMode_SpellDisplay.style.display = "none";
     };
 
     // Choose winner button display based on mode
     if (PlayingInCreatedLevel || CreativeLevel_from_onlineMode_costumPatterns) {
+
         globalChooseWinnerBtn.style.display = "none";
         GiveUp_btn.style.display = "none";
         chooseWinnerWindowBtn.style.display = "none";
@@ -580,6 +583,8 @@ function initializePlayers(OnlineGameDataArray) {
 
         // blocker name if exists
         PlayerData[3].PlayerName = OnlineGameDataArray[12];
+
+        personal_GameData.role == "blocker" && (personalname = PlayerData[3].PlayerName); // for third player
 
     } else { // offline mode
         PlayerData[1].AdvancedSkin = 'cell ' + localStorage.getItem('userInfoClass');
@@ -674,21 +679,28 @@ function cell_mouseEnter(cell) {
 
         // Display player symbol or advanced skin
         if (curr_mode != GameMode[3].opponent && AdvancedSkin != "cell empty") { // online mode | advanture mode
-            let str = AdvancedSkin;
-            let parts = str.split(" "); // Trennung anhand des Leerzeichens
 
-            let part1 = parts[0]; // Erster Teil des geteilten Strings
-            let part2 = parts[1]; // Zweiter Teil des geteilten Strings
-            let part3 = parts[2]; // Zweiter Teil des geteilten Strings
+            if (personal_GameData.role != "blocker") {
 
-            cell.classList.add(part1);
-            cell.classList.add(part2);
-            cell.classList.add(part3);
+                let str = AdvancedSkin;
+                let parts = str.split(" "); // Trennung anhand des Leerzeichens
+
+                let part1 = parts[0]; // Erster Teil des geteilten Strings
+                let part2 = parts[1]; // Zweiter Teil des geteilten Strings
+                let part3 = parts[2]; // Zweiter Teil des geteilten Strings
+
+                cell.classList.add(part1);
+                cell.classList.add(part2);
+                cell.classList.add(part3);
+            };
 
         } else if (curr_mode != GameMode[3].opponent && AdvancedSkin == "cell empty") {
 
-            cell.textContent = localStorage.getItem("UserIcon");
-            cell.style.color = localStorage.getItem('userInfoColor');
+            if (personal_GameData.role != "blocker") {
+
+                cell.textContent = localStorage.getItem("UserIcon");
+                cell.style.color = localStorage.getItem('userInfoColor');
+            };
 
         } else if (curr_mode == GameMode[3].opponent && currentPlayer != PlayerData[1].PlayerForm) { // offline mode and player 2 turn 
 
@@ -929,14 +941,14 @@ async function cellCicked() {
             // if not, nothing must happen
             if (player1_can_set && personal_GameData.role == 'admin') {
                 player1_can_set = false;
-                await socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set, localStorage.getItem('userInfoColor'), localStorage.getItem('userInfoClass')]);
+                await socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, PlayerData[1].PlayerForm, player1_can_set, localStorage.getItem('userInfoColor'), localStorage.getItem('userInfoClass')]);
             }; // the second player tries to click, but he must wait for his opponent;
 
             // Check if the second player (user) can set and the player that clicked it the user
             // if not, nothing must happen
             if (!player1_can_set && personal_GameData.role == 'user') {
                 player1_can_set = true;
-                await socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, currentPlayer, player1_can_set, localStorage.getItem('userInfoColor'), localStorage.getItem('userInfoClass')]);
+                await socket.emit('PlayerClicked', [personal_GameData.currGameID, personal_GameData.role, cellIndex, PlayerData[2].PlayerForm, player1_can_set, localStorage.getItem('userInfoColor'), localStorage.getItem('userInfoClass')]);
             }; // the first player tries to click, but he must wait for his opponent
 
             // After a player finishes and inner game mode is blocker combat and the blocker clicked a cell
@@ -1012,58 +1024,60 @@ async function cellCicked() {
 // A message to all players that a player placed his (form/icon/skin whatever you call it) on a cell
 // the update options event is in the server, here the options array gets copied
 socket.on('player_clicked', Goptions => {
-    // update cell
-    options = Goptions[0];
+    if (running) {
+        // update cell
+        options = Goptions[0];
 
-    let cells = [...cellGrid.children];
+        let cells = [...cellGrid.children];
 
-    for (let i = 0; i < options.length; i++) {
-        const element = options[i];
+        for (let i = 0; i < options.length; i++) {
+            const element = options[i];
 
-        if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] == "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
+            if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] == "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
 
-            cells[i].style.color = Goptions[2];
-            cells[i].classList.add('colored-cell');
+                cells[i].style.color = Goptions[2];
+                cells[i].classList.add('colored-cell');
 
-            cells[i].textContent = element;
+                cells[i].textContent = element;
 
-            cells[i].className = cells[i].className.replace(PlayerData[1].AdvancedSkin, "");
-            cells[i].className = cells[i].className.replace(PlayerData[2].AdvancedSkin, "");
+                cells[i].className = cells[i].className.replace(PlayerData[1].AdvancedSkin, "");
+                cells[i].className = cells[i].className.replace(PlayerData[2].AdvancedSkin, "");
 
-            cells[i].style.opacity = "1";
-            cells[i].classList.add("draw");
+                cells[i].style.opacity = "1";
+                cells[i].classList.add("draw");
 
-        } else if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] != "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
+            } else if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] != "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
 
-            cells[i].style.color = "var(--font-color)";
-            cells[i].className = `cell ${Goptions[3]}`;
-            cells[i].textContent = "";
+                cells[i].style.color = "var(--font-color)";
+                cells[i].className = `cell ${Goptions[3]}`;
+                cells[i].textContent = "";
 
-            cells[i].style.opacity = "1";
-            cells[i].classList.add("draw");
-        };
-    };
-
-    AllUsersClickedSum++;
-
-    // Check which inner game mode is activated
-    if (GameData.InnerGameMode == InnerGameModes[2] && AllUsersClickedSum % 2 == 0) { // blocker combat inner game mode
-        player1_can_set = Goptions[1];
-
-        if (personal_GameData.role == "admin") {
-            // important stuff
-            killPlayerClocks(false, "stop");
+                cells[i].style.opacity = "1";
+                cells[i].classList.add("draw");
+            };
         };
 
-        // now the third player can set his block
-        player3_can_set = true;
-        thirdPlayerSets();
+        AllUsersClickedSum++;
 
-    } else if (GameData.InnerGameMode == InnerGameModes[1] || GameData.InnerGameMode == InnerGameModes[3]) { // If other inner game mode => just check winner
-        player1_can_set = Goptions[1];
+        // Check which inner game mode is activated
+        if (GameData.InnerGameMode == InnerGameModes[2] && AllUsersClickedSum % 2 == 0) { // blocker combat inner game mode
+            player1_can_set = Goptions[1];
 
-        // check the winner
-        checkWinner(false, "fromClick");
+            if (personal_GameData.role == "admin") {
+                // important stuff
+                killPlayerClocks(false, "stop");
+            };
+
+            // now the third player can set his block
+            player3_can_set = true;
+            thirdPlayerSets();
+
+        } else if (GameData.InnerGameMode != InnerGameModes[2] || AllUsersClickedSum % 2 == 1) { // If other inner game mode => just check winner
+            player1_can_set = Goptions[1];
+
+            // check the winner
+            checkWinner(false, "fromClick");
+        };
     };
 });
 
@@ -1107,14 +1121,17 @@ function updateCell(index) {
 function thirdPlayerSets() {
     // console.log(personal_GameData.role, running, player1_can_set, player3_can_set)
     if (personal_GameData.role == "blocker") {
+
         // add blocker access to set
         cells.forEach(cell => {
             cell.addEventListener('click', cellCicked);
         });
+
         statusText.textContent = "You can block now!";
         running = true;
 
     } else { // for the other player in the lobby
+
         // remove other player access to set
         cells.forEach(cell => {
             cell.removeEventListener('click', cellCicked);
@@ -1123,7 +1140,7 @@ function thirdPlayerSets() {
     };
 };
 
-// When the blocker combat inner game mode is activated and a player sets his form
+// When the blocker combat inner game mode is activated and a player places his block
 // The global blocker cell click event sends the updated cell grid with the new block to all players
 socket.on('blockerCombat_action', Goptions => {
     let Grid = [...cellGrid.children];
@@ -1154,11 +1171,16 @@ socket.on('blockerCombat_action', Goptions => {
 });
 
 async function changePlayer(from_restart, fromClick) {
+    console.log("from change player function lol:", from_restart, currentPlayer, curr_mode);
+
     currentPlayer = (currentPlayer == PlayerData[1].PlayerForm) ? PlayerData[2].PlayerForm : PlayerData[1].PlayerForm;
     currentName = (currentName == PlayerData[1].PlayerName) ? PlayerData[2].PlayerName : PlayerData[1].PlayerName;
 
+    console.log("lololololololololololololool", currentPlayer);
+
     // If in KI Mode and it is Ki's turn now
     if (curr_mode == GameMode[1].opponent) {
+
         if (currentPlayer == PlayerData[2].PlayerForm) {
             statusText.textContent = `Waiting for ${currentName}...`;
         };
@@ -1168,29 +1190,42 @@ async function changePlayer(from_restart, fromClick) {
         };
 
     } else { // If not in KI Mode
+
+        console.log(from_restart, " leleeleellelell");
+
         if (!from_restart) {
+
             await killPlayerClocks();
+
             if (currentPlayer == PlayerData[1].PlayerForm) {
-                if (curr_mode != GameMode[2].opponent) {
+
+                if (curr_mode != GameMode[2].opponent) { // offline mode
                     Activate_PlayerClock(true, false);
+
                 } else {
+
                     // start player clock for a player
-                    await killPlayerClocks(false, "Reset&&Continue", "player1_timer_event", "player1_timer", 1) // the params are only for online mode
+                    personal_GameData.role == "admin" && await killPlayerClocks(false, "Reset&&Continue", "player1_timer_event", "player1_timer", 1) // the params are only for online mode
                 };
 
             } else if (currentPlayer == PlayerData[2].PlayerForm) {
-                if (curr_mode != GameMode[2].opponent) {
-                    Activate_PlayerClock(false, true)
+
+                if (curr_mode != GameMode[2].opponent) { // offline mode
+                    Activate_PlayerClock(false, true);
+
                 } else {
+
                     // start player clock for a player
-                    await killPlayerClocks(false, "Reset&&Continue", "player2_timer_event", "player2_timer", 2) // the params are only for online mode
+                    personal_GameData.role == "admin" && await killPlayerClocks(false, "Reset&&Continue", "player2_timer_event", "player2_timer", 2) // the params are only for online mode
                 };
             };
+
             // in online mode the player things get handled in the server wih the "playerClocks" function above
             // This function with the given data send an emit to server which handles the request
 
             // if NOT in online mode
             if (curr_mode != GameMode[2].opponent) {
+
                 // "Your turn" for player who's turn
                 statusText.textContent = `${currentName}'s turn`;
             };
@@ -1661,6 +1696,13 @@ const KI_PlacesTwoTimesInARow = () => {
 // This is from the server to all clients
 socket.on('changePlayerTurnDisplay', (currPlayer) => {
     // Change for all clients
+    ChangePlayer(currPlayer);
+});
+
+const ChangePlayer = (currPlayer) => {
+
+    currentPlayer = currPlayer;
+
     if (currPlayer == PlayerData[1].PlayerForm && personal_GameData.role == 'admin') { // INFO: admin is always player one
         statusText.textContent = `It is your turn ${PlayerData[1].PlayerName}`;
 
@@ -1680,4 +1722,41 @@ socket.on('changePlayerTurnDisplay', (currPlayer) => {
     } else if (currPlayer == PlayerData[2].PlayerForm && personal_GameData.role == 'blocker') {
         statusText.textContent = `${PlayerData[2].PlayerName}'s turn`;
     };
-});
+};
+
+const ChangePlayerOnNumber = (currPlayer) => { // 1,2,3 instead of PlayerForms
+
+    if (player3_can_set) return;
+
+    if (currPlayer == 1 && personal_GameData.role == 'admin') { // INFO: admin is always player one
+
+        currentPlayer = PlayerData[1].PlayerForm;
+        statusText.textContent = `It is your turn ${PlayerData[1].PlayerName}`;
+
+    } else if (currPlayer == 1 && personal_GameData.role == 'user') {
+
+        currentPlayer = PlayerData[1].PlayerForm;
+        statusText.textContent = `${PlayerData[1].PlayerName}'s turn`;
+
+    } else if (currPlayer == 1 && personal_GameData.role == 'blocker') {
+
+        currentPlayer = PlayerData[1].PlayerForm;
+        statusText.textContent = `${PlayerData[1].PlayerName}'s turn`;
+    };
+
+    if (currPlayer == 2 && personal_GameData.role == 'user') { // INFO: user is always player two
+
+        currentPlayer = PlayerData[2].PlayerForm;
+        statusText.textContent = `It is your turn ${PlayerData[2].PlayerName}`;
+
+    } else if (currPlayer == 2 && personal_GameData.role == 'admin') {
+
+        currentPlayer = PlayerData[2].PlayerForm;
+        statusText.textContent = `${PlayerData[2].PlayerName}'s turn`;
+
+    } else if (currPlayer == 2 && personal_GameData.role == 'blocker') {
+
+        currentPlayer = PlayerData[2].PlayerForm;
+        statusText.textContent = `${PlayerData[2].PlayerName}'s turn`;
+    };
+};

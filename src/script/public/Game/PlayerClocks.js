@@ -6,6 +6,7 @@ function Activate_PlayerClock(PlayerOne, PlayerTwo) {
 
 // kill all intervals
 async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, playerN_timer, playerInNumber) {
+
     if (curr_mode != GameMode[2].opponent) { // offline mode
 
         clearInterval(firstClock);
@@ -24,6 +25,7 @@ async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, 
         SecondPlayerTime.textContent = `${GameData.PlayerClock}`;
 
     } else { // online mode
+
         if (command == "stop") {
             await socket.emit("stop_Players_timer", parseInt(personal_GameData.currGameID));
 
@@ -33,6 +35,7 @@ async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, 
             await socket.emit("Request_Players_timer", parseInt(personal_GameData.currGameID), playerN_timer_event, playerN_timer, playerInNumber, currentPlayer);
         };
     };
+
     SecondPlayerTime.style.color = 'var(--font-color)';
     FirstPlayerTime.style.color = 'var(--font-color)';
 };
@@ -49,7 +52,6 @@ function removeAccessToAnything() {
     restartBtn.style.color = '#56565659';
     // console.log("lol")
     !current_level_boss && CloseOnlinePopUps(true);
-    GiveUpPopUp.style.display = "none";
 
     // remove access to set
     cells.forEach(cell => {
@@ -196,9 +198,12 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
     FirstPlayerTime.textContent = `${player1_timer} `;
     SecondPlayerTime.textContent = `${player2_timer}`;
 
-    // console.log(player1_timer, player2_timer, currentPlayer);
+    console.log(player1_timer, player2_timer, currentPlayer, running);
+
+    ChangePlayerOnNumber(currentPlayer);
 
     if (running) {
+
         if (currentPlayer == 1 && !player3_can_set) {
             player1_can_set = true;
 
@@ -226,18 +231,20 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
                     cell.style.cursor = "default";
                 });
             };
+        };
 
-        } else if (player3_can_set) {
-            if (personal_GameData.role == "blocker") {
-                addAccesOnlineMode(true, true);
+    } else if (player3_can_set) {
 
-            } else {
-                // remove access to set
-                cells.forEach(cell => {
-                    cell.removeEventListener('click', cellCicked);
-                    cell.style.cursor = "default";
-                });
-            };
+        if (personal_GameData.role == "blocker") {
+            running = true;
+            addAccesOnlineMode(true, true);
+
+        } else {
+            // remove access to set
+            cells.forEach(cell => {
+                cell.removeEventListener('click', cellCicked);
+                cell.style.cursor = "default";
+            });
         };
     };
 
@@ -245,37 +252,62 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
     if (personal_GameData.role == 'admin') {
         if (player1_timer <= 2) {
             FirstPlayerTime.style.color = 'red';
-        };
+
+        } else FirstPlayerTime.style.color = 'white';
     };
+
     if (personal_GameData.role == 'user') {
         if (player2_timer <= 2) {
             SecondPlayerTime.style.color = 'red';
-        };
+
+        } else SecondPlayerTime.style.color = 'white';
+    };
+
+    if (player1_timer <= 0 || player2_timer <= 0) {
+
+        removeAccessToAnything();
     };
 
     if (player1_timer <= 1 || player2_timer <= 1) {
-        removeAccessToAnything();
+
+        if (player3_can_set && personal_GameData.role == "blocker") {
+            running = true;
+
+        } else {
+            running = false;
+        };
+
+    } else {
+        running = true;
     };
 });
 
 socket.on("EndOfPlayerTimer", () => {
-    removeAccessToAnything();
+    console.log("lol");
+
+    // removeAccessToAnything();
+
     SecondPlayerTime.style.color = 'var(--font-color)';
     FirstPlayerTime.style.color = 'var(--font-color)';
 
     // animational purpose
-    modifyCellgrid();
+    // modifyCellgrid();
 
-    setTimeout(() => {
-        // make cell grid normal again
-        initCellgrid();
+    // setTimeout(() => {
 
-        addAccesOnlineMode("TimerEnded", true);
+    // make cell grid normal again
+    // initCellgrid();
 
-        // now it's player two turn
-        if (curr_mode == GameMode[2].opponent)(player1_can_set == true) ? player1_can_set = false : player1_can_set = true;
-        checkWinner();
-    }, 1000);
+    // addAccesOnlineMode("TimerEnded", true);
+
+    // now it's player two turn
+    if (curr_mode == GameMode[2].opponent)(player1_can_set == true) ? player1_can_set = false : player1_can_set = true;
+
+    checkWinner();
+    addAccesOnlineMode(true, true);
+
+    running = true;
+    // }, 1000);
 });
 
 // for offline game

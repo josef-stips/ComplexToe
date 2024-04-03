@@ -110,7 +110,7 @@ const createCell = (x, index, grid, eventListener) => {
         });
     };
 
-    cell.style.fontSize = "70px";
+    cell.style.fontSize = "40px";
 
     return cell;
 };

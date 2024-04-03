@@ -1,3 +1,6 @@
+// wether a win combination found or not. Variable sets back to false after win animation. This is just for bug prevention
+let win_found = false;
+
 function checkWinner(fromRestart, fromClick) { // the first two parameter are just for the online mode when the third player blocked
     let roundWon = false;
     let Player1_won = false; // check if x has won
@@ -8,6 +11,8 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
     let extra_points = 0; // n additional points by a win pattern of 5 cells
     let Grid = Array.from(cellGrid.children);
     let someoneIsCheck = false;
+
+    if (win_found) return;
 
     // remove access to set
     cells.forEach(cell => {
@@ -259,6 +264,10 @@ function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombinatio
 // process result of game: if a sub game round is won 
 function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points, fromRestart, fromClick) {
     killPlayerClocks(false);
+
+    running = false;
+    win_found = true;
+
     // Choose winner
     chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points).then((KI_CanSetASecondTime) => {
 
@@ -281,7 +290,7 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
         // Change player things. execute this everytime
         setTimeout(() => {
             if (!inAdvantureMode) {
-                processResult_continueGame(fromRestart, fromClick, true)
+                processResult_continueGame(fromRestart, fromClick, true);
 
             } else {
                 if (KI_CanSetASecondTime != "KI_CanSetASecondTime") {
@@ -417,6 +426,8 @@ function processResult_AdvantureMode(WinCombination) {
 
 // everything processed and checked. Now the game can continue and the other player can set now
 function processResult_continueGame(fromRestart, fromClick, won) {
+    win_found = false;
+
     // if in advanture mode
     if (inAdvantureMode) {
         setTimeout(() => {
@@ -476,6 +487,9 @@ function processResult_continueGame(fromRestart, fromClick, won) {
             }, 200);
 
         } else if (curr_mode != GameMode[1].opponent) { // It is not KI Mode
+
+            console.log(fromClick);
+
             // add access to set
             setTimeout(() => {
                 running = true;

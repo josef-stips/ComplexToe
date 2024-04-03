@@ -1223,6 +1223,8 @@ socket.on('recieveGlobalOptions', message => {
     // update old array with modified version
     options = message;
 
+    console.log(options, message, Grid);
+
     // Anzahl der Elemente, die schwarz gefärbt werden sollen
     for (let i = 0; i < options.length; i++) {
         let el = options[i];
@@ -1232,6 +1234,7 @@ socket.on('recieveGlobalOptions', message => {
             Grid[i].style.backgroundColor = "var(--font-color)";
             Grid[i].classList = "cell death-cell";
             Grid[i].removeEventListener('click', cellCicked);
+
             setTimeout(() => {
                 Grid[i].textContent = null;
                 el = '';
@@ -1405,6 +1408,13 @@ OnlineChat_btn.addEventListener('click', () => {
 
     // Name of other player
     personal_GameData.role == "admin" ? ChatTitle.textContent = `A chat between you and ${PlayerData[2].PlayerName}` : ChatTitle.textContent = `A chat between you and ${PlayerData[1].PlayerName}`;
+
+
+    if (curr_innerGameMode == InnerGameModes[2]) { // three players
+        personal_GameData.role == "admin" ? ChatTitle.textContent = `A chat between you, ${PlayerData[2].PlayerName} and the blocker ${PlayerData[3].PlayerName}` : ChatTitle.textContent = `A chat between you, ${PlayerData[1].PlayerName} and the blocker ${PlayerData[3].PlayerName}`;
+
+        personal_GameData.role == "blocker" && (ChatTitle.textContent = `A chat between you, ${PlayerData[1].PlayerName} and ${PlayerData[2].PlayerName}`);
+    };
 });
 
 // close chat pop up

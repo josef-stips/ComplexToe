@@ -2527,7 +2527,7 @@ label h3 {
     justify-content: center;
     flex-direction: row;
     gap: 3em;
-    width: 100%;
+    width: 95%;
     font-size: 125px;
     height: 100%;
 }
@@ -6067,7 +6067,6 @@ label h3 {
     overflow: scroll;
     flex-direction: column-reverse;
     display: flex;
-    justify-content: flex-end;
 }
 
 .ReplaceText_Levellist {
@@ -6086,6 +6085,7 @@ label h3 {
     padding: 0 0 0 10px;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     cursor: pointer;
+    min-height: 3em;
 }
 
 .LevelIconWrapper {
@@ -7963,11 +7963,11 @@ p.createCostumField_yInput {
 
 @media screen and (max-width: 1400px) {
     .SetPlayerNamesPopUp {
-        width: 80%;
-        height: 80%;
+        width: 90%;
+        height: 90%;
     }
     .first-tier-modes {
-        margin: 350px 0 0 0;
+        margin: 280px 0 0 0;
     }
     .second-tier-modes {
         margin: 0 0 0 0;
@@ -7991,10 +7991,10 @@ p.createCostumField_yInput {
     }
     .skinShop-SkinColors {
         gap: 1em;
-        font-size: 28px;
+        font-size: 34px;
     }
     .skinShop-AdvancedSkins {
-        font-size: 27px;
+        font-size: 34px;
         gap: 1em;
     }
     .map {
@@ -8054,5 +8054,144 @@ p.createCostumField_yInput {
     }
     .costum_patterns_overview {
         height: 50vh;
+    }
+    .Lobby_GameInfo_PopUp {
+        width: 80%;
+        height: 75%;
+    }
+    .LobbyPlayerSection {
+        width: 100%;
+        font-size: 180px;
+    }
+    .JoinGame_btn {
+        left: 12.5%;
+    }
+    .ChooseField-display {
+        font-size: larger;
+    }
+    .GameMode-display {
+        font-size: 35px;
+    }
+    .secondTierModeCardsTowerWrapper {
+        margin-bottom: -0.7%;
+    }
+    .OnlineGame_CodeName_PopUp {
+        width: 35%;
+        height: 35%;
+    }
+    .alert-pop-up {
+        width: 45%;
+        height: 35%;
+    }
+    .userInfo-PopUp {
+        height: 87.5%;
+        width: 90%;
+    }
+    .settings-window {
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        position: absolute;
+        margin: auto auto auto auto;
+        bottom: 0;
+        right: 0;
+        color: var(--font-color);
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        background: var(--bg-app-color2);
+    }
+    .MailPopUp {
+        width: 80%;
+        height: 80%;
+    }
+    .gameModes-cards-Left {
+        height: 52.5%;
+    }
+    .mainCard {
+        height: 65%;
+    }
+    .card-mainSec {
+        margin-top: 0;
+    }
+    .miniCellMini {
+        width: 4vh;
+        height: 4vh;
+    }
+    .skinShopTabWrapper {
+        width: 60%;
+    }
+    .shopGuideText {
+        font-size: 15px !important;
+    }
+    .ELO-Points-div {
+        width: 32.5%;
+        margin: 0 0 0 -2%;
+    }
+    .tradeX_PopUp {
+        width: 45%;
+        height: 45%;
+    }
+    .AchievementsPopUp {
+        width: 70%;
+        height: 70%;
+    }
+    .ChallengeBox {
+        height: 22.5%;
+    }
+    .CreateLevel_CreateOwnStuff_btn {
+        bottom: 3%;
+    }
+    .costum_field_overview {
+        width: 92.5%;
+        height: 400px;
+    }
+    .GameArea-SideInfo-Footer {
+        margin: 0 0 18px 0;
+    }
+    #GameArea-FieldCircle {
+        margin-top: 30px;
+    }
+    #UltimateWinTextArea {
+        margin-top: 1em;
+    }
+    @keyframes ElementComesFromAboveTheScreen {
+        0% {
+            top: -500px;
+        }
+        5% {
+            top: 30px;
+        }
+        100% {
+            top: 160px;
+        }
+    }
+    .MessagesPopUp {
+        width: 90%;
+        height: 90%;
+    }
+    .SearchPlayerPopUp {
+        width: 90%;
+        height: 90%;
+    }
+    .FriendsListPopUp {
+        width: 90%;
+        height: 90%;
+    }
+    .UserGivesData_PopUp {
+        width: 30%;
+        height: 30%;
+    }
+    .CreateLevel_MusicPreviewPopUp {
+        width: 60%;
+        height: 60%;
+    }
+    .CreateLevel_musicPreviewBtn {
+        font-size: 10px;
+    }
+    .MaxAmountOfMovesGameDisplay {
+        right: 3%;
+    }
+    .UseSpell_PopUp {
+        width: 40%;
+        height: 35%;
     }
 }

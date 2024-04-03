@@ -490,8 +490,10 @@ function KI_Action() {
         } else {
             // remove current win conditions
             WinConditions = [];
+
             // create win conditions for mini field in big field
-            Create_5x5_WinCombis(allowedPatterns);
+            CreateWinConditions(5, allowedPatterns);
+
             // convert copy of win conditions in binary
             let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
             // console.log(options, InnerFieldOptions, InnerFieldData_Options, InnerFieldData_Indexes, InnerFieldData, blockages.toString(2), binaryWinConds.toString(2));
@@ -602,10 +604,13 @@ let WinConds;
 const KI_aim_WinCombis = () => {
     // remove current win conditions
     WinConditions = [];
+
     // create win conditions for mini field in big field
-    Create_5x5_WinCombis(allowedPatterns);
+    CreateWinConditions(5, allowedPatterns);
+
     // convert copy of win conditions in binary
     let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
+
     // get bitboards for the game field
     let bitboards = InitBitboards(InnerFieldData_Options); // 1 : ki_board, 0 : player_board, 2 : blockages
 
@@ -730,16 +735,20 @@ const GenerateOriginWinConds = (costum_amount) => {
         WinConditions = [];
         // generate new win conditions for current big field
         if (board_size == 20 && costum_amount == undefined) {
-            Create_20x20_WinCombis(allowedPatterns);
+
+            CreateWinConditions(20, allowedPatterns);
 
         } else if (board_size == 25 && costum_amount == undefined) {
-            Create_25x25_WinCombis(allowedPatterns);
+
+            CreateWinConditions(25, allowedPatterns);
 
         } else if (board_size == 30 && costum_amount == undefined) {
-            Create_30x30_WinCombis(allowedPatterns);
+
+            CreateWinConditions(30, allowedPatterns);
 
         } else if (costum_amount == 15 && costum_amount != undefined) {
-            Create_15x15_WinCombis(allowedPatterns);
+
+            CreateWinConditions(15, allowedPatterns);
         };
         done();
     });
@@ -933,7 +942,8 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
                 // remove current win conditions
                 WinConditions = [];
                 // create win conditions for mini field in big field
-                Create_5x5_WinCombis(allowedPatterns);
+                CreateWinConditions(5, allowedPatterns);
+
                 // convert copy of win conditions in binary
                 let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
                 // console.log(options, InnerFieldOptions, InnerFieldData_Options, InnerFieldData_Indexes, InnerFieldData, blockages.toString(2), binaryWinConds.toString(2));
@@ -1016,7 +1026,7 @@ const KI_move = (finalMove) => {
 // if minimax returns -1 for some reason
 const SpecialCaseKIPlace = (index) => {
     if (!cells[index].classList.contains("death-cell") && options[index] == "") {
-        Create_20x20_WinCombis(allPatt_KIMode_Copy);
+        CreateWinConditions(20, allPatt_KIMode_Copy);
 
         ki_set(index, InnerFieldData_Indexes[index]);
 

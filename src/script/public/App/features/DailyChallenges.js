@@ -251,7 +251,7 @@ class DailyChallenges {
             updated_challenges.push(this.Challenges[rnd]);
         };
 
-        console.log(updated_challenges);
+        // console.log(updated_challenges);
 
         // call animation and refresh ui
         this.new_challenges_animation(updated_challenges);
@@ -322,7 +322,7 @@ class DailyChallenges {
 
     // called by Treasure script
     new_available = () => {
-        console.log("New challenges are available!");
+        // console.log("New challenges are available!");
     };
 
     // check single pattern challenges 
@@ -330,7 +330,7 @@ class DailyChallenges {
         this.Last24HoursUsedPatterns = JSON.parse(localStorage.getItem("Last24HourUsedPatterns"));
         let currentChallenges = JSON.parse(this.CurrentChallenges);
 
-        console.log(currentChallenges, this.Last24HoursUsedPatterns);
+        // console.log(currentChallenges, this.Last24HoursUsedPatterns);
 
         // savety first
         if (currentChallenges) {
@@ -339,7 +339,7 @@ class DailyChallenges {
 
                 let prerequisite = data["type"].replace("pattern", "");
 
-                console.log(prerequisite, data["type"], this.Last24HoursUsedPatterns);
+                // console.log(prerequisite, data["type"], this.Last24HoursUsedPatterns);
 
                 // check for pattern used once
                 if (this.Last24HoursUsedPatterns.includes(prerequisite)) {
@@ -393,7 +393,7 @@ class DailyChallenges {
     check_online_games_challenges = (wins_to_achieve, index) => {
         let wins_achieved = Number(localStorage.getItem("Last24Hours_Won_OnlineGames"));
 
-        console.log(wins_achieved, index, wins_to_achieve);
+        // console.log(wins_achieved, index, wins_to_achieve);
 
         ChallengeBox_progressText[index].textContent = `Progress: ${wins_achieved}/${wins_to_achieve}`;
 

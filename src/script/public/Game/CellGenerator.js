@@ -63,6 +63,9 @@ const ConfigureCellSize = (cell, xCell_Amount) => {
 
 // Generates an 2-dimensional array with all possible win combination for a 10x10 field
 function CreateWinConditions(NxN, Allowed_Patterns) {
+    xCell_Amount = NxN;
+    CalculateBoundaries();
+
     WinConditions.length = 0;
 
     let list = GamePatternsList;
