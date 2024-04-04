@@ -99,6 +99,8 @@ function checkLoadingProgress() {
         // start random icons on screen
         randomItemsOnScreen();
 
+        ToS(); // terms of service pop up the user must agree on the first time he joins the game
+
     } else {
         setTimeout(() => {
             checkLoadingProgress();
@@ -236,6 +238,17 @@ function checkForSettings() {
     };
     if (localStorage.getItem('onlineMatches-won')) {
         // console.log(localStorage.getItem('onlineMatches-won'));
+    };
+};
+
+function ToS() {
+    let agreed = localStorage.getItem("agreed_on_ToS");
+
+    if (!agreed) {
+        DisplayPopUp_PopAnimation(AGB_PopUp, "flex", true);
+
+    } else {
+        AGB_PopUp.style.display = "none";
     };
 };
 

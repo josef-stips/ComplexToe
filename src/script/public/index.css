@@ -7470,6 +7470,65 @@ p.createCostumField_yInput {
 }
 
 
+/* AGB pop up */
+
+.AGB_PopUp {
+    width: 65%;
+    height: 65%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto auto auto auto;
+    border: 3px solid rgba(255, 217, 0, 0.37);
+    background-color: var(--bg-app-color);
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-size: 23px;
+    z-index: 10001;
+    border-radius: 25px;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.AGB_PopUP_main {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: inherit;
+    width: 90%;
+    margin-top: 1em;
+}
+
+.AGB_PopUP_main ol {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    text-align: left;
+}
+
+.AGB_PopUP_mainWrapper {
+    height: 90%;
+    width: 100%;
+    padding: 0 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.AGB_PopUP_footer {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: end;
+    padding: 0 40px 20px 0;
+}
+
+
 /* Animations */
 
 @keyframes blue_color_fade {
@@ -8208,5 +8267,11 @@ p.createCostumField_yInput {
     }
     .PatternsUsedInTheLevelText {
         font-size: 30px;
+    }
+    .ToS_title {
+        font-size: xx-large;
+    }
+    .AGB_PopUP_main {
+        font-size: medium;
     }
 }

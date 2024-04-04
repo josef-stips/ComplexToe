@@ -1922,3 +1922,9 @@ canvas.addEventListener('click', function(event) {
 });
 
 draw();
+
+agree_ToS_btn.addEventListener("click", () => {
+    localStorage.setItem("agreed_on_ToS", "true");
+    AGB_PopUp.style.display = "none";
+    DarkLayer.style.display = "none";
+});
