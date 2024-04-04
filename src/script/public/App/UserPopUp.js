@@ -71,6 +71,7 @@ const CloseUserPopUpOfOtherPlayer = () => {
 
     // console.log(running, personal_GameData.role);
     if (!running) {
+
         if (personal_GameData.currGameID != null) {
             DarkLayer.style.display = "block";
 
@@ -78,8 +79,16 @@ const CloseUserPopUpOfOtherPlayer = () => {
             DarkLayer.style.display = "block";
         };
 
+        if (SearchPlayerPopUp.style.display == "flex" || FriendsListPopUp.style.display == "flex") {
+            DarkLayer.style.display = "block"
+        };
+
     } else {
         DarkLayer.style.display = "none"
+    };
+
+    if (SearchPlayerPopUp.style.display == "flex" || FriendsListPopUp.style.display == "flex") {
+        DarkLayer.style.display = "block"
     };
 
     UserLastTimeOnlineDisplay.style.display = "none";

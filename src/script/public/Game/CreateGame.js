@@ -284,15 +284,15 @@ class NewLevel {
 
     // display level list
     StartLevelList = (Display, DisplayList) => {
+
         // get levels user created
         if (DisplayList == undefined) {
             try {
                 socket.emit("RequestLevels", localStorage.getItem("PlayerID"), levels => {
-                    // console.log(levels);
 
                     if (levels.length <= 0) { // no levels
                         [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
-                        ReplaceText_Levellist.style.display = "block";
+                        ReplaceText_Levellist.style.display = "flex";
 
                     } else { // create level display
                         ReplaceText_Levellist.style.display = "none";
@@ -1593,7 +1593,7 @@ const InitCreateLevelScene = () => {
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
-            AlertText.textContent = "Draw your new pattern and provide a custom name for it. Minimum drawing on 3 cells is required. It can be drawn up to 5 cells. You cannot use a pattern already existing in the game.";
+            AlertText.textContent = "Draw your new pattern and provide a custom name for it. Minimum drawing on 3 cells is required. You cannot draw a pattern already existing in the game.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });

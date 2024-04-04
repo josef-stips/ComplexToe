@@ -51,7 +51,7 @@ async function SendMail(PlayerName, PlayerID, mailName, message) {
 
     await Email.send({
             SecureToken: "50ae5256-e4e9-4700-b42b-fafc3cd150ec",
-            To: 'josef.stips@sgw-schule.de',
+            To: 'complextoe@gmail.com',
             From: 'josefstips@gmx.de',
             Subject: 'Sended from User',
             Body: body

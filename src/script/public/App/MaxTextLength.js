@@ -802,6 +802,11 @@ createCostumPattern_title.addEventListener("keydown", (event) => {
         return true;
     };
 
+    if (event.key == "Enter") {
+        event.preventDefault();
+        return false;
+    };
+
     if (len >= 15 && !hasSelection && event.key != "Enter") {
         event.preventDefault();
         return false;

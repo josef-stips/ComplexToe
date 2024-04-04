@@ -15,7 +15,7 @@ const createWindow = () => {
         contextIsolation: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            devTools: true,
+            devTools: false,
         },
     });
 
@@ -26,7 +26,7 @@ const createWindow = () => {
     // load content
     mainWindow.loadFile(path.join(__dirname, 'script/public/index.html'));
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 };
 
 // Menu.setApplicationMenu(null);

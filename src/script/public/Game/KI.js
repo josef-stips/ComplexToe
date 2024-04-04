@@ -618,6 +618,7 @@ const KI_aim_WinCombis = () => {
     // console.log(WinConditions, binaryWinConds);
 
     if (all_good_win_combinations.length == 0) {
+
         // look and add good win combis for the KI
         for (let [i, cond] of binaryWinConds.entries()) {
             // console.log((bitboards[0] & cond), (blockages & cond), (bitboards[1] & cond));
@@ -629,21 +630,26 @@ const KI_aim_WinCombis = () => {
 
         currently_taken_combination = all_good_win_combinations[0];
 
-        for (let i = currently_taken_combination.length - 1; i > 0; i--) {
-            let index = currently_taken_combination[i];
+        try {
+            for (let i = currently_taken_combination.length - 1; i > 0; i--) {
+                let index = currently_taken_combination[i];
 
-            // console.log(index, KI_lastCellIndex_Clicked, InnerFieldData_Indexes[KI_lastCellIndex_Clicked], current_combination_index, currently_taken_combination)
-            // console.log(((bitboards[1] >> index) & 1), ((bitboards[0] >> index) & 1), ((blockages >> index) & 1))
+                // console.log(index, KI_lastCellIndex_Clicked, InnerFieldData_Indexes[KI_lastCellIndex_Clicked], current_combination_index, currently_taken_combination)
+                // console.log(((bitboards[1] >> index) & 1), ((bitboards[0] >> index) & 1), ((blockages >> index) & 1))
 
-            if (index != InnerFieldData_Indexes[KI_lastCellIndex_Clicked] &&
-                ((bitboards[1] >> index) & 1) === 0 &&
-                ((bitboards[0] >> index) & 1) === 0 &&
-                ((blockages >> index) & 1) === 0
-            ) {
-                current_combination_index = index;
-                placeAtInstantWinForOpponent([true, getKeyByValue(InnerFieldData_Indexes, current_combination_index)]);
-                break;
+                if (index != InnerFieldData_Indexes[KI_lastCellIndex_Clicked] &&
+                    ((bitboards[1] >> index) & 1) === 0 &&
+                    ((bitboards[0] >> index) & 1) === 0 &&
+                    ((blockages >> index) & 1) === 0
+                ) {
+                    current_combination_index = index;
+                    placeAtInstantWinForOpponent([true, getKeyByValue(InnerFieldData_Indexes, current_combination_index)]);
+                    break;
+                };
             };
+
+        } catch (error) {
+            PlayerCanWinIn2Moves(InnerFieldData_Indexes, true);
         };
 
     } else {

@@ -5685,7 +5685,7 @@ label h3 {
 }
 
 
-/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
+/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;
@@ -6030,6 +6030,8 @@ label h3 {
     padding: 10px;
     border-radius: 100px;
     border: 3px solid white;
+    height: max-content;
+    margin-left: 20px;
 }
 
 .LevelList_footer {
@@ -6065,7 +6067,7 @@ label h3 {
     height: 100%;
     border: 3px solid goldenrod;
     overflow: scroll;
-    flex-direction: column-reverse;
+    flex-direction: column;
     display: flex;
 }
 
@@ -6073,6 +6075,7 @@ label h3 {
     margin-top: 50px;
     display: none;
     align-self: center;
+    height: -webkit-fill-available;
 }
 
 .Level_InLevelList {

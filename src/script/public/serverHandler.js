@@ -1307,6 +1307,10 @@ function SwitchToSelection(Selection, to, display) {
 // alter game data for every client
 // emit comes from the server obviously
 socket.on('ChangeGameData', (display, SpecificData, Selection) => {
+    if (!curr_field_ele) {
+        curr_field_ele = DataFields["20x20"];
+    };
+
     // variables
     let fieldIndex = curr_field_ele.getAttribute('index');
     let fieldTitle = curr_field_ele.getAttribute('title');

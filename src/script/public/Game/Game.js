@@ -175,7 +175,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
     };
 
-    console.log(xCell_Amount, yCell_Amount);
+    // console.log(xCell_Amount, yCell_Amount);
 
     board_size = xCell_Amount;
 
@@ -296,8 +296,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // if in 40x40 field, generate its properties: eye
     // or level 10: eye boss, or level 9: sun boss
-    if (Fields[fieldIndex].size == "40x40" || current_selected_level == 10 && inAdvantureMode || current_selected_level == 9 || current_selected_level == 4 &&
+    if ( /*Fields[fieldIndex].size == "40x40" ||*/ current_selected_level == 10 && inAdvantureMode || current_selected_level == 9 && inAdvantureMode || current_selected_level == 4 &&
         inAdvantureMode) {
+
         document.querySelector('#GameArea-FieldCircle').style.margin = "0 var(--BossMode-fieldcircleMargin) 0 0";
         lobbyFooterText.style.display = 'none';
 
@@ -320,8 +321,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
             // eye_40.style.display = 'flex';
             // sun_40.style.display = 'none';
             // init_eye();
-            current_level_boss = new Eye();
-            current_level_boss.display();
+            // current_level_boss = new Eye();
+            // current_level_boss.display();
 
         } else if (inAdvantureMode && current_selected_level == 4) {
             current_level_boss = new StarEye();

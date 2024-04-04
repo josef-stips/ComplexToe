@@ -707,7 +707,7 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
         score_Player2_numb = Infinity;
     };
 
-    console.log("win combination: ", WinCombination);
+    win_found = false;
 
     if (WinCombination == undefined) {
         setTimeout(() => {
@@ -1122,6 +1122,8 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
         killPlayerClocks(true, "stop");
         clearInterval(gameCounter);
         gameCounter = null;
+
+        win_found = false;
 
         // so the user can't leave while win animation
         leaveGame_btn.removeEventListener('click', UserleavesGame);
