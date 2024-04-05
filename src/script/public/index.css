@@ -4262,7 +4262,6 @@ label h3 {
 }
 
 .exploredItems_PopUp {
-    transform: scale(0);
     display: none;
     position: fixed;
     flex-direction: column;
@@ -4271,22 +4270,21 @@ label h3 {
     top: 0;
     right: 0;
     margin: auto auto auto auto;
-    width: 85%;
-    height: 85%;
+    width: 100%;
+    height: 100%;
     background-color: var(--bg-app-color);
-    border: 3px solid goldenrod;
-    border-radius: 25px;
     z-index: 10001;
     transition: all 0.5s ease-out;
     color: var(--font-color);
     font-family: 'Geologica', sans-serif;
-    /* font-family: 'Josefin Sans', sans-serif; */
 }
 
 .exploredItems_main {
-    width: 90%;
+    width: 80%;
     height: 100%;
-    overflow-x: scroll;
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
 }
 
 .exploredItems_main::-webkit-scrollbar {
@@ -4302,15 +4300,10 @@ label h3 {
 
 .exploredItems_mainContent {
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
-    gap: 4em;
-    flex-direction: row;
-    font-size: 20px;
-    width: 90%;
-    height: 100%;
-    white-space: nowrap;
-    padding: 20px;
+    width: 100%;
+    height: 90%;
 }
 
 .exploredItems_header {
@@ -4318,8 +4311,8 @@ label h3 {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 7%;
-    border-bottom: 3px solid goldenrod;
+    height: 15%;
+    font-size: 35px;
 }
 
 .exploredItems_footer {
@@ -4333,8 +4326,9 @@ label h3 {
 .exploredItemPopUp_closeBtn {
     cursor: pointer;
     transition: transform 0.2s ease-out;
-    font-size: 19px;
-    margin: 0 26px 0 0;
+    font-size: 25px;
+    margin: 20px 20px 0 0;
+    align-self: flex-start;
 }
 
 .exploredItemPopUp_closeBtn:hover {
@@ -4343,7 +4337,7 @@ label h3 {
 }
 
 .exploredItem_container {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 5px;
     font-size: 40px;
@@ -4362,10 +4356,11 @@ label h3 {
 
 .exploredItems_MainWrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
-    height: 90%;
+    height: 100%;
     align-items: center;
+    justify-content: center;
 }
 
 .explored_itemsDescription_Div {
@@ -4404,6 +4399,31 @@ label h3 {
 
 .exploreditem_wrapper:hover {
     cursor: pointer;
+}
+
+.exploredItems_mainContent .exploredItem_container.active {
+    display: flex;
+}
+
+.exploredItems_caret {
+    transition: color 0.15s ease-in-out;
+    color: white;
+    font-size: xxx-large;
+}
+
+.exploredItems_caret:hover {
+    transition: color 0.15s ease-in-out;
+    cursor: pointer;
+    color: goldenrod;
+}
+
+.exploreditem_wrapper img {
+    width: 500px;
+    height: 500px;
+}
+
+.exploreditem_wrapper {
+    animation: floating-el 3s infinite ease-in-out;
 }
 
 
@@ -5685,7 +5705,7 @@ label h3 {
 }
 
 
-/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
+/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;
@@ -8273,5 +8293,9 @@ p.createCostumField_yInput {
     }
     .AGB_PopUP_main {
         font-size: medium;
+    }
+    .exploreditem_wrapper img {
+        width: 400px;
+        height: 400px;
     }
 }

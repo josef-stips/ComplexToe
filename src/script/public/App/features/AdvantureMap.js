@@ -819,75 +819,61 @@ function UserWon_AdvantureLevel(won_levelIndex) {
 
 // explored items book btn
 exploredItems_bookBtn.addEventListener('click', () => {
-    exploredItems_PopUp.style.display = 'flex';
-    DarkLayer.style.display = 'block';
-    exploredItems_PopUp.style.animation = 'popUp-POP 0.07s ease-out';
-
-    setTimeout(() => {
-        exploredItems_PopUp.style.transform = "scale(1)";
-    }, 70);
+    DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", true);
 });
 
 exploredItemPopUp_closeBtn.addEventListener('click', () => {
     exploredItems_PopUp.style.display = 'none';
     DarkLayer.style.display = 'none';
-
-    // bug fix:
-    exploredItems_PopUp.style.animation = 'none';
-    exploredItems_PopUp.style.transform = "scale(0)";
 });
 
 // explored items
-exploreditem_wrapper.forEach((item_wrapper, i) => {
-    item_wrapper.index = i;
-    item_wrapper.addEventListener("click", function() {
-        let i = item_wrapper.index;
-        switch (i) {
-            case 0:
-                exploredItemTitle.textContent = "Ore";
-                exploredItem_describtion.textContent = "It can be found everywhere on this map and is a normal material to upgrade and build weapons.";
-                exploredItem_rarity.textContent = "rarity: common";
-                exploredItem_rarity.style.color = "lightgreen";
-                init_exploredItems(i);
-                break;
-            case 1:
-                exploredItemTitle.textContent = "Diamonds";
-                exploredItem_describtion.textContent = "A rare item only found by lucky or ambitious players. It can be used for nothing.";
-                exploredItem_rarity.textContent = "rarity: rare";
-                exploredItem_rarity.style.color = "royalblue";
-                init_exploredItems(i);
-                break;
-            case 2:
-                exploredItemTitle.textContent = "Minerals";
-                exploredItem_describtion.textContent = "A common item that you usually need often. It is very hard, so you can use it to throw at annoying enemies.";
-                exploredItem_rarity.textContent = "rarity: common";
-                exploredItem_rarity.style.color = "lightgreen";
-                init_exploredItems(i);
-                break;
-            case 3:
-                exploredItemTitle.textContent = "Abandoned Eye";
-                exploredItem_describtion.textContent = "This is the key to the evil. With it you can open the door to death.";
-                exploredItem_rarity.textContent = "rarity: legendary";
-                exploredItem_rarity.style.color = "gold";
-                init_exploredItems(i);
-                break;
-            case 4:
-                exploredItemTitle.textContent = "Asteroid";
-                exploredItem_describtion.textContent = "So far, only a few pieces have been found in the respective levels. It is very valuable and can be used for maximizing weapons.";
-                exploredItem_rarity.textContent = "rarity: mystique";
-                exploredItem_rarity.style.color = "purple";
-                init_exploredItems(i);
-                break;
-            case 5:
-                exploredItemTitle.textContent = "Encrypted writing";
-                exploredItem_describtion.textContent = "The previous players who took up the challenge of defeating evil left behind encrypted writings along the way. Can you decipher them?";
-                exploredItem_rarity.textContent = "rarity: mystique";
-                exploredItem_rarity.style.color = "purple";
-                init_exploredItems(i);
-                break;
-        };
-    });
-});
+const exploredItems_preview = (i) => {
+    switch (i) {
+        case 0:
+            exploredItemTitle.textContent = "Ore";
+            exploredItem_describtion.textContent = "It can be found everywhere on this map and is a normal material to upgrade and build weapons.";
+            exploredItem_rarity.textContent = "rarity: common";
+            exploredItem_rarity.style.color = "lightgreen";
+            init_exploredItems(i);
+            break;
+        case 1:
+            exploredItemTitle.textContent = "Diamonds";
+            exploredItem_describtion.textContent = "A rare item only found by lucky or ambitious players. It can be used for nothing.";
+            exploredItem_rarity.textContent = "rarity: rare";
+            exploredItem_rarity.style.color = "royalblue";
+            init_exploredItems(i);
+            break;
+        case 2:
+            exploredItemTitle.textContent = "Minerals";
+            exploredItem_describtion.textContent = "A common item that you usually need often. It is very hard, so you can use it to throw at annoying enemies.";
+            exploredItem_rarity.textContent = "rarity: common";
+            exploredItem_rarity.style.color = "lightgreen";
+            init_exploredItems(i);
+            break;
+        case 3:
+            exploredItemTitle.textContent = "Abandoned Eye";
+            exploredItem_describtion.textContent = "This is the key to the evil. With it you can open the door to death.";
+            exploredItem_rarity.textContent = "rarity: legendary";
+            exploredItem_rarity.style.color = "gold";
+            init_exploredItems(i);
+            break;
+        case 4:
+            exploredItemTitle.textContent = "Asteroid";
+            exploredItem_describtion.textContent = "So far, only a few pieces have been found in the respective levels. It is very valuable and can be used for maximizing weapons.";
+            exploredItem_rarity.textContent = "rarity: mystique";
+            exploredItem_rarity.style.color = "purple";
+            init_exploredItems(i);
+            break;
+        case 5:
+            exploredItemTitle.textContent = "Encrypted writing";
+            exploredItem_describtion.textContent = "The previous players who took up the challenge of defeating evil left behind encrypted writings along the way. Can you decipher them?";
+            exploredItem_rarity.textContent = "rarity: mystique";
+            exploredItem_rarity.style.color = "purple";
+            init_exploredItems(i);
+            break;
+    };
+};
 
 // You found pop up 
 YouFound_OkBtn.addEventListener('click', () => {
@@ -899,4 +885,34 @@ YouFound_OkBtn.addEventListener('click', () => {
         secret_world.unlock();
         just_beat_advantureMap = false;
     };
+});
+
+// slide show for found elements pop up
+document.addEventListener("DOMContentLoaded", function() {
+    const items = document.querySelectorAll(".exploredItems_mainContent .exploredItem_container");
+    let currentItemIndex = 0;
+
+    function showItem(index) {
+        items.forEach(item => {
+            item.classList.remove("active");
+        });
+        items[index].classList.add("active");
+        updateFooter(index);
+    };
+
+    function updateFooter(index) {
+        exploredItems_preview(index);
+    };
+
+    showItem(currentItemIndex);
+
+    document.querySelector(".exploredItems_caretLeft").addEventListener("click", function() {
+        currentItemIndex = (currentItemIndex - 1 + items.length) % items.length;
+        showItem(currentItemIndex);
+    });
+
+    document.querySelector(".exploredItems_caretRight").addEventListener("click", function() {
+        currentItemIndex = (currentItemIndex + 1) % items.length;
+        showItem(currentItemIndex);
+    });
 });

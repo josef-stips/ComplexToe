@@ -2,7 +2,7 @@
     "name": "ComplexToe",
     "productName": "ComplexToe",
     "version": "1.0.0",
-    "description": "Conquer your opponent.",
+    "description": "The game you have waited for.",
     "main": "src/index.js",
     "build": {
         "appId": "com.josefstips.ComplexToe",

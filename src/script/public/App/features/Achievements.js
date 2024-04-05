@@ -102,9 +102,9 @@ class Achievements {
             ];
 
         this.unlocked = {
-            0: false,
-            1: false,
-            2: false,
+            0: true,
+            1: true,
+            2: true,
             3: false,
             4: false,
             5: false,
