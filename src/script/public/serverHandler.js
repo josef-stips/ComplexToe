@@ -117,6 +117,8 @@ const InitStyleForUserEntersLobby = (message) => {
     // warn text 
     OnlineGame_NameWarnText[0].style.display = 'none';
     OnlineGame_NameWarnText[1].style.display = 'none';
+
+    SetPlayerNames_AdditionalSettings.style.display = "none";
 };
 
 // Init and display all game info for user enters the lobby
@@ -1181,6 +1183,8 @@ socket.on('StartGame', (RoomData) => { // RoomData
     let player1_SkinColor = RoomData[0].player1_SkinColor;
     let player2_SkinColor = RoomData[0].player2_SkinColor;
 
+    let killdrawnCells = RoomData[0].killAllDrawnCells;
+
     // initialize game
     curr_innerGameMode = currInnerGameMode;
     // allowed patterns
@@ -1205,7 +1209,9 @@ socket.on('StartGame', (RoomData) => { // RoomData
 
     costumLevelIcon = costumIcon;
 
-    console.log(costumPatterns, costumX, costumY, costumIcon, costumLevelIcon);
+    console.log(costumPatterns, costumX, costumY, costumIcon, costumLevelIcon, killdrawnCells);
+
+    (killdrawnCells == 0) ? killAllDrawnCells = false: killAllDrawnCells = true;
 
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,

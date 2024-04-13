@@ -275,15 +275,31 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
         if (curr_field != 'Small Price' || curr_field != 'Thunder Advanture') {
             setTimeout(() => {
                 let grid = [...cellGrid.children];
-                // Make used cells die
-                for (let cell of grid) {
-                    // cells with normal skins => look if their textContent is a form, cells with advanced skins => look at their classList
-                    // All cells that contain an advanced skin have 3 classNames (cell fa-solid fa-xxx)
-                    if (cell.textContent == PlayerData[1].PlayerForm || cell.textContent == PlayerData[2].PlayerForm || cell.classList.length >= 3 && cell.classList.contains("draw")) {
-                        single_CellBlock(cell);
+
+                console.log(WinCombination, killAllDrawnCells);
+
+                if (killAllDrawnCells) { // wether all cells which are drawn should be blocked/killed or only the one from the win combination
+
+                    // Make used cells die
+                    for (let cell of grid) {
+                        // cells with normal skins => look if their textContent is a form, cells with advanced skins => look at their classList
+                        // All cells that contain an advanced skin have atleast 3 items in their classList (cell fa-solid fa-xxx)
+                        if (cell.textContent == PlayerData[1].PlayerForm || cell.textContent == PlayerData[2].PlayerForm || cell.classList.length >= 3 && cell.classList.contains("draw")) {
+                            single_CellBlock(cell, undefined, WinCombination);
+                        };
+                    };
+
+                } else {
+                    WinCombination.forEach(cell => single_CellBlock(cell, undefined, WinCombination));
+
+                    // make a list of cells that are still in the game
+                    for (let cell of grid) {
+
+                        if (cell.textContent != "" || cell.classList.length >= 3 && cell.classList.contains("draw")) {
+                            stillActiveCells.push(cell);
+                        };
                     };
                 };
-                ava_cells = check_RemainingCells();
             }, 600);
         };
 
@@ -487,8 +503,6 @@ function processResult_continueGame(fromRestart, fromClick, won) {
             }, 200);
 
         } else if (curr_mode != GameMode[1].opponent) { // It is not KI Mode
-
-            console.log(fromClick);
 
             // add access to set
             setTimeout(() => {

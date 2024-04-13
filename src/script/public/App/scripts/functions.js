@@ -204,5 +204,5 @@ const CloseOnlinePopUps = (CloseDarkLayer) => {
 };
 
 function removeInvisibleChars(str) {
-    return str.replace(/\s/g, ''); // Hier werden alle Leerzeichen entfernt
+    return str.replace(/\s/g, '');
 };

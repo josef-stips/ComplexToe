@@ -1422,6 +1422,23 @@ SetClockListItem_70sec.addEventListener('click', () => {
     };
 });
 
+AdditionalSetting_item_killAllCells.addEventListener("click", () => {
+    switch (AdditionalSetting_item_killAllCells.getAttribute("selected")) {
+
+        case "false":
+            killAllDrawnCells = true;
+            AdditionalSettingItem_Checkmark_killAllCells.classList = 'fa-solid fa-check';
+            AdditionalSetting_item_killAllCells.setAttribute('selected', 'true');
+            break;
+
+        case "true":
+            killAllDrawnCells = false;
+            AdditionalSettingItem_Checkmark_killAllCells.classList = '';
+            AdditionalSetting_item_killAllCells.setAttribute('selected', 'false');
+            break;
+    };
+});
+
 chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
 
 onlineGame_closeBtn.addEventListener('click', () => {

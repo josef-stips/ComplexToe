@@ -1770,6 +1770,50 @@ img {
     gap: 0.9em;
 }
 
+.AdditionalSettings_Wrapper {
+    width: 100%;
+    height: min-content;
+    gap: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.AdditionalSettings_list {
+    width: 100%;
+    display: flex;
+    height: min-content;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.AdditionalSetting_item {
+    cursor: pointer;
+    color: rgb(202, 202, 202);
+    padding: 4px;
+    margin: 0;
+    transition: all 0.15s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: 18px;
+    flex-direction: row;
+    width: 100%;
+    height: max-content;
+}
+
+.AdditionalSettingItem_TextWrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1em;
+}
+
 
 /* .SetPlayerNames-ClockInput {
     margin-bottom: 5em;

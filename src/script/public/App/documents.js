@@ -93,6 +93,9 @@ let treasurePopUpTimer = document.querySelector('.treasure-pop-up-timer');
 let hours = document.querySelector('.hours');
 let minutes = document.querySelector('.minutes');
 let seconds = document.querySelector('.seconds');
+let AdditionalSetting_item_killAllCells = document.querySelector("#AdditionalSetting_item_killAllCells");
+let AdditionalSettingItem_Checkmark_killAllCells = document.querySelector("#AdditionalSettingItem_Checkmark_killAllCells");
+let SetPlayerNames_AdditionalSettings = document.querySelector(".SetPlayerNames_AdditionalSettings");
 
 let SetPlayerNamesPopUp = document.querySelector('.SetPlayerNamesPopUp');
 let SetPlayerName_ConfirmButton = document.querySelector('.SetPlayerName-ConfirmButton');

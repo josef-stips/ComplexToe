@@ -109,6 +109,9 @@ let board_size;
 
 let allGameData = [];
 
+let killAllDrawnCells = false;
+let stillActiveCells = [];
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -273,6 +276,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         };
 
     } else if (curr_mode == GameMode[1].opponent && inAdvantureMode) { // If in advanture mode
+
+        killAllDrawnCells = true;
+
         // in advanture mode every level has a presetted inner game mode the user can't change
         GameData.InnerGameMode = AdvantureLevel_InnerGameMode;
 
@@ -1172,12 +1178,10 @@ socket.on('blockerCombat_action', Goptions => {
 });
 
 async function changePlayer(from_restart, fromClick) {
-    console.log("from change player function lol:", from_restart, currentPlayer, curr_mode);
+    // console.log("from change player function:", from_restart, currentPlayer, curr_mode);
 
     currentPlayer = (currentPlayer == PlayerData[1].PlayerForm) ? PlayerData[2].PlayerForm : PlayerData[1].PlayerForm;
     currentName = (currentName == PlayerData[1].PlayerName) ? PlayerData[2].PlayerName : PlayerData[1].PlayerName;
-
-    console.log("lololololololololololololool", currentPlayer);
 
     // If in KI Mode and it is Ki's turn now
     if (curr_mode == GameMode[1].opponent) {
@@ -1191,8 +1195,6 @@ async function changePlayer(from_restart, fromClick) {
         };
 
     } else { // If not in KI Mode
-
-        console.log(from_restart, " leleeleellelell");
 
         if (!from_restart) {
 
@@ -1329,7 +1331,7 @@ socket.on('Reload_GlobalGame', (Goptions) => {
 });
 
 // Block used cells after a win
-function single_CellBlock(cell, fromMap) {
+function single_CellBlock(cell, fromMap, WinCombination) {
     // just different animation style
     if (fromMap == "fromMap") {
         cell.style.animation = "destroyCell 2s forwards"
@@ -1351,12 +1353,22 @@ function single_CellBlock(cell, fromMap) {
 
     // Bug Fix
     if (curr_mode == GameMode[2].opponent) {
-        socket.emit('resetOptions', personal_GameData.currGameID, xCell_Amount, message => {
+        socket.emit('resetOptions', personal_GameData.currGameID, xCell_Amount, killAllDrawnCells, [...WinCombination].map(cell => Number(cell.getAttribute("cell-index"))), options, message => {
             options = message;
         });
 
     } else {
-        CreateOptions("fromMap"); // local options
+
+        if (killAllDrawnCells) {
+            CreateOptions("fromMap"); // local options
+
+        } else {
+
+            if (WinCombination) {
+
+                WinCombination.forEach(cell => options[Number(cell.getAttribute("cell-index"))] = "");
+            };
+        };
     };
 };
 

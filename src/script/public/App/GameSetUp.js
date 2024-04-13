@@ -196,6 +196,8 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
 };
 
 const UserClicksNxNDefaultSettings = (readonly) => {
+    killAllDrawnCells = false;
+
     Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
     Player1_IconInput.style.display = "block";
 
@@ -230,6 +232,7 @@ const UserClicksNxNDefaultSettings = (readonly) => {
         document.querySelector(".SetPlayerNames-InputArea").style.gap = "0.9em";
         UserSetPointsToWinGameInput.style.display = "block";
         SetClockList.style.display = 'flex';
+        SetPlayerNames_AdditionalSettings.style.display = "flex";
     };
 };
 
@@ -412,7 +415,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
-            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon
+            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
