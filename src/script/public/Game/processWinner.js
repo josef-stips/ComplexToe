@@ -229,8 +229,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
 
         if (pattern) {
             extra_points = patternPoints[pattern];
-
-            console.log(extra_points, pattern, patternPoints);
+            // console.log(extra_points, pattern, patternPoints);
 
         } else {
             extra_points = 1;
@@ -275,8 +274,7 @@ function processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_
         if (curr_field != 'Small Price' || curr_field != 'Thunder Advanture') {
             setTimeout(() => {
                 let grid = [...cellGrid.children];
-
-                console.log(WinCombination, killAllDrawnCells);
+                // console.log(WinCombination, killAllDrawnCells);
 
                 if (killAllDrawnCells) { // wether all cells which are drawn should be blocked/killed or only the one from the win combination
 

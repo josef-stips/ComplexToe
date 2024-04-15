@@ -161,7 +161,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // set up x and y coordinates
     if (costumCoords) {
-        console.log(costumCoords[0], costumCoords);
+        // console.log(costumCoords[0], costumCoords);
 
         if (costumCoords[0] != undefined && !isNaN(costumCoords[0])) {
             // set user costum level coordinates

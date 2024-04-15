@@ -198,7 +198,7 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
     FirstPlayerTime.textContent = `${player1_timer} `;
     SecondPlayerTime.textContent = `${player2_timer}`;
 
-    console.log(player1_timer, player2_timer, currentPlayer, running);
+    // console.log(player1_timer, player2_timer, currentPlayer, running);
 
     ChangePlayerOnNumber(currentPlayer);
 

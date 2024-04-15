@@ -2476,7 +2476,7 @@ label h3 {
     color: white;
     background-color: var(--bg-app-color);
     border-radius: 0;
-    z-index: 10000;
+    z-index: 201;
 }
 
 .GameInfoLobby_btn {
@@ -5126,7 +5126,7 @@ label h3 {
 
 .JourneyMainInner {
     display: flex;
-    height: 100%;
+    height: min-content;
     width: 100%;
     flex-direction: column;
     align-items: start;
@@ -8087,7 +8087,7 @@ p.createCostumField_yInput {
 
 /* Mediq Querys */
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1366px) {
     .SetPlayerNamesPopUp {
         width: 90%;
         height: 90%;
@@ -8341,5 +8341,111 @@ p.createCostumField_yInput {
     .exploreditem_wrapper img {
         width: 400px;
         height: 400px;
+    }
+    .SetPlayerNamesMain-wrapper {
+        gap: 20em;
+    }
+    .big-svg {
+        width: 300px;
+        height: 300px;
+    }
+}
+
+@media screen and (min-width: 2560px) {
+    .card-footer h2 {
+        font-size: 40px;
+    }
+    .miniCell {
+        width: 4.7vh;
+        height: 4.7vh;
+    }
+    .miniCellMini {
+        width: 4vh;
+        height: 4vh;
+    }
+    .header-item {
+        width: 70px;
+        height: 70px;
+    }
+    .ELO-Points-div div div {
+        align-items: center;
+    }
+    .ELO-Points-div {
+        height: 4vh;
+        font-size: 40px;
+    }
+    .ELO-Points-display {
+        font-size: 45px;
+    }
+    .XP_JourneyBtn {
+        height: 45px;
+        width: 45px;
+    }
+    #cardHeaderIcon-onlinePlayer {
+        margin-bottom: 3.5em;
+    }
+    .card-circle {
+        width: 6em;
+        height: 6em;
+    }
+    .BotIcon {
+        font-size: 70px;
+        width: 60px;
+        height: 70px;
+    }
+    .lobby-cards-header-right img {
+        width: 60px;
+        height: 60px;
+    }
+    .lobby-cards-header-left {
+        font-size: 40px;
+    }
+    .homeLobby-iconBtn {
+        border-radius: 40px;
+    }
+    .homeLobby-iconBtn img {
+        width: 50px;
+        height: 60px;
+    }
+     :root {
+        --max-cellGrid-size: 800px;
+        --Text-font-size: 27px;
+        --CreateLevel-ScrollContainerHeight-max: 800px;
+    }
+    .ComplexToe-Field {
+        height: 100%;
+    }
+    .GameField-Header {
+        height: 10%;
+    }
+    .game-status {
+        height: 10%;
+    }
+    .secondTierModeCardsTowerWrapper {
+        margin-bottom: -0.4%;
+    }
+    .first-tier-modes {
+        margin: 480px 0 0 0;
+    }
+    .CreateLevel_CreateOwnStuff_btn {
+        bottom: 2%;
+    }
+    .CreateLevel_header {
+        height: min-content;
+    }
+    .GameInfoLobby_btn {
+        top: 100px;
+    }
+    .Lobby_GameCode_display {
+        font-size: 30px;
+    }
+    .PlayerLobbyDisplay {
+        font-size: 200px;
+    }
+    .LobbyBottomRowWrapper {
+        bottom: 14.5%;
+    }
+    .LobbyInfo_main {
+        font-size: 40px;
     }
 }

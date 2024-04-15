@@ -1536,18 +1536,12 @@ OnlineGame_CodeNamePopUp_closeBtn.addEventListener('click', () => {
 // Then he can click two buttons to confirm his seeing
 friendLeft_Aj_btn.addEventListener('click', () => {
     friendLeftGamePopUp.style.display = 'none';
-
-    if (friendLeft_text.textContent == 'The admin disconnected from the game') {
-        DarkLayer.style.display = 'none';
-    };
+    DarkLayer.style.display = 'none';
 });
 
 friendLeft_OK_btn.addEventListener('click', () => {
     friendLeftGamePopUp.style.display = 'none';
-
-    if (friendLeft_text.textContent == 'The admin disconnected from the game') {
-        DarkLayer.style.display = 'none';
-    };
+    DarkLayer.style.display = 'none';
 });
 
 let isInAdvancedGameModes = false;
@@ -1782,6 +1776,7 @@ GameInfoLobby_btn.addEventListener('click', () => {
 
 CloseBtn_LobbyInfoPopUp.addEventListener('click', () => {
     Lobby_GameInfo_PopUp.style.display = "none";
+    DarkLayer.style.display = "none";
 });
 
 // give up online game button

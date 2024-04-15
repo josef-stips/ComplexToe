@@ -91,6 +91,8 @@ const CloseUserPopUpOfOtherPlayer = () => {
         DarkLayer.style.display = "block"
     };
 
+    if (getComputedStyle(OnlineGame_Lobby).display == "flex") DarkLayer.style.display = "none";
+
     UserLastTimeOnlineDisplay.style.display = "none";
     SendMessage_Btn.style.display = "none";
     AddFriend_Or_Friend_btn.style.display = "none";
@@ -143,6 +145,8 @@ const TryToCloseUserInfoPopUp = () => {
             } else {
                 DarkLayer.style.display = "none"
             };
+
+            if (getComputedStyle(OnlineGame_Lobby).display == "flex") DarkLayer.style.display = "none";
 
             if (!UserIsOnProfileFromOtherPlayer) userInfoPopUp.style.display = 'none';
 

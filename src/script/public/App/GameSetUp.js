@@ -431,9 +431,10 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         });
 
         // general stuff
-        DisplayPopUp_PopAnimation(OnlineGame_Lobby, "flex", true);
+        DisplayPopUp_PopAnimation(OnlineGame_Lobby, "flex", false);
         SetPlayerNamesPopUp.style.display = 'none';
         Lobby_PointsToWin.contentEditable = "true";
+        DarkLayer.style.display = "none";
 
         // initialize game with the right values
         curr_name1 = Player1_NameInput.value;
@@ -566,6 +567,7 @@ const UserEntersOnlineGame = (m) => {
     // general stuff
     OnlineGame_Lobby.style.display = 'flex';
     SetPlayerNamesPopUp.style.display = 'none';
+    DarkLayer.style.display = "none";
 };
 
 // user tries to start the game

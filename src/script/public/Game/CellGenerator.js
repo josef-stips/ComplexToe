@@ -71,8 +71,7 @@ function CreateWinConditions(NxN, Allowed_Patterns) {
     let list = GamePatternsList;
     let patterns = Allowed_Patterns.map(name => list[name]);
 
-    console.log(NxN, Allowed_Patterns, list, patterns);
-
+    // console.log(NxN, Allowed_Patterns, list, patterns);
     patterns.forEach(pattern => CostumWinPattern(pattern, NxN, NxN));
 };
 

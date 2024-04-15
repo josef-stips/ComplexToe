@@ -924,7 +924,7 @@ socket.on('killed_game', () => {
     // clear timer and stuff to prevent bugs
     clearTimer();
 
-    DarkLayer.style.display = "block";
+    DarkLayer.style.display = "none";
 
     // remove big screen text if there was one 
     if (document.querySelector(".bigScreenText")) {
