@@ -357,7 +357,7 @@ function processResult_AdvantureMode(WinCombination) {
             break;
 
         case 4:
-            console.log(current_level_boss, current_level_boss.hp);
+            // console.log(current_level_boss, current_level_boss.hp);
 
             if (score_Player1_numb >= points_to_win && current_level_boss.hp <= 0) { // Player won
                 Call_UltimateWin(WinCombination);
@@ -445,9 +445,9 @@ function processResult_continueGame(fromRestart, fromClick, won) {
     // if in advanture mode
     if (inAdvantureMode) {
         setTimeout(() => {
-            if (currentPlayer == PlayerData[1].PlayerForm) {
+            if (currentPlayer == PlayerData[1].PlayerForm) { // player's turn
 
-                if (PlayerIsAllowedToSetTwoTimes) { // if player can place two times in a row through a forbidden spell he found
+                if (PlayerIsAllowedToSetTwoTimes) { // player can place two times in a row through a forbidden spell he found on a cell
                     running = true;
 
                     AdvantureMode_SpellDisplay.style.color = "white";
@@ -477,6 +477,7 @@ function processResult_continueGame(fromRestart, fromClick, won) {
                 };
 
             } else {
+                // ki is allowed to place two times in a row
                 changePlayer(false);
                 running = true;
 

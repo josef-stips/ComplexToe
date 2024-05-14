@@ -1054,7 +1054,7 @@ const ki_set = (index, inner_field_index) => {
     index = Number(index);
     inner_field_index = Number(inner_field_index);
 
-    // console.log("index:", index, "inner field index:", inner_field_index);
+    console.log("index:", index, "inner field index:", inner_field_index);
 
     // on bitboard
     ki_board |= 1 << inner_field_index;
@@ -1072,7 +1072,7 @@ const ki_set = (index, inner_field_index) => {
     // update last clicked cell
     KI_lastCellIndex_Clicked = index;
 
-    // console.log(Ki_canSetTwoTimesInARow);
+    console.log(Ki_canSetTwoTimesInARow);
 
     GenerateOriginWinConds().then(() => {
         if (Ki_canSetTwoTimesInARow) {

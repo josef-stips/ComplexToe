@@ -50,8 +50,13 @@ function removeAccessToAnything() {
     globalChooseWinnerBtn.style.color = '#56565659';
     restartBtn.removeEventListener('click', restartGame);
     restartBtn.style.color = '#56565659';
-    // console.log("lol")
+
     !current_level_boss && CloseOnlinePopUps(true);
+
+    if (UseSpell_PopUp.style.display == "flex") {
+        UseSpell_PopUp.style.display = "none";
+        DarkLayer.style.display = "none"
+    };
 
     // remove access to set
     cells.forEach(cell => {

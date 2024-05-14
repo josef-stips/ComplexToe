@@ -61,3 +61,22 @@ ipcMain.on("ActivateFullscreen", () => {
 ipcMain.on("DeactivateFullscreen", () => {
     mainWindow.setFullScreen(false); // Deaktiviert den Fullscreen-Modus
 });
+
+// steam stuff * not working atm 
+// class steamIntegration {
+//     constructor(steam) {
+//         this.steam = steam;
+//     };
+
+//     init = () => {
+//         try {
+//             steam.getGlobalAchievements(2940750, cb => console.log(cb));
+
+//         } catch (error) {
+//             console.log("failed to bind to steam");
+//         };
+//     };
+// };
+
+// let steamIntegrationInstance = new steamIntegration(steam);
+// steamIntegrationInstance.init();

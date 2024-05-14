@@ -47,7 +47,8 @@
         "@socket.io/admin-ui": "^0.5.1",
         "electron-squirrel-startup": "^1.0.0",
         "socket.io": "^4.7.1",
-        "socket.io-client": "^4.7.1"
+        "socket.io-client": "^4.7.1",
+        "steam-js-api": "^1.1.0"
     },
     "devDependencies": {
         "@electron-forge/cli": "^6.2.1",
