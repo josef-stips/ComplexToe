@@ -429,7 +429,14 @@ function RenderSkins() {
     });
 };
 
-buySkinBtn.addEventListener('click', tryToBuySkin);
+buySkinBtn.addEventListener('click', () => {
+    if (contentsElements[1].style.display == "flex") {
+        theme.buy();
+
+    } else {
+        tryToBuySkin();
+    };
+});
 
 function tryToBuySkin() {
     // The user selected something
@@ -577,6 +584,13 @@ function closeAllTabViews(contentsElements) {
 
 function displayTabContentViewX(contentsElements, content) {
     contentsElements[content].style.display = "flex";
+
+    if (content == 1) {
+        skinPriceDisplay.textContent = `"${localStorage.getItem("currentTheme")}" is your current theme`;
+
+    } else if (content == 0) {
+        skinPriceDisplay.textContent = `This is your current skin`;
+    };
 };
 
 // shop guide text functionality
@@ -715,3 +729,147 @@ function resetGuidingText() {
     clearInterval(shopGuideTextInterval);
     shopGuideTextInterval = null;
 };
+
+// about themes
+
+// user can buy themes with materials earned in the Advanture Map
+class themes {
+    constructor() {
+        this.themesList = {
+
+            "default": {
+                "id": 0,
+                "line-color": "goldenrod",
+                "bg": null,
+                "currency": null,
+                "price": null,
+                "CurrencyImg": null,
+                "unlocked": true,
+                "inUse": true
+            },
+            "jungle": {
+                "id": 1,
+                "line-color": "rgb(20,88,20)",
+                "bg": null,
+                "currency": "diamonds",
+                "price": "15",
+                "CurrencyImg": "assets/game/minerals.svg",
+                "unlocked": false,
+                "inUse": false
+            },
+        };
+
+        this.current_used_theme = null;
+        this.current_clicked_theme = null;
+    };
+
+    start = () => {
+        this.init();
+        this.theme_state();
+
+        themeIcons.forEach(themeIcon => {
+            this.events(themeIcon);
+        });
+    };
+
+    init = () => {
+        let current_theme = localStorage.getItem("currentTheme");
+        let unlocked_themes = localStorage.getItem("unlocked_themes");
+
+        if (!current_theme) {
+            localStorage.setItem("currentTheme", "default");
+            localStorage.setItem("unlocked_themes", JSON.stringify(this.themesList));
+
+            this.current_used_theme = "default";
+
+        } else {
+            this.current_used_theme = current_theme;
+            this.themesList = JSON.parse(unlocked_themes);
+        };
+    };
+
+    events = (themeIcon) => {
+        themeIcon.addEventListener("click", () => {
+            const idx = themeIcon.getAttribute("theme-idx");
+            const themeName = Object.keys(this.themesList)[idx];
+            const themePrice = this.themesList[themeName]["price"];
+            const themeCurrency = this.themesList[themeName]["currency"];
+            const currencyImage = this.themesList[themeName]["CurrencyImg"];
+            const unlocked = this.theme_unlocked(themeName);
+
+            this.current_clicked_theme = themeName;
+
+            skinFooterLeft.querySelector(".skinShopPriceIMG") && skinFooterLeft.querySelector(".skinShopPriceIMG").remove();
+
+            if (!unlocked) {
+                // create img 
+                let img = document.createElement("img");
+                img.src = currencyImage;
+                img.width = "32";
+                img.height = "32";
+                img.classList.add("skinShopPriceIMG");
+
+                sidelinePrice.style.display = "block";
+                skinPriceDisplay.textContent = `${String.fromCharCode(160)} ${themePrice} ${String.fromCharCode(160)}`;
+                skinFooterLeft.appendChild(img);
+
+                useSkinBtn.style.display = "none";
+                buySkinBtn.style.display = "block";
+
+            } else {
+
+                skinPriceDisplay.textContent = "This theme is owned by you";
+                sidelinePrice.style.display = "none";
+                useSkinBtn.style.display = "block";
+                buySkinBtn.style.display = "none";
+            };
+        });
+    };
+
+    theme_state = () => {
+        themeIcons.forEach(themeElement => {
+            const theme = Object.keys(this.themesList)[themeElement.getAttribute("theme-idx")];
+            const id = this.themesList[theme]["id"];
+            const themeUnlocked = this.themesList[theme]["unlocked"];
+            const themeInUse = this.themesList[theme]["inUse"];
+
+            let themeElementChild = themeElement.querySelector(".theme-icon-text");
+
+            if (themeUnlocked) {
+                themeElementChild.style.borderBottom = "5px solid green";
+            };
+
+            if (themeInUse) {
+                themeElementChild.style.borderBottom = "5px solid royalblue";
+            };
+
+            console.log(id, theme, themeUnlocked, themeInUse, this.themesList);
+        });
+    };
+
+    theme_unlocked = (themeName) => {
+        let themeInStorage = JSON.parse(localStorage.getItem("unlocked_themes"))[themeName]["unlocked"];
+
+        return themeInStorage;
+    };
+
+    buy = () => {
+        let theme = this.current_clicked_theme;
+        let themeCurrency = this.themesList[theme]["currency"];
+        let themePrice = this.themesList[theme]["price"];
+        let usersCurrencyAmount = JSON.parse(localStorage.getItem("ExploredItems"))[themeCurrency];
+
+        console.log(usersCurrencyAmount);
+
+        if (usersCurrencyAmount >= themePrice) { // user buys skin
+
+
+        } else { // user cannot buy skin
+
+
+        };
+    };
+};
+
+const theme = new themes();
+theme.start();

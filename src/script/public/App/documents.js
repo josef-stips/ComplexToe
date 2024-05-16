@@ -588,3 +588,6 @@ let Merciful_slaughter_Theme = document.querySelector('#Merciful_slaughter_Theme
 let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
 let gameMode_TwoPlayerOnline_card = document.querySelector('#gameMode-TwoPlayerOnline-card');
 let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
+
+let themeIcons = document.querySelectorAll(".theme-icon");
+let skinFooterLeft = document.querySelector(".skin-footer-left");
