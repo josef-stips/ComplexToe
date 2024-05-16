@@ -9,7 +9,7 @@ let mapLevels = {
         ],
         ["U paused your Roblox game to be here?", "This is nothing for average explorer but for those who want to know the truth with all their heart", "Here begins the journey to become king and defeat the lord of darkness. Do you really think you will survive this?",
             "To conquer this level you have to score 3 points against the unknown. And... It is a really rare case but.. sometimes your win combination will be not accepted and you don't get the point!"
-        ], 3, InnerGameModes[1], false, {},
+        ], 3, InnerGameModes[3], false, {},
         40
     ], // level 1 is unlocked by default
     2: [false, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["dia2", "vert"],
@@ -35,7 +35,7 @@ let mapLevels = {
     5: [false, 35, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia"],
         ["Are you winning servant?", "Congrats on winning the previous boss fight.", "Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level. ",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
-        ], 7, InnerGameModes[3], false, { 'keys': 35, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
+        ], 7, InnerGameModes[1], false, { 'keys': 35, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
         55
     ],
     6: [false, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["L1", "L2"],

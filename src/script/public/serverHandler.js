@@ -45,7 +45,8 @@ socket.on('connect', () => {
         endGameStatsPopUp.style.display == "flex" ||
         DailyChallenges_PopUp.style.display == "flex" ||
         OfficialWinPatternsPopUp.style.display == "flex" ||
-        AGB_PopUp.style.display == "flex") {
+        AGB_PopUp.style.display == "flex" ||
+        settingsWindow.style.display == "block") {
         // Your code to execute when any of the elements' style.display is "flex"
 
         DarkLayer.style.display = "block";

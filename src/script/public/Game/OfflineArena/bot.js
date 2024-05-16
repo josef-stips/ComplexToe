@@ -1,0 +1,9 @@
+class bot {
+    constructor() {
+
+    };
+
+    start = () => {
+
+    };
+};

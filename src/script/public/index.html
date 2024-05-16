@@ -6950,7 +6950,7 @@
                 <i class="fa-solid fa-x tabContainer1_closeBtn"></i>
             </div>
 
-            <div class="tab_content_main_wrapper">
+            <div class="tab_content_main_wrapper" style="position: relative;">
 
                 <div class="tab_content" tab_content="11">
                     <div class="CreateLevelSceneButton CreateCostumField_btn" style="margin: 20px 0 0 20px;align-self: flex-start;">
@@ -6968,7 +6968,7 @@
                             </div>
                         </div>
 
-                        <div class="costum_ui_column" style="border-left: 2px solid goldenrod;">
+                        <div class="costum_ui_column" style="border-left: 2px solid goldenrod;border-left-style: dashed;">
                             <h1 class="PatternsInStorageText">Field used in this level</h1>
                             <br>
 
@@ -6978,7 +6978,12 @@
                                 </div>
                             </div>
 
-                            <div class="SelectedCostumFieldText">
+                            <div class="SelectedCostumFieldText" style="
+                            position: absolute;
+                            bottom: 0px;
+                            right: 0;
+                            display: block;
+                            left: 50%;">
                                 This selected field is the field for the level. It cannot be changed or be replaced by default fields <br> until you remove it from the level by clicking <i class="fa-solid fa-trash"></i>.
                             </div>
                         </div>
@@ -6994,7 +6999,7 @@
 
                     <div class="costum_pattern_ui">
 
-                        <div class="costum_ui_column" style="border-left: 2px solid goldenrod;order:2;">
+                        <div class="costum_ui_column" style="border-left: 2px solid goldenrod;order:2;border-left-style: dashed;">
                             <h1 class="PatternsUsedInTheLevelText">Patterns used in the level</h1>
                             <br>
 
