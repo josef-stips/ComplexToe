@@ -888,14 +888,12 @@ class themes {
         let themePrice = this.themesList[theme]["price"];
         let themeID = this.themesList[theme]["id"];
         let usersCurrencyAmount = JSON.parse(localStorage.getItem("ExploredItems"))[themeCurrency];
-
-        console.log(themeCurrency, usersCurrencyAmount);
-        unlockSound1();
+        // console.log(themeCurrency, usersCurrencyAmount);
 
         // user buys skin
         if (usersCurrencyAmount >= themePrice) {
             // update currency amount in local storage
-            let newAmountInStorage = usersCurrencyAmount + themePrice
+            let newAmountInStorage = usersCurrencyAmount - themePrice
             let AmountInStorage = JSON.parse(localStorage.getItem("ExploredItems"));
 
             AmountInStorage[themeCurrency] = newAmountInStorage;
@@ -916,10 +914,21 @@ class themes {
             // to update DOM
             this.clickEl(theme);
 
+            // sound effect
+            unlockSound1();
+
             // user cannot buy skin
         } else {
+            // warn text + animation
+            BuySkinError.style.transition = 'none';
+            BuySkinError.style.display = 'block';
+            BuySkinError.style.opacity = '1';
 
+            setTimeout(() => {
+                BuySkinError.style.transition = 'all 2s ease';
+                BuySkinError.style.opacity = '0';
 
+            }, 1000);
         };
     };
 
