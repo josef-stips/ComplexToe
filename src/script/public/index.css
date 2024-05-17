@@ -1,5 +1,4 @@
 :root {
-    --hover-item: goldenrod;
     --font-color: #101214;
     --bg-app-color: rgb(255, 255, 255);
     --bg-gradient: rgb(255, 255, 255);
@@ -19,6 +18,8 @@
     --CreateLevel-ScrollContainerHeight-max: 650px;
     --max-responsive-scale: scale(1);
     --maxCellSize: 425%;
+    --line-color: goldenrod;
+    --hover-item: var(--line-color);
 }
 
 .dark-mode {
@@ -29,6 +30,12 @@
     --bg-app-color: #191c20;
     --bg-app-color2: #121518;
     --locked-field: rgb(255, 255, 255);
+}
+
+body[theme="jungle"] {
+    --line-color: green;
+    --hover-item: var(--line-color);
+    background: linear-gradient(150deg, #1e2f1c, #142116);
 }
 
 body,
@@ -45,6 +52,8 @@ html {
     /* font-family: 'Geologica', sans-serif; */
     /* font-family: 'Josefin Sans', sans-serif; */
     font-family: 'Rubik', sans-serif;
+    overflow: hidden;
+    position: relative;
 }
 
 *::selection {
@@ -733,7 +742,7 @@ img {
     border: 4px solid rgba(100, 35, 35, 0.856);
     width: 90%;
     height: 45%;
-    transition: all 0.1s ease-out;
+    transition: all 0.1s ease-out, width 1s ease-in-out, height 1s ease-in-out;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -744,6 +753,11 @@ img {
     animation: animatedBorder 4s linear infinite;
     background: var(--bg-app-color3);
     z-index: 400;
+}
+
+body[theme="jungle"] .gameMode-card {
+    border: 4px solid rgba(50, 100, 35, 0.856) !important;
+    animation-name: animatedBorder_jungleTheme !important;
 }
 
 .gameMode-card:hover {
@@ -1049,7 +1063,7 @@ img {
     color: var(--font-color);
     margin-top: 1em;
     padding: 15px;
-    border: 2px solid darkgoldenrod;
+    border: 2px solid var(--line-color);
     border-radius: 40px;
 }
 
@@ -1340,7 +1354,7 @@ img {
 .settings-window {
     width: 85%;
     height: 85%;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     border-radius: 30px;
     background-color: var(--bg-app-color);
     z-index: 1000;
@@ -1359,7 +1373,7 @@ img {
 
 .settings-header {
     height: 10%;
-    border-bottom: 3px solid goldenrod;
+    border-bottom: 3px solid var(--line-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1504,7 +1518,7 @@ img {
 
 .settingsButton:hover {
     transition: 0.1s ease-in-out;
-    border: 2px solid goldenrod;
+    border: 2px solid var(--line-color);
 }
 
 
@@ -1540,7 +1554,7 @@ img {
     height: 85%;
     background-color: var(--bg-app-color);
     padding: 0px;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     border-radius: 35px;
     display: none;
     justify-content: center;
@@ -1565,7 +1579,7 @@ img {
     height: 5%;
     max-height: 10%;
     width: 100%;
-    border-bottom: 3px solid goldenrod;
+    border-bottom: 3px solid var(--line-color);
 }
 
 .SetPlayerNames-Header img {
@@ -1651,7 +1665,7 @@ img {
 
 .Confirm-Name-btn:hover {
     transition: all 0.1s ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
     transform: scale(1.1);
 }
 
@@ -1997,7 +2011,7 @@ label h3 {
 .GameInfoPopUp {
     width: 90%;
     height: 85%;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     border-radius: 30px;
     background-color: var(--bg-app-color);
     z-index: 1000;
@@ -2022,7 +2036,7 @@ label h3 {
 .GameInfo-Header {
     height: 7.5%;
     width: 100%;
-    border-bottom: 7px solid goldenrod;
+    border-bottom: 7px solid var(--line-color);
     border-radius: 10px;
 }
 
@@ -2151,7 +2165,7 @@ label h3 {
 
 #ChooseWinnerWindow-CloseBtn:hover {
     transition: all 0.1s ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
     cursor: pointer;
 }
 
@@ -2426,7 +2440,7 @@ label h3 {
     align-items: center;
     color: white;
     background-color: var(--bg-app-color);
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     border-radius: 30px;
     z-index: 10001;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
@@ -2439,7 +2453,7 @@ label h3 {
     width: 100%;
     height: 8%;
     background-color: #15171a;
-    border-bottom: 3px solid goldenrod;
+    border-bottom: 3px solid var(--line-color);
     font-size: 24px;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
@@ -2502,7 +2516,7 @@ label h3 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.25em;
-    border-bottom: 3px solid goldenrod;
+    border-bottom: 3px solid var(--line-color);
 }
 
 #Lobby_closeBtn {
@@ -2527,7 +2541,7 @@ label h3 {
     font-size: 21.5px;
     height: 80%;
     font-weight: 400;
-    border-bottom: 3px solid goldenrod;
+    border-bottom: 3px solid var(--line-color);
 }
 
 .Lobby_footer {
@@ -2556,7 +2570,7 @@ label h3 {
 }
 
 .Lobby_startGame_btn:hover {
-    border-color: goldenrod;
+    border-color: var(--line-color);
     transition: all 0.15s ease-out;
 }
 
@@ -2772,7 +2786,7 @@ label h3 {
     position: absolute;
     display: none;
     border-radius: 30px;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     width: 80%;
     height: 80%;
     background-color: var(--bg-app-color);
@@ -2792,7 +2806,7 @@ label h3 {
     font-weight: 600;
     position: absolute;
     top: -30px;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2879,7 +2893,7 @@ label h3 {
     margin: 0;
     padding: 10px 20px;
     font-size: 40px;
-    border: rgb(170, 129, 24) solid 2px;
+    border: var(--line-color) solid 2px;
     gap: 20px;
     background-color: #121518;
     border-radius: 10px;
@@ -2923,7 +2937,7 @@ label h3 {
 }
 
 .CreateOnlineProfile-btn:hover {
-    color: rgb(170, 129, 24);
+    color: var(--line-color);
 }
 
 .userInfoEditable {
@@ -2974,7 +2988,7 @@ label h3 {
 }
 
 .UserPopUpBtnBox:hover {
-    border-color: rgb(170, 129, 24);
+    border-color: var(--line-color);
     font-size: 27px;
 }
 
@@ -3075,7 +3089,7 @@ label h3 {
     left: 0;
     width: 30%;
     height: 30%;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     color: var(--font-color);
     border-radius: 40px;
     background-color: var(--bg-app-color);
@@ -3286,13 +3300,14 @@ label h3 {
 }
 
 .CellGridColorSelectionWrapper {
-    border-top: 4px solid goldenrod;
+    border-top: 4px solid var(--line-color);
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 3em;
+    flex-direction: row;
 }
 
 .skin-footer {
@@ -3309,6 +3324,7 @@ label h3 {
 .skin-footer-left {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .buy-skin-button {
@@ -3355,7 +3371,7 @@ label h3 {
 }
 
 .skin-shop-skin-selection {
-    border-top: 4px solid goldenrod;
+    border-top: 4px solid var(--line-color);
     width: 100%;
     height: 100%;
     display: flex;
@@ -3445,7 +3461,7 @@ label h3 {
 }
 
 .skin-goldenrod {
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .skin-darkslateblue {
@@ -3512,7 +3528,7 @@ label h3 {
     left: 0;
     width: 35%;
     height: 25%;
-    border: 2px solid rgba(211, 183, 24, 0.644);
+    border: 2px solid var(--line-color);
     color: var(--font-color);
     border-radius: 30px;
     background-color: var(--bg-app-color);
@@ -3533,7 +3549,7 @@ label h3 {
 
 #closeAlertPopUpBtn:hover {
     transition: all 0.1s ease-in;
-    color: rgba(211, 183, 24, 0.644);
+    color: var(--line-color);
 }
 
 .alert-header {
@@ -3878,7 +3894,7 @@ label h3 {
 .homeLobby-iconBtn:hover {
     transition: transform 0.15s ease-in-out, border-color 0.75s ease;
     transform: scale(1.05);
-    border-color: #FF9800;
+    border-color: var(--line-color);
 }
 
 
@@ -4002,7 +4018,7 @@ label h3 {
     margin: auto auto auto auto;
     width: 85%;
     height: 85%;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     border-radius: 40px;
     background-color: var(--bg-app-color);
     color: var(--font-color);
@@ -4011,7 +4027,7 @@ label h3 {
 .mapLevelDisplay-header {
     height: 10%;
     width: 100%;
-    border-bottom: 3px solid goldenrod;
+    border-bottom: 3px solid var(--line-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4462,7 +4478,7 @@ label h3 {
 .exploredItems_caret:hover {
     transition: color 0.15s ease-in-out;
     cursor: pointer;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .exploreditem_wrapper img {
@@ -4496,6 +4512,8 @@ label h3 {
     font-size: 35px;
     transition: all 0.5s ease-out;
     color: var(--font-color);
+    justify-content: center;
+    align-items: center;
 }
 
 .YouFoundItems_PopUp hr {
@@ -4537,7 +4555,7 @@ label h3 {
     cursor: pointer;
     border: 2px solid white;
     border-radius: 20px;
-    padding: 1px 30px 1px 30px;
+    padding: 5px 30px 5px 30px;
 }
 
 .YouFound_OkBtn:hover {
@@ -4571,7 +4589,7 @@ label h3 {
 .Chat {
     width: 85%;
     height: 80%;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     border-radius: 30px;
     background-color: var(--bg-app-color);
     z-index: 1000;
@@ -4892,7 +4910,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -4993,7 +5011,6 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5045,7 +5062,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5173,7 +5190,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5274,7 +5291,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5313,7 +5330,7 @@ label h3 {
 
 .ClickTextTo_SearchPlayersPopUp:hover {
     transition: color 0.1s ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .Friend {
@@ -5356,7 +5373,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5472,13 +5489,13 @@ label h3 {
 
 .Message:hover {
     cursor: pointer;
-    border: 2px solid goldenrod;
+    border: 2px solid var(--line-color);
     transition: border 0.3 ease-in-out;
 }
 
 .AmountDisplay {
     padding: 3.5px 12.5px;
-    border: 2px solid goldenrod;
+    border: 2px solid var(--line-color);
     border-radius: 100px;
 }
 
@@ -5499,7 +5516,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5552,7 +5569,7 @@ label h3 {
 
 .SendMessageToPlayer_Btn:hover {
     transition: border-color 0.1s ease-in-out;
-    border-color: goldenrod;
+    border-color: var(--line-color);
 }
 
 .userInfoBtn_notificationText_Display {
@@ -5593,7 +5610,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5753,7 +5770,7 @@ label h3 {
 }
 
 
-/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
+/* create level BenutzeroberflÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¤che */
 
 .CreateLevelSceneButton {
     padding: 10px 25px;
@@ -5772,7 +5789,7 @@ label h3 {
 
 .CreateLevelSceneButton:hover {
     cursor: pointer;
-    border-color: goldenrod;
+    border-color: var(--line-color);
     transition: border 0.1s ease-in-out;
 }
 
@@ -5785,7 +5802,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -5806,7 +5823,7 @@ label h3 {
 
 .CreateLevel_HelpPopUpCloseBtn:hover {
     transition: color 0.1s ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .CreateLevelHelpHeader {
@@ -5936,7 +5953,7 @@ label h3 {
 
 .ChangeSetting_leftCaret:hover {
     cursor: pointer;
-    color: goldenrod;
+    color: var(--line-color);
     transition: border 0.1s ease-in-out;
 }
 
@@ -5946,7 +5963,7 @@ label h3 {
 
 .ChangeSetting_rightCaret:hover {
     cursor: pointer;
-    color: goldenrod;
+    color: var(--line-color);
     transition: color 0.1s ease-in-out;
 }
 
@@ -6089,7 +6106,7 @@ label h3 {
 }
 
 .AddLevelBtn:hover {
-    border-color: goldenrod;
+    border-color: var(--line-color);
     transition: transform 0.1s ease-in-out, border-color 0.1s ease-in-out;
     transform: scale(1.1);
 }
@@ -6133,7 +6150,7 @@ label h3 {
 .LevelList_list {
     width: 50%;
     height: 100%;
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     overflow: scroll;
     flex-direction: column;
     display: flex;
@@ -6151,7 +6168,7 @@ label h3 {
     height: 90px;
     display: flex;
     align-items: center;
-    border-bottom: 2px solid goldenrod;
+    border-bottom: 2px solid var(--line-color);
     font-size: 30px;
     padding: 0 0 0 10px;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
@@ -6233,7 +6250,7 @@ label h3 {
 
 .Level_PlayerName:hover {
     transition: color 0.1 ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 
@@ -6248,7 +6265,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6349,7 +6366,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6375,7 +6392,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6395,7 +6412,7 @@ label h3 {
 
 .Credits_closeBtn:hover {
     transition: color 0.1 ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .Credits_header {
@@ -6453,7 +6470,7 @@ label h3 {
 
 .chooseModeCloseBtn:hover {
     transition: all 0.1 ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
     transform: scale(1.05);
 }
 
@@ -6469,7 +6486,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6489,7 +6506,7 @@ label h3 {
 
 .AchievementsCloseBtn:hover {
     transition: color 0.1s ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .AchievementsBtn {
@@ -6508,7 +6525,7 @@ label h3 {
 
 .AchievementsBtn:hover {
     transition: border 0.1s ease-in-out;
-    border-color: goldenrod;
+    border-color: var(--line-color);
 }
 
 .Achievements_header {
@@ -6570,7 +6587,7 @@ label h3 {
 }
 
 .achievement_item.hovered:hover {
-    border-color: goldenrod;
+    border-color: var(--line-color);
     animation: animatedBorder_gold 0.15s infinite;
 }
 
@@ -6588,7 +6605,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: 0 auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: flex;
     flex-direction: column;
@@ -6691,7 +6708,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid rgba(255, 217, 0, 0.37);
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6710,7 +6727,7 @@ label h3 {
     flex-direction: row;
     width: 95%;
     height: 10%;
-    border-bottom: 2px solid rgba(255, 217, 0, 0.37);
+    border-bottom: 2px solid var(--line-color);
 }
 
 .MusicPreview_closeBtn {
@@ -6796,7 +6813,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid goldenrod;
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     /* flex-direction: column; */
@@ -6837,7 +6854,7 @@ label h3 {
 }
 
 .tab[active_tap="true"] {
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     color: white;
 }
 
@@ -6860,7 +6877,7 @@ label h3 {
 
 .tabContainer1_closeBtn:hover {
     transition: color 0.15s ease-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .tab_container {
@@ -6891,7 +6908,7 @@ label h3 {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid goldenrod;
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -6911,7 +6928,7 @@ label h3 {
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    border-bottom: 2px solid goldenrod;
+    border-bottom: 2px solid var(--line-color);
 }
 
 .createCostumMain {
@@ -6967,7 +6984,7 @@ p.createCostumField_yInput {
 
 .createCostum_closeBtn:hover {
     transition: color 0.15s ease-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .createCostumField_Field_wrapper {
@@ -7004,7 +7021,7 @@ p.createCostumField_yInput {
 }
 
 .createCostum_helpBtn:hover {
-    color: goldenrod;
+    color: var(--line-color);
     transition: color 0.15s ease-out;
 }
 
@@ -7033,7 +7050,7 @@ p.createCostumField_yInput {
     height: 100%;
     margin: 2% 0 0 0;
     flex-direction: row;
-    border-top: 5px goldenrod solid;
+    border-top: 5px var(--line-color) solid;
     border-radius: 1.25%;
 }
 
@@ -7043,7 +7060,7 @@ p.createCostumField_yInput {
     height: 100%;
     flex-direction: row;
     margin: 2% 0 0 0;
-    border-top: 5px goldenrod solid;
+    border-top: 5px var(--line-color) solid;
     border-radius: 1.25%;
 }
 
@@ -7083,7 +7100,7 @@ p.createCostumField_yInput {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid goldenrod;
+    border: 2px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -7188,7 +7205,7 @@ p.createCostumField_yInput {
 
 .item:hover {
     transition: color 0.15s ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 
@@ -7203,7 +7220,7 @@ p.createCostumField_yInput {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 3px solid rgba(255, 217, 0, 0.37);
+    border: 3px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
@@ -7243,7 +7260,7 @@ p.createCostumField_yInput {
 .endGameStatsLeaderBoardWrapper {
     padding: 10px;
     border-radius: 20px;
-    border: 3px solid #FF9800;
+    border: 3px solid var(--line-color);
     width: 50%;
     height: 50%;
     display: flex;
@@ -7279,7 +7296,7 @@ p.createCostumField_yInput {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 3px solid rgba(255, 217, 0, 0.37);
+    border: 3px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     align-items: center;
@@ -7306,7 +7323,7 @@ p.createCostumField_yInput {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    border-top: 2px solid goldenrod;
+    border-top: 2px solid var(--line-color);
     align-items: center;
     justify-content: center;
 }
@@ -7355,7 +7372,7 @@ p.createCostumField_yInput {
 }
 
 .ChallengeBox[completed="true"] {
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
 }
 
 .ChallengeBox[claimed="true"] {
@@ -7370,7 +7387,7 @@ p.createCostumField_yInput {
 
 .basicPopUpBtn:hover {
     transition: color 0.15s ease-in-out;
-    color: goldenrod;
+    color: var(--line-color);
 }
 
 .ChallengeBoxTitle {
@@ -7423,7 +7440,7 @@ p.createCostumField_yInput {
 }
 
 .ChallengeBox[completed="true"] .DailyChallengeClaimBtn {
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     cursor: pointer;
     transition: transform 0.15s ease-in-out;
     animation: unset;
@@ -7432,7 +7449,7 @@ p.createCostumField_yInput {
 }
 
 .ChallengeBox[completed="true"] .DailyChallengeClaimBtn:hover {
-    border: 3px solid goldenrod;
+    border: 3px solid var(--line-color);
     cursor: pointer;
     transition: transform 0.15s ease-in-out;
     transform: scale(1.05);
@@ -7473,7 +7490,7 @@ p.createCostumField_yInput {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 3px solid rgba(255, 217, 0, 0.37);
+    border: 3px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     align-items: center;
@@ -7491,7 +7508,7 @@ p.createCostumField_yInput {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    border-top: 2px solid goldenrod;
+    border-top: 2px solid var(--line-color);
 }
 
 .WinPatternsPopUp_header {
@@ -7526,7 +7543,7 @@ p.createCostumField_yInput {
 }
 
 .officialWinPatternsOpenBtn:hover {
-    border-color: goldenrod;
+    border-color: var(--line-color);
     transition: border-color 0.15s ease-in-out;
 }
 
@@ -7554,7 +7571,7 @@ p.createCostumField_yInput {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 3px solid rgba(255, 217, 0, 0.37);
+    border: 3px solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     align-items: center;
@@ -7602,7 +7619,55 @@ p.createCostumField_yInput {
 }
 
 
+/* skin shop themes */
+
+.theme-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    font-size: 25px;
+    margin-top: 40px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.theme-icon-circle {
+    border-radius: 100px;
+    padding: 30px;
+    width: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.theme-icon[theme-idx="0"] .theme-icon-circle {
+    background-color: goldenrod;
+}
+
+.theme-icon[theme-idx="1"] .theme-icon-circle {
+    background-color: rgb(20, 88, 20);
+}
+
+.theme-icon-text {
+    font-weight: 500;
+    border-bottom: none;
+    border-radius: 5px;
+    padding: 0 0 5px 0;
+}
+
+
 /* Animations */
+
+@keyframes opacity_fadeIn {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
 @keyframes blue_color_fade {
     0% {
@@ -7709,7 +7774,7 @@ p.createCostumField_yInput {
         color: white;
     }
     50% {
-        color: goldenrod;
+        color: var(--line-color);
     }
     100% {
         color: white;
@@ -7721,7 +7786,7 @@ p.createCostumField_yInput {
         border-color: white;
     }
     50% {
-        border-color: goldenrod;
+        border-color: var(--line-color);
     }
     100% {
         border-color: white;
@@ -7793,6 +7858,18 @@ p.createCostumField_yInput {
     }
     50% {
         border-color: rgba(128, 36, 36, 0.856);
+    }
+    100% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+}
+
+@keyframes animatedBorder_jungleTheme {
+    0% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+    50% {
+        border-color: rgba(50, 100, 35, 0.856);
     }
     100% {
         border-color: rgba(128, 36, 36, 0.110);
@@ -8089,6 +8166,39 @@ p.createCostumField_yInput {
         transform: scale(1.3);
     }
     100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes lobbyInit_mainCard {
+    0% {
+        transform: scale(0.3);
+        margin-top: 100%;
+    }
+    100% {
+        margin-top: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes lobbyInit_leftCard {
+    0% {
+        transform: scale(0.3);
+        margin-right: 100%;
+    }
+    100% {
+        margin-right: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes lobbyInit_rightCard {
+    0% {
+        transform: scale(0.3);
+        margin-left: 100%;
+    }
+    100% {
+        margin-left: 0;
         transform: scale(1);
     }
 }

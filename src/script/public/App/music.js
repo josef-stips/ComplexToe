@@ -167,10 +167,17 @@ function playShopTheme() {
     }, 500);
 };
 
+function unlockSound1() {
+    unlock_sound1.pause();
+    unlock_sound1.currentTime = 0;
+    unlock_sound1.blaybackRate = 0.9;
+    unlock_sound1.play();
+};
+
 function play_rewardSound() {
     // reward/ achievement sound
     rewardAudio.volume = sfxVolume - (1 / 3 * sfxVolume);
-    rewardAudio.playbackRate = 0.9;
+    rewardAudio.playbackRate = 1;
     rewardAudio.play();
 };
 

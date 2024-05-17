@@ -3,7 +3,7 @@ class bot {
 
     };
 
-    start = () => {
+    start() {
 
     };
 };

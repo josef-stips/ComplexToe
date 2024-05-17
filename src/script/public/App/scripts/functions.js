@@ -53,7 +53,7 @@ const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
         // animation
         DarkLayer.style.backgroundColor = 'black';
         DarkLayer.style.display = 'block';
-        DarkLayer.style.transition = 'opacity 0.2s ease-in-out';
+        DarkLayer.style.transition = 'opacity 0.25s ease-in-out';
         DarkLayer.style.opacity = '0';
 
         setTimeout(() => {
@@ -75,7 +75,7 @@ const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
                 DarkLayer.style.opacity = '1';
                 DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
             }, 350);
-        }, 400);
+        }, 450);
     });
 };
 

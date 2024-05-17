@@ -99,6 +99,8 @@ function checkLoadingProgress() {
         // start random icons on screen
         randomItemsOnScreen();
 
+        LobbyInitAnimation();
+
         ToS(); // terms of service pop up the user must agree on the first time he joins the game
 
     } else {
@@ -334,7 +336,9 @@ function UserOfflineData() {
                 userInfoIcon.textContent = icon;
             };
         };
+
     } else { // user has not an account
+
         GetMessage_Btn.style.color = "rgb(80,80,80)";
         GetMessage_Btn.style.borderColor = "rgb(40,40,40)";
         GetMessage_Btn.removeEventListener('click', OpenGetMessagesPopUp);
@@ -599,4 +603,30 @@ function ini_LightDark_Mode() {
         settDarkMode.classList = "fa-regular fa-square checkBox";
         settDarkMode.setAttribute("marked", "false");
     };
+};
+
+// animation on lobby elements on start
+const LobbyInitAnimation = () => {
+    // big main cards
+    gameModeCards[1].style.animation = "lobbyInit_mainCard 0.55s ease-out";
+    gameModeCards[0].style.animation = "lobbyInit_leftCard 0.55s ease-out";
+    gameModeCards[2].style.animation = "lobbyInit_rightCard 0.55s ease-out";
+
+    treasureIcon2.style.animation = "opacity_fadeIn 1.2s ease-in-out";
+    treasureIcon.style.animation = "opacity_fadeIn 1.2s ease-in-out";
+    storeIcon.style.animation = "opacity_fadeIn 1.2s ease-in-out";
+    document.querySelector(".lobby-cards-header-left").style.animation = "opacity_fadeIn 1.2s ease-in-out";
+    [...document.querySelectorAll(".homeLobby-iconBtn")].map(el => el.style.animation = "opacity_fadeIn 1.2s ease-in-out");
+
+    setTimeout(() => {
+        gameModeCards[1].style.animation = "none";
+        gameModeCards[0].style.animation = "none";
+        gameModeCards[2].style.animation = "none";
+
+        treasureIcon2.style.animation = "none";
+        treasureIcon.style.animation = "none";
+        storeIcon.style.animation = "none";
+        document.querySelector(".lobby-cards-header-left").style.animation = "none";
+        [...document.querySelectorAll(".homeLobby-iconBtn")].map(el => el.style.animation = "none");
+    }, 1200);
 };

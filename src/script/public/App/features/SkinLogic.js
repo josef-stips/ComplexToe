@@ -429,7 +429,16 @@ function RenderSkins() {
     });
 };
 
-buySkinBtn.addEventListener('click', tryToBuySkin);
+buySkinBtn.addEventListener('click', () => {
+    let skinShopContent = document.querySelectorAll(".skinShop_tab_content");
+
+    if ([...skinShopContent][1].style.display == "flex") {
+        theme.buy();
+
+    } else {
+        tryToBuySkin();
+    };
+});
 
 function tryToBuySkin() {
     // The user selected something
@@ -516,25 +525,33 @@ function buySkin(user_currency_amount, currency) {
 };
 
 useSkinBtn.addEventListener('click', () => {
-    skinToSelect.forEach(skin => {
-        if (skin.getAttribute('name') == localStorage.getItem('current_used_skin')) {
-            skin.style.borderBottom = "4px solid green";
-        };
-    });
+    let skinShopContent = document.querySelectorAll(".skinShop_tab_content");
 
-    current_used_skin = selected_skin.name;
-    localStorage.setItem('current_used_skin', current_used_skin);
-    skinPriceDisplay.textContent = 'This is your current skin';
+    if ([...skinShopContent][1].style.display == "flex") {
+        theme.use();
 
-    switch_skins(current_used_skin, localStorage.getItem('UserIcon'));
+    } else {
 
-    useSkinBtn.style.display = 'none';
+        skinToSelect.forEach(skin => {
+            if (skin.getAttribute('name') == localStorage.getItem('current_used_skin')) {
+                skin.style.borderBottom = "4px solid green";
+            };
+        });
 
-    skinToSelect.forEach(skin => {
-        if (skin.getAttribute('name') == current_used_skin) {
-            skin.style.borderBottom = "4px solid royalblue";
-        };
-    });
+        current_used_skin = selected_skin.name;
+        localStorage.setItem('current_used_skin', current_used_skin);
+        skinPriceDisplay.textContent = 'This is your current skin';
+
+        switch_skins(current_used_skin, localStorage.getItem('UserIcon'));
+
+        useSkinBtn.style.display = 'none';
+
+        skinToSelect.forEach(skin => {
+            if (skin.getAttribute('name') == current_used_skin) {
+                skin.style.borderBottom = "4px solid royalblue";
+            };
+        });
+    };
 });
 
 // display users currency for buying skins
@@ -577,6 +594,23 @@ function closeAllTabViews(contentsElements) {
 
 function displayTabContentViewX(contentsElements, content) {
     contentsElements[content].style.display = "flex";
+    sidelinePrice.style.display = "none";
+    useSkinBtn.style.display = "none";
+    buySkinBtn.style.display = "none";
+
+    if (content == 1) {
+        skinPriceDisplay.textContent = `Your current theme is "${localStorage.getItem("currentTheme")}"`;
+
+        theme.current_used_theme = `${localStorage.getItem("currentTheme")}`;
+        theme.current_clicked_theme = `${localStorage.getItem("currentTheme")}`;
+        theme.clickEl(localStorage.getItem("currentTheme"));
+
+    } else if (content == 0) {
+
+        skinPriceDisplay.textContent = `This is your current skin`;
+        skinFooterLeft.querySelector(".skinShopPriceIMG") && skinFooterLeft.querySelector(".skinShopPriceIMG").remove();
+        RenderSkins();
+    };
 };
 
 // shop guide text functionality
@@ -715,3 +749,205 @@ function resetGuidingText() {
     clearInterval(shopGuideTextInterval);
     shopGuideTextInterval = null;
 };
+
+// about themes
+
+// user can buy themes with materials earned in the Advanture Map
+class themes {
+    constructor() {
+        this.themesList = {
+
+            "default": {
+                "id": 0,
+                "line-color": "goldenrod",
+                "bg": null,
+                "currency": null,
+                "price": null,
+                "CurrencyImg": null,
+                "unlocked": true,
+                "inUse": true
+            },
+            "jungle": {
+                "id": 1,
+                "line-color": "rgb(20,88,20)",
+                "bg": null,
+                "currency": "diamonds",
+                "price": "15",
+                "CurrencyImg": "assets/game/minerals.svg",
+                "unlocked": false,
+                "inUse": false
+            },
+        };
+
+        this.current_used_theme = null;
+        this.current_clicked_theme = null;
+    };
+
+    start = () => {
+        this.init();
+        this.theme_state();
+
+        themeIcons.forEach(themeIcon => {
+            this.events(themeIcon);
+        });
+    };
+
+    init = () => {
+        let current_theme = localStorage.getItem("currentTheme");
+        let unlocked_themes = localStorage.getItem("unlocked_themes");
+
+        if (!current_theme) {
+            localStorage.setItem("currentTheme", "default");
+            localStorage.setItem("unlocked_themes", JSON.stringify(this.themesList));
+
+            this.current_used_theme = "default";
+
+        } else {
+            this.current_used_theme = current_theme;
+            this.themesList = JSON.parse(unlocked_themes);
+        };
+
+        document.body.setAttribute("theme", this.current_used_theme);
+    };
+
+    events = (themeIcon) => {
+        themeIcon.addEventListener("click", () => {
+            const idx = themeIcon.getAttribute("theme-idx");
+            const themeName = Object.keys(this.themesList)[idx];
+            const themePrice = this.themesList[themeName]["price"];
+            const themeCurrency = this.themesList[themeName]["currency"];
+            const currencyImage = this.themesList[themeName]["CurrencyImg"];
+            const unlocked = this.theme_unlocked(themeName);
+
+            this.current_clicked_theme = themeName;
+
+            skinFooterLeft.querySelector(".skinShopPriceIMG") && skinFooterLeft.querySelector(".skinShopPriceIMG").remove();
+
+            if (!unlocked) {
+                // create img 
+                let img = document.createElement("img");
+                img.src = currencyImage;
+                img.width = "32";
+                img.height = "32";
+                img.classList.add("skinShopPriceIMG");
+
+                sidelinePrice.style.display = "block";
+                skinPriceDisplay.textContent = `${String.fromCharCode(160)} ${themePrice} ${String.fromCharCode(160)}`;
+                skinFooterLeft.appendChild(img);
+
+                useSkinBtn.style.display = "none";
+                buySkinBtn.style.display = "block";
+
+            } else {
+
+                sidelinePrice.style.display = "none";
+                buySkinBtn.style.display = "none";
+
+                if (this.current_used_theme == themeName) {
+                    skinPriceDisplay.textContent = `Your current theme is "${themeName}"`;
+                    useSkinBtn.style.display = "none";
+
+                } else {
+                    skinPriceDisplay.textContent = `The theme "${themeName}" is owned by you`;
+                    useSkinBtn.style.display = "block";
+                };
+            };
+        });
+    };
+
+    theme_state = () => {
+        themeIcons.forEach(themeElement => {
+            const theme = Object.keys(this.themesList)[themeElement.getAttribute("theme-idx")];
+            const id = this.themesList[theme]["id"];
+            const themeUnlocked = this.themesList[theme]["unlocked"];
+            const themeInUse = localStorage.getItem("currentTheme");
+
+            let themeElementChild = themeElement.querySelector(".theme-icon-text");
+
+            if (themeUnlocked) {
+                themeElementChild.style.borderBottom = "5px solid green";
+            };
+
+            if (themeInUse == theme) {
+                themeElementChild.style.borderBottom = "5px solid royalblue";
+            };
+
+            console.log(id, theme, themeUnlocked, themeInUse, this.themesList);
+        });
+    };
+
+    theme_unlocked = (themeName) => {
+        let themeInStorage = JSON.parse(localStorage.getItem("unlocked_themes"))[themeName]["unlocked"];
+
+        return themeInStorage;
+    };
+
+    buy = () => {
+        let theme = this.current_clicked_theme;
+        let themeCurrency = this.themesList[theme]["currency"];
+        let themePrice = this.themesList[theme]["price"];
+        let themeID = this.themesList[theme]["id"];
+        let usersCurrencyAmount = JSON.parse(localStorage.getItem("ExploredItems"))[themeCurrency];
+
+        console.log(themeCurrency, usersCurrencyAmount);
+        unlockSound1();
+
+        // user buys skin
+        if (usersCurrencyAmount >= themePrice) {
+            // update currency amount in local storage
+            let newAmountInStorage = usersCurrencyAmount + themePrice
+            let AmountInStorage = JSON.parse(localStorage.getItem("ExploredItems"));
+
+            AmountInStorage[themeCurrency] = newAmountInStorage;
+            localStorage.setItem("ExploredItems", JSON.stringify(AmountInStorage));
+
+            // update theme data in storage ...
+            let themeInStorage = JSON.parse(localStorage.getItem("unlocked_themes"));
+            themeInStorage[theme]["unlocked"] = true;
+            localStorage.setItem("unlocked_themes", JSON.stringify(themeInStorage));
+
+            // ... and live
+            let unlocked_themes = localStorage.getItem("unlocked_themes");
+            this.themesList = JSON.parse(unlocked_themes);
+
+            // update dom
+            this.theme_state();
+
+            // to update DOM
+            this.clickEl(theme);
+
+            // user cannot buy skin
+        } else {
+
+
+        };
+    };
+
+    use = () => {
+        // get data and modify
+        let unlocked_themes = JSON.parse(localStorage.getItem("unlocked_themes"));
+        unlocked_themes[this.current_clicked_theme]["inUse"] = true;
+        localStorage.setItem("unlocked_themes", JSON.stringify(unlocked_themes));
+
+        // update data
+        localStorage.setItem("currentTheme", this.current_clicked_theme);
+        this.current_used_theme = localStorage.getItem("currentTheme");
+        this.theme_state();
+
+        // update dom
+        useSkinBtn.style.display = 'none';
+        skinPriceDisplay.textContent = `Your current theme is "${this.current_clicked_theme}"`;
+
+        // use theme
+        document.body.setAttribute("theme", this.current_clicked_theme);
+        unlockSound1();
+    };
+
+    clickEl = (themeName) => {
+        let themeElement = document.querySelector(`[theme-idx="${this.themesList[themeName]["id"]}"]`);
+        themeElement.click();
+    };
+};
+
+const theme = new themes();
+theme.start();

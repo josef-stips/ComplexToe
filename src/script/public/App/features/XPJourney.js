@@ -175,7 +175,7 @@ const ClickPoint = (Point, PointValue) => {
     let Points = document.querySelectorAll(".JourneyPoint");
     for (let p_el of[...Points]) {
         if (p_el.classList[1] == PointValue) {
-            Point.style.borderColor = "goldenrod";
+            Point.style.borderColor = "var(--line-color)";
 
         } else { p_el.style.borderColor = "white" };
     };

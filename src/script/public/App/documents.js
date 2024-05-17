@@ -21,6 +21,7 @@ let gateOpenSound = document.querySelector("#gateOpenSound");
 let sound1 = document.querySelector("#sound1");
 let battleAudio = document.querySelector("#battleAudio");
 let ShopTheme = document.querySelector("#ShopTheme");
+let unlock_sound1 = document.querySelector("#unlock_sound1");
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -588,3 +589,6 @@ let Merciful_slaughter_Theme = document.querySelector('#Merciful_slaughter_Theme
 let gameMode_KI_card = document.querySelector('#gameMode-KI-card');
 let gameMode_TwoPlayerOnline_card = document.querySelector('#gameMode-TwoPlayerOnline-card');
 let gameMode_OneVsOne_card = document.querySelector('#gameMode-OneVsOne-card');
+
+let themeIcons = document.querySelectorAll(".theme-icon");
+let skinFooterLeft = document.querySelector(".skin-footer-left");

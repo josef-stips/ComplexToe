@@ -52,6 +52,7 @@ function UserFoundItems() {
 };
 
 // Amount of different items the user gets
+// The higher the level the harder it is hence the player gets a bigger reward
 function UserGets_N_Items(n) {
     let exploredItems = JSON.parse(localStorage.getItem("ExploredItems"));
 
@@ -116,7 +117,7 @@ function UserGets_N_Items(n) {
             };
 
             if (common) {
-                let rndIndex = Math.floor(Math.random() * 2);
+                let rndIndex = Math.floor(Math.random() * 3);
                 let amount = Math.floor(Math.random() * 400) + 144;
 
                 if (rndIndex == 1) {
@@ -186,10 +187,10 @@ function UserGets_N_Items(n) {
                 };
 
                 if (common2) {
-                    let rndIndex = Math.floor(Math.random() * 2);
+                    let rndIndex = Math.floor(Math.random() * 24);
                     let amount = Math.floor(Math.random() * 400) + 144;
 
-                    if (rndIndex == 1) {
+                    if (rndIndex >= 10) {
                         foundItem_imgs[i].src = "assets/game/crystal-bars.svg";
                         foundItem_titles[i].textContent = items["common1"];
                         FoundItemCount_Displays[i].textContent = amount;
@@ -256,22 +257,24 @@ function UserGets_N_Items(n) {
                 };
 
                 if (common4) {
-                    let rndIndex = Math.floor(Math.random() * 2);
+                    let rndIndex = Math.floor(Math.random() * 10);
                     let amount = Math.floor(Math.random() * 400) + 144;
 
                     if (rndIndex == 1) {
-                        foundItem_imgs[i].src = "assets/game/crystal-bars.svg";
-                        foundItem_titles[i].textContent = items["common1"];
-                        FoundItemCount_Displays[i].textContent = amount;
 
-                        exploredItems["minerals"] = exploredItems["minerals"] + amount;
-
-                    } else {
                         foundItem_imgs[i].src = "assets/game/ore.svg";
                         foundItem_titles[i].textContent = items["common2"];
                         FoundItemCount_Displays[i].textContent = amount;
 
                         exploredItems["ore"] = exploredItems["ore"] + amount;
+
+                    } else {
+
+                        foundItem_imgs[i].src = "assets/game/crystal-bars.svg";
+                        foundItem_titles[i].textContent = items["common1"];
+                        FoundItemCount_Displays[i].textContent = amount;
+
+                        exploredItems["minerals"] = exploredItems["minerals"] + amount;
                     };
                 };
             };

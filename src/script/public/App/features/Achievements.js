@@ -191,7 +191,7 @@ class Achievements {
             i_abso.style.margin = "auto 0 auto auto";
             i_abso.style.display = "flex";
             i_abso.style.alignItems = "center";
-            i_abso.style.color = "goldenrod";
+            i_abso.style.color = "var(--line-color)";
 
             i_abso.classList.add("achievement_check_icon");
 
@@ -202,7 +202,7 @@ class Achievements {
 
             for (let i = 0; i < achievement.reward_names.length; i++) {
                 // list item style depends on its completion
-                listItem.style.borderColor = !achievement.unlocked ? "#060708" : "goldenrod";
+                listItem.style.borderColor = !achievement.unlocked ? "#060708" : "var(--line-color)";
 
                 if (!achievement.unlocked) {
                     listItem.addEventListener('mouseenter', () => listItem.classList.add('hovered'));
