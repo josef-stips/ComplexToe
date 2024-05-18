@@ -492,7 +492,7 @@ function KI_Action() {
             WinConditions = [];
 
             // create win conditions for mini field in big field
-            CreateWinConditions(5, allowedPatterns);
+            CreateWinConditions(5, 5, allowedPatterns);
 
             // convert copy of win conditions in binary
             let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
@@ -606,7 +606,7 @@ const KI_aim_WinCombis = () => {
     WinConditions = [];
 
     // create win conditions for mini field in big field
-    CreateWinConditions(5, allowedPatterns);
+    CreateWinConditions(5, 5, allowedPatterns);
 
     // convert copy of win conditions in binary
     let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
@@ -742,19 +742,19 @@ const GenerateOriginWinConds = (costum_amount) => {
         // generate new win conditions for current big field
         if (board_size == 20 && costum_amount == undefined) {
 
-            CreateWinConditions(20, allowedPatterns);
+            CreateWinConditions(20, 20, allowedPatterns);
 
         } else if (board_size == 25 && costum_amount == undefined) {
 
-            CreateWinConditions(25, allowedPatterns);
+            CreateWinConditions(25, 25, allowedPatterns);
 
         } else if (board_size == 30 && costum_amount == undefined) {
 
-            CreateWinConditions(30, allowedPatterns);
+            CreateWinConditions(30, 30, allowedPatterns);
 
         } else if (costum_amount == 15 && costum_amount != undefined) {
 
-            CreateWinConditions(15, allowedPatterns);
+            CreateWinConditions(15, 15, allowedPatterns);
         };
         done();
     });
@@ -948,7 +948,7 @@ const PlayerCanWinIn2Moves = async(MixedField_Indexes, fromAttack, fromKI_CheckP
                 // remove current win conditions
                 WinConditions = [];
                 // create win conditions for mini field in big field
-                CreateWinConditions(5, allowedPatterns);
+                CreateWinConditions(5, 5, allowedPatterns);
 
                 // convert copy of win conditions in binary
                 let binaryWinConds = convertToBinary_SmallBitMask(WinConditions);
@@ -1032,7 +1032,7 @@ const KI_move = (finalMove) => {
 // if minimax returns -1 for some reason
 const SpecialCaseKIPlace = (index) => {
     if (!cells[index].classList.contains("death-cell") && options[index] == "") {
-        CreateWinConditions(20, allPatt_KIMode_Copy);
+        CreateWinConditions(20, 20, allPatt_KIMode_Copy);
 
         ki_set(index, InnerFieldData_Indexes[index]);
 

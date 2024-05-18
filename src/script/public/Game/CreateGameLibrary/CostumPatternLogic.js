@@ -5,8 +5,6 @@
 const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let n = Fieldx * Fieldy;
 
-    console.log(n);
-
     xCell_Amount = 5;
     CalculateBoundaries();
 
