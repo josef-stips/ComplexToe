@@ -1246,6 +1246,7 @@ gameInfo_btn.addEventListener('click', () => {
         };
 
     } else { // in advanture mode
+
         // display for 5x5 fields and higher
         PatternGridThree.forEach(pattern => pattern.style.display = 'none');
         PatternGridFor.forEach(pattern => pattern.style.display = 'none');

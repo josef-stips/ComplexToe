@@ -376,6 +376,8 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         let costumPatterns;
         let costumIcon;
 
+        console.log(PointsToWinGame);
+
         // set data: either extern data or intern data
         if (Data1) Check[2] = Data1;
         if (Data2) Check[3] = Data2;
@@ -409,6 +411,8 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             costumIcon = NewCreativeLevel.Settings.levelicon[NewCreativeLevel.selectedLevel[4]];
 
             fieldTitle = NewCreativeLevel.selectedLevel[8];
+
+            UserSetPointsToWinGameInput.value = NewCreativeLevel.selectedLevel[2];
         };
 
         console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon);

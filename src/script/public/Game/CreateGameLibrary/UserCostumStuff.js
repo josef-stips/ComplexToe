@@ -322,7 +322,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     createPattern_checkPatternInLevel(checkBox, patternName, patternStructure, gridType);
 
     // create basic 5x5 grid 
-    createPattern_createGrid(patternStructure, gridRows, y, grid, rights);
+    createPattern_createGrid(patternStructure, gridRows, y, grid, rights, special_class);
 
     // event listener
     createPattern_eventListener(pen, bin, checkBox, bin2, patternStructure, patternName, gridType, Number(gridRows), Number(y));
@@ -350,6 +350,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
         editItemsWrapper.appendChild(checkBox);
 
         gridWrapper.setAttribute("right", "personal");
+        gridWrapper.style.fontSize = "xxx-large";
 
     } else if (rights == "level") {
 
@@ -358,13 +359,13 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     } else if (rights == "remove") {
 
         editItemsWrapper.appendChild(bin2);
-
         gridWrapper.setAttribute("right", "remove");
+        gridWrapper.style.fontSize = "xxx-large";
     };
 
     setTimeout(() => {
         // give static height/ scale whatever
-        StaticCellScale(grid);
+        special_class != "ingame_preview" && StaticCellScale(grid);
     }, 250);
 };
 
@@ -391,7 +392,13 @@ const createPattern_addAttributes = (gridWrapper, patternName, grid, title, head
     checkBox.style.fontSize = "larger";
     grid.style.gridTemplateColumns = `repeat(${gridRows}, 1fr)`;
     title.textContent = patternName;
-    title.style.fontSize = "medium";
+
+    if (title.textContent.length >= 12) {
+        title.style.fontSize = "var(--costum-grid-font-size-small)";
+
+    } else {
+        title.style.fontSize = "var(--costum-grid-font-size-big)";
+    };
 };
 
 // check if this pattern exists in the current creative level
@@ -417,12 +424,13 @@ const createPattern_checkPatternInLevel = (checkBox, patternName, patternStructu
 };
 
 // create grid and grid pattern if exists to the grid
-const createPattern_createGrid = (patternStructure, gridRows, y, grid, rights) => {
+const createPattern_createGrid = (patternStructure, gridRows, y, grid, rights, special_class) => {
     let cellClass = rights == "level" ? "miniCellMini" : "cell";
 
     new Array(gridRows * y).fill("").forEach(i => {
         let cell = document.createElement("div");
-        cell.classList.add("preview_cell");
+
+        special_class != "ingame_preview" && cell.classList.add("preview_cell");
         cell.classList.add(cellClass);
 
         grid.appendChild(cell);

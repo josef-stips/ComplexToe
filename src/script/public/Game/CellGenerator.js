@@ -11,13 +11,21 @@ let boundaries = [];
 // calculate boundaries to prevent winning condition glitches
 const CalculateBoundaries = () => {
     xCell_Amount = parseInt(xCell_Amount);
+    yCell_Amount = parseInt(yCell_Amount);
     boundaries = [];
 
     boundaries.push(0);
 
-    for (let i = xCell_Amount; i < xCell_Amount * xCell_Amount; i = i + xCell_Amount) boundaries.push(i);
+    for (let i = xCell_Amount; i < xCell_Amount * yCell_Amount; i = i + xCell_Amount) boundaries.push(i);
 
-    boundaries.push(xCell_Amount * xCell_Amount);
+    boundaries.push(xCell_Amount * yCell_Amount);
+
+    // when y is bigger than x continue to add more boundaries to fill the whole grid with win combinations
+    if (yCell_Amount > xCell_Amount) {
+        for (i = 0; i < yCell_Amount - xCell_Amount; i++) {
+            boundaries.push(xCell_Amount * yCell_Amount + xCell_Amount * i)
+        };
+    };
 };
 
 // Creates the TicTacToe Field
@@ -44,6 +52,34 @@ function generateCell(index) {
     let Cell = ConfigureCellSize(cell, xCell_Amount);
 
     cellGrid.appendChild(Cell);
+
+    if (xCell_Amount > yCell_Amount) {
+        cellGrid.style.gridAutoRows = "min-content";
+    };
+
+    if (xCell_Amount < yCell_Amount) {
+        cellGrid.style.overflowY = "visible";
+        cellGrid.style.margin = "auto";
+        ComplexToeField.style.overflowY = "auto";
+        ComplexToeField.style.height = "auto";
+        ComplexToeField.style.display = "grid";
+        ComplexToeField.style.alignItems = "";
+        ComplexToeField.style.justifyContent = "";
+        document.querySelector(".GameArea-SideInfo-Footer").style.margin = "0 0 7.5% 0";
+        document.querySelector("#GameArea-FieldIcon").style.margin = "20px 0 30px 0";
+        Game_Upper_Field_Icon.style.margin = "0 0 5px 0";
+
+    } else {
+        cellGrid.style.overflowY = "unset";
+        cellGrid.style.margin = "-15px auto";
+        ComplexToeField.style.height = "auto";
+        ComplexToeField.style.overflowY = "unset";
+        ComplexToeField.style.display = "flex";
+        ComplexToeField.style.alignItems = "center";
+        ComplexToeField.style.justifyContent = "center";
+        document.querySelector(".GameArea-SideInfo-Footer").style.margin = "";
+        document.querySelector("#GameArea-FieldIcon").style.margin = "0 0 30px 0";
+    };
 };
 
 // configure cell size 
@@ -62,8 +98,8 @@ const ConfigureCellSize = (cell, xCell_Amount) => {
 };
 
 // Generates an 2-dimensional array with all possible win combination for a 10x10 field
-function CreateWinConditions(NxN, Allowed_Patterns) {
-    xCell_Amount = NxN;
+function CreateWinConditions(x, y, Allowed_Patterns) {
+    xCell_Amount = x;
     CalculateBoundaries();
 
     WinConditions.length = 0;
@@ -72,7 +108,7 @@ function CreateWinConditions(NxN, Allowed_Patterns) {
     let patterns = Allowed_Patterns.map(name => list[name]);
 
     // console.log(NxN, Allowed_Patterns, list, patterns);
-    patterns.forEach(pattern => CostumWinPattern(pattern, NxN, NxN));
+    patterns.forEach(pattern => CostumWinPattern(pattern, x, y));
 };
 
 // Create Options that are live in the game  

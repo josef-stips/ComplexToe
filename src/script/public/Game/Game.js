@@ -163,10 +163,14 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     if (costumCoords) {
         // console.log(costumCoords[0], costumCoords);
 
-        if (costumCoords[0] != undefined && !isNaN(costumCoords[0])) {
+        // for costum coords that have a different value e.g: 9x11 , 15x10
+        let costumX = costumCoords[0];
+        let costumY = costumCoords[1];
+
+        if (costumX != undefined && !isNaN(costumX)) {
             // set user costum level coordinates
-            xCell_Amount = costumCoords[0];
-            yCell_Amount = costumCoords[1];
+            xCell_Amount = costumX;
+            yCell_Amount = costumY;
 
         } else {
             xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
@@ -212,7 +216,24 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     //Creates TicTacToe field etc.
     CalculateBoundaries();
     CreateField();
-    CreateWinConditions(xCell_Amount, Allowed_Patterns);
+
+    // for costum coords that have a different value e.g: 9x11 , 15x10
+    // if (costumCoords) {
+    //     let costumX = costumCoords[0];
+    //     let costumY = costumCoords[1];
+
+    //     console.log(costumX, costumY);
+
+    //     if (costumX < costumY) {
+    //         costumX = costumY;
+
+    //     } else if (costumX > costumY) {};
+
+    //     CreateWinConditions(costumX, Allowed_Patterns);
+
+    // } else {
+    CreateWinConditions(xCell_Amount, yCell_Amount, Allowed_Patterns);
+    // };
 
     // user costum patterns are only availible in user costum levels
     if (NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns) {
@@ -705,8 +726,15 @@ function cell_mouseEnter(cell) {
 
             if (personal_GameData.role != "blocker") {
 
-                cell.textContent = localStorage.getItem("UserIcon");
                 cell.style.color = localStorage.getItem('userInfoColor');
+
+                if (personal_GameData.role == "admin") {
+                    cell.textContent = PlayerData[1].PlayerForm;
+                };
+
+                if (personal_GameData.role == "user") {
+                    cell.textContent = PlayerData[2].PlayerForm;
+                };
             };
 
         } else if (curr_mode == GameMode[3].opponent && currentPlayer != PlayerData[1].PlayerForm) { // offline mode and player 2 turn 

@@ -548,6 +548,10 @@ let officialWinPatternsOpenBtn = document.querySelectorAll(".officialWinPatterns
 let dailyChallenges_notifyBtn = document.querySelector(".dailyChallenges_notifyBtn");
 let GameModeFields_flowField = document.querySelector(".GameModeFields_flowField");
 let SearchRandomOpponent_btn = document.querySelector(".SearchRandomOpponent_btn");
+let PatternGridWrapperForCostumPatterns = document.querySelector(".PatternGridWrapperForCostumPatterns");
+let workbenchMiddle_main = document.querySelector(".workbenchMiddle_main");
+let workbenchMain_middle = document.querySelector(".workbenchMain_middle");
+let ComplexToeField = document.querySelector(".ComplexToe-Field");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

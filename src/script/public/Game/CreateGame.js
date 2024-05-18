@@ -505,11 +505,11 @@ class NewLevel {
     };
 
     // Generate field on given xy length
-    GenerateField = async(size) => {
+    GenerateField = async(x, y) => {
         workbench_cellGrid.textContent = null;
-        workbench_LevelFieldSize_Display.textContent = `${size}x${size}`;
+        workbench_LevelFieldSize_Display.textContent = `${x}x${y}`;
 
-        for (let i = 0; i < size * size; i++) {
+        for (let i = 0; i < x * y; i++) {
             // create single cell
             let cell = document.createElement('div');
             cell.className = "cell createlevelscene_cell";
@@ -518,7 +518,48 @@ class NewLevel {
             workbench_cellGrid.appendChild(cell);
         };
 
-        workbench_cellGrid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        let smallerCoord = x > y ? y : x;
+
+        workbench_cellGrid.style.gridTemplateColumns = `repeat(${x}, 1fr)`;
+
+        if (x !== y) {
+
+            if (x > y) {
+                workbench_cellGrid.style.gridAutoRows = "min-content";
+                StaticCellScale(workbench_cellGrid);
+
+                workbenchMiddle_main.style.display = "flex";
+                workbench_cellGrid.style.height = "auto";
+                workbench_cellGrid.style.overflow = "unset";
+                workbenchMiddle_main.style.overflow = "unset";
+                // workbench_cellGrid.style.minHeight = "-webkit-fill-available";
+                // workbenchMiddle_main.style.overflow = "scroll";
+
+            } else if (x < y) {
+                workbench_cellGrid.style.height = "100vh";
+                workbench_cellGrid.style.overflow = "scroll";
+                workbenchMiddle_main.style.overflow = "scroll";
+                // workbenchMain_middle.style.position = "fixed";
+                workbenchMiddle_main.style.display = "block";
+                workbenchMiddle_main.style.height = "55%";
+                document.querySelector(".workbenchMain_left").style.width = "25%";
+                document.querySelector(".workbenchMain_right").style.width = "17.5%";
+                // workbench_cellGrid.style.minHeight = "var(--max-cellGrid-size)"
+
+                workbench_cellGrid.style.gridAutoRows = "unset";
+            };
+
+        } else if (x === y) {
+            workbenchMiddle_main.style.display = "flex";
+            workbench_cellGrid.style.gridAutoRows = "unset";
+            workbench_cellGrid.style.height = "auto";
+            workbench_cellGrid.style.overflow = "unset";
+            workbenchMiddle_main.style.overflow = "unset";
+            // workbench_cellGrid.style.height = "";
+            // workbenchMiddle_main.style.display = "flex";
+            // workbenchMiddle_main.style.overflow = "unset";
+            // workbench_cellGrid.style.minHeight = "var(--max-cellGrid-size)"
+        };
     };
 
     // Init current settings on level
@@ -559,7 +600,7 @@ class NewLevel {
         // field size
         if (field !== undefined) {
             this.CurrentSelectedSetting.cellgrid = field;
-            this.GenerateField(this.Settings.cellgrid[field]);
+            this.GenerateField(this.Settings.cellgrid[field], this.Settings.cellgrid[field]);
         };
         // allowed patterns
         if (patterns !== undefined) {
@@ -979,7 +1020,7 @@ class NewLevel {
                 "name": fieldName,
                 "x": x,
                 "y": y
-            }
+            };
 
         } else if (method == "remove") {
             // delete field from object
@@ -1023,7 +1064,7 @@ class NewLevel {
         } else {
             toggleCellGridCarets("none");
 
-            this.GenerateField(this.CurrentSelectedSetting.costumField["x"]);
+            this.GenerateField(this.CurrentSelectedSetting.costumField["x"], this.CurrentSelectedSetting.costumField["y"]);
         };
     };
 
@@ -1032,7 +1073,7 @@ class NewLevel {
         toggleCellGridCarets("flex");
 
         let fieldCoord = this.Settings.cellgrid[this.CurrentSelectedSetting.cellgrid];
-        this.GenerateField(fieldCoord);
+        this.GenerateField(fieldCoord, fieldCoord);
     };
 };
 
@@ -1065,7 +1106,7 @@ const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, c
 
             console.log(structure, xCellAmount);
 
-            CostumWinPattern(structure, xCellAmount, xCellAmount);
+            CostumWinPattern(structure, xCellAmount, yCell_Amount);
         };
 
     } else if (costumPatternsFromThirdParty) {
@@ -1079,7 +1120,7 @@ const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, c
 
             console.log(structure, xCellAmount);
 
-            CostumWinPattern(structure, xCellAmount, xCellAmount);
+            CostumWinPattern(structure, xCellAmount, yCell_Amount);
         };
     };
 };
@@ -1112,7 +1153,7 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
             // console.log(structure, xCellAmount);
 
             // show in game info pop up
-            createPattern_preview(pattern, structure, PatternGridWrapper, "level", "ingame_preview");
+            createPattern_preview(pattern, structure, PatternGridWrapperForCostumPatterns, "level", "ingame_preview");
         };
 
     } else {
@@ -1126,7 +1167,7 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
             // console.log(structure, xCellAmount);
 
             // show in game info pop up
-            createPattern_preview(pattern, structure, PatternGridWrapper, "level", "ingame_preview");
+            createPattern_preview(pattern, structure, PatternGridWrapperForCostumPatterns, "level", "ingame_preview");
         };
     };
 };
@@ -1564,7 +1605,8 @@ const InitCreateLevelScene = () => {
     });
 
     CreateField_createField_btn.addEventListener("click", () => {
-        let sameCoord = createCostumField_xInput.textContent == createCostumField_yInput.textContent;
+        // let sameCoord = createCostumField_xInput.textContent == createCostumField_yInput.textContent;
+        let sameCoord = true;
 
         if (createCostumField_title.textContent != "field name" && sameCoord) {
             createNewCostumField();
@@ -1572,7 +1614,8 @@ const InitCreateLevelScene = () => {
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
-            AlertText.textContent = "Build your new field and provide a costum name for it. The x and y axes should be the same.";
+            // AlertText.textContent = "Build your new field and provide a costum name for it. The x and y axes should be the same.";
+            AlertText.textContent = "Build your new field and provide a costum name for it.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
