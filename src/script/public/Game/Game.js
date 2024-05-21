@@ -1729,7 +1729,7 @@ const KI_PlacesTwoTimesInARow = () => {
     GameAnimation("The unknown can set two times in a row!").then(() => {
         win_found = false;
         changePlayer();
-        KI_Action();
+        ki.init();
     });
 };
 

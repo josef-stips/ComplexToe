@@ -473,7 +473,7 @@ function processResult_continueGame(fromRestart, fromClick, won) {
                 } else {
                     AdvantureMode_SpellDisplay.style.color = "grey";
                     changePlayer(false);
-                    KI_Action();
+                    ki.init();
                 };
 
             } else {
@@ -493,7 +493,7 @@ function processResult_continueGame(fromRestart, fromClick, won) {
                 // Check who can set next the bot or the player
                 if (currentPlayer == PlayerData[1].PlayerForm) {
                     changePlayer(false);
-                    KI_Action();
+                    ki.init();
 
                 } else {
                     changePlayer(false);

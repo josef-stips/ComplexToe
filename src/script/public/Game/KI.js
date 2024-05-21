@@ -333,15 +333,24 @@ const InnerFieldCreation_calculateBoundaries = (OriginIndex, cellSize = 5) => {
 };
 
 function findValidMoves(board) {
+
+    const squrtNumberOfBoard = Math.sqrt(board.length);
     const validMoves = [];
-    for (let i = 2; i < 18; i++) {
-        for (let j = 2; j < 18; j++) {
-            const index = i * 20 + j;
+
+    for (let i = 2; i < squrtNumberOfBoard - 2; i++) {
+
+        for (let j = 2; j < squrtNumberOfBoard - 2; j++) {
+
+            const index = i * squrtNumberOfBoard + j;
+
             if (board[index] === '') {
                 validMoves.push(index);
-            }
-        }
-    }
+            };
+
+        };
+
+    };
+
     return validMoves;
 };
 
@@ -370,6 +379,10 @@ const FindBestSpot = (Boardstate, SearchNewField) => {
         let bestIndexesArray = [];
         let validMove = 0;
 
+        let listOf_bestIndexes = [];
+        let valid_move_list = [];
+
+        // field with the less amount of blockages gets choosen as the right spot for the ki to set
         validMoves.forEach(i => {
             let indexes = InnerFieldCreation_calculateBoundaries(i);
             let current_N_blockages = 0;
@@ -380,15 +393,27 @@ const FindBestSpot = (Boardstate, SearchNewField) => {
                 };
             };
 
-            if (current_N_blockages < N_blockages) {
+            if (current_N_blockages <= N_blockages) {
                 N_blockages = current_N_blockages;
-                bestIndexesArray = indexes;
-                validMove = i;
+                // bestIndexesArray = indexes;
+                // validMove = i;
+
+                listOf_bestIndexes.push(indexes);
+                valid_move_list.push(i);
             };
         });
 
+        console.log(listOf_bestIndexes);
+
+        // for multiple best choices: choose random field
+        let rndI = Math.floor(Math.random() * listOf_bestIndexes.length);
+
+        bestIndexesArray = listOf_bestIndexes[rndI];
+        validMove = valid_move_list[rndI];
+
+        // for each index in big field an index for the inner 5x5 field
         let indexes = {}
-        bestIndexesArray.forEach((el, i) => { // for each index in big field an index for the inner 5x5 field
+        bestIndexesArray.forEach((el, i) => {
             indexes[el] = i;
         });
         let NewOptions = createInnerFieldOptions([], indexes);
@@ -405,6 +430,8 @@ let currentWorkers = 4;
 
 // KI sets O somewhere
 function KI_Action() {
+    console.log("lol");
+
     setTimeout(() => { // remove access to set for the player
         cells.forEach(cell => {
             cell.removeEventListener('click', cellCicked);
@@ -506,6 +533,7 @@ function KI_Action() {
                         scores, max_depth, chunk, KIBoardOrigin, blockages, completedWorkers, currentWorkers, calculatedMoves, startTime, i, MixedField_Indexes);
                 });
             } else {
+
                 // create win conditions for the 15x15 inner field 
                 GenerateOriginWinConds(15).then(() => {
                     TMA_InnerField_instance = null;
@@ -559,42 +587,6 @@ function KI_Action() {
             };
         };
     };
-};
-
-// shorten a copy of options where there are no icons
-const ShortenOptions = () => {
-    let opti = [];
-    let Addi_length = xCell_Amount + xCell_Amount;
-    let Minu_Length = xCell_Amount + xCell_Amount;
-
-    let icon_far_in_array;
-    let icon_index_far_in_array
-
-    let icon_beginning_in_array;
-    let icon_index_beginning_in_array;
-
-    for (let i = 0; i < options.length; i++) {
-        if (options[i] != "") {
-            icon_far_in_array = options[i];
-            icon_index_far_in_array = i;
-        };
-    };
-
-    for (let i = options.length; i > 0; i--) {
-        if (options[i] != "") {
-            icon_beginning_in_array = options[i];
-            icon_index_beginning_in_array = i;
-        };
-    };
-
-    if (options[icon_index_beginning_in_array - Minu_Length] == undefined) Minu_Length = 0;
-    if (options[icon_index_beginning_in_array + Addi_length] == undefined) Addi_length = 0;
-
-    for (let i = icon_index_beginning_in_array - Minu_Length; i < icon_index_far_in_array + Addi_length; i++) {
-        opti.push(options[i]);
-    };
-
-    return opti;
 };
 
 // win conditions in bit version
