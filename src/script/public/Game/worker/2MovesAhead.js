@@ -102,6 +102,8 @@ onmessage = (data) => {
                 board &= ~(BigInt(1) << i);
 
                 if (result[0] == true) {
+                    console.log(player_lastCellIndexClicked, i, result[1])
+
                     let nearestIndex = nearestNumber(Number(player_lastCellIndexClicked), Number(i), Number(result[1]));
 
                     // console.log(i, Number(result[1]), Number(nearestIndex));

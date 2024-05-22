@@ -347,6 +347,265 @@ class bot_config {
     };
 };
 
+class TMA_handler {
+    constructor(config, inner_field, parent) {
+        this.config = config;
+        this.inner_field = inner_field;
+        this.parent = parent;
+    };
+
+    // TMA = two moves ahead algorithm
+    // 1. generate win conditions for a 15x15 field
+    // 2. create a 15x15 inner field for the algorithm
+    // 3. let the algorithm work wether the KI can win in 2 moves
+    // 4.1. player can win instantly or ki cannot win in 2 moves -> check if player can win in minimum 2 moves
+    // 4.2. set at index returned by TMA algorithm
+
+    // 1. check wether player can win instantly
+    // 2. check wether ki can win in 2 moves or less
+    // 3. check wether player can win in 2 moves or less
+    // 4. when player cannot win in 2 moves -> attack through (first choice) good win combination or (second choice) minimax
+    TMA_algorithm(MixedField_Indexes) {
+        this.parent.config.generate_origin_win_conds(15).then(() => {
+
+            // new TMA 
+            this.parent.TMA_Inner_field_instance = null;
+            this.parent.TMA_Inner_field_instance = new TMA_InnerField(lastCellIndex_Clicked, xCell_Amount);
+
+            // variables and TMA worker instance
+            let [TMA_indexes, TMA_options, TMA_blockages] = this.parent.TMA_Inner_field_instance.create();
+            let bigboards = this.parent.config.TMA_init_big_boards(TMA_options, TMA_blockages);
+            let BinaryWinConds = this.parent.config.convert_to_bigInt_binary(WinConditions);
+            let [player_can_instant_win, instant_win_index] = this.parent.player_instant_win();
+
+            // when player can instantly win, this is the highest priority
+            if (player_can_instant_win) {
+                this.parent.set_at_instant_win(instant_win_index);
+                return;
+            };
+
+            // if the player cannot win instantly, the KI checks wether it can win in 2 moves or less
+            let worker = new Worker('./Game/worker/2MovesAhead.js');
+            worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
+
+            worker.onmessage = (worker_result) => this.TMA_handle_result(worker, worker_result, MixedField_Indexes);
+        });
+    };
+
+    TMA_handle_result(worker, worker_result, MixedField_Indexes) {
+        // close worker 
+        worker.terminate();
+
+        console.log("step 1. ki can win in 2 moves: ", worker_result.data);
+
+        // player cannot win instantly in one move and ki can win in 2 moves or less
+        if (worker_result.data) {
+
+            let index = getKeyByValue(this.parent.TMA_Inner_field_instance.indexes, Number(worker_result.data));
+
+            let inner_field_index = MixedField_Indexes[index];
+            let big_field_index = Number(index);
+
+            this.parent.set(big_field_index, inner_field_index);
+
+        } else {
+
+            this.TM_player(MixedField_Indexes);
+        };
+    };
+
+    async TM_player(MixedField_Indexes, fromAttack, fromKI_CheckPlayer) { // check wether player can win in 2 moves
+        this.parent.config.generate_origin_win_conds(15).then(() => {
+
+            this.parent.TMA_Inner_field_instance = null;
+            this.parent.TMA_Inner_field_instance = new TMA_InnerField(lastCellIndex_Clicked, xCell_Amount);
+
+            let [TMA_indexes, TMA_options, TMA_blockages] = this.parent.TMA_Inner_field_instance.create();
+            let bigboards = this.parent.config.TMA_init_big_boards(TMA_options, TMA_blockages);
+            let BinaryWinConds = convertToBinary(WinConditions);
+
+            let worker = new Worker('./Game/worker/2MovesAhead.js');
+
+            worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
+
+            let condition = 0;
+
+            worker.onmessage = (worker_result) => {
+                worker.terminate();
+                console.log("step 2. player can win in 2 moves: ", worker_result.data, fromAttack, fromKI_CheckPlayer);
+
+                // player can win in 2 moves -> set in corresponding field
+                if (worker_result.data != false) {
+                    this.TM_player_1(TMA_indexes, worker_result, MixedField_Indexes);
+
+                    condition = 1
+                };
+
+                // player cannot win in 2 moves -> attack. First try good_win_combinations. Else try minimax
+                if (worker_result.data == false && fromAttack == undefined && fromKI_CheckPlayer == undefined) {
+                    this.TM_player_2(MixedField_Indexes);
+
+                    condition = 2
+                };
+
+                // if ki cannot win in 2 moves because the player interrupted, check if player can win in 2 moves
+                // if player also can't win in 2 moves the ki searches for a new free space to attack on a different space 
+                if (worker_result.data == false && fromAttack == true && fromKI_CheckPlayer != true) {
+                    this.TM_player_3();
+
+                    condition = 3
+                };
+
+                // The KI should start something new through doing the following:
+                // 1. Search for potential win combinations on the field where there is already a beginning so the KI has not to start everything again
+                // 2. If there is no win combination => start a new field and try to attack again
+                if (worker_result.data == false && fromAttack == undefined && fromKI_CheckPlayer == true) {
+                    this.TM_player_4();
+
+                    condition = 4
+                };
+
+                console.log("TMA condition type: ", condition);
+            };
+        });
+    };
+
+    // condition 1: player can win in 2 moves
+    TM_player_1(TMA_indexes, worker_result, MixedField_Indexes) {
+        let Calc_result = getKeyByValue(TMA_indexes, Number(worker_result.data));
+
+        // init. index for small and big field
+        let index = MixedField_Indexes[Calc_result];
+        let BigField_Index = Number(Calc_result);
+
+        this.parent.set(BigField_Index, index);
+    };
+
+    // condition 2: player cannot win in 2 moves. attack.
+    TM_player_2(MixedField_Indexes) {
+        let [ki_board, player_board, blockages] = this.parent.config.init_big_boards(options);
+        this.parent.config.generate_origin_win_conds();
+        let binary_win_conds = this.parent.config.convert_to_bigInt_binary(WinConditions);
+
+        let result = this.set_at_win_cond(ki_board, player_board, blockages, player_board, ki_board, lastCellIndex_Clicked, binary_win_conds);
+
+        if (!result) {
+            this.parent.defend(MixedField_Indexes, this.inner_field.inner_field_data_options, ki_board, player_board, undefined, true);
+        };
+    };
+
+    // condition 3: player cannot win in 2 moves
+    TM_player_3() {
+        this.TM_player(this.inner_field.inner_field_data_indexes, undefined, true);
+    };
+
+    // condition 4: player cannot win in 2 moves
+    TM_player_4() {
+        let [ki_board, player_board, blockages] = this.parent.config.init_big_boards(options);
+        this.parent.config.generate_origin_win_conds();
+        let binary_win_conds = this.parent.config.convert_to_bigInt_binary(WinConditions);
+
+        // this.parent.aim_for_win_combs();
+
+        // 1. look for good win combinations
+        // for (let [i, cond] of binaryWinConds.entries()) {
+        //     if ((bigboards[0] & BigInt(cond)) > BigInt(0) && (bigboards[2] & BigInt(cond)) == BigInt(0) && (bigboards[1] & BigInt(cond)) == BigInt(0)) {
+        //         this.parent.all_good_win_combinations.push(WinConditions[i]); // win condition with: minimum 1 drawn cell. no player blockages. no blockages.
+        //     };
+        // };
+
+        // // 2. look for good index in the first win combination
+        // if (this.parent.all_good_win_combinations.length > 0) {
+        //     let first_win_condition = this.parent.all_good_win_combinations[0];
+
+        //     // filter indexes which are blocked. The ki is not allowed to set at those indexes
+        //     let invalid_indexes = this.index_in_condition(this.parent.all_good_win_combinations);
+
+        //     // delete players index out of win condition
+        //     first_win_condition = first_win_condition.filter((val, i) => !invalid_indexes.includes(val));
+
+        //     // make object out of array
+        //     let win_condition_object = first_win_condition.reduce((acc, value, index) => {
+        //         acc[value] = index;
+        //         return acc;
+        //     }, {});
+
+        //     // evaluate index from win condition which is the nearest to the previous player index
+        //     let best_index = this.parent.config.find_nearest_key(win_condition_object, this.parent.lastCellIndex);
+
+        //     console.log(first_win_condition, invalid_indexes, win_condition_object, best_index);
+
+        //     // set at index
+        //     this.parent.set_and_attack_mode(best_index);
+        //     return;
+        // };
+
+        let result = this.set_at_win_cond(ki_board, player_board, blockages, ki_board, player_board, this.parent.lastCellIndex, binary_win_conds);
+
+        if (!result) {
+            this.TM_player(this.inner_field.inner_field_data_indexes, undefined, undefined);
+        };
+    };
+
+    // evaluate best win conditions for x player and set at empty cell of the win condition
+    set_at_win_cond(ki_board, player_board, blockages, target_board, opponent_board, last_cell_clicked, binary_win_conds) {
+
+        // 1. evaluate good win combinations
+        for (let [i, cond] of binary_win_conds.entries()) {
+
+            let minimum_one_drawn_cell = (target_board & BigInt(cond)) > BigInt(0);
+            let no_opponent_blockages = (opponent_board & BigInt(cond)) == BigInt(0);
+            let no_blockages = (blockages & BigInt(cond)) == BigInt(0);
+
+            if (minimum_one_drawn_cell && no_opponent_blockages && no_blockages) {
+                this.parent.all_good_win_combinations.push(WinConditions[i])
+            };
+        };
+
+        // 2. evaluate good index in the first win condition
+        if (this.parent.all_good_win_combinations.length > 0) {
+            let first_win_condition = this.parent.all_good_win_combinations[0];
+
+            // filter indexes which are blocked. The ki is not allowed to set at those indexes
+            let invalid_indexes = this.index_in_condition(first_win_condition, player_board, ki_board, blockages);
+            first_win_condition = first_win_condition.filter((val, i) => !invalid_indexes.includes(val));
+
+            // make object out of array
+            let win_condition_object = first_win_condition.reduce((acc, value, index) => {
+                acc[value] = index;
+                return acc;
+            }, {});
+
+            // evaluate index from win condition which is the nearest to the previous player index
+            let best_index = this.parent.config.find_nearest_key(win_condition_object, last_cell_clicked);
+
+            // set at index
+            this.parent.set(best_index, Number(this.inner_field.inner_field_data_indexes[best_index]));
+
+            console.log(first_win_condition, invalid_indexes, win_condition_object, best_index);
+
+            return true;
+        };
+
+        return false;
+    };
+
+    index_in_condition(conditions, player_board, ki_board, blockages) {
+        let invalid_indexes = [];
+
+        for (let i of conditions) {
+            let no_blockages = ((player_board >> BigInt(i)) & BigInt(1)) === BigInt(0);
+            let no_ki = ((ki_board >> BigInt(i)) & BigInt(1)) === BigInt(0);
+            let no_player = ((blockages >> BigInt(i)) & BigInt(1)) === BigInt(0);
+
+            let empty_cell = no_blockages && no_ki && no_player;
+            !empty_cell && invalid_indexes.push(i);
+        };
+
+        return invalid_indexes;
+    };
+};
+
 class bot {
     constructor() {
         this.max_depth = 0;
@@ -367,6 +626,7 @@ class bot {
         // "bot_config" and "inner_field" is part of "bot": bot (this) -> bot_config && inner_field
         this.inner_field = new inner_field(this.config, this);
         this.config = new bot_config(this.inner_field, this);
+        this.TMA_handler = new TMA_handler(this.config, this.inner_field, this);
 
         this.current_workers = 4;
         this.completed_workers = 0;
@@ -427,7 +687,13 @@ class bot {
         // wether attack or defend mode
         switch (this.play_mode) {
             case "attack":
-                this.attack(instant_win_exists);
+                // when user has spells -> defend. otherwise -> attack.
+                if (SpellsInStore > 0) {
+                    this.defend(MixedField_Indexes, InnerFieldOptions, ki_board, player_board, instant_win_exists);
+
+                } else {
+                    this.attack(instant_win_exists);
+                };
                 break;
 
             case "defend":
@@ -466,7 +732,7 @@ class bot {
             });
 
         } else { // use TMA algorithm 
-            this.TMA_algorithm(MixedField_Indexes);
+            this.TMA_handler.TMA_algorithm(MixedField_Indexes);
         };
     };
 
@@ -571,49 +837,6 @@ class bot {
         return validMoves;
     };
 
-    set_and_attack_mode(finalMove) {
-        setTimeout(() => {
-            this.set_mode("attack");
-            this.set(finalMove, this.inner_field.inner_field_data_indexes[finalMove]);
-        }, 1000);
-    };
-
-    set(index, inner_field_index) { // place on given index and innerfield index
-        index = Number(index);
-        inner_field_index = Number(inner_field_index);
-
-        cells[index].textContent = PlayerData[2].PlayerForm;
-        cells[index].className = "cell";
-        cells[index].style.opacity = "1";
-        cells[index].classList.add("draw");
-        cells[index].style.color = "gold";
-        options[index] = PlayerData[2].PlayerForm;
-
-        this.ki_board |= 1 << inner_field_index;
-        this.inner_field.inner_field_data_options[inner_field_index] = PlayerData[2].PlayerForm;
-        this.lastCellIndex = index;
-
-        GenerateOriginWinConds().then(() => {
-            if (this.canSetTwoTimes) {
-
-                this.canSetTwoTimes = false;
-                this.start();
-                return;
-
-            } else {
-                checkWinner();
-
-                setTimeout(() => {
-                    cells.forEach(cell => {
-
-                        cell.addEventListener('click', cellCicked);
-                        (cell.classList.contains("draw") || cell.classList.contains("death-cell")) ? cell.style.cursor = 'default': cell.style.cursor = 'pointer';
-                    });
-                }, 700);
-            };
-        });
-    };
-
     // check wether player can win in one move
     player_instant_win() {
         let [ki_board, player_board, blockages] = this.config.init_big_boards(options);
@@ -687,11 +910,11 @@ class bot {
                 this.good_win_combination_get_best_index(player_board, ki_board);
 
             } catch (error) {
-                this.TM_player(this.inner_field.inner_field_data_indexes, true);
+                this.TMA_handler.TM_player(this.inner_field.inner_field_data_indexes, true);
             };
 
         } else {
-            this.TM_player(this.inner_field.inner_field_data_indexes, true);
+            this.TMA_handler.TM_player(this.inner_field.inner_field_data_indexes, true);
         };
     };
 
@@ -841,205 +1064,47 @@ class bot {
         return ((board & pattern) == BigInt(0)) ? 1 : 0;
     };
 
-    // TMA = two moves ahead algorithm
-    // 1. generate win conditions for a 15x15 field
-    // 2. create a 15x15 inner field for the algorithm
-    // 3. let the algorithm work 
-    // 4.1. player can win instantly or ki cannot win in 2 moves -> check if player can win in minimum 2 moves
-    // 4.2. set at index returned by TMA algorithm
-    TMA_algorithm(MixedField_Indexes) {
-        this.config.generate_origin_win_conds(15).then(() => {
-
-            // new TMA 
-            this.TMA_Inner_field_instance = null;
-            this.TMA_Inner_field_instance = new TMA_InnerField(lastCellIndex_Clicked, xCell_Amount);
-
-            // variables and TMA worker instance
-            let [TMA_indexes, TMA_options, TMA_blockages] = this.TMA_Inner_field_instance.create();
-            let bigboards = this.config.TMA_init_big_boards(TMA_options, TMA_blockages);
-            let BinaryWinConds = this.config.convert_to_bigInt_binary(WinConditions);
-            let player_can_instant_win = this.player_instant_win();
-
-            let worker = new Worker('./Game/worker/2MovesAhead.js');
-            worker.postMessage([true, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
-
-            worker.onmessage = (worker_result) => this.TMA_handle_result(worker, player_can_instant_win, worker_result, MixedField_Indexes);
-        });
+    set_and_attack_mode(finalMove) {
+        setTimeout(() => {
+            this.set_mode("attack");
+            this.set(finalMove, this.inner_field.inner_field_data_indexes[finalMove]);
+        }, 1000);
     };
 
-    TMA_handle_result(worker, player_can_instant_win, worker_result, MixedField_Indexes) {
-        // close worker 
-        worker.terminate();
+    set(index, inner_field_index) { // place on given index and innerfield index
+        index = Number(index);
+        inner_field_index = Number(inner_field_index);
 
-        // player cannot win instantly in one move and TMA got a result
-        if (!player_can_instant_win[0] && worker_result.data) {
+        cells[index].textContent = PlayerData[2].PlayerForm;
+        cells[index].className = "cell";
+        cells[index].style.opacity = "1";
+        cells[index].classList.add("draw");
+        cells[index].style.color = "gold";
+        options[index] = PlayerData[2].PlayerForm;
 
-            let index = getKeyByValue(this.TMA_Inner_field_instance.indexes, Number(worker_result.data));
+        this.ki_board |= 1 << inner_field_index;
+        this.inner_field.inner_field_data_options[inner_field_index] = PlayerData[2].PlayerForm;
+        this.lastCellIndex = index;
 
-            let inner_field_index = MixedField_Indexes[index];
-            let big_field_index = Number(index);
+        GenerateOriginWinConds().then(() => {
+            if (this.canSetTwoTimes) {
 
-            this.set(big_field_index, inner_field_index);
+                this.canSetTwoTimes = false;
+                this.start();
+                return;
 
-        } else {
+            } else {
+                checkWinner();
 
-            this.TM_player(MixedField_Indexes);
-        };
-    };
+                setTimeout(() => {
+                    cells.forEach(cell => {
 
-    async TM_player(MixedField_Indexes, fromAttack, fromKI_CheckPlayer) { // check wether player can win in 2 moves
-        this.config.generate_origin_win_conds(15).then(() => {
-
-            this.TMA_Inner_field_instance = null;
-            this.TMA_Inner_field_instance = new TMA_InnerField(lastCellIndex_Clicked, xCell_Amount);
-
-            let [TMA_indexes, TMA_options, TMA_blockages] = this.TMA_Inner_field_instance.create();
-            let bigboards = this.config.TMA_init_big_boards(TMA_options, TMA_blockages);
-            let BinaryWinConds = convertToBinary(WinConditions);
-
-            let worker = new Worker('./Game/worker/2MovesAhead.js');
-
-            worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
-
-            let condition = 0;
-
-            worker.onmessage = (worker_result) => {
-                worker.terminate();
-
-                // player can win in 2 moves -> set in corresponding field
-                if (worker_result.data != false) {
-                    this.TM_player_1(TMA_indexes, worker_result, MixedField_Indexes);
-
-                    condition = 1
-                };
-
-                // player cannot win in 2 moves -> attack. First try good_win_combinations. Else try minimax
-                if (worker_result.data == false && fromAttack == undefined && fromKI_CheckPlayer == undefined) {
-                    this.TM_player_2(MixedField_Indexes);
-
-                    condition = 2
-                };
-
-                // if ki cannot win in 2 moves because the player interrupted, check if player can win in 2 moves
-                // if player also can't win in 2 moves the ki searches for a new free space to attack on a different space 
-                if (worker_result.data == false && fromAttack == true && fromKI_CheckPlayer != true) {
-                    this.TM_player_3();
-
-                    condition = 3
-                };
-
-                // The KI should start something new through doing the following:
-                // 1. Search for potential win combinations on the field where there is already a beginning so the KI has not to start everything again
-                // 2. If there is no win combination => start a new field and try to attack again
-                if (worker_result.data == false && fromAttack == undefined && fromKI_CheckPlayer == true) {
-                    this.TM_player_4();
-
-                    condition = 4
-                };
-
-                console.log(condition);
+                        cell.addEventListener('click', cellCicked);
+                        (cell.classList.contains("draw") || cell.classList.contains("death-cell")) ? cell.style.cursor = 'default': cell.style.cursor = 'pointer';
+                    });
+                }, 700);
             };
         });
-    };
-
-    // condition 1: player can win in 2 moves
-    TM_player_1(TMA_indexes, worker_result, MixedField_Indexes) {
-        let Calc_result = getKeyByValue(TMA_indexes, Number(worker_result.data));
-
-        // init. index for small and big field
-        let index = MixedField_Indexes[Calc_result];
-        let BigField_Index = Number(Calc_result);
-
-        this.set(BigField_Index, index);
-    };
-
-    // condition 2: player cannot win in 2 moves
-    TM_player_2(MixedField_Indexes) {
-
-        let bigboards = this.config.init_big_boards(options); // 0: ki_board, 1: player_board, 2: blockages
-        this.config.generate_origin_win_conds();
-        let binaryWinConds_forPlayer = this.config.convert_to_bigInt_binary(WinConditions);
-
-        // look and add good win combis for the KI
-        for (let [i, cond] of binaryWinConds_forPlayer.entries()) {
-
-            // check wether the win combination is good and if there is no blockage
-            if ((bigboards[1] & BigInt(cond)) > BigInt(0) && (bigboards[2] & BigInt(cond)) == BigInt(0) && (bigboards[0] & BigInt(cond)) == BigInt(0)) {
-                this.all_good_win_combinations.push(WinConditions[i]);
-                // console.log(WinConditions[i][0], i, blockages.toString(2), bigboards[2].toString(2), ((bigboards[2] >> BigInt(WinConditions[i][0])) & BigInt(1)));
-
-                if ((((bigboards[2] >> BigInt(WinConditions[i][0])) & BigInt(1)) === BigInt(0))) {
-                    console.log("sdfaifhndifjhasdfuiasdhflshdjifjasdlfjdf", WinConditions[i][0], WinConditions[i], lastCellIndex_Clicked);
-
-                    // delete players index out of win condition
-                    WinConditions[i] = WinConditions[i].filter((val, i) => val !== lastCellIndex_Clicked);
-
-                    console.log(WinConditions[i], lastCellIndex_Clicked)
-
-                    // make object out of array
-                    let winConditionObject = WinConditions[i].reduce((acc, value, index) => {
-                        acc[value] = index;
-                        return acc;
-                    }, {});
-
-                    // evaluate index from win condition which is the nearest to the previous player index
-                    let best_index = this.config.find_nearest_key(winConditionObject, lastCellIndex_Clicked);
-
-                    this.set(best_index, Number(this.inner_field.inner_field_data_indexes[best_index]));
-                    return;
-
-                } else continue;
-            };
-        };
-
-        this.defend(MixedField_Indexes, this.inner_field.inner_field_data_options, bigboards[0], bigboards[1], undefined, true);
-    };
-
-    // condition 3: player cannot win in 2 moves
-    TM_player_3() {
-        this.TM_player(this.inner_field.inner_field_data_indexes, undefined, true);
-    };
-
-    // condition 4: player cannot win in 2 moves
-    TM_player_4() {
-        let bigboards = this.config.init_big_boards(options); // 0: ki_board, 1: player_board, 2: blockages
-        this.config.generate_origin_win_conds();
-        let binaryWinConds = this.config.convert_to_bigInt_binary(WinConditions);
-
-        // look and add good win combis for the KI
-        for (let [i, cond] of binaryWinConds.entries()) {
-            // console.log((bigboards[0] & BigInt(cond)), (BigInt(blockages) & BigInt(cond)), (bigboards[1] & BigInt(cond)));
-
-            // check if in the win combination is good and if there is no blockage
-            if ((bigboards[0] & BigInt(cond)) > BigInt(0) && (bigboards[2] & BigInt(cond)) == BigInt(0) && (bigboards[1] & BigInt(cond)) == BigInt(0)) {
-                this.all_good_win_combinations.push(WinConditions[i]);
-
-                // console.log(WinConditions[i][0], i, blockages.toString(2), bigboards[2].toString(2), ((bigboards[2] >> BigInt(WinConditions[i][0])) & BigInt(1)));
-                if ((((bigboards[2] >> BigInt(WinConditions[i][0])) & BigInt(1)) === BigInt(0))) {
-
-                    // delete ki index out of win condition
-                    WinConditions[i] = WinConditions[i].filter((val, i) => val !== this.lastCellIndex);
-
-                    console.log(WinConditions[i], this.lastCellIndex)
-
-                    // make object out of array
-                    let winConditionObject = WinConditions[i].reduce((acc, value, index) => {
-                        acc[value] = index;
-                        return acc;
-                    }, {});
-
-                    // evaluate index from win condition which is the nearest to the previous player index
-                    let best_index = this.config.find_nearest_key(winConditionObject, this.lastCellIndex);
-
-                    // console.log("sdfaifhndifjhasdfuiasdhflshdjifjasdlfjdf", WinConditions[i][0]);
-                    this.set_and_attack_mode(best_index);
-                    return;
-
-                } else continue;
-            };
-        };
-
-        this.TM_player(this.inner_field.inner_field_data_indexes, undefined, undefined);
     };
 };
 
