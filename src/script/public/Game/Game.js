@@ -112,6 +112,8 @@ let allGameData = [];
 let killAllDrawnCells = false;
 let stillActiveCells = [];
 
+let max_amount_of_moves = null;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -123,6 +125,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     for (const i of arguments) {
         allGameData.push(i);
     };
+
+    max_amount_of_moves = maxAmoOfMoves;
 
     // console.log(allGameData);
 
@@ -1451,6 +1455,8 @@ const EndGameGameAnimation = (text, OnGameEnd) => {
 
                     // display end game leaderboard
                     EndGame_Leaderboard();
+
+                    starsHandler.check();
 
                     // show play time
                     displayPlayTime();

@@ -426,7 +426,8 @@ class TMA_handler {
 
             let worker = new Worker('./Game/worker/2MovesAhead.js');
 
-            worker.postMessage([fromAttack, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
+            console.log([false, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)])
+            worker.postMessage([false, WinConditions, bigboards, BinaryWinConds, PlayerData, TMA_options, Number(lastCellIndex_Clicked)]);
 
             let condition = 0;
 
@@ -505,41 +506,6 @@ class TMA_handler {
         this.parent.config.generate_origin_win_conds();
         let binary_win_conds = this.parent.config.convert_to_bigInt_binary(WinConditions);
 
-        // this.parent.aim_for_win_combs();
-
-        // 1. look for good win combinations
-        // for (let [i, cond] of binaryWinConds.entries()) {
-        //     if ((bigboards[0] & BigInt(cond)) > BigInt(0) && (bigboards[2] & BigInt(cond)) == BigInt(0) && (bigboards[1] & BigInt(cond)) == BigInt(0)) {
-        //         this.parent.all_good_win_combinations.push(WinConditions[i]); // win condition with: minimum 1 drawn cell. no player blockages. no blockages.
-        //     };
-        // };
-
-        // // 2. look for good index in the first win combination
-        // if (this.parent.all_good_win_combinations.length > 0) {
-        //     let first_win_condition = this.parent.all_good_win_combinations[0];
-
-        //     // filter indexes which are blocked. The ki is not allowed to set at those indexes
-        //     let invalid_indexes = this.index_in_condition(this.parent.all_good_win_combinations);
-
-        //     // delete players index out of win condition
-        //     first_win_condition = first_win_condition.filter((val, i) => !invalid_indexes.includes(val));
-
-        //     // make object out of array
-        //     let win_condition_object = first_win_condition.reduce((acc, value, index) => {
-        //         acc[value] = index;
-        //         return acc;
-        //     }, {});
-
-        //     // evaluate index from win condition which is the nearest to the previous player index
-        //     let best_index = this.parent.config.find_nearest_key(win_condition_object, this.parent.lastCellIndex);
-
-        //     console.log(first_win_condition, invalid_indexes, win_condition_object, best_index);
-
-        //     // set at index
-        //     this.parent.set_and_attack_mode(best_index);
-        //     return;
-        // };
-
         let result = this.set_at_win_cond(ki_board, player_board, blockages, ki_board, player_board, this.parent.lastCellIndex, binary_win_conds);
 
         if (!result) {
@@ -580,7 +546,7 @@ class TMA_handler {
             let best_index = this.parent.config.find_nearest_key(win_condition_object, last_cell_clicked);
 
             // set at index
-            this.parent.set(best_index, Number(this.inner_field.inner_field_data_indexes[best_index]));
+            this.parent.set_and_attack_mode(best_index);
 
             console.log(first_win_condition, invalid_indexes, win_condition_object, best_index);
 
@@ -632,7 +598,7 @@ class bot {
         this.completed_workers = 0;
 
         // index sum of player and ki boundary when to use minimax and when to use other algorithm
-        this.index_boundary_for_minimax = [3, 20];
+        this.index_boundary_for_minimax = [0, 100]; // 3, 20 default
 
         this.TMA_Inner_field_instance = null;
 
@@ -643,6 +609,11 @@ class bot {
     init() {
         this.find_max_depth();
         this.start();
+
+        this.all_good_win_combinations = [];
+        this.currently_taken_combination = [];
+        this.current_combination_index = 0;
+        this.binary_win_conditions;
     };
 
     set_mode = (mode) => this.play_mode = mode;

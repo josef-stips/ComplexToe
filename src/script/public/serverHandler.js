@@ -46,7 +46,8 @@ socket.on('connect', () => {
         DailyChallenges_PopUp.style.display == "flex" ||
         OfficialWinPatternsPopUp.style.display == "flex" ||
         AGB_PopUp.style.display == "flex" ||
-        settingsWindow.style.display == "block") {
+        settingsWindow.style.display == "block" ||
+        mapLevelOverview.style.display == "flex") {
         // Your code to execute when any of the elements' style.display is "flex"
 
         DarkLayer.style.display = "block";
@@ -516,6 +517,8 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
                 UserLeftGameInOnlineMode();
             } else { // in offline mode
                 UserLeftGameInOfflineMode(userWonInAdvantureMode, LevelIndex_AdvantureMode);
+
+                starsHandler.init();
             };
         });
     };

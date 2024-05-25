@@ -174,6 +174,14 @@ function unlockSound1() {
     unlock_sound1.play();
 };
 
+function play_collectSound() {
+    collect1.pause();
+    collect1.currentTime = 0;
+    collect1.playbackRate = 1.5;
+    collect1.volume = sfxVolume - (1 / 3 * sfxVolume);
+    collect1.play();
+};
+
 function play_rewardSound() {
     // reward/ achievement sound
     rewardAudio.volume = sfxVolume - (1 / 3 * sfxVolume);

@@ -206,3 +206,7 @@ const CloseOnlinePopUps = (CloseDarkLayer) => {
 function removeInvisibleChars(str) {
     return str.replace(/\s/g, '');
 };
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+};

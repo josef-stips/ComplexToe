@@ -1,118 +1,94 @@
 onmessage = (data) => {
     let for_ki = data.data[0];
     let WinConditions = data.data[1];
-    let bigboards = data.data[2];
+    let [player_board, ki_board, blockages] = data.data[2];
     let BinaryWinConds = data.data[3];
     let PlayerData = data.data[4];
     let options = data.data[5];
     let player_lastCellIndexClicked = data.data[6];
-    // console.log(for_ki, WinConditions, bigboards, BinaryWinConds, PlayerData, options);
-    // console.log(options, WinConditions, BinaryWinConds, bigboards);
+
+    let winner = for_ki ? PlayerData[2].PlayerForm : PlayerData[1].PlayerForm;
+
+    console.log(ki_board, player_board, blockages);
+    console.log(for_ki, options);
+
+    options = new Array(400)
 
     const nearestNumber = (mainNumb, numb1, numb2) => (Math.abs(mainNumb - numb1) < Math.abs(mainNumb - numb2)) ? numb1 : numb2;
 
-    // check if player has won
-    function minimax_checkWinner(Player_B, winnerIcon) { // give player big bit boards (type BigInt)
-        let winner = null;
+    function minimax_checkWinner(Player_B) {
+        let WinnerOfCurrentState = null;
         let tie = 0; // 1 || 0
 
-        // console.log(Player_B, winnerIcon, WinConds, WinConditions);
         for (let i = 0; i < BinaryWinConds.length; i++) {
             let pattern = BinaryWinConds[i];
 
             if (tie == 0) tie = evaluatingTie(pattern, Player_B)
 
             if ((Player_B & pattern) == pattern) {
-                winner = winnerIcon
-                break
-            }
-        }
-        return (winner == null && tie == 0) ? 'tie' : winner;
+                WinnerOfCurrentState = winner;
+                break;
+            };
+        };
+
+        return (WinnerOfCurrentState == null && tie == 0) ? 'tie' : WinnerOfCurrentState;
     };
 
     // check if there is tie for a specific board state 
     const evaluatingTie = (pattern, Board) => {
-        if ((Board & pattern) == BigInt(0)) {
-            return 1;
-        };
-        return 0;
+        return ((Board & pattern) == BigInt(0)) ? 1 : 0;
     };
 
-    // if the opponent of the KI (player [you]) can beat it in just one move, the KI does not have to do calculations with the minimax algorithm 
-    // but just place the icon on that right cell
-    const lookForInstantWin = (BigBoard) => {
-        // init bit-based win conditions
-        WinConds = [];
-        WinConds = BinaryWinConds;
+    const lookForInstantWin = (board) => {
 
-        let player_board; // ki board or player board
-        let winner; // ki or player icon
-
-        if (BigBoard) {
-            player_board = BigBoard; // ki
-            winner = PlayerData[2].PlayerForm;
-
-        } else {
-            player_board = bigboards[1]; // player
-            winner = PlayerData[1].PlayerForm;
-        };
-        // console.log(BigBoard.toString(2), winner, player_board);
-
-        // set icon for player in every cell and look if he would win
         for (let i = BigInt(0); i < options.length; i++) {
-            // and operator for big int with 1
-            if ((((bigboards[0] >> i) & BigInt(1)) === BigInt(0)) &&
-                (((bigboards[1] >> i) & BigInt(1)) === BigInt(0)) &&
-                (((bigboards[2] >> i) & BigInt(1)) === BigInt(0))) {
-                // set for second player and check win
-                player_board |= (BigInt(1) << i)
-                let result = minimax_checkWinner(player_board, winner);
-                player_board &= ~(BigInt(1) << i)
+
+            if (
+                (((ki_board >> i) & BigInt(1)) === BigInt(0)) &&
+                (((player_board >> i) & BigInt(1)) === BigInt(0)) &&
+                (((blockages >> i) & BigInt(1)) === BigInt(0))
+            ) {
+
+                board |= (BigInt(1) << i)
+                let result = minimax_checkWinner(board);
+                board &= ~(BigInt(1) << i)
 
                 if (result === winner) {
-                    return [true, i]
-                }
-            }
-        }
-        return [false]
+                    return i;
+                };
+            };
+        };
+
+        return false;
     };
 
-    // check if player can win in 2 moves
     const lookForTwoMoveWin = (for_ki) => {
-        let board;
+        let board = for_ki ? ki_board : player_board;
 
-        if (for_ki) {
-            board = bigboards[0]; // look if ki can win in 2 moves
-        } else board = bigboards[1]; // look if player can win in 2 moves
-
-        // console.log(for_ki, board.toString(2), WinConditions);
         for (let i = BigInt(0); i < options.length; i++) {
-            // Überprüfe, ob die Zelle frei ist
+
             if (
-                ((bigboards[0] >> i) & BigInt(1)) === BigInt(0) &&
-                ((bigboards[1] >> i) & BigInt(1)) === BigInt(0) &&
-                ((bigboards[2] >> i) & BigInt(1)) === BigInt(0)
+                ((ki_board >> i) & BigInt(1)) === BigInt(0) &&
+                ((player_board >> i) & BigInt(1)) === BigInt(0) &&
+                ((blockages >> i) & BigInt(1)) === BigInt(0)
             ) {
-                // Setze für den Spieler
+
                 board |= BigInt(1) << i;
-
                 let result = lookForInstantWin(board);
-
-                // Setze die Boards zurück, da der Zug des Spielers nicht zu einem Gewinn führt
                 board &= ~(BigInt(1) << i);
 
-                if (result[0] == true) {
-                    console.log(player_lastCellIndexClicked, i, result[1])
+                if (result) {
 
-                    let nearestIndex = nearestNumber(Number(player_lastCellIndexClicked), Number(i), Number(result[1]));
-
-                    // console.log(i, Number(result[1]), Number(nearestIndex));
+                    let nearestIndex = nearestNumber(Number(player_lastCellIndexClicked), Number(i), Number(result));
                     postMessage(nearestIndex);
+                    return;
 
                 } else continue;
-            }
-        }
+            };
+        };
+
         postMessage(false);
     };
+
     lookForTwoMoveWin(for_ki);
 };

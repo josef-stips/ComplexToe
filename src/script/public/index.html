@@ -44,6 +44,7 @@
     <audio id="default_MapLevel_theme2" src="assets/Maps/mapLevel_theme2.mp3"></audio>
     <audio id="eye_attack_soundeffect" src="assets/eye_attack.mp3"></audio>
     <audio src="assets/unlock_sound1.mp3" id="unlock_sound1"></audio>
+    <audio src="assets/collect1.mp3" id="collect1"></audio>
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -89,6 +90,8 @@
     <script defer src="Game/processWinner.js"></script>
     <script defer src="App/features/DailyChallenges.js"></script>
     <script defer src="App/features/bosses/eye.js"></script>
+    <script defer src="App/features//AdvantureMap_scripts/stars.js"></script>
+    <script defer src="App/features/AdvantureMap_scripts/map_popUps.js"></script>
 </head>
 
 <body>
@@ -2253,7 +2256,14 @@
                 <div class="AdvantureMap-main">
                     <div class="map">
                         <!-- level 1 -->
-                        <i style="margin-top:12em ;" level="1" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
+
+                        <!-- <div class="map_stars_container" stars_index="1"> generate with javascript something like this
+                            <i class="fa-solid fa-star map_level_star left_star"></i>
+                            <i class="fa-regular fa-star map_level_star center_star"></i>
+                            <i class="fa-solid fa-star map_level_star right_star"></i>
+                        </div> -->
+
+                        <i style="margin-top:12.35em ;transform:translateY(0.1em) translateX(0.55em);" level="1" class="fa-regular fa-circle-dot mapLevel_Btn"></i>
                         <i style="margin-top:32.5em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:22em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top: 10em;" class="fa-solid fa-circle mapCircle"></i>
@@ -2283,7 +2293,7 @@
                         <i style="margin-top:45.5em ;" class="fa-solid fa-circle mapCircle"></i>
 
                         <!-- level 3 -->
-                        <i style="margin-top:16em ;" level="3" class="fa-solid fa-lock mapLevel_Btn"></i>
+                        <i style="margin-top:16.45em ;" level="3" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:45.5em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:38em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:30em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -2291,7 +2301,7 @@
                         <i style="margin-top:17em ;" class="fa-solid fa-circle mapCircle"></i>
 
                         <!-- level 4 -->
-                        <i style="margin-top:3.5em ;" level="4" class="fa-solid fa-lock mapLevel_Btn"></i>
+                        <i style="margin-top:3.7em ;" level="4" class="fa-solid fa-lock mapLevel_Btn"></i>
                         <i style="margin-top:5em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-1em ;" class="fa-solid fa-circle mapCircle"></i>
                         <i style="margin-top:-8em ;" class="fa-solid fa-circle mapCircle"></i>
@@ -6431,6 +6441,49 @@
         <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="170" height="170">
     </div>
 
+    <!-- stars pop up -->
+    <div class="map_stars_pop_up">
+        <div class="stars_pop_up_header">
+            <img src="assets/game/egyptian-bird.svg" width="32" height="32" style="transform: rotate(90deg);">
+            <h1 class="stars_pop_up_title">How to get stars in the level "level name"</h1>
+            <i class="fa-solid fa-x close_stars_pop_up_btn"></i>
+        </div>
+
+        <div class="stars_pop_up_main">
+
+            <div>
+                <img src="./assets/game/winged-sword.svg" width="170" height="170" style="animation: floating-el 5s infinite;">
+            </div>
+
+            <div class="stars_pop_up_main_center">
+                <ul class="stars_pop_up_stars_wrapper">
+                    <div>
+                        <li class="fa-solid fa-star"></li>
+                        <p class="stars_overview_stars"></p>
+                    </div>
+
+                    <div>
+                        <li class="fa-solid fa-star"></li>
+                        <p class="stars_overview_stars"></p>
+                    </div>
+
+                    <div>
+                        <li class="fa-solid fa-star"></li>
+                        <p class="stars_overview_stars"></p>
+                    </div>
+                </ul>
+            </div>
+
+            <div>
+                <img src="./assets/game/winged-sword.svg" width="170" height="170" style="animation: floating-el 5s infinite;">
+            </div>
+
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="170" height="170">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="170" height="170">
+    </div>
+
     <!-- map level overview -->
     <div class="mapLevelOverview">
         <div class="mapLevelDisplay-header">
@@ -6465,6 +6518,14 @@
                         <li class="LevelOverview_requirement"></li>
                         <li class="LevelOverview_requirement"></li>
                         <li class="LevelOverview_requirement"></li>
+                    </ul>
+
+                    <span class="levelOverview_subTitle" style="color: var(--line-color);">Stars earned: <i for="stars" class="fa-regular fa-question-circle level_overview_question_btn" question-btn-idx="1"></i></span>
+
+                    <ul class="level_overview_stars_wrapper">
+                        <li class="fa-solid fa-star level_overview_stars"></li>
+                        <li class="fa-solid fa-star level_overview_stars"></li>
+                        <li class="fa-solid fa-star level_overview_stars"></li>
                     </ul>
                 </div>
 
@@ -7128,6 +7189,14 @@
         <div class="endGameStats_main">
             <div id="UltimateWinTextArea">
                 <span id="UltimateWinText"></span>
+            </div>
+
+            <div class="endGame_stars">
+                <ul class="level_overview_stars_wrapper">
+                    <li class="fa-regular fa-star endgame_level_stars"></li>
+                    <li class="fa-regular fa-star endgame_level_stars"></li>
+                    <li class="fa-regular fa-star endgame_level_stars"></li>
+                </ul>
             </div>
 
             <div class="endGame_statusText">

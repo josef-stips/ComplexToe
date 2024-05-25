@@ -323,6 +323,11 @@ MapLevelBtns.forEach((item, k) => {
             let maxAmountOfMoves = unlocked_mapLevels[k + 1][12];
             MaxAmountOfMovesDisplay.textContent = maxAmountOfMoves;
 
+            // stars display
+            level_overview_stars.forEach((el, i) => {
+                el.className = `fa-${starsHandler.stars[current_selected_level][i + 1].type} fa-star`;
+            });
+
         } else {
             // Level is not unlocked
             DarkLayer.style.display = 'block';
@@ -346,7 +351,11 @@ function conqueredLevels() {
 
         // If user unlocked the next level but didn't conquered it yet
         if (!mapLevel_completed && mapLevel_unlocked) {
+            MapLevelBtns[i - 1].setAttribute("floating", "true");
             MapLevelBtns[i - 1].style.animation = "floating-el 5s infinite";
+
+        } else if (mapLevel_completed) {
+            MapLevelBtns[i + 1].setAttribute("floating", null);
         };
     };
 };
@@ -370,6 +379,8 @@ planet.addEventListener('click', async() => {
     inAdvantureMode = true;
 
     playMapTheme();
+
+    starsHandler.init_stars_document(0);
 });
 
 AdvantureMapBackbtn.addEventListener('click', () => {

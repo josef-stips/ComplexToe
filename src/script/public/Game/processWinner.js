@@ -783,8 +783,7 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
     GameFieldHeaderUnderBody.style.display = 'none';
 
     endGame_player1Won = player1_won;
-
-    console.log(player1_won, player2_won);
+    // console.log(player1_won, player2_won);
 
     setTimeout(() => {
 
@@ -917,6 +916,7 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
 
     // Display win text in the proper way
     if (inAdvantureMode || curr_mode == GameMode[1].opponent) {
+
         // if user beat level 10 - boss level
         if (current_selected_level == 10) {
             UltimateWinAnimation("You have conquered the evil");
@@ -928,6 +928,10 @@ const FirstPlayerUltimateWin = (player1_won, player2_won) => {
                 };
             }, 100);
         };
+
+        starsHandler.liveData[0] = starsHandler.liveData[0] == Infinity ? 0 : starsHandler.liveData[0];
+        starsHandler.liveData[2] = Number(GameField_TimeMonitor.textContent.replace("s.", ""));
+        starsHandler.liveData[1] = max_amount_of_moves - MaxAmountOfMovesCount
     };
 
     // additional img. If player is not it level 10 , this default img gets created
@@ -1004,7 +1008,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
     } else {
         setTimeout(() => {
 
-            console.log(current_level_boss);
+            // console.log(current_level_boss);
             current_level_boss && current_level_boss.stop_attack_interval();
 
             // basic stuff

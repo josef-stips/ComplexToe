@@ -22,6 +22,7 @@ let sound1 = document.querySelector("#sound1");
 let battleAudio = document.querySelector("#battleAudio");
 let ShopTheme = document.querySelector("#ShopTheme");
 let unlock_sound1 = document.querySelector("#unlock_sound1");
+let collect1 = document.querySelector("#collect1");
 
 let cellGrid = document.querySelector('#cellGrid');
 
@@ -182,6 +183,7 @@ let clickEnter_text = document.querySelector('.clickEnter_text');
 let mapLevel_AllowedPatterns_Text = document.querySelector('.mapLevel_AllowedPatterns_Text');
 let conquered_MapLevel_Display = document.querySelector('.conquered_MapLevel_Display');
 let mapLevel_ModeDisplay = document.querySelector('.mapLevel_ModeDisplay');
+let map = document.querySelector(".map");
 // sun
 let sun_40 = document.querySelector('.sun');
 let sunIMG_container = document.querySelector('.sunIMG_container');
@@ -406,6 +408,13 @@ let Lobby_FirstPlayer_Wrapper = document.querySelector(".Lobby_FirstPlayer_Wrapp
 let Lobby_SecondPlayer_Wrapper = document.querySelector(".Lobby_SecondPlayer_Wrapper");
 let ChooseFieldDisplay = document.querySelector(".ChooseField-display");
 let CreateLevelScene = document.querySelector(".CreateLevelScene");
+let level_overview_question_btns = document.querySelectorAll(".level_overview_question_btn");
+let map_stars_pop_up = document.querySelector(".map_stars_pop_up");
+let stars_pop_up_title = document.querySelector(".stars_pop_up_title");
+let stars_overview_stars = document.querySelectorAll(".stars_overview_stars");
+let close_stars_pop_up_btn = document.querySelector(".close_stars_pop_up_btn");
+let level_overview_stars = document.querySelectorAll(".level_overview_stars");
+let endgame_level_stars = document.querySelectorAll(".endgame_level_stars");
 // create level etc. elements
 let CreateLevel_helpPopUp = document.querySelector(".CreateLevel_helpPopUp");
 let CreateLevel_HelpPopUpCloseBtn = document.querySelector(".CreateLevel_HelpPopUpCloseBtn");

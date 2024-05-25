@@ -28,6 +28,8 @@ UseSpell_UseBtn.addEventListener('click', () => {
         SpellsInStore--;
         SpellAmountDisplay.textContent = SpellsInStore;
         PlayerIsAllowedToSetTwoTimes = true;
+
+        starsHandler.liveData[0] = starsHandler.liveData[0] == Infinity ? 1 : starsHandler.liveData[0] + 1;
     });
 });
 
