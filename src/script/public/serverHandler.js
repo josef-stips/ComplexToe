@@ -522,6 +522,8 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
             };
         });
     };
+
+    Lobby.style.background = "";
 };
 
 // display third player 
@@ -920,6 +922,7 @@ socket.on('killed_game', () => {
     OnlineGame_Lobby.style.display = 'flex';
     (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
     Lobby_GameCode_display.style.userSelect = 'text';
+    Lobby.style.background = "";
     // close pop ups if there where any open
     CloseOnlinePopUps();
     ChangeGameBG(undefined, undefined, true);
@@ -1076,6 +1079,7 @@ socket.on('INFORM_user_left_game', () => {
         friendLeft_text.textContent = 'Your friend left the game';
         // so user can select game code with mouse
         Lobby_GameCode_display.style.userSelect = 'text';
+        Lobby.style.background = "";
 
         DarkLayer.style.display = 'block';
 
@@ -1110,6 +1114,7 @@ socket.on('INFORM_blocker_left_game', () => {
         friendLeftGamePopUp.style.display = 'flex';
         friendLeft_text.textContent = 'The blocker left the game';
         Lobby_GameCode_display.style.userSelect = 'text';
+        Lobby.style.background = "";
 
         DarkLayer.style.display = 'block';
 

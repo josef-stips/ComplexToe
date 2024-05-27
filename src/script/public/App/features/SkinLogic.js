@@ -777,6 +777,56 @@ class themes {
                 "unlocked": false,
                 "inUse": false
             },
+            "magenta": {
+                "id": 2,
+                "line-color": "magenta",
+                "bg": null,
+                "currency": "diamonds",
+                "price": "25",
+                "CurrencyImg": "assets/game/minerals.svg",
+                "unlocked": false,
+                "inUse": false
+            },
+            "brown": {
+                "id": 3,
+                "line-color": "brown",
+                "bg": null,
+                "currency": "diamonds",
+                "price": "35",
+                "CurrencyImg": "assets/game/minerals.svg",
+                "unlocked": false,
+                "inUse": false
+            },
+            "yellow": {
+                "id": 4,
+                "line-color": "yellow",
+                "bg": null,
+                "currency": "diamonds",
+                "price": "75",
+                "CurrencyImg": "assets/game/minerals.svg",
+                "unlocked": false,
+                "inUse": false
+            },
+            "blue": {
+                "id": 5,
+                "line-color": "royalblue",
+                "bg": null,
+                "currency": "diamonds",
+                "price": "100",
+                "CurrencyImg": "assets/game/minerals.svg",
+                "unlocked": false,
+                "inUse": false
+            },
+            "black": {
+                "id": 6,
+                "line-color": "rgb(22,22,22)",
+                "bg": null,
+                "currency": "diamonds",
+                "price": "200",
+                "CurrencyImg": "assets/game/minerals.svg",
+                "unlocked": false,
+                "inUse": false
+            },
         };
 
         this.current_used_theme = null;
@@ -787,9 +837,14 @@ class themes {
         this.init();
         this.theme_state();
 
-        themeIcons.forEach(themeIcon => {
+        themeIcons.forEach((themeIcon, i) => {
             this.events(themeIcon);
+            this.DOM_color(themeIcon, i);
         });
+    };
+
+    DOM_color = (themeIcon, i) => {
+        themeIcon.children[0].style.backgroundColor = `${this.themesList[Object.keys(this.themesList)[i]]["line-color"]}`;
     };
 
     init = () => {

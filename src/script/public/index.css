@@ -43,6 +43,122 @@ body[theme="jungle"] .Lobby {
     background: linear-gradient(150deg, #1e2f1c, #142116);
 }
 
+body[theme="jungle"] .gameMode-card {
+    border: 4px solid rgba(50, 100, 35, 0.856) !important;
+    animation-name: animatedBorder_jungleTheme !important;
+}
+
+body[theme="magenta"] {
+    --line-color: magenta;
+    --hover-item: var(--line-color);
+}
+
+body[theme="magenta"] .Lobby {
+    background: linear-gradient(150deg, #ff00ff1a, rgb(148 0 148 / 0%));
+}
+
+body[theme="magenta"] .gameMode-card {
+    border: 4px solid #ff00ff1a !important;
+    animation-name: animatedBorder_jungleTheme !important;
+}
+
+body[theme="brown"] {
+    --line-color: brown;
+    --hover-item: var(--line-color);
+}
+
+body[theme="brown"] .Lobby {
+    background: linear-gradient(150deg, rgba(165, 42, 42, 0.288), rgba(109, 27, 27, 0.123));
+}
+
+body[theme="brown"] .gameMode-card {
+    border: 4px solid brown !important;
+    animation-name: animatedBorder_jungleTheme !important;
+}
+
+body[theme="yellow"] {
+    --line-color: yellow;
+    --hover-item: var(--line-color);
+}
+
+body[theme="yellow"] .Lobby {
+    background: linear-gradient(150deg, rgba(255, 255, 0, 0.199), rgba(158, 158, 28, 0.11));
+}
+
+body[theme="yellow"] .gameMode-card {
+    border: 4px solid yellow !important;
+    animation-name: animatedBorder_jungleTheme !important;
+}
+
+body[theme="blue"] {
+    --line-color: royalblue;
+    --hover-item: var(--line-color);
+}
+
+body[theme="blue"] .Lobby {
+    background: linear-gradient(150deg, rgba(65, 105, 225, 0.24), rgba(36, 61, 138, 0.151));
+}
+
+body[theme="blue"] .gameMode-card {
+    border: 4px solid royalblue !important;
+    animation-name: animatedBorder_jungleTheme !important;
+}
+
+body[theme="black"] {
+    --line-color: rgb(22, 22, 22);
+    --hover-item: var(--line-color);
+}
+
+body[theme="black"] .Lobby {
+    background: linear-gradient(150deg, rgba(22, 22, 22, 0.493), rgba(14, 14, 14, 0.342));
+}
+
+body[theme="black"] .gameMode-card {
+    border: 4px solid rgb(22, 22, 22) !important;
+    animation-name: animatedBorder_jungleTheme !important;
+}
+
+body[theme="black"] .imgBG {
+    background: url("assets/images/space_prev.jpg");
+}
+
+.imgBG_wrapper {
+    max-width: max-content;
+    position: relative;
+    z-index: 0;
+    /* display: none; */
+}
+
+.imgBG_innerScroller {
+    width: max-content;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: center;
+    z-index: inherit;
+}
+
+.imgBG {
+    width: 100vw;
+    height: 100vh;
+    animation: moveBackground 75s linear infinite;
+    z-index: inherit;
+}
+
+@keyframes moveBackground {
+    to {
+        transform: translateX(-100vw);
+    }
+}
+
+
+/* document style */
+
 body,
 html {
     user-select: none;
@@ -619,6 +735,8 @@ img {
     align-items: center;
     justify-content: center;
     margin: 20px 0 0 0;
+    position: relative;
+    z-index: 1;
 }
 
 #AllowedPatternsOuter {
@@ -758,11 +876,6 @@ img {
     animation: animatedBorder 4s linear infinite;
     background: var(--bg-app-color3);
     z-index: 400;
-}
-
-body[theme="jungle"] .gameMode-card {
-    border: 4px solid rgba(50, 100, 35, 0.856) !important;
-    animation-name: animatedBorder_jungleTheme !important;
 }
 
 .gameMode-card:hover {
@@ -6343,11 +6456,11 @@ label h3 {
 .LevelList_list {
     width: 50%;
     height: 100%;
-    border: 3px solid var(--line-color);
-    border: 3px solid var(--line-color);
+    border: 6px solid var(--line-color);
     overflow: scroll;
     flex-direction: column;
     display: flex;
+    border-radius: 30px;
 }
 
 .ReplaceText_Levellist {
@@ -7866,15 +7979,15 @@ p.createCostumField_yInput {
     border-radius: 100px;
     padding: 30px;
     width: 10px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .theme-icon[theme-idx="0"] .theme-icon-circle {
-    background: linear-gradient(120deg, goldenrod, rgb(90, 90, 90));
+    background: goldenrod;
 }
 
 .theme-icon[theme-idx="1"] .theme-icon-circle {
-    background: linear-gradient(120deg, rgb(20, 88, 20), rgb(13, 56, 13));
+    background: rgb(20, 88, 20);
 }
 
 .theme-icon-text {
@@ -7882,6 +7995,92 @@ p.createCostumField_yInput {
     border-bottom: none;
     border-radius: 5px;
     padding: 0 0 5px 0;
+}
+
+
+/* online stuff scene */
+
+.online_stuff_scene {
+    width: 100vw;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: none;
+    flex-direction: column;
+    position: relative;
+    z-index: 1000;
+    align-items: center;
+}
+
+.online_stuff_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+    height: 10%;
+    border-bottom: 5px solid;
+    border-radius: 3%;
+    z-index: 1000;
+    font-size: 2.5vh;
+}
+
+.online_stuff_main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+}
+
+.online_stuff_btns_wrapper {
+    width: 85vh;
+    height: 85vh;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 5vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.online_stuff_close_btn {
+    cursor: pointer;
+    transition: scale 0.15s ease-in-out;
+}
+
+.online_stuff_close_btn:hover {
+    transition: tranform 0.15s ease-in-out;
+    transform: scale(1.05);
+}
+
+.social_stuff_card>img {
+    width: 45%;
+}
+
+.social_stuff_card>p {
+    font-size: 3.5vh;
+}
+
+.social_stuff_card {
+    width: 40vh;
+    height: 20vh;
+    border: 5px solid;
+    transition: transform 0.20s ease-in-out;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5vh;
+    align-items: center;
+    background: #00000061;
+}
+
+.social_stuff_card:hover {
+    transition: transform 0.20s ease-in-out;
+    transform: scale(1.05);
 }
 
 
@@ -8097,6 +8296,66 @@ p.createCostumField_yInput {
 }
 
 @keyframes animatedBorder_jungleTheme {
+    0% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+    50% {
+        border-color: rgba(50, 100, 35, 0.856);
+    }
+    100% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+}
+
+@keyframes animatedBorder_magentaTheme {
+    0% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+    50% {
+        border-color: rgba(50, 100, 35, 0.856);
+    }
+    100% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+}
+
+@keyframes animatedBorder_yellowTheme {
+    0% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+    50% {
+        border-color: rgba(50, 100, 35, 0.856);
+    }
+    100% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+}
+
+@keyframes animatedBorder_brownTheme {
+    0% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+    50% {
+        border-color: rgba(50, 100, 35, 0.856);
+    }
+    100% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+}
+
+@keyframes animatedBorder_blueTheme {
+    0% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+    50% {
+        border-color: rgba(50, 100, 35, 0.856);
+    }
+    100% {
+        border-color: rgba(128, 36, 36, 0.110);
+    }
+}
+
+@keyframes animatedBorder_blackTheme {
     0% {
         border-color: rgba(128, 36, 36, 0.110);
     }

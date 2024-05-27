@@ -850,6 +850,9 @@ const SetBGColorForCurrentField = (xy) => {
                 bgcolor2 = "#f436364a";
                 break;
         };
+
+    } else {
+        Lobby.style.background = "unset";
     };
 };
 

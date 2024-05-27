@@ -561,6 +561,10 @@ let PatternGridWrapperForCostumPatterns = document.querySelector(".PatternGridWr
 let workbenchMiddle_main = document.querySelector(".workbenchMiddle_main");
 let workbenchMain_middle = document.querySelector(".workbenchMain_middle");
 let ComplexToeField = document.querySelector(".ComplexToe-Field");
+let online_stuff_scene = document.querySelector(".online_stuff_scene");
+let online_stuff_close_btn = document.querySelector(".online_stuff_close_btn");
+let online_stuff_btns_wrapper = document.querySelector(".online_stuff_btns_wrapper");
+let social_stuff_cards = document.querySelector(".social_stuff_card");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

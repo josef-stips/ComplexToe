@@ -62,7 +62,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 20 moves left.",
+                    requirementText: "Win with minimum 20 moves left.",
                     requirementCondition: 10,
                     requirementType: 1
                 },
@@ -79,7 +79,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 5 moves left.",
+                    requirementText: "Win with minimum 5 moves left.",
                     requirementCondition: 5,
                     requirementType: 1
                 },
@@ -96,7 +96,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 8 moves left.",
+                    requirementText: "Win with minimum 8 moves left.",
                     requirementCondition: 8,
                     requirementType: 1
                 },
@@ -113,7 +113,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 12 moves left.",
+                    requirementText: "Win with minimum 12 moves left.",
                     requirementCondition: 12,
                     requirementType: 1
                 },
@@ -130,7 +130,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 7 moves left.",
+                    requirementText: "Win with minimum 7 moves left.",
                     requirementCondition: 7,
                     requirementType: 1
                 },
@@ -147,7 +147,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 9 moves left.",
+                    requirementText: "Win with minimum 9 moves left.",
                     requirementCondition: 9,
                     requirementType: 1
                 },
@@ -164,7 +164,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 6 moves left.",
+                    requirementText: "Win with minimum 6 moves left.",
                     requirementCondition: 6,
                     requirementType: 1
                 },
@@ -181,7 +181,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 11 moves left.",
+                    requirementText: "Win with minimum 11 moves left.",
                     requirementCondition: 11,
                     requirementType: 1
                 },
@@ -198,7 +198,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 4 moves left.",
+                    requirementText: "Win with minimum 4 moves left.",
                     requirementCondition: 4,
                     requirementType: 1
                 },
@@ -215,7 +215,7 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with 3 moves left.",
+                    requirementText: "Win with minimum 3 moves left.",
                     requirementCondition: 3,
                     requirementType: 1
                 },

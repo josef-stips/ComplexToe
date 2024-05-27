@@ -982,7 +982,7 @@ Allbtns.forEach((btn) => {
             playBtn_Audio();
 
             // create level or play offline on same computer
-            (btn.classList.contains("create")) ? CreateLevelScene_CheckIn(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
+            (btn.classList.contains("create")) ? social_scene.init(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
         });
     };
 });
@@ -1026,29 +1026,29 @@ fieldsArea_back_btn.addEventListener('click', () => {
 let NewCreativeLevel;
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
-    if (localStorage.getItem("UserName")) {
-        curr_mode = GameMode[4].opponent;
+    // if (localStorage.getItem("UserName")) {
+    //     curr_mode = GameMode[4].opponent;
 
-        // pause music in create level mode
-        PauseMusic();
+    //     // pause music in create level mode
+    //     PauseMusic();
 
-        // User entered create level mode
-        let NewField = new NewLevel();
-        NewCreativeLevel = NewField;
-        NewCreativeLevel.Init();
+    //     // User entered create level mode
+    //     let NewField = new NewLevel();
+    //     NewCreativeLevel = NewField;
+    //     NewCreativeLevel.Init();
 
-        InitCreateLevelScene();
+    //     InitCreateLevelScene();
+    // };
 
-        // bug fix if user was in advanced mode:
-        goToAdvancedFields.style.display = 'none';
-        goToAdvancedFields.classList = "fa-solid fa-caret-down";
-        secondTierModes.style.marginBottom = "0";
-        isInAdvancedGameModes = false;
-        bossModeIsActive = false;
+    // bug fix if user was in advanced mode:
+    goToAdvancedFields.style.display = 'none';
+    goToAdvancedFields.classList = "fa-solid fa-caret-down";
+    secondTierModes.style.marginBottom = "0";
+    isInAdvancedGameModes = false;
+    bossModeIsActive = false;
 
-        // other thing
-        ChooseFieldDisplay.style.opacity = "0";
-    };
+    // other thing
+    ChooseFieldDisplay.style.opacity = "0";
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
@@ -1940,4 +1940,26 @@ agree_ToS_btn.addEventListener("click", () => {
     localStorage.setItem("agreed_on_ToS", "true");
     AGB_PopUp.style.display = "none";
     DarkLayer.style.display = "none";
+});
+
+// animatied lobby background
+class animated_lobby_background {
+    constructor() {};
+
+    init() {
+        let scroll_img_wrapper = document.querySelector(".imgBG_wrapper");
+        let imgBG_innerScroller = document.querySelector(".imgBG_innerScroller");
+        let imgs = [...scroll_img_wrapper.children];
+
+        imgs[0].addEventListener("animationend", () => {
+            imgBG_innerScroller.appendChild(imgs[0]);
+        });
+    };
+};
+
+let lobby_background = new animated_lobby_background();
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    lobby_background.init();
 });
