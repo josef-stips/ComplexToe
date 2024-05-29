@@ -210,3 +210,17 @@ function removeInvisibleChars(str) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
+
+const DisplayPlayerIcon_at_el = (userInfoIcon, playerInfoClass, playerInfoColor, player_icon) => {
+
+    if (playerInfoClass == "empty") { // user has standard skin
+        userInfoIcon.classList = "userInfo-Icon userInfoEditable";
+        userInfoIcon.textContent = player_icon;
+        userInfoIcon.style.color = playerInfoColor;
+
+    } else { // user has advanced skin
+        userInfoIcon.classList = "userInfo-Icon userInfoEditable " + playerInfoClass;
+        userInfoIcon.textContent = null;
+        userInfoIcon.style.color = "var(--font-color)";
+    };
+};

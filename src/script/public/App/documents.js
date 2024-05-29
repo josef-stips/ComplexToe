@@ -564,7 +564,26 @@ let ComplexToeField = document.querySelector(".ComplexToe-Field");
 let online_stuff_scene = document.querySelector(".online_stuff_scene");
 let online_stuff_close_btn = document.querySelector(".online_stuff_close_btn");
 let online_stuff_btns_wrapper = document.querySelector(".online_stuff_btns_wrapper");
-let social_stuff_cards = document.querySelector(".social_stuff_card");
+let social_stuff_cards = document.querySelectorAll(".social_stuff_card");
+let clan_search_pop_up = document.querySelector(".clan_search_pop_up");
+let clan_search_header = document.querySelector(".clan_search_header");
+let clan_search_main = document.querySelector(".clan_search_main");
+let clan_search_closeBtn = document.querySelector(".clan_search_closeBtn");
+let clan_search_input = document.querySelector(".clan_search_input");
+let clan_search_title = document.querySelector(".clan_search_title");
+let clan_search_list = document.querySelector(".clan_search_list");
+let clan_search_btn = document.querySelector(".clan_search_btn");
+let clan_overview_pop_up = document.querySelector(".clan_overview_pop_up");
+let clan_pop_up_close_btn = document.querySelector(".clan_pop_up_close_btn");
+let clan_description_el = document.querySelector(".clan_description");
+let clan_level_el = document.querySelector(".clan_level");
+let clan_admin_name = document.querySelector(".clan_admin_name");
+let clan_member_list = document.querySelector(".clan_member_list");
+let clan_name_el = document.querySelector(".clan_name");
+let clan_members_title = document.querySelector(".clan_members_title");
+let leave_clan_btn = document.querySelector(".leave_clan_btn");
+let join_clan_btn = document.querySelector(".join_clan_btn");
+let clan_id_el = document.querySelector(".clan_id");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

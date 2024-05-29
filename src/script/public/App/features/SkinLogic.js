@@ -927,7 +927,7 @@ class themes {
                 themeElementChild.style.borderBottom = "5px solid royalblue";
             };
 
-            console.log(id, theme, themeUnlocked, themeInUse, this.themesList);
+            // console.log(id, theme, themeUnlocked, themeInUse, this.themesList);
         });
     };
 

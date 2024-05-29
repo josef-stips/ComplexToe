@@ -93,6 +93,7 @@
     <script defer src="App/features//AdvantureMap_scripts/stars.js"></script>
     <script defer src="App/features/AdvantureMap_scripts/map_popUps.js"></script>
     <script defer src="App/social_stuff/social_scene.js"></script>
+    <script defer src="App/social_stuff/clan.js"></script>
 
 </head>
 
@@ -167,6 +168,51 @@
         </div>
 
         <div class="lobby-main-sec">
+
+            <!-- search for clans pop up -->
+            <div class="clan_search_pop_up">
+                <div class="clan_search_header">
+
+                    <i class="fa-solid fa-arrow-left clan_search_closeBtn"></i>
+                </div>
+
+                <div class="clan_search_main">
+
+                    <div class="clan_search_main_inner">
+
+                        <!-- first item -->
+                        <img src="assets/game/flying-flag.svg" alt="">
+
+                        <!-- center item -->
+                        <div class="default_search_box">
+                            <div class="default_sb_header">
+                                <input placeholder="search for clan name or id..." type="text" class="default_sb_input clan_search_input">
+                                <i class="fa-solid fa-magnifying-glass default_sb_search_btn clan_search_btn"></i>
+                            </div>
+
+                            <div class="default_sb_main">
+
+                                <div class="default_sb_main_inner">
+                                    <h2 class="clan_search_title"></h2>
+
+                                    <ul class="default_sb_list clan_search_list">
+
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                            <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+                            <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+                        </div>
+
+                        <!-- last item -->
+                        <img src="assets/game/flying-flag.svg" alt="" style="transform: scaleX(-1);">
+
+                    </div>
+                </div>
+            </div>
+
             <!-- online and social stuff scene -->
             <div class="online_stuff_scene">
                 <div class="online_stuff_header">
@@ -6440,7 +6486,7 @@
 
                         <div class="theme-icon" theme-idx="1">
                             <div class="theme-icon-circle"></div>
-                            <div class="theme-icon-text">jungle</div>
+                            <div class="theme-icon-text">green</div>
                         </div>
 
                         <div class="theme-icon" theme-idx="2">
@@ -6465,7 +6511,7 @@
 
                         <div class="theme-icon" theme-idx="6">
                             <div class="theme-icon-circle"></div>
-                            <div class="theme-icon-text">black</div>
+                            <div class="theme-icon-text">universe</div>
                         </div>
                     </div>
                 </div>
@@ -7544,6 +7590,83 @@
 
         <div class="AGB_PopUP_footer">
             <div class="agree_ToS_btn CreateLevelSceneButton">I Agree</div>
+        </div>
+    </div>
+
+    <!-- clan overview pop up -->
+    <div class="clan_overview_pop_up">
+        <div class="clan_pop_up_header">
+
+            <div class="clan_pop_up_header_inner_wrapper_1">
+                <i class="fa-solid fa-x clan_pop_up_close_btn"></i>
+            </div>
+
+            <div class="clan_pop_up_header_inner_wrapper_2">
+
+                <div class="clan_pop_up_header_section_1">
+
+                    <div class="clan_pop_up_section_1_inner_wrapper_1">
+                        <img src="assets/game/caesar.svg">
+                        <h1 class="clan_name">Clan name</h1>
+                    </div>
+
+                    <div class="clan_pop_up_section_1_inner_wrapper_2">
+                        <p class="clan_description">clan describtion</p>
+                    </div>
+
+                </div>
+
+                <div class="clan_pop_up_header_section_2">
+                    <ul>
+                        <li>
+                            level
+                            <p class="clan_level">39</p>
+                        </li>
+
+                        <li>
+                            |
+                        </li>
+
+                        <li>
+                            Leader
+                            <p class="clan_admin_name">Josef</p>
+                        </li>
+
+                        <li>
+                            |
+                        </li>
+
+                        <li>
+                            ID
+                            <p class="clan_id">n</p>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li class="join_clan_btn default_btn" style="color: green;">
+                            <p>join</p>
+                            <i class="fa-solid fa-sign-in"></i>
+                        </li>
+
+                        <li class="leave_clan_btn default_btn" style="color: red;">
+                            <p>leave</p>
+                            <i class="fa-solid fa-sign-out"></i>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="clan_pop_up_main">
+            <div class="clan_pop_up_list_wrapper">
+                <h2 class="clan_members_title">Members</h2>
+
+                <ul class="clan_member_list">
+
+                </ul>
+
+            </div>
         </div>
     </div>
 

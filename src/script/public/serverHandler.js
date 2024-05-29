@@ -47,7 +47,8 @@ socket.on('connect', () => {
         OfficialWinPatternsPopUp.style.display == "flex" ||
         AGB_PopUp.style.display == "flex" ||
         settingsWindow.style.display == "block" ||
-        mapLevelOverview.style.display == "flex") {
+        mapLevelOverview.style.display == "flex" ||
+        clan_overview_pop_up.style.display == "flex") {
         // Your code to execute when any of the elements' style.display is "flex"
 
         DarkLayer.style.display = "block";

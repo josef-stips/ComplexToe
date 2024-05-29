@@ -301,6 +301,7 @@ socket.on('availible-treasure', () => {
 
 // message from server that the treasure can't be opened now
 socket.on('availible-treasure-NOT', (timestamp) => {
+
     // Calculate time difference for the html treasure timer
     CalculateTimeDifference(timestamp);
 
