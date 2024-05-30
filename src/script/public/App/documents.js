@@ -584,6 +584,20 @@ let clan_members_title = document.querySelector(".clan_members_title");
 let leave_clan_btn = document.querySelector(".leave_clan_btn");
 let join_clan_btn = document.querySelector(".join_clan_btn");
 let clan_id_el = document.querySelector(".clan_id");
+let create_clan_pop_up = document.querySelector(".create_clan_pop_up");
+let create_clan_close_btn = document.querySelector(".create_clan_close_btn");
+let create_clan_form = document.querySelector(".create_clan_form");
+let create_clan_name = document.querySelector("#create_clan_name");
+let create_clan_logo = document.querySelector("#create_clan_logo");
+let create_clan_description = document.querySelector("#create_clan_description");
+let create_clan_caret_right = document.querySelector(".create_clan_caret_right");
+let create_clan_caret_left = document.querySelector(".create_clan_caret_left")
+let create_clan_description_pop_up_btn = document.querySelector(".create_clan_description_pop_up_btn");
+let clan_description_close_btn = document.querySelector(".clan_description_close_btn");
+let clan_description_pop_up = document.querySelector(".clan_description_pop_up");
+let clan_description_text = document.querySelector(".clan_description_text");
+let create_clan_inputs = document.querySelectorAll(".create_clan_form input");
+let create_clan_btn = document.querySelector(".create_clan_btn");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

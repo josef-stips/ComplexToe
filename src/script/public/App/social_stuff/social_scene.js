@@ -402,11 +402,143 @@ class clan_handler {
         console.log(err);
 
         clan_overview_pop_up.style.display = "none";
-        DarkLayer.style.display = "none";
         AlertText.textContent = "Something went wrong!";
         DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    };
+
+    create_clan_handler() {
+
+    };
+};
+
+class create_clan_handler {
+    constructor() {
+        this.current_logo_index = 0;
+
+        this.clan_logos = {
+            0: "caesar.svg",
+            1: "book-cover.svg",
+            2: "crenulated-shield.svg",
+            3: "wolf-head.svg",
+            4: "pirate-flag.svg",
+            5: "burning-skull.svg",
+            6: "fire-axe.svg",
+            7: "crossed-axes.svg",
+            8: "horned-helm.svg",
+            9: "dwarf-helmet.svg",
+            10: "bandit.svg",
+            11: "frog-prince.svg",
+            12: "battle-gear.svg",
+            13: "crowned-skull.svg",
+            14: "visored-helm.svg",
+            15: "mustache.svg",
+            16: "overlord-helm.svg",
+            17: "duck.svg",
+            18: "horse-head.svg",
+            19: "rooster.svg",
+            20: "sheep.svg",
+            21: "goat.svg",
+            22: "donkey.svg",
+            23: "cow.svg",
+            24: "rabbit.svg",
+            25: "condor-emblem.svg",
+            26: "chicken-oven.svg",
+        };
+
+        this.name = "";
+        this.logo = "";
+        this.description = "";
+
+        this.allowed_keys = [
+            "Backspace",
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Delete",
+            "End",
+            "Home"
+        ];
+    };
+
+    init() {
+        this.events();
+    };
+
+    events() {
+        create_clan_close_btn.addEventListener("click", () => {
+            create_clan_pop_up.style.display = "none";
+            DarkLayer.style.display = "none";
+        });
+
+        create_clan_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+        });
+
+        create_clan_description_pop_up_btn.addEventListener("click", () => {
+            DisplayPopUp_PopAnimation(clan_description_pop_up, "flex", true);
+            clan_description_text.textContent = create_clan_description.value;
+        });
+
+        clan_description_close_btn.addEventListener("click", () => {
+            clan_description_pop_up.style.display = "none";
+        });
+
+        create_clan_inputs.forEach((input, i) => {
+            let max_text_length = input.getAttribute("input_for") == "name" ? 25 : 200;
+
+            input.addEventListener("keydown", (e) => {
+                let len = input.value.length;
+
+                if (len > max_text_length && !this.allowed_keys.includes(e.key)) {
+                    e.preventDefault();
+                    return;
+                };
+            });
+        });
+
+        create_clan_caret_left.addEventListener("click", () => {
+            this.current_logo_index > 0 && this.current_logo_index--;
+            this.update_logo();
+        });
+
+        create_clan_caret_right.addEventListener("click", () => {
+            this.current_logo_index < Object.keys(this.clan_logos).length - 1 && this.current_logo_index++;
+            this.update_logo();
+        });
+
+        create_clan_btn.addEventListener("click", () => {
+            try {
+                socket.emit("create_clan",
+                    this.name,
+                    this.logo,
+                    this.description,
+                    localStorage.getItem("PlayerID"), data => {
+
+                        if (!data) {
+                            AlertText.textContent = "Something went wrong!";
+                            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                            return;
+                        };
+
+                        // open clan pop up
+                        social_scene.clan_handler.item_click(data);
+                    });
+
+            } catch (error) {
+                AlertText.textContent = "Something went wrong!";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+            };
+        });
+    };
+
+    update_logo() {
+        create_clan_logo.src = `assets/game/${this.clan_logos[this.current_logo_index]}`;
     };
 };
 
 let social_scene = new social_scene_class();
 social_scene.events();
+
+let CreateClanHandler = new create_clan_handler();
+CreateClanHandler.init();

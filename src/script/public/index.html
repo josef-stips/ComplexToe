@@ -7670,6 +7670,65 @@
         </div>
     </div>
 
+    <!-- create clan pop up -->
+    <div class="create_clan_pop_up">
+        <div class="create_clan_header">
+            <i class="fa-solid fa-x create_clan_close_btn"></i>
+        </div>
+
+        <div class="create_clan_main">
+            <form class="create_clan_form">
+
+                <div>
+                    <label for="create_clan_name">clan name</label>
+                    <input type="text" id="create_clan_name" input_for="name">
+                </div>
+
+                <div>
+                    <label for="create_clan_logo">clan logo</label>
+
+                    <div class="create_clan_logo_wrapper">
+                        <i class="fa-solid fa-caret-left create_clan_caret_left caret_prototype"></i>
+                        <img src="assets/game/caesar.svg" id="create_clan_logo">
+                        <i class="fa-solid fa-caret-right create_clan_caret_right caret_prototype"></i>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="create_clan_description" class="clan_description_label">
+                        <p>clan description</p>
+                        <i class="fa-solid fa-question-circle create_clan_description_pop_up_btn caret_prototype"></i>
+                    </label>
+                    <input type="text" id="create_clan_description" input_for="description">
+                </div>
+
+            </form>
+
+            <div class="create_clan_btn caret_prototype">Create</div>
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left:0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <!-- large description pop up -->
+    <div class="clan_description_pop_up">
+        <div class="clan_description_header">
+            <i class="fa-solid fa-x clan_description_close_btn caret_prototype"></i>
+        </div>
+
+        <div class="clan_description_main">
+            <h2>clan description</h2>
+
+            <textarea spellcheck="false" class="clan_description_text">
+                
+            </textarea>
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left:0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;display:none;" width="450" height="450">
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;right: 0;z-index: 0;transform:rotate(270deg);display:none;" width="450" height="450">
 

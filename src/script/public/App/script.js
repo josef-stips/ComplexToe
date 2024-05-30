@@ -1846,8 +1846,7 @@ UserQuote.addEventListener('mousedown', function(event) {
 // lobby btns
 
 lobbyBtn2.addEventListener("click", () => {
-    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-    AlertText.textContent = "This feature is availible soon";
+    DisplayPopUp_PopAnimation(create_clan_pop_up, "flex", true);
     playBtn_Audio_2();
 });
 
