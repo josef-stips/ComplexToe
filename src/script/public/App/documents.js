@@ -598,6 +598,22 @@ let clan_description_pop_up = document.querySelector(".clan_description_pop_up")
 let clan_description_text = document.querySelector(".clan_description_text");
 let create_clan_inputs = document.querySelectorAll(".create_clan_form input");
 let create_clan_btn = document.querySelector(".create_clan_btn");
+let clan_description_detail_btn = document.querySelector(".clan_description_detail_btn");
+let create_clan_reload_btn = document.querySelector(".create_clan_reload_btn");
+let multiple_use_scene = document.querySelector(".multiple_use_scene");
+let use_scene_back_btn = document.querySelector(".use_scene_back_btn");
+let clan_chat_pop_up = document.querySelector(".clan_chat_pop_up");
+let clan_chat_back_btn = document.querySelector(".clan_chat_back_btn");
+let clan_chat_playground_wrapper = document.querySelector(".clan_chat_playground");
+let lobbyMainSec = document.querySelector(".lobby-main-sec");
+let clan_chat_form = document.querySelector(".clan_chat_form");
+let clan_chat_message_input = document.querySelector(".clan_chat_message_input");
+let clan_chat_send_btn = document.querySelector(".clan_chat_send_btn");
+let clan_chat_header_clan_logo = document.querySelector(".clan_chat_header_clan_logo");
+let clan_chat_header_clan_name = document.querySelector(".clan_chat_header_clan_name");
+let clan_chat_playground = document.querySelector(".clan_chat_playground_ground");
+let clan_playground_character = document.querySelector(".clan_playground_character");
+let clan_playground_viewport = document.querySelector(".clan_playground_viewport")
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

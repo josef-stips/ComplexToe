@@ -116,7 +116,9 @@ function treasureIsAvailible() {
     localStorage.setItem('treasureIsAvailible', true);
 
     // play animation
-    treasureIcon.style.animation = "treasure_availible 1s infinite";
+    setTimeout(() => {
+        treasureIcon.style.animation = "treasure_availible 1s infinite";
+    }, 2000);
     treasureBoxTimerPopUp.style.display = "none";
     DailyChallenges_PopUp.style.display = "none";
     DarkLayer.style.display = 'none';

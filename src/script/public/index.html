@@ -169,6 +169,120 @@
 
         <div class="lobby-main-sec">
 
+            <!-- clan chat + playground scene -->
+            <div class="clan_chat_pop_up">
+                <div class="clan_chat_leftWrapper">
+
+                    <div class="clan_chat_header">
+                        <img src="assets/game/caesar.svg" class="clan_chat_header_clan_logo">
+                        <p class="clan_chat_header_clan_name">clan name</p>
+                    </div>
+
+                    <div class="clan_chat_chat">
+
+                        <div class="clan_chat_message" from="other">
+                            <div class="clan_chat_message_player_name">player name</div>
+                            <div class="clan_chat_message_player_role">player role</div>
+
+                            <div class="clan_chat_message_player_message">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi laudantium, incidunt accusantium eum dolorem delectus numquam tempora modi, magnam ea illum deserunt ab. Rem dolorem quod aspernatur neque eaque officia?
+                            </div>
+
+                            <div class="clan_message_date">
+                                May 26, 2008, 3:06 PM
+                            </div>
+                        </div>
+
+                        <div class="clan_chat_message" from="self">
+                            <div class="clan_chat_message_player_name">player name</div>
+                            <div class="clan_chat_message_player_role">player role</div>
+
+                            <div class="clan_chat_message_player_message">
+                                Lorem ipsum
+                            </div>
+
+                            <div class="clan_message_date">
+                                May 26, 2008, 3:06 PM
+                            </div>
+                        </div>
+
+                        <div class="clan_chat_message" from="other">
+                            <div class="clan_chat_message_player_name">player name</div>
+                            <div class="clan_chat_message_player_role">player role</div>
+
+                            <div class="clan_chat_message_player_message">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi laudantium, incidunt accusantium eum dolorem delectus numquam tempora modi, magnam ea illum deserunt ab. Rem dolorem quod aspernatur neque eaque officia?
+                            </div>
+
+                            <div class="clan_message_date">
+                                May 26, 2008, 3:06 PM
+                            </div>
+                        </div>
+
+                        <div class="clan_chat_message" from="self">
+                            <div class="clan_chat_message_player_name">player name</div>
+                            <div class="clan_chat_message_player_role">player role</div>
+
+                            <div class="clan_chat_message_player_message">
+                                Lorem ipsum
+                            </div>
+
+                            <div class="clan_message_date">
+                                May 26, 2008, 3:06 PM
+                            </div>
+                        </div>
+
+                        <div class="clan_chat_message" from="other">
+                            <div class="clan_chat_message_player_name">player name</div>
+                            <div class="clan_chat_message_player_role">player role</div>
+
+                            <div class="clan_chat_message_player_message">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi laudantium, incidunt accusantium eum dolorem delectus numquam tempora modi, magnam ea illum deserunt ab. Rem dolorem quod aspernatur neque eaque officia?
+                            </div>
+
+                            <div class="clan_message_date">
+                                May 26, 2008, 3:06 PM
+                            </div>
+                        </div>
+
+                        <div class="clan_chat_message" from="self">
+                            <div class="clan_chat_message_player_name">player name</div>
+                            <div class="clan_chat_message_player_role">player role</div>
+
+                            <div class="clan_chat_message_player_message">
+                                Lorem ipsum
+                            </div>
+
+                            <div class="clan_message_date">
+                                May 26, 2008, 3:06 PM
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="clan_chat_footer">
+                        <form class="clan_chat_form">
+                            <input type="text" class="clan_chat_message_input">
+                            <button class="fa-solid fa-arrow-right clan_chat_send_btn default_btn"></button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="clan_chat_rightWrapper">
+
+                    <div class="clan_chat_playground">
+                        <i style="z-index: 1;margin:1% 0 0 1%;" class="fa-solid fa-arrow-left default_btn clan_chat_back_btn"></i>
+
+                        <div class="clan_playground_viewport">
+                            <div class="clan_chat_playground_ground">
+                                <p class="clan_playground_character">X</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- search for clans pop up -->
             <div class="clan_search_pop_up">
                 <div class="clan_search_header">
@@ -260,7 +374,7 @@
                         <img draggable="false" src="assets/game/tied-scroll.svg" height="32px" width="32px">
                     </div>
                     <div class="homeLobby-iconBtn lobbyBtn2">
-                        <img draggable="false" src="assets/game/sword-in-stone.svg" height="32px" width="32px">
+                        <img draggable="false" src="assets/game/crenulated-shield.svg" height="32px" width="32px">
                     </div>
                 </div>
 
@@ -7612,6 +7726,7 @@
 
                     <div class="clan_pop_up_section_1_inner_wrapper_2">
                         <p class="clan_description">clan describtion</p>
+                        <i class="fa-solid fa-question-circle default_btn clan_description_detail_btn"></i>
                     </div>
 
                 </div>
@@ -7677,6 +7792,8 @@
         </div>
 
         <div class="create_clan_main">
+            <i class="fa-solid fa-rotate-right create_clan_reload_btn default_btn"></i>
+
             <form class="create_clan_form">
 
                 <div>
@@ -7720,13 +7837,27 @@
         <div class="clan_description_main">
             <h2>clan description</h2>
 
-            <textarea spellcheck="false" class="clan_description_text">
+            <textarea readonly spellcheck="false" class="clan_description_text">
                 
             </textarea>
         </div>
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left:0;" width="200" height="200">
         <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <div class="multiple_use_scene">
+        <div class="use_scene_header">
+            <i class="fa-solid fa-arrow-left default_btn use_scene_back_btn"></i>
+        </div>
+
+        <div class="use_scene_main">
+
+            <div use_for="clan">
+
+            </div>
+
+        </div>
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;display:none;" width="450" height="450">

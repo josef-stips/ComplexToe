@@ -164,13 +164,27 @@ class clan_handler {
         colors[0] = newClan.level_color[data["id"]][0];
         colors[1] = newClan.level_color[data["id"]][1];
 
+        document.documentElement.style.setProperty(`--gradient-first-color-${data["id"]}`, colors[0]);
+        document.documentElement.style.setProperty(`--gradient-second-color-${data["id"]}`, colors[1]);
+
         list_item.classList.add("default_sb_item");
         list_item.setAttribute("result_clan_id", data["id"]);
-
-        document.documentElement.style.setProperty("--gradient-first-color", colors[0]);
-        document.documentElement.style.setProperty("--gradient-second-color", colors[1]);
         item_text.style.webkitBackgroundClip = "text";
         item_text.style.backgroundClip = "text";
+
+        item_text.style.setProperty(`--first-color`, `var(--gradient-first-color-${data["id"]})`);
+        item_text.style.setProperty(`--second-color`, `var(--gradient-second-color-${data["id"]})`);
+
+        list_item.addEventListener("mouseover", () => {
+            item_text.style.setProperty(`--first-color`, `var(--gradient-second-color-${data["id"]})`);
+            item_text.style.setProperty(`--second-color`, `var(--gradient-first-color-${data["id"]})`);
+        });
+
+        list_item.addEventListener("mouseout", () => {
+            item_text.style.setProperty(`--first-color`, `var(--gradient-first-color-${data["id"]})`);
+            item_text.style.setProperty(`--second-color`, `var(--gradient-second-color-${data["id"]})`);
+        });
+
         item_img.style.setProperty('--clan-border-color', `linear-gradient(45deg, ${colors[0]}, ${colors[1]})`);
 
         item_img.src = `assets/game/${data["logo"]}`;
@@ -198,6 +212,9 @@ class clan_handler {
             };
 
             DisplayPopUp_PopAnimation(clan_overview_pop_up, "flex", true);
+
+            clan_name_el.style.setProperty("--gradient-first-color", `var(--gradient-first-color-${data["id"]})`);
+            clan_name_el.style.setProperty("--gradient-second-color", `var(--gradient-second-color-${data["id"]})`);
 
             clan_name_el.textContent = data["name"];
             clan_description_el.textContent = data["description"];
@@ -321,6 +338,9 @@ class clan_handler {
         socket.emit("GetDataByID", data["admin"]["id"], cb => {
 
             // set clan leader name
+            clan_admin_name.style.setProperty("--first-color", `var(--gradient-first-color-${data["id"]})`);
+            clan_admin_name.style.setProperty("--second-color", `var(--gradient-second-color-${data["id"]})`);
+
             clan_admin_name.setAttribute("clan_admin_id", data["admin"]["id"]);
             clan_admin_name.textContent = cb["player_name"];
 
@@ -465,6 +485,13 @@ class create_clan_handler {
         this.events();
     };
 
+    start_pop_up() {
+        create_clan_name.value = null;
+        create_clan_description.value = null;
+        create_clan_logo.src = "assets/game/caesar.svg";
+        CreateClanHandler.current_logo_index = 0;
+    };
+
     events() {
         create_clan_close_btn.addEventListener("click", () => {
             create_clan_pop_up.style.display = "none";
@@ -508,32 +535,53 @@ class create_clan_handler {
         });
 
         create_clan_btn.addEventListener("click", () => {
-            try {
-                socket.emit("create_clan",
-                    this.name,
-                    this.logo,
-                    this.description,
-                    localStorage.getItem("PlayerID"), data => {
-
-                        if (!data) {
-                            AlertText.textContent = "Something went wrong!";
-                            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-                            return;
-                        };
-
-                        // open clan pop up
-                        social_scene.clan_handler.item_click(data);
-                    });
-
-            } catch (error) {
-                AlertText.textContent = "Something went wrong!";
-                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+            if (create_clan_name.value.length > 0 &&
+                create_clan_description.value.length > 0) {
+                this.create_clan();
             };
+        });
+
+        clan_description_detail_btn.addEventListener("click", () => {
+            DisplayPopUp_PopAnimation(clan_description_pop_up, "flex", true);
+            clan_description_text.textContent = clan_description_el.textContent;
+        });
+
+        create_clan_reload_btn.addEventListener("click", () => {
+            this.start_pop_up();
         });
     };
 
     update_logo() {
         create_clan_logo.src = `assets/game/${this.clan_logos[this.current_logo_index]}`;
+    };
+
+    create_clan() {
+        this.name = create_clan_name.value;
+        this.description = create_clan_description.value;
+        this.logo = this.clan_logos[this.current_logo_index];
+
+        try {
+            socket.emit("create_clan",
+                this.name,
+                this.logo,
+                this.description,
+                parseInt(localStorage.getItem("PlayerID")), data => {
+
+                    if (!data) {
+                        AlertText.textContent = "Something went wrong!";
+                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                        return;
+                    };
+
+                    // open clan pop up and close create clan pop up
+                    create_clan_pop_up.style.display = "none";
+                    social_scene.clan_handler.item_click(data);
+                });
+
+        } catch (error) {
+            AlertText.textContent = "Something went wrong!";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        };
     };
 };
 

@@ -92,12 +92,14 @@ class clan {
         };
 
         this.current_clan_data = {};
+        this.current_clan_all_data = null;
 
         this.current_selected_clan_id = null;
     };
 
     init() {
         this.storage_data();
+        this.get_clan_data();
     };
 
     storage_data() {
@@ -115,7 +117,160 @@ class clan {
     update_data() {
 
     };
+
+    get_clan_data() {
+        socket.emit("get_clan_data", this.current_clan_data["clan_id"], cb => {
+
+            console.log(cb);
+            if (cb) {
+                this.current_clan_all_data = cb;
+            };
+        });
+    };
+};
+
+class clan_chat_pop_up_class {
+    constructor() {
+
+    };
+
+    init() {
+        this.events();
+    };
+
+    open() {
+        DarkLayerAnimation(clan_chat_pop_up, gameModeCards_Div).then(() => {
+            sceneMode.full();
+            clanPlaygroundHandler.open();
+            clanPlaygroundHandler.generate_field();
+        });
+    };
+
+    events() {
+        clan_chat_back_btn.addEventListener("click", () => {
+            DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
+                sceneMode.default();
+            });
+        });
+
+        clan_chat_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+        });
+    };
+};
+
+class clan_playground_handler {
+    constructor() {
+        this.playground = clan_chat_playground;
+        this.self_character = clan_playground_character;
+        this.viewport = clan_playground_viewport;
+
+        this.self_character_coords = { x: 200, y: 200 };
+        this.self_character_size = 30;
+        this.playground_height = this.playground.clientHeight;
+        this.playground_width = this.playground.clientWidth;
+        this.clan_level = null;
+    };
+
+    init() {
+        this.init_character();
+        this.character_control();
+        this.update_position();
+    };
+
+    open() {
+        this.playground_height = this.playground.clientHeight;
+        this.playground_width = this.playground.clientWidth;
+    };
+
+    generate_field() {
+        // this.clan_level = newClan.current_clan_all_data["level"];
+        this.clan_level = 40;
+
+        document.querySelector(".playground_field_wrapper") && document.querySelector(".playground_field_wrapper").remove();
+
+        let field_wrapper = document.createElement("div");
+        let field = document.createElement("div");
+        let field_title = document.createElement("h1");
+
+        field_wrapper.classList.add("playground_field_wrapper");
+        field.classList.add("playground_field");
+        field_title.classList.add("playground_field_title");
+
+        field_title.textContent = `${this.clan_level}x${this.clan_level} clan field`;
+
+        field_wrapper.appendChild(field_title);
+        field_wrapper.appendChild(field);
+        this.playground.appendChild(field_wrapper);
+
+        generateField_preview(this.clan_level, this.clan_level, field, null);
+    };
+
+    init_character() {
+        DisplayPlayerIcon_at_el(this.self_character,
+            localStorage.getItem("userInfoClass"),
+            localStorage.getItem("userInfoColor"),
+            localStorage.getItem("UserIcon")
+        );
+        this.self_character.classList.add("clan_playground_character");
+    };
+
+    character_control() {
+        this.playground.addEventListener("click", (e) => {
+            this.playground.focus();
+        });
+
+        window.addEventListener("keydown", (e) => {
+            switch (e.key) {
+                case "ArrowUp":
+                    if (clanPlaygroundHandler.self_character_coords["y"] > 0) {
+                        clanPlaygroundHandler.self_character_coords.y = clanPlaygroundHandler.self_character_coords.y - 5;
+                    };
+                    break;
+
+                case "ArrowDown":
+                    if (clanPlaygroundHandler.self_character_coords["y"] < this.playground_height - this.self_character_size * 4) {
+                        clanPlaygroundHandler.self_character_coords.y = clanPlaygroundHandler.self_character_coords.y + 5;
+                    };
+                    break;
+
+                case "ArrowLeft":
+                    if (clanPlaygroundHandler.self_character_coords["x"] > 0) {
+                        clanPlaygroundHandler.self_character_coords.x = clanPlaygroundHandler.self_character_coords.x - 5;
+                    };
+                    break;
+
+                case "ArrowRight":
+                    if (clanPlaygroundHandler.self_character_coords["x"] < this.playground_width - this.self_character_size) {
+                        clanPlaygroundHandler.self_character_coords.x = clanPlaygroundHandler.self_character_coords.x + 5;
+                    };
+                    break;
+            };
+
+            clanPlaygroundHandler.update_position();
+        });
+    };
+
+    update_position() {
+        this.self_character.style.left = `${this.self_character_coords.x}px`;
+        this.self_character.style.top = `${this.self_character_coords.y}px`;
+
+        // Kamera zentrieren
+        const viewportWidth = this.viewport.clientWidth;
+        const viewportHeight = this.viewport.clientHeight;
+        const offsetX = this.self_character_coords.x - viewportWidth / 2;
+        const offsetY = this.self_character_coords.y - viewportHeight / 2;
+
+        // this.playground.style.left = `${-offsetX}px`;
+        // this.playground.style.top = `${-offsetY}px`;
+    };
 };
 
 let newClan = new clan();
 newClan.init();
+
+let clan_chat = new clan_chat_pop_up_class();
+clan_chat.init();
+
+let clanPlaygroundHandler = new clan_playground_handler();
+clanPlaygroundHandler.init();

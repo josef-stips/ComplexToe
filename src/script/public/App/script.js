@@ -1,24 +1,21 @@
 // important data
 let GameMode = {
     1: {
-        "opponent": "KI", // This KI Mode doesn't exists as a mode anymore but as an info for advanture mode
+        "opponent": "KI",
         "icon": "fa-solid fa-robot",
-        "description": "Create a level" // the "create level mode" was originally a Ki mode but the advanture map replaced it
+        "description": "Online stuff" // for DOM card. used to be the ki card.
     },
     2: {
-        "opponent": "OnlineFriend", // Guy you send a link to so you can play with him together
+        "opponent": "OnlineFriend", // official game fields online and offline
         "icon": "fa-solid fa-user-group",
-        "description": "Play online"
+        "description": "Official fields"
     },
     3: {
-        "opponent": "ComputerFriend", // Guy on same computer
+        "opponent": "ComputerFriend", // Against KI (non advanture mode ki mode)
         "icon": "fa-solid fa-computer",
-        "description": "Play offline"
-    },
-    4: {
         "opponent": "CreateLevel",
         "icon": "",
-        "description": "Create Level",
+        "description": "Arena",
     }
 };
 
@@ -1846,8 +1843,12 @@ UserQuote.addEventListener('mousedown', function(event) {
 // lobby btns
 
 lobbyBtn2.addEventListener("click", () => {
-    DisplayPopUp_PopAnimation(create_clan_pop_up, "flex", true);
-    playBtn_Audio_2();
+    if (JSON.parse(localStorage.getItem("clan_member_data"))["is_in_clan"]) {
+        clan_chat.open();
+
+    } else {
+        use_scene.open("clan");
+    };
 });
 
 officialWinPatternsOpenBtn.forEach(btn => {
@@ -1962,3 +1963,45 @@ let lobby_background = new animated_lobby_background();
 document.addEventListener("DOMContentLoaded", function() {
     lobby_background.init();
 });
+
+class multiple_use_scenery {
+    constructor() {
+        this.use = null;
+    };
+
+    init() {
+        this.events();
+    };
+
+    open(use_for) {
+        this.use = use_for;
+        DisplayPopUp_PopAnimation(multiple_use_scene, "flex", false);
+    };
+
+    events() {
+        use_scene_back_btn.addEventListener("click", () => {
+            multiple_use_scene.style.display = "none";
+        });
+    };
+};
+
+let use_scene = new multiple_use_scenery();
+use_scene.init();
+
+class scene_mode {
+
+    default () {
+        lobbyMainSec.style.height = "80%";
+        lobbyMainSec.style.margin = "20px 0 0 0";
+        HeaderWrapper.style.margin = "0 0 2% 0";
+    };
+
+    full() {
+        lobbyMainSec.style.height = "100%";
+        lobbyMainSec.style.margin = "0 0 0 0";
+        HeaderWrapper.style.margin = "0 0 0 0";
+    };
+};
+
+let sceneMode = new scene_mode();
+sceneMode.default();

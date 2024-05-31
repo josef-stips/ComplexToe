@@ -608,11 +608,9 @@ function ini_LightDark_Mode() {
 // animation on lobby elements on start
 const LobbyInitAnimation = () => {
     // big main cards
-    setTimeout(() => {
-        gameModeCards[1].style.animation = "lobbyInit_mainCard 0.55s ease-out !important";
-        gameModeCards[0].style.animation = "lobbyInit_leftCard 0.55s ease-out !important";
-        gameModeCards[2].style.animation = "lobbyInit_rightCard 0.55s ease-out !important";
-    }, 1000);
+    gameModeCards[1].style.animation = "lobbyInit_mainCard 0.55s ease-out";
+    gameModeCards[0].style.animation = "lobbyInit_leftCard 0.55s ease-out";
+    gameModeCards[2].style.animation = "lobbyInit_rightCard 0.55s ease-out";
 
     treasureIcon2.style.animation = "opacity_fadeIn 1.2s ease-in-out";
     treasureIcon.style.animation = "opacity_fadeIn 1.2s ease-in-out";
@@ -621,14 +619,15 @@ const LobbyInitAnimation = () => {
     [...document.querySelectorAll(".homeLobby-iconBtn")].map(el => el.style.animation = "opacity_fadeIn 1.2s ease-in-out");
 
     setTimeout(() => {
-        // gameModeCards[1].style.animation = "none";
-        // gameModeCards[0].style.animation = "none";
-        // gameModeCards[2].style.animation = "none";
+        gameModeCards[1].style.animation = "none";
+        gameModeCards[0].style.animation = "none";
+        gameModeCards[2].style.animation = "none";
+        // console.log(getComputedStyle(treasureIcon).animation);
 
         treasureIcon2.style.animation = "none";
-        treasureIcon.style.animation = "none";
+        getComputedStyle(treasureIcon).animation == "1.2s ease-in-out 0s 1 normal none running opacity_fadeIn" && (treasureIcon.style.animation = "none");
         storeIcon.style.animation = "none";
         document.querySelector(".lobby-cards-header-left").style.animation = "none";
         [...document.querySelectorAll(".homeLobby-iconBtn")].map(el => el.style.animation = "none");
-    }, 2200);
+    }, 1200);
 };
