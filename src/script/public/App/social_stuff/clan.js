@@ -118,10 +118,14 @@ class clan {
 
     };
 
-    get_clan_data() {
-        socket.emit("get_clan_data", this.current_clan_data["clan_id"], cb => {
+    events() {
 
-            console.log(cb);
+    };
+
+    async get_clan_data() {
+        await socket.emit("get_clan_data", this.current_clan_data["clan_id"], cb => {
+
+            // console.log(cb);
             if (cb) {
                 this.current_clan_all_data = cb;
             };
@@ -139,10 +143,15 @@ class clan_chat_pop_up_class {
     };
 
     open() {
-        DarkLayerAnimation(clan_chat_pop_up, gameModeCards_Div).then(() => {
+        DarkLayerAnimation(clan_chat_pop_up, gameModeCards_Div).then(async() => {
             sceneMode.full();
             clanPlaygroundHandler.open();
-            clanPlaygroundHandler.generate_field();
+            await this.parse_data();
+
+            clan_chat_chat.scrollTo({
+                top: clan_chat_chat.scrollHeight,
+                behavior: 'smooth'
+            });
         });
     };
 
@@ -153,9 +162,125 @@ class clan_chat_pop_up_class {
             });
         });
 
-        clan_chat_form.addEventListener("submit", (e) => {
-            e.preventDefault();
+        clan_chat_message_input.addEventListener("keydown", (e) => {
+            let max_text_length = 200;
+            let text = clan_chat_message_input.value;
+
+            if (text.length > max_text_length && !CreateClanHandler.allowed_keys.includes(e.key)) {
+                e.preventDefault();
+                return;
+            };
         });
+
+        clan_chat_form.addEventListener("submit", async(e) => {
+            e.preventDefault();
+
+            let text = clan_chat_message_input.value;
+
+            if (text.length > 0) {
+
+                clan_chat_chat.textContent = null;
+                clan_chat_message_input.value = null;
+
+                await this.pass_message(text);
+
+                setTimeout(() => {
+                    clan_chat_chat.scrollTo({
+                        top: clan_chat_chat.scrollHeight,
+                        behavior: 'instant'
+                    });
+                }, 100);
+            };
+        });
+
+        clan_chat_header.removeEventListener("click", clan_chat_header.clickEvent);
+
+        clan_chat_header.addEventListener("click", clan_chat_header.clickEvent = async() => {
+            await newClan.get_clan_data();
+            await social_scene.clan_handler.item_click(newClan.current_clan_all_data);
+        });
+    };
+
+    async parse_data() {
+        await newClan.get_clan_data();
+        clan_chat_chat.textContent = null;
+
+        clan_chat_header_clan_name.textContent = newClan.current_clan_all_data["name"];
+        clan_chat_header_clan_logo.src = `assets/game/${newClan.current_clan_all_data["logo"]}`;
+
+        if (newClan.current_clan_all_data["chat"]) {
+
+            for (const message of newClan.current_clan_all_data["chat"]) {
+                let author_role = newClan.current_clan_all_data["members"][message["from"]]["role"];
+                let author_name = newClan.current_clan_all_data["members"][message["from"]]["name"];
+
+                this.new_message(message["message"], author_name, message["from"], author_role, message["date"]);
+            };
+        };
+    };
+
+    async pass_message(text) {
+        await socket.emit("pass_clan_message", text, Number(localStorage.getItem("PlayerID")), newClan.current_clan_data["clan_id"], (newChat, playerData, playerRole) => {
+
+            for (const message of newChat) {
+                this.new_message(message["message"], playerData["player_name"], playerData["player_id"], playerRole, message["date"]);
+            };
+        });
+    };
+
+    async new_message(text, player_name, player_id, player_role, message_date) {
+        let self_id = Number(localStorage.getItem("PlayerID"));
+
+        let message_author_type = self_id == player_id ? "self" : "other";
+
+        let message_wrapper = document.createElement("div");
+        let player_name_wrapper = document.createElement("div");
+        let player_role_wrapper = document.createElement("div");
+        let message_text_wrapper = document.createElement("div");
+        let message_date_wrapper = document.createElement("div");
+
+        player_name_wrapper.addEventListener("click", async() => {
+            if (message_author_type == "self") {
+                player_name = player_name + " (You)";
+                OpenOwnUserProfile();
+
+            } else {
+
+                try {
+                    await socket.emit("GetDataByID", player_id, player_data => {
+                        ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+                            undefined, undefined, player_data
+                        );
+                    });
+
+                } catch (error) {
+                    console.log(error);
+
+                    AlertText.textContent = "Something went wrong!";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                };
+            };
+        });
+
+        message_date_wrapper.textContent = message_date;
+        message_text_wrapper.textContent = text;
+        player_role_wrapper.textContent = player_role;
+        player_name_wrapper.textContent = player_name;
+
+        message_wrapper.setAttribute("from", message_author_type);
+        message_wrapper.setAttribute("message_player_id", player_id);
+
+        message_wrapper.classList.add("clan_chat_message");
+        player_name_wrapper.classList.add("clan_chat_message_player_name");
+        player_role_wrapper.classList.add("clan_chat_message_player_role");
+        message_text_wrapper.classList.add("clan_chat_message_player_message");
+        message_date_wrapper.classList.add("clan_message_date");
+
+        message_wrapper.appendChild(player_name_wrapper);
+        message_wrapper.appendChild(player_role_wrapper);
+        message_wrapper.appendChild(message_text_wrapper);
+        message_wrapper.appendChild(message_date_wrapper);
+        clan_chat_chat.appendChild(message_wrapper);
     };
 };
 
@@ -165,11 +290,16 @@ class clan_playground_handler {
         this.self_character = clan_playground_character;
         this.viewport = clan_playground_viewport;
 
-        this.self_character_coords = { x: 200, y: 200 };
-        this.self_character_size = 30;
+        this.back_btn = clan_chat_back_btn;
+        this.self_character_coords = { x: 300, y: 300 };
+        this.self_character_size = this.self_character.getBoundingClientRect().width;
+        this.speed = 10;
         this.playground_height = this.playground.clientHeight;
         this.playground_width = this.playground.clientWidth;
         this.clan_level = null;
+
+        this.keys_pressed = {};
+        this.can_leave = false;
     };
 
     init() {
@@ -178,15 +308,18 @@ class clan_playground_handler {
         this.update_position();
     };
 
-    open() {
+    async open() {
+        await newClan.get_clan_data();
+        this.clan_level = await newClan.current_clan_all_data["level"];
+
         this.playground_height = this.playground.clientHeight;
         this.playground_width = this.playground.clientWidth;
+        this.self_character_size = this.self_character.getBoundingClientRect().height;
+        this.init_character_position();
+        this.generate_field();
     };
 
     generate_field() {
-        // this.clan_level = newClan.current_clan_all_data["level"];
-        this.clan_level = 40;
-
         document.querySelector(".playground_field_wrapper") && document.querySelector(".playground_field_wrapper").remove();
 
         let field_wrapper = document.createElement("div");
@@ -204,6 +337,24 @@ class clan_playground_handler {
         this.playground.appendChild(field_wrapper);
 
         generateField_preview(this.clan_level, this.clan_level, field, null);
+        this.init_field_color(field, field_title);
+    };
+
+    init_field_color(field, title) {
+        let colors = [];
+
+        colors[0] = newClan.level_color[this.clan_level][0];
+        colors[1] = newClan.level_color[this.clan_level][1];
+
+        document.documentElement.style.setProperty(`--gradient-first-color-${this.clan_level}`, colors[0]);
+        document.documentElement.style.setProperty(`--gradient-second-color-${this.clan_level}`, colors[1]);
+
+        title.style.setProperty(`--first-color`, `var(--gradient-first-color-${this.clan_level})`);
+        title.style.setProperty(`--second-color`, `var(--gradient-second-color-${this.clan_level})`);
+        title.style.backgroundClip = "text";
+
+        field.style.setProperty(`--first-color`, `var(--gradient-first-color-${this.clan_level})`);
+        field.style.setProperty(`--second-color`, `var(--gradient-second-color-${this.clan_level})`);
     };
 
     init_character() {
@@ -215,54 +366,99 @@ class clan_playground_handler {
         this.self_character.classList.add("clan_playground_character");
     };
 
+    init_character_position() {
+        this.self_character_coords = { x: 300, y: 300 };
+        this.update_position();
+        this.check_collision();
+        this.init_character();
+    };
+
     character_control() {
         this.playground.addEventListener("click", (e) => {
             this.playground.focus();
         });
 
         window.addEventListener("keydown", (e) => {
-            switch (e.key) {
-                case "ArrowUp":
-                    if (clanPlaygroundHandler.self_character_coords["y"] > 0) {
-                        clanPlaygroundHandler.self_character_coords.y = clanPlaygroundHandler.self_character_coords.y - 5;
-                    };
-                    break;
-
-                case "ArrowDown":
-                    if (clanPlaygroundHandler.self_character_coords["y"] < this.playground_height - this.self_character_size * 4) {
-                        clanPlaygroundHandler.self_character_coords.y = clanPlaygroundHandler.self_character_coords.y + 5;
-                    };
-                    break;
-
-                case "ArrowLeft":
-                    if (clanPlaygroundHandler.self_character_coords["x"] > 0) {
-                        clanPlaygroundHandler.self_character_coords.x = clanPlaygroundHandler.self_character_coords.x - 5;
-                    };
-                    break;
-
-                case "ArrowRight":
-                    if (clanPlaygroundHandler.self_character_coords["x"] < this.playground_width - this.self_character_size) {
-                        clanPlaygroundHandler.self_character_coords.x = clanPlaygroundHandler.self_character_coords.x + 5;
-                    };
-                    break;
-            };
-
-            clanPlaygroundHandler.update_position();
+            this.keys_pressed[e.key] = true;
         });
+
+        window.addEventListener("keyup", (e) => {
+            this.keys_pressed[e.key] = false;
+        });
+
+        this.animate_character();
+    };
+
+    animate_character() {
+        let update_needed = false;
+
+        if ((this.keys_pressed['ArrowUp']) && this.self_character_coords.y > 0) {
+            this.self_character_coords.y -= this.speed;
+            update_needed = true;
+        };
+
+        if ((this.keys_pressed['ArrowDown']) && this.self_character_coords.y < this.playground_height - this.self_character_size) {
+            this.self_character_coords.y += this.speed;
+            update_needed = true;
+        };
+
+        if ((this.keys_pressed['ArrowLeft']) && this.self_character_coords.x > 0) {
+            this.self_character_coords.x -= this.speed;
+            update_needed = true;
+        };
+
+        if ((this.keys_pressed['ArrowRight']) && this.self_character_coords.x < this.playground_width - this.self_character_size) {
+            this.self_character_coords.x += this.speed;
+            update_needed = true;
+        };
+
+        if (this.keys_pressed['Enter'] && this.can_leave) {
+            this.back_btn.click();
+        };
+
+        if (update_needed) {
+            this.update_position();
+            this.check_collision();
+        };
+
+        requestAnimationFrame(() => this.animate_character());
     };
 
     update_position() {
         this.self_character.style.left = `${this.self_character_coords.x}px`;
         this.self_character.style.top = `${this.self_character_coords.y}px`;
 
-        // Kamera zentrieren
+        // centrate viewport
         const viewportWidth = this.viewport.clientWidth;
         const viewportHeight = this.viewport.clientHeight;
-        const offsetX = this.self_character_coords.x - viewportWidth / 2;
-        const offsetY = this.self_character_coords.y - viewportHeight / 2;
+        const offsetX = Math.max(this.self_character_coords.x - (viewportWidth * 4 / 5), 0);
+        const offsetY = Math.max(this.self_character_coords.y - (viewportHeight * 4 / 5), 0);
 
-        // this.playground.style.left = `${-offsetX}px`;
-        // this.playground.style.top = `${-offsetY}px`;
+        this.playground.style.left = `${-offsetX}px`;
+        this.playground.style.top = `${-offsetY}px`;
+    };
+
+    check_collision() {
+        this.self_character_rect = this.self_character.getBoundingClientRect();
+        this.back_btn_rect = this.back_btn.getBoundingClientRect();
+
+        this.check_collision_on_back_btn(this.self_character_rect, this.back_btn_rect) ? this.display_leave_text("block") : this.display_leave_text("none");
+    };
+
+    check_collision_on_back_btn(rect1, rect2) {
+        return !(rect1.right < rect2.left ||
+            rect1.left > rect2.right ||
+            rect1.bottom < rect2.top ||
+            rect1.top > rect2.bottom);
+    };
+
+    display_leave_text(type) {
+        clan_playground_leave_text.style.display = type;
+        this.can_leave = type == "none" ? false : true;
+    };
+
+    send_coords() {
+        socket.emit("playground_player_moves", Number(localStorage.getItem("PlayerID")), this.self_character_coords);
     };
 };
 

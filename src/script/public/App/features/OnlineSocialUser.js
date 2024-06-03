@@ -12,7 +12,6 @@ let UserName_OfCurrentVisitedProfile; // String
         SearchUser_Btn.addEventListener('click', OpenSearchUserPopUp);
     };
 })();
-
 // Automatically at the start of the app Initialize everything that needs to be initialized
 (function InitData() {
     document.addEventListener("DOMContentLoaded", () => {
@@ -51,8 +50,22 @@ const RequestPlayer = () => {
 };
 
 // Player clicks on other player when he searched him or he is in his lobby f.e
-const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern) => {
-    // console.log(player_name, player_id);
+const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern, allData) => {
+    // console.log(allData);
+
+    if (allData) {
+        player_name = allData["player_name"];
+        player_id = allData["player_id"];
+        player_icon = allData["player_icon"];
+        playerInfoClass = allData["playerInfoClass"];
+        playerInfoColor = allData["playerInfoColor"];
+        quote = allData["quote"];
+        onlineGamesWon = allData["onlineGamesWon"];
+        XP = allData["XP"];
+        currentUsedSkin = allData["currentUsedSkin"];
+        last_connection = allData["last_connection"];
+        commonPattern = allData["commonPattern"];
+    };
 
     // check if player is friends with searched and displayed player
     try {

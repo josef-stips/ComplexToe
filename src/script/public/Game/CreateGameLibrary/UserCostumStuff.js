@@ -60,7 +60,7 @@ const generateField_preview = (x, y, field_el, eventListener) => {
     // delete previous field
     grid.textContent = null;
 
-    console.log(x, y)
+    // console.log(x, y)
 
     if (x == 0 || x == NaN || y == 0 || y == NaN) {
         return false;

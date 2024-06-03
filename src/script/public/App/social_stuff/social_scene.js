@@ -159,13 +159,7 @@ class clan_handler {
         let item_text = document.createElement("h2");
         let item_img = document.createElement("img");
 
-        let colors = [];
-
-        colors[0] = newClan.level_color[data["id"]][0];
-        colors[1] = newClan.level_color[data["id"]][1];
-
-        document.documentElement.style.setProperty(`--gradient-first-color-${data["id"]}`, colors[0]);
-        document.documentElement.style.setProperty(`--gradient-second-color-${data["id"]}`, colors[1]);
+        let colors = this.create_clan_css_propertys(data);
 
         list_item.classList.add("default_sb_item");
         list_item.setAttribute("result_clan_id", data["id"]);
@@ -213,10 +207,13 @@ class clan_handler {
 
             DisplayPopUp_PopAnimation(clan_overview_pop_up, "flex", true);
 
+            let colors = this.create_clan_css_propertys(data);
+
             clan_name_el.style.setProperty("--gradient-first-color", `var(--gradient-first-color-${data["id"]})`);
             clan_name_el.style.setProperty("--gradient-second-color", `var(--gradient-second-color-${data["id"]})`);
 
             clan_name_el.textContent = data["name"];
+            clan_logo_el.src = `assets/game/${data["logo"]}`;
             clan_description_el.textContent = data["description"];
             clan_level_el.textContent = data["level"];
             clan_members_title.textContent = `Members (${Object.keys(data["members"]).length})`;
@@ -429,6 +426,18 @@ class clan_handler {
     create_clan_handler() {
 
     };
+
+    create_clan_css_propertys(data) {
+        let colors = [];
+
+        colors[0] = newClan.level_color[data["level"]][0];
+        colors[1] = newClan.level_color[data["level"]][1];
+
+        document.documentElement.style.setProperty(`--gradient-first-color-${data["id"]}`, colors[0]);
+        document.documentElement.style.setProperty(`--gradient-second-color-${data["id"]}`, colors[1]);
+
+        return colors;
+    };
 };
 
 class create_clan_handler {
@@ -512,7 +521,7 @@ class create_clan_handler {
         });
 
         create_clan_inputs.forEach((input, i) => {
-            let max_text_length = input.getAttribute("input_for") == "name" ? 25 : 200;
+            let max_text_length = input.getAttribute("input_for") == "name" ? 20 : 200;
 
             input.addEventListener("keydown", (e) => {
                 let len = input.value.length;

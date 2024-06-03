@@ -614,6 +614,10 @@ let clan_chat_header_clan_name = document.querySelector(".clan_chat_header_clan_
 let clan_chat_playground = document.querySelector(".clan_chat_playground_ground");
 let clan_playground_character = document.querySelector(".clan_playground_character");
 let clan_playground_viewport = document.querySelector(".clan_playground_viewport")
+let clan_playground_leave_text = document.querySelector(".clan_playground_leave_text");
+let clan_chat_chat = document.querySelector(".clan_chat_chat");
+let clan_chat_header = document.querySelector(".clan_chat_header");
+let clan_logo_el = document.querySelector(".clan_logo");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

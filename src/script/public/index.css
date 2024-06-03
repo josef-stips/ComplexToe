@@ -8436,6 +8436,7 @@ p.createCostumField_yInput {
     background: linear-gradient(45deg, var(--first-color), var(--second-color));
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
+    font-size: 180%;
 }
 
 .clan_member_list {
@@ -8753,6 +8754,7 @@ p.createCostumField_yInput {
     position: relative;
     z-index: 1005;
     align-items: center;
+    user-select: none;
     background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
 }
 
@@ -8780,7 +8782,7 @@ p.createCostumField_yInput {
     background-color: var(--bg-app-color3);
     display: grid;
     align-items: flex-start;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
     padding: 30px 0 0 20px;
     grid-template-columns: repeat(1, auto);
     grid-auto-rows: min-content;
@@ -8793,13 +8795,20 @@ p.createCostumField_yInput {
     width: 100%;
     height: 10%;
     border-bottom: 5px solid;
-    background-color: var(--bg-app-color3);
+    background-color: #101214;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     gap: 1vh;
     font-size: 6vh;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.clan_chat_header:hover {
+    transition: background-color 0.15s ease-in-out;
+    background-color: #191c1f;
+    cursor: pointer;
 }
 
 .clan_chat_footer {
@@ -8838,7 +8847,7 @@ p.createCostumField_yInput {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    margin: 0 20px 0 0;
+    margin: 0 20px 20px 0;
 }
 
 .clan_chat_message[from="self"] {
@@ -8848,6 +8857,7 @@ p.createCostumField_yInput {
 
 .clan_chat_message_player_name {
     font-size: 3vh;
+    cursor: pointer;
 }
 
 .clan_chat_message_player_role {
@@ -8857,6 +8867,8 @@ p.createCostumField_yInput {
 .clan_chat_message_player_message {
     margin: 1vh 0 0 0;
     text-align: start;
+    user-select: text;
+    overflow-wrap: anywhere;
 }
 
 .clan_chat_form {
@@ -8899,15 +8911,16 @@ p.createCostumField_yInput {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 
 .clan_chat_playground_ground {
     overflow: scroll;
-    /* position: absolute; */
+    position: absolute;
     width: 100%;
     height: 100%;
-    border: 3px solid;
+    border: 4px solid;
+    border-radius: 30px;
 }
 
 .clan_playground_character {
@@ -8937,6 +8950,8 @@ p.createCostumField_yInput {
     /* margin: auto; */
     width: 100%;
     height: 100%;
+    background: linear-gradient(100deg, var(--first-color), var(--second-color));
+    z-index: -1;
 }
 
 .playground_field_title {
@@ -8946,6 +8961,33 @@ p.createCostumField_yInput {
     /* margin: auto; */
     width: max-content;
     height: max-content;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: --first-color 1.5s, --second-color 1.5s;
+    background: linear-gradient(45deg, var(--first-color), var(--second-color));
+}
+
+.clan_chat_back_btn {
+    position: absolute;
+    top: 1vh;
+    left: 1vh;
+    padding: 20px;
+}
+
+.clan_playground_leave_text {
+    display: none;
+    position: fixed;
+    inset: 95% 0 0 35%;
+    margin: 0 auto;
+    font-size: 3vh;
+}
+
+.clan_chat_header_clan_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 95%;
+    text-align: start;
 }
 
 

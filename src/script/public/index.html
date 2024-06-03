@@ -180,88 +180,10 @@
 
                     <div class="clan_chat_chat">
 
-                        <div class="clan_chat_message" from="other">
-                            <div class="clan_chat_message_player_name">player name</div>
-                            <div class="clan_chat_message_player_role">player role</div>
-
-                            <div class="clan_chat_message_player_message">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi laudantium, incidunt accusantium eum dolorem delectus numquam tempora modi, magnam ea illum deserunt ab. Rem dolorem quod aspernatur neque eaque officia?
-                            </div>
-
-                            <div class="clan_message_date">
-                                May 26, 2008, 3:06 PM
-                            </div>
-                        </div>
-
-                        <div class="clan_chat_message" from="self">
-                            <div class="clan_chat_message_player_name">player name</div>
-                            <div class="clan_chat_message_player_role">player role</div>
-
-                            <div class="clan_chat_message_player_message">
-                                Lorem ipsum
-                            </div>
-
-                            <div class="clan_message_date">
-                                May 26, 2008, 3:06 PM
-                            </div>
-                        </div>
-
-                        <div class="clan_chat_message" from="other">
-                            <div class="clan_chat_message_player_name">player name</div>
-                            <div class="clan_chat_message_player_role">player role</div>
-
-                            <div class="clan_chat_message_player_message">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi laudantium, incidunt accusantium eum dolorem delectus numquam tempora modi, magnam ea illum deserunt ab. Rem dolorem quod aspernatur neque eaque officia?
-                            </div>
-
-                            <div class="clan_message_date">
-                                May 26, 2008, 3:06 PM
-                            </div>
-                        </div>
-
-                        <div class="clan_chat_message" from="self">
-                            <div class="clan_chat_message_player_name">player name</div>
-                            <div class="clan_chat_message_player_role">player role</div>
-
-                            <div class="clan_chat_message_player_message">
-                                Lorem ipsum
-                            </div>
-
-                            <div class="clan_message_date">
-                                May 26, 2008, 3:06 PM
-                            </div>
-                        </div>
-
-                        <div class="clan_chat_message" from="other">
-                            <div class="clan_chat_message_player_name">player name</div>
-                            <div class="clan_chat_message_player_role">player role</div>
-
-                            <div class="clan_chat_message_player_message">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi laudantium, incidunt accusantium eum dolorem delectus numquam tempora modi, magnam ea illum deserunt ab. Rem dolorem quod aspernatur neque eaque officia?
-                            </div>
-
-                            <div class="clan_message_date">
-                                May 26, 2008, 3:06 PM
-                            </div>
-                        </div>
-
-                        <div class="clan_chat_message" from="self">
-                            <div class="clan_chat_message_player_name">player name</div>
-                            <div class="clan_chat_message_player_role">player role</div>
-
-                            <div class="clan_chat_message_player_message">
-                                Lorem ipsum
-                            </div>
-
-                            <div class="clan_message_date">
-                                May 26, 2008, 3:06 PM
-                            </div>
-                        </div>
-
                     </div>
 
                     <div class="clan_chat_footer">
-                        <form class="clan_chat_form">
+                        <form action="submit" class="clan_chat_form">
                             <input type="text" class="clan_chat_message_input">
                             <button class="fa-solid fa-arrow-right clan_chat_send_btn default_btn"></button>
                         </form>
@@ -271,11 +193,17 @@
                 <div class="clan_chat_rightWrapper">
 
                     <div class="clan_chat_playground">
-                        <i style="z-index: 1;margin:1% 0 0 1%;" class="fa-solid fa-arrow-left default_btn clan_chat_back_btn"></i>
-
                         <div class="clan_playground_viewport">
                             <div class="clan_chat_playground_ground">
+                                <i style="z-index: 1;margin:1% 0 0 1%;" class="fa-solid fa-arrow-left default_btn clan_chat_back_btn"></i>
+
                                 <p class="clan_playground_character">X</p>
+
+                                <h1 class="clan_playground_leave_text">Click "Enter" to leave</h1>
+
+                                <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left:20vh;" width="200" height="200">
+                                <img src="./assets/game/BG_asteroid.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+                                <img src="./assets/game/BG_icon_2.svg" style="position: absolute;top: 0;left:0;" width="200" height="200">
                             </div>
                         </div>
                     </div>
@@ -7720,7 +7648,7 @@
                 <div class="clan_pop_up_header_section_1">
 
                     <div class="clan_pop_up_section_1_inner_wrapper_1">
-                        <img src="assets/game/caesar.svg">
+                        <img class="clan_logo" src="assets/game/caesar.svg">
                         <h1 class="clan_name">Clan name</h1>
                     </div>
 

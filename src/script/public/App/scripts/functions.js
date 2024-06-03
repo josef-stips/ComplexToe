@@ -163,6 +163,7 @@ function ItemAnimation(item, destination_position, fromMap, mapItem, fromSecondT
             setTimeout(() => {
                 div.style.opacity = "0.5";
             }, 200);
+
             // remove item from html so it looks better
             setTimeout(() => {
                 div.remove();
