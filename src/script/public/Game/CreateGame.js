@@ -285,17 +285,20 @@ class NewLevel {
     // display level list
     StartLevelList = (Display, DisplayList) => {
 
+        console.log(DisplayList);
+
         // get levels user created
         if (DisplayList == undefined) {
             try {
                 socket.emit("RequestLevels", localStorage.getItem("PlayerID"), levels => {
+                    console.log(levels);
 
                     if (levels.length <= 0) { // no levels
                         [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
-                        ReplaceText_Levellist.style.display = "flex";
+                        ReplaceText_Levellist[1].style.display = "flex";
 
                     } else { // create level display
-                        ReplaceText_Levellist.style.display = "none";
+                        ReplaceText_Levellist[1].style.display = "none";
                         [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
 
                         // create every single level
@@ -384,12 +387,12 @@ class NewLevel {
         if (level.level_name.length >= 18) {
             span.style.fontSize = "var(--Text-font-size)";
         } else {
-            span.style.fontSize = "inherit";
+            span.style.fontSize = "4vh";
         };
 
         let span1 = document.createElement("span");
         span1.classList = "LevelIconWrapper"
-        span1.style.border = `2px solid ${level_theme}`;
+        span1.style.border = `5px solid ${level_theme}`;
 
         let div1 = document.createElement("div");
         let div2 = document.createElement("div");
@@ -505,8 +508,8 @@ class NewLevel {
     };
 
     // Generate field on given xy length
-    GenerateField = async(x, y) => {
-        workbench_cellGrid.textContent = null;
+    GenerateField = async(x, y, workbench_grid = workbench_cellGrid) => {
+        workbench_grid.textContent = null;
         workbench_LevelFieldSize_Display.textContent = `${x}x${y}`;
 
         for (let i = 0; i < x * y; i++) {
@@ -515,29 +518,29 @@ class NewLevel {
             cell.className = "cell createlevelscene_cell";
             cell.setAttribute('cell-index', i);
 
-            workbench_cellGrid.appendChild(cell);
+            workbench_grid.appendChild(cell);
         };
 
         let smallerCoord = x > y ? y : x;
 
-        workbench_cellGrid.style.gridTemplateColumns = `repeat(${x}, 1fr)`;
+        workbench_grid.style.gridTemplateColumns = `repeat(${x}, 1fr)`;
 
         if (x !== y) {
 
             if (x > y) {
-                workbench_cellGrid.style.gridAutoRows = "min-content";
-                StaticCellScale(workbench_cellGrid);
+                workbench_grid.style.gridAutoRows = "min-content";
+                StaticCellScale(workbench_grid);
 
                 workbenchMiddle_main.style.display = "flex";
-                workbench_cellGrid.style.height = "auto";
-                workbench_cellGrid.style.overflow = "unset";
+                workbench_grid.style.height = "auto";
+                workbench_grid.style.overflow = "unset";
                 workbenchMiddle_main.style.overflow = "unset";
                 // workbench_cellGrid.style.minHeight = "-webkit-fill-available";
                 // workbenchMiddle_main.style.overflow = "scroll";
 
             } else if (x < y) {
-                workbench_cellGrid.style.height = "100vh";
-                workbench_cellGrid.style.overflow = "scroll";
+                workbench_grid.style.height = "100vh";
+                workbench_grid.style.overflow = "scroll";
                 workbenchMiddle_main.style.overflow = "scroll";
                 // workbenchMain_middle.style.position = "fixed";
                 workbenchMiddle_main.style.display = "block";
@@ -546,14 +549,14 @@ class NewLevel {
                 document.querySelector(".workbenchMain_right").style.width = "17.5%";
                 // workbench_cellGrid.style.minHeight = "var(--max-cellGrid-size)"
 
-                workbench_cellGrid.style.gridAutoRows = "unset";
+                workbench_grid.style.gridAutoRows = "unset";
             };
 
         } else if (x === y) {
             workbenchMiddle_main.style.display = "flex";
-            workbench_cellGrid.style.gridAutoRows = "unset";
-            workbench_cellGrid.style.height = "auto";
-            workbench_cellGrid.style.overflow = "unset";
+            workbench_grid.style.gridAutoRows = "unset";
+            workbench_grid.style.height = "auto";
+            workbench_grid.style.overflow = "unset";
             workbenchMiddle_main.style.overflow = "unset";
             // workbench_cellGrid.style.height = "";
             // workbenchMiddle_main.style.display = "flex";
@@ -842,65 +845,66 @@ class NewLevel {
         };
     };
 
+    // legacy code. moved to other file
     // search for levels functionality
-    OpenSearch = () => {
-        CreateLevel_Title.style.display = "none";
-        SearchLevelInputWrapper.style.display = "flex";
+    // OpenSearch = () => {
+    //     CreateLevel_Title.style.display = "none";
+    //     SearchLevelInputWrapper.style.display = "flex";
 
-        SearchLevelInput.focus();
+    //     SearchLevelInput.focus();
 
-        LevelList_list.textContent = null;
+    //     LevelList_list.textContent = null;
 
-        EditLevelBtn_ListBtn.style.display = "none";
-        RemoveLevelBtn.style.display = "none";
-        PublishLevelBtn.style.display = "none";
-        LevelList_PublishStatusDisplay.style.display = "none";
+    //     EditLevelBtn_ListBtn.style.display = "none";
+    //     RemoveLevelBtn.style.display = "none";
+    //     PublishLevelBtn.style.display = "none";
+    //     LevelList_PublishStatusDisplay.style.display = "none";
 
-        this.selectedLevel = undefined;
-        this.Searching = true;
+    //     this.selectedLevel = undefined;
+    //     this.Searching = true;
 
-        this.StartLevelList(undefined, false); // false : Don't display list of player's created levels
+    //     this.StartLevelList(undefined, false); // false : Don't display list of player's created levels
 
-        SearchLevelsBtn.style.display = "none";
-        CloseSearchLevelsBtn.style.display = "block";
+    //     SearchLevelsBtn.style.display = "none";
+    //     CloseSearchLevelsBtn.style.display = "block";
 
-        try {
-            socket.emit("DisplayAllOnlineLevel", ((levels, players) => {
-                // console.log(levels, players);
-                if (levels.length >= 1) {
-                    levels.forEach((level, index) => {
-                        // console.log(level, index, players[index][0])
+    //     try {
+    //         socket.emit("DisplayAllOnlineLevel", ((levels, players) => {
+    //             // console.log(levels, players);
+    //             if (levels.length >= 1) {
+    //                 levels.forEach((level, index) => {
+    //                     // console.log(level, index, players[index][0])
 
-                        this.AddLevelToList(level, players[index][0]);
-                    });
-                };
-            }));
+    //                     this.AddLevelToList(level, players[index][0]);
+    //                 });
+    //             };
+    //         }));
 
-        } catch (error) {
-            console.log(error);
-        };
-    };
+    //     } catch (error) {
+    //         console.log(error);
+    //     };
+    // };
 
-    CloseSearch = (ShowLevelList) => {
-        CreateLevel_Title.style.display = "block";
-        SearchLevelInputWrapper.style.display = "none";
+    // CloseSearch = (ShowLevelList) => {
+    //     CreateLevel_Title.style.display = "block";
+    //     SearchLevelInputWrapper.style.display = "none";
 
-        SearchLevelsBtn.style.display = "block";
-        CloseSearchLevelsBtn.style.display = "none";
+    //     SearchLevelsBtn.style.display = "block";
+    //     CloseSearchLevelsBtn.style.display = "none";
 
-        SearchLevelInput.value = null;
-        LevelList_list.textContent = null;
+    //     SearchLevelInput.value = null;
+    //     LevelList_list.textContent = null;
 
-        EditLevelBtn_ListBtn.style.display = "block";
-        RemoveLevelBtn.style.display = "block";
-        PublishLevelBtn.style.display = "block";
-        LevelList_PublishStatusDisplay.style.display = "block";
+    //     EditLevelBtn_ListBtn.style.display = "block";
+    //     RemoveLevelBtn.style.display = "block";
+    //     PublishLevelBtn.style.display = "block";
+    //     LevelList_PublishStatusDisplay.style.display = "block";
 
-        this.selectedLevel = undefined;
-        this.Searching = false;
+    //     this.selectedLevel = undefined;
+    //     this.Searching = false;
 
-        this.StartLevelList(ShowLevelList); // false : Don't display the level list tab itself but just refresh its content
-    };
+    //     this.StartLevelList(ShowLevelList); // false : Don't display the level list tab itself but just refresh its content
+    // };
 
     RequestLevelSearchResults = (text) => {
         try {
@@ -1250,12 +1254,13 @@ const InitCreateLevelScene = () => {
         NewCreativeLevel.CloseSearch();
     });
 
-    SearchLevelInput.addEventListener("keyup", (e) => {
-        if (e.key == "Enter") {
-            e.preventDefault();
-            NewCreativeLevel.RequestLevelSearchResults(SearchLevelInput.value);
-        };
-    });
+    // legacy. code moved to script.js
+    // SearchLevelInput.addEventListener("keyup", (e) => {
+    //     if (e.key == "Enter") {
+    //         e.preventDefault();
+    //         NewCreativeLevel.RequestLevelSearchResults(SearchLevelInput.value);
+    //     };
+    // });
 
     // start event listener
     EditLevelBtn_ListBtn.addEventListener('click', () => {
@@ -1486,19 +1491,6 @@ const InitCreateLevelScene = () => {
             AlertText.textContent = "Select a level to play it";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
-    });
-
-    chooseModeCloseBtn.addEventListener("click", () => {
-        ChooseBetweenModesPopUp.style.display = "none";
-        DarkLayer.style.display = "none";
-    });
-
-    OnlineModeBtn.addEventListener("click", () => {
-        NewCreativeLevel.startGame(1);
-    });
-
-    OfflineModeBtn.addEventListener("click", () => {
-        NewCreativeLevel.startGame(0);
     });
 
     CreateLevel_musicPreviewBtn.addEventListener("click", () => {

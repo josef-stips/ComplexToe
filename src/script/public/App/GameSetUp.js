@@ -330,13 +330,11 @@ function Click_single_NxN(e) {
 function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequired, PointsToWinGame, patterns) {
     let Check = SetGameData_CheckConfirm();
 
-    // console.log(NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]]);
-
     // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
     if (Player1_NameInput.value != "" &&
         Player1_IconInput.value != "" &&
         Check[0] == true && Check[1] == true && !PlayingInCreatedLevel || PlayingInCreatedLevel &&
-        Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[1] == true && NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]]) {
+        Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[1] == true && creative_level_instance.Settings["playertimer"][creative_level_instance.selectedLevel[3]]) {
         // server
         let fieldIndex = curr_field_ele.getAttribute('index');
         let fieldTitle = curr_field_ele.getAttribute('title');
@@ -387,16 +385,16 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         if (patterns) allowedPatternsFromUser = patterns;
 
         if (PlayingInCreatedLevel) {
-            Check[2] = NewCreativeLevel.Settings["playertimer"][NewCreativeLevel.selectedLevel[3]];
+            Check[2] = creative_level_instance.Settings["playertimer"][creative_level_instance.selectedLevel[3]];
 
             // set up x and y coordinates. case: default field is choosen
-            if (NewCreativeLevel.selectedLevel[16] == {}) {
-                costumX = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
-                costumY = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+            if (creative_level_instance.selectedLevel[16] == {}) {
+                costumX = creative_level_instance.Settings.cellgrid[creative_level_instance.selectedLevel[7]];
+                costumY = creative_level_instance.Settings.cellgrid[creative_level_instance.selectedLevel[7]];
 
             } else {
-                costumX = NewCreativeLevel.selectedLevel[16]["x"];
-                costumY = NewCreativeLevel.selectedLevel[16]["y"];
+                costumX = creative_level_instance.selectedLevel[16]["x"];
+                costumY = creative_level_instance.selectedLevel[16]["y"];
             };
 
             if (costumX == undefined || costumY == undefined) {
@@ -404,15 +402,15 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
                 costumY = xyCell_Amount;
             };
 
-            costumPatterns = NewCreativeLevel.selectedLevel[15];
+            costumPatterns = creative_level_instance.selectedLevel[15];
 
-            allowedPatternsFromUser = NewCreativeLevel.selectedLevel[6];
+            allowedPatternsFromUser = creative_level_instance.selectedLevel[6];
 
-            costumIcon = NewCreativeLevel.Settings.levelicon[NewCreativeLevel.selectedLevel[4]];
+            costumIcon = creative_level_instance.Settings.levelicon[creative_level_instance.selectedLevel[4]];
 
-            fieldTitle = NewCreativeLevel.selectedLevel[8];
+            fieldTitle = creative_level_instance.selectedLevel[8];
 
-            UserSetPointsToWinGameInput.value = NewCreativeLevel.selectedLevel[2];
+            UserSetPointsToWinGameInput.value = creative_level_instance.selectedLevel[2];
         };
 
         console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon);
@@ -601,18 +599,18 @@ function SetPlayerData_ConfirmEvent() {
         // check if this is user created level
         if (PlayingInCreatedLevel) {
             Check[0] = true;
-            Check[2] = NewCreativeLevel.Settings.playertimer[NewCreativeLevel.selectedLevel[3]];
-            UserSetPointsToWinGameInput.value = NewCreativeLevel.selectedLevel[2];
-            allowedPatternsFromUser = NewCreativeLevel.selectedLevel[6];
+            Check[2] = creative_level_instance.Settings.playertimer[creative_level_instance.selectedLevel[3]];
+            UserSetPointsToWinGameInput.value = creative_level_instance.selectedLevel[2];
+            allowedPatternsFromUser = creative_level_instance.selectedLevel[6];
 
             // set up x and y coordinates. case: default field is choosen
-            if (NewCreativeLevel.selectedLevel[16] == {}) {
-                costumX = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
-                costumY = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+            if (creative_level_instance.selectedLevel[16] == {}) {
+                costumX = creative_level_instance.Settings.cellgrid[creative_level_instance.selectedLevel[7]];
+                costumY = creative_level_instance.Settings.cellgrid[creative_level_instance.selectedLevel[7]];
 
             } else {
-                costumX = NewCreativeLevel.selectedLevel[16]["x"];
-                costumY = NewCreativeLevel.selectedLevel[16]["y"];
+                costumX = creative_level_instance.selectedLevel[16]["x"];
+                costumY = creative_level_instance.selectedLevel[16]["y"];
             };
         };
 
@@ -634,13 +632,15 @@ function SetPlayerData_ConfirmEvent() {
             curr_selected_PlayerClock = Check[2]; // Player Clock
 
             DarkLayer.style.display = 'none';
+            online_level_scene.style.display = 'none';
+
             initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
 
             // play theme music 
             PauseMusic();
             if (PlayingInCreatedLevel) {
-                if (NewCreativeLevel.selectedLevel[5] != 0) {
-                    CreateMusicBars(document.querySelector(`[src="${NewCreativeLevel.Settings["bgmusic"][NewCreativeLevel.selectedLevel[5]]}"]`));
+                if (creative_level_instance.selectedLevel[5] != 0) {
+                    CreateMusicBars(document.querySelector(`[src="${creative_level_instance.Settings["bgmusic"][creative_level_instance.selectedLevel[5]]}"]`));
                 };
 
             } else {

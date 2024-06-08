@@ -797,10 +797,10 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
 
                 if (PlayingInCreatedLevel) { // Player played user created level
 
-                    if (NewCreativeLevel.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
+                    if (creative_level_instance.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
                         endGame_statusText.textContent = `It's conquered! Level is ready to publish`;
 
-                    } else if (NewCreativeLevel.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
+                    } else if (creative_level_instance.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
                         endGame_statusText.textContent = rnd_text;
                     };
 
@@ -811,11 +811,11 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
             } else if (!inAdvantureMode && curr_mode != GameMode[2].opponent) { // not in advanture and not in online mode
 
                 if (PlayingInCreatedLevel) { // Player played user created level
-                    if (NewCreativeLevel.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
+                    if (creative_level_instance.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
 
                         endGame_statusText.textContent = `You beat it! Level is ready to publish`;
 
-                    } else if (NewCreativeLevel.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
+                    } else if (creative_level_instance.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
                         endGame_statusText.textContent = rnd_text;
                     };
 
@@ -847,14 +847,14 @@ const continueGame = () => {
 
             if (PlayingInCreatedLevel) { // Player played user created level
 
-                if (NewCreativeLevel.selectedLevel[9] == 0) {
+                if (creative_level_instance.selectedLevel[9] == 0) {
                     // admin leaves game and this info all player get
                     if (personal_GameData.role == "admin") {
                         UserleavesGame();
-                        score_Player1_numb != score_Player2_numb && NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                        score_Player1_numb != score_Player2_numb && creative_level_instance.verified(); // User beat his own created level and can publish it now
                     };
 
-                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                } else if (creative_level_instance.selectedLevel[9] == 1) {
                     // admin leaves game and this info all player get
                     if (personal_GameData.role == "admin") {
                         UserleavesGame();
@@ -886,11 +886,11 @@ const continueGame = () => {
         } else if (curr_mode != GameMode[2].opponent) {
 
             if (PlayingInCreatedLevel) { // Player played user created level
-                if (NewCreativeLevel.selectedLevel[9] == 0) {
-                    score_Player1_numb != score_Player2_numb && NewCreativeLevel.verified(); // User beat his own created level and can publish it now
+                if (creative_level_instance.selectedLevel[9] == 0) {
+                    score_Player1_numb != score_Player2_numb && creative_level_instance.verified(); // User beat his own created level and can publish it now
                     UserleavesGame();
 
-                } else if (NewCreativeLevel.selectedLevel[9] == 1) {
+                } else if (creative_level_instance.selectedLevel[9] == 1) {
                     restartGame();
                 };
 

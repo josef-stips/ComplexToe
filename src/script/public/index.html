@@ -94,7 +94,7 @@
     <script defer src="App/features/AdvantureMap_scripts/map_popUps.js"></script>
     <script defer src="App/social_stuff/social_scene.js"></script>
     <script defer src="App/social_stuff/clan.js"></script>
-
+    <script defer src="App/social_stuff/online_level_overview.js"></script>
 </head>
 
 <body>
@@ -252,6 +252,119 @@
                         <img src="assets/game/flying-flag.svg" alt="" style="transform: scaleX(-1);">
 
                     </div>
+                </div>
+            </div>
+
+            <!-- social scene scene for multiple purpose -->
+            <div class="multiple_use_scene">
+                <div class="use_scene_header">
+                    <i class="fa-solid fa-arrow-left default_btn use_scene_back_btn"></i>
+
+                    <h1 class="multiple_use_scene_title">Recent Players</h1>
+
+                    <div></div>
+                </div>
+
+                <div class="use_scene_main">
+
+                    <div use_for="Recent Players">
+
+                        <div class="recent_player_scene" scene="Recent Players">
+
+
+                        </div>
+
+                        <div class="best_player_scene" scene="Best Players">
+
+
+                        </div>
+
+                        <div class="player_level_scene" scene="Player Levels">
+
+                            <div class="default_search_box level_search_box">
+                                <div class="default_sb_header">
+                                    <input placeholder="search for level..." class="SearchLevelInput default_sb_input">
+                                    <div class="fa-solid fa-magnifying-glass default_sb_search_btn player_level_search_btn"></div>
+                                </div>
+
+                                <div class="default_sb_main">
+                                    <div class="default_sb_main_inner">
+                                        <ul class="default_sb_list player_levels_results_list">
+                                            <h2 class="ReplaceText_Levellist">There are no levels yet. Create a level by clicking <i style="font-size: 16px;" class="fa-solid fa-plus AddCircleBtnStyle"></i></h2>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- level scene -->
+            <div class="online_level_scene">
+
+                <div class="online_level_scene_header">
+                    <i class="fa-solid fa-arrow-left default_btn level_scene_back_btn"></i>
+                </div>
+
+                <div class="online_level_scene_main">
+
+                    <div class="online_level_scene_wrapper" pos="side">
+                        <div class="level_scene_btn level_scene_common_pattern_btn">
+                            <i class="fa-solid fa-shapes"></i>
+                            <p>common</p>
+                        </div>
+                        <div class="level_scene_btn level_scene_player_conquered_btn">
+                            <i class="fa-solid fa-shapes"></i>
+                            <p>scores</p>
+                        </div>
+                    </div>
+
+                    <div class="online_level_scene_wrapper" pos="center">
+                        <h1 class="online_level_scene_title">level name</h1>
+
+                        <div class="level_scene_start_wrapper">
+                            <div class="level_scene_grid">
+
+                            </div>
+
+                            <div class="level_scene_start_btn">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+
+                        <div class="level_scene_progress_wrapper">
+                            <div class="level_scene_progress_bar">
+
+                            </div>
+
+                            <div class="level_scene_progress_text">
+                                0 / 5
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="online_level_scene_wrapper" pos="side">
+                        <div class="level_scene_btn level_scene_patterns_btn">
+                            <i class="fa-solid fa-draw-polygon"></i>
+                            <p>patterns</p>
+                        </div>
+
+                        <div class="level_scene_btn level_scene_comments_btn">
+                            <i class="fa-solid fa-comment"></i>
+                            <p>social</p>
+                        </div>
+
+                        <div class="level_scene_btn level_scene_likes_btn">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <p>351</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -2551,7 +2664,7 @@
                             <div class="SearchBar_leftWrapper">
                                 <i class="fa-solid fa-search SearchBar_searchIcon" style="margin: 0 0 0 30px;"></i>
                             </div>
-                            <input class="SearchLevelInput" type="text" placeholder="search a level by its name">
+                            <!-- <input class="SearchLevelInput" type="text" placeholder="search a level by its name"> -->
                         </div>
                     </div>
 
@@ -7772,20 +7885,6 @@
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left:0;" width="200" height="200">
         <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
-    </div>
-
-    <div class="multiple_use_scene">
-        <div class="use_scene_header">
-            <i class="fa-solid fa-arrow-left default_btn use_scene_back_btn"></i>
-        </div>
-
-        <div class="use_scene_main">
-
-            <div use_for="clan">
-
-            </div>
-
-        </div>
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;display:none;" width="450" height="450">

@@ -6474,8 +6474,7 @@ label h3 {
     height: 90px;
     display: flex;
     align-items: center;
-    border-bottom: 2px solid var(--line-color);
-    border-bottom: 2px solid var(--line-color);
+    border-bottom: 5px solid var(--line-color);
     font-size: 30px;
     padding: 0 0 0 10px;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
@@ -6631,6 +6630,10 @@ label h3 {
     cursor: pointer;
 }
 
+.SearchLevelsBtn {
+    display: none !important;
+}
+
 .SearchLevelInputWrapper {
     display: none;
     justify-content: start;
@@ -6645,17 +6648,6 @@ label h3 {
     left: 50%;
     padding: 7.5px;
     margin: 10px 0 0 0;
-}
-
-.SearchLevelInput {
-    display: block !important;
-    background-color: unset;
-    outline: none;
-    border: none;
-    font-weight: 600;
-    color: white;
-    margin: 0 0 0 20px;
-    font-size: 16px;
 }
 
 .CloseSearchLevelsBtn {
@@ -8015,6 +8007,7 @@ p.createCostumField_yInput {
     position: relative;
     z-index: 1000;
     align-items: center;
+    user-select: none;
 }
 
 .online_stuff_header {
@@ -8151,8 +8144,8 @@ p.createCostumField_yInput {
 /* default search box */
 
 .default_search_box {
-    width: 55vw;
-    height: 65vh;
+    width: 62.5vw;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     border: 5px solid var(--line-color);
@@ -8165,7 +8158,7 @@ p.createCostumField_yInput {
 
 .default_sb_header {
     width: 100%;
-    height: 15%;
+    height: 12.5%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -8176,7 +8169,7 @@ p.createCostumField_yInput {
 
 .default_sb_main {
     width: 100%;
-    height: 90%;
+    height: 87.5%;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -8719,10 +8712,11 @@ p.createCostumField_yInput {
     position: relative;
     z-index: 1005;
     align-items: center;
+    gap: 4.5vh;
 }
 
 .use_scene_header {
-    width: 100%;
+    width: 97.5%;
     height: 5%;
     display: flex;
     align-items: center;
@@ -8738,6 +8732,64 @@ p.createCostumField_yInput {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+.use_scene_main>div {
+    width: 100%;
+    height: 100%;
+}
+
+.use_scene_main>div>div {
+    display: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 1vh 0 0 0;
+    flex-direction: column;
+    font-size: 3vh;
+    gap: 2vh;
+}
+
+.use_scene_main [use_for="Recent Players"] [scene] {
+    display: none;
+}
+
+.use_scene_main [use_for="Best Players"] [scene] {
+    display: none;
+}
+
+.use_scene_main [use_for="Player Levels"] [scene] {
+    display: none;
+}
+
+.use_scene_main [use_for="Recent Players"] [scene="Recent Players"] {
+    display: flex;
+}
+
+.use_scene_main [use_for="Best Players"] [scene="Best Players"] {
+    display: flex;
+}
+
+.use_scene_main [use_for="Player Levels"] [scene="Player Levels"] {
+    display: flex;
+}
+
+.multiple_use_scene_title {
+    font-size: 6.5vh;
+}
+
+.player_level_result_item {
+    width: 100%;
+    height: 7.5vh;
+    display: flex;
+    align-items: center;
+    border-bottom: 5px solid var(--line-color);
+    padding: 0 0 0 10px;
+    cursor: pointer;
+    min-height: 3em;
+    font-weight: 600;
 }
 
 
@@ -8988,6 +9040,182 @@ p.createCostumField_yInput {
     white-space: nowrap;
     width: 95%;
     text-align: start;
+}
+
+
+/* online level scene */
+
+.online_level_scene {
+    display: none;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    inset: 0;
+    margin: auto;
+    position: relative;
+    user-select: none;
+}
+
+.online_level_scene_header {
+    width: 100%;
+    height: 1vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.online_level_scene_header>i {
+    margin: 0 0 0 2vh;
+    font-size: 3.5vh;
+}
+
+.online_level_scene_main {
+    width: 100%;
+    height: 92.5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.online_level_scene_wrapper {
+    width: 33.33%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.online_level_scene_wrapper[pos="side"] {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5vh;
+    justify-content: flex-start;
+    margin: 30vh 2vh 0 0;
+    align-items: flex-end;
+}
+
+.online_level_scene_wrapper[pos="center"] {
+    width: 80%;
+    gap: 5vh;
+}
+
+.online_level_scene_title {
+    font-size: 7vh;
+}
+
+.level_scene_start_wrapper {
+    width: max-content;
+    height: max-content;
+}
+
+.level_scene_grid {
+    display: grid;
+    width: 80vh;
+    height: 80vh !important;
+    position: absolute;
+    opacity: 0.1;
+    z-index: -1;
+    inset: 0 0 20vh 0;
+    margin: auto;
+    filter: blur(0.2vh);
+}
+
+.level_scene_start_btn {
+    width: max-content;
+    height: max-content;
+    border: 4vh solid;
+    border-radius: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30vh;
+    padding: 6vh 6vw;
+    cursor: pointer;
+}
+
+.level_scene_start_btn>i {
+    margin: 0 0 0 3.5vw;
+    transition: transform 0.15s ease-in-out;
+    background: linear-gradient(45deg, var(--first-color), var(--second-color));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    --first-color: var(--gradient-second-color);
+    --second-color: var(--gradient-first-color);
+}
+
+.level_scene_start_btn:hover>i {
+    /* --gradient-first-color: royalblue;
+    --gradient-second-color: magenta; */
+    animation: gradient_color_switch infinite 2s ease-in-out;
+    transform: scale(1.1);
+    transition: transform 0.15s ease-in-out;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.level_scene_progress_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2vh;
+    width: 100%;
+    height: auto;
+}
+
+.level_scene_progress_bar {
+    border: 1vh solid;
+    border-radius: 30px;
+    width: 45vh;
+    height: 5vh;
+}
+
+.level_scene_progress_text {
+    font-size: 4vh;
+}
+
+.level_scene_player_conquered_btn {}
+
+.level_scene_common_pattern_btn {}
+
+.level_scene_btn {
+    font-size: 3vh;
+    transition: transform 0.15s ease-in-out;
+    border-radius: 35px;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.level_scene_btn:hover {
+    transition: transform 0.15s ease-in-out;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.level_scene_btn>i {
+    border: 0.5vh solid;
+    padding: 2vh;
+    border-radius: 5vh;
+}
+
+.level_scene_btn>p {
+    font-size: 2vh;
+}
+
+.online_level_scene_wrapper[pos="side"]:first-child {
+    align-items: flex-start;
+}
+
+.level_scene_btn.level_scene_player_conquered_btn {
+    margin: 0 0 0 2vh;
+}
+
+.level_scene_btn.level_scene_common_pattern_btn {
+    margin: 0 0 0 2vh;
 }
 
 

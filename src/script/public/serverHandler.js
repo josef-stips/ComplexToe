@@ -381,7 +381,18 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
 
                 if (!inAdvantureMode) {
                     // if player created a lobby from the create level scene and leaves the game, he should spawn there where he left. The same for normal card level
-                    (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+
+                    if (PlayingInCreatedLevel && !inPlayerLevelsScene) {
+                        CreateLevelScene.style.display = "flex"
+
+                    } else {
+                        if (inPlayerLevelsScene) {
+                            online_level_scene.style.display = "flex";
+
+                        } else {
+                            gameModeFields_Div.style.display = 'flex'
+                        };
+                    };
 
                 } else {
                     AdvantureMap.style.display = 'flex';
@@ -495,7 +506,14 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     ChangeGameBG(undefined, undefined, true);
 
     if (personal_GameData.role == "admin") {
-        (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+
+        if (PlayingInCreatedLevel && !inPlayerLevelsScene) {
+            CreateLevelScene.style.display = "flex";
+
+        } else {
+            gameModeFields_Div.style.display = 'flex';
+        };
+
         GameField.style.display = "none";
 
         // kill timers

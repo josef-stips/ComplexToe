@@ -79,7 +79,7 @@ async function CreateMusicBars(Audio) {
         const barWidth = firstDiv.offsetWidth / numBars;
 
         bars.forEach((bar, index) => {
-            const barHeight = (dataArray[index] / 195) * firstDiv.offsetHeight;
+            const barHeight = (dataArray[index] / 100) * firstDiv.offsetHeight;
 
             bar.style.width = barWidth + "px";
             bar.style.height = barHeight + "px";
@@ -87,7 +87,7 @@ async function CreateMusicBars(Audio) {
 
         bars2.forEach((bar, index) => {
             const reversedIndex = numBars - 1 - index; // Umkehren der Indexreihenfolge
-            const barHeight = (dataArray[reversedIndex] / 195) * secondDiv.offsetHeight;
+            const barHeight = (dataArray[reversedIndex] / 100) * secondDiv.offsetHeight;
 
             bar.style.width = barWidth + "px";
             bar.style.height = barHeight + "px";

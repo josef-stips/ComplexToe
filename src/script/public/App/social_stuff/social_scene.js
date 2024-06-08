@@ -15,6 +15,43 @@ class social_scene_class {
         online_stuff_close_btn.addEventListener("click", () => {
             DarkLayerAnimation(gameModeCards_Div, online_stuff_scene);
 
+            inPlayerLevelsScene = false;
+        });
+
+        social_stuff_cards[0].addEventListener("click", () => {
+            if (localStorage.getItem("UserName")) {
+                curr_mode = GameMode[4].opponent;
+
+                // pause music in create level mode
+                PauseMusic();
+
+                // User entered create level modeD
+                let NewField = new NewLevel();
+                NewCreativeLevel = NewField;
+                NewCreativeLevel.Init();
+
+                InitCreateLevelScene();
+
+                CreateLevelScene_CheckIn();
+                online_stuff_scene.style.display = "none";
+
+                creative_level_instance = NewCreativeLevel;
+            };
+        });
+
+        social_stuff_cards[1].addEventListener("click", () => {
+            use_scene.open("social_scene", "Recent Players", online_stuff_scene);
+        });
+
+        social_stuff_cards[2].addEventListener("click", () => {
+            use_scene.open("social_scene", "Best Players", online_stuff_scene);
+        });
+
+        social_stuff_cards[3].addEventListener("click", () => {
+            use_scene.open("social_scene", "Player Levels", online_stuff_scene);
+            player_levels_handler.OpenSearch();
+
+            inPlayerLevelsScene = true;
         });
 
         social_stuff_cards[5].addEventListener("click", () => {
@@ -594,8 +631,179 @@ class create_clan_handler {
     };
 };
 
+class player_levels_handler_wrapper extends NewLevel {
+    constructor() {
+        super();
+    };
+
+    init() {
+        this.events();
+    };
+
+    events() {
+        player_level_search_btn.addEventListener("click", () => {
+            if (SearchLevelInput.value.length > 0) {
+                this.RequestLevelSearchResults(SearchLevelInput.value);
+            };
+        });
+    };
+
+    RequestLevelSearchResults(text) {
+        try {
+            socket.emit("RequestOnlineLevels", text, levels => {
+                this.DisplayLevelSearchResults(levels);
+            });
+
+        } catch (error) {
+            AlertText.textContent = "Something went wrong!";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        };
+    };
+
+    DisplayLevelSearchResults = (levels) => {
+        player_levels_results_list.textContent = null;
+
+        // no level found
+        if (levels.length <= 0) {
+            let p = document.createElement("p");
+            p.textContent = "No level found";
+            p.style.margin = "50px 0 0 0";
+            p.style.fontSize = "40px";
+            p.style.fontWeight = "600";
+
+            player_levels_results_list.appendChild(p);
+
+        } else { // levels exist
+            levels.forEach(level => {
+                this.AddLevelToList(level);
+            });
+        };
+    };
+
+    AddLevelToList = (level, correspondPlayer) => {
+        let li = document.createElement("li");
+        li.classList = "player_level_result_item";
+
+        let level_theme = (level.bg1 == "0") ? "white" : this.PossibleColors[parseInt(level.bg1)];
+
+        let span = document.createElement("span");
+        span.textContent = level.level_name;
+        span.style.color = level_theme;
+
+        if (level.level_name.length >= 18) {
+            span.style.fontSize = "var(--Text-font-size)";
+        } else {
+            span.style.fontSize = "4vh";
+        };
+
+        let span1 = document.createElement("span");
+        span1.classList = "LevelIconWrapper"
+        span1.style.border = `5px solid ${level_theme}`;
+
+        let div1 = document.createElement("div");
+        let div2 = document.createElement("div");
+
+        let InnerP = document.createElement("p");
+        InnerP.textContent = `Level ID: 0${level.id}`;
+
+        div1.classList = "LevelListItem_InnerWrapper1";
+        div2.classList = "LevelListItem_InnerWrapper2";
+
+        // Display from which player the level is. User can also click on the name of player to look at this profile
+        if (correspondPlayer) {
+            let InnerSpan = document.createElement("span");
+            let PlayerNameP = document.createElement("p");
+            InnerSpan.textContent = `from `;
+            PlayerNameP.textContent = `${correspondPlayer.player_name}`;
+            PlayerNameP.classList = "Level_PlayerName";
+
+            let player = correspondPlayer;
+            let player_name = player.player_name;
+            let player_id = player.player_id;
+            let player_icon = player.player_icon;
+            let playerInfoClass = player.playerInfoClass;
+            let playerInfoColor = player.playerInfoColor;
+            let quote = player.quote;
+            let onlineGamesWon = player.onlineGamesWon;
+            let XP = player.XP;
+            let currentUsedSkin = player.currentUsedSkin;
+            let last_connection = player.last_connection;
+
+            // click event
+            PlayerNameP.addEventListener("click", (e) => {
+                e.stopPropagation();
+
+                DarkLayer.style.display = "block";
+                if (player_id != localStorage.getItem("PlayerID")) { // User clicks on other players profile
+                    ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+
+                } else { // User clicks on his own profile
+                    OpenOwnUserProfile();
+                };
+            });
+
+            div2.appendChild(InnerSpan);
+            div2.appendChild(PlayerNameP);
+        };
+
+        div2.appendChild(InnerP);
+
+        let img = document.createElement("img");
+        img.src = this.Settings.levelicon[parseInt(level.icon)];
+        img.width = "32";
+        img.height = "32";
+
+        li.addEventListener("click", () => {
+            DarkLayerAnimation(online_level_scene, multiple_use_scene).then(() => {
+                // console.log(level, level.CreatorBeatIt, level.costum_patterns);
+
+                this.selectedLevel = [parseInt(level.bg1), parseInt(level.bg2), level.required_points, level.player_timer, parseInt(level.icon), parseInt(level.bg_music), JSON.parse(level.pattern), level.field, level.level_name, level.level_status,
+                    true, level.id, level.publish_date, level.CreatorBeatIt, level.creation_date, JSON.parse(level.costum_patterns), JSON.parse(level.costum_field)
+                ];
+
+
+                let online_level_overview_handler = new onlineLevelOverviewHandler(level);
+                online_level_overview_handler.init();
+            });
+        });
+
+        span1.appendChild(img);
+        div1.appendChild(span);
+        div1.appendChild(span1)
+        li.appendChild(div1);
+        li.appendChild(div2);
+        player_levels_results_list.appendChild(li);
+    };
+
+    OpenSearch = () => {
+        SearchLevelInput.focus();
+
+        player_levels_results_list.textContent = null;
+        this.selectedLevel = undefined;
+
+        try {
+            socket.emit("DisplayAllOnlineLevel", ((levels, players) => {
+
+                if (levels.length >= 1) {
+
+                    levels.forEach((level, index) => {
+                        this.AddLevelToList(level, players[index][0]);
+                    });
+                };
+            }));
+
+        } catch (error) {
+            console.log(error);
+        };
+    };
+};
+
 let social_scene = new social_scene_class();
 social_scene.events();
 
 let CreateClanHandler = new create_clan_handler();
 CreateClanHandler.init();
+
+player_levels_handler = new player_levels_handler_wrapper();
+creative_level_instance = player_levels_handler
+player_levels_handler.init();

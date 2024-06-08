@@ -123,7 +123,7 @@ SearchBar_placeholderText.addEventListener('keydown', event => {
     };
 });
 
-SearchLevelInput.addEventListener("keydown", () => {
+SearchLevelInput.addEventListener("keydown", (e) => {
     let len = event.target.value.trim().length;
     let hasSelection = false;
     let selection = window.getSelection();

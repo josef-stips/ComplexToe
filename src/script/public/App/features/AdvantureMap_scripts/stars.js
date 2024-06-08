@@ -474,54 +474,61 @@ class stars_handler {
     };
 
     async check() {
-        let starsUser = JSON.parse(localStorage.getItem("starsUser"));
-        let filled_stars = [];
+        if (inAdvantureMode) {
+            endgame_level_stars.forEach(star => star.style.display = "block");
 
-        // fill stars that were already filled
-        for (const [i, val] of Object.entries(starsUser[current_selected_level])) {
-            if (val) {
-                endgame_level_stars[i - 1].className = "endgame_level_stars fa-solid fa-star";
+            let starsUser = JSON.parse(localStorage.getItem("starsUser"));
+            let filled_stars = [];
+
+            // fill stars that were already filled
+            for (const [i, val] of Object.entries(starsUser[current_selected_level])) {
+                if (val) {
+                    endgame_level_stars[i - 1].className = "endgame_level_stars fa-solid fa-star";
+                };
             };
-        };
 
-        // check for new stars to be filled
-        for (let [i, val] of Object.entries(this.liveData)) {
-            i = Number(i);
-            let condition = this.starsData[current_selected_level][i + 1]["requirementCondition"];
-            let userValue = this.liveData[i];
+            // check for new stars to be filled
+            for (let [i, val] of Object.entries(this.liveData)) {
+                i = Number(i);
+                let condition = this.starsData[current_selected_level][i + 1]["requirementCondition"];
+                let userValue = this.liveData[i];
 
-            if (this.starsUser[current_selected_level][i + 1] == true) continue;
+                if (this.starsUser[current_selected_level][i + 1] == true) continue;
 
-            switch (i + 1) {
-                case 2:
-                    if (MaxAmountOfMovesCount >= condition) {
-                        console.log(`Good! ${max_amount_of_moves - userValue} ${condition}`);
+                switch (i + 1) {
+                    case 2:
+                        if (MaxAmountOfMovesCount >= condition) {
+                            console.log(`Good! ${max_amount_of_moves - userValue} ${condition}`);
 
-                        starsUser[current_selected_level][i + 1] = true;
-                        filled_stars.push(endgame_level_stars[i]);
-                    };
-                    break;
+                            starsUser[current_selected_level][i + 1] = true;
+                            filled_stars.push(endgame_level_stars[i]);
+                        };
+                        break;
 
-                default:
-                    if (userValue <= condition) {
-                        console.log(`Good! ${userValue} ${condition}`)
+                    default:
+                        if (userValue <= condition) {
+                            console.log(`Good! ${userValue} ${condition}`)
 
-                        starsUser[current_selected_level][i + 1] = true;
-                        filled_stars.push(endgame_level_stars[i]);
-                    };
-                    break;
+                            starsUser[current_selected_level][i + 1] = true;
+                            filled_stars.push(endgame_level_stars[i]);
+                        };
+                        break;
+                };
             };
-        };
 
-        // fill
-        for (const i of filled_stars) {
-            await sleep(750);
-            this.fill_star_animation(i);
-        };
+            // fill
+            for (const i of filled_stars) {
+                await sleep(750);
+                this.fill_star_animation(i);
+            };
 
-        // save in storage
-        localStorage.setItem("starsUser", JSON.stringify(starsUser));
-        this.starsUser = starsUser;
+            // save in storage
+            localStorage.setItem("starsUser", JSON.stringify(starsUser));
+            this.starsUser = starsUser;
+
+        } else {
+            endgame_level_stars.forEach(star => star.style.display = "none");
+        };
     };
 
     fill_star_animation(star) {

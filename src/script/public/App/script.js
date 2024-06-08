@@ -16,6 +16,11 @@ let GameMode = {
         "opponent": "CreateLevel",
         "icon": "",
         "description": "Arena",
+    },
+    4: {
+        "opponent": "CreateLevel",
+        "icon": "",
+        "description": "Create Level",
     }
 };
 
@@ -471,6 +476,11 @@ let socket;
 
 // check if admin created a lobby based on a self created game from the game cards or on a costum level which a user can create and publish to the server
 let PlayingInCreatedLevel = false;
+
+let NewCreativeLevel;
+let player_levels_handler;
+let creative_level_instance;
+let inPlayerLevelsScene = false;
 
 // Request friends from database and take action
 const RequestFriendsListFromDatabase = async() => {
@@ -1020,7 +1030,7 @@ fieldsArea_back_btn.addEventListener('click', () => {
     DailyChallenge.check();
 });
 
-let NewCreativeLevel;
+
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
     // if (localStorage.getItem("UserName")) {
@@ -1973,15 +1983,32 @@ class multiple_use_scenery {
         this.events();
     };
 
-    open(use_for) {
+    open(pop_up, use_for, close_el) {
         this.use = use_for;
-        DisplayPopUp_PopAnimation(multiple_use_scene, "flex", false);
+
+        DarkLayerAnimation(multiple_use_scene, close_el);
+        this.alter_scene_use(pop_up, use_for);
     };
 
     events() {
         use_scene_back_btn.addEventListener("click", () => {
-            multiple_use_scene.style.display = "none";
+            switch (multiple_use_scene.getAttribute("open_scene_x")) {
+                case "lobby":
+                    DarkLayerAnimation(gameModeCards_Div, multiple_use_scene);
+                    break;
+
+                case "social_scene":
+                    DarkLayerAnimation(online_stuff_scene, multiple_use_scene);
+                    break;
+            };
         });
+    };
+
+    alter_scene_use(use, specific_content) {
+        multiple_use_scene.setAttribute("open_scene_x", use);
+        multiple_use_scene_content_wrapper.setAttribute("use_for", specific_content);
+
+        multiple_use_scene_title.textContent = this.use;
     };
 };
 
@@ -2005,3 +2032,10 @@ class scene_mode {
 
 let sceneMode = new scene_mode();
 sceneMode.default();
+
+SearchLevelInput.addEventListener("keyup", (e) => {
+    if (e.key == "Enter") {
+        e.preventDefault();
+        player_levels_handler.RequestLevelSearchResults(SearchLevelInput.value);
+    };
+});
