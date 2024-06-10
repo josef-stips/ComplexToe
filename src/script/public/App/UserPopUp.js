@@ -158,7 +158,11 @@ const TryToCloseUserInfoPopUp = () => {
                 localStorage.setItem('UserName', userInfoName.textContent);
             };
 
-            if (getComputedStyle(clan_overview_pop_up).display == "flex") DarkLayer.style.display = "block";
+            if (getComputedStyle(clan_overview_pop_up).display == "flex" ||
+                getComputedStyle(comments_pop_up).display == "flex") {
+
+                DarkLayer.style.display = "block"
+            };
 
             UserQuote.contentEditable = "false";
             UserEditsQuote = false;

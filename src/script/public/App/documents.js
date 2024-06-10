@@ -634,6 +634,12 @@ let level_scene_progress_bar = document.querySelector(".level_scene_progress_bar
 let level_scene_start_btn = document.querySelector(".level_scene_start_btn");
 let level_scene_common_pattern_btn = document.querySelector(".level_scene_common_pattern_btn");
 let level_scene_player_conquered_btn = document.querySelector(".level_scene_player_conquered_btn");
+let comments_pop_up = document.querySelector(".comments_pop_up");
+let comments_main_form = document.querySelector(".comments_main_form");
+let comments_submit_btn = document.querySelector(".comments_submit_btn");
+let comments_submit_input = document.querySelector(".comments_submit_input");
+let comments_close_btn = document.querySelector(".comments_close_btn");
+let comments_list = document.querySelector(".comments_list");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

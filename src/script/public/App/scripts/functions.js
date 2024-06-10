@@ -225,3 +225,27 @@ const DisplayPlayerIcon_at_el = (userInfoIcon, playerInfoClass, playerInfoColor,
         userInfoIcon.style.color = "var(--font-color)";
     };
 };
+
+function formatDate(dateString) {
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const date = new Date(dateString);
+    const month = months[date.getUTCMonth()]; // 'June'
+    const day = String(date.getUTCDate()).padStart(2, '0'); // '10'
+    const year = date.getUTCFullYear(); // '2024'
+
+    let hours = date.getUTCHours();
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0'); // '48'
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0'); // '29'
+    const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0'); // '617'
+
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // '0' should be '12'
+
+    const formattedDate = `${month} ${day}, ${year}, ${hours}:${minutes} ${ampm}`;
+    return formattedDate;
+}
