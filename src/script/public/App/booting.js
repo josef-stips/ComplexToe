@@ -103,6 +103,11 @@ function checkLoadingProgress() {
 
         ToS(); // terms of service pop up the user must agree on the first time he joins the game
 
+        roll_animation(comments_header_sword, comments_header_sword);
+        roll_animation(document.querySelector("#gameMode-KI-card"), document.querySelectorAll(".BotIcon")[0]);
+        roll_animation(document.querySelector("#gameMode-TwoPlayerOnline-card"), document.querySelectorAll(".BotIcon")[1]);
+        roll_animation(document.querySelector("#gameMode-OneVsOne-card"), document.querySelectorAll(".BotIcon")[2]);
+
     } else {
         setTimeout(() => {
             checkLoadingProgress();

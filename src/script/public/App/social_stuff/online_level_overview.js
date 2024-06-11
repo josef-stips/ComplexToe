@@ -7,14 +7,15 @@ class onlineLevelOverviewHandler {
         this.comments_handler = new level_comments_handler(this);
     };
 
-    init() {
-        this.events();
+    async init() {
+        console.log(this.level);
+
         this.init_DOM();
         this.init_grid();
-        this.init_personal_data_for_level();
-        this.comments_handler.events();
+        await this.init_personal_data_for_level();
+        this.events();
 
-        console.log(this.level);
+        this.comments_handler.events();
     };
 
     abort(err) {
@@ -25,25 +26,41 @@ class onlineLevelOverviewHandler {
 
     events() {
         level_scene_back_btn.removeEventListener("click", level_scene_back_btn.click);
-        level_scene_back_btn.addEventListener("click", level_scene_back_btn.click = () => {
-            DarkLayerAnimation(multiple_use_scene, online_level_scene).then(() => {
 
-                Lobby.style.background = ``;
-                theme.start();
-            });
+        level_scene_back_btn.addEventListener("click", level_scene_back_btn.click = () => {
+            if (!NewCreativeLevel) {
+                DarkLayerAnimation(multiple_use_scene, online_level_scene).then(() => {
+
+                    Lobby.style.background = ``;
+                    theme.start();
+                });
+
+            } else {
+                DarkLayerAnimation(CreateLevelScene, online_level_scene).then(() => {
+                    sceneMode.full();
+                    Lobby.style.background = ``;
+                    theme.start();
+                });
+            };
         });
 
-        level_scene_start_btn.addEventListener("click", () => {
+        level_scene_start_btn.removeEventListener("click", level_scene_start_btn.ev);
+
+        level_scene_start_btn.addEventListener("click", level_scene_start_btn.ev = () => {
             DisplayPopUp_PopAnimation(ChooseBetweenModesPopUp, "flex", true);
         });
 
-        level_scene_comments_btn.addEventListener("click", () => {
+        level_scene_comments_btn.removeEventListener("click", level_scene_comments_btn.ev);
+
+        level_scene_comments_btn.addEventListener("click", level_scene_comments_btn.ev = () => {
             this.comments_handler.open();
         });
 
         comments_close_btn.addEventListener("click", () => {
             this.comments_handler.close();
         });
+
+        level_scene_likes_btn.removeEventListener("click", level_scene_likes_btn.ev);
     };
 
     init_DOM() {
@@ -67,19 +84,73 @@ class onlineLevelOverviewHandler {
         player_levels_handler.GenerateField(xy, xy, level_scene_grid);
     };
 
-    init_personal_data_for_level() {
+    async init_personal_data_for_level() {
         try {
-            socket.emit("check_personal_data_for_level_x", Number(localStorage.getItem("PlayerID")), this.level["id"], cb => {
+            await socket.emit("check_personal_data_for_level_x", Number(localStorage.getItem("PlayerID")), this.level["id"], (cb, level_data) => {
                 console.log(cb);
+                this.fetch_reaction();
 
-                if (!cb) return;
+                level_likes_text.textContent = !level_data["likes"] ? "0" : level_data["likes"];
+
+                if (!cb["points_made"]) {
+                    this.placeholder_data_text();
+                    return;
+                };
+
+                let points_made = cb["points_made"];
+                let points_required = this.level["required_points"];
+                let progress = (points_made / points_required) * 100;
 
                 this.personal_data_for_level = cb;
-                level_scene_progress_text.textContent = `${cb[this.level["id"]]["points_made"]} / ${this.level["required_points"]} Points`;
+                level_scene_progress_text.textContent = `${points_made} / ${points_required} Points`;
+                level_scene_progress_bar.style.background = `linear-gradient(90deg, white ${progress}%, transparent 0%)`;
+                level_scene_best_time.textContent = `best time: ${cb["best_time"]} seconds`;
             });
 
         } catch (error) {
             this.abort(error);
+        };
+    };
+
+    placeholder_data_text() {
+        level_scene_progress_text.textContent = `0 / ${this.level["required_points"]} Points`;
+        level_scene_progress_bar.style.background = `linear-gradient(90deg, white 0%, transparent 0%)`;
+        level_scene_best_time.textContent = `best time: 0 seconds`;
+    };
+
+    async fetch_reaction() {
+        try {
+            await socket.emit("fetch_users_level_reaction", this.level["id"], Number(localStorage.getItem("PlayerID")), cb => {
+
+                if (cb.reaction == 1) {
+                    level_scene_likes_btn.classList.add("active_like_btn");
+                    level_scene_likes_btn.setAttribute("like_level_btn_is_active", "true");
+
+                } else {
+                    level_scene_likes_btn.classList.remove("active_like_btn");
+                    level_scene_likes_btn.setAttribute("like_level_btn_is_active", null);
+
+                    level_scene_likes_btn.addEventListener("click", level_scene_likes_btn.ev = () => {
+                        this.like_level();
+                    });
+                };
+            });
+
+        } catch (error) {
+            console.log(error);
+        };
+    };
+
+    like_level() {
+        try {
+            socket.emit("like_level", this.level["id"], Number(localStorage.getItem("PlayerID")), cb => {
+                level_scene_likes_btn.setAttribute("like_level_btn_is_active", "true");
+                level_scene_likes_btn.classList.add("active_like_btn");
+                level_likes_text.textContent = cb;
+            });
+
+        } catch (error) {
+            console.log(error);
         };
     };
 };
@@ -318,9 +389,9 @@ chooseModeCloseBtn.addEventListener("click", () => {
 });
 
 OnlineModeBtn.addEventListener("click", () => {
-    player_levels_handler.startGame(1);
+    !NewCreativeLevel ? player_levels_handler.startGame(1) : NewCreativeLevel.startGame(1);
 });
 
 OfflineModeBtn.addEventListener("click", () => {
-    player_levels_handler.startGame(0);
+    !NewCreativeLevel ? player_levels_handler.startGame(0) : NewCreativeLevel.startGame(0);
 });

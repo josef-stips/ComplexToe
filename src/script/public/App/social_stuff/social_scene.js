@@ -21,6 +21,9 @@ class social_scene_class {
         social_stuff_cards[0].addEventListener("click", () => {
             if (localStorage.getItem("UserName")) {
                 curr_mode = GameMode[4].opponent;
+                inPlayerLevelsScene = false;
+
+                sceneMode.full();
 
                 // pause music in create level mode
                 PauseMusic();
@@ -634,6 +637,8 @@ class create_clan_handler {
 class player_levels_handler_wrapper extends NewLevel {
     constructor() {
         super();
+
+        this.online_level_overview_handler = null;
     };
 
     init() {
@@ -762,8 +767,8 @@ class player_levels_handler_wrapper extends NewLevel {
                 ];
 
 
-                let online_level_overview_handler = new onlineLevelOverviewHandler(level);
-                online_level_overview_handler.init();
+                this.online_level_overview_handler = new onlineLevelOverviewHandler(level);
+                this.online_level_overview_handler.init();
             });
         });
 

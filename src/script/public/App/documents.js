@@ -640,6 +640,10 @@ let comments_submit_btn = document.querySelector(".comments_submit_btn");
 let comments_submit_input = document.querySelector(".comments_submit_input");
 let comments_close_btn = document.querySelector(".comments_close_btn");
 let comments_list = document.querySelector(".comments_list");
+let comments_header_sword = document.querySelector(".comments_header_sword");
+let level_scene_best_time = document.querySelector(".level_scene_best_time");
+let PreviewLevelBtn = document.querySelector(".PreviewLevelBtn");
+let level_likes_text = document.querySelector(".level_likes_text");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

@@ -258,9 +258,6 @@ class NewLevel {
         SearchLevelInputWrapper.style.display = "none";
         CreateLevel_Title.style.display = "block";
 
-        PlayLevelBtn.style.display = "none";
-
-        this.CloseSearch(false);
 
         if (this.CurrentSelectedSetting.id == 0) {
             workbench_levelID_display.textContent = "ID none";
@@ -340,6 +337,7 @@ class NewLevel {
 
         PublishLevelBtn.style.display = "none";
         unpublishLevelBtn.style.display = "none";
+        PreviewLevelBtn.style.display = "none";
 
         if (this.selectedLevel == undefined) {
             CurrentSelectedLevel_Display.textContent = "selected level: ";
@@ -465,9 +463,12 @@ class NewLevel {
 
                     EditLevelBtn_ListBtn.style.display = "block";
                     RemoveLevelBtn.style.display = "block";
+                    PreviewLevelBtn.style.display = "none";
+
                 } else {
                     PublishLevelBtn.style.display = "none";
                     unpublishLevelBtn.style.display = "none";
+                    PreviewLevelBtn.style.display = "none";
                 };
 
                 LevelList_PublishStatusDisplay.textContent = "unpublished";
@@ -478,9 +479,12 @@ class NewLevel {
                 if (!this.Searching) {
                     PublishLevelBtn.style.display = "none";
                     unpublishLevelBtn.style.display = "block";
+                    PreviewLevelBtn.style.display = "block";
+
                 } else {
                     PublishLevelBtn.style.display = "none";
                     unpublishLevelBtn.style.display = "none";
+                    PreviewLevelBtn.style.display = "none";
                 };
 
                 EditLevelBtn_ListBtn.style.display = "none";
@@ -794,6 +798,7 @@ class NewLevel {
     startGame = (mode) => {
         let FieldSize = `${this.Settings.cellgrid[this.selectedLevel[7]]}x${this.Settings.cellgrid[this.selectedLevel[7]]}`;
         var user_unlocked_Advanced_fields_online = true;
+
         // If player haven't unlocked advanced fields but the level is an advanced field, unlock it and delete it later after level creation
         if (DataFields[FieldSize] == undefined) {
             DataFields['25x25'] = document.querySelector('#twentyfivextwentyfive');
@@ -1083,14 +1088,17 @@ class NewLevel {
 
 // add user costum pattern to win conditions
 const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, costumXCoordFromThirdParty) => { // costumPatternsFromThirdParty : from database for online game
-    // console.log(costumPatternsFromThirdParty, NewCreativeLevel);
+    console.log(costumPatternsFromThirdParty, NewCreativeLevel, costumXCoordFromThirdParty);
 
     let patterns;
     if (NewCreativeLevel) {
         patterns = NewCreativeLevel.selectedLevel[15];
 
-    } else {
+    } else if (!NewCreativeLevel && !inPlayerLevelsScene) {
         patterns = costumPatternsFromThirdParty;
+
+    } else if (inPlayerLevelsScene) {
+        patterns = JSON.parse(player_levels_handler.online_level_overview_handler.level["costum_patterns"]);
     };
 
     if (patterns && NewCreativeLevel) {
@@ -1135,8 +1143,11 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
     if (NewCreativeLevel) {
         patterns = NewCreativeLevel.selectedLevel[15];
 
-    } else {
-        patterns = creativeLevel_online_costumPatterns;
+    } else if (!NewCreativeLevel && !inPlayerLevelsScene) {
+        patterns = costumPatternsFromThirdParty;
+
+    } else if (inPlayerLevelsScene) {
+        patterns = JSON.parse(player_levels_handler.online_level_overview_handler.level["costum_patterns"]);
     };
 
     // delete previous costum user cell grids 
@@ -1282,6 +1293,28 @@ const InitCreateLevelScene = () => {
         } else if (NewCreativeLevel.selectedLevel != undefined && NewCreativeLevel.selectedLevel[9] == 1) { // level is published, can't be edited
             AlertText.textContent = "You can't edit a level once it's published";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        };
+    });
+
+    PreviewLevelBtn.addEventListener("click", () => {
+        if (NewCreativeLevel.selectedLevel == undefined) {
+
+            AlertText.textContent = "select a level to preview it";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+
+        } else {
+            DarkLayerAnimation(online_level_scene, multiple_use_scene).then(async() => {
+
+                await socket.emit("request_level_for_id", NewCreativeLevel.selectedLevel[11], (level) => {
+
+                    player_levels_handler.online_level_overview_handler = new onlineLevelOverviewHandler();
+                    player_levels_handler.online_level_overview_handler.level = level;
+                    player_levels_handler.online_level_overview_handler.init();
+
+                    CreateLevelScene.style.display = "none";
+                    sceneMode.default();
+                });
+            });
         };
     });
 

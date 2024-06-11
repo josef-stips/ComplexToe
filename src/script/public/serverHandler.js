@@ -384,6 +384,7 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
 
                     if (PlayingInCreatedLevel && !inPlayerLevelsScene) {
                         CreateLevelScene.style.display = "flex"
+                        sceneMode.full();
 
                     } else {
                         if (inPlayerLevelsScene) {
@@ -509,6 +510,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
 
         if (PlayingInCreatedLevel && !inPlayerLevelsScene) {
             CreateLevelScene.style.display = "flex";
+            sceneMode.full();
 
         } else {
             gameModeFields_Div.style.display = 'flex';
@@ -939,7 +941,15 @@ socket.on('killed_game', () => {
     GameField.style.display = 'none';
     // enter lobby
     OnlineGame_Lobby.style.display = 'flex';
-    (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+
+    if (PlayingInCreatedLevel) {
+        CreateLevelScene.style.display = "flex"
+        sceneMode.full();
+
+    } else {
+        gameModeFields_Div.style.display = 'flex';
+    };
+
     Lobby_GameCode_display.style.userSelect = 'text';
     Lobby.style.background = "";
     // close pop ups if there where any open
@@ -1089,8 +1099,16 @@ socket.on('INFORM_user_left_game', () => {
     // for the admin and blocker, they are in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == "blocker") {
         ChangeGameBG(undefined, undefined, true);
+
         // display right things
-        (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+        if (PlayingInCreatedLevel) {
+            CreateLevelScene.style.display = "flex"
+            sceneMode.full();
+
+        } else {
+            gameModeFields_Div.style.display = 'flex';
+        };
+
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
         // informative pop up for other players in lobby
@@ -1127,7 +1145,15 @@ socket.on('INFORM_blocker_left_game', () => {
     // for the admin, he is in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == 'user') {
         ChangeGameBG(undefined, undefined, true);
-        (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+
+        if (PlayingInCreatedLevel) {
+            CreateLevelScene.style.display = "flex"
+            sceneMode.full();
+
+        } else {
+            gameModeFields_Div.style.display = 'flex';
+        };
+
         OnlineGame_Lobby.style.display = 'flex';
         GameField.style.display = 'none';
         friendLeftGamePopUp.style.display = 'flex';
@@ -1160,7 +1186,15 @@ socket.on('INFORM_admin_left_room', () => {
     ChangeGameBG(undefined, undefined, true);
     OnlineGame_Lobby.style.display = 'none';
     GameField.style.display = 'none';
-    (PlayingInCreatedLevel) ? CreateLevelScene.style.display = "flex": gameModeFields_Div.style.display = 'flex';
+
+    if (PlayingInCreatedLevel) {
+        CreateLevelScene.style.display = "flex"
+        sceneMode.full();
+
+    } else {
+        gameModeFields_Div.style.display = 'flex';
+    };
+
     SetPlayerNamesPopUp.style.display = 'none';
     CloseOnlinePopUps();
     DarkLayer.style.display = 'block';

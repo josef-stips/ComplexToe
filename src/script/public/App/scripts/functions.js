@@ -248,4 +248,16 @@ function formatDate(dateString) {
 
     const formattedDate = `${month} ${day}, ${year}, ${hours}:${minutes} ${ampm}`;
     return formattedDate;
+};
+
+const roll_animation = (item, class_item) => {
+    item.addEventListener('mouseenter', () => {
+        class_item.classList.remove('unroll');
+        class_item.classList.add('roll');
+    });
+
+    item.addEventListener('mouseleave', () => {
+        class_item.classList.remove('roll');
+        class_item.classList.add('unroll');
+    });
 }

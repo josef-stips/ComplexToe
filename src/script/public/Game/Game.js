@@ -12,6 +12,8 @@ let points_to_win = 0; // required amount of points to win
 let yCell_Amount; // numb
 let xCell_Amount; // numb
 
+let GameSeconds = 0;
+
 // Player 1 is always X and can start first
 let PlayerData = {
     1: {
@@ -119,8 +121,11 @@ let max_amount_of_moves = null;
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
     CreativeLevel_from_onlineMode_costumPatterns) {
 
+    sceneMode.default();
+
     // to have all info globally
     allGameData = [];
+    GameSeconds = 0;
 
     for (const i of arguments) {
         allGameData.push(i);
@@ -452,7 +457,6 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     if (!onlineMode) {
 
         // Offline mode
-        let GameSeconds = 0;
         GameField_TimeMonitor.textContent = '0 s.';
         clearInterval(gameCounter);
         gameCounter = null;
@@ -1411,6 +1415,7 @@ function single_CellBlock(cell, fromMap, WinCombination) {
 const EndGameGameAnimation = (text, OnGameEnd) => {
     return new Promise((resolve) => {
         if (!document.body.querySelector(".WhiteLayer")) {
+
             // remove access to anything and close all pop ups
             removeAccessToAnything();
 

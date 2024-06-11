@@ -898,6 +898,14 @@ img {
     transform: scale(1.05);
 }
 
+.gameMode-card:hover .card-circle img.roll {
+    animation: item_roll 0.85s ease-in-out forwards;
+}
+
+.gameMode-card:hover .card-circle img.unroll {
+    animation: item_unroll 0.85s ease-in-out forwards;
+}
+
 .card-header {
     height: 10%;
     width: 100%;
@@ -5972,8 +5980,8 @@ label h3 {
 .CreateLevelScene {
     display: none;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     justify-content: space-between;
     align-items: center;
 }
@@ -5984,19 +5992,20 @@ label h3 {
     align-items: center;
     justify-content: space-between;
     width: 97.5%;
-    height: 50%;
+    height: 15%;
     min-height: 10%;
 }
 
 .CreateLevel_main {
-    height: 100%;
+    height: 85%;
     width: 100%;
+    position: relative;
 }
 
 .CreateLevel_Workbench {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 85%;
     width: 100%;
     align-items: center;
 }
@@ -6007,13 +6016,18 @@ label h3 {
     display: flex;
     gap: 1em;
     justify-content: start;
+    align-items: flex-start;
     flex-direction: row;
+    margin-top: 5vh;
 }
 
 .CreateLevel_headerMiddle {
+    display: flex;
     height: 100%;
     width: 100%;
     position: relative;
+    align-items: center;
+    justify-content: center;
 }
 
 .CreateLevel_headerRight {
@@ -6023,6 +6037,8 @@ label h3 {
     gap: 1em;
     flex-direction: row;
     justify-content: end;
+    align-items: flex-start;
+    margin-top: 5vh;
 }
 
 .Workbench_main {
@@ -6036,7 +6052,7 @@ label h3 {
 }
 
 .CreateLevel_Title {
-    font-size: 30px;
+    font-size: 4.5vh;
 }
 
 .Workbench_footer {
@@ -6050,6 +6066,10 @@ label h3 {
 }
 
 .PlayLevelBtn {
+    display: none;
+}
+
+.PreviewLevelBtn {
     display: none;
 }
 
@@ -6385,17 +6405,21 @@ label h3 {
     display: flex;
     width: 100%;
     flex-direction: column;
-    height: 100%;
+    height: 85%;
+    max-height: 85%;
+    position: relative;
 }
 
 .LevelList_main {
     display: flex;
     width: 100%;
-    min-height: 65vh;
-    max-height: 65vh;
+    /* min-height: 65vh; */
+    /* max-height: 65vh; */
+    height: 100%;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
+    position: relative;
 }
 
 .AddLevelBtn {
@@ -6429,7 +6453,7 @@ label h3 {
     height: 5%;
     display: flex;
     padding: 20px 0 0 0;
-    border-top: 2px solid white;
+    border-top: 5px solid white;
     flex-direction: row;
 }
 
@@ -6455,6 +6479,7 @@ label h3 {
 .LevelList_list {
     width: 50%;
     height: 100%;
+    max-height: 60vh;
     border: 6px solid var(--line-color);
     overflow: scroll;
     flex-direction: column;
@@ -9145,6 +9170,7 @@ p.createCostumField_yInput {
     -webkit-text-fill-color: transparent;
     --first-color: var(--gradient-second-color);
     --second-color: var(--gradient-first-color);
+    background-color: currentcolor;
 }
 
 .level_scene_start_btn:hover>i {
@@ -9157,19 +9183,29 @@ p.createCostumField_yInput {
     background-clip: text;
 }
 
+.level_scene_grid {
+    transition: transform 1s ease-in-out;
+}
+
+
+/* .level_scene_start_btn:hover .level_scene_grid {
+    transform: scale(1.1);
+    transition: transform 2s ease-in-out;
+} */
+
 .level_scene_progress_wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 2vh;
+    gap: 1vh;
     width: 100%;
     height: auto;
 }
 
 .level_scene_progress_bar {
-    border: 1vh solid;
-    border-radius: 30px;
+    border: 1vh solid #cbcbcb;
+    border-radius: 10vh;
     width: 45vh;
     height: 5vh;
 }
@@ -9220,6 +9256,17 @@ p.createCostumField_yInput {
     margin: 0 0 0 2vh;
 }
 
+.active_like_btn {
+    color: var(--line-color);
+    cursor: default !important;
+    transition: unset !important;
+}
+
+.active_like_btn:hover {
+    transform: unset !important;
+    transition: unset !important;
+}
+
 
 /* comments pop up */
 
@@ -9247,6 +9294,7 @@ p.createCostumField_yInput {
     align-items: flex-start;
     justify-content: flex-start;
     border-right: 5px solid;
+    flex-direction: column;
 }
 
 .comments_close_btn {
@@ -9353,8 +9401,54 @@ p.createCostumField_yInput {
     color: var(--line-color);
 }
 
+.comments_header_sword {
+    margin-top: 20vh;
+    width: 80%;
+    height: 50%;
+    align-self: center;
+    cursor: pointer;
+    pointer-events: all;
+    animation: none;
+}
+
+.comments_header_sword.roll {
+    animation: item_roll 0.65s ease-in-out forwards;
+}
+
+.comments_header_sword.unroll {
+    animation: item_unroll 0.65s ease-in-out forwards;
+}
+
+.level_scene_best_time {
+    font-size: 3vh;
+}
+
 
 /* Animations */
+
+@keyframes item_roll {
+    0% {
+        transform: rotate(0);
+    }
+    50% {
+        transform: rotate(-360deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(-360deg) scale(1.2);
+    }
+}
+
+@keyframes item_unroll {
+    0% {
+        transform: rotate(-360deg) scale(1.2);
+    }
+    50% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
 
 @keyframes gradient_color_switch {
     0% {

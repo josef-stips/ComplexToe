@@ -1203,11 +1203,14 @@ gameInfo_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'flex';
     DisplayPopUp_PopAnimation(GameInfoPopUp, "flex", true);
 
-    if (!NewCreativeLevel) {
+    if (!NewCreativeLevel && !inPlayerLevelsScene) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
     } else if (NewCreativeLevel || PlayingInCreatedLevel_AsGuest) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
+
+    } else if (inPlayerLevelsScene) {
+        GameInfo_HeaderTitle.textContent = `${player_levels_handler.online_level_overview_handler.level.level_name} - Game Info`;
     };
 
     // not in advanture mode
@@ -2038,4 +2041,12 @@ SearchLevelInput.addEventListener("keyup", (e) => {
         e.preventDefault();
         player_levels_handler.RequestLevelSearchResults(SearchLevelInput.value);
     };
+});
+
+document.querySelector('.level_scene_start_btn').addEventListener('mouseover', () => {
+    document.querySelector('.level_scene_grid').style.transform = 'scale(1.05)';
+});
+
+document.querySelector('.level_scene_start_btn').addEventListener('mouseout', () => {
+    document.querySelector('.level_scene_grid').style.transform = 'scale(1)';
 });

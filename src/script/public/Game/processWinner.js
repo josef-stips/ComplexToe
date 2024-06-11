@@ -1008,6 +1008,19 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
     } else {
         setTimeout(() => {
 
+            console.log(player1_won, GameSeconds, score_Player1_numb);
+
+            if (inPlayerLevelsScene) {
+                console.log(player_levels_handler.online_level_overview_handler.level["id"]);
+
+                socket.emit("update_online_level_data", player1_won, GameSeconds,
+                    score_Player1_numb, Number(localStorage.getItem("PlayerID")),
+                    player_levels_handler.online_level_overview_handler.level["id"], cb => {
+
+                        console.log(cb);
+                    });
+            };
+
             // console.log(current_level_boss);
             current_level_boss && current_level_boss.stop_attack_interval();
 
