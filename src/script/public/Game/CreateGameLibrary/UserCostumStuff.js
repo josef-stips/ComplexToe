@@ -340,7 +340,6 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     };
 
     headerWrapper.appendChild(editItemsWrapper)
-
     gridWrapper.appendChild(grid);
 
     if (rights == "personal") {

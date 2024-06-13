@@ -9236,12 +9236,14 @@ p.createCostumField_yInput {
 
 .level_scene_btn>i {
     border: 0.5vh solid;
-    padding: 2vh;
+    padding: 1.8vh;
     border-radius: 5vh;
+    font-size: 4vh;
 }
 
 .level_scene_btn>p {
-    font-size: 2vh;
+    font-size: 2.5vh;
+    font-weight: 500;
 }
 
 .online_level_scene_wrapper[pos="side"]:first-child {
@@ -9257,7 +9259,7 @@ p.createCostumField_yInput {
 }
 
 .active_like_btn {
-    color: var(--line-color);
+    color: var(--gradient-first-color);
     cursor: default !important;
     transition: unset !important;
 }
@@ -9421,6 +9423,110 @@ p.createCostumField_yInput {
 
 .level_scene_best_time {
     font-size: 3vh;
+}
+
+
+/* level patterns pop up */
+
+.levels_patterns_pop_up {
+    width: 80vw;
+    height: 80vh;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: none;
+    flex-direction: column;
+    z-index: 1005;
+    align-items: center;
+    user-select: none;
+    background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
+    border: 5px solid var(--gradient-first-color);
+    border-radius: 20px;
+    color: var(--font-color);
+}
+
+.level_patterns_pop_up_header {
+    display: flex;
+    width: 97.5%;
+    height: 7.5%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 3vh;
+    padding-bottom: 3vh;
+    border-bottom: 0.5vh solid var(--gradient-first-color);
+}
+
+.level_patterns_pop_up_main {
+    width: 97.5%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.level_patterns_inner_wrapper {
+    width: 100%;
+    height: inherit;
+    margin-top: 1em;
+    display: grid;
+    align-items: flex-start;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 25vh);
+    column-gap: 2em;
+    row-gap: 2em;
+    overflow-y: auto;
+    justify-content: center;
+}
+
+.level_patterns_header_title {
+    margin-top: 3vh;
+}
+
+
+/* avg pattern pop up */
+
+.level_avg_pattern_pop_up {
+    width: 60vw;
+    height: 60vh;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: none;
+    flex-direction: column;
+    z-index: 1005;
+    align-items: center;
+    user-select: none;
+    background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
+    border: 5px solid var(--gradient-first-color);
+    border-radius: 20px;
+    color: var(--font-color);
+}
+
+.level_avg_inner_wrapper {
+    width: 100%;
+    height: inherit;
+    margin-top: 3vh;
+    display: grid;
+    align-items: flex-start;
+    grid-template-columns: repeat(auto-fill, 35vh);
+    column-gap: 2em;
+    row-gap: 2em;
+    overflow-y: auto;
+    justify-content: center;
+    font-size: 4vh;
+}
+
+h1.level_avg_header_title {
+    margin-top: 2vh;
+}
+
+.level_avg_main {
+    width: max-content;
+}
+
+i.fa-solid.fa-ranking-star {
+    font-size: 3.5vh;
 }
 
 

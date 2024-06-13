@@ -545,6 +545,10 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     };
 
     Lobby.style.background = "";
+
+    if (inPlayerLevelsScene) {
+        player_levels_handler.online_level_overview_handler.init_level_BG();
+    };
 };
 
 // display third player 

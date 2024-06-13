@@ -5,6 +5,7 @@ class onlineLevelOverviewHandler {
         this.personal_data_for_level = null;
 
         this.comments_handler = new level_comments_handler(this);
+        this.patterns_handler = new levelPatternsOverviewHandler(this);
     };
 
     async init() {
@@ -16,6 +17,7 @@ class onlineLevelOverviewHandler {
         this.events();
 
         this.comments_handler.events();
+        this.patterns_handler.init();
     };
 
     abort(err) {
@@ -64,14 +66,18 @@ class onlineLevelOverviewHandler {
     };
 
     init_DOM() {
+        this.init_level_BG();
+
+        online_level_scene_title.textContent = this.level["level_name"];
+    };
+
+    init_level_BG() {
         let bg1 = player_levels_handler.Settings.bgcolor1[this.level["bg1"]];
         let bg2 = player_levels_handler.Settings.bgcolor2[this.level["bg2"]];
 
         document.documentElement.style.setProperty("--gradient-first-color", bg1);
         document.documentElement.style.setProperty("--gradient-second-color", bg2);
         Lobby.style.background = `linear-gradient(45deg, ${bg1}, ${bg2})`;
-
-        online_level_scene_title.textContent = this.level["level_name"];
     };
 
     init_grid() {
@@ -99,17 +105,22 @@ class onlineLevelOverviewHandler {
 
                 let points_made = cb["points_made"];
                 let points_required = this.level["required_points"];
-                let progress = (points_made / points_required) * 100;
 
                 this.personal_data_for_level = cb;
-                level_scene_progress_text.textContent = `${points_made} / ${points_required} Points`;
-                level_scene_progress_bar.style.background = `linear-gradient(90deg, white ${progress}%, transparent 0%)`;
+                this.progress_bar(points_made, points_required);
                 level_scene_best_time.textContent = `best time: ${cb["best_time"]} seconds`;
             });
 
         } catch (error) {
             this.abort(error);
         };
+    };
+
+    progress_bar(points_made, points_required) {
+        let progress = (points_made / points_required) * 100;
+
+        level_scene_progress_text.textContent = `${points_made} / ${points_required} Points`;
+        level_scene_progress_bar.style.background = `linear-gradient(90deg, white ${progress}%, transparent 0%)`;
     };
 
     placeholder_data_text() {
@@ -380,6 +391,119 @@ class level_comments_handler {
                 dislike_btn.style.color = "var(--font-color)";
             };
         });
+    };
+};
+
+class levelPatternsOverviewHandler {
+    constructor(parent) {
+        this.parent = parent;
+        this.level_all_pattern_names = [];
+    };
+
+    init() {
+        this.events();
+        this.all_patterns();
+    };
+
+    all_patterns() {
+        this.parent.level.pattern && (this.level_all_pattern_names = JSON.parse(this.parent.level.pattern));
+
+        if (this.parent.level.costum_patterns != "{}") {
+            let costum_ps = Object.keys(JSON.parse(this.parent.level.costum_patterns));
+
+            console.log(costum_ps);
+
+            this.level_all_pattern_names.push(...costum_ps);
+        };
+
+        console.log(this.level_all_pattern_names);
+    };
+
+    events() {
+        level_scene_patterns_btn.removeEventListener("click", level_scene_patterns_btn.ev);
+        level_scene_patterns_btn.addEventListener("click", level_scene_patterns_btn.ev = () => {
+            this.open_patterns();
+        });
+
+        level_patterns_close_btn.removeEventListener("click", level_patterns_close_btn.ev);
+        level_patterns_close_btn.addEventListener("click", level_patterns_close_btn.ev = () => {
+            levels_patterns_pop_up.style.display = "none";
+            DarkLayer.style.display = "none";
+        });
+
+        level_scene_common_pattern_btn.removeEventListener("click", level_scene_common_pattern_btn.ev);
+        level_scene_common_pattern_btn.addEventListener("click", level_scene_common_pattern_btn.ev = () => {
+            this.open_avg();
+        });
+
+        level_avg_close_btn.removeEventListener("click", level_avg_close_btn.ev);
+        level_avg_close_btn.addEventListener("click", level_avg_close_btn.ev = () => {
+            level_avg_pattern_pop_up.style.display = "none";
+            DarkLayer.style.display = "none";
+        });
+    };
+
+    open_patterns() {
+        DisplayPopUp_PopAnimation(levels_patterns_pop_up, "flex", true);
+        this.generate_patterns();
+    };
+
+    open_avg() {
+        DisplayPopUp_PopAnimation(level_avg_pattern_pop_up, "flex", true);
+        this.generate_avg_pattern();
+    };
+
+    generate_patterns() {
+        level_patterns_inner_wrapper.textContent = null;
+        let patterns = JSON.parse(this.parent.level["costum_patterns"]);
+        let costum_patterns_n = 0;
+
+        // costum patterns
+        for (const [pattern, index] of Object.entries(patterns)) {
+            let structure = index[pattern]["structure"];
+            costum_patterns_n++;
+
+            createPattern_preview(pattern, structure, level_patterns_inner_wrapper, "level");
+        };
+
+        // official patterns
+        let off_pattern_names = JSON.parse(this.parent.level["pattern"]);
+        let off_patterns = off_pattern_names.map(p => GamePatternsList[p]);
+
+        for (const [index, structure] of off_patterns.entries()) {
+            let pattern = off_pattern_names[index];
+
+            createPattern_preview(pattern, structure, level_patterns_inner_wrapper, "level");
+        };
+
+        level_patterns_header_title.textContent =
+            `Patterns in this level (${off_patterns.length + costum_patterns_n})`;
+    };
+
+    generate_avg_pattern() {
+        level_avg_inner_wrapper.textContent = null;
+
+        try {
+            socket.emit("get_avg_pattern_of_level", this.parent.level["id"], cb => {
+                console.log(cb);
+
+                if (!cb) {
+                    level_avg_inner_wrapper.textContent = "no current data available";
+                    return;
+                };
+
+                let name = cb;
+                let structure = GamePatternsList[cb];
+
+                if (this.level_all_pattern_names.includes(cb)) {
+                    createPattern_preview(name, structure, level_avg_inner_wrapper, "level");
+                };
+            });
+
+        } catch (error) {
+            console.log(error);
+            level_avg_inner_wrapper.textContent = "couldn't load data";
+        };
     };
 };
 

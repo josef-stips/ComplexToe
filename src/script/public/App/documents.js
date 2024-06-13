@@ -644,6 +644,14 @@ let comments_header_sword = document.querySelector(".comments_header_sword");
 let level_scene_best_time = document.querySelector(".level_scene_best_time");
 let PreviewLevelBtn = document.querySelector(".PreviewLevelBtn");
 let level_likes_text = document.querySelector(".level_likes_text");
+let levels_patterns_pop_up = document.querySelector(".levels_patterns_pop_up");
+let level_patterns_close_btn = document.querySelector(".level_patterns_close_btn");
+let level_patterns_inner_wrapper = document.querySelector(".level_patterns_inner_wrapper");
+let level_patterns_header_title = document.querySelector(".level_patterns_header_title");
+let level_avg_close_btn = document.querySelector(".level_avg_close_btn");
+let level_avg_header_title = document.querySelector(".level_avg_header_title");
+let level_avg_pattern_pop_up = document.querySelector(".level_avg_pattern_pop_up");
+let level_avg_inner_wrapper = document.querySelector(".level_avg_inner_wrapper");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

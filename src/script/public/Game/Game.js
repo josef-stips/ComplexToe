@@ -116,6 +116,8 @@ let stillActiveCells = [];
 
 let max_amount_of_moves = null;
 
+let patterns_used = [];
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -125,6 +127,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // to have all info globally
     allGameData = [];
+    patterns_used = [];
     GameSeconds = 0;
 
     for (const i of arguments) {
@@ -434,7 +437,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     };
 
     SetGameFieldIconForCurrentField(parseInt(xCell_Amount), fieldIndex, CreativeLevel_from_onlineMode_costumPatterns);
-    SetBGColorForCurrentField(parseInt(xCell_Amount));
+    !inPlayerLevelsScene && SetBGColorForCurrentField(parseInt(xCell_Amount));
     inAdvantureMode ? GameField_AveragePlayTimeDisplay.textContent = `ave. playtime is unknown` : GameField_AveragePlayTimeDisplay.textContent = `ave. playtime ${Fields[fieldIndex].averagePlayTime}`;
 
     // Display game grid

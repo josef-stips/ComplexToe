@@ -235,6 +235,8 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             extra_points = 1;
         };
 
+        patterns_used.push(pattern);
+
         // console.log(pattern, extra_points);
     };
 
@@ -1011,13 +1013,16 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             console.log(player1_won, GameSeconds, score_Player1_numb);
 
             if (inPlayerLevelsScene) {
-                console.log(player_levels_handler.online_level_overview_handler.level["id"]);
+                console.log(player_levels_handler.online_level_overview_handler.level["id"], patterns_used);
 
                 socket.emit("update_online_level_data", player1_won, GameSeconds,
                     score_Player1_numb, Number(localStorage.getItem("PlayerID")),
-                    player_levels_handler.online_level_overview_handler.level["id"], cb => {
+                    player_levels_handler.online_level_overview_handler.level["id"], patterns_used, (newData) => {
 
-                        console.log(cb);
+                        level_scene_best_time.textContent = `best time: ${newData["best_time"]} seconds`;
+                        player_levels_handler.online_level_overview_handler.progress_bar(
+                            newData["points"], player_levels_handler.online_level_overview_handler.level["required_points"]
+                        );
                     });
             };
 
