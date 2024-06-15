@@ -673,7 +673,7 @@ class player_levels_handler_wrapper extends NewLevel {
             let p = document.createElement("p");
             p.textContent = "No level found";
             p.style.margin = "50px 0 0 0";
-            p.style.fontSize = "40px";
+            p.style.fontSize = "5vh";
             p.style.fontWeight = "600";
 
             player_levels_results_list.appendChild(p);
@@ -698,12 +698,12 @@ class player_levels_handler_wrapper extends NewLevel {
         if (level.level_name.length >= 18) {
             span.style.fontSize = "var(--Text-font-size)";
         } else {
-            span.style.fontSize = "4vh";
+            span.style.fontSize = "6vh";
         };
 
         let span1 = document.createElement("span");
         span1.classList = "LevelIconWrapper"
-        span1.style.border = `5px solid ${level_theme}`;
+        span1.style.border = `0.5vh solid ${level_theme}`;
 
         let div1 = document.createElement("div");
         let div2 = document.createElement("div");
@@ -767,7 +767,7 @@ class player_levels_handler_wrapper extends NewLevel {
                 ];
 
 
-                this.online_level_overview_handler = new onlineLevelOverviewHandler(level);
+                this.online_level_overview_handler = new onlineLevelOverviewHandler(level, correspondPlayer);
                 this.online_level_overview_handler.init();
             });
         });

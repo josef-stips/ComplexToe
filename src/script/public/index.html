@@ -324,6 +324,7 @@
 
                     <div class="online_level_scene_wrapper" pos="center">
                         <h1 class="online_level_scene_title">level name</h1>
+                        <span class="online_level_scene_author">by author</span>
 
                         <div class="level_scene_start_wrapper">
                             <div class="level_scene_grid">
@@ -437,9 +438,9 @@
                         </div>
 
                         <div class="lobby-cards-header-right">
-                            <img height="40" width="40" src="assets/game/camping-tent.svg" style="transform: rotate(90deg);" id="store-icon" draggable="false">
-                            <img id="treasure-icon" width="31" height="31" src="assets/game/locked-chest.svg" draggable="false">
-                            <img id="treasure-icon-2" width="31" height="31" src="assets/game/locked-chest.svg" draggable="false">
+                            <img src="assets/game/camping-tent.svg" style="transform: rotate(90deg);" id="store-icon" draggable="false">
+                            <img id="treasure-icon" src="assets/game/locked-chest.svg" draggable="false">
+                            <img id="treasure-icon-2" src="assets/game/locked-chest.svg" draggable="false">
                         </div>
                     </div>
 
@@ -3635,7 +3636,7 @@
     <div class="settings-window">
         <div class="settings-header">
             <div class="lol"></div>
-            <h1>your settings...</h1>
+            <h1>Settings</h1>
             <i id="settings-close-btn" class="fa-solid fa-x"></i>
         </div>
 
@@ -3643,7 +3644,6 @@
             <div class="general-settings">
                 <ul>
                     <h2>General settings</h2>
-                    <hr align="left" width="70%">
 
                     <li style="display: none;"><i id="sett-roundEdges" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-RoundEdges"></i> round edges</li>
                     <li style="display: none;"><i id="sett-darkMode" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-DarkMode"></i> dark mode</li>
@@ -3670,12 +3670,8 @@
 
                 <ul>
                     <h2 style="margin-top: 0.5em;">Game stuff</h2>
-                    <hr align="left" width="70%"> <br>
-
                     <li class="officialWinPatternsOpenBtn">Official Win Patterns</li>
                 </ul>
-
-                <br>
 
                 <div class="ImportantBtnsSection">
                     <button style="display: none;" class="Settings_MailBtn settingsButton">Mail</button>
@@ -6363,7 +6359,7 @@
         <!-- header -->
         <div class="userInfo-header">
             <div>
-                <img style="margin: 13px 0 0 13px;" width="38" height="38" src="assets/game/winged-sword.svg">
+                <img width="38" height="38" src="assets/game/winged-sword.svg">
             </div>
 
             <div></div>
@@ -6388,13 +6384,13 @@
                         <img width="35" height="35" src="assets/game/laurels-trophy.svg">
                     </li>
                     <li title="most used pattern" style="
-                    display: flex;
-                    justify-content: start;
-                    align-items: baseline;
-                    gap: 0.3em;">
-                        <span subject="most-used-pattern" class="userInfo_MostUsedPattern" style="font-size: 35px;
-                        margin-bottom: 0.1em;"></span>
-                        <i class="fa-solid fa-border-all" style="font-size: 35px;"></i>
+display: flex;
+    justify-content: start;
+    align-items: baseline;
+    gap: 2vh;">
+                        <span subject="most-used-pattern" class="userInfo_MostUsedPattern" style="font-size: 6vh;
+    margin-bottom: 0.1em;"></span>
+                        <i class="fa-solid fa-border-all" style="font-size: 6vh;"></i>
                     </li>
                 </ol>
 
@@ -6712,7 +6708,7 @@
     <!-- stars pop up -->
     <div class="map_stars_pop_up">
         <div class="stars_pop_up_header">
-            <img src="assets/game/egyptian-bird.svg" width="32" height="32" style="transform: rotate(90deg);">
+            <img src="assets/game/egyptian-bird.svg" style="transform: rotate(90deg);">
             <h1 class="stars_pop_up_title">How to get stars in the level "level name"</h1>
             <i class="fa-solid fa-x close_stars_pop_up_btn"></i>
         </div>
@@ -7941,6 +7937,25 @@
             <div class="level_avg_inner_wrapper">
 
             </div>
+        </div>
+    </div>
+
+    <!-- online level score board -->
+    <div class="scoreboard_pop_up">
+        <div class="scoreboard_header">
+            <img src="assets/game/laurels-trophy.svg">
+            <div class="scoreboard_header_center">
+                <img src="assets/game/two-feathers.svg" class="scoreboard_header_center_wing1">
+                <h1>Scoreboard</h1>
+                <img src="assets/game/two-feathers.svg" class="scoreboard_header_center_wing2">
+            </div>
+            <i class="fa-solid fa-x scoreboard_close_btn default_btn"></i>
+        </div>
+
+        <div class="scoreboard_main">
+            <ul class="scoreboard_list">
+
+            </ul>
         </div>
     </div>
 

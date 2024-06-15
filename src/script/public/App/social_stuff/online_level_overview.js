@@ -1,11 +1,13 @@
 // on online level click
 class onlineLevelOverviewHandler {
-    constructor(level) {
+    constructor(level, author) {
         this.level = level;
+        this.author = author;
         this.personal_data_for_level = null;
 
         this.comments_handler = new level_comments_handler(this);
         this.patterns_handler = new levelPatternsOverviewHandler(this);
+        this.score_board = new OnlineLevelPlayerScoreBoardHandler(this);
     };
 
     async init() {
@@ -17,6 +19,7 @@ class onlineLevelOverviewHandler {
         this.events();
 
         this.comments_handler.events();
+        this.score_board.events();
         this.patterns_handler.init();
     };
 
@@ -63,12 +66,24 @@ class onlineLevelOverviewHandler {
         });
 
         level_scene_likes_btn.removeEventListener("click", level_scene_likes_btn.ev);
+
+        online_level_scene_author.removeEventListener("click", online_level_scene_author.ev);
+        online_level_scene_author.addEventListener("click", online_level_scene_author.ev = () => {
+
+            if (this.author["player_id"] == Number(localStorage.getItem("PlayerID"))) {
+                OpenOwnUserProfile();
+
+            } else {
+                ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, this.author);
+            };
+        });
     };
 
     init_DOM() {
         this.init_level_BG();
 
         online_level_scene_title.textContent = this.level["level_name"];
+        online_level_scene_author.textContent = `by ${this.author["player_name"]}`;
     };
 
     init_level_BG() {
@@ -504,6 +519,119 @@ class levelPatternsOverviewHandler {
             console.log(error);
             level_avg_inner_wrapper.textContent = "couldn't load data";
         };
+    };
+};
+
+class OnlineLevelPlayerScoreBoardHandler {
+    constructor(parent) {
+        this.parent = parent;
+        this.required_points = parent.level["required_points"];
+    };
+
+    events() {
+        level_scene_player_conquered_btn.removeEventListener("click", level_scene_player_conquered_btn.ev);
+        level_scene_player_conquered_btn.addEventListener("click", level_scene_player_conquered_btn.ev = () => {
+            this.open();
+        });
+
+        scoreboard_close_btn.removeEventListener("click", scoreboard_close_btn.ev);
+        scoreboard_close_btn.addEventListener("click", scoreboard_close_btn.ev = () => {
+            this.close();
+        });
+    };
+
+    close() {
+        scoreboard_pop_up.style.display = "none";
+        DarkLayer.style.display = "none";
+    };
+
+    open() {
+        DisplayPopUp_PopAnimation(scoreboard_pop_up, "flex", true);
+        this.fetch();
+    };
+
+    fetch() {
+        try {
+            socket.emit("get_best_players_of_level", this.parent.level["id"], (level_player_data, player_data) => {
+                if (level_player_data == null) {
+                    this.abort();
+                    return;
+                };
+
+                this.display(level_player_data, player_data);
+            });
+
+        } catch (error) {
+            console.log(error);
+            this.abort();
+        };
+    };
+
+    display(level_player_data, player_data) {
+        scoreboard_list.textContent = null;
+
+        for (const [i, val] of level_player_data.entries()) {
+            this.element(val, player_data[i]);
+        };
+    };
+
+    element(level_player_data, player_data) {
+        console.log(level_player_data, player_data);
+
+        let div = document.createElement("div");
+        let span1 = document.createElement("span");
+        let span2 = document.createElement("span");
+        let span3 = document.createElement("span");
+        let level_data1 = document.createElement("div");
+        let level_data2 = document.createElement("div");
+
+        div.addEventListener('click', () => {
+            if (player_data["player_id"] == Number(localStorage.getItem("PlayerID"))) {
+                OpenOwnUserProfile();
+
+            } else {
+                ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, player_data);
+            };
+        });
+
+        if (player_data["playerInfoClass"] == "empty") { // user has standard skin
+            span2.classList = "userInfo-Icon userInfoEditable";
+            span2.textContent = player_data["player_icon"];
+            span2.style.color = player_data["playerInfoColor"];
+
+        } else { // user has advanced skin
+            span2.classList = "userInfo-Icon userInfoEditable " + player_data["playerInfoClass"];
+            span2.textContent = null;
+            span2.style.color = "var(--font-color)";
+        };
+
+        // wrapper
+        div.classList.add("scoreboard_player");
+
+        // display name
+        span1.classList.add("scoreboard_player_name");
+        span1.textContent = player_data["player_name"];
+
+        // display icon
+        span2.classList.add("scoreboard_player_icon");
+
+        // level data wrapper
+        span3.classList.add("scoreboard_player_data_wrapper");
+
+        level_data1.textContent = `points: ${level_player_data.points_made} / ${this.required_points} `;
+        level_data2.textContent = `best time: ${level_player_data.best_time} s.`;
+
+        // add to document
+        span3.appendChild(level_data1);
+        span3.appendChild(level_data2);
+        div.appendChild(span2);
+        div.appendChild(span1);
+        div.appendChild(span3);
+        scoreboard_list.appendChild(div);
+    };
+
+    abort() {
+        scoreboard_list.textContent = "no data could be shown";
     };
 };
 

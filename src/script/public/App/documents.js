@@ -652,6 +652,10 @@ let level_avg_close_btn = document.querySelector(".level_avg_close_btn");
 let level_avg_header_title = document.querySelector(".level_avg_header_title");
 let level_avg_pattern_pop_up = document.querySelector(".level_avg_pattern_pop_up");
 let level_avg_inner_wrapper = document.querySelector(".level_avg_inner_wrapper");
+let scoreboard_pop_up = document.querySelector(".scoreboard_pop_up");
+let scoreboard_close_btn = document.querySelector(".scoreboard_close_btn");
+let scoreboard_list = document.querySelector(".scoreboard_list");
+let online_level_scene_author = document.querySelector(".online_level_scene_author");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

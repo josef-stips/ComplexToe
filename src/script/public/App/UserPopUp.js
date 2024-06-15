@@ -158,12 +158,6 @@ const TryToCloseUserInfoPopUp = () => {
                 localStorage.setItem('UserName', userInfoName.textContent);
             };
 
-            if (getComputedStyle(clan_overview_pop_up).display == "flex" ||
-                getComputedStyle(comments_pop_up).display == "flex") {
-
-                DarkLayer.style.display = "block"
-            };
-
             UserQuote.contentEditable = "false";
             UserEditsQuote = false;
             UserQuoteSubmitBtn.textContent = "Edit";
@@ -174,6 +168,13 @@ const TryToCloseUserInfoPopUp = () => {
         // if player visited profile from other player
     } else if (UserIsOnProfileFromOtherPlayer) {
         CloseUserPopUpOfOtherPlayer();
+    };
+
+    if (getComputedStyle(clan_overview_pop_up).display == "flex" ||
+        getComputedStyle(comments_pop_up).display == "flex" ||
+        getComputedStyle(scoreboard_pop_up).display == "flex") {
+
+        DarkLayer.style.display = "block"
     };
 };
 
