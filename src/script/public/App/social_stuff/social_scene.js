@@ -703,7 +703,7 @@ class player_levels_handler_wrapper extends NewLevel {
 
         let span1 = document.createElement("span");
         span1.classList = "LevelIconWrapper"
-        span1.style.border = `0.5vh solid ${level_theme}`;
+        span1.style.border = `0.7vh solid ${level_theme}`;
 
         let div1 = document.createElement("div");
         let div2 = document.createElement("div");

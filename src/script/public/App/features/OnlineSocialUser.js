@@ -177,7 +177,10 @@ const DisplayPlayerList = result => { // result: array containing objects
 
         // display icon
         span2.className = "PlayerIcon";
-        span2.style = "border:2px solid white;border-radius:100px;padding:5px 15px 5px 15px;";
+        span2.style = `border: 0.5vh solid white;
+                        border-radius: 100%;
+                        padding: 0.25vh 1vw;
+                        color: white;`;
 
         if (playerInfoClass == "empty") { // user has standard skin
             span2.classList = "userInfo-Icon userInfoEditable";

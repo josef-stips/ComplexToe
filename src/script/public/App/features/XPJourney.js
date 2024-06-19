@@ -70,7 +70,9 @@ Object.keys(Journey).forEach(Point => {
         for (let i = 0; i < 4; i++) {
             let i = document.createElement('i');
             i.classList = "fa-solid fa-circle";
-            i.style = "align-self: start;margin: 15px 0 0 35%;font-size: small;"
+            i.style = `align-self: start;
+                    margin: 1vh 0 0 35%;
+                    font-size: 2vh;`
 
             JourneyInnerSideWrapper.appendChild(i);
         };

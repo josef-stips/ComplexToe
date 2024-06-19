@@ -830,7 +830,7 @@ function UserWon_AdvantureLevel(won_levelIndex) {
 
 // explored items book btn
 exploredItems_bookBtn.addEventListener('click', () => {
-    DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", true);
+    DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", false);
     exploredItems_preview(0);
 });
 

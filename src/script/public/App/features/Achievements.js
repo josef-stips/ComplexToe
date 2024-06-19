@@ -195,10 +195,22 @@ class Achievements {
 
             i_abso.classList.add("achievement_check_icon");
 
+            i_abso.style = `
+            position: absolute;
+            font-weight: 600;
+            font-size: 5vh;
+            inset: 0 1vw 0 93%;
+            bottom: 0px;
+            margin: auto 0px auto auto;
+            display: flex;
+            align-items: center;
+            color: var(--line-color);
+        `;
+
             let img = document.createElement("img");
             img.src = achievement["img"];
-            img.width = "80";
-            img.height = "80";
+            img.style = `    width: 10vh;
+    height: 10vh;`;
 
             for (let i = 0; i < achievement.reward_names.length; i++) {
                 // list item style depends on its completion
