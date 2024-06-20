@@ -666,6 +666,11 @@ let CurrencySkinShopDisplay = document.querySelector(".CurrencySkinShopDisplay")
 let player1_score_bar_wrapper = document.querySelector(".player1_score_bar_wrapper");
 let player2_score_bar_wrapper = document.querySelector(".player2_score_bar_wrapper");
 let pointsToAchieve_ScoreBar = document.querySelectorAll(".pointsToAchieve_ScoreBar");
+let recent_player_box = document.querySelector(".recent_player_box");
+let recent_players_list = document.querySelector(".recent_players_list");
+let best_player_box = document.querySelector(".best_player_box");
+let best_players_list = document.querySelector(".best_players_list");
+let best_players_wrapper = document.querySelector(".best_players_wrapper");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

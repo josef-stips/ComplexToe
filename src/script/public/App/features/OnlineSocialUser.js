@@ -67,6 +67,8 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
         commonPattern = allData["commonPattern"];
     };
 
+    console.log(allData);
+
     // check if player is friends with searched and displayed player
     try {
         AddFriend_Or_Friend_btn.style.display = "flex";
@@ -122,8 +124,8 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
     userInfoName.textContent = player_name;
     UserID_display.textContent = `User ID: ${player_id}`;
     UserQuote.textContent = quote;
-    userInfoOnlineMatchesWon.textContent = onlineGamesWon;
-    userInfoSkillpoints.textContent = XP;
+    userInfoOnlineMatchesWon.textContent = !onlineGamesWon ? 0 : onlineGamesWon;
+    userInfoSkillpoints.textContent = !XP ? 0 : XP;
     UserLastTimeOnlineDisplay.textContent = "last time online: " + formattedDate;
 
     userInfoIcon.textContent = player_icon;
@@ -140,7 +142,7 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
     };
 
     // users most used pattern
-    userInfo_MostUsedPattern.textContent = commonPattern;
+    userInfo_MostUsedPattern.textContent = !commonPattern ? "-" : commonPattern;
 };
 
 // display requested player

@@ -115,9 +115,9 @@ const CloseUserPopUpOfOtherPlayer = () => {
     };
 
     // if user is in lobby or in online game
-    if (personal_GameData.currGameID != null || running) {
-        userInfoPopUp.style.display = "none";
-    };
+    // if (personal_GameData.currGameID != null || running) {
+    userInfoPopUp.style.display = "none";
+    // };
 
     let commonPattern = Init_RecentUsedPatterns();
 
@@ -174,7 +174,10 @@ const TryToCloseUserInfoPopUp = () => {
         getComputedStyle(comments_pop_up).display == "flex" ||
         getComputedStyle(scoreboard_pop_up).display == "flex") {
 
-        DarkLayer.style.display = "block"
+        DarkLayer.style.display = "block";
+
+    } else {
+        DarkLayer.style.display = "none";
     };
 };
 

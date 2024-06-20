@@ -44,6 +44,7 @@ class social_scene_class {
 
         social_stuff_cards[1].addEventListener("click", () => {
             use_scene.open("social_scene", "Recent Players", online_stuff_scene);
+            recent_players_handler.open();
         });
 
         social_stuff_cards[2].addEventListener("click", () => {
@@ -803,6 +804,123 @@ class player_levels_handler_wrapper extends NewLevel {
     };
 };
 
+class recentPlayersHandler {
+    constructor() {
+
+    };
+
+    events() {
+
+    };
+
+    async open() {
+        await this.fetch();
+    };
+
+    async fetch() {
+        try {
+            await socket.emit("get_recent_players", cb => {
+                this.load(cb);
+            });
+
+        } catch (error) {
+            this.abort(new Error("no players found."));
+        };
+    };
+
+    load(results) {
+        recent_players_list.textContent = null;
+
+        results.forEach(data => {
+            this.player(data);
+        });
+    };
+
+    player(player_data, list = recent_players_list) {
+        let div = document.createElement("div");
+        let span1 = document.createElement("span");
+        let span2 = document.createElement("span");
+
+        div.addEventListener('click', () => {
+            if (player_data["player_id"] == Number(localStorage.getItem("PlayerID"))) {
+                OpenOwnUserProfile();
+
+            } else {
+                ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, player_data);
+            };
+        });
+
+        if (player_data["playerInfoClass"] == "empty") { // user has standard skin
+            span2.classList = "userInfo-Icon userInfoEditable";
+            span2.textContent = player_data["player_icon"];
+            span2.style.color = player_data["playerInfoColor"];
+
+        } else { // user has advanced skin
+            span2.classList = "userInfo-Icon userInfoEditable " + player_data["playerInfoClass"];
+            span2.textContent = null;
+            span2.style.color = "var(--font-color)";
+        };
+
+        // wrapper
+        div.classList.add("recent_player_item");
+
+        // display name
+        span1.classList.add("scoreboard_player_name");
+        span1.textContent = player_data["player_name"];
+
+        // display icon
+        span2.classList.add("scoreboard_player_icon");
+
+        // add to document
+        div.appendChild(span2);
+        div.appendChild(span1);
+        list.appendChild(div);
+    };
+
+    abort(message) {
+        recent_players_list.textContent = message;
+    };
+};
+
+class bestPlayersHandler {
+    constructor() {
+
+    };
+
+    events() {
+
+    };
+
+    open() {
+        this.fetch();
+    };
+
+    fetch() {
+        try {
+            socket.emit("top_100_players", (cb) => {
+                this.load(cb);
+            });
+
+        } catch (error) {
+            this.abort(new Error("No players found."));
+        };
+    };
+
+    load(player_data) {
+        player_data.forEach(data => {
+            recent_players_list.player(data, best_players_list);
+        });
+    };
+
+    player() {
+
+    };
+
+    abort(message) {
+
+    };
+};
+
 let social_scene = new social_scene_class();
 social_scene.events();
 
@@ -812,3 +930,9 @@ CreateClanHandler.init();
 player_levels_handler = new player_levels_handler_wrapper();
 creative_level_instance = player_levels_handler
 player_levels_handler.init();
+
+let recent_players_handler = new recentPlayersHandler();
+recent_players_handler.events();
+
+let best_players_handler = new bestPlayersHandler();
+best_players_handler.events();
