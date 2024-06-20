@@ -261,3 +261,7 @@ const roll_animation = (item, class_item) => {
         class_item.classList.add('unroll');
     });
 }
+
+function easeOutSine(x) {
+    return Math.sin((x * Math.PI) / 2);
+};

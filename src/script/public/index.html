@@ -2183,6 +2183,13 @@
                 <div class="Game">
 
                     <div class="game-upper-head">
+
+                        <div class="player1_score_bar_wrapper score_bar_wrapper">
+                            <p id="score-player1">0</p>
+                            <p class="pointsToAchieve_ScoreBar">/ 5</p>
+                        </div>
+                        <p id="name-player1">Josef</p>
+
                         <div id="GameArea-FieldIcon" class="card-header NxN-field-card-header">
                             <div id="GameArea-FieldCircle" class="upper-field-card-circle">
 
@@ -2192,6 +2199,12 @@
 
                             </div>
                         </div>
+
+                        <div class="player2_score_bar_wrapper score_bar_wrapper">
+                            <p id="score-player2">0</p>
+                            <p class="pointsToAchieve_ScoreBar">/ 5</p>
+                        </div>
+                        <p id="name-player2">Basti</p>
 
                         <i class="OnlineChat_btn fa-regular fa-comment-dots"></i>
                     </div>
@@ -2230,15 +2243,15 @@
                             </div>
 
                             <!-- #2 -->
-                            <div class="GameArea-SideInfo-Main">
+                            <div class="GameArea-SideInfo-Main" style="display:none;">
                                 <ul id="score-list">
                                     <li>
-                                        <p id="name-player1">Josef</p>
-                                        <p id="score-player1">0</p>
+                                        <!-- <p id="name-player1">Josef</p> -->
+                                        <!-- <p id="score-player1">0</p> -->
                                     </li>
                                     <li>
-                                        <p id="name-player2">Basti</p>
-                                        <p id="score-player2">0</p>
+                                        <!-- <p id="name-player2">Basti</p> -->
+                                        <!-- <p id="score-player2">0</p> -->
                                     </li>
                                 </ul>
                             </div>
@@ -2358,98 +2371,6 @@
                     </div>
                 </div>
 
-            </div>
-
-            <!-- explored items pop up -->
-            <div class="exploredItems_PopUp">
-                <div class="exploredItems_header">
-                    <div></div>
-                    <h2>Items you have found..</h2>
-                    <i class="fa-solid fa-x exploredItemPopUp_closeBtn"></i>
-                </div>
-
-                <div class="exploredItems_MainWrapper">
-
-                    <i class="fa-solid fa-caret-left exploredItems_caretLeft exploredItems_caret"></i>
-
-                    <div class="exploredItems_main">
-
-                        <div class="exploredItems_mainContent">
-
-                            <div class="exploredItem_container">
-                                <div class="exploreditem_wrapper ore_ItemCount">
-                                    <img src="assets/game/ore.svg" width="200" height="200" draggable="false">
-                                    <!-- <span style="text-align: start;">ore</span> -->
-                                </div>
-                            </div>
-
-                            <div class="exploredItem_container">
-                                <div class="exploreditem_wrapper diamonds_ItemCount">
-                                    <img src="assets/game/minerals.svg" width="200" height="200" draggable="false">
-                                    <!-- <span>diamonds</span> -->
-                                </div>
-                            </div>
-
-                            <div class="exploredItem_container">
-                                <div class="exploreditem_wrapper minerals_ItemCount">
-                                    <img src="assets/game/crystal-bars.svg" width="200" height="200" draggable="false">
-                                    <!-- <span>minerals</span> -->
-                                </div>
-                            </div>
-
-                            <div class="exploredItem_container">
-                                <div class="exploreditem_wrapper abandonedEye_ItemCount">
-                                    <img src="assets/game/crystal-eye.svg" width="200" height="200" draggable="false">
-                                    <!-- <span>abandoned eye</span> -->
-                                </div>
-                            </div>
-
-                            <div class="exploredItem_container">
-                                <div class="exploreditem_wrapper asteroid_ItemCount">
-                                    <img src="assets/game/asteroid.svg" width="200" height="200" draggable="false">
-                                    <!-- <span>asteroids</span> -->
-                                </div>
-                            </div>
-
-                            <div class="exploredItem_container">
-                                <div class="exploreditem_wrapper encryptedWriting_ItemCount">
-                                    <img src="assets/game/wax-tablet.svg" width="200" height="200" draggable="false">
-                                    <!-- <span>encrypted writings</span> -->
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <i class="fa-solid fa-caret-right exploredItems_caretRight exploredItems_caret"></i>
-
-                </div>
-
-                <div class="exploredItems_footer">
-
-                    <div class="explored_itemsDescription_Div">
-                        <h2 class="exploredItemTitle">Ore</h2>
-
-                        <div class="infoContainer">
-                            <div style="display: flex;flex-direction: row;">
-                                <span class="exploredItem_rarity" style="color: lightgreen;">rarity: common</span> &nbsp;
-                                <p>|</p>
-                                &nbsp;
-                                <span class="exploredItem_count">0</span>
-                            </div>
-                            <hr width="95%" align="left">
-
-                            <span>describtion:</span>
-                            <span class="exploredItem_describtion">
-                                It can be found everywhere on this map and is a normal material to upgrade and build weapons.
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
-                <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
             </div>
 
             <!-- you found pop up for explored items pop up -->
@@ -3939,6 +3860,98 @@
                 <li>crystal-shine by lorc under CC BY 3.0</li>
                 <li>birch-trees by Caro Asercion under C BY 3.0</li>
             </ul>
+
+        </div>
+
+        <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
+        <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <!-- explored items pop up -->
+    <div class="exploredItems_PopUp">
+        <div class="exploredItems_header">
+            <div></div>
+            <h2>Items you have found..</h2>
+            <i class="fa-solid fa-x exploredItemPopUp_closeBtn"></i>
+        </div>
+
+        <div class="exploredItems_MainWrapper">
+
+            <i class="fa-solid fa-caret-left exploredItems_caretLeft exploredItems_caret"></i>
+
+            <div class="exploredItems_main">
+
+                <div class="exploredItems_mainContent">
+
+                    <div class="exploredItem_container">
+                        <div class="exploreditem_wrapper ore_ItemCount">
+                            <img src="assets/game/ore.svg" width="200" height="200" draggable="false">
+                            <!-- <span style="text-align: start;">ore</span> -->
+                        </div>
+                    </div>
+
+                    <div class="exploredItem_container">
+                        <div class="exploreditem_wrapper diamonds_ItemCount">
+                            <img src="assets/game/minerals.svg" width="200" height="200" draggable="false">
+                            <!-- <span>diamonds</span> -->
+                        </div>
+                    </div>
+
+                    <div class="exploredItem_container">
+                        <div class="exploreditem_wrapper minerals_ItemCount">
+                            <img src="assets/game/crystal-bars.svg" width="200" height="200" draggable="false">
+                            <!-- <span>minerals</span> -->
+                        </div>
+                    </div>
+
+                    <div class="exploredItem_container">
+                        <div class="exploreditem_wrapper abandonedEye_ItemCount">
+                            <img src="assets/game/crystal-eye.svg" width="200" height="200" draggable="false">
+                            <!-- <span>abandoned eye</span> -->
+                        </div>
+                    </div>
+
+                    <div class="exploredItem_container">
+                        <div class="exploreditem_wrapper asteroid_ItemCount">
+                            <img src="assets/game/asteroid.svg" width="200" height="200" draggable="false">
+                            <!-- <span>asteroids</span> -->
+                        </div>
+                    </div>
+
+                    <div class="exploredItem_container">
+                        <div class="exploreditem_wrapper encryptedWriting_ItemCount">
+                            <img src="assets/game/wax-tablet.svg" width="200" height="200" draggable="false">
+                            <!-- <span>encrypted writings</span> -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <i class="fa-solid fa-caret-right exploredItems_caretRight exploredItems_caret"></i>
+
+        </div>
+
+        <div class="exploredItems_footer">
+
+            <div class="explored_itemsDescription_Div">
+                <h2 class="exploredItemTitle">Ore</h2>
+
+                <div class="infoContainer">
+                    <div style="display: flex;flex-direction: row;">
+                        <span class="exploredItem_rarity" style="color: lightgreen;">rarity: common</span> &nbsp;
+                        <p>|</p>
+                        &nbsp;
+                        <span class="exploredItem_count">0</span>
+                    </div>
+                    <hr width="95%" align="left">
+
+                    <span>describtion:</span>
+                    <span class="exploredItem_describtion">
+                                    It can be found everywhere on this map and is a normal material to upgrade and build weapons.
+                                </span>
+                </div>
+            </div>
 
         </div>
 
@@ -6637,7 +6650,7 @@ display: flex;
                     <div class="CellGridColorSelectionWrapper skinShop_tab_content" tab_content="22">
                         <div class="theme-icon" theme-idx="0">
                             <div class="theme-icon-circle"></div>
-                            <div class="theme-icon-text">default</div>
+                            <div class="theme-icon-text">blue</div>
                         </div>
 
                         <div class="theme-icon" theme-idx="1">
@@ -6662,7 +6675,7 @@ display: flex;
 
                         <div class="theme-icon" theme-idx="5">
                             <div class="theme-icon-circle"></div>
-                            <div class="theme-icon-text">blue</div>
+                            <div class="theme-icon-text">grey</div>
                         </div>
 
                         <div class="theme-icon" theme-idx="6">
@@ -6829,7 +6842,12 @@ display: flex;
                         </li>
 
                         <li class="mapLevel_AllowedPatterns mapLevel_column">
-                            <span style="color: var(--line-color);">Allowed patterns:</span>
+                            <span style="    color: var(--line-color);
+    display: flex;
+    gap: 0.7vw;"><p>Allowed patterns: </p>
+                                <span class=" fa-regular fa-question-circle map_patterns_overview_btn"></span>
+                            </span>
+
                             <span class="mapLevel_AllowedPatterns_Text mapLevel_column_text">
                                 <!-- default text -->
                                 All patterns are allowed
@@ -6859,7 +6877,12 @@ display: flex;
                         </li>
 
                         <li>
-                            <span style="color: var(--line-color);">Boss:</span>
+                            <span style="display: flex;
+    color: var(--line-color);
+    gap: 0.7vw;">
+                                <p>Boss:</p>
+                                <span class="fa-regular fa-question-circle map_overview_boss_btn"></span>
+                            </span>
                             <span class="BossIn_MapLevel_Display"></span>
                         </li>
 
@@ -7978,6 +8001,18 @@ display: flex;
             <ul class="scoreboard_list">
 
             </ul>
+        </div>
+    </div>
+
+
+    <!-- advanture map boss pop up -->
+    <div class="map_overview_boss_pop_up">
+        <div class="boss_pop_up_header">
+            <i class="fa-solid fa-x map_overview_boss_close_btn default_btn"></i>
+        </div>
+
+        <div class="boss_pop_up_main">
+            <img src="assets/game/" alt="" class="boss_overview_img">
         </div>
     </div>
 

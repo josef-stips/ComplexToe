@@ -437,13 +437,9 @@ class levelPatternsOverviewHandler {
     events() {
         level_scene_patterns_btn.removeEventListener("click", level_scene_patterns_btn.ev);
         level_scene_patterns_btn.addEventListener("click", level_scene_patterns_btn.ev = () => {
+            levels_patterns_pop_up.style.borderColor = "var(--gradient-first-color)";
+            level_patterns_pop_up_header.style.borderColor = "var(--gradient-first-color)";
             this.open_patterns();
-        });
-
-        level_patterns_close_btn.removeEventListener("click", level_patterns_close_btn.ev);
-        level_patterns_close_btn.addEventListener("click", level_patterns_close_btn.ev = () => {
-            levels_patterns_pop_up.style.display = "none";
-            DarkLayer.style.display = "none";
         });
 
         level_scene_common_pattern_btn.removeEventListener("click", level_scene_common_pattern_btn.ev);
@@ -646,4 +642,16 @@ OnlineModeBtn.addEventListener("click", () => {
 
 OfflineModeBtn.addEventListener("click", () => {
     !NewCreativeLevel ? player_levels_handler.startGame(0) : NewCreativeLevel.startGame(0);
+});
+
+level_patterns_close_btn.removeEventListener("click", level_patterns_close_btn.ev);
+level_patterns_close_btn.addEventListener("click", level_patterns_close_btn.ev = () => {
+    levels_patterns_pop_up.style.display = "none";
+
+    if (inAdvantureMode) {
+        DisplayPopUp_PopAnimation(mapLevelOverview, "flex", true);
+
+    } else {
+        DarkLayer.style.display = "none";
+    };
 });

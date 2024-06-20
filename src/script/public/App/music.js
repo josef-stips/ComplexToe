@@ -25,11 +25,18 @@ async function CreateMusicBars(Audio) {
     globalAudio.volume = 0;
     count = 10
     appVolume = Number(appVolume);
+
+    let currVolume = appVolume
+
+    if (Audio.id == "mapSound") {
+        currVolume = appVolume * 10;
+    };
+
     let volumeInterval = setInterval(() => {
         // console.log(globalAudio, globalAudio.volume, appVolume, count, appVolume / count);
         try {
             if (count >= 2) {
-                let newVolume = appVolume / count;
+                let newVolume = currVolume / count;
                 globalAudio.volume = parseFloat(newVolume);
             };
 
@@ -171,6 +178,7 @@ function unlockSound1() {
     unlock_sound1.pause();
     unlock_sound1.currentTime = 0;
     unlock_sound1.blaybackRate = 0.9;
+    unlock_sound1.volume = sfxVolume - ((1 / 3) * sfxVolume);
     unlock_sound1.play();
 };
 

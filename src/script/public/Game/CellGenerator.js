@@ -72,10 +72,10 @@ function generateCell(index) {
     } else {
         cellGrid.style.overflowY = "unset";
         cellGrid.style.margin = "-15px auto";
-        ComplexToeField.style.height = "auto";
+        ComplexToeField.style.height = "55vh";
         ComplexToeField.style.overflowY = "unset";
         ComplexToeField.style.display = "flex";
-        ComplexToeField.style.alignItems = "center";
+        ComplexToeField.style.alignItems = "flex-start";
         ComplexToeField.style.justifyContent = "center";
         document.querySelector(".GameArea-SideInfo-Footer").style.margin = "";
         document.querySelector("#GameArea-FieldIcon").style.margin = "0 0 30px 0";
@@ -84,14 +84,14 @@ function generateCell(index) {
 
 // configure cell size 
 const ConfigureCellSize = (cell, xCell_Amount) => {
-    // configure cell size
+    // configure cell font size
     const maxGridSize = "var(--max-cellGrid-size)";
 
     if (xCell_Amount <= 25) {
-        cell.style.fontSize = `calc((${maxGridSize} / ${xCell_Amount}) - 10px)`;
+        cell.style.fontSize = `calc((${maxGridSize} / ${xCell_Amount}) - 1vh)`;
 
     } else {
-        cell.style.fontSize = `calc((${maxGridSize} / ${xCell_Amount}) - 5px)`;
+        cell.style.fontSize = `calc((${maxGridSize} / ${xCell_Amount}) - 1vh)`;
     };
 
     return cell;

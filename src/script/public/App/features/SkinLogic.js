@@ -322,7 +322,7 @@ function RenderSkins() {
                 const key = Object.keys(skins)[ObjCounter];
 
                 if (element == true && key == skin.getAttribute('name')) {
-                    skin.style.borderBottom = "4px solid green";
+                    skin.style.borderBottom = "0.5vh solid green";
                 };
 
                 ObjCounter++;
@@ -333,7 +333,7 @@ function RenderSkins() {
         sidelinePrice.style.display = 'none';
         skinPriceDisplay.textContent = 'This is your current skin';
         if (skin.getAttribute('name') == localStorage.getItem('current_used_skin')) {
-            skin.style.borderBottom = "4px solid royalblue";
+            skin.style.borderBottom = "0.5vh solid royalblue";
             skinBigItem.style.color = localStorage.getItem('userInfoColor');
 
             if (skin.getAttribute('skin-type') == 'skin') {
@@ -393,7 +393,7 @@ function RenderSkins() {
                     let i = document.createElement('i');
                     let span = document.createElement('span');
 
-                    span.textContent = `${String.fromCharCode(160)} ${curr_skin.getAttribute('price')} `;
+                    span.textContent = `${curr_skin.getAttribute('price')} `;
                     i.classList = "fa-solid fa-gem";
 
                     skinPriceDisplay.appendChild(span);
@@ -403,7 +403,7 @@ function RenderSkins() {
                     let i = document.createElement('i');
                     let span = document.createElement('span');
 
-                    span.textContent = `${String.fromCharCode(160)} ${curr_skin.getAttribute('price')} `;
+                    span.textContent = `${curr_skin.getAttribute('price')} `;
                     i.classList = "fa-solid fa-x";
 
                     skinPriceDisplay.appendChild(span);
@@ -517,7 +517,7 @@ function buySkin(user_currency_amount, currency) {
 
     skinToSelect.forEach(skin => {
         if (skin.getAttribute('name') == selected_skin.name) {
-            skin.style.borderBottom = "4px solid green";
+            skin.style.borderBottom = "0.5vh solid green";
         };
     });
 
@@ -534,7 +534,7 @@ useSkinBtn.addEventListener('click', () => {
 
         skinToSelect.forEach(skin => {
             if (skin.getAttribute('name') == localStorage.getItem('current_used_skin')) {
-                skin.style.borderBottom = "4px solid green";
+                skin.style.borderBottom = "0.5vh solid green";
             };
         });
 
@@ -548,7 +548,7 @@ useSkinBtn.addEventListener('click', () => {
 
         skinToSelect.forEach(skin => {
             if (skin.getAttribute('name') == current_used_skin) {
-                skin.style.borderBottom = "4px solid royalblue";
+                skin.style.borderBottom = "0.5vh solid royalblue";
             };
         });
     };
@@ -756,10 +756,9 @@ function resetGuidingText() {
 class themes {
     constructor() {
         this.themesList = {
-
-            "default": {
+            "blue": {
                 "id": 0,
-                "line-color": "goldenrod",
+                "line-color": "royalblue",
                 "bg": null,
                 "currency": null,
                 "price": null,
@@ -807,12 +806,12 @@ class themes {
                 "unlocked": false,
                 "inUse": false
             },
-            "blue": {
+            "grey": {
                 "id": 5,
-                "line-color": "royalblue",
+                "line-color": "goldenrod",
                 "bg": null,
                 "currency": "diamonds",
-                "price": "100",
+                "price": "50",
                 "CurrencyImg": "assets/game/minerals.svg",
                 "unlocked": false,
                 "inUse": false
@@ -836,6 +835,7 @@ class themes {
     start = () => {
         this.init();
         this.theme_state();
+        this.book_btn();
 
         themeIcons.forEach((themeIcon, i) => {
             this.events(themeIcon);
@@ -852,10 +852,10 @@ class themes {
         let unlocked_themes = localStorage.getItem("unlocked_themes");
 
         if (!current_theme) {
-            localStorage.setItem("currentTheme", "default");
+            localStorage.setItem("currentTheme", "blue");
             localStorage.setItem("unlocked_themes", JSON.stringify(this.themesList));
 
-            this.current_used_theme = "default";
+            this.current_used_theme = "blue";
 
         } else {
             this.current_used_theme = current_theme;
@@ -863,6 +863,16 @@ class themes {
         };
 
         document.body.setAttribute("theme", this.current_used_theme);
+    };
+
+    book_btn() {
+        CurrencySkinShopDisplay.appendChild(exploredItems_bookBtn.cloneNode(true));
+
+        let btn = CurrencySkinShopDisplay.querySelector(".exploredItems_bookBtn");
+        btn.addEventListener("click", () => {
+            DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", false);
+            exploredItems_preview(0);
+        });
     };
 
     events = (themeIcon) => {
@@ -887,7 +897,7 @@ class themes {
                 img.classList.add("skinShopPriceIMG");
 
                 sidelinePrice.style.display = "block";
-                skinPriceDisplay.textContent = `${String.fromCharCode(160)} ${themePrice} ${String.fromCharCode(160)}`;
+                skinPriceDisplay.textContent = `${themePrice}`;
                 skinFooterLeft.appendChild(img);
 
                 useSkinBtn.style.display = "none";
@@ -920,11 +930,11 @@ class themes {
             let themeElementChild = themeElement.querySelector(".theme-icon-text");
 
             if (themeUnlocked) {
-                themeElementChild.style.borderBottom = "5px solid green";
+                themeElementChild.style.borderBottom = "0.5vh solid green";
             };
 
             if (themeInUse == theme) {
-                themeElementChild.style.borderBottom = "5px solid royalblue";
+                themeElementChild.style.borderBottom = "0.5vh solid royalblue";
             };
 
             // console.log(id, theme, themeUnlocked, themeInUse, this.themesList);

@@ -928,3 +928,63 @@ document.addEventListener("DOMContentLoaded", function() {
         showItem(currentItemIndex);
     });
 });
+
+// patterns overview on map level pop up
+map_patterns_overview_btn.addEventListener("click", () => {
+    let patterns = mapLevels[current_selected_level][6];
+
+    DisplayPopUp_PopAnimation(levels_patterns_pop_up, "flex", true);
+    mapLevelOverview.style.display = "none";
+
+    levels_patterns_pop_up.style.borderColor = "var(--line-color)";
+    level_patterns_pop_up_header.style.borderColor = "var(--line-color)";
+
+    level_patterns_inner_wrapper.textContent = null;
+    level_patterns_header_title.textContent =
+        `Patterns in this level (${patterns.length})`;
+
+    patterns.forEach(p => {
+        let structure = GamePatternsList[p];
+
+        createPattern_preview(p, structure, level_patterns_inner_wrapper, "level");
+    });
+});
+
+map_overview_boss_close_btn.addEventListener("click", () => {
+    map_overview_boss_pop_up.style.display = "none";
+
+    DisplayPopUp_PopAnimation(mapLevelOverview, "flex", true);
+});
+
+map_overview_boss_btn.addEventListener("click", () => {
+    let isBoss = mapLevels[current_selected_level][10];
+    let boss = null;
+
+    if (isBoss) {
+        boss = getBossOfLevel(current_selected_level);
+
+        boss_overview_img.src = boss;
+        mapLevelOverview.style.display = "none";
+        DisplayPopUp_PopAnimation(map_overview_boss_pop_up, "flex", true);
+    };
+});
+
+function getBossOfLevel(level) {
+    let boss = null;
+
+    switch (level) {
+        case 4:
+            boss = "./assets/game/cursed-star.svg";
+            break;
+
+        case 9:
+            boss = "./assets/game/spikes-full.svg";
+            break;
+
+        case 10:
+            boss = "./assets/game/warlock-eye.svg";
+            break;
+    };
+
+    return boss;
+};

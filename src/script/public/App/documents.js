@@ -656,6 +656,16 @@ let scoreboard_pop_up = document.querySelector(".scoreboard_pop_up");
 let scoreboard_close_btn = document.querySelector(".scoreboard_close_btn");
 let scoreboard_list = document.querySelector(".scoreboard_list");
 let online_level_scene_author = document.querySelector(".online_level_scene_author");
+let map_patterns_overview_btn = document.querySelector(".map_patterns_overview_btn");
+let level_patterns_pop_up_header = document.querySelector(".level_patterns_pop_up_header");
+let map_overview_boss_pop_up = document.querySelector(".map_overview_boss_pop_up");
+let map_overview_boss_close_btn = document.querySelector(".map_overview_boss_close_btn");
+let boss_overview_img = document.querySelector(".boss_overview_img");
+let map_overview_boss_btn = document.querySelector(".map_overview_boss_btn");
+let CurrencySkinShopDisplay = document.querySelector(".CurrencySkinShopDisplay");
+let player1_score_bar_wrapper = document.querySelector(".player1_score_bar_wrapper");
+let player2_score_bar_wrapper = document.querySelector(".player2_score_bar_wrapper");
+let pointsToAchieve_ScoreBar = document.querySelectorAll(".pointsToAchieve_ScoreBar");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

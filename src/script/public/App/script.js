@@ -631,8 +631,8 @@ const MainCardDisplay = (setting) => {
         MainCardSlideShow.setAttribute("marked", "true");
 
         document.querySelector('.GameModeCards-main').classList.add("SlideMode");
-        MainCardsSlideCaret_Left.style.display = "block";
-        MainCardsSlideCaret_Right.style.display = "block";
+        MainCardsSlideCaret_Left.style.display = "flex";
+        MainCardsSlideCaret_Right.style.display = "flex";
         gameMode_KI_card.style.display = "none";
         gameMode_OneVsOne_card.style.display = "none";
         gameMode_TwoPlayerOnline_card.style.display = "block";

@@ -619,6 +619,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
                 score_Player1_numb = score_Player1_numb + extra_points;
                 scorePlayer1.textContent = score_Player1_numb;
+                scoreUp_animation(1, score_Player1_numb, points_to_win);
 
                 // player made a point in advanture mode
                 if (inAdvantureMode) {
@@ -677,6 +678,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
                 score_Player2_numb = score_Player2_numb + extra_points;
                 scorePlayer2.textContent = score_Player2_numb;
+                scoreUp_animation(2, score_Player2_numb, points_to_win);
 
                 // the opponent made a point in advanture mode
                 if (inAdvantureMode) {
@@ -1350,4 +1352,37 @@ function minus_SkillPoints(minus) {
             i = 0
         };
     }, 200);
+};
+
+async function scoreUp_animation(player, points, max_points) {
+    let points_relation = (points / max_points) * 100;
+
+    switch (player) {
+
+        case 1:
+            let time = 4;
+
+            for (let i = player1_lastBarRelation; i < points_relation; i = i + 1 / 4) {
+                player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${i}%, transparent ${i + 5}%)`;
+
+                await sleep(time);
+                time = easeOutSine(time);
+            };
+
+            player1_lastBarRelation = points_relation;
+            break;
+
+        case 2:
+            let time2 = 4;
+
+            for (let i = player2_lastBarRelation; i < points_relation; i = i + 1 / 4) {
+                player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${i}%, transparent ${i + 5}%)`;
+
+                await sleep(time2);
+                time2 = easeOutSine(time2);
+            };
+
+            player2_lastBarRelation = points_relation;
+            break;
+    };
 };

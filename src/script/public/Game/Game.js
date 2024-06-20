@@ -12,6 +12,9 @@ let points_to_win = 0; // required amount of points to win
 let yCell_Amount; // numb
 let xCell_Amount; // numb
 
+let player2_lastBarRelation = 0;
+let player1_lastBarRelation = 0;
+
 let GameSeconds = 0;
 
 // Player 1 is always X and can start first
@@ -129,6 +132,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     allGameData = [];
     patterns_used = [];
     GameSeconds = 0;
+
+    player2_lastBarRelation = 0;
+    player1_lastBarRelation = 0;
 
     for (const i of arguments) {
         allGameData.push(i);
@@ -338,7 +344,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     if ( /*Fields[fieldIndex].size == "40x40" ||*/ current_selected_level == 10 && inAdvantureMode || current_selected_level == 9 && inAdvantureMode || current_selected_level == 4 &&
         inAdvantureMode) {
 
-        document.querySelector('#GameArea-FieldCircle').style.margin = "0 var(--BossMode-fieldcircleMargin) 0 0";
+        document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 1.5vw";
         lobbyFooterText.style.display = 'none';
 
         // in advanture map on the last level with the eye boss
@@ -373,7 +379,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         sun_40.style.display = 'none';
         eye_40.style.display = 'none';
         boss.style.display = "none";
-        document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 0";
+        document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 1.5vw";
     };
 
     // play theme music 
@@ -392,6 +398,10 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     HeaderWrapper.style.height = '7.5%';
     lobbyFooter.style.background = "#15171a";
     lobbyFooter.style.width = "100%";
+
+    pointsToAchieve_ScoreBar.forEach(textEl => {
+        textEl.textContent = ` / ${points_to_win}`;
+    });
 
     // Initialize leaderboard scores
     leaderboard_player1_score.textContent = "0";
@@ -525,7 +535,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
 
         restartBtn.style.display = 'none';
         globalChooseWinnerBtn.style.display = 'none';
-        MaxAmountOfMovesGameDisplay.style.display = 'block';
+        MaxAmountOfMovesGameDisplay.style.display = 'flex';
         MaxAmountOfMovesGameDisplay.textContent = `moves left: ${maxAmoOfMoves}`;
         AdvantureMode_SpellDisplay.style.display = "flex";
         SpellAmountDisplay.textContent = SpellsInStore;
@@ -553,8 +563,8 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     // Adjust cell width and height
     let cellWidth = cellGrid.children[0].getBoundingClientRect().width;
     [...cellGrid.children].forEach(cell => {
-        cell.style.width = `${cellWidth - 1}px`;
-        cell.style.height = `${cellWidth - 1}px`;
+        cell.style.width = `${cellWidth}px`;
+        cell.style.height = `${cellWidth}px`;
     });
 
     // Initialize players
@@ -564,6 +574,12 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
 function initializePlayers(OnlineGameDataArray) {
     scorePlayer1.textContent = score_Player1_numb;
     scorePlayer2.textContent = score_Player2_numb;
+
+    scoreUp_animation(1, score_Player1_numb, points_to_win);
+    scoreUp_animation(2, score_Player2_numb, points_to_win);
+
+    player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
+    player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
 
     // Player Name
     PlayerData[1].PlayerName = curr_name1;
