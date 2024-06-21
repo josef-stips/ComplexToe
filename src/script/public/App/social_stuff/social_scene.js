@@ -49,6 +49,7 @@ class social_scene_class {
 
         social_stuff_cards[2].addEventListener("click", () => {
             use_scene.open("social_scene", "Best Players", online_stuff_scene);
+            best_players_handler.open();
         });
 
         social_stuff_cards[3].addEventListener("click", () => {
@@ -81,7 +82,15 @@ class social_scene_class {
 
         clan_pop_up_close_btn.addEventListener("click", () => {
             clan_overview_pop_up.style.display = "none";
-            DarkLayer.style.display = "none";
+
+            if (this.clan_handler.clan_pop_up_opened_in_pop_up) {
+                DarkLayer.style.display = "flex";
+
+            } else {
+                DarkLayer.style.display = "none";
+            };
+
+            this.clan_handler.clan_pop_up_opened_in_pop_up = false;
         });
 
         leave_clan_btn.addEventListener("click", () => { // user is in this clan
@@ -171,6 +180,8 @@ class clan_handler {
             "sophron": 0b0011,
             "member": 0b0000
         };
+
+        this.clan_pop_up_opened_in_pop_up = false;
     };
 
     search(query) {
@@ -384,7 +395,6 @@ class clan_handler {
 
             clan_admin_name.removeEventListener("click", clan_admin_name.event);
 
-            console.log(cb);
             clan_admin_name.addEventListener("click", clan_admin_name.event = () => {
                 if (Number(localStorage.getItem("PlayerID")) == cb["player_id"]) {
                     OpenOwnUserProfile();
@@ -626,6 +636,8 @@ class create_clan_handler {
                     // open clan pop up and close create clan pop up
                     create_clan_pop_up.style.display = "none";
                     social_scene.clan_handler.item_click(data);
+
+                    newClan.update_data(data);
                 });
 
         } catch (error) {
@@ -840,6 +852,13 @@ class recentPlayersHandler {
         let div = document.createElement("div");
         let span1 = document.createElement("span");
         let span2 = document.createElement("span");
+        let span3 = document.createElement("span");
+        let first_wrapper = document.createElement("div");
+        let isInClanEl = document.createElement("p");
+        let lastTimeOnlineEl = document.createElement("p");
+
+        first_wrapper.classList.add("player_list_item_first_wrapper");
+        span3.classList.add("player_list_item_additional_text_wrapper");
 
         div.addEventListener('click', () => {
             if (player_data["player_id"] == Number(localStorage.getItem("PlayerID"))) {
@@ -849,6 +868,11 @@ class recentPlayersHandler {
                 ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, player_data);
             };
         });
+
+        if (!player_data["player_icon"] && !player_data["playerInfoClass"]) {
+            player_data["player_icon"] = "X";
+            player_data["playerInfoClass"] = "empty";
+        };
 
         if (player_data["playerInfoClass"] == "empty") { // user has standard skin
             span2.classList = "userInfo-Icon userInfoEditable";
@@ -861,19 +885,26 @@ class recentPlayersHandler {
             span2.style.color = "var(--font-color)";
         };
 
+        lastTimeOnlineEl.textContent = `last time online: ${formatDate(player_data["last_connection"])}`;
+        isInClanEl.textContent = !player_data["isInClan"] ? "loner" : "clan member";
+
         // wrapper
         div.classList.add("recent_player_item");
 
         // display name
         span1.classList.add("scoreboard_player_name");
-        span1.textContent = player_data["player_name"];
+        span1.textContent = !player_data["player_name"] ? "no name" : player_data["player_name"];
 
         // display icon
         span2.classList.add("scoreboard_player_icon");
 
         // add to document
-        div.appendChild(span2);
-        div.appendChild(span1);
+        first_wrapper.appendChild(span2);
+        first_wrapper.appendChild(span1);
+        div.appendChild(first_wrapper);
+        div.appendChild(span3);
+        span3.appendChild(isInClanEl);
+        span3.appendChild(lastTimeOnlineEl);
         list.appendChild(div);
     };
 
@@ -907,8 +938,11 @@ class bestPlayersHandler {
     };
 
     load(player_data) {
+        best_players_list.textContent = null;
+
         player_data.forEach(data => {
-            recent_players_list.player(data, best_players_list);
+            console.log(data, best_players_list);
+            recent_players_handler.player(data, best_players_list);
         });
     };
 
@@ -917,7 +951,7 @@ class bestPlayersHandler {
     };
 
     abort(message) {
-
+        best_players_list.textContent = message;
     };
 };
 

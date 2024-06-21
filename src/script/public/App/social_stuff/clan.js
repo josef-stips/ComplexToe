@@ -114,12 +114,21 @@ class clan {
         };
     };
 
-    update_data() {
+    update_data(data) {
+        console.log(data);
 
-    };
+        socket.emit("update_clan_data", data["id"],
+            Number(localStorage.getItem("PlayerID")), async cb => {
 
-    events() {
+                this.current_clan_data = {
+                    "is_in_clan": true,
+                    "clan_id": data["id"]
+                };
 
+                localStorage.setItem("clan_member_data", JSON.stringify(this.current_clan_data));
+
+                await this.get_clan_data();
+            });
     };
 
     async get_clan_data() {
@@ -130,6 +139,10 @@ class clan {
                 this.current_clan_all_data = cb;
             };
         });
+    };
+
+    events() {
+
     };
 };
 

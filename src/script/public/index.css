@@ -3195,7 +3195,7 @@ label h3 {
     width: 70%;
     height: 60%;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     flex-direction: column;
 }
 
@@ -3206,6 +3206,8 @@ label h3 {
     justify-content: center;
     gap: 2vh;
     width: 45vw;
+    height: 100%;
+    margin-top: 15vh;
 }
 
 .UserQuoteSubmitBtn {
@@ -8565,7 +8567,7 @@ p.createCostumField_yInput {
     align-items: center;
     flex-direction: column;
     color: white;
-    z-index: 10000;
+    z-index: 10005;
     border-radius: 4vh;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     user-select: none;
@@ -8798,7 +8800,7 @@ p.createCostumField_yInput {
     position: absolute;
     inset: 0;
     margin: auto;
-    border: 3px solid var(--line-color);
+    border: 0.5vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     align-items: center;
@@ -8867,7 +8869,7 @@ p.createCostumField_yInput {
     height: 5vh;
     background: none;
     color: white;
-    font-size: 3vh;
+    font-size: 3.5vh;
     text-align: center;
 }
 
@@ -8914,14 +8916,14 @@ p.createCostumField_yInput {
     position: absolute;
     inset: 0;
     margin: auto;
-    border: 3px solid var(--line-color);
+    border: 0.5vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     align-items: center;
     flex-direction: column;
     color: white;
-    z-index: 10000;
-    border-radius: 3vh;
+    z-index: 10006;
+    border-radius: 4vh;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     user-select: none;
     font-size: 5vh;
@@ -8946,6 +8948,7 @@ p.createCostumField_yInput {
     justify-content: flex-start;
     width: 100%;
     height: 93%;
+    text-transform: capitalize;
 }
 
 .clan_description_text {
@@ -8982,8 +8985,8 @@ p.createCostumField_yInput {
 
 .create_clan_reload_btn {
     position: absolute;
-    top: 4vh;
-    left: 14vh;
+    top: 2.5vh;
+    left: 15vh;
     font-size: 3vh;
 }
 
@@ -9903,6 +9906,7 @@ i.fa-solid.fa-ranking-star {
 
 .scoreboard_player_name {
     font-size: 5vh;
+    text-wrap: nowrap;
 }
 
 .scoreboard_player_data_wrapper {
@@ -10021,6 +10025,10 @@ ul.default_sb_list.recent_players_list div:first-child {
     border-top: none;
 }
 
+ul.default_sb_list.best_players_list div:first-child {
+    border-top: none;
+}
+
 .recent_player_item {
     width: 100%;
     height: 8vh;
@@ -10028,8 +10036,7 @@ ul.default_sb_list.recent_players_list div:first-child {
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    border-bottom: 0.5vh solid var(--line-color);
-    border-top: 0.5vh solid var(--line-color);
+    border-bottom: 0.7vh solid var(--line-color);
     gap: 1vh;
     cursor: pointer;
     padding: 1vh 1vh;
@@ -10062,6 +10069,67 @@ ul.default_sb_list.recent_players_list div:first-child {
     gap: 1vh;
     cursor: pointer;
     padding: 1vh 1vh;
+}
+
+.best_players_wrapper {
+    padding: 0;
+}
+
+.player_list_item_additional_text_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2vw;
+    color: dimgrey;
+    margin-right: 2vw;
+    text-wrap: nowrap;
+}
+
+.player_list_item_first_wrapper {
+    height: 100%;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1vw;
+}
+
+
+/* user info clan wrapper */
+
+.userInfo_clanInfoWrapper {
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh;
+    font-size: 4vh;
+}
+
+.userInfo_notInClanText {
+    width: max-content;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    gap: 0.5vh;
+}
+
+.userInfo_inClanText {
+    width: max-content;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.userInfo_inClanText span {
+    color: var(--line-color);
+    font-weight: 600;
+    cursor: pointer;
 }
 
 

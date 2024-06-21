@@ -48,6 +48,8 @@ const OpenOwnUserProfile = () => {
         CreateOnlineProfileBtn.style.display = 'block';
         UserInfoCont.style.display = 'none';
     };
+
+    userInfoClanDisplay(JSON.parse(localStorage.getItem("clan_member_data"))["clan_id"]);
 };
 
 headerUserBtn.addEventListener('click', () => {

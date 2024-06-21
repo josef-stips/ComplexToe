@@ -54,10 +54,10 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
     // console.log(allData);
 
     if (allData) {
-        player_name = allData["player_name"];
+        player_name = !allData["player_name"] ? "no name" : allData["player_name"];
         player_id = allData["player_id"];
-        player_icon = allData["player_icon"];
-        playerInfoClass = allData["playerInfoClass"];
+        player_icon = !allData["player_icon"] ? "X" : allData["player_icon"];
+        playerInfoClass = !allData["playerInfoClass"] ? "empty" : allData["playerInfoClass"];
         playerInfoColor = allData["playerInfoColor"];
         quote = allData["quote"];
         onlineGamesWon = allData["onlineGamesWon"];
@@ -66,6 +66,8 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
         last_connection = allData["last_connection"];
         commonPattern = allData["commonPattern"];
     };
+
+    let isInClan = allData["isInClan"];
 
     console.log(allData);
 
@@ -143,6 +145,43 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
 
     // users most used pattern
     userInfo_MostUsedPattern.textContent = !commonPattern ? "-" : commonPattern;
+
+    // clan data
+    userInfoClanDisplay(isInClan);
+};
+
+async function userInfoClanDisplay(isInClan) { // isInClan : id int
+    if (isInClan) {
+        userInfo_notInClanText.style.display = "none";
+        userInfo_inClanText.style.display = "flex";
+
+    } else {
+        userInfo_notInClanText.style.display = "flex";
+        userInfo_inClanText.style.display = "none";
+        return;
+    };
+
+    let clan_data;
+
+    await socket.emit("get_clan_data", isInClan, cb => {
+        clan_data = cb;
+
+        userInfo_ClanName.textContent = clan_data["name"];
+    });
+
+    userInfo_ClanName.removeEventListener("click", userInfo_ClanName.ev);
+    userInfo_ClanName.addEventListener("click", userInfo_ClanName.ev = async() => {
+
+        if (clan_data) {
+            social_scene.clan_handler.item_click(clan_data);
+            social_scene.clan_handler.clan_pop_up_opened_in_pop_up = true;
+
+        } else {
+            AlertText.textContent = "Something went wrong!";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+            OpenedPopUp_WhereAlertPopUpNeeded = true;
+        };
+    });
 };
 
 // display requested player

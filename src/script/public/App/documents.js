@@ -671,6 +671,10 @@ let recent_players_list = document.querySelector(".recent_players_list");
 let best_player_box = document.querySelector(".best_player_box");
 let best_players_list = document.querySelector(".best_players_list");
 let best_players_wrapper = document.querySelector(".best_players_wrapper");
+let userInfo_clanInfoWrapper = document.querySelector(".userInfo_clanInfoWrapper");
+let userInfo_notInClanText = document.querySelector(".userInfo_notInClanText");
+let userInfo_inClanText = document.querySelector(".userInfo_inClanText");
+let userInfo_ClanName = document.querySelector(".userInfo_ClanName");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');
