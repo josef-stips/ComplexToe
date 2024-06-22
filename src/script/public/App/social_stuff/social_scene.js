@@ -82,11 +82,13 @@ class social_scene_class {
 
         clan_pop_up_close_btn.addEventListener("click", () => {
             clan_overview_pop_up.style.display = "none";
+            clan_overview_pop_up.style.zIndex = "10005";
 
             console.log(this.clan_handler.clan_pop_up_opened_in_pop_up);
 
             if (this.clan_handler.clan_pop_up_opened_in_pop_up &&
-                getComputedStyle(userInfoPopUp).display != "none"
+                getComputedStyle(userInfoPopUp).display != "none" ||
+                getComputedStyle(FriendsListPopUp).display != "none"
             ) {
                 DarkLayer.style.display = "flex";
 
@@ -110,12 +112,13 @@ class social_scene_class {
 
                                 OpenedPopUp_WhereAlertPopUpNeeded = false;
                                 AlertText.textContent = "You successfully left the clan.";
-                                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                                 clan_overview_pop_up.style.display = "none";
                                 userInfoPopUp.style.display = "none";
 
                                 if (getComputedStyle(clan_chat_pop_up).display == "flex") {
-                                    DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up);
+                                    DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
+                                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                                    });
                                     sceneMode.default();
                                 };
 
@@ -136,15 +139,24 @@ class social_scene_class {
                 newClan.current_clan_data["clan_id"] != newClan.current_selected_clan_id) {
 
                 try {
-                    socket.emit("join_clan", localStorage.getItem("PlayerID"), cb => {
+                    socket.emit("join_clan", localStorage.getItem("PlayerID"),
+                        newClan.current_selected_clan_id, async cb => {
 
-                        if (cb) {
+                            if (cb) {
+                                // update data in local storage
+                                await newClan.update_data(cb);
 
-                            AlertText.textContent = "You successfully joined the clan!";
-                            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-                            clan_overview_pop_up.style.display = "none";
-                        };
-                    });
+                                OpenedPopUp_WhereAlertPopUpNeeded = false;
+                                AlertText.textContent = "You successfully joined the clan!";
+                                clan_overview_pop_up.style.display = "none";
+                                userInfoPopUp.style.display = "none";
+
+                                close_all_scenes();
+                                sceneMode.full();
+                                DarkLayerAnimation(clan_chat_pop_up, clan_search_pop_up).then(DisplayPopUp_PopAnimation(alertPopUp, "flex", true))
+
+                            };
+                        });
 
                 } catch (error) {
                     AlertText.textContent = "Something went wrong...";
@@ -266,7 +278,13 @@ class clan_handler {
         try {
             console.log(data);
 
-            this.self_role = data["members"][Number(localStorage.getItem("PlayerID"))]["role"];
+            if (data["members"][Number(localStorage.getItem("PlayerID"))]) {
+
+                this.self_role = data["members"][Number(localStorage.getItem("PlayerID"))]["role"];
+
+            } else {
+                this.self_role = null;
+            };
 
             // click event on admin name
             this.admin_name_click(data);
@@ -360,23 +378,13 @@ class clan_handler {
     };
 
     member_click(data) {
+        userInfoPopUp.style.zIndex = "10011";
+
         if (Number(localStorage.getItem("PlayerID")) == data["player_id"]) {
             OpenOwnUserProfile();
 
         } else {
-            ClickedOnPlayerInfo(
-                data["player_name"],
-                data["player_id"],
-                data["player_icon"],
-                data["playerInfoClass"],
-                data["playerInfoColor"],
-                data["quote"],
-                data["onlineGamesWon"],
-                data["XP"],
-                data["currentUsedSkin"],
-                data["last_connection"],
-                data["commonPattern"]
-            );
+            ClickedOnPlayerInfo(data);
         };
     };
 
@@ -421,25 +429,13 @@ class clan_handler {
             clan_admin_name.removeEventListener("click", clan_admin_name.event);
 
             clan_admin_name.addEventListener("click", clan_admin_name.event = () => {
-                userInfoPopUp.style.zIndex = "10009";
+                userInfoPopUp.style.zIndex = "10011";
 
                 if (Number(localStorage.getItem("PlayerID")) == cb["player_id"]) {
                     OpenOwnUserProfile();
 
                 } else {
-                    ClickedOnPlayerInfo(
-                        cb["player_name"],
-                        cb["player_id"],
-                        cb["player_icon"],
-                        cb["playerInfoClass"],
-                        cb["playerInfoColor"],
-                        cb["quote"],
-                        cb["onlineGamesWon"],
-                        cb["XP"],
-                        cb["currentUsedSkin"],
-                        cb["last_connection"],
-                        cb["commonPattern"]
-                    );
+                    ClickedOnPlayerInfo(cb);
                 };
             });
         });
@@ -526,6 +522,9 @@ class clan_handler {
                     this.role_btns_display(kick_btn, promote_btn, "none", "none");
                 };
                 break;
+
+            case null:
+                this.role_btns_display(kick_btn, promote_btn, "none", "none");
         };
     };
 
@@ -853,7 +852,7 @@ class player_levels_handler_wrapper extends NewLevel {
 
                 DarkLayer.style.display = "block";
                 if (player_id != localStorage.getItem("PlayerID")) { // User clicks on other players profile
-                    ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+                    ClickedOnPlayerInfo(player);
 
                 } else { // User clicks on his own profile
                     OpenOwnUserProfile();
@@ -965,7 +964,7 @@ class recentPlayersHandler {
                 OpenOwnUserProfile();
 
             } else {
-                ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, player_data);
+                ClickedOnPlayerInfo(player_data);
             };
         });
 

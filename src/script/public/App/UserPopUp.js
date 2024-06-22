@@ -175,7 +175,9 @@ const TryToCloseUserInfoPopUp = () => {
 
     if (getComputedStyle(clan_overview_pop_up).display == "flex" ||
         getComputedStyle(comments_pop_up).display == "flex" ||
-        getComputedStyle(scoreboard_pop_up).display == "flex") {
+        getComputedStyle(scoreboard_pop_up).display == "flex" ||
+        getComputedStyle(SearchPlayerPopUp).display == "flex" ||
+        getComputedStyle(FriendsListPopUp).display == "flex") {
 
         DarkLayer.style.display = "block";
 

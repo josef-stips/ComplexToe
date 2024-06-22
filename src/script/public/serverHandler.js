@@ -836,7 +836,7 @@ const EventListenerForXPlayer = (x) => {
                     let last_connection = player.last_connection;
                     let commonPattern = player.commonPattern;
 
-                    ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern);
+                    ClickedOnPlayerInfo(player);
 
                 } catch (error) {
                     console.log(error);

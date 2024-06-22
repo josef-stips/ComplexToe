@@ -74,7 +74,7 @@ class onlineLevelOverviewHandler {
                 OpenOwnUserProfile();
 
             } else {
-                ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, this.author);
+                ClickedOnPlayerInfo(this.author);
             };
         });
     };
@@ -328,7 +328,7 @@ class level_comments_handler {
                         return;
 
                     } else {
-                        ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, cb);
+                        ClickedOnPlayerInfo(cb);
                     };
                 });
 
@@ -586,7 +586,7 @@ class OnlineLevelPlayerScoreBoardHandler {
                 OpenOwnUserProfile();
 
             } else {
-                ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, player_data);
+                ClickedOnPlayerInfo(player_data);
             };
         });
 

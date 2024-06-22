@@ -265,3 +265,7 @@ const roll_animation = (item, class_item) => {
 function easeOutSine(x) {
     return Math.sin((x * Math.PI) / 2);
 };
+
+function close_all_scenes() {
+    [...lobbyMainSec.children].forEach(scene => scene.style.display = "none");
+};

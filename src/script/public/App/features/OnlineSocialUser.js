@@ -50,24 +50,19 @@ const RequestPlayer = () => {
 };
 
 // Player clicks on other player when he searched him or he is in his lobby f.e
-const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern, allData) => {
-    // console.log(allData);
-
-    if (allData) {
-        player_name = !allData["player_name"] ? "no name" : allData["player_name"];
-        player_id = allData["player_id"];
-        player_icon = !allData["player_icon"] ? "X" : allData["player_icon"];
-        playerInfoClass = !allData["playerInfoClass"] ? "empty" : allData["playerInfoClass"];
-        playerInfoColor = allData["playerInfoColor"];
-        quote = allData["quote"];
-        onlineGamesWon = allData["onlineGamesWon"];
-        XP = allData["XP"];
-        currentUsedSkin = allData["currentUsedSkin"];
-        last_connection = allData["last_connection"];
-        commonPattern = allData["commonPattern"];
-    };
-
-    let isInClan = allData["isInClan"];
+const ClickedOnPlayerInfo = (allData) => {
+    let player_name = !allData["player_name"] ? "no name" : allData["player_name"];
+    let player_id = allData["player_id"];
+    let player_icon = !allData["player_icon"] ? "X" : allData["player_icon"];
+    let playerInfoClass = !allData["playerInfoClass"] ? "empty" : allData["playerInfoClass"];
+    let playerInfoColor = allData["playerInfoColor"];
+    let quote = allData["quote"];
+    let onlineGamesWon = allData["onlineGamesWon"];
+    let XP = allData["XP"];
+    let currentUsedSkin = allData["currentUsedSkin"];
+    let last_connection = allData["last_connection"];
+    let commonPattern = allData["commonPattern"];
+    let clan_data = allData["clan_data"];
 
     console.log(allData);
 
@@ -98,7 +93,7 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
     };
 
     DisplayPopUp_PopAnimation(userInfoPopUp, "flex", true);
-    userInfoPopUp.style.zIndex = "10005";
+    // userInfoPopUp.style.zIndex = "10005";
 
     UserID_OfCurrentVisitedProfile = player_id;
     UserName_OfCurrentVisitedProfile = player_name;
@@ -147,7 +142,7 @@ const ClickedOnPlayerInfo = (player_name, player_id, player_icon, playerInfoClas
     userInfo_MostUsedPattern.textContent = !commonPattern ? "-" : commonPattern;
 
     // clan data
-    userInfoClanDisplay(isInClan);
+    userInfoClanDisplay(clan_data["clan_id"]);
 };
 
 async function userInfoClanDisplay(isInClan) { // isInClan : id int
@@ -175,6 +170,7 @@ async function userInfoClanDisplay(isInClan) { // isInClan : id int
         if (clan_data) {
             social_scene.clan_handler.item_click(clan_data);
             social_scene.clan_handler.clan_pop_up_opened_in_pop_up = true;
+            clan_overview_pop_up.style.zIndex = "10010";
 
         } else {
             AlertText.textContent = "Something went wrong!";
@@ -206,7 +202,8 @@ const DisplayPlayerList = result => { // result: array containing objects
         div.id = player_id;
 
         div.addEventListener('click', function anonymous() {
-            ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern);
+            userInfoPopUp.style.zIndex = "10009";
+            ClickedOnPlayerInfo(player);
         });
 
         let span1 = document.createElement("span"); // name of searched player
@@ -248,6 +245,13 @@ SearchBar_searchIcon.addEventListener('click', () => {
 closeSearchPlayer_Btn.addEventListener('click', () => {
     SearchPlayerPopUp.style.display = "none";
 
+    if (getComputedStyle(userInfoPopUp).display != "none") {
+        DarkLayer.style.display = "flex";
+
+    } else {
+        DarkLayer.style.display = "none";
+    };
+
     closePlayerSearch();
 });
 
@@ -269,6 +273,10 @@ SearchBar_placeholderText.addEventListener('mousedrag', e => {
 
 closeFriendsList_Btn.addEventListener("click", () => {
     FriendsListPopUp.style.display = "none";
+
+    if (getComputedStyle(userInfoPopUp).display == "none") {
+        DarkLayer.style.display = "none";
+    };
 });
 
 // Generate friends list with data from database
@@ -318,7 +326,8 @@ const GenerateFriendsList = async(FriendsList) => { // looks like this: id = [Fr
 
 
             MainWrapper.addEventListener("click", () => {
-                ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection, commonPattern);
+                userInfoPopUp.style.zIndex = "10009";
+                ClickedOnPlayerInfo(player);
             });
 
             MainWrapper.appendChild(NameDiv);
@@ -602,10 +611,8 @@ const InitPos_OfNotificationText = () => {
     setTimeout(() => {
         let PositionOfUserInfoBtn = headerUserBtn.getBoundingClientRect();
 
-        NotiOnUserInfoBtn.style.inset = `${PositionOfUserInfoBtn.top + 25}px ${PositionOfUserInfoBtn.right}px ${PositionOfUserInfoBtn.bottom}px ${PositionOfUserInfoBtn.left}px`;
         GetMessageBtn_notificationText_Display.style.right = "0";
         GetMessageBtn_notificationText_Display.style.top = "0";
-        GetMessageBtn_notificationText_Display.style.margin = "0 49px 10px 0";
     }, 1000);
 };
 

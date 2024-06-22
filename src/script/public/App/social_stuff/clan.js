@@ -242,8 +242,17 @@ class clan_chat_pop_up_class {
         if (newClan.current_clan_all_data["chat"]) {
 
             for (const message of newClan.current_clan_all_data["chat"]) {
-                let author_role = newClan.current_clan_all_data["members"][message["from"]]["role"];
-                let author_name = newClan.current_clan_all_data["members"][message["from"]]["name"];
+                let author_role;
+                let author_name;
+
+                if (newClan.current_clan_all_data["members"][message["from"]]) {
+                    author_role = newClan.current_clan_all_data["members"][message["from"]]["role"];
+                    author_name = newClan.current_clan_all_data["members"][message["from"]]["name"];
+
+                } else {
+                    author_role = newClan.current_clan_all_data["previous_members"][message["from"]]["role"];
+                    author_name = newClan.current_clan_all_data["previous_members"][message["from"]]["name"];
+                };
 
                 this.new_message(message["message"], author_name, message["from"], author_role, message["date"]);
             };
@@ -279,9 +288,7 @@ class clan_chat_pop_up_class {
 
                 try {
                     await socket.emit("GetDataByID", player_id, player_data => {
-                        ClickedOnPlayerInfo(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
-                            undefined, undefined, player_data
-                        );
+                        ClickedOnPlayerInfo(player_data);
                     });
 
                 } catch (error) {

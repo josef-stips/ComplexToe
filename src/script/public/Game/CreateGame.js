@@ -425,7 +425,7 @@ class NewLevel {
             PlayerNameP.addEventListener("click", () => {
                 DarkLayer.style.display = "block";
                 if (player_id != localStorage.getItem("PlayerID")) { // User clicks on other players profile
-                    ClickedOnPlayerInfo(player_name, player_id, player_icon, playerInfoClass, playerInfoColor, quote, onlineGamesWon, XP, currentUsedSkin, last_connection);
+                    ClickedOnPlayerInfo(player);
 
                 } else { // User clicks on his own profile
                     OpenOwnUserProfile();
