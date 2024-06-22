@@ -88,7 +88,8 @@ class clan {
 
         this.init_clan_member_storage_data = {
             "is_in_clan": false,
-            "clan_id": null
+            "clan_id": null,
+            "role": "leader"
         };
 
         this.current_clan_data = {};
@@ -114,19 +115,36 @@ class clan {
         };
     };
 
-    update_data(data) {
+    async update_data(data, create_action, leave_clan = false) {
         console.log(data);
 
-        socket.emit("update_clan_data", data["id"],
+        let role;
+        let get_member = true; // opposite of leave clan
+
+        // user created clan. otherwise joined clan as member
+        if (create_action) {
+            role = "leader";
+
+        } else {
+            role = "member";
+        };
+
+        if (leave_clan) {
+            get_member = false;
+            role = null;
+            data["id"] = null;
+        };
+
+        this.current_clan_data = {
+            "is_in_clan": get_member,
+            "clan_id": data["id"],
+            "role": role
+        };
+
+        await socket.emit("update_clan_data", JSON.stringify(this.current_clan_data),
             Number(localStorage.getItem("PlayerID")), async cb => {
 
-                this.current_clan_data = {
-                    "is_in_clan": true,
-                    "clan_id": data["id"]
-                };
-
                 localStorage.setItem("clan_member_data", JSON.stringify(this.current_clan_data));
-
                 await this.get_clan_data();
             });
     };

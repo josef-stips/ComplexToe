@@ -1862,6 +1862,7 @@ lobbyBtn2.addEventListener("click", () => {
     } else {
         // use_scene.open("clan");
         DisplayPopUp_PopAnimation(create_clan_pop_up, "flex", true);
+        CreateClanHandler.start_pop_up();
     };
 });
 

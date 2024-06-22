@@ -130,6 +130,7 @@ const CloseUserPopUpOfOtherPlayer = () => {
 // try to close user info pop up through event clicks f.ex
 const TryToCloseUserInfoPopUp = () => {
     OpenedPopUp_WhereAlertPopUpNeeded = false;
+    userInfoPopUp.style.zIndex = "10001";
 
     if (!UserIsOnProfileFromOtherPlayer) { // user was on his own profile
         if (userInfoName.textContent != "" && userInfoIcon.textContent !== "" || userInfoName.textContent != "" && localStorage.getItem('UserIcon') != "" ||

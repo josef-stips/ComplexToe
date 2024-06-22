@@ -3345,28 +3345,29 @@ label h3 {
     right: 0;
     position: absolute;
     display: none;
-    border-radius: 30px;
-    border: 2px solid var(--font-color);
+    border-radius: 4vh;
+    border: 0.4vh solid var(--font-color);
     width: 25%;
     height: 25%;
     background-color: var(--bg-app-color);
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 10px;
+    padding: 2vh;
     z-index: 10001;
     color: var(--font-color);
 }
 
 .UserGivesData_header {
+    font-size: 3vh;
     height: 10%;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid var(--font-color);
-    padding-bottom: 10px;
+    border-bottom: 0.4vh solid var(--font-color);
+    padding: 0 0 3vh 0;
 }
 
 .UserGivesData_main {
@@ -3384,13 +3385,15 @@ label h3 {
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    font-size: 3vh;
+    padding: 0 0 1vh 0;
 }
 
 .UserGivesData_closeBtn {
     cursor: pointer;
-    margin: 0 0.25em 0 0;
+    margin: 0 1vh 0 0;
     transition: color 0.1s ease-out;
-    font-size: 18px;
+    font-size: 3vh;
 }
 
 .UserGivesData_closeBtn:hover {
@@ -3400,19 +3403,19 @@ label h3 {
 
 .UserGivesData_Input {
     outline: none;
-    font-size: 25px;
+    font-size: 4vh;
     font-weight: 600;
-    margin: 0 0 0 0.5em;
     width: 55%;
     height: 20%;
     border: none;
-    border-bottom: 2px white solid;
+    border-bottom: 0.4vh white solid;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     background: unset;
     color: white;
+    padding: 0 0 1vh 0;
 }
 
 #UserGivesData_IconInput {
@@ -8581,8 +8584,8 @@ p.createCostumField_yInput {
     justify-content: flex-start;
     align-items: center;
     position: relative;
-    border-bottom: 5px solid var(--line-color);
-    border-radius: 20px;
+    border-bottom: 0.4vh solid var(--line-color);
+    border-radius: 2%;
 }
 
 .clan_pop_up_header_inner_wrapper_1 {
@@ -8768,8 +8771,8 @@ p.createCostumField_yInput {
 
 .clan_member_accessory {
     font-size: 5vh;
-    padding: 20px;
-    border-right: 3px solid var(--line-color);
+    padding: 1vh;
+    border-right: 0.4vh solid var(--line-color);
 }
 
 .member_kick_btn {
@@ -8955,7 +8958,7 @@ p.createCostumField_yInput {
     background-color: var(--bg-app-color2);
     width: 90%;
     height: 70%;
-    border-radius: 30px;
+    border-radius: 4vh;
     color: var(--font-color);
     font-family: inherit;
     font-size: 3vh;
@@ -8967,7 +8970,7 @@ p.createCostumField_yInput {
     resize: none;
     outline: none;
     text-wrap: pretty;
-    padding: 20px;
+    padding: 2vh;
     user-select: none;
     overflow-y: auto;
 }
@@ -10130,6 +10133,13 @@ ul.default_sb_list.best_players_list div:first-child {
     color: var(--line-color);
     font-weight: 600;
     cursor: pointer;
+}
+
+.clan_member_list_item img {
+    border-image: none;
+    border: none;
+    padding: 1vh;
+    border-right: 0.4vh solid var(--line-color);
 }
 
 
