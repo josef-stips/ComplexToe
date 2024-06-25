@@ -3269,7 +3269,7 @@ label h3 {
 
 .CreateOnlineProfile-btn {
     margin-top: 75%;
-    font-size: 40px;
+    font-size: 6vh;
     transition: all 0.1s ease-in;
     cursor: pointer;
     font-family: 'Geologica', sans-serif;

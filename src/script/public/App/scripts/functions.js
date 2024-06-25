@@ -269,3 +269,14 @@ function easeOutSine(x) {
 function close_all_scenes() {
     [...lobbyMainSec.children].forEach(scene => scene.style.display = "none");
 };
+
+function chat_scroll_to_bottom(behavior, chat) {
+    clan_chat_chat.scrollTo({
+        top: chat.scrollHeight,
+        behavior
+    });
+};
+
+function self_id() {
+    return Number(localStorage.getItem("PlayerID"));
+};
