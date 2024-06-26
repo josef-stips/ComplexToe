@@ -185,6 +185,8 @@ class clan_chat_pop_up_class {
     };
 
     open() {
+        this.lastDate = null;
+
         DarkLayerAnimation(clan_chat_pop_up, gameModeCards_Div).then(async() => {
             await newClan.connect_to_clan_room();
             await this.parse_data();
