@@ -53,7 +53,7 @@ const default_tab_content_view = (container) => {
 };
 
 // create costum field on given dimensions. max. dimensions are 30x30
-const generateField_preview = (x, y, field_el, eventListener) => {
+const generateField_preview = (x, y, field_el, eventListener, static_cell = true) => {
     // get and init. grid
     let grid = field_el;
 
@@ -74,15 +74,20 @@ const generateField_preview = (x, y, field_el, eventListener) => {
             grid.appendChild(cell);
         };
 
-        setTimeout(() => {
-            try {
-                // give cell static width and height to prevent issues  
-                StaticCellScale(grid);
+        if (static_cell) {
+            setTimeout(() => {
+                try {
+                    // give cell static width and height to prevent issues  
+                    StaticCellScale(grid);
 
-            } catch (error) {
-                console.log(error)
-            }
-        }, 250);
+                } catch (error) {
+                    console.log(error)
+                }
+            }, 250);
+
+        } else {
+            cell_inherit_width(grid);
+        };
     };
 };
 
@@ -94,7 +99,15 @@ const StaticCellScale = (grid) => {
         cell.style.width = `${cellWidth - 1}px`;
         cell.style.height = `${cellWidth - 1}px`;
     });
-}
+};
+
+// give cell width of grid to fill the space
+const cell_inherit_width = (grid) => {
+    // [...grid.children].forEach(cell => {
+    //     cell.style.width = `inherit`;
+    //     cell.style.height = `inherit`;
+    // });
+};
 
 // just create cell. Do not append to parent
 const createCell = (x, index, grid, eventListener) => {
@@ -110,7 +123,7 @@ const createCell = (x, index, grid, eventListener) => {
         });
     };
 
-    cell.style.fontSize = "40px";
+    cell.style.fontSize = "3.5vh";
 
     return cell;
 };

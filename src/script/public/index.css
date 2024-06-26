@@ -6365,6 +6365,7 @@ h1.stars_pop_up_title {
     background-color: #0000007d;
     transition: border 0.1s ease-in-out;
     font-size: 3vh;
+    margin: 0 1vh 1vw 0;
 }
 
 .CreateLevelSceneButton:hover {
@@ -8200,32 +8201,33 @@ p.createCostumField_yInput {
 /* AGB pop up */
 
 .AGB_PopUp {
-    width: 65%;
-    height: 65%;
+    width: 70%;
+    height: 70%;
     position: absolute;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 3px solid var(--line-color);
+    border: 0.4vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     align-items: center;
+    justify-content: space-around;
     flex-direction: column;
     color: white;
-    font-size: 23px;
+    font-size: 3vh;
     z-index: 10001;
-    border-radius: 25px;
+    border-radius: 4vh;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .AGB_PopUP_main {
     overflow-y: scroll;
     overflow-x: hidden;
-    height: inherit;
+    height: 80%;
     width: 90%;
-    margin-top: 1em;
+    margin-top: 0.1vh;
 }
 
 .AGB_PopUP_main ol {
@@ -8243,6 +8245,7 @@ p.createCostumField_yInput {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-size: 2.9vh;
 }
 
 .AGB_PopUP_footer {
@@ -8252,7 +8255,7 @@ p.createCostumField_yInput {
     flex-direction: row;
     justify-content: end;
     align-items: end;
-    padding: 0 40px 20px 0;
+    padding: 0 1vw 1vw 0;
 }
 
 
@@ -8521,8 +8524,8 @@ p.createCostumField_yInput {
 .default_sb_item>img {
     --clan-border-color: white;
     height: 55%;
-    padding: 10px;
-    border: 3px solid;
+    padding: 1vh;
+    border: 0.6vh solid;
     border-image: var(--clan-border-color) 1;
 }
 
@@ -8864,7 +8867,7 @@ p.createCostumField_yInput {
     display: flex;
     flex-direction: column;
     background-color: var(--bg-app-color2);
-    padding: 20px;
+    padding: 1vh;
     border: 4px solid var(--bg-app-color2);
     border-radius: 30px;
     justify-content: space-between;
@@ -8939,7 +8942,7 @@ p.createCostumField_yInput {
     align-items: center;
     flex-direction: column;
     color: white;
-    z-index: 10006;
+    z-index: 10011;
     border-radius: 4vh;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     user-select: none;
@@ -9002,8 +9005,8 @@ p.createCostumField_yInput {
 
 .create_clan_reload_btn {
     position: absolute;
-    top: 2.5vh;
-    left: 15vh;
+    top: 3vh;
+    left: 9vw;
     font-size: 3vh;
 }
 
@@ -9073,6 +9076,10 @@ p.createCostumField_yInput {
     display: none;
 }
 
+.use_scene_main [use_for="Create or join a clan!"] [scene] {
+    display: none;
+}
+
 .use_scene_main [use_for="Recent Players"] [scene="Recent Players"] {
     display: flex;
 }
@@ -9082,6 +9089,10 @@ p.createCostumField_yInput {
 }
 
 .use_scene_main [use_for="Player Levels"] [scene="Player Levels"] {
+    display: flex;
+}
+
+.use_scene_main [use_for="Create or join a clan!"] [scene="Create or join a clan!"] {
     display: flex;
 }
 
@@ -9099,6 +9110,27 @@ p.createCostumField_yInput {
     cursor: pointer;
     min-height: 3em;
     font-weight: 600;
+}
+
+.clan_options[scene="Create or join a clan!"] {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.clan_options_btn {
+    transition: transform 0.15s ease-in-out;
+    font-size: 9vh;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.clan_options_btn:hover {
+    transition: transform 0.15s ease-in-out;
+    transform: scale(1.1);
 }
 
 
@@ -9198,6 +9230,23 @@ p.createCostumField_yInput {
     padding: 1vh;
 }
 
+.neutral_clan_message {
+    background-color: var(--bg-app-color);
+    padding: 0.5vh;
+    border: 0.3vh solid #494949;
+    color: #c9c9c9;
+    border-radius: 3vh;
+    min-width: 30%;
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2vh 2vh 0;
+    font-size: 2vh;
+    justify-self: center;
+}
+
 .clan_chat_message {
     background-color: var(--bg-app-color);
     padding: 2vh;
@@ -9273,10 +9322,11 @@ p.createCostumField_yInput {
 
 .clan_playground_viewport {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     position: relative;
     overflow: hidden;
-    /* border: 1px solid #000; */
+    /* border: 0.2vh solid #000; */
+    /* border-radius: 4vh; */
 }
 
 .clan_chat_playground_ground {
@@ -9284,14 +9334,13 @@ p.createCostumField_yInput {
     position: absolute;
     width: 100%;
     height: 100%;
-    /* border: 4px solid; */
-    border-radius: 30px;
+    /* border: 0.4vh solid; */
 }
 
 .clan_playground_character {
     position: absolute;
-    inset: 200px auto auto 200px;
-    margin: auto;
+    inset: 1vh 0 0 1vh;
+    margin: 0;
     width: max-content;
     height: max-content;
 }
@@ -9302,8 +9351,8 @@ p.createCostumField_yInput {
     justify-content: center;
     flex-direction: column;
     gap: 1vh;
-    width: max-content;
-    height: max-content;
+    width: 20vw;
+    height: 20vw;
     position: absolute;
     inset: 25% auto auto 30%;
 }

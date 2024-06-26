@@ -117,9 +117,15 @@ class social_scene_class {
 
                                 if (getComputedStyle(clan_chat_pop_up).display == "flex") {
                                     DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
-                                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+
+                                        setTimeout(() => {
+                                            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                                        }, 400);
                                     });
                                     sceneMode.default();
+
+                                } else {
+                                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                                 };
 
                                 // update data in local storage
@@ -153,8 +159,13 @@ class social_scene_class {
 
                                 close_all_scenes();
                                 sceneMode.full();
-                                DarkLayerAnimation(clan_chat_pop_up, clan_search_pop_up).then(DisplayPopUp_PopAnimation(alertPopUp, "flex", true))
+                                clan_chat.open();
+                                DarkLayerAnimation(clan_chat_pop_up, clan_search_pop_up).then(() => {
 
+                                    setTimeout(() => {
+                                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                                    }, 400);
+                                });
                             };
                         });
 

@@ -74,6 +74,7 @@ const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
                 DarkLayer.style.transition = 'none';
                 DarkLayer.style.opacity = '1';
                 DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+
             }, 350);
         }, 450);
     });
@@ -280,3 +281,7 @@ function chat_scroll_to_bottom(behavior, chat) {
 function self_id() {
     return Number(localStorage.getItem("PlayerID"));
 };
+
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];

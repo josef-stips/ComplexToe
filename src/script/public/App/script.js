@@ -1856,13 +1856,18 @@ UserQuote.addEventListener('mousedown', function(event) {
 // lobby btns
 
 lobbyBtn2.addEventListener("click", () => {
-    if (JSON.parse(localStorage.getItem("clan_member_data"))["is_in_clan"]) {
-        clan_chat.open();
+    if (!localStorage.getItem("UserName")) {
+
+        AlertText.textContent = "Create a profile first";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
     } else {
-        // use_scene.open("clan");
-        DisplayPopUp_PopAnimation(create_clan_pop_up, "flex", true);
-        CreateClanHandler.start_pop_up();
+        if (JSON.parse(localStorage.getItem("clan_member_data"))["is_in_clan"]) {
+            clan_chat.open();
+
+        } else {
+            use_scene.open("clan_options", "Create or join a clan!", gameModeCards_Div);
+        };
     };
 });
 
@@ -2005,6 +2010,10 @@ class multiple_use_scenery {
                 case "social_scene":
                     DarkLayerAnimation(online_stuff_scene, multiple_use_scene);
                     break;
+
+                case "clan_options":
+                    DarkLayerAnimation(gameModeCards_Div, multiple_use_scene);
+                    break;
             };
         });
     };
@@ -2051,4 +2060,14 @@ document.querySelector('.level_scene_start_btn').addEventListener('mouseover', (
 
 document.querySelector('.level_scene_start_btn').addEventListener('mouseout', () => {
     document.querySelector('.level_scene_grid').style.transform = 'scale(1)';
+});
+
+join_clan_btn_use_scene.addEventListener("click", () => {
+    social_scene.clan_handler.popular_view();
+    DarkLayerAnimation(clan_search_pop_up, multiple_use_scene);
+});
+
+create_clan_btn_use_scene.addEventListener("click", () => {
+    DisplayPopUp_PopAnimation(create_clan_pop_up, "flex", true);
+    CreateClanHandler.start_pop_up();
 });

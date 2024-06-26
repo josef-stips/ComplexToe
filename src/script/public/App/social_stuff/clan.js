@@ -163,8 +163,13 @@ class clan {
     async connect_to_clan_room() {
         let id = this.current_clan_data["clan_id"];
 
-        await socket.emit("connect_to_clan_room", id, cb => {
+        await socket.emit("connect_to_clan_room", id, clanPlaygroundHandler.self_player_id, cb => {
             if (!cb) new Error("couldn't connect to clan room.");
+
+            // for (id of cb) {
+            //     !clanPlaygroundHandler.player_cache[id] && (clanPlaygroundHandler.player_cache[id] = new playground_player(id, { x: 0, y: 0 }));
+            //     !clanPlaygroundHandler.player_cache[id] && clanPlaygroundHandler.player_cache[id].init();
+            // };
         });
     };
 };
@@ -172,6 +177,7 @@ class clan {
 class clan_chat_pop_up_class {
     constructor() {
         this.message_cache = [];
+        this.lastDate = null;
     };
 
     init() {
@@ -193,6 +199,8 @@ class clan_chat_pop_up_class {
 
     events() {
         clan_chat_back_btn.addEventListener("click", () => {
+            socket.emit("leave_clan_room", newClan.roomID, newClan.current_clan_data["clan_id"], clanPlaygroundHandler.self_player_id);
+
             DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
                 sceneMode.default();
             });
@@ -246,12 +254,16 @@ class clan_chat_pop_up_class {
 
     async parse_chat(clan_all_chat_data, msg_cache) {
         let msgs = !msg_cache && clan_all_chat_data ? clan_all_chat_data : this.message_cache;
-        console.log(msgs);
+
+        if (this.message_cache.length <= 0) this.message_cache = newClan.current_clan_all_data["chat"];
 
         clan_chat_chat.textContent = null;
 
         if (msgs) {
             for (const message of msgs) {
+
+                this.new_date_msg(message);
+
                 try {
                     const { data, author_role, author_name } = await this.get_author_data_of_msg(message);
 
@@ -263,6 +275,18 @@ class clan_chat_pop_up_class {
                 };
             };
         };
+    };
+
+    new_date_msg(message) {
+        const date = new Date(message["date"]);
+        const day = monthNames[date.getMonth()] + " " + date.getDate() + " " + date.getFullYear();
+
+        if (this.lastDate != day) {
+            this.clan_msg(day);
+            date.getMonth();
+        };
+
+        this.lastDate = day;
     };
 
     get_author_data_of_msg = (message) => {
@@ -284,6 +308,15 @@ class clan_chat_pop_up_class {
 
     async pass_message(text) {
         await socket.emit("pass_clan_message", text, Number(localStorage.getItem("PlayerID")), newClan.current_clan_data["clan_id"]);
+    };
+
+    clan_msg(text) {
+        let message_wrapper = document.createElement("div");
+
+        message_wrapper.classList.add("neutral_clan_message");
+        message_wrapper.textContent = text;
+
+        clan_chat_chat.appendChild(message_wrapper);
     };
 
     async new_message(msg, author_data) {
@@ -336,9 +369,9 @@ class clan_playground_handler {
         this.viewport = clan_playground_viewport;
 
         this.back_btn = clan_chat_back_btn;
-        this.self_character_coords = { x: 300, y: 300 };
+        this.self_character_coords = { x: 30, y: 30 };
         this.self_character_size = 32;
-        this.speed = 10;
+        this.speed = 1;
         this.playground_height = this.playground.clientHeight;
         this.playground_width = this.playground.clientWidth;
         this.clan_level = null;
@@ -351,9 +384,7 @@ class clan_playground_handler {
     };
 
     init() {
-        // this.init_character();
         this.character_control();
-        // this.update_position();
     };
 
     async open() {
@@ -361,9 +392,15 @@ class clan_playground_handler {
         this.playground_height = this.playground.clientHeight;
         this.playground_width = this.playground.clientWidth;
         this.self_character_size = 32;
+        this.player_cache = {};
 
-        // this.init_character_position();
-        this.send_coords();
+        [...this.playground.children].forEach(el => {
+            if (el.classList.contains("clan_playground_character")) el.remove();
+        });
+
+        setTimeout(async() => {
+            await this.send_coords();
+        }, 400);
         this.generate_field();
     };
 
@@ -384,7 +421,7 @@ class clan_playground_handler {
         field_wrapper.appendChild(field);
         this.playground.appendChild(field_wrapper);
 
-        generateField_preview(this.clan_level, this.clan_level, field, null);
+        generateField_preview(this.clan_level, this.clan_level, field, null, true);
         this.init_field_color(field, field_title);
     };
 
@@ -445,7 +482,7 @@ class clan_playground_handler {
             update_needed = true;
         };
 
-        if ((this.keys_pressed['ArrowDown']) && this.self_character_coords.y < this.playground_height - this.self_character_size) {
+        if ((this.keys_pressed['ArrowDown']) && this.self_character_coords.y < 85) {
             this.self_character_coords.y += this.speed;
             update_needed = true;
         };
@@ -455,44 +492,33 @@ class clan_playground_handler {
             update_needed = true;
         };
 
-        if ((this.keys_pressed['ArrowRight']) && this.self_character_coords.x < this.playground_width - this.self_character_size) {
+        if ((this.keys_pressed['ArrowRight']) && this.self_character_coords.x < 100) {
             this.self_character_coords.x += this.speed;
             update_needed = true;
         };
 
-        if (this.keys_pressed['Enter'] && this.can_leave) {
-            this.back_btn.click();
-        };
+        if (this.keys_pressed['Enter'] && this.can_leave) this.back_btn.click();
+        if (update_needed) this.send_coords();
 
-        if (update_needed) {
-            // this.update_position();
-            // this.check_collision();
-            this.send_coords();
-        };
-
-        requestAnimationFrame(() => {
-            this.animate_character();
-        });
+        requestAnimationFrame(() => this.animate_character());
     };
 
     update_position(character, character_coords, character_id) {
-        character.style.left = `${character_coords.x}px`;
-        character.style.top = `${character_coords.y}px`;
+        character.style.left = `${character_coords.x}vh`;
+        character.style.top = `${character_coords.y}vh`;
 
         // centrate viewport
         if (character_id == this.self_player_id) {
-            const viewportWidth = this.viewport.clientWidth;
-            const viewportHeight = this.viewport.clientHeight;
-            const offsetX = Math.max(character_coords.x - (viewportWidth * 4 / 5), 0);
-            const offsetY = Math.max(character_coords.y - (viewportHeight * 4 / 5), 0);
+            const offsetX = Math.max(character_coords.x - 75, 0);
+            const offsetY = Math.max(character_coords.y - 75, 0);
 
-            this.playground.style.left = `${-offsetX}px`;
-            this.playground.style.top = `${-offsetY}px`;
+            this.playground.style.left = `${-offsetX}vh`;
+            this.playground.style.top = `${-offsetY}vh`;
         };
     };
 
-    check_collision() {
-        this.self_character_rect = this.self_character.getBoundingClientRect();
+    check_collision(character) {
+        this.self_character_rect = character.getBoundingClientRect();
         this.back_btn_rect = this.back_btn.getBoundingClientRect();
 
         this.check_collision_on_back_btn(this.self_character_rect, this.back_btn_rect) ? this.display_leave_text("block") : this.display_leave_text("none");
@@ -510,18 +536,16 @@ class clan_playground_handler {
         this.can_leave = type == "none" ? false : true;
     };
 
-    send_coords() {
-        socket.emit("playground_player_moves", Number(localStorage.getItem("PlayerID")), this.self_character_coords, newClan.roomID);
+    async send_coords() {
+        await socket.emit("playground_player_moves", Number(localStorage.getItem("PlayerID")), this.self_character_coords, newClan.roomID);
     };
 };
 
 // client recieves position of other player in the room
 socket.on("recieve_player_coords", (player_id, coords) => {
-    console.log(player_id, coords);
+    // console.log(player_id, coords);
 
     if (!clanPlaygroundHandler.player_cache[player_id]) {
-
-        console.log(clanPlaygroundHandler);
 
         clanPlaygroundHandler.player_cache[player_id] = new playground_player(player_id, coords);
         clanPlaygroundHandler.player_cache[player_id].init();
@@ -530,6 +554,10 @@ socket.on("recieve_player_coords", (player_id, coords) => {
         clanPlaygroundHandler.player_cache[player_id].coords = coords;
         clanPlaygroundHandler.player_cache[player_id].update();
     };
+});
+
+socket.on("player_leaves_clan_room", player_id => {
+    clanPlaygroundHandler.player_cache[player_id] && clanPlaygroundHandler.player_cache[player_id].disconnect();
 });
 
 class playground_player {
@@ -543,6 +571,7 @@ class playground_player {
     init() {
         this.self_element = document.createElement("p");
         this.self_element.classList.add("clan_playground_character");
+        this.self_element.setAttribute("playground_character_id", this.self_id);
         this.self_element.textContent = "X";
 
         clan_chat_playground.appendChild(this.self_element);
@@ -551,6 +580,12 @@ class playground_player {
 
     update() {
         clanPlaygroundHandler.update_position(this.self_element, this.coords, this.self_id);
+        if (clanPlaygroundHandler.self_player_id == this.self_id) clanPlaygroundHandler.check_collision(this.self_element);
+    };
+
+    disconnect() {
+        this.self_element.remove();
+        delete clanPlaygroundHandler.player_cache[this.self_id];
     };
 };
 
@@ -1134,6 +1169,8 @@ socket.on("new_clan_message", async(message, author_data) => {
         role: author_data["player_name"],
         name: message["role"]
     });
+
+    clan_chat.new_date_msg(message);
 
     clan_chat.new_message(message, author_data);
     chat_scroll_to_bottom('instant', clan_chat_chat);

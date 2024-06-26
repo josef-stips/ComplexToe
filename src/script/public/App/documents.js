@@ -675,6 +675,8 @@ let userInfo_clanInfoWrapper = document.querySelector(".userInfo_clanInfoWrapper
 let userInfo_notInClanText = document.querySelector(".userInfo_notInClanText");
 let userInfo_inClanText = document.querySelector(".userInfo_inClanText");
 let userInfo_ClanName = document.querySelector(".userInfo_ClanName");
+let join_clan_btn_use_scene = document.querySelector(".join_clan_btn_use_scene");
+let create_clan_btn_use_scene = document.querySelector(".create_clan_btn_use_scene");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');
