@@ -142,10 +142,20 @@ const ClickedOnPlayerInfo = (allData) => {
     userInfo_MostUsedPattern.textContent = !commonPattern ? "-" : commonPattern;
 
     // clan data
-    userInfoClanDisplay(clan_data["clan_id"]);
+    userInfoClanDisplay(clan_data);
 };
 
-async function userInfoClanDisplay(isInClan) { // isInClan : id int
+async function userInfoClanDisplay(clan_data_user) { // isInClan : id int
+    let isInClan = null;
+
+    if (!clan_data_user) {
+        userInfo_notInClanText.style.display = "flex";
+        userInfo_inClanText.style.display = "none";
+
+    } else {
+        isInClan = clan_data_user;
+    };
+
     if (isInClan) {
         userInfo_notInClanText.style.display = "none";
         userInfo_inClanText.style.display = "flex";
