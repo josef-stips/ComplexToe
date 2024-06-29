@@ -285,3 +285,23 @@ function self_id() {
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
+
+function returnTimeOfDate(date) {
+    let datum = new Date(date);
+
+    let stunden = datum.getHours();
+    let minuten = datum.getMinutes();
+    let sekunden = datum.getSeconds();
+
+    let ampm = stunden >= 12 ? 'PM' : 'AM';
+
+    stunden = stunden % 12;
+    stunden = stunden ? stunden : 12;
+
+    minuten = minuten < 10 ? '0' + minuten : minuten;
+    sekunden = sekunden < 10 ? '0' + sekunden : sekunden;
+
+    let uhrzeit = `${stunden}:${minuten} ${ampm}`;
+
+    return uhrzeit;
+};

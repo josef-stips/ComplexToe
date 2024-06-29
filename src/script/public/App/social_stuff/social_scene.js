@@ -409,8 +409,10 @@ class recentPlayersHandler {
         first_wrapper.classList.add("player_list_item_first_wrapper");
         span3.classList.add("player_list_item_additional_text_wrapper");
 
+        let self = player_data["player_id"] == Number(localStorage.getItem("PlayerID"));
+
         div.addEventListener('click', () => {
-            if (player_data["player_id"] == Number(localStorage.getItem("PlayerID"))) {
+            if (self) {
                 OpenOwnUserProfile();
 
             } else {
@@ -443,6 +445,10 @@ class recentPlayersHandler {
         // display name
         span1.classList.add("scoreboard_player_name");
         span1.textContent = !player_data["player_name"] ? "no name" : player_data["player_name"];
+
+        if (self) {
+            span1.textContent = "You";
+        };
 
         // display icon
         span2.classList.add("scoreboard_player_icon");

@@ -2,21 +2,21 @@ class clan {
     constructor() {
         this.level_xp_requirement = {
             1: 0,
-            2: 1000,
-            3: 2000,
-            4: 3000,
-            5: 4000,
-            6: 5000,
-            7: 6000,
-            8: 7000,
-            9: 8000,
-            10: 9000,
-            11: 10000,
-            12: 11000,
-            13: 12000,
-            14: 13000,
-            15: 14000,
-            16: 15000,
+            2: 100,
+            3: 300,
+            4: 700,
+            5: 900,
+            6: 1100,
+            7: 1500,
+            8: 1900,
+            9: 2200,
+            10: 3000,
+            11: 5000,
+            12: 6000,
+            13: 8000,
+            14: 10000,
+            15: 12000,
+            16: 14000,
             17: 16000,
             18: 17000,
             19: 18000,
@@ -172,6 +172,20 @@ class clan {
             // };
         });
     };
+
+    // update XP of player in clan data
+    async send_XP_to_clan() {
+        let player_XP = Number(localStorage.getItem("ELO"));
+        let clan_id = this.current_clan_data["clan_id"];
+
+        socket.emit("send_XP_to_clan", clan_id, clanPlaygroundHandler.self_player_id, player_XP, cb => {
+            newClan.current_clan_all_data = cb;
+        });
+    };
+
+    async new_clan_level(new_level) {
+        console.log(new_level);
+    };
 };
 
 class clan_chat_pop_up_class {
@@ -189,6 +203,7 @@ class clan_chat_pop_up_class {
 
         DarkLayerAnimation(clan_chat_pop_up, gameModeCards_Div).then(async() => {
             await newClan.connect_to_clan_room();
+            await newClan.send_XP_to_clan();
             await this.parse_data();
             clanPlaygroundHandler.open();
             sceneMode.full();
@@ -257,8 +272,7 @@ class clan_chat_pop_up_class {
     async parse_chat(clan_all_chat_data, msg_cache) {
         let msgs = !msg_cache && clan_all_chat_data ? clan_all_chat_data : this.message_cache;
 
-        if (this.message_cache.length <= 0) this.message_cache = newClan.current_clan_all_data["chat"];
-
+        if (this.message_cache.length <= 0 && clan_all_chat_data) this.message_cache = clan_all_chat_data;
         clan_chat_chat.textContent = null;
 
         if (msgs) {
@@ -267,10 +281,16 @@ class clan_chat_pop_up_class {
                 this.new_date_msg(message);
 
                 try {
-                    const { data, author_role, author_name } = await this.get_author_data_of_msg(message);
 
-                    message["role"] = author_role;
-                    this.new_message(message, data);
+                    if (message["type"] == "human") {
+                        const { data, author_role, author_name } = await this.get_author_data_of_msg(message);
+                        message["role"] = author_role;
+
+                        this.new_message(message, data);
+
+                    } else {
+                        this.clan_msg(message["message"]);
+                    };
 
                 } catch (error) {
                     console.error("Error getting author data:", error);
@@ -342,10 +362,10 @@ class clan_chat_pop_up_class {
             };
         });
 
-        message_date_wrapper.textContent = msg["date"];
+        message_date_wrapper.textContent = returnTimeOfDate(msg["date"]);
         message_text_wrapper.textContent = msg["message"];
         player_role_wrapper.textContent = msg["role"];
-        player_name_wrapper.textContent = author_data["player_name"];
+        player_name_wrapper.textContent = message_author_type == "self" ? "You" : author_data["player_name"];
 
         message_wrapper.setAttribute("from", message_author_type);
         message_wrapper.setAttribute("message_player_id", author_data["player_id"]);
@@ -355,6 +375,13 @@ class clan_chat_pop_up_class {
         player_role_wrapper.classList.add("clan_chat_message_player_role");
         message_text_wrapper.classList.add("clan_chat_message_player_message");
         message_date_wrapper.classList.add("clan_message_date");
+
+        if (message_author_type == "self") {
+            message_wrapper.style.borderColor = `var(--gradient-first-color-${clanPlaygroundHandler.clan_level})`;
+
+        } else {
+            message_wrapper.style.borderColor = `var(--gradient-second-color-${clanPlaygroundHandler.clan_level})`;
+        };
 
         message_wrapper.appendChild(player_name_wrapper);
         message_wrapper.appendChild(player_role_wrapper);
@@ -383,6 +410,11 @@ class clan_playground_handler {
 
         this.player_cache = {};
         this.self_player_id = self_id();
+
+        // elements
+        this.XP_bar = null;
+        this.XP_text = null;
+        this.level_text = null;
     };
 
     init() {
@@ -403,7 +435,12 @@ class clan_playground_handler {
         setTimeout(async() => {
             await this.send_coords();
         }, 400);
+
         this.generate_field();
+        this.init_clan_level_bar(newClan.current_clan_all_data["XP"], newClan.current_clan_all_data["level"]);
+
+        clan_chat_header.style.borderColor = `var(--gradient-second-color-${clanPlaygroundHandler.clan_level})`;
+        document.querySelector(".clan_chat_leftWrapper").style.borderColor = `var(--gradient-second-color-${clanPlaygroundHandler.clan_level})`;
     };
 
     generate_field() {
@@ -425,6 +462,77 @@ class clan_playground_handler {
 
         generateField_preview(this.clan_level, this.clan_level, field, null, true);
         this.init_field_color(field, field_title);
+    };
+
+    init_clan_level_bar(clan_XP, clan_level) {
+        let bar_color = newClan.level_color[this.clan_level][1];
+
+        let wrapper = document.querySelector(".playground_field_wrapper");
+
+        let bar_wrapper = document.createElement("div");
+        let bar = document.createElement("div");
+        let text = document.createElement("div");
+        let XP_text = document.createElement("div");
+
+        this.XP_bar = bar;
+        this.XP_text = XP_text;
+        this.level_text = text;
+
+        bar_wrapper.classList.add("clan_level_bar_wrapper");
+        bar.classList.add("clan_level_bar");
+
+        bar_wrapper.appendChild(text);
+        bar_wrapper.appendChild(bar);
+        bar_wrapper.appendChild(XP_text);
+        wrapper.appendChild(bar_wrapper);
+
+        // logic
+        let next_level = Number(Object.keys(newClan.level_xp_requirement)[clan_level]);
+
+        if (!next_level) {
+            bar.style.background = `linear-gradient(105deg, ${bar_color} 100%, transparent 0% )`;
+            return;
+        };
+
+        let XP_for_next_level = newClan.level_xp_requirement[clan_level + 1];
+        let difference = (clan_XP / XP_for_next_level) * 100;
+
+        text.textContent = `level ${clan_level}`;
+        XP_text.textContent = `XP ${clan_XP} / ${XP_for_next_level}`;
+
+        if (difference >= 100) {
+            newClan.new_clan_level(next_level);
+            this.update_clan_level_bar(bar, XP_text, text, next_level, clan_XP, newClan.level_xp_requirement[next_level]);
+        };
+
+        setTimeout(async() => {
+            for (let i = 0; i < difference; i++) {
+
+                await sleep(10);
+                bar.style.background = `linear-gradient(105deg, ${bar_color} ${i}%, transparent 0% )`;
+            };
+        }, 400);
+    };
+
+    update_clan_level_bar(XP_bar, XP_text, level_text, new_level, clan_XP, next_level_XP) {
+
+        let difference = (clan_XP / next_level_XP) * 100;
+
+        if (difference >= 100) {
+            newClan.new_clan_level(new_level);
+            this.update_clan_level_bar(XP_bar, XP_text, level_text, new_level + 1, clan_XP, newClan.level_xp_requirement[new_level + 1]);
+        };
+
+        level_text.textContent = `level ${new_level}`;
+        XP_text.textContent = `XP ${clan_XP}`;
+
+        setTimeout(async() => {
+            for (let i = 0; i < difference; i++) {
+
+                await sleep(10);
+                XP_bar.style.background = `linear-gradient(105deg, ${bar_color} ${i}%, transparent 0% )`;
+            };
+        }, 400);
     };
 
     init_field_color(field, title) {
@@ -542,6 +650,25 @@ class clan_playground_handler {
         await socket.emit("playground_player_moves", Number(localStorage.getItem("PlayerID")), this.self_character_coords, newClan.roomID);
     };
 };
+
+socket.on("player_joined_clan", player_name => {
+    clan_chat.clan_msg(`${player_name} joined the clan`);
+});
+
+// on player left clan
+socket.on("player_left_clan", player_name => {
+    clan_chat.clan_msg(`${player_name} left the clan`);
+});
+
+// server updated XP and level of clan
+socket.on("update_clan_XP_bar", (newXP, clanLevel) => {
+
+    console.log(newXP, clanLevel);
+
+    clanPlaygroundHandler.update_clan_level_bar(clanPlaygroundHandler.XP_bar, clanPlaygroundHandler.XP_text, clanPlaygroundHandler.level_text,
+        clanLevel, newXP, clanLevel + 1
+    );
+});
 
 // client recieves position of other player in the room
 socket.on("recieve_player_coords", (player_id, coords) => {
@@ -737,7 +864,12 @@ class create_clan_handler {
 
                     // open clan pop up and close create clan pop up
                     create_clan_pop_up.style.display = "none";
+                    multiple_use_scene.style.display = "none";
                     social_scene.clan_handler.item_click(data);
+
+                    setTimeout(() => {
+                        clan_chat.open();
+                    }, 1000);
                 });
 
         } catch (error) {
@@ -881,8 +1013,11 @@ class clan_handler {
     member_item(member_id, member_data) {
         clan_member_list.textContent = null;
 
+        // console.log(member_data, member_data["join_date"]);
+
         try {
             socket.emit("GetDataByID", member_id, data => {
+                let you_tag = clanPlaygroundHandler.self_player_id == data["player_id"] ? "(You)" : "";
 
                 let list_item = document.createElement("li");
                 let item_text = document.createElement("h2");
@@ -892,6 +1027,8 @@ class clan_handler {
                 let kick_btn = document.createElement("p");
                 let promote_btn = document.createElement("p");
                 let wrapper2 = document.createElement("div");
+                let join_date_el = document.createElement("p");
+                let small_text_wrapper = document.createElement("div");
 
                 let member_icon = this.member_role_icon(member_data["role"]);
                 member_icon.classList.add("clan_member_accessory");
@@ -899,13 +1036,17 @@ class clan_handler {
                 list_item.classList.add("default_sb_item");
                 list_item.classList.add("clan_member_list_item");
                 list_item.style.padding = "0";
-                item_text.textContent = data["player_name"];
+                item_text.textContent = data["player_name"] + " " + you_tag;
                 item_text.style.background = "unset";
                 item_text.style.webkitTextFillColor = "unset";
-                item_text.style.fontSize = "5vh";
+                item_text.style.fontSize = "4.5vh";
+                item_text.style.textWrap = "nowrap";
                 item_img.style.fontSize = "4.5vh";
                 item_role.classList.add("member_role_text");
                 item_role.textContent = member_data["role"];
+                small_text_wrapper.classList.add("small_text_wrapper");
+                join_date_el.textContent = "joined on " + member_data["join_date"];
+                join_date_el.classList.add("join_date_el");
                 item_text_wrapper.classList.add("member_text_wrapper");
                 kick_btn.classList.add("member_kick_btn");
                 kick_btn.textContent = "kick";
@@ -921,7 +1062,9 @@ class clan_handler {
                 wrapper2.appendChild(kick_btn);
                 wrapper2.appendChild(promote_btn);
                 item_text_wrapper.appendChild(item_text);
-                item_text_wrapper.appendChild(item_role);
+                small_text_wrapper.appendChild(item_role);
+                small_text_wrapper.appendChild(join_date_el);
+                item_text_wrapper.appendChild(small_text_wrapper);
                 list_item.appendChild(member_icon);
                 list_item.appendChild(item_img);
                 list_item.appendChild(item_text_wrapper);
