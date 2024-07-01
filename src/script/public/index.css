@@ -6095,7 +6095,7 @@ h1.stars_pop_up_title {
     width: 100vh;
     height: 70%;
     border: 0.4vh solid #15171a;
-    border-radius: 30px;
+    border-radius: 3vh;
     background-color: #c7c7c7;
     font-size: 3vh;
     resize: none;
@@ -10238,6 +10238,222 @@ ul.default_sb_list.best_players_list div:first-child {
     width: 10vw;
     height: 3vh;
     min-height: 3vh;
+}
+
+
+/* clan reason pop up */
+
+.clan_action_reason_pop_up {
+    width: 60vw;
+    height: 60vh;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: none;
+    flex-direction: column;
+    z-index: 10025;
+    align-items: center;
+    user-select: none;
+    background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
+    border: 0.7vh solid var(--line-color);
+    border-radius: 4vh;
+    color: var(--font-color);
+    justify-content: space-between;
+}
+
+.clan_reason_header {
+    width: 97%;
+    height: 7%;
+    font-size: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.clan_reason_main {
+    width: 100%;
+    height: 93%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clan_reason_form {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    align-items: end;
+}
+
+.clan_reason_text_input {
+    outline: none;
+    border: none;
+    border-radius: 3vh;
+    width: 95%;
+    height: 90%;
+    font-size: 3vh;
+    padding: 2.5%;
+    font-family: 'Rubik';
+    resize: none;
+    background-color: #c7c7c7;
+    color: #33373a;
+}
+
+.clan_reason_submit_btn {
+    outline: none;
+    border: none;
+    width: max-content;
+    padding: 0.5vh 1vw;
+    font-size: 3vh;
+    border-radius: 3vh;
+    cursor: pointer;
+    display: flex;
+}
+
+
+/* clan universal msg pop up */
+
+.clan_universal_msg_pop_up {
+    width: 90vw;
+    height: 90vh;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: none;
+    flex-direction: column;
+    z-index: 10005;
+    align-items: center;
+    user-select: none;
+    background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
+    border: 0.7vh solid var(--line-color);
+    border-radius: 4vh;
+    color: var(--font-color);
+    justify-content: space-between;
+}
+
+
+/* .clan_universal_msg_header {
+    width: 97%;
+    height: 7%;
+    font-size: 3vh;
+    align-items: center;
+    display: flex;
+    justify-content: end;
+} */
+
+.clan_universal_msg_main {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    padding: 3vh 0 0 0;
+    /* align-items: center; */
+    /* justify-content: center; */
+}
+
+.clan_universal_content {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+    justify-content: flex-start;
+}
+
+.clan_universal_content[for="kick"]>div {
+    margin: 5vh 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    font-size: 2vh;
+    width: 50%;
+    height: 30%;
+}
+
+.clan_universal_content[for="kick"]>span {
+    margin: 10vh 0 0 0;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.clan_universal_content[for="kick"]>span>img {
+    width: 20vh;
+    height: 20vh;
+}
+
+.clan_universal_content>h1 {
+    font-size: 6vh;
+}
+
+.clan_universal_msg_footer {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clan_universal_msg_ok_btn {
+    outline: none;
+    border: 0.4vh solid white;
+    font-size: 3vh;
+    padding: 0.5vh 1vw;
+    border-radius: 3vh;
+    font-weight: 600;
+    width: 10%;
+    background-color: var(--bg-app-color);
+    color: var(--font-color);
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out;
+    box-shadow: 10px 10px 7px var(--bg-app-color3);
+}
+
+.clan_universal_msg_ok_btn:hover {
+    transition: transform 0.15s ease-in-out;
+    transform: scale(1.1);
+}
+
+.default_text_area {
+    outline: none;
+    border: none;
+    border-radius: 3vh;
+    width: 95%;
+    height: 90%;
+    font-size: 3vh;
+    padding: 2.5%;
+    font-family: 'Rubik';
+    resize: none;
+    background-color: #c7c7c7;
+    color: #33373a;
+    box-shadow: 5px 5px 7px var(--bg-app-color3);
+}
+
+.clan_universal_kick_content_kicker_name {
+    text-shadow: 5px 5px 7px var(--bg-app-color3);
+    font-weight: 700;
+    color: var(--line-color);
+    cursor: pointer;
+}
+
+.clan_btn_notify_label {
+    display: none;
+    padding: 0.5vh 1.3vh;
+    background-color: red;
+    border-radius: 100%;
+    border: 0.3vh solid white;
+    font-size: 2vh;
+    position: absolute;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    margin: 0 0 0 auto;
+    top: 2vh;
+    right: -0.8vw;
+    bottom: 0;
+    left: 0;
 }
 
 

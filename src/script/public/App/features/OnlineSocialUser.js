@@ -168,10 +168,12 @@ async function userInfoClanDisplay(clan_data_user) { // isInClan : id int
 
     let clan_data;
 
-    await socket.emit("get_clan_data", isInClan, cb => {
+    await socket.emit("get_clan_data", isInClan["clan_id"], cb => {
         clan_data = cb;
 
-        userInfo_ClanName.textContent = clan_data["name"];
+        if (cb) {
+            userInfo_ClanName.textContent = clan_data["name"];
+        };
     });
 
     userInfo_ClanName.removeEventListener("click", userInfo_ClanName.ev);

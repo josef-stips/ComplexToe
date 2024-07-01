@@ -678,6 +678,22 @@ let userInfo_ClanName = document.querySelector(".userInfo_ClanName");
 let join_clan_btn_use_scene = document.querySelector(".join_clan_btn_use_scene");
 let create_clan_btn_use_scene = document.querySelector(".create_clan_btn_use_scene");
 
+const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
+const clan_reason_header = document.querySelector('.clan_reason_header');
+const clan_reason_close_btn = document.querySelector('.clan_reason_close_btn');
+const clan_reason_main = document.querySelector('.clan_reason_main');
+const clan_reason_form = document.querySelector('.clan_reason_form');
+const clan_reason_text_input = document.querySelector('.clan_reason_text_input');
+const clan_reason_submit_btn = document.querySelector('.clan_reason_submit_btn');
+
+const clan_universal_msg_pop_up = document.querySelector(".clan_universal_msg_pop_up");
+const clan_universal_msg_ok_btn = document.querySelector(".clan_universal_msg_ok_btn");
+const clan_universal_content = document.querySelectorAll(".clan_universal_content");
+const clan_content_kick_reason = document.querySelector(".clan_content_kick_reason");
+const clan_universal_kick_content_kicker_name = document.querySelector(".clan_universal_kick_content_kicker_name");
+
+const clan_btn_notify_label = document.querySelector(".clan_btn_notify_label");
+
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');
 let SearchBar_searchIcon = document.querySelector('.SearchBar_searchIcon');

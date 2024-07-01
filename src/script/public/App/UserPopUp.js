@@ -49,7 +49,7 @@ const OpenOwnUserProfile = () => {
         UserInfoCont.style.display = 'none';
     };
 
-    userInfoClanDisplay(JSON.parse(localStorage.getItem("clan_member_data"))["clan_id"]);
+    userInfoClanDisplay(JSON.parse(localStorage.getItem("clan_member_data")));
 };
 
 headerUserBtn.addEventListener('click', () => {

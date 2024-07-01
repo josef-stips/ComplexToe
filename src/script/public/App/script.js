@@ -1856,6 +1856,8 @@ UserQuote.addEventListener('mousedown', function(event) {
 // lobby btns
 
 lobbyBtn2.addEventListener("click", () => {
+    clan_btn_notify_label.style.display = "none";
+
     if (!localStorage.getItem("UserName")) {
 
         AlertText.textContent = "Create a profile first";

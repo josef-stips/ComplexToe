@@ -305,3 +305,7 @@ function returnTimeOfDate(date) {
 
     return uhrzeit;
 };
+
+const sortArrayObjectsAfterOneCriteria = (obj, criteria) => {
+    return obj
+};
