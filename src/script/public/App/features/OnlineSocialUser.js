@@ -145,18 +145,20 @@ const ClickedOnPlayerInfo = (allData) => {
     userInfoClanDisplay(clan_data);
 };
 
-async function userInfoClanDisplay(clan_data_user) { // isInClan : id int
+async function userInfoClanDisplay(clan_data_user) {
     let isInClan = null;
 
     if (!clan_data_user) {
+
         userInfo_notInClanText.style.display = "flex";
         userInfo_inClanText.style.display = "none";
+        return;
 
     } else {
         isInClan = clan_data_user;
     };
 
-    if (isInClan) {
+    if (isInClan["clan_id"]) {
         userInfo_notInClanText.style.display = "none";
         userInfo_inClanText.style.display = "flex";
 

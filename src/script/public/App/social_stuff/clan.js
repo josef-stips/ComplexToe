@@ -103,7 +103,9 @@ class clan {
         this.storage_data();
         await this.get_clan_data();
         await this.connect_to_clan_room();
-        clan_chat.message_cache = await this.current_clan_all_data["chat"];
+
+        let db_clan_chat = await this.current_clan_all_data["chat"];
+        clan_chat.message_cache = db_clan_chat ? db_clan_chat : [];
     };
 
     storage_data() {
@@ -263,7 +265,7 @@ class clan_chat_pop_up_class {
     };
 
     async parse_data() {
-        let msg_cache = Object.keys(this.message_cache).length > 0;
+        let msg_cache = this.message_cache ? Object.keys(this.message_cache).length > 0 : false;
 
         !msg_cache && await newClan.get_clan_data();
 
@@ -298,8 +300,13 @@ class clan_chat_pop_up_class {
 
                         this.new_message(message, data);
 
-                    } else {
+                    } else if (message["type"] == "clan_msg") {
+
                         this.clan_msg(message["message"]);
+
+                    } else if (message["type"] == "join_request") {
+
+                        this.join_request_msg(message, message["player_data"]);
                     };
 
                 } catch (error) {
@@ -360,6 +367,55 @@ class clan_chat_pop_up_class {
         clan_chat_chat.appendChild(message_wrapper);
 
         chat_scroll_to_bottom('instant', clan_chat_chat);
+    };
+
+    join_request_msg(msg, player) {
+        console.log(msg, player);
+
+        let msg_wrapper = document.createElement("div");
+        let msg_upper = document.createElement("div");
+        let msg_lower = document.createElement("div");
+        let msg_accept = document.createElement("i");
+        let msg_reject = document.createElement("i");
+        let text_el = document.createElement("p");
+
+        msg_wrapper.setAttribute("from", "join_request");
+        msg_wrapper.setAttribute("message_player_id", player.player_id);
+        msg_wrapper.setAttribute("message_id", msg.msg_id);
+
+        msg_wrapper.classList.add("clan_chat_message");
+        msg_upper.classList.add("clan_chat_message_upper");
+        msg_lower.classList.add("clan_chat_message_lower");
+
+        msg_accept.className = "fa-solid fa-check clan_request_msg_accept_btn";
+        msg_reject.className = "fas fa-x clan_request_msg_reject_btn";
+
+        text_el.textContent = msg.message;
+
+        msg_wrapper.appendChild(msg_upper);
+        msg_wrapper.appendChild(msg_lower);
+        msg_lower.appendChild(msg_accept);
+        msg_lower.appendChild(msg_reject);
+        msg_upper.appendChild(text_el);
+        clan_chat_chat.appendChild(msg_wrapper);
+
+        text_el.addEventListener("click", () => {
+            ClickedOnPlayerInfo(player);
+        });
+
+        msg_accept.addEventListener("click", () => {
+
+        });
+
+        msg_reject.addEventListener("click", () => {
+            if (newClan.current_clan_data.role == this.clan_roles[0] || newClan.current_clan_data.role == this.clan_roles[1]) {
+
+                socket.emit("remove_clan_msg", newClan.current_clan_data["clan_id"], msg.msg_id);
+
+            } else {
+                AlertText.textContent = `Only the ${this.clan_roles[0]} and the ${this.clan_roles[1]} can modify join requests!`;
+            };
+        });
     };
 
     async new_message(msg, author_data) {
@@ -739,6 +795,12 @@ socket.on("recieve_player_coords", (player_id, coords) => {
 
 socket.on("player_leaves_clan_room", player_id => {
     clanPlaygroundHandler.player_cache[player_id] && clanPlaygroundHandler.player_cache[player_id].disconnect();
+});
+
+socket.on("rm_clan_msg", msg_id => {
+    let el = clan_chat_chat.querySelector(`[from="join_request"][message_id="${msg_id}"]`);
+    el && el.remove();
+    clan_chat.message_cache.splice(msg_id, 1);
 });
 
 class playground_player {
@@ -1312,14 +1374,16 @@ class clan_handler {
             kick_btn.addEventListener("click", kick_btn.ev = (event) => {
                 event.stopPropagation();
 
-                clan_action_reason_handler.open(member_data);
+                clan_action_reason_handler.open(member_data, "kick");
             });
         };
 
         if (display2 != "none") {
 
-            promote_btn.addEventListener("click", promote_btn.ev = () => {
-                // socket.emit("promote_member", );
+            promote_btn.addEventListener("click", promote_btn.ev = (event) => {
+                event.stopPropagation();
+
+                clan_action_reason_handler.open(member_data, "promote");
             });
         };
     };
@@ -1379,7 +1443,10 @@ class clan_handler {
 
 class clan_action_reason_pop_up_handler {
     constructor() {
+        this.action_type = null;
+
         this.member_data = null;
+        this.clan_data = null;
         this.reason = "";
 
         this.kicked_player_cache = [];
@@ -1397,7 +1464,6 @@ class clan_action_reason_pop_up_handler {
         });
 
         clan_reason_text_input.addEventListener("keydown", (e) => {
-
             this.reason = clan_reason_text_input.value;
         });
 
@@ -1405,16 +1471,33 @@ class clan_action_reason_pop_up_handler {
             e.preventDefault();
 
             if (this.reason.length > 0 && this.reason.length < 255) {
-
-                this.submit_kick();
+                this.action_ev();
             };
         });
     };
 
-    open(member_data) {
+    action_ev() {
+        switch (this.action_type) {
+            case "kick":
+                this.submit_kick();
+                break;
+
+            case "join_request":
+                this.submit_join_request();
+                break;
+
+            case "promote":
+                this.submit_promotion();
+                break;
+        };
+    };
+
+    open(member_data, action_type, clan_data) {
         DisplayPopUp_PopAnimation(clan_action_reason_pop_up, "flex", true);
 
         this.member_data = member_data;
+        this.action_type = action_type;
+        this.clan_data = clan_data;
     };
 
     submit_kick() {
@@ -1432,6 +1515,28 @@ class clan_action_reason_pop_up_handler {
                     this.kicked_player_cache.push(this.member_data);
                 };
             });
+    };
+
+    submit_promotion() {
+        console.log(this.reason, this.member_data)
+    };
+
+    submit_join_request() {
+        console.log(this.reason, this.member_data)
+
+        socket.emit("clan_join_request", this.member_data, this.clan_data, cb => {
+
+            clan_action_reason_pop_up.style.display = "none";
+
+            if (cb) {
+                AlertText.textContent = "Join Request successfully sended to the clan!";
+
+            } else {
+                AlertText.textContent = "something went wrong. Did you already sent a request?";
+            };
+
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        });
     };
 };
 
@@ -1453,7 +1558,7 @@ class universal_clan_msg_pop_up_handler {
     async check() {
 
         try {
-            await socket.emit("check_for_ingoing_clan_msgs", clanPlaygroundHandler.self_player_id, newClan.current_clan_data["clan_id"], cb => {
+            await socket.emit("check_for_ingoing_clan_msgs", Number(localStorage.getItem("PlayerID")), newClan.current_clan_data["clan_id"], cb => {
 
                 console.log(cb);
 
@@ -1489,9 +1594,11 @@ class universal_clan_msg_pop_up_handler {
                     clan_universal_msg_pop_up.style.display = "none";
                     DarkLayer.style.display = "none";
 
-                    DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
-                        sceneMode.default();
-                    });
+                    if (getComputedStyle(multiple_use_scene).display == "none") {
+                        DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
+                            sceneMode.default();
+                        });
+                    };
 
                     newClan.current_clan_data = { is_in_clan: false, clan_id: null, role: null };
                     newClan.update_data(newClan.current_clan_data, false, true);
@@ -1544,25 +1651,16 @@ CreateClanHandler.init();
 let clan_action_reason_handler = new clan_action_reason_pop_up_handler();
 clan_action_reason_handler.init();
 
-let universal_clan_msg_handler = new universal_clan_msg_pop_up_handler();
-universal_clan_msg_handler.init();
-
 // recieve from clan room
-socket.on("new_clan_message", async(message, author_data) => {
+socket.on("new_clan_message", async(message, author_data, msg_type = "human") => {
     console.log(message);
 
-    clan_chat.message_cache.push({
-        message: message["message"],
-        from: message["from"],
-        date: message["date"],
-        role: author_data["player_name"],
-        name: message["role"],
-        type: "human"
-    });
+    message.name = author_data.player_name;
 
+    clan_chat.message_cache.push(message);
     clan_chat.new_date_msg(message);
 
-    clan_chat.new_message(message, author_data);
+    msg_type == "human" ? clan_chat.new_message(message, author_data) : clan_chat.join_request_msg(message, author_data);
     chat_scroll_to_bottom('instant', clan_chat_chat);
 
     if (getComputedStyle(clan_chat_pop_up).display == "none") {

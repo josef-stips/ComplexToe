@@ -108,6 +108,9 @@ function checkLoadingProgress() {
         roll_animation(document.querySelector("#gameMode-TwoPlayerOnline-card"), document.querySelectorAll(".BotIcon")[1]);
         roll_animation(document.querySelector("#gameMode-OneVsOne-card"), document.querySelectorAll(".BotIcon")[2]);
 
+        universal_clan_msg_handler = new universal_clan_msg_pop_up_handler();
+        universal_clan_msg_handler.init();
+
     } else {
         setTimeout(() => {
             checkLoadingProgress();
@@ -175,6 +178,9 @@ function checkLoadingProgress() {
         loadingScreenFunc();
     };
 })();
+
+
+let universal_clan_msg_handler = undefined;
 
 // app initialization and code --------------
 function AppInit() {

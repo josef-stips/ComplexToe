@@ -268,6 +268,8 @@ UserGivesData_IconInput.addEventListener('keydown', e => {
             GetMessage_Btn.addEventListener('click', OpenGetMessagesPopUp);
             FriendsList_Btn.addEventListener('click', OpenFriendsListPopUp);
             SearchUser_Btn.addEventListener('click', OpenSearchUserPopUp);
+
+            userInfoClanDisplay(null);
         };
     };
 
