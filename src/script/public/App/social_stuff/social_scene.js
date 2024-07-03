@@ -145,10 +145,10 @@ class social_scene_class {
                 newClan.current_clan_data["clan_id"] != newClan.current_selected_clan_id) {
 
                 try {
-                    socket.emit("join_clan", localStorage.getItem("PlayerID"),
+                    socket.emit("join_clan", Number(localStorage.getItem("PlayerID")),
                         newClan.current_selected_clan_id, async(can_join, clan_data, player_data) => {
 
-                            if (can_join) {
+                            if (can_join == true) {
                                 // update data in local storage
                                 await newClan.update_data(cb);
 
@@ -167,10 +167,18 @@ class social_scene_class {
                                     }, 400);
                                 });
 
+                            } else if (can_join == "request_sended") {
+
+                                OpenedPopUp_WhereAlertPopUpNeeded = true;
+                                AlertText.textContent = "You already sended a request to this clan. Wait for an answer.";
+                                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+
+
                             } else { // player has to request getting a member of the clan because he was already a member but got kicked or left
 
                                 clan_overview_pop_up.style.display = "none";
                                 clan_action_reason_handler.open(player_data, "join_request", clan_data);
+
                             };
                         });
 

@@ -408,12 +408,12 @@ class clan_chat_pop_up_class {
         });
 
         msg_reject.addEventListener("click", () => {
-            if (newClan.current_clan_data.role == this.clan_roles[0] || newClan.current_clan_data.role == this.clan_roles[1]) {
+            if (newClan.current_clan_data.role == social_scene.clan_handler.clan_roles[0] || newClan.current_clan_data.role == social_scene.clan_handler.clan_roles[1]) {
 
                 socket.emit("remove_clan_msg", newClan.current_clan_data["clan_id"], msg.msg_id);
 
             } else {
-                AlertText.textContent = `Only the ${this.clan_roles[0]} and the ${this.clan_roles[1]} can modify join requests!`;
+                AlertText.textContent = `Only the ${social_scene.clan_handler.clan_roles[0]} and the ${social_scene.clan_handler.clan_roles[1]} can modify join requests!`;
             };
         });
     };
@@ -1461,6 +1461,10 @@ class clan_action_reason_pop_up_handler {
 
             clan_reason_text_input.value = null;
             clan_action_reason_pop_up.style.display = "none";
+
+            if (getComputedStyle(clan_overview_pop_up).display == "none") {
+                DarkLayer.style.display = "none";
+            };
         });
 
         clan_reason_text_input.addEventListener("keydown", (e) => {
@@ -1494,6 +1498,7 @@ class clan_action_reason_pop_up_handler {
 
     open(member_data, action_type, clan_data) {
         DisplayPopUp_PopAnimation(clan_action_reason_pop_up, "flex", true);
+        clan_reason_text_input.value = "";
 
         this.member_data = member_data;
         this.action_type = action_type;
@@ -1532,7 +1537,7 @@ class clan_action_reason_pop_up_handler {
                 AlertText.textContent = "Join Request successfully sended to the clan!";
 
             } else {
-                AlertText.textContent = "something went wrong. Did you already sent a request?";
+                AlertText.textContent = "Something went wrong. Did you already sent a request?";
             };
 
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
