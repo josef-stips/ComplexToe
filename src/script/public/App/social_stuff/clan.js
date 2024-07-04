@@ -533,6 +533,10 @@ class clan_playground_handler {
         this.generate_field();
         this.init_clan_level_bar(newClan.current_clan_all_data["XP"], newClan.current_clan_all_data["level"]);
 
+        this.init_DOM_colors();
+    };
+
+    init_DOM_colors() {
         clan_chat_header.style.borderColor = `var(--gradient-second-color-${clanPlaygroundHandler.clan_level})`;
         document.querySelector(".clan_chat_leftWrapper").style.borderColor = `var(--gradient-second-color-${clanPlaygroundHandler.clan_level})`;
     };
@@ -565,6 +569,8 @@ class clan_playground_handler {
         this.bar_color = newClan.level_color[this.clan_level][1];
         this.clan_level = clan_level;
 
+        this.init_DOM_colors();
+
         let wrapper = document.querySelector(".playground_field_wrapper");
         let bar_wrapper = document.createElement("div");
         let bar = document.createElement("div");
@@ -585,14 +591,17 @@ class clan_playground_handler {
 
         // logic
         let next_level = Number(Object.keys(newClan.level_xp_requirement)[clan_level]);
+        let last_XP = newClan.level_xp_requirement[clan_level];
 
         if (!next_level) {
             bar.style.background = `linear-gradient(105deg, ${this.bar_color} 100%, transparent 0% )`;
+
+            text.textContent = `max. level ${clan_level}`;
+            XP_text.textContent = `XP ${clan_XP} / ${last_XP}`;
             return;
         };
 
         let XP_for_next_level = newClan.level_xp_requirement[clan_level + 1];
-        let last_XP = newClan.level_xp_requirement[clan_level];
 
         // let difference = (clan_XP / (XP_for_next_level)) * 100;
         let difference = ((clan_XP - last_XP) / (XP_for_next_level - last_XP)) * 100;

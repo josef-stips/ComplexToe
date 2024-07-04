@@ -2074,3 +2074,20 @@ create_clan_btn_use_scene.addEventListener("click", () => {
     DisplayPopUp_PopAnimation(create_clan_pop_up, "flex", true);
     CreateClanHandler.start_pop_up();
 });
+
+class rewardPickUp {
+    show() {
+        return new Promise(resolve => {
+            reward_pick_up.style.top = "12vh";
+            setTimeout(() => {
+                resolve();
+            }, 500);
+        });
+    };
+
+    hide() {
+        reward_pick_up.style.top = "-7vh";
+    };
+};
+
+const reward_pickup = new rewardPickUp();

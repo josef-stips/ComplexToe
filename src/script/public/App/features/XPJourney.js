@@ -87,7 +87,6 @@ XPJourneyBtn.addEventListener('click', () => {
         localStorage.setItem("JourneyPoints_clicked", JSON.stringify(JourneyPoints_Click));
 
         UserGetsJourneyItems(Reward_WhichIsAvailible);
-
         CheckIfUserCanGetReward();
 
     } else {
@@ -101,9 +100,10 @@ XPJourneyBtn.addEventListener('click', () => {
 
         Object.keys(PointsAchievedOrNotList).reverse().forEach(point => {
             if (!PointsAchievedOrNotList[point]) {
-                CurrentPoint = point
+                CurrentPoint = point;
             };
         });
+
         if (CurrentPoint == 0) { // if user collected all rewards so he maxed out XP Journey, display last reward which is availible on the journey
             CurrentPoint = Object.keys(Journey)[Object.keys(Journey).length];
         };
@@ -113,15 +113,21 @@ XPJourneyBtn.addEventListener('click', () => {
         let CurrentPoint_Element;
 
         for (let p_el of[...Points]) {
+
             if (p_el.classList[1] == CurrentPoint) {
                 CurrentPoint_Element = p_el;
             } else {
                 p_el.style.borderColor = "white";
-            }
+            };
         };
 
         // set scroll of overflow scroll div side wrapper to current XP
-        JourneyInnerSideWrapper.scrollTop = CurrentPoint_Element.offsetTop - (CurrentPoint_Element.offsetTop / 10);
+        try {
+            JourneyInnerSideWrapper.scrollTop = CurrentPoint_Element.offsetTop - (CurrentPoint_Element.offsetTop / 10);
+
+        } catch (err) {
+            console.log(err);
+        };
 
         ClickPoint(CurrentPoint_Element, CurrentPoint);
         playBtn_Audio_3();
@@ -233,10 +239,13 @@ const UserGetsJourneyItems = (Items) => {
 };
 
 // animation + save in storage
-const Get_XPReward_Animation = (type, src, amount, element) => {
+const Get_XPReward_Animation = async(type, src, amount, element) => {
     // position
     let start_position = XPJourneyBtn.getBoundingClientRect();
-    let destination_position = IconsForItems[element][2].getBoundingClientRect();
+    let item_pos = IconsForItems[element][2].getBoundingClientRect();
+
+    item_pos.top == 0 && await reward_pickup.show();
+    let destination_position = item_pos.top == 0 ? reward_pick_up.getBoundingClientRect() : item_pos;
 
     let counter = 0;
     let ItemForAmount = setInterval(() => {
@@ -268,15 +277,15 @@ const Get_XPReward_Animation = (type, src, amount, element) => {
         if (type == "img") {
             var item = document.createElement('img');
             item.src = src;
-            item.width = "30";
-            item.height = "30";
+            item.style.width = "3vh";
+            item.style.height = "3vh";
 
         } else if (type == "font") {
             var item = document.createElement('span');
             item.classList = src + " floating-item";
-            item.style.width = "30px"
-            item.style.height = "30px"
-            item.style.fontSize = "25px";
+            item.style.width = "3vh"
+            item.style.height = "3vh"
+            item.style.fontSize = "3vh";
         };
 
         item.style.transition = "opacity 0.5s linear, top 0.5s ease-in-out, bottom 0.5s ease-in-out, left 0.5s ease-in-out, right 0.5s ease-in-out";
@@ -309,8 +318,16 @@ const Get_XPReward_Animation = (type, src, amount, element) => {
         // add to document
         document.body.appendChild(item);
 
+        reward_pick_up.style.top = "12vh";
+
         // clear interval on max amount
-        if (counter >= amount) clearInterval(ItemForAmount);
+        if (counter >= amount) {
+            clearInterval(ItemForAmount);
+
+            setTimeout(() => {
+                reward_pickup.hide();
+            }, 1500);
+        };
     }, 50);
 };
 

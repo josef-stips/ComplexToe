@@ -4280,7 +4280,7 @@ label h3 {
 }
 
 .AdvantureMap-header {
-    font-size: 4vh;
+    font-size: 3vh;
     height: 10%;
     width: 100%;
     display: flex;
@@ -4373,8 +4373,8 @@ h1.stars_pop_up_title {
 }
 
 .exploredItems_bookBtn img {
-    width: 6vh;
-    height: 6vh;
+    width: 5vh;
+    height: 5vh;
 }
 
 .levelOverview_subTitle {
@@ -10544,6 +10544,20 @@ ul.default_sb_list.best_players_list div:first-child {
     padding: 0.5vh;
     align-items: flex-end;
     justify-content: flex-end;
+}
+
+
+/* reward pick-up */
+
+.reward_pick_up {
+    position: absolute;
+    margin: 0 auto auto auto;
+    inset: -7vh 0 100vh 50vw;
+    display: block;
+    z-index: 10001;
+    transition: top 0.5s ease-in-out;
+    width: 5vh;
+    height: 5vh;
 }
 
 
