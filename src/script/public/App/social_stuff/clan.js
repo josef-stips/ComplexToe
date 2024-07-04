@@ -44,52 +44,52 @@ class clan {
         };
 
         this.level_color = {
-            1: ["#6328c1", "#228d65"],
-            2: ["#F6C900", "#48DBFB"],
-            3: ["#FF006C", "#FF0000"],
-            4: ["#FF5733", "#FFC300"],
-            5: ["#6F1E51", "#833471"],
-            6: ["#0652DD", "#833471"],
-            7: ["#ED4C67", "#F79F1F"],
-            8: ["#0A3D62", "#0C2461"],
-            9: ["#7D6608", "#8E44AD"],
-            10: ["#6A89CC", "#78e08f"],
-            11: ["#2C3A47", "#d1ccc0"],
-            12: ["#a29bfe", "#6c5ce7"],
-            13: ["#55efc4", "#81ecec"],
-            14: ["#ff7979", "#ffbe76"],
-            15: ["#badc58", "#f9ca24"],
-            16: ["#f0932b", "#eb4d4b"],
-            17: ["#7ed6df", "#e056fd"],
-            18: ["#ff9ff3", "#feca57"],
-            19: ["#ffda79", "#ff6b81"],
-            20: ["#3c40c6", "#e74c3c"],
-            21: ["#f1c40f", "#2980b9"],
-            22: ["#3498db", "#e74c3c"],
-            23: ["#6F1E51", "#0652DD"],
-            24: ["#0A3D62", "#833471"],
-            25: ["#7D6608", "#8E44AD"],
-            26: ["#0A3D62", "#48DBFB"],
-            27: ["#ED4C67", "#F79F1F"],
-            28: ["#0A3D62", "#0C2461"],
-            29: ["#7D6608", "#8E44AD"],
-            30: ["#6A89CC", "#78e08f"],
-            31: ["#2C3A47", "#d1ccc0"],
-            32: ["#a29bfe", "#6c5ce7"],
-            33: ["#55efc4", "#81ecec"],
-            34: ["#ff7979", "#ffbe76"],
-            35: ["#badc58", "#f9ca24"],
-            36: ["#f0932b", "#eb4d4b"],
-            37: ["#7ed6df", "#e056fd"],
-            38: ["#ff9ff3", "#feca57"],
-            39: ["#ffda79", "#ff6b81"],
-            40: ["#3c40c6", "#e74c3c"]
+            1: { 0: "#6328c1", 1: "#228d65" },
+            2: { 0: "#F6C900", 1: "#48DBFB" },
+            3: { 0: "#FF006C", 1: "#FF0000" },
+            4: { 0: "#FF5733", 1: "#FFC300" },
+            5: { 0: "#6F1E51", 1: "#833471" },
+            6: { 0: "#0652DD", 1: "#833471" },
+            7: { 0: "#ED4C67", 1: "#F79F1F" },
+            8: { 0: "#0A3D62", 1: "#0C2461" },
+            9: { 0: "#7D6608", 1: "#8E44AD" },
+            10: { 0: "#6A89CC", 1: "#78e08f" },
+            11: { 0: "#2C3A47", 1: "#d1ccc0" },
+            12: { 0: "#a29bfe", 1: "#6c5ce7" },
+            13: { 0: "#55efc4", 1: "#81ecec" },
+            14: { 0: "#ff7979", 1: "#ffbe76" },
+            15: { 0: "#badc58", 1: "#f9ca24" },
+            16: { 0: "#f0932b", 1: "#eb4d4b" },
+            17: { 0: "#7ed6df", 1: "#e056fd" },
+            18: { 0: "#ff9ff3", 1: "#feca57" },
+            19: { 0: "#ffda79", 1: "#ff6b81" },
+            20: { 0: "#3c40c6", 1: "#e74c3c" },
+            21: { 0: "#f1c40f", 1: "#2980b9" },
+            22: { 0: "#3498db", 1: "#e74c3c" },
+            23: { 0: "#6F1E51", 1: "#0652DD" },
+            24: { 0: "#0A3D62", 1: "#833471" },
+            25: { 0: "#7D6608", 1: "#8E44AD" },
+            26: { 0: "#0A3D62", 1: "#48DBFB" },
+            27: { 0: "#ED4C67", 1: "#F79F1F" },
+            28: { 0: "#0A3D62", 1: "#0C2461" },
+            29: { 0: "#7D6608", 1: "#8E44AD" },
+            30: { 0: "#6A89CC", 1: "#78e08f" },
+            31: { 0: "#2C3A47", 1: "#d1ccc0" },
+            32: { 0: "#a29bfe", 1: "#6c5ce7" },
+            33: { 0: "#55efc4", 1: "#81ecec" },
+            34: { 0: "#ff7979", 1: "#ffbe76" },
+            35: { 0: "#badc58", 1: "#f9ca24" },
+            36: { 0: "#f0932b", 1: "#eb4d4b" },
+            37: { 0: "#7ed6df", 1: "#e056fd" },
+            38: { 0: "#ff9ff3", 1: "#feca57" },
+            39: { 0: "#ffda79", 1: "#ff6b81" },
+            40: { 0: "#3c40c6", 1: "#e74c3c" }
         };
 
         this.init_clan_member_storage_data = {
             "is_in_clan": false,
             "clan_id": null,
-            "role": "leader"
+            "role": "member"
         };
 
         this.current_clan_data = {};
@@ -158,8 +158,7 @@ class clan {
         return new Promise(resolve => {
 
             socket.emit("get_clan_data", this.current_clan_data["clan_id"], cb => {
-
-                console.log(cb);
+                // console.log(cb);
 
                 if (cb) {
                     this.current_clan_all_data = cb;
@@ -184,11 +183,17 @@ class clan {
 
     // update XP of player in clan data
     async send_XP_to_clan() {
-        let player_XP = Number(localStorage.getItem("ELO"));
-        let clan_id = this.current_clan_data["clan_id"];
+        return new Promise(resolve => {
+            let player_XP = Number(localStorage.getItem("ELO"));
+            let clan_id = this.current_clan_data["clan_id"];
 
-        socket.emit("send_XP_to_clan", clan_id, clanPlaygroundHandler.self_player_id, player_XP, cb => {
-            newClan.current_clan_all_data = cb;
+            console.log(player_XP);
+
+            socket.emit("send_XP_to_clan", clan_id, clanPlaygroundHandler.self_player_id, player_XP, cb => {
+                newClan.current_clan_all_data = cb;
+
+                resolve();
+            });
         });
     };
 
@@ -210,13 +215,15 @@ class clan_chat_pop_up_class {
     async open() {
         this.lastDate = null;
 
-        DarkLayerAnimation(clan_chat_pop_up, gameModeCards_Div).then(async() => {
-            await newClan.connect_to_clan_room();
-            await newClan.send_XP_to_clan();
-            await this.parse_data();
-            clanPlaygroundHandler.open();
-            sceneMode.full();
-        });
+        await StartLoad(clan_chat_pop_up, gameModeCards_Div);
+
+        await newClan.connect_to_clan_room();
+        await newClan.send_XP_to_clan();
+        await this.parse_data();
+        await clanPlaygroundHandler.open();
+        sceneMode.full();
+
+        await FinishLoad(clan_chat_pop_up, gameModeCards_Div);
     };
 
     events() {
@@ -267,57 +274,59 @@ class clan_chat_pop_up_class {
     async parse_data() {
         let msg_cache = this.message_cache ? Object.keys(this.message_cache).length > 0 : false;
 
-        !msg_cache && await newClan.get_clan_data();
+        // !msg_cache && await newClan.get_clan_data();
 
         newClan.roomID = newClan.current_clan_all_data.room_id;
 
         clan_chat_header_clan_name.textContent = newClan.current_clan_all_data["name"];
         clan_chat_header_clan_logo.src = `assets/game/${newClan.current_clan_all_data["logo"]}`;
 
-        this.parse_chat(newClan.current_clan_all_data["chat"], msg_cache);
+        clanPlaygroundHandler.clan_level = newClan.current_clan_all_data.level;
+
+        await this.parse_chat(newClan.current_clan_all_data["chat"], msg_cache);
     };
 
     async parse_chat(clan_all_chat_data, msg_cache) {
-        let msgs = !msg_cache && clan_all_chat_data ? clan_all_chat_data : this.message_cache;
+        return new Promise(async resolve => {
+            let msgs = !msg_cache && clan_all_chat_data ? clan_all_chat_data : this.message_cache;
 
-        if (this.message_cache.length <= 0 && clan_all_chat_data) this.message_cache = clan_all_chat_data;
-        clan_chat_chat.textContent = null;
+            if (this.message_cache.length <= 0 && clan_all_chat_data) this.message_cache = clan_all_chat_data;
+            clan_chat_chat.textContent = null;
+            // console.log(msgs);
 
-        console.log(msgs);
+            if (msgs) {
+                for (const message of msgs) {
+                    this.new_date_msg(message);
 
-        if (msgs) {
-            for (const message of msgs) {
+                    try {
+                        // console.log(message);
+                        if (message["type"] == "human") {
 
-                this.new_date_msg(message);
+                            const { data, author_role, author_name } = await this.get_author_data_of_msg(message);
+                            message["role"] = author_role;
 
-                try {
-                    // console.log(message);
+                            this.new_message(message, data);
 
-                    if (message["type"] == "human") {
+                        } else if (message["type"] == "clan_msg") {
 
-                        const { data, author_role, author_name } = await this.get_author_data_of_msg(message);
-                        message["role"] = author_role;
+                            this.clan_msg(message["message"]);
 
-                        this.new_message(message, data);
+                        } else if (message["type"] == "join_request") {
 
-                    } else if (message["type"] == "clan_msg") {
+                            this.join_request_msg(message, message["player_data"]);
+                        };
 
-                        this.clan_msg(message["message"]);
-
-                    } else if (message["type"] == "join_request") {
-
-                        this.join_request_msg(message, message["player_data"]);
+                    } catch (error) {
+                        console.error("Error getting author data:", error);
                     };
-
-                } catch (error) {
-                    console.error("Error getting author data:", error);
                 };
-            };
 
-            setTimeout(() => {
-                chat_scroll_to_bottom('smooth', clan_chat_chat);
-            }, 200);
-        };
+                setTimeout(() => {
+                    chat_scroll_to_bottom('smooth', clan_chat_chat);
+                    resolve();
+                }, 200);
+            };
+        });
     };
 
     new_date_msg(message) {
@@ -404,7 +413,11 @@ class clan_chat_pop_up_class {
         });
 
         msg_accept.addEventListener("click", () => {
+            socket.emit("accept_clan_request", player.player_id, newClan.current_clan_all_data["id"], cb => {
 
+                console.log(cb);
+                socket.emit("remove_clan_msg", newClan.current_clan_data["clan_id"], msg.msg_id);
+            });
         });
 
         msg_reject.addEventListener("click", () => {
@@ -492,6 +505,10 @@ class clan_playground_handler {
         this.XP_bar = null;
         this.XP_text = null;
         this.level_text = null;
+        this.bar_color = null;
+
+        this.playground_field = null;
+        this.playground_field_title = null;
     };
 
     init() {
@@ -537,15 +554,18 @@ class clan_playground_handler {
         field_wrapper.appendChild(field);
         this.playground.appendChild(field_wrapper);
 
-        generateField_preview(this.clan_level, this.clan_level, field, null, true);
-        this.init_field_color(field, field_title);
+        this.playground_field = field;
+        this.playground_field_title = field_title;
+
+        generateField_preview(this.clan_level, this.clan_level, this.playground_field, null, true);
+        this.init_field_color(this.playground_field, this.playground_field_title);
     };
 
-    init_clan_level_bar(clan_XP, clan_level) {
-        let bar_color = newClan.level_color[this.clan_level][1];
+    async init_clan_level_bar(clan_XP, clan_level) {
+        this.bar_color = newClan.level_color[this.clan_level][1];
+        this.clan_level = clan_level;
 
         let wrapper = document.querySelector(".playground_field_wrapper");
-
         let bar_wrapper = document.createElement("div");
         let bar = document.createElement("div");
         let text = document.createElement("div");
@@ -553,7 +573,7 @@ class clan_playground_handler {
 
         this.XP_bar = bar;
         this.XP_text = XP_text;
-        this.level_text = text;
+        this.level_text = text
 
         bar_wrapper.classList.add("clan_level_bar_wrapper");
         bar.classList.add("clan_level_bar");
@@ -567,49 +587,78 @@ class clan_playground_handler {
         let next_level = Number(Object.keys(newClan.level_xp_requirement)[clan_level]);
 
         if (!next_level) {
-            bar.style.background = `linear-gradient(105deg, ${bar_color} 100%, transparent 0% )`;
+            bar.style.background = `linear-gradient(105deg, ${this.bar_color} 100%, transparent 0% )`;
             return;
         };
 
         let XP_for_next_level = newClan.level_xp_requirement[clan_level + 1];
-        let difference = (clan_XP / XP_for_next_level) * 100;
+        let last_XP = newClan.level_xp_requirement[clan_level];
+
+        // let difference = (clan_XP / (XP_for_next_level)) * 100;
+        let difference = ((clan_XP - last_XP) / (XP_for_next_level - last_XP)) * 100;
 
         text.textContent = `level ${clan_level}`;
         XP_text.textContent = `XP ${clan_XP} / ${XP_for_next_level}`;
+        this.playground_field_title.textContent = `${clan_level}x${clan_level} clan field`;
 
-        if (difference >= 100) {
-            newClan.new_clan_level(next_level);
-            this.update_clan_level_bar(bar, XP_text, text, next_level, clan_XP, newClan.level_xp_requirement[next_level]);
+        console.log(difference, 1 / 5 * difference, clan_XP, XP_for_next_level, next_level, clan_level);
+
+        for (let i = 0; i <= difference; i += 1 / 150 * difference) {
+            await sleep(20);
+            bar.style.background = `linear-gradient(105deg, ${this.bar_color} ${i}%, transparent 0% )`;
         };
 
-        setTimeout(async() => {
-            for (let i = 0; i < difference; i++) {
+        console.log("fertig")
 
-                await sleep(10);
-                bar.style.background = `linear-gradient(105deg, ${bar_color} ${i}%, transparent 0% )`;
-            };
-        }, 400);
+        if (difference >= 100) {
+            this.clan_level = next_level;
+
+            generateField_preview(next_level, next_level, this.playground_field, null, true);
+            this.init_field_color(this.playground_field, this.playground_field_title);
+
+            this.update_clan_level_bar(clan_XP, next_level);
+        };
     };
 
-    update_clan_level_bar(XP_bar, XP_text, level_text, new_level, clan_XP, next_level_XP) {
+    async update_clan_level_bar(clan_XP, clan_level) {
+        let next_level = Number(Object.keys(newClan.level_xp_requirement)[clan_level]);
+        let next_level_XP = newClan.level_xp_requirement[next_level];
+        let last_level_XP = newClan.level_xp_requirement[clan_level];
 
-        let difference = (clan_XP / next_level_XP) * 100;
-
-        if (difference >= 100) {
-            newClan.new_clan_level(new_level);
-            this.update_clan_level_bar(XP_bar, XP_text, level_text, new_level + 1, clan_XP, newClan.level_xp_requirement[new_level + 1]);
+        if (!next_level) {
+            this.XP_bar.style.background = `linear-gradient(105deg, ${this.bar_color} 100%, transparent 0% )`;
+            return;
         };
 
-        level_text.textContent = `level ${new_level}`;
-        XP_text.textContent = `XP ${clan_XP}`;
+        // let difference = (clan_XP / (next_level_XP)) * 100;
+        let difference = ((clan_XP - last_XP) / (next_level_XP - last_level_XP)) * 100;
 
-        setTimeout(async() => {
-            for (let i = 0; i < difference; i++) {
+        this.level_text.textContent = `level ${clan_level}`;
+        this.XP_text.textContent = `XP ${clan_XP} / ${next_level_XP}`;
+        this.playground_field_title.textContent = `${clan_level}x${clan_level} clan field`;
 
-                await sleep(10);
-                XP_bar.style.background = `linear-gradient(105deg, ${bar_color} ${i}%, transparent 0% )`;
-            };
-        }, 400);
+        this.XP_bar.style.background = `linear-gradient(105deg, ${this.bar_color} 0%, transparent 0% )`;
+
+        console.log(difference, 1 / 5 * difference, clan_XP, next_level_XP, next_level, clan_level);
+
+        for (let i = 0; i <= difference; i += 1 / 150 * difference) {
+            await sleep(20);
+            this.XP_bar.style.background = `linear-gradient(105deg, ${this.bar_color} ${i}%, transparent 0% )`;
+        };
+
+        console.log("fertig")
+
+        if (difference >= 100) {
+
+            setTimeout(() => {
+                this.clan_level = next_level;
+
+                generateField_preview(next_level, next_level, this.playground_field, null, true);
+                this.init_field_color(this.playground_field, this.playground_field_title);
+
+                this.update_clan_level_bar(clan_XP, next_level);
+            }, 500);
+        };
     };
 
     init_field_color(field, title) {
@@ -744,7 +793,7 @@ socket.on("player_got_kicked", (player_name, kicker_name, player_id, clanData) =
             clan_pop_up_close_btn.click();
 
             setTimeout(async() => {
-                await universal_clan_msg_handler.check();
+                await universal_clan_msg_handler.check(0);
             }, 200);
 
             clan_btn_notify_label.style.display = "none";
@@ -770,12 +819,12 @@ socket.on("player_left_clan", player_name => {
 
 // server updated XP and level of clan
 socket.on("update_clan_XP_bar", (newXP, clanLevel) => {
-
     console.log(newXP, clanLevel);
 
-    clanPlaygroundHandler.update_clan_level_bar(clanPlaygroundHandler.XP_bar, clanPlaygroundHandler.XP_text, clanPlaygroundHandler.level_text,
-        clanLevel, newXP, clanLevel + 1
-    );
+    clanPlaygroundHandler.clan_level = clanLevel;
+
+    clanPlaygroundHandler.generate_field();
+    clanPlaygroundHandler.init_clan_level_bar(newXP, clanLevel);
 });
 
 // client recieves position of other player in the room
@@ -979,10 +1028,11 @@ class create_clan_handler {
                     // open clan pop up and close create clan pop up
                     create_clan_pop_up.style.display = "none";
                     multiple_use_scene.style.display = "none";
-                    social_scene.clan_handler.item_click(data);
+
+                    await clan_chat.open();
 
                     setTimeout(() => {
-                        clan_chat.open();
+                        // social_scene.clan_handler.item_click(data);
                     }, 1000);
                 });
 
@@ -1047,10 +1097,14 @@ class clan_handler {
         let list_item = document.createElement("li");
         let item_text = document.createElement("h2");
         let item_img = document.createElement("img");
+        let details_wrapper = document.createElement("div");
+        let member_count_el = document.createElement("p");
 
         let colors = this.create_clan_css_propertys(data);
 
         list_item.classList.add("default_sb_item");
+        details_wrapper.classList.add("clan_list_item_details_wrapper");
+
         list_item.setAttribute("result_clan_id", data["id"]);
         item_text.style.webkitBackgroundClip = "text";
         item_text.style.backgroundClip = "text";
@@ -1073,8 +1127,12 @@ class clan_handler {
         item_img.src = `assets/game/${data["logo"]}`;
         item_text.textContent = data["name"];
 
+        member_count_el.textContent = `${Object.keys(data.members).length} members`;
+
+        details_wrapper.appendChild(member_count_el);
         list_item.appendChild(item_img);
         list_item.appendChild(item_text);
+        list_item.appendChild(details_wrapper);
         clan_search_list.appendChild(list_item);
 
         list_item.addEventListener("click", () => {
@@ -1084,8 +1142,7 @@ class clan_handler {
 
     item_click(data) {
         try {
-            console.log(data);
-
+            // console.log(data);
             if (data["members"][Number(localStorage.getItem("PlayerID"))]) {
 
                 this.self_role = data["members"][Number(localStorage.getItem("PlayerID"))]["role"];
@@ -1100,11 +1157,9 @@ class clan_handler {
             // sort members after date
             let members_arr = Object.entries(data["members"]).map(([id, val]) => ({ id, ...val }));
 
-            console.log(data["members"], members_arr)
-
+            // console.log(data["members"], members_arr)
             members_arr = members_arr.sort((a, b) => new Date(a.join_date) - new Date(b.join_date));
-
-            console.log(members_arr);
+            // console.log(members_arr);
 
             let sorted_member_data = members_arr.reduce((obj, item) => {
                 obj[item.id] = item;
@@ -1276,7 +1331,7 @@ class clan_handler {
     };
 
     display_action_btn(clan_id) {
-        console.log(clan_id, newClan.current_clan_data["clan_id"], newClan);
+        // console.log(clan_id, newClan.current_clan_data["clan_id"], newClan);
 
         if (clan_id == newClan.current_clan_data["clan_id"]) {
 
@@ -1290,7 +1345,7 @@ class clan_handler {
     };
 
     role_btns_events(kick_btn, promote_btn, member_role, self_role, member_data) {
-        console.log(kick_btn, promote_btn, member_role, self_role, member_data);
+        // console.log(kick_btn, promote_btn, member_role, self_role, member_data);
 
         switch (self_role) {
             case this.clan_roles[0]: // leader
@@ -1552,7 +1607,7 @@ class universal_clan_msg_pop_up_handler {
 
     async init() {
         this.events();
-        await this.check();
+        await this.check(1000);
     };
 
     events() {
@@ -1560,25 +1615,31 @@ class universal_clan_msg_pop_up_handler {
     };
 
     // check for ingoing messages in db
-    async check() {
+    async check(delay) {
+        return new Promise(async resolve => {
 
-        try {
-            await socket.emit("check_for_ingoing_clan_msgs", Number(localStorage.getItem("PlayerID")), newClan.current_clan_data["clan_id"], cb => {
+            try {
+                await socket.emit("check_for_ingoing_clan_msgs", Number(localStorage.getItem("PlayerID")), newClan.current_clan_data["clan_id"], cb => {
+                    // console.log(cb);
 
-                console.log(cb);
+                    if (!cb) {
+                        resolve();
+                        return;
+                    };
 
-                if (!cb) return;
+                    setTimeout(() => {
+                        resolve();
+                        DisplayPopUp_PopAnimation(clan_universal_msg_pop_up, "flex", true);
+                    }, delay);
 
-                setTimeout(() => {
-                    DisplayPopUp_PopAnimation(clan_universal_msg_pop_up, "flex", true);
-                }, 1500);
+                    this.init_content(cb);
+                });
 
-                this.init_content(cb);
-            });
-
-        } catch (error) {
-            new Error("couldn't load ingoing clan messages.");
-        };
+            } catch (error) {
+                resolve();
+                new Error("couldn't load ingoing clan messages.");
+            };
+        });
     };
 
     init_content(data) {
@@ -1591,31 +1652,7 @@ class universal_clan_msg_pop_up_handler {
         switch (data["msg_type"]) {
 
             case "kick":
-
-                clan_content_kick_reason.value = data["kick_reason"];
-                clan_universal_kick_content_kicker_name.textContent = data["kicker_name"];
-
-                clan_universal_msg_ok_btn.addEventListener("click", () => {
-                    clan_universal_msg_pop_up.style.display = "none";
-                    DarkLayer.style.display = "none";
-
-                    if (getComputedStyle(multiple_use_scene).display == "none") {
-                        DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
-                            sceneMode.default();
-                        });
-                    };
-
-                    newClan.current_clan_data = { is_in_clan: false, clan_id: null, role: null };
-                    newClan.update_data(newClan.current_clan_data, false, true);
-                    socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
-                });
-
-                clan_universal_kick_content_kicker_name.addEventListener("click", async() => {
-                    await socket.emit("GetDataByID", data["kicker_id"], cb => {
-                        ClickedOnPlayerInfo(cb);
-                    });
-                });
-
+                this.kick_action(data);
                 break;
 
             case "promote":
@@ -1629,7 +1666,61 @@ class universal_clan_msg_pop_up_handler {
             case "clan_level":
 
                 break;
+
+            case "request_accepted":
+                this.request_accepted_action(data);
+                break;
         };
+    };
+
+    kick_action(data) {
+        clan_content_kick_reason.value = data["kick_reason"];
+        clan_universal_kick_content_kicker_name.textContent = data["kicker_name"];
+
+        clan_universal_msg_ok_btn.addEventListener("click", () => {
+            clan_universal_msg_pop_up.style.display = "none";
+            DarkLayer.style.display = "none";
+
+            if (getComputedStyle(multiple_use_scene).display == "none") {
+                DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
+                    sceneMode.default();
+                });
+            };
+
+            newClan.current_clan_data = { is_in_clan: false, clan_id: null, role: null };
+            newClan.update_data(newClan.current_clan_data, false, true);
+            socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
+        });
+
+        clan_universal_kick_content_kicker_name.addEventListener("click", async() => {
+            await socket.emit("GetDataByID", data["kicker_id"], cb => {
+                ClickedOnPlayerInfo(cb);
+            });
+        });
+    };
+
+    request_accepted_action(data) {
+        clan_universal_msg_ok_btn.addEventListener("click", () => {
+            clan_universal_msg_pop_up.style.display = "none";
+            DarkLayer.style.display = "none";
+
+            if (getComputedStyle(multiple_use_scene).display != "none") {
+                multiple_use_scene.style.display = "none";
+                sceneMode.full();
+                clan_chat.open();
+            };
+
+            newClan.current_clan_data = {
+                "is_in_clan": true,
+                "id": data["clan_id"],
+                "role": "member"
+            };
+
+            newClan.update_data(newClan.current_clan_data, false, false);
+            socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
+        });
+
+        clan_content_request_accepted_clan_name.textContent = data["clan_name"];
     };
 
     close_all_content() {

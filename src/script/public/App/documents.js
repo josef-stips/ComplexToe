@@ -677,6 +677,8 @@ let userInfo_inClanText = document.querySelector(".userInfo_inClanText");
 let userInfo_ClanName = document.querySelector(".userInfo_ClanName");
 let join_clan_btn_use_scene = document.querySelector(".join_clan_btn_use_scene");
 let create_clan_btn_use_scene = document.querySelector(".create_clan_btn_use_scene");
+let clan_content_request_accepted_clan_name = document.querySelector(".clan_content_request_accepted_clan_name");
+let spinner = document.querySelector(".spinner");
 
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
 const clan_reason_header = document.querySelector('.clan_reason_header');

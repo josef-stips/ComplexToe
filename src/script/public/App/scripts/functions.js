@@ -80,6 +80,51 @@ const DarkLayerAnimation = (Display_Element, undisplay_Element) => {
     });
 };
 
+const StartLoad = (Display_Element, undisplay_Element) => {
+    return new Promise(resolve => {
+        DarkLayer.style.backgroundColor = 'black';
+        DarkLayer.style.display = 'block';
+        DarkLayer.style.transition = 'opacity 0.25s ease-in-out';
+        DarkLayer.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.opacity = '1';
+            spinner.style.display = 'block';
+
+            setTimeout(() => {
+                spinner.style.opacity = '1';
+            }, 200);
+
+            setTimeout(() => {
+                undisplay_Element.style.display = 'none';
+                Display_Element.style.display = 'flex';
+
+                resolve();
+            }, 250);
+        }, 100);
+    });
+};
+
+const FinishLoad = (Display_Element, undisplay_Element) => {
+    return new Promise(resolve => {
+        spinner.style.opacity = '0';
+
+        setTimeout(() => {
+            DarkLayer.style.opacity = '0';
+
+            setTimeout(() => {
+                DarkLayer.style.display = 'none';
+                DarkLayer.style.transition = 'none';
+                spinner.style.display = 'none';
+                DarkLayer.style.opacity = '1';
+                DarkLayer.style.backgroundColor = 'rgba(0, 0, 0, 0.87)';
+
+                resolve();
+            }, 350);
+        }, 450);
+    });
+};
+
 // floating element over the screen
 function ItemAnimation(item, destination_position, fromMap, mapItem, fromSecondTreasure) {
     // position of treasure

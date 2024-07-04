@@ -84,7 +84,7 @@ class social_scene_class {
             clan_overview_pop_up.style.display = "none";
             clan_overview_pop_up.style.zIndex = "10005";
 
-            console.log(this.clan_handler.clan_pop_up_opened_in_pop_up);
+            // console.log(this.clan_handler.clan_pop_up_opened_in_pop_up);
 
             if (this.clan_handler.clan_pop_up_opened_in_pop_up &&
                 getComputedStyle(userInfoPopUp).display != "none" ||
@@ -150,7 +150,7 @@ class social_scene_class {
 
                             if (can_join == true) {
                                 // update data in local storage
-                                await newClan.update_data(cb);
+                                await newClan.update_data(clan_data);
 
                                 OpenedPopUp_WhereAlertPopUpNeeded = false;
                                 AlertText.textContent = "You successfully joined the clan!";
@@ -178,7 +178,6 @@ class social_scene_class {
 
                                 clan_overview_pop_up.style.display = "none";
                                 clan_action_reason_handler.open(player_data, "join_request", clan_data);
-
                             };
                         });
 
@@ -190,6 +189,7 @@ class social_scene_class {
             } else {
                 AlertText.textContent = "You can't join the clan.";
                 DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                OpenedPopUp_WhereAlertPopUpNeeded = true;
             };
         });
     };
@@ -298,16 +298,7 @@ class player_levels_handler_wrapper extends NewLevel {
             PlayerNameP.classList = "Level_PlayerName";
 
             let player = correspondPlayer;
-            let player_name = player.player_name;
             let player_id = player.player_id;
-            let player_icon = player.player_icon;
-            let playerInfoClass = player.playerInfoClass;
-            let playerInfoColor = player.playerInfoColor;
-            let quote = player.quote;
-            let onlineGamesWon = player.onlineGamesWon;
-            let XP = player.XP;
-            let currentUsedSkin = player.currentUsedSkin;
-            let last_connection = player.last_connection;
 
             // click event
             PlayerNameP.addEventListener("click", (e) => {

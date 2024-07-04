@@ -1855,9 +1855,9 @@ UserQuote.addEventListener('mousedown', function(event) {
 
 // lobby btns
 
-lobbyBtn2.addEventListener("click", () => {
+lobbyBtn2.addEventListener("click", async() => {
     clan_btn_notify_label.style.display = "none";
-    universal_clan_msg_handler.check();
+    universal_clan_msg_handler.check(1000);
 
     if (!localStorage.getItem("UserName")) {
 
