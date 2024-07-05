@@ -193,7 +193,6 @@ class level_comments_handler {
 
         comments_main_form.addEventListener("submit", comments_main_form.event = (e) => {
             let text = comments_submit_input.value;
-
             e.preventDefault();
 
             if (text.length > 0 && text.length < 275) {
@@ -230,6 +229,8 @@ class level_comments_handler {
                 } else {
                     messages.forEach(message => this.add(message, personal_reactions[message["comment_id"]]));
                 };
+
+                chat_scroll_to_bottom("smooth", comments_list);
             });
 
         } catch (error) {
@@ -241,6 +242,7 @@ class level_comments_handler {
         try {
             socket.emit("submit_comment_to_level", text, this.parent.level["id"], Number(localStorage.getItem("PlayerID")), localStorage.getItem("UserName"), this.parent.personal_data_for_level, cb => {
                 this.add(cb);
+                chat_scroll_to_bottom("smooth", comments_list);
             });
 
         } catch (error) {

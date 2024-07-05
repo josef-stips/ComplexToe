@@ -205,7 +205,7 @@ CreateOnlineProfileBtn.addEventListener('click', () => {
 // Input on user name
 UserGivesData_NameInput.addEventListener('keydown', e => {
     const inputValue = e.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -232,7 +232,7 @@ UserGivesData_NameInput.addEventListener('keydown', e => {
 // Input on user icon
 UserGivesData_IconInput.addEventListener('keydown', e => {
     const inputValue = e.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert

@@ -164,7 +164,7 @@ class social_scene_class {
 
                                     setTimeout(() => {
                                         DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-                                    }, 400);
+                                    }, 1200);
                                 });
 
                             } else if (can_join == "request_sended") {

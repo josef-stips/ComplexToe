@@ -132,6 +132,10 @@ class clan {
 
         } else {
             role = "member";
+
+            if (data["role"]) {
+                role = data["role"];
+            };
         };
 
         if (leave_clan) {
@@ -187,8 +191,7 @@ class clan {
             let player_XP = Number(localStorage.getItem("ELO"));
             let clan_id = this.current_clan_data["clan_id"];
 
-            console.log(player_XP);
-
+            // console.log(player_XP);
             socket.emit("send_XP_to_clan", clan_id, clanPlaygroundHandler.self_player_id, player_XP, cb => {
                 newClan.current_clan_all_data = cb;
 
@@ -307,7 +310,7 @@ class clan_chat_pop_up_class {
 
                             this.new_message(message, data);
 
-                        } else if (message["type"] == "clan_msg") {
+                        } else if (message["type"] == "clan_msg" || message["type"] == "promotion") {
 
                             this.clan_msg(message["message"]);
 
@@ -387,6 +390,14 @@ class clan_chat_pop_up_class {
         let msg_accept = document.createElement("i");
         let msg_reject = document.createElement("i");
         let text_el = document.createElement("p");
+        let details_btn = document.createElement("p");
+
+        details_btn.className = "fa-solid fa-question cursor_btn";
+
+        details_btn.addEventListener("click", () => {
+            AlertText.textContent = msg.request_text;
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        });
 
         msg_wrapper.setAttribute("from", "join_request");
         msg_wrapper.setAttribute("message_player_id", player.player_id);
@@ -405,6 +416,7 @@ class clan_chat_pop_up_class {
         msg_wrapper.appendChild(msg_lower);
         msg_lower.appendChild(msg_accept);
         msg_lower.appendChild(msg_reject);
+        msg_lower.appendChild(details_btn);
         msg_upper.appendChild(text_el);
         clan_chat_chat.appendChild(msg_wrapper);
 
@@ -610,14 +622,12 @@ class clan_playground_handler {
         XP_text.textContent = `XP ${clan_XP} / ${XP_for_next_level}`;
         this.playground_field_title.textContent = `${clan_level}x${clan_level} clan field`;
 
-        console.log(difference, 1 / 5 * difference, clan_XP, XP_for_next_level, next_level, clan_level);
-
+        // console.log(difference, 1 / 5 * difference, clan_XP, XP_for_next_level, next_level, clan_level);
         for (let i = 0; i <= difference; i += 1 / 150 * difference) {
             await sleep(20);
             bar.style.background = `linear-gradient(105deg, ${this.bar_color} ${i}%, transparent 0% )`;
         };
-
-        console.log("fertig")
+        // console.log("fertig")
 
         if (difference >= 100) {
             this.clan_level = next_level;
@@ -648,14 +658,12 @@ class clan_playground_handler {
 
         this.XP_bar.style.background = `linear-gradient(105deg, ${this.bar_color} 0%, transparent 0% )`;
 
-        console.log(difference, 1 / 5 * difference, clan_XP, next_level_XP, next_level, clan_level);
-
+        // console.log(difference, 1 / 5 * difference, clan_XP, next_level_XP, next_level, clan_level);
         for (let i = 0; i <= difference; i += 1 / 150 * difference) {
             await sleep(20);
             this.XP_bar.style.background = `linear-gradient(105deg, ${this.bar_color} ${i}%, transparent 0% )`;
         };
-
-        console.log("fertig")
+        // console.log("fertig")
 
         if (difference >= 100) {
 
@@ -828,7 +836,7 @@ socket.on("player_left_clan", player_name => {
 
 // server updated XP and level of clan
 socket.on("update_clan_XP_bar", (newXP, clanLevel) => {
-    console.log(newXP, clanLevel);
+    // console.log(newXP, clanLevel);
 
     clanPlaygroundHandler.clan_level = clanLevel;
 
@@ -964,10 +972,13 @@ class create_clan_handler {
         create_clan_description_pop_up_btn.addEventListener("click", () => {
             DisplayPopUp_PopAnimation(clan_description_pop_up, "flex", true);
             clan_description_text.textContent = create_clan_description.value;
+            clan_info_pen.style.display = "none";
         });
 
         clan_description_close_btn.addEventListener("click", () => {
             clan_description_pop_up.style.display = "none";
+            clan_description_text.readOnly = true;
+            clan_desc_save_btn.style.display = "none";
         });
 
         create_clan_inputs.forEach((input, i) => {
@@ -997,16 +1008,53 @@ class create_clan_handler {
             if (create_clan_name.value.length > 0 &&
                 create_clan_description.value.length > 0) {
                 this.create_clan();
+                11
             };
         });
 
         clan_description_detail_btn.addEventListener("click", () => {
             DisplayPopUp_PopAnimation(clan_description_pop_up, "flex", true);
-            clan_description_text.textContent = clan_description_el.textContent;
+            clan_description_text.value = clan_description_el.textContent;
+
+            if (newClan.current_clan_data.clan_id == newClan.current_selected_clan_id && newClan.current_clan_data.role == "leader" || newClan.current_clan_data.role == "dikaios") {
+                clan_info_pen.style.display = "flex";
+
+            } else {
+                clan_info_pen.style.display = "none";
+            };
         });
 
         create_clan_reload_btn.addEventListener("click", () => {
             this.start_pop_up();
+        });
+
+        clan_info_pen.removeEventListener("click", clan_info_pen.ev);
+
+        clan_info_pen.addEventListener("click", clan_info_pen.ev = () => {
+            clan_description_text.readOnly = false;
+            clan_description_text.focus();
+            clan_desc_save_btn.style.display = "flex";
+        });
+
+        clan_desc_save_btn.removeEventListener("click", clan_desc_save_btn.ev);
+
+        clan_desc_save_btn.addEventListener("click", clan_desc_save_btn.ev = () => {
+            let desc = clan_description_text.value;
+
+            socket.emit("update_clan_desc", newClan.current_selected_clan_id, desc, cb => {
+                OpenedPopUp_WhereAlertPopUpNeeded = true;
+
+                if (!cb) {
+                    AlertText.textContent = "something went wrong. May try again?";
+
+                } else {
+                    AlertText.textContent = "Clan description successfully updated!";
+                    clan_description_el.textContent = desc;
+                };
+
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                clan_description_close_btn.click();
+            });
         });
     };
 
@@ -1588,12 +1636,26 @@ class clan_action_reason_pop_up_handler {
 
     submit_promotion() {
         console.log(this.reason, this.member_data)
+
+        socket.emit("promote_member", this.member_data.player_id, newClan.current_selected_clan_id, clan_reason_text_input.value, cb => {
+            clan_action_reason_pop_up.style.display = "none";
+            clan_overview_pop_up.style.display = "none";
+
+            if (!cb) {
+                AlertText.textContent = "Something went wrong! Try again later.";
+
+            } else {
+                AlertText.textContent = `You promoted ${this.member_data.player_name} to ${cb.new_role}`;
+            };
+
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        });
     };
 
     submit_join_request() {
         console.log(this.reason, this.member_data)
 
-        socket.emit("clan_join_request", this.member_data, this.clan_data, cb => {
+        socket.emit("clan_join_request", this.member_data, this.clan_data, clan_reason_text_input.value, cb => {
 
             clan_action_reason_pop_up.style.display = "none";
 
@@ -1665,7 +1727,7 @@ class universal_clan_msg_pop_up_handler {
                 break;
 
             case "promote":
-
+                this.promote_action(data);
                 break;
 
             case "tournament":
@@ -1680,6 +1742,24 @@ class universal_clan_msg_pop_up_handler {
                 this.request_accepted_action(data);
                 break;
         };
+    };
+
+    promote_action(data) {
+        clan_msg_promote_text_clan_name.textContent = data.clan_name;
+        clan_msg_promote_text.textContent = data.new_role;
+        clan_msg_promote_text_old_role.textContent = data.old_role;
+        clan_content_promote_reason.textContent = data.promote_reason;
+
+        clan_universal_msg_ok_btn.addEventListener("click", () => {
+            clan_universal_msg_pop_up.style.display = "none";
+            DarkLayer.style.display = "none";
+
+            newClan.current_clan_data.role = data.new_role;
+            newClan.current_clan_data.id = data.clan_id;
+
+            newClan.update_data(newClan.current_clan_data);
+            socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
+        });
     };
 
     kick_action(data) {
@@ -1765,8 +1845,25 @@ socket.on("new_clan_message", async(message, author_data, msg_type = "human") =>
     clan_chat.message_cache.push(message);
     clan_chat.new_date_msg(message);
 
-    msg_type == "human" ? clan_chat.new_message(message, author_data) : clan_chat.join_request_msg(message, author_data);
-    chat_scroll_to_bottom('instant', clan_chat_chat);
+    if (msg_type == "human") {
+        clan_chat.new_message(message, author_data)
+
+    } else if (msg_type == "promotion") {
+        clan_chat.clan_msg(message.message);
+
+        if (author_data.player_id == Number(localStorage.getItem("PlayerID"))) {
+
+            if (getComputedStyle(clan_overview_pop_up).display != "none") {
+                universal_clan_msg_handler.check(0);
+
+            } else {
+                clan_btn_notify_label.style.display = "flex";
+            };
+        };
+
+    } else {
+        chat_scroll_to_bottom('instant', clan_chat_chat);
+    };
 
     if (getComputedStyle(clan_chat_pop_up).display == "none") {
         clan_btn_notify_label.style.display = "flex";
@@ -1774,4 +1871,5 @@ socket.on("new_clan_message", async(message, author_data, msg_type = "human") =>
     } else {
         clan_btn_notify_label.style.display = "none";
     };
+
 });

@@ -565,7 +565,7 @@ Your_IconInput.addEventListener("input", function(event) {
 
 UserGivesData_NameInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben und Zahlen
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -575,7 +575,7 @@ UserGivesData_NameInput.addEventListener("input", function(event) {
 
 UserGivesData_IconInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert

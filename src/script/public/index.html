@@ -7948,6 +7948,7 @@
     <!-- large description pop up -->
     <div class="clan_description_pop_up">
         <div class="clan_description_header">
+            <i class="fas fa-pen clan_info_pen"></i>
             <i class="fa-solid fa-x clan_description_close_btn caret_prototype"></i>
         </div>
 
@@ -7957,6 +7958,8 @@
             <textarea readonly spellcheck="false" class="clan_description_text">
                 
             </textarea>
+
+            <div class="clan_desc_save_btn">save</div>
         </div>
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left:0;" width="200" height="200">
@@ -8089,7 +8092,19 @@
             </div>
 
             <div class="clan_universal_content" for="promote">
-                <h1>You got promoted to dikaios</h1>
+                <h1>You got promoted from <span class="clan_msg_promote_text_old_role"></span> to <span class="clan_msg_promote_text">dikaios</span></h1>
+                <h1>In your clan <span class="clan_msg_promote_text_clan_name"></span></h1>
+
+                <div>
+                    <h1>reason:</h1>
+
+                    <textarea class="clan_content_promote_reason default_text_area" draggable="false" spellcheck="false" readonly="true"></textarea>
+                </div>
+
+                <span>
+                    <img src="assets/game/crenulated-shield.svg" alt="">
+                    <img src="assets/game/crenulated-shield.svg" alt="">
+                </span>
             </div>
 
             <div class="clan_universal_content" for="kick">
@@ -8109,7 +8124,7 @@
             </div>
 
             <div class="clan_universal_content" for="clan_level">
-                <h1>Your clan leveled up to level 39!</h1>
+                <!-- not in current use -->
             </div>
 
             <div class="clan_universal_content" for="request_accepted">

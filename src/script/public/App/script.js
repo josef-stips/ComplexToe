@@ -984,13 +984,20 @@ Allbtns.forEach((btn) => {
         });
 
     } else { // event listener for all other cards
-        btn.addEventListener('click', (card) => {
-            // audio
-            playBtn_Audio();
 
-            // create level or play offline on same computer
-            (btn.classList.contains("create")) ? social_scene.init(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
-        });
+        if (localStorage.getItem("UserName")) {
+            btn.addEventListener('click', (card) => {
+                // audio
+                playBtn_Audio();
+
+                // create level or play offline on same computer
+                (btn.classList.contains("create")) ? social_scene.init(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
+            });
+
+        } else {
+            AlertText.textContent = "Create an account to get access to the online stuff";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        };
     };
 });
 
@@ -1001,7 +1008,6 @@ const CreateLevelScene_CheckIn = () => {
     // The user should have an account to be able to create an online level
     if (!localStorage.getItem("UserName")) {
         AlertText.textContent = "Create an account to create online level";
-        DarkLayer.style.display = "block";
         DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
     } else {
@@ -1033,29 +1039,33 @@ fieldsArea_back_btn.addEventListener('click', () => {
 
 // Game Mode buttons 
 gameMode_KI_card.addEventListener('click', () => {
-    // if (localStorage.getItem("UserName")) {
-    //     curr_mode = GameMode[4].opponent;
+    if (localStorage.getItem("UserName")) {
+        //     curr_mode = GameMode[4].opponent;
 
-    //     // pause music in create level mode
-    //     PauseMusic();
+        //     // pause music in create level mode
+        //     PauseMusic();
 
-    //     // User entered create level mode
-    //     let NewField = new NewLevel();
-    //     NewCreativeLevel = NewField;
-    //     NewCreativeLevel.Init();
+        //     // User entered create level mode
+        //     let NewField = new NewLevel();
+        //     NewCreativeLevel = NewField;
+        //     NewCreativeLevel.Init();
 
-    //     InitCreateLevelScene();
-    // };
+        //     InitCreateLevelScene();
 
-    // bug fix if user was in advanced mode:
-    goToAdvancedFields.style.display = 'none';
-    goToAdvancedFields.classList = "fa-solid fa-caret-down";
-    secondTierModes.style.marginBottom = "0";
-    isInAdvancedGameModes = false;
-    bossModeIsActive = false;
+        // bug fix if user was in advanced mode:
+        goToAdvancedFields.style.display = 'none';
+        goToAdvancedFields.classList = "fa-solid fa-caret-down";
+        secondTierModes.style.marginBottom = "0";
+        isInAdvancedGameModes = false;
+        bossModeIsActive = false;
 
-    // other thing
-    ChooseFieldDisplay.style.opacity = "0";
+        // other thing
+        ChooseFieldDisplay.style.opacity = "0";
+
+    } else {
+        AlertText.textContent = "Create an account to get access to the online stuff";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    };
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
@@ -1857,7 +1867,7 @@ UserQuote.addEventListener('mousedown', function(event) {
 
 lobbyBtn2.addEventListener("click", async() => {
     clan_btn_notify_label.style.display = "none";
-    universal_clan_msg_handler.check(1000);
+    universal_clan_msg_handler.check(2000);
 
     if (!localStorage.getItem("UserName")) {
 

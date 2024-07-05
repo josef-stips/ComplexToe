@@ -3927,10 +3927,15 @@ label h3 {
     font-size: 3.5vh;
     width: 90%;
     height: 83%;
+    text-wrap: pretty;
+    text-overflow: ellipsis;
 }
 
 .alert-text-span {
     margin-bottom: 10%;
+    text-wrap: pretty;
+    width: inherit;
+    line-break: anywhere;
 }
 
 
@@ -8605,6 +8610,26 @@ p.createCostumField_yInput {
     border-radius: 2%;
 }
 
+.clan_info_pen {
+    font: 3vh;
+    padding: 0.5vh;
+    margin-right: 1vw;
+    cursor: pointer;
+}
+
+.clan_desc_save_btn {
+    font-weight: 600;
+    font-size: 4vh;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out;
+    display: none;
+}
+
+.clan_desc_save_btn:hover {
+    transition: transform 0.15s ease-in-out;
+    transform: scale(1.1);
+}
+
 .clan_pop_up_header_inner_wrapper_1 {
     display: flex;
     width: 98%;
@@ -8986,7 +9011,7 @@ p.createCostumField_yInput {
     white-space: normal;
     resize: none;
     outline: none;
-    text-wrap: pretty;
+    text-wrap: unset;
     padding: 2vh;
     user-select: none;
     overflow-y: auto;
@@ -10421,6 +10446,29 @@ ul.default_sb_list.best_players_list div:first-child {
     height: 20vh;
 }
 
+.clan_universal_content[for="promote"]>div {
+    margin: 5vh 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    font-size: 2vh;
+    width: 50%;
+    height: 30%;
+}
+
+.clan_universal_content[for="promote"]>span {
+    margin: 10vh 0 0 0;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.clan_universal_content[for="promote"]>span>img {
+    width: 20vh;
+    height: 20vh;
+}
+
 .clan_universal_content[for="request_accepted"] {
     display: flex;
     align-items: center;
@@ -10558,6 +10606,25 @@ ul.default_sb_list.best_players_list div:first-child {
     transition: top 0.5s ease-in-out;
     width: 5vh;
     height: 5vh;
+}
+
+.cursor_btn {
+    cursor: pointer;
+}
+
+.clan_msg_promote_text_old_role {
+    color: lightcoral;
+    text-shadow: 5px 5px 7px var(--bg-app-color3);
+}
+
+.clan_msg_promote_text {
+    color: green;
+    text-shadow: 5px 5px 7px var(--bg-app-color3);
+}
+
+.clan_msg_promote_text_clan_name {
+    color: var(--line-color);
+    text-shadow: 5px 5px 7px var(--bg-app-color3);
 }
 
 

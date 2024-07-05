@@ -317,9 +317,9 @@ function close_all_scenes() {
 };
 
 function chat_scroll_to_bottom(behavior, chat) {
-    clan_chat_chat.scrollTo({
+    chat.scrollTo({
         top: chat.scrollHeight,
-        behavior
+        behavior: behavior
     });
 };
 

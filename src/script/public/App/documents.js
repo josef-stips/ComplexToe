@@ -681,6 +681,7 @@ let clan_content_request_accepted_clan_name = document.querySelector(".clan_cont
 let reward_pick_up = document.querySelector(".reward_pick_up");
 let spinner = document.querySelector(".spinner");
 
+const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
 const clan_reason_header = document.querySelector('.clan_reason_header');
 const clan_reason_close_btn = document.querySelector('.clan_reason_close_btn');
@@ -688,14 +689,17 @@ const clan_reason_main = document.querySelector('.clan_reason_main');
 const clan_reason_form = document.querySelector('.clan_reason_form');
 const clan_reason_text_input = document.querySelector('.clan_reason_text_input');
 const clan_reason_submit_btn = document.querySelector('.clan_reason_submit_btn');
-
 const clan_universal_msg_pop_up = document.querySelector(".clan_universal_msg_pop_up");
 const clan_universal_msg_ok_btn = document.querySelector(".clan_universal_msg_ok_btn");
 const clan_universal_content = document.querySelectorAll(".clan_universal_content");
 const clan_content_kick_reason = document.querySelector(".clan_content_kick_reason");
 const clan_universal_kick_content_kicker_name = document.querySelector(".clan_universal_kick_content_kicker_name");
-
 const clan_btn_notify_label = document.querySelector(".clan_btn_notify_label");
+const clan_desc_save_btn = document.querySelector(".clan_desc_save_btn");
+const clan_msg_promote_text_clan_name = document.querySelector(".clan_msg_promote_text_clan_name");
+const clan_msg_promote_text = document.querySelector(".clan_msg_promote_text");
+const clan_msg_promote_text_old_role = document.querySelector(".clan_msg_promote_text_old_role");
+const clan_content_promote_reason = document.querySelector(".clan_content_promote_reason");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');
