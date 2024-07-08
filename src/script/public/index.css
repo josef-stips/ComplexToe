@@ -1083,8 +1083,8 @@ ol.UserInfo-list img {
 }
 
 .BotIcon {
-    width: 4.5vh;
-    height: 4.5vh;
+    width: 2.5vw;
+    height: 3.5vw;
 }
 
 .card-circle {
@@ -3354,7 +3354,7 @@ label h3 {
     align-items: center;
     flex-direction: column;
     padding: 2vh;
-    z-index: 10001;
+    z-index: 10020;
     color: var(--font-color);
 }
 
@@ -3873,6 +3873,60 @@ label h3 {
 
 .shopGuideText {
     font-size: 2vh !important;
+}
+
+.skinsSecondContainer {
+    display: none;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    gap: 3.5vh;
+}
+
+.skinsFirstContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.skin_shop_next_tab {
+    position: absolute;
+    top: 3vh;
+    right: 3vw;
+    font-size: 5vh;
+    cursor: pointer;
+}
+
+.skin_shop_last_tab {
+    position: absolute;
+    top: 3vh;
+    left: 3vw;
+    font-size: 5vh;
+    cursor: pointer;
+}
+
+.skinShop-AdvancedSkins2 {
+    margin-top: 10px;
+    font-size: 2.3vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.skinShop-AdvancedSkins2>div {
+    display: flex;
+    flex-direction: row;
+    gap: 3vw;
 }
 
 
@@ -7215,15 +7269,15 @@ span.LevelIconWrapper img {
     right: 0;
     left: 0;
     margin: 0 auto auto auto;
-    border: 2px solid var(--line-color);
+    border: 0.5vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: white;
-    font-size: 25px;
+    font-size: 3vh;
     z-index: 10006;
-    border-radius: 25px;
+    border-radius: 3vh;
     align-items: center;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     transition: top 0.15s ease-in, opacity 0.75s ease-in;
@@ -8602,9 +8656,9 @@ p.createCostumField_yInput {
     height: 31.5%;
     width: 99%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    align-items: flex-start;
     position: relative;
     border-bottom: 0.4vh solid var(--line-color);
     border-radius: 2%;
@@ -8632,7 +8686,7 @@ p.createCostumField_yInput {
 
 .clan_pop_up_header_inner_wrapper_1 {
     display: flex;
-    width: 98%;
+    width: max-content;
     height: 17%;
     flex-direction: row;
     align-items: flex-end;
@@ -8645,19 +8699,20 @@ p.createCostumField_yInput {
 
 .clan_pop_up_header_inner_wrapper_2 {
     width: 97.5%;
-    height: 70%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: 3vh;
     font-size: 4vh;
+    align-self: flex-start;
 }
 
 .clan_pop_up_header_section_1 {
     width: 100%;
-    height: max-content;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 0.5vh;
 }
 
@@ -8666,7 +8721,8 @@ p.createCostumField_yInput {
     height: max-content;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
+    font-size: 2.8vh;
 }
 
 .clan_pop_up_section_1_inner_wrapper_1 {

@@ -700,6 +700,11 @@ const clan_msg_promote_text_clan_name = document.querySelector(".clan_msg_promot
 const clan_msg_promote_text = document.querySelector(".clan_msg_promote_text");
 const clan_msg_promote_text_old_role = document.querySelector(".clan_msg_promote_text_old_role");
 const clan_content_promote_reason = document.querySelector(".clan_content_promote_reason");
+const clan_creation_date = document.querySelector(".clan_creation_date");
+const skin_shop_next_tab = document.querySelector(".skin_shop_next_tab");
+const skinsSecondContainer = document.querySelector(".skinsSecondContainer");
+const skinsFirstContainer = document.querySelector(".skinsFirstContainer");
+const skin_shop_last_tab = document.querySelector(".skin_shop_last_tab");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

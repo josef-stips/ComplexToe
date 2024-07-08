@@ -115,6 +115,8 @@ class social_scene_class {
                                 clan_overview_pop_up.style.display = "none";
                                 userInfoPopUp.style.display = "none";
 
+                                clan_chat.message_cache = [];
+
                                 if (getComputedStyle(clan_chat_pop_up).display == "flex") {
                                     DarkLayerAnimation(gameModeCards_Div, clan_chat_pop_up).then(() => {
 
@@ -149,6 +151,8 @@ class social_scene_class {
                         newClan.current_selected_clan_id, async(can_join, clan_data, player_data) => {
 
                             if (can_join == true) {
+                                clan_chat.message_cache = [];
+
                                 // update data in local storage
                                 await newClan.update_data(clan_data);
 
@@ -173,6 +177,11 @@ class social_scene_class {
                                 AlertText.textContent = "You already sended a request to this clan. Wait for an answer.";
                                 DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
+                            } else if (can_join == "full") {
+
+                                OpenedPopUp_WhereAlertPopUpNeeded = true;
+                                AlertText.textContent = "Unfortunately, the clan is full. It has 50/50 members.";
+                                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 
                             } else { // player has to request getting a member of the clan because he was already a member but got kicked or left
 

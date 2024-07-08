@@ -795,7 +795,9 @@ class clan_playground_handler {
     };
 
     async send_coords() {
-        await socket.emit("playground_player_moves", Number(localStorage.getItem("PlayerID")), this.self_character_coords, newClan.roomID);
+        await socket.emit("playground_player_moves", Number(localStorage.getItem("PlayerID")), localStorage.getItem("userInfoClass"), localStorage.getItem("userInfoColor"),
+            localStorage.getItem("UserIcon"),
+            this.self_character_coords, newClan.roomID);
     };
 };
 
@@ -845,12 +847,12 @@ socket.on("update_clan_XP_bar", (newXP, clanLevel) => {
 });
 
 // client recieves position of other player in the room
-socket.on("recieve_player_coords", (player_id, coords) => {
+socket.on("recieve_player_coords", (player_id, coords, UserInfoClass, UserInfoColor, UserIcon) => {
     // console.log(player_id, coords);
 
     if (!clanPlaygroundHandler.player_cache[player_id]) {
 
-        clanPlaygroundHandler.player_cache[player_id] = new playground_player(player_id, coords);
+        clanPlaygroundHandler.player_cache[player_id] = new playground_player(player_id, coords, UserInfoClass, UserInfoColor, UserIcon);
         clanPlaygroundHandler.player_cache[player_id].init();
 
     } else {
@@ -870,18 +872,22 @@ socket.on("rm_clan_msg", msg_id => {
 });
 
 class playground_player {
-    constructor(id, coords) {
+    constructor(id, coords, UserInfoClass, UserInfoColor, UserIcon) {
         this.self_element = null;
         this.skin = null;
         this.self_id = id;
         this.coords = coords;
+        this.UserInfoClass = UserInfoClass;
+        this.UserInfoColor = UserInfoColor;
+        this.UserIcon = UserIcon;
     };
 
     init() {
         this.self_element = document.createElement("p");
-        this.self_element.classList.add("clan_playground_character");
         this.self_element.setAttribute("playground_character_id", this.self_id);
-        this.self_element.textContent = "X";
+        DisplayPlayerIcon_at_el(this.self_element, this.UserInfoClass, this.UserInfoColor, this.UserIcon);
+        this.self_element.classList.remove("userInfoEditable");
+        this.self_element.classList.add("clan_playground_character");
 
         clan_chat_playground.appendChild(this.self_element);
         clanPlaygroundHandler.update_position(this.self_element, this.coords, this.self_id);
@@ -987,7 +993,7 @@ class create_clan_handler {
             input.addEventListener("keydown", (e) => {
                 let len = input.value.length;
 
-                if (len > max_text_length && !this.allowed_keys.includes(e.key)) {
+                if (len >= max_text_length && !this.allowed_keys.includes(e.key)) {
                     e.preventDefault();
                     return;
                 };
@@ -1004,11 +1010,17 @@ class create_clan_handler {
             this.update_logo();
         });
 
-        create_clan_btn.addEventListener("click", () => {
+        create_clan_btn.addEventListener("click", create_clan_btn.ev = () => {
             if (create_clan_name.value.length > 0 &&
                 create_clan_description.value.length > 0) {
                 this.create_clan();
-                11
+
+                create_clan_btn.style.pointerEvents = "none";
+
+                // bug prevention of creating multiple clans
+                setTimeout(() => {
+                    create_clan_btn.style.pointerEvents = "all";
+                }, 5000);
             };
         });
 
@@ -1073,6 +1085,8 @@ class create_clan_handler {
                 this.logo,
                 this.description,
                 parseInt(localStorage.getItem("PlayerID")), async data => {
+
+                    clan_chat.message_cache = [];
 
                     if (!data) {
                         AlertText.textContent = "Something went wrong!";
@@ -1373,6 +1387,8 @@ class clan_handler {
             clan_admin_name.textContent = cb["player_name"];
 
             clan_admin_name.removeEventListener("click", clan_admin_name.event);
+
+            clan_creation_date.textContent = formatDate(data.creation_date);
 
             clan_admin_name.addEventListener("click", clan_admin_name.event = () => {
                 userInfoPopUp.style.zIndex = "10011";
@@ -1840,7 +1856,9 @@ clan_action_reason_handler.init();
 socket.on("new_clan_message", async(message, author_data, msg_type = "human") => {
     console.log(message);
 
-    message.name = author_data.player_name;
+    if (author_data) {
+        message.name = author_data.player_name;
+    };
 
     clan_chat.message_cache.push(message);
     clan_chat.new_date_msg(message);
@@ -1849,11 +1867,12 @@ socket.on("new_clan_message", async(message, author_data, msg_type = "human") =>
         clan_chat.new_message(message, author_data)
 
     } else if (msg_type == "promotion") {
+
         clan_chat.clan_msg(message.message);
 
         if (author_data.player_id == Number(localStorage.getItem("PlayerID"))) {
 
-            if (getComputedStyle(clan_overview_pop_up).display != "none") {
+            if (getComputedStyle(clan_chat_pop_up).display != "none") {
                 universal_clan_msg_handler.check(0);
 
             } else {
@@ -1861,9 +1880,16 @@ socket.on("new_clan_message", async(message, author_data, msg_type = "human") =>
             };
         };
 
-    } else {
-        chat_scroll_to_bottom('instant', clan_chat_chat);
+    } else if (msg_type == "join_request") {
+
+        clan_chat.join_request_msg(message, message.player_data);
+
+    } else if (msg_type == "clan_msg") {
+
+        clan_chat.clan_msg(message.message);
     };
+
+    chat_scroll_to_bottom('instant', clan_chat_chat);
 
     if (getComputedStyle(clan_chat_pop_up).display == "none") {
         clan_btn_notify_label.style.display = "flex";
@@ -1871,5 +1897,4 @@ socket.on("new_clan_message", async(message, author_data, msg_type = "human") =>
     } else {
         clan_btn_notify_label.style.display = "none";
     };
-
 });

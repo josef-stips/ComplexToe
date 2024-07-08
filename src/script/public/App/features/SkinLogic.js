@@ -29,9 +29,22 @@ skinShopCloseBtn.addEventListener('click', () => {
         useSkinBtn.style.display = 'none';
         sidelinePrice.style.display = 'block';
 
+        skinsSecondContainer.style.display = "none";
+        skinsFirstContainer.style.display = "flex";
+
         playGameTheme();
         resetGuidingText();
     });
+});
+
+skin_shop_next_tab.addEventListener("click", () => {
+    skinsSecondContainer.style.display = "flex";
+    skinsFirstContainer.style.display = "none";
+});
+
+skin_shop_last_tab.addEventListener("click", () => {
+    skinsSecondContainer.style.display = "none";
+    skinsFirstContainer.style.display = "flex";
 });
 
 let selected_skin = {
@@ -78,7 +91,37 @@ let skins = {
     'bug': false,
     'handshake': false,
     'thumbs-up': false,
-    'face-smile': false
+    'face-smile': false,
+    'phone': false,
+    'star': false,
+    'circle-info': false,
+    'hand': false,
+    'wifi': false,
+    'hashtag': false,
+    'mug-saucer': false,
+    'shirt': false,
+    'hand-point-up': false,
+    'brain': false,
+    'kiwi-bird': false,
+    'chair': false,
+    'dollar-sign': false,
+    'hand-middle-finger': false,
+    'face-surprise': false,
+    'bone': false,
+    'atom': false,
+    'calendar-check': false,
+    'cloud-arrow-up': false,
+    'poo': false,
+    'face-meh': false,
+    'cat': false,
+    'frog': false,
+    'dog': false,
+    'shrimp': false,
+    'bucket': false,
+    'paint-roller': false,
+    'splotch': false,
+    'highlighter': false,
+    'scissors': false
 };
 
 let skins_display = {
@@ -116,7 +159,37 @@ let skins_display = {
     'bug': 'fa-solid fa-bug',
     'handshake': 'fa-solid fa-handshake',
     'thumbs-up': 'fa-solid fa-thumbs-up',
-    'face-smile': 'fa-solid fa-face-smile'
+    'face-smile': 'fa-solid fa-face-smile',
+    'phone': 'fa-solid fa-phone',
+    'star': 'fa-solid fa-star',
+    'circle-info': 'fa-solid fa-circle-info',
+    'hand': 'fa-solid fa-hand',
+    'wifi': 'fa-solid fa-wifi',
+    'hashtag': 'fa-solid fa-hashtag',
+    'mug-saucer': 'fa-solid fa-mug-saucer',
+    'shirt': 'fa-solid fa-shirt',
+    'hand-point-up': 'fa-solid fa-hand-point-up',
+    'brain': 'fa-solid fa-brain',
+    'kiwi-bird': 'fa-solid fa-kiwi-bird',
+    'chair': 'fa-solid fa-chair',
+    'dollar-sign': 'fa-solid fa-dollar-sign',
+    'hand-middle-finger': 'fa-solid fa-hand-middle-finger',
+    'face-surprise': 'fa-solid fa-face-surprise',
+    'bone': 'fa-solid fa-bone',
+    'atom': 'fa-solid fa-atom',
+    'calendar-check': 'fa-solid fa-calendar-check',
+    'cloud-arrow-up': 'fa-solid fa-cloud-arrow-up',
+    'poo': 'fa-solid fa-poo',
+    'face-meh': 'fa-solid fa-face-meh',
+    'cat': 'fa-solid fa-cat',
+    'frog': 'fa-solid fa-frog',
+    'dog': 'fa-solid fa-dog',
+    'shrimp': 'fa-solid fa-shrimp',
+    'bucket': 'fa-solid fa-bucket',
+    'paint-roller': 'fa-solid fa-paint-roller',
+    'splotch': 'fa-solid fa-splotch',
+    'highlighter': 'fa-solid fa-highlighter',
+    'scissors': 'fa-solid fa-scissors'
 };
 
 let current_used_skin = '';
@@ -135,147 +208,154 @@ let current_used_skin = '';
 })();
 
 function switch_skins(current_used_skin, UserIcon) {
-    switch (current_used_skin) {
-        case 'skin-default':
-            colorSkin(UserIcon, skins_display['skin-default'], "empty");
-            break;
 
-        case 'skin-yellow':
-            colorSkin(UserIcon, skins_display['skin-yellow'], "empty");
-            break;
+    let name = current_used_skin;
+    let color = skins_display[name];
+    let skinType = name.startsWith('chess-') || name === 'jedi' || name === 'fish' || name === 'crown' || name === 'spaghetti-monster-flying' || name === 'hand-fist' || name === 'heart' || name === 'bug' || name === 'handshake' || name === 'thumbs-up' || name === 'face-smile' ? color : "empty";
 
-        case 'skin-teal':
-            colorSkin(UserIcon, skins_display['skin-teal'], "empty");
-            break;
+    colorSkin(name.startsWith('skin-') ? UserIcon : "", color, skinType);
 
-        case 'skin-red':
-            colorSkin(UserIcon, skins_display['skin-red'], "empty");
-            break;
+    // switch (current_used_skin) {
+    //     case 'skin-default':
+    //         colorSkin(UserIcon, skins_display['skin-default'], "empty");
+    //         break;
 
-        case 'skin-orange':
-            colorSkin(UserIcon, skins_display['skin-orange'], "empty");
-            break;
+    //     case 'skin-yellow':
+    //         colorSkin(UserIcon, skins_display['skin-yellow'], "empty");
+    //         break;
 
-        case 'skin-pink':
-            colorSkin(UserIcon, skins_display['skin-pink'], "empty");
-            break;
+    //     case 'skin-teal':
+    //         colorSkin(UserIcon, skins_display['skin-teal'], "empty");
+    //         break;
 
-        case 'skin-lightBlue':
-            colorSkin(UserIcon, skins_display['skin-lightBlue'], "empty");
-            break;
+    //     case 'skin-red':
+    //         colorSkin(UserIcon, skins_display['skin-red'], "empty");
+    //         break;
 
-        case 'skin-lightGreen':
-            colorSkin(UserIcon, skins_display['skin-lightGreen'], "empty");
-            break;
+    //     case 'skin-orange':
+    //         colorSkin(UserIcon, skins_display['skin-orange'], "empty");
+    //         break;
 
-        case 'skin-purple':
-            colorSkin(UserIcon, skins_display['skin-purple'], "empty");
-            break;
+    //     case 'skin-pink':
+    //         colorSkin(UserIcon, skins_display['skin-pink'], "empty");
+    //         break;
 
-        case 'skin-green':
-            colorSkin(UserIcon, skins_display['skin-green'], "empty");
-            break;
+    //     case 'skin-lightBlue':
+    //         colorSkin(UserIcon, skins_display['skin-lightBlue'], "empty");
+    //         break;
 
-        case 'skin-blue':
-            colorSkin(UserIcon, skins_display['skin-blue'], "empty");
-            break;
+    //     case 'skin-lightGreen':
+    //         colorSkin(UserIcon, skins_display['skin-lightGreen'], "empty");
+    //         break;
 
-        case 'skin-goldenrod':
-            colorSkin(UserIcon, skins_display['skin-goldenrod'], "empty");
-            break;
+    //     case 'skin-purple':
+    //         colorSkin(UserIcon, skins_display['skin-purple'], "empty");
+    //         break;
 
-        case 'skin-darkslateblue':
-            colorSkin(UserIcon, skins_display['skin-darkslateblue'], "empty");
-            break;
+    //     case 'skin-green':
+    //         colorSkin(UserIcon, skins_display['skin-green'], "empty");
+    //         break;
 
-        case 'skin-silver':
-            colorSkin(UserIcon, skins_display['skin-silver'], "empty");
-            break;
+    //     case 'skin-blue':
+    //         colorSkin(UserIcon, skins_display['skin-blue'], "empty");
+    //         break;
 
-        case 'skin-olive':
-            colorSkin(UserIcon, skins_display['skin-olive'], "empty");
-            break;
+    //     case 'skin-goldenrod':
+    //         colorSkin(UserIcon, skins_display['skin-goldenrod'], "empty");
+    //         break;
 
-        case 'skin-mediumpurple':
-            colorSkin(UserIcon, skins_display['skin-mediumpurple'], "empty");
-            break;
+    //     case 'skin-darkslateblue':
+    //         colorSkin(UserIcon, skins_display['skin-darkslateblue'], "empty");
+    //         break;
 
-        case 'skin-crimson':
-            colorSkin(UserIcon, skins_display['skin-crimson'], "empty");
-            break;
+    //     case 'skin-silver':
+    //         colorSkin(UserIcon, skins_display['skin-silver'], "empty");
+    //         break;
 
-        case 'skin-lightslategrey':
-            colorSkin(UserIcon, skins_display['skin-lightslategrey'], "empty");
-            break;
+    //     case 'skin-olive':
+    //         colorSkin(UserIcon, skins_display['skin-olive'], "empty");
+    //         break;
 
-        case 'skin-rosybrown':
-            colorSkin(UserIcon, skins_display['skin-rosybrown'], "empty");
-            break;
+    //     case 'skin-mediumpurple':
+    //         colorSkin(UserIcon, skins_display['skin-mediumpurple'], "empty");
+    //         break;
 
-        case 'skin-tomato':
-            colorSkin(UserIcon, skins_display['skin-tomato'], "empty");
-            break;
+    //     case 'skin-crimson':
+    //         colorSkin(UserIcon, skins_display['skin-crimson'], "empty");
+    //         break;
 
-        case 'chess-rook':
-            colorSkin("", "", skins_display['chess-rook']);
-            break;
+    //     case 'skin-lightslategrey':
+    //         colorSkin(UserIcon, skins_display['skin-lightslategrey'], "empty");
+    //         break;
 
-        case 'chess-queen':
-            colorSkin("", "", skins_display['chess-queen']);
-            break;
+    //     case 'skin-rosybrown':
+    //         colorSkin(UserIcon, skins_display['skin-rosybrown'], "empty");
+    //         break;
 
-        case 'chess-pawn':
-            colorSkin("", "", skins_display['chess-pawn']);
-            break;
+    //     case 'skin-tomato':
+    //         colorSkin(UserIcon, skins_display['skin-tomato'], "empty");
+    //         break;
 
-        case 'chess-knight':
-            colorSkin("", "", skins_display['chess-knight']);
-            break;
+    //     case 'chess-rook':
+    //         colorSkin("", "", skins_display['chess-rook']);
+    //         break;
 
-        case 'chess-king':
-            colorSkin("", "", skins_display['chess-king']);
-            break;
+    //     case 'chess-queen':
+    //         colorSkin("", "", skins_display['chess-queen']);
+    //         break;
 
-        case 'jedi':
-            colorSkin("", "", skins_display['jedi']);
-            break;
+    //     case 'chess-pawn':
+    //         colorSkin("", "", skins_display['chess-pawn']);
+    //         break;
 
-        case 'fish':
-            colorSkin("", "", skins_display['fish']);
-            break;
+    //     case 'chess-knight':
+    //         colorSkin("", "", skins_display['chess-knight']);
+    //         break;
 
-        case 'crown':
-            colorSkin("", "", skins_display['crown']);
-            break;
+    //     case 'chess-king':
+    //         colorSkin("", "", skins_display['chess-king']);
+    //         break;
 
-        case 'spaghetti-monster-flying':
-            colorSkin("", "", skins_display['spaghetti-monster-flying']);
-            break;
+    //     case 'jedi':
+    //         colorSkin("", "", skins_display['jedi']);
+    //         break;
 
-        case 'hand-fist':
-            colorSkin("", "", skins_display['hand-fist']);
-            break;
+    //     case 'fish':
+    //         colorSkin("", "", skins_display['fish']);
+    //         break;
 
-        case 'heart':
-            colorSkin("", "", skins_display['heart']);
-            break;
+    //     case 'crown':
+    //         colorSkin("", "", skins_display['crown']);
+    //         break;
 
-        case 'bug':
-            colorSkin("", "", skins_display['bug']);
-            break;
+    //     case 'spaghetti-monster-flying':
+    //         colorSkin("", "", skins_display['spaghetti-monster-flying']);
+    //         break;
 
-        case 'handshake':
-            colorSkin("", "", skins_display['handshake']);
-            break;
+    //     case 'hand-fist':
+    //         colorSkin("", "", skins_display['hand-fist']);
+    //         break;
 
-        case 'thumbs-up':
-            colorSkin("", "", skins_display['thumbs-up']);
-            break;
+    //     case 'heart':
+    //         colorSkin("", "", skins_display['heart']);
+    //         break;
 
-        case 'face-smile':
-            colorSkin("", "", skins_display['face-smile']);
-            break;
-    };
+    //     case 'bug':
+    //         colorSkin("", "", skins_display['bug']);
+    //         break;
+
+    //     case 'handshake':
+    //         colorSkin("", "", skins_display['handshake']);
+    //         break;
+
+    //     case 'thumbs-up':
+    //         colorSkin("", "", skins_display['thumbs-up']);
+    //         break;
+
+    //     case 'face-smile':
+    //         colorSkin("", "", skins_display['face-smile']);
+    //         break;
+    // };
 };
 
 function colorSkin(UserIcon, iColor, iClass) {
@@ -766,7 +846,7 @@ class themes {
                 "unlocked": true,
                 "inUse": true
             },
-            "jungle": {
+            "green": {
                 "id": 1,
                 "line-color": "rgb(20,88,20)",
                 "bg": null,
