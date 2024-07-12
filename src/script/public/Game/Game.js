@@ -1446,7 +1446,8 @@ const EndGameGameAnimation = (text, OnGameEnd) => {
                 play_GameAnimationSound();
             };
 
-            GameAnimation(text, true, "second_ani");
+            GameAnimation(text, true, "second_ani")
+                .then(resolve);
 
         } else resolve();
     });
@@ -1468,12 +1469,12 @@ const GameAnimation = (text, OnGameEnd, aniType = "default") => {
             };
 
             if (aniType == "default") {
-                defaultGameAnimation(text, resolve)
-                    .then(resolve());
+                defaultGameAnimation(text)
+                    .then(resolve);
 
             } else {
-                secondGameAnimation(text, resolve)
-                    .then(resolve());
+                secondGameAnimation(text, OnGameEnd)
+                    .then(resolve);
             };
 
         } else resolve();
@@ -1481,7 +1482,7 @@ const GameAnimation = (text, OnGameEnd, aniType = "default") => {
 };
 
 // second game animation
-const secondGameAnimation = (text) => {
+const secondGameAnimation = (text, OnGameEnd) => {
     return new Promise(resolve => {
 
         // create white layer
@@ -1507,6 +1508,12 @@ const secondGameAnimation = (text) => {
         Text.style.fontSize = "10vh";
         Text.textContent = text;
 
+        if (OnGameEnd) {
+            // create Text 
+            UltimateWinText.classList.add("BigScreenText");
+            UltimateWinText.textContent = text;
+        };
+
         sword.addEventListener("animationend", () => {
             sword.style.opacity = "0";
             sword2.style.opacity = "0";
@@ -1531,6 +1538,19 @@ const secondGameAnimation = (text) => {
 
                             resolve();
                         }, 200);
+
+                        if (OnGameEnd) {
+                            // display end game pop up
+                            DisplayPopUp_PopAnimation(endGameStatsPopUp, "flex", true);
+
+                            // display end game leaderboard
+                            EndGame_Leaderboard();
+
+                            starsHandler.check();
+
+                            // show play time
+                            displayPlayTime();
+                        };
                     }, 1250);
                 });
             }, 200);
