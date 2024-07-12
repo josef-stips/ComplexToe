@@ -213,149 +213,91 @@ function switch_skins(current_used_skin, UserIcon) {
     let color = skins_display[name];
     let skinType = name.startsWith('chess-') || name === 'jedi' || name === 'fish' || name === 'crown' || name === 'spaghetti-monster-flying' || name === 'hand-fist' || name === 'heart' || name === 'bug' || name === 'handshake' || name === 'thumbs-up' || name === 'face-smile' ? color : "empty";
 
-    colorSkin(name.startsWith('skin-') ? UserIcon : "", color, skinType);
+    switch (current_used_skin) {
+        case 'skin-default':
+            colorSkin(UserIcon, skins_display['skin-default'], "empty");
+            break;
 
-    // switch (current_used_skin) {
-    //     case 'skin-default':
-    //         colorSkin(UserIcon, skins_display['skin-default'], "empty");
-    //         break;
+        case 'skin-yellow':
+            colorSkin(UserIcon, skins_display['skin-yellow'], "empty");
+            break;
 
-    //     case 'skin-yellow':
-    //         colorSkin(UserIcon, skins_display['skin-yellow'], "empty");
-    //         break;
+        case 'skin-teal':
+            colorSkin(UserIcon, skins_display['skin-teal'], "empty");
+            break;
 
-    //     case 'skin-teal':
-    //         colorSkin(UserIcon, skins_display['skin-teal'], "empty");
-    //         break;
+        case 'skin-red':
+            colorSkin(UserIcon, skins_display['skin-red'], "empty");
+            break;
 
-    //     case 'skin-red':
-    //         colorSkin(UserIcon, skins_display['skin-red'], "empty");
-    //         break;
+        case 'skin-orange':
+            colorSkin(UserIcon, skins_display['skin-orange'], "empty");
+            break;
 
-    //     case 'skin-orange':
-    //         colorSkin(UserIcon, skins_display['skin-orange'], "empty");
-    //         break;
+        case 'skin-pink':
+            colorSkin(UserIcon, skins_display['skin-pink'], "empty");
+            break;
 
-    //     case 'skin-pink':
-    //         colorSkin(UserIcon, skins_display['skin-pink'], "empty");
-    //         break;
+        case 'skin-lightBlue':
+            colorSkin(UserIcon, skins_display['skin-lightBlue'], "empty");
+            break;
 
-    //     case 'skin-lightBlue':
-    //         colorSkin(UserIcon, skins_display['skin-lightBlue'], "empty");
-    //         break;
+        case 'skin-lightGreen':
+            colorSkin(UserIcon, skins_display['skin-lightGreen'], "empty");
+            break;
 
-    //     case 'skin-lightGreen':
-    //         colorSkin(UserIcon, skins_display['skin-lightGreen'], "empty");
-    //         break;
+        case 'skin-purple':
+            colorSkin(UserIcon, skins_display['skin-purple'], "empty");
+            break;
 
-    //     case 'skin-purple':
-    //         colorSkin(UserIcon, skins_display['skin-purple'], "empty");
-    //         break;
+        case 'skin-green':
+            colorSkin(UserIcon, skins_display['skin-green'], "empty");
+            break;
 
-    //     case 'skin-green':
-    //         colorSkin(UserIcon, skins_display['skin-green'], "empty");
-    //         break;
+        case 'skin-blue':
+            colorSkin(UserIcon, skins_display['skin-blue'], "empty");
+            break;
 
-    //     case 'skin-blue':
-    //         colorSkin(UserIcon, skins_display['skin-blue'], "empty");
-    //         break;
+        case 'skin-goldenrod':
+            colorSkin(UserIcon, skins_display['skin-goldenrod'], "empty");
+            break;
 
-    //     case 'skin-goldenrod':
-    //         colorSkin(UserIcon, skins_display['skin-goldenrod'], "empty");
-    //         break;
+        case 'skin-darkslateblue':
+            colorSkin(UserIcon, skins_display['skin-darkslateblue'], "empty");
+            break;
 
-    //     case 'skin-darkslateblue':
-    //         colorSkin(UserIcon, skins_display['skin-darkslateblue'], "empty");
-    //         break;
+        case 'skin-silver':
+            colorSkin(UserIcon, skins_display['skin-silver'], "empty");
+            break;
 
-    //     case 'skin-silver':
-    //         colorSkin(UserIcon, skins_display['skin-silver'], "empty");
-    //         break;
+        case 'skin-olive':
+            colorSkin(UserIcon, skins_display['skin-olive'], "empty");
+            break;
 
-    //     case 'skin-olive':
-    //         colorSkin(UserIcon, skins_display['skin-olive'], "empty");
-    //         break;
+        case 'skin-mediumpurple':
+            colorSkin(UserIcon, skins_display['skin-mediumpurple'], "empty");
+            break;
 
-    //     case 'skin-mediumpurple':
-    //         colorSkin(UserIcon, skins_display['skin-mediumpurple'], "empty");
-    //         break;
+        case 'skin-crimson':
+            colorSkin(UserIcon, skins_display['skin-crimson'], "empty");
+            break;
 
-    //     case 'skin-crimson':
-    //         colorSkin(UserIcon, skins_display['skin-crimson'], "empty");
-    //         break;
+        case 'skin-lightslategrey':
+            colorSkin(UserIcon, skins_display['skin-lightslategrey'], "empty");
+            break;
 
-    //     case 'skin-lightslategrey':
-    //         colorSkin(UserIcon, skins_display['skin-lightslategrey'], "empty");
-    //         break;
+        case 'skin-rosybrown':
+            colorSkin(UserIcon, skins_display['skin-rosybrown'], "empty");
+            break;
 
-    //     case 'skin-rosybrown':
-    //         colorSkin(UserIcon, skins_display['skin-rosybrown'], "empty");
-    //         break;
+        case 'skin-tomato':
+            colorSkin(UserIcon, skins_display['skin-tomato'], "empty");
+            break;
 
-    //     case 'skin-tomato':
-    //         colorSkin(UserIcon, skins_display['skin-tomato'], "empty");
-    //         break;
-
-    //     case 'chess-rook':
-    //         colorSkin("", "", skins_display['chess-rook']);
-    //         break;
-
-    //     case 'chess-queen':
-    //         colorSkin("", "", skins_display['chess-queen']);
-    //         break;
-
-    //     case 'chess-pawn':
-    //         colorSkin("", "", skins_display['chess-pawn']);
-    //         break;
-
-    //     case 'chess-knight':
-    //         colorSkin("", "", skins_display['chess-knight']);
-    //         break;
-
-    //     case 'chess-king':
-    //         colorSkin("", "", skins_display['chess-king']);
-    //         break;
-
-    //     case 'jedi':
-    //         colorSkin("", "", skins_display['jedi']);
-    //         break;
-
-    //     case 'fish':
-    //         colorSkin("", "", skins_display['fish']);
-    //         break;
-
-    //     case 'crown':
-    //         colorSkin("", "", skins_display['crown']);
-    //         break;
-
-    //     case 'spaghetti-monster-flying':
-    //         colorSkin("", "", skins_display['spaghetti-monster-flying']);
-    //         break;
-
-    //     case 'hand-fist':
-    //         colorSkin("", "", skins_display['hand-fist']);
-    //         break;
-
-    //     case 'heart':
-    //         colorSkin("", "", skins_display['heart']);
-    //         break;
-
-    //     case 'bug':
-    //         colorSkin("", "", skins_display['bug']);
-    //         break;
-
-    //     case 'handshake':
-    //         colorSkin("", "", skins_display['handshake']);
-    //         break;
-
-    //     case 'thumbs-up':
-    //         colorSkin("", "", skins_display['thumbs-up']);
-    //         break;
-
-    //     case 'face-smile':
-    //         colorSkin("", "", skins_display['face-smile']);
-    //         break;
-    // };
+        default:
+            colorSkin("", "", color);
+            break;
+    };
 };
 
 function colorSkin(UserIcon, iColor, iClass) {
@@ -387,6 +329,7 @@ function RenderSkins() {
     skinToSelect.forEach(skin => {
         // All the color skins to user skin icon
         if (skin.getAttribute('skin-type') == 'skin-color') {
+
             if (localStorage.getItem('UserIcon')) {
                 skin.textContent = localStorage.getItem('UserIcon');
             } else {
@@ -412,17 +355,22 @@ function RenderSkins() {
         // display current selected skin first
         sidelinePrice.style.display = 'none';
         skinPriceDisplay.textContent = 'This is your current skin';
+
         if (skin.getAttribute('name') == localStorage.getItem('current_used_skin')) {
+
             skin.style.borderBottom = "0.5vh solid royalblue";
             skinBigItem.style.color = localStorage.getItem('userInfoColor');
 
             if (skin.getAttribute('skin-type') == 'skin') {
+
                 let classes = localStorage.getItem('userInfoClass');
                 let classArray = classes.split(" ");
+
                 for (let i = 0; i < classArray.length; i++) {
                     skinBigItem.classList.add(classArray[i]);
                     skinBigItem.textContent = null;
                 };
+
             } else {
                 skinBigItem.textContent = localStorage.getItem('UserIcon');
             };
@@ -469,28 +417,19 @@ function RenderSkins() {
 
                 // textContent for price
                 skinPriceDisplay.textContent = null;
-                if (curr_skin.getAttribute('item-type') == 'gem') { // if the product needs to be bought with gems
-                    let i = document.createElement('i');
-                    let span = document.createElement('span');
 
-                    span.textContent = `${curr_skin.getAttribute('price')} `;
-                    i.classList = "fa-solid fa-gem";
+                let i = document.createElement('i');
+                let span = document.createElement('span');
+                let priceType = curr_skin.getAttribute('item-type');
 
-                    skinPriceDisplay.appendChild(span);
-                    skinPriceDisplay.appendChild(i);
+                span.textContent = `${curr_skin.getAttribute('price')} `;
+                priceTypeDisplay(i, priceType);
 
-                } else { // if the product needs to be bought with X items
-                    let i = document.createElement('i');
-                    let span = document.createElement('span');
-
-                    span.textContent = `${curr_skin.getAttribute('price')} `;
-                    i.classList = "fa-solid fa-x";
-
-                    skinPriceDisplay.appendChild(span);
-                    skinPriceDisplay.appendChild(i);
-                };
+                skinPriceDisplay.appendChild(span);
+                skinPriceDisplay.appendChild(i);
 
             } else {
+
                 sidelinePrice.style.display = 'none';
                 skinPriceDisplay.textContent = 'This skin is owned by you';
                 buySkinBtn.style.display = 'none';
@@ -509,6 +448,63 @@ function RenderSkins() {
     });
 };
 
+const priceTypeDisplay = (i, priceType) => {
+    let img = document.createElement("img");
+
+    switch (priceType) {
+        case 'x':
+
+            i.classList = `fa-solid fa-${priceType}`;
+            break;
+
+        case 'gem':
+
+            i.classList = `fa-solid fa-${priceType}`;
+            break;
+
+        case 'keys':
+
+            i.classList = `fa-solid fa-key`;
+            break;
+
+        case 'diamonds':
+
+            img.src = "assets/game/minerals.svg";
+            i.appendChild(img);
+            break;
+
+        case 'ore':
+
+            img.src = "assets/game/ore.svg";
+            i.appendChild(img);
+            break;
+
+        case 'asteroid':
+
+            img.src = "assets/game/asteroid.svg";
+            i.appendChild(img);
+            break;
+
+        case 'minerals':
+
+            img.src = "assets/game/crystal-bars.svg";
+            i.appendChild(img);
+            break;
+
+        case 'abandonedEye':
+
+            img.src = "assets/game/crystal-eye.svg";
+            i.appendChild(img);
+            break;
+
+        case 'encryptedWriting':
+
+            img.src = "assets/game/wax-tablet.svg";
+            i.appendChild(img);
+            break;
+    };
+};
+
 buySkinBtn.addEventListener('click', () => {
     let skinShopContent = document.querySelectorAll(".skinShop_tab_content");
 
@@ -523,60 +519,112 @@ buySkinBtn.addEventListener('click', () => {
 function tryToBuySkin() {
     // The user selected something
     if (selected_skin.price != '') {
-        // chech which currency ? gems or X
-        if (selected_skin.price_type == 'gem') {
-            let gems = parseInt(localStorage.getItem('GemsItem'));
-            // check if user has enough to buy it
-            if (gems >= parseInt(selected_skin.price)) {
-                buySkin(gems, 'GEMS');
 
-            } else {
-                // warn text + animation
-                BuySkinError.style.transition = 'none';
-                BuySkinError.style.display = 'block';
-                BuySkinError.style.opacity = '1';
+        switch (selected_skin.price_type) {
+            case 'gem':
+                checkAndBuySkin('gem', 'GemsItem');
+                break;
 
-                setTimeout(() => {
-                    BuySkinError.style.transition = 'all 2s ease';
-                    BuySkinError.style.opacity = '0';
+            case 'x':
+                checkAndBuySkin('x', 'ItemX');
 
-                }, 1000);
-            };
+                break;
 
-        } else {
-            let x = parseInt(localStorage.getItem('ItemX'));
-            // check if user has enough to buy it
-            if (x >= parseInt(selected_skin.price)) {
-                buySkin(x, 'X');
+            case 'keys':
+                checkAndBuySkin('keys', 'keys');
 
-            } else {
-                // warn text + animation
-                BuySkinError.style.transition = 'none';
-                BuySkinError.style.display = 'block';
-                BuySkinError.style.opacity = '1';
+                break;
 
-                setTimeout(() => {
-                    BuySkinError.style.transition = 'all 2s ease';
-                    BuySkinError.style.opacity = '0';
-                }, 1000);
-            };
+            case 'ore':
+                checkAndBuySkin('ore', 'ore', true);
+
+                break;
+
+            case 'diamonds':
+                checkAndBuySkin('diamonds', 'diamonds', true);
+
+                break;
+
+            case 'asteroid':
+                checkAndBuySkin('asteroid', 'asteroid', true);
+
+                break;
+
+            case 'encryptedWriting':
+                checkAndBuySkin('encryptedWriting', 'encryptedWriting', true);
+
+                break;
+
+            case 'abandonedEye':
+                checkAndBuySkin('abandonedEye', 'abandonedEye', true);
+
+                break;
+
+            case 'minerals':
+                checkAndBuySkin('minerals', 'minerals', true);
+
+                break;
         };
     };
 };
 
-// user buyed skin
-function buySkin(user_currency_amount, currency) {
-    let price = selected_skin.price;
-    let new_user_currency_amount = user_currency_amount - price;
+// chech which currency ? gems or X
+const buySkinErrorAnimation = () => {
+    BuySkinError.style.transition = 'none';
+    BuySkinError.style.display = 'block';
+    BuySkinError.style.opacity = '1';
 
-    if (currency == 'X') {
-        localStorage.setItem('ItemX', new_user_currency_amount);
-        Xicon.textContent = new_user_currency_amount;
+    setTimeout(() => {
+        BuySkinError.style.transition = 'all 2s ease';
+        BuySkinError.style.opacity = '0';
+    }, 1000);
+};
+
+const checkAndBuySkin = (currencyType, itemName, special = false) => {
+    let balance;
+    let price = selected_skin.price;
+    let new_user_currency_amount;
+
+    if (!special) {
+        balance = parseInt(localStorage.getItem(itemName));
+        new_user_currency_amount = balance - price;
+
+        if (itemName == 'x') {
+            Xicon.textContent = new_user_currency_amount;
+            localStorage.setItem('ItemX', new_user_currency_amount);
+
+        } else if (itemName == 'gem') {
+            gemsIcon.textContent = new_user_currency_amount;
+            localStorage.setItem('GemsItem', new_user_currency_amount);
+
+        } else if (itemName == 'keys') {
+            KEYicon_skinShop.textContent = new_user_currency_amount;
+            KEYicon.textContent = new_user_currency_amount;
+            localStorage.setItem('keys', new_user_currency_amount);
+        };
 
     } else {
-        localStorage.setItem('GemsItem', new_user_currency_amount);
-        gemsIcon.textContent = new_user_currency_amount;
+        let items = JSON.parse(localStorage.getItem("ExploredItems"));
+        balance = items[itemName];
+        new_user_currency_amount = balance - price;
+
+        items[itemName] = new_user_currency_amount
+
+        localStorage.setItem('ExploredItems', JSON.stringify(items));
     };
+
+
+    if (balance >= parseInt(selected_skin.price)) {
+        buySkin(balance, currencyType);
+
+    } else {
+        buySkinErrorAnimation();
+    };
+};
+
+
+// user buyed skin
+function buySkin(user_currency_amount, currency) {
 
     // for achievements
     let SkinsCopy = {...skins };

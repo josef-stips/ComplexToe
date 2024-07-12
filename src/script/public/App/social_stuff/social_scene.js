@@ -449,7 +449,9 @@ class recentPlayersHandler {
             span2.style.color = "var(--font-color)";
         };
 
-        lastTimeOnlineEl.textContent = `last time online: ${formatDate(player_data["last_connection"])}`;
+        let date = formatDate(player_data["last_connection"]).split(",");
+
+        lastTimeOnlineEl.textContent = `last time online: ${date[0] + date[1]}`;
         isInClanEl.textContent = !player_data["clan_data"] ? "loner" : "clan member";
 
         // wrapper

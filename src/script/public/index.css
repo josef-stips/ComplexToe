@@ -3819,8 +3819,7 @@ label h3 {
 }
 
 .skin-goldenrod {
-    color: var(--line-color);
-    color: var(--line-color);
+    color: goldenrod;
 }
 
 .skin-darkslateblue {
@@ -3869,6 +3868,7 @@ label h3 {
     gap: 0.2em;
     align-items: center;
     justify-content: center;
+    width: 30vw;
 }
 
 .shopGuideText {
@@ -8723,6 +8723,7 @@ p.createCostumField_yInput {
     justify-content: space-between;
     align-items: flex-end;
     font-size: 2.8vh;
+    padding-bottom: 1vh;
 }
 
 .clan_pop_up_section_1_inner_wrapper_1 {
