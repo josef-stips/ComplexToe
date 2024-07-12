@@ -7394,10 +7394,42 @@ span.LevelIconWrapper img {
     bottom: 0;
     left: 0;
     right: 0;
-    top: -500px;
+    top: -100%;
     z-index: 500;
     animation: 1.5s ease-in 0s 1 normal forwards running ElementComesFromAboveTheScreen;
     transition: opacity 0.2s ease-in-out;
+    width: 50vh;
+    height: 50vh;
+}
+
+.BigScreenSword_side1 {
+    position: absolute;
+    margin: auto auto auto auto;
+    transform: rotate(90deg);
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    right: 0;
+    z-index: 500;
+    animation: 1.5s ease-in 0s 1 normal forwards running ElementComesFromTheRightInTheScreen;
+    transition: opacity 0.2s ease-in-out;
+    width: 50vh;
+    height: 50vh;
+}
+
+.BigScreenSword_side2 {
+    position: absolute;
+    margin: auto auto auto auto;
+    transform: rotate(-90deg);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 100%;
+    z-index: 500;
+    animation: 1.5s ease-in 0s 1 normal forwards running ElementComesFromTheLeftInTheScreen;
+    transition: opacity 0.2s ease-in-out;
+    width: 50vh;
+    height: 50vh;
 }
 
 .BigScreenText {
@@ -10849,13 +10881,37 @@ ul.default_sb_list.best_players_list div:first-child {
 
 @keyframes ElementComesFromAboveTheScreen {
     0% {
-        top: -500px;
+        top: -100%;
     }
     5% {
-        top: 130px;
+        top: 10%;
     }
     100% {
-        top: 260px;
+        top: 25%;
+    }
+}
+
+@keyframes ElementComesFromTheRightInTheScreen {
+    0% {
+        left: 100%;
+    }
+    5% {
+        left: -10%;
+    }
+    100% {
+        left: -50%;
+    }
+}
+
+@keyframes ElementComesFromTheLeftInTheScreen {
+    0% {
+        right: 100%;
+    }
+    5% {
+        right: -10%;
+    }
+    100% {
+        right: -50%;
     }
 }
 

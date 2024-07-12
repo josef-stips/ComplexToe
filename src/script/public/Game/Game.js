@@ -1446,59 +1446,14 @@ const EndGameGameAnimation = (text, OnGameEnd) => {
                 play_GameAnimationSound();
             };
 
-            // create white layer
-            let layer = document.createElement("div");
-            layer.classList.add("WhiteLayer");
-
-            // create sword
-            let sword = document.createElement("img");
-            sword.classList.add("BigScreenSword");
-            sword.width = "500";
-            sword.height = "500";
-            sword.src = "assets/game/winged-sword.svg";
-
-            // create Text 
-            UltimateWinText.classList.add("BigScreenText");
-            UltimateWinText.textContent = text;
-
-            sword.addEventListener("animationend", () => {
-                sword.style.opacity = "0";
-
-                setTimeout(() => {
-                    layer.style.opacity = "0";
-                    sword.remove();
-
-                    setTimeout(() => {
-                        layer.remove();
-
-                        // add access to anything
-                        addAccessToAnything(undefined, true, true);
-
-                        resolve();
-                    }, 200);
-
-                    // display end game pop up
-                    DisplayPopUp_PopAnimation(endGameStatsPopUp, "flex", true);
-
-                    // display end game leaderboard
-                    EndGame_Leaderboard();
-
-                    starsHandler.check();
-
-                    // show play time
-                    displayPlayTime();
-                }, 200);
-            });
-
-            document.body.appendChild(sword);
-            document.body.appendChild(layer);
+            GameAnimation(text, true, "second_ani");
 
         } else resolve();
     });
 };
 
 // cool game animation
-const GameAnimation = (text, OnGameEnd) => {
+const GameAnimation = (text, OnGameEnd, aniType = "default") => {
     return new Promise((resolve) => {
         if (!document.body.querySelector(".WhiteLayer")) {
             // remove access to anything and close all pop ups
@@ -1512,50 +1467,128 @@ const GameAnimation = (text, OnGameEnd) => {
                 play_GameAnimationSound();
             };
 
-            // create white layer
-            let layer = document.createElement("div");
-            layer.classList.add("WhiteLayer");
-            // create sword
-            let sword = document.createElement("img");
-            sword.classList.add("BigScreenSword");
-            sword.width = "500";
-            sword.height = "500";
-            sword.src = "assets/game/winged-sword.svg";
-            // create Text 
-            let Text = document.createElement("h1");
-            Text.textContent = text;
+            if (aniType == "default") {
+                defaultGameAnimation(text, resolve)
+                    .then(resolve());
 
-            sword.addEventListener("animationend", () => {
-                sword.style.opacity = "0";
-
-                setTimeout(() => {
-                    sword.remove();
-                    Text.classList.add("BigScreenText2");
-                    document.body.appendChild(Text);
-
-                    Text.addEventListener("animationend", () => {
-                        setTimeout(() => {
-                            layer.style.opacity = "0";
-                            Text.style.opacity = "0";
-
-                            setTimeout(() => {
-                                Text.remove();
-                                layer.remove();
-
-                                // add access to anything
-                                addAccessToAnything(undefined, true, true);
-
-                                resolve();
-                            }, 200);
-                        }, 1250);
-                    });
-                }, 200);
-            });
-
-            document.body.appendChild(sword);
-            document.body.appendChild(layer);
+            } else {
+                secondGameAnimation(text, resolve)
+                    .then(resolve());
+            };
 
         } else resolve();
+    });
+};
+
+// second game animation
+const secondGameAnimation = (text) => {
+    return new Promise(resolve => {
+
+        // create white layer
+        let layer = document.createElement("div");
+        layer.classList.add("WhiteLayer");
+
+        // create sword
+        let sword = document.createElement("img");
+        sword.classList.add("BigScreenSword_side1");
+        sword.width = "500";
+        sword.height = "500";
+        sword.src = "assets/game/winged-sword.svg";
+
+        // create sword 2
+        let sword2 = document.createElement("img");
+        sword2.classList.add("BigScreenSword_side2");
+        sword2.width = "500";
+        sword2.height = "500";
+        sword2.src = "assets/game/winged-sword.svg";
+
+        // create Text 
+        let Text = document.createElement("h1");
+        Text.style.fontSize = "10vh";
+        Text.textContent = text;
+
+        sword.addEventListener("animationend", () => {
+            sword.style.opacity = "0";
+            sword2.style.opacity = "0";
+
+            setTimeout(() => {
+                sword.remove();
+                sword2.remove();
+                Text.classList.add("BigScreenText2");
+                document.body.appendChild(Text);
+
+                Text.addEventListener("animationend", () => {
+                    setTimeout(() => {
+                        layer.style.opacity = "0";
+                        Text.style.opacity = "0";
+
+                        setTimeout(() => {
+                            Text.remove();
+                            layer.remove();
+
+                            // add access to anything
+                            addAccessToAnything(undefined, true, true);
+
+                            resolve();
+                        }, 200);
+                    }, 1250);
+                });
+            }, 200);
+        });
+
+        document.body.appendChild(sword);
+        document.body.appendChild(sword2);
+        document.body.appendChild(layer);
+    });
+};
+
+// default game animation
+const defaultGameAnimation = (text) => {
+    return new Promise(resolve => {
+
+        // create white layer
+        let layer = document.createElement("div");
+        layer.classList.add("WhiteLayer");
+        // create sword
+        let sword = document.createElement("img");
+        sword.classList.add("BigScreenSword");
+        sword.width = "500";
+        sword.height = "500";
+        sword.src = "assets/game/winged-sword.svg";
+        // create Text 
+        let Text = document.createElement("h1");
+        Text.style.fontSize = "10vh";
+        Text.textContent = text;
+
+        sword.addEventListener("animationend", () => {
+            sword.style.opacity = "0";
+
+            setTimeout(() => {
+                sword.remove();
+                Text.classList.add("BigScreenText2");
+                document.body.appendChild(Text);
+
+                Text.addEventListener("animationend", () => {
+                    setTimeout(() => {
+                        layer.style.opacity = "0";
+                        Text.style.opacity = "0";
+
+                        setTimeout(() => {
+                            Text.remove();
+                            layer.remove();
+
+                            // add access to anything
+                            addAccessToAnything(undefined, true, true);
+
+                            resolve();
+                        }, 200);
+                    }, 1250);
+                });
+            }, 200);
+        });
+
+        document.body.appendChild(sword);
+        document.body.appendChild(layer);
     });
 };
 
