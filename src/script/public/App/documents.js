@@ -705,6 +705,7 @@ const skin_shop_next_tab = document.querySelector(".skin_shop_next_tab");
 const skinsSecondContainer = document.querySelector(".skinsSecondContainer");
 const skinsFirstContainer = document.querySelector(".skinsFirstContainer");
 const skin_shop_last_tab = document.querySelector(".skin_shop_last_tab");
+const clan_best_level = document.querySelector(".clan_best_level");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

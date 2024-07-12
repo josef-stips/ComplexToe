@@ -1254,6 +1254,7 @@ class clan_handler {
             clan_logo_el.src = `assets/game/${data["logo"]}`;
             clan_description_el.textContent = data["description"];
             clan_level_el.textContent = data["level"];
+            clan_best_level.textContent = data["best_level"];
             clan_members_title.textContent = `Members (${Object.keys(data["members"]).length})`;
             clan_id_el.textContent = data["id"];
             newClan.current_selected_clan_id = data["id"];
