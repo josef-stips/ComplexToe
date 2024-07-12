@@ -380,6 +380,8 @@ planet.addEventListener('click', async() => {
 
     playMapTheme();
 
+    sceneMode.full();
+
     starsHandler.init_stars_document(0);
 });
 
@@ -396,6 +398,8 @@ AdvantureMapBackbtn.addEventListener('click', () => {
 
         inAdvantureMode = false;
         playGameTheme();
+
+        sceneMode.default();
     });
 });
 

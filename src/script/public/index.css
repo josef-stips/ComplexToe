@@ -267,6 +267,66 @@ body[theme="grey"] .gameMode-card {
     }
 }
 
+img[src="./assets/game/BG_icon_1.svg"] {
+    width: 20vh;
+    height: 20vh;
+}
+
+img[src="assets/game/BG_icon_1.svg"] {
+    width: 20vh;
+    height: 20vh;
+}
+
+img[src="./assets/game/BG_icon_4.svg"] {
+    width: 20vh;
+    height: 20vh;
+}
+
+img[src="assets/game/BG_icon_4.svg"] {
+    width: 20vh;
+    height: 20vh;
+}
+
+.loadingScreen img[src="assets/game/BG_icon_4.svg"] {
+    width: 50vh;
+    height: 50vh;
+}
+
+.loadingScreen img[src="assets/game/BG_icon_3.svg"] {
+    width: 60vh;
+    height: 60vh;
+}
+
+img[src="assets/game/BG_icon_3.svg"] {
+    width: 20vh;
+    height: 20vh;
+}
+
+img[src="./assets/game/piercing-sword.svg"] {
+    width: 30vh;
+    height: 30vh;
+}
+
+.loadingScreen img[src="assets/game/BG_icon_2.svg"] {
+    width: 50vh;
+    height: 50vh;
+}
+
+img[src="assets/game/BG_icon_2.svg"] {
+    width: 20vh;
+    height: 20vh;
+}
+
+.loadingScreen img[src="assets/game/cave-entrance.svg"] {
+    width: 40vh;
+    height: 40vh;
+}
+
+img[src="assets/game/cave-entrance.svg"] {
+    width: 20vh;
+    height: 20vh;
+}
+
 
 /* document style */
 
@@ -4362,7 +4422,7 @@ label h3 {
 
 .AdvantureMap-main {
     width: 100%;
-    height: 80%;
+    height: 77.5%;
 }
 
 .map {
@@ -4843,7 +4903,7 @@ h1.stars_pop_up_title {
 
 .BG_LoadingScreen1 {
     bottom: -1.5% !important;
-    right: 75% !important;
+    right: 85% !important;
 }
 
 
@@ -5085,6 +5145,11 @@ h1.stars_pop_up_title {
 
 .exploreditem_wrapper {
     animation: floating-el 3s infinite ease-in-out;
+}
+
+.secret_map_btn {
+    width: 5vh;
+    height: 5vh;
 }
 
 
