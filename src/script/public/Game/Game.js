@@ -1887,3 +1887,160 @@ const ChangePlayerOnNumber = (currPlayer) => { // 1,2,3 instead of PlayerForms
         statusText.textContent = `${PlayerData[2].PlayerName}'s turn`;
     };
 };
+
+// wheel of fortune after game
+wheelOfFortuneAfterGameBtn.addEventListener("click", () => {
+    play_door_open_sound();
+    play_wheel_theme();
+
+    endGameStatsPopUp.style.display = "none";
+    DarkLayerAnimation(wheel_of_fortune_scene, GameField);
+    sceneMode.full();
+
+    wheel_of_fortune_handler.open();
+});
+
+wheel_scene_close_btn.addEventListener("click", () => {
+    playBtn_Audio_2();
+
+    DarkLayerAnimation(GameField, wheel_of_fortune_scene).then(() => {
+        setTimeout(() => {
+            sceneMode.default();
+            endGameStatsPopUp.style.display = "flex";
+            DarkLayer.style.display = "flex";
+            playBattleEndTheme();
+        }, 500);
+    });
+});
+
+wheel_bet_input.addEventListener("click", () => {
+    wheel_of_fortune_handler.bet = wheel_bet_input.value;
+});
+
+class WheelOfFortuneHandler {
+    constructor() {
+        this.bet = 0;
+
+        this.possible_slots = {
+            0: { type: "gem", amount: this.bet * 1 / 3 },
+            1: { type: "keys", amount: Math.random() * this.bet * 1 / 100 },
+            2: { type: "x", amount: Math.random() * 3 },
+            3: { type: "skin", amount: 1 },
+            4: { type: "free spin", amount: Math.random() * 2 },
+            5: { type: "explored_item", amount: undefined }
+        };
+
+        this.taken_rewards = {
+            0: null,
+            1: null,
+            2: null,
+            3: null,
+            4: null,
+            5: null
+        };
+
+        this.slots = {
+            0: null,
+            1: null,
+            2: null,
+            3: null,
+            4: null,
+            5: null
+        };
+
+        this.reward = null;
+    };
+
+    open() {
+        this.init_slots();
+    };
+
+    init_slots() {
+        [...wheel_slot_contents].map(slot => {
+
+            let rnd_index = Math.floor(Math.random() * Object.keys(this.possible_slots).length);
+            let slot_reward = this.possible_slots[rnd_index];
+
+            this.init_slot_content(slot, slot_reward);
+        });
+    };
+
+    init_slot_content(slot_content, slot_reward) {
+        slot_content.textContent = null;
+        slot_content.className = "wheel_slot_content";
+        slot_content.querySelector("img") && slot_content.querySelector("img").remove();
+
+        slot_content.setAttribute("slot_type", slot_reward.type);
+
+        switch (slot_reward.type) {
+
+            case "gem":
+
+                slot_content.classList.add("fa-solid");
+                slot_content.classList.add("fa-gem");
+                break;
+
+            case "keys":
+
+                slot_content.classList.add("fa-solid");
+                slot_content.classList.add("fa-key");
+                break;
+
+            case "x":
+
+                slot_content.classList.add("fa-solid");
+                slot_content.classList.add("fa-x");
+                break;
+
+            case "skin":
+                let possible_skins = this.check_skins();
+                let rnd_skin = possible_skins[Math.floor(Math.random() * Object.keys(possible_skins).length)];
+
+                slot_content.classList.add("fa-solid");
+                slot_content.classList.add(`fa-${rnd_skin}`);
+                break;
+
+            case "free spin":
+                let img = document.createElement("img");
+                img.src = "assets/game/sun-spear.svg";
+
+                slot_content.appendChild(img);
+                break;
+
+            case "explored_item":
+
+                slot_content = this.explored_items_reward_handle(slot_content);
+                break;
+        };
+    };
+
+    check_skins() {
+        let skins = JSON.parse(localStorage.getItem("Skins"));
+        let skin_names = Object.keys(skins);
+        let reward_skins_list = [...reward_skins].map(skin => skin.getAttribute("name"));
+        // console.log(reward_skins_list, skins, skin_names);
+
+        return reward_skins_list.filter(skin => !skins[skin]);
+    };
+
+    explored_items_reward_handle(slot_content) {
+        let items = JSON.parse(localStorage.getItem("ExploredItems"));
+
+        items = Object.keys(items).filter(item => item != "abandonedEye");
+
+        let rnd_index = Math.floor(Math.random() * Object.keys(items).length);
+        let rnd_item = items[rnd_index];
+
+        let img = document.createElement("img");
+        img = display_explored_item_after_storage_name(rnd_item, img);
+        slot_content.appendChild(img);
+
+        return slot_content;
+    };
+
+    spin() {
+
+    };
+};
+
+const wheel_of_fortune_handler = new WheelOfFortuneHandler();

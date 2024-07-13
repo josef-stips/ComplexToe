@@ -10782,6 +10782,195 @@ ul.default_sb_list.best_players_list div:first-child {
 }
 
 
+/* wheel of fortune */
+
+.wheelOfFortuneAfterGameBtn {
+    position: absolute;
+    cursor: pointer;
+    bottom: 0.4vh;
+    left: -0.6vw;
+    width: min-content;
+    height: min-content;
+    margin: auto auto 0 0;
+    transform: scaleX(-1);
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.wheelOfFortuneAfterGameBtn img {
+    width: 15vh;
+    height: 15vh;
+}
+
+.gambleArrow {
+    display: flex;
+    flex-direction: column-reverse;
+    transform: scaleX(-1);
+    position: absolute;
+    left: -11vw;
+    bottom: 2vh;
+    font-size: 2.5vh;
+}
+
+.gambleArrow img {
+    width: 10vh !important;
+    height: 10vh !important;
+}
+
+.wheel_of_fortune_scene {
+    display: none;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    inset: 0;
+    margin: auto;
+    position: relative;
+    user-select: none;
+    background: linear-gradient(65deg, var(--bg-app-color), var(--bg-app-color2));
+    align-items: center;
+    justify-content: center;
+}
+
+.wheelOfFortune_header {
+    width: 97.5%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 3vh;
+}
+
+.wheelOfFortune_main {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 3vh;
+}
+
+.wheel_main_center {
+    height: 100%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5vh;
+    z-index: 0;
+}
+
+.wheel_main_center .wheel_play_btn {
+    margin: 0;
+    padding: 1vh 3vw;
+    transition: transform 0.15s ease-in-out;
+    border-color: white !important;
+}
+
+.wheel_main_center .wheel_play_btn:hover {
+    transition: transform 0.15s ease-in-out;
+    transform: scale(1.1);
+}
+
+.wheel_main_left {
+    height: 85%;
+    width: 20%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: row;
+    gap: 1vw;
+}
+
+.wheel_main_left img {
+    height: 25vh;
+    width: 25vh;
+    animation: infinite ease-in-out 4s floating-el;
+    margin-left: 9vw;
+}
+
+.wheel_main_right {
+    height: 100%;
+    width: 20%;
+}
+
+.wheel_bet_input {
+    outline: none;
+    border: none;
+    border-bottom: 0.4vh solid white;
+    border-radius: 2%;
+    cursor: pointer;
+    font-size: 3vh;
+    width: 5vw;
+    padding: 1vh;
+    background: none;
+    color: white;
+    z-index: 10000;
+}
+
+.wheel_bet_wrapper {
+    font-size: 3vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0.5vw;
+}
+
+.wheel {
+    width: 70vh;
+    height: 70vh;
+    border-radius: 100%;
+    border: 0.8vh solid white;
+    position: relative;
+}
+
+.wheel_line {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    height: 100%;
+    transform: rotate(0deg);
+    background: white;
+    width: 0.5vw;
+}
+
+.wheel_slot_content {
+    position: absolute;
+    inset: 35% 0 0 900%;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    font-size: 5vh;
+    /* transform: translate(-50%, 50%) rotate(0deg); */
+}
+
+.wheel_slot_content img {
+    width: 7vh;
+    height: 7vh;
+}
+
+.wheel_line[wheel_line_idx="2"] {
+    transform: rotate(60deg);
+}
+
+.wheel_line[wheel_line_idx="3"] {
+    transform: rotate(120deg);
+}
+
+.wheel_line[wheel_line_idx="4"] {
+    transform: rotate(180deg);
+}
+
+.wheel_line[wheel_line_idx="5"] {
+    transform: rotate(240deg);
+}
+
+.wheel_line[wheel_line_idx="6"] {
+    transform: rotate(300deg);
+}
+
+
 /* Animations */
 
 @keyframes spinner_ani {

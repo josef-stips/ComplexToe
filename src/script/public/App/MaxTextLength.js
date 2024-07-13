@@ -503,6 +503,27 @@ UserSetPointsToWinGameInput.addEventListener('keydown', (event) => {
     };
 });
 
+wheel_bet_input.addEventListener('keydown', (event) => {
+    let len = event.target.value.trim().length;
+    let hasSelection = false;
+    let selection = window.getSelection();
+    let isSpecial = utils.isSpecial(event);
+    let isNavigational = utils.isNavigational(event);
+
+    if (selection) {
+        hasSelection = !!selection.toString();
+    };
+
+    if (isSpecial || isNavigational) {
+        return true;
+    };
+
+    if (len >= 5 && !hasSelection) {
+        event.preventDefault();
+        return false;
+    };
+});
+
 Player1_NameInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
     const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
@@ -561,6 +582,16 @@ Your_IconInput.addEventListener("input", function(event) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
         event.target.value = validInput;
     }
+});
+
+wheel_bet_input.addEventListener("input", function(event) {
+    const inputValue = event.target.value;
+    const validInput = inputValue.replace(/[^0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+
+    if (inputValue !== validInput) {
+        // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
+        event.target.value = validInput;
+    };
 });
 
 UserGivesData_NameInput.addEventListener("input", function(event) {

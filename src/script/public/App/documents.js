@@ -24,6 +24,17 @@ let ShopTheme = document.querySelector("#ShopTheme");
 let unlock_sound1 = document.querySelector("#unlock_sound1");
 let collect1 = document.querySelector("#collect1");
 
+const door_open_sound = document.querySelector("#door_open_sound");
+const wheel_of_fortune_scene = document.querySelector(".wheel_of_fortune_scene");
+const wheel_scene_close_btn = document.querySelector(".wheel_scene_close_btn");
+const wheel = document.querySelector(".wheel");
+const wheel_of_fortune_bg = document.querySelector("#wheel_of_fortune_bg");
+const wheel_bet_input = document.querySelector(".wheel_bet_input");
+const wheel_slot_contents = document.querySelectorAll(".wheel_slot_content");
+
+// all skins the user only can get through gambling or achievements
+const reward_skins = document.querySelectorAll(`[skin-type="skin"][price="none"]`);
+
 let cellGrid = document.querySelector('#cellGrid');
 
 // general elements and buttons
@@ -706,6 +717,7 @@ const skinsSecondContainer = document.querySelector(".skinsSecondContainer");
 const skinsFirstContainer = document.querySelector(".skinsFirstContainer");
 const skin_shop_last_tab = document.querySelector(".skin_shop_last_tab");
 const clan_best_level = document.querySelector(".clan_best_level");
+const wheelOfFortuneAfterGameBtn = document.querySelector(".wheelOfFortuneAfterGameBtn");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

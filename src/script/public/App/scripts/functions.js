@@ -354,3 +354,36 @@ function returnTimeOfDate(date) {
 const sortArrayObjectsAfterOneCriteria = (obj, criteria) => {
     return obj
 };
+
+const display_explored_item_after_storage_name = (name, element) => {
+    switch (name) {
+        case "ore":
+            element.src = "assets/game/ore.svg";
+            return element;
+
+        case "minerals":
+            element.src = "assets/game/crystal-bars.svg";
+            return element;
+
+
+        case "diamonds":
+            element.src = "assets/game/minerals.svg";
+            return element;
+
+
+        case "asteroid":
+            element.src = "assets/game/asteroid.svg";
+            return element;
+
+
+        case "encryptedWriting":
+            element.src = "assets/game/wax-tablet.svg";
+            return element;
+
+
+        case "abandonedEye":
+            element.src = "assets/game/crystal-eye.svg";
+            return element;
+
+    };
+};

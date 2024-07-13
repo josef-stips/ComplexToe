@@ -45,6 +45,9 @@
     <audio id="eye_attack_soundeffect" src="assets/eye_attack.mp3"></audio>
     <audio src="assets/unlock_sound1.mp3" id="unlock_sound1"></audio>
     <audio src="assets/collect1.mp3" id="collect1"></audio>
+    <audio src="assets/door_open.mp3" id="door_open_sound"></audio>
+    <audio src="assets/Maps/wheel_of_fortune_bg.mp3" id="wheel_of_fortune_bg"></audio>
+
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -331,6 +334,59 @@
                     </div>
 
                 </div>
+            </div>
+
+            <!-- wheel of fortune scene -->
+            <div class="wheel_of_fortune_scene">
+
+                <div class="wheelOfFortune_header">
+                    <i class="fa-solid fa-arrow-left wheel_scene_close_btn default_btn"></i>
+                </div>
+
+                <div class="wheelOfFortune_main">
+
+                    <div class="wheel_main_left">
+                        <img src="assets/game/beard.svg" draggable="false">
+
+                        <div style="display: flex;flex-direction:column;">
+                            <p>What's your bet?</p>
+
+                            <div class="wheel_bet_wrapper">
+                                <input type="text" class="wheel_bet_input">
+                                <i class="fa-solid fa-gem"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wheel_main_center">
+                        <div class="wheel">
+                            <div class="wheel_line" wheel_line_idx="1">
+                                <div class="wheel_slot_content">lel</div>
+                            </div>
+                            <div class="wheel_line" wheel_line_idx="2">
+                                <div class="wheel_slot_content">lel</div>
+                            </div>
+                            <div class="wheel_line" wheel_line_idx="3">
+                                <div class="wheel_slot_content">lel</div>
+                            </div>
+                            <div class="wheel_line" wheel_line_idx="4">
+                                <div class="wheel_slot_content">lel</div>
+                            </div>
+                            <div class="wheel_line" wheel_line_idx="5">
+                                <div class="wheel_slot_content">lel</div>
+                            </div>
+                            <div class="wheel_line" wheel_line_idx="6">
+                                <div class="wheel_slot_content">lel</div>
+                            </div>
+                        </div>
+
+                        <div class="wheel_play_btn CreateLevelSceneButton">Spin</div>
+                    </div>
+
+                    <div class="wheel_main_right"></div>
+
+                </div>
+
             </div>
 
             <!-- level scene -->
@@ -7644,6 +7700,15 @@
             </div>
         </div>
 
+        <div class="wheelOfFortuneAfterGameBtn">
+            <img draggable="false" src="assets/game/wooden-door.svg">
+
+            <div class="gambleArrow">
+                <img draggable="false" src="assets/game/sideswipe.svg">
+                <p>Want to gamble?</p>
+            </div>
+        </div>
+
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
         <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
     </div>
@@ -7917,7 +7982,7 @@
                 <div class="clan_pop_up_header_section_2">
                     <ul>
                         <li>
-                            level
+                            Level
                             <p class="clan_level">39</p>
                         </li>
 

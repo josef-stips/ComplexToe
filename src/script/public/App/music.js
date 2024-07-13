@@ -174,6 +174,11 @@ function playShopTheme() {
     }, 500);
 };
 
+function play_wheel_theme() {
+    PauseMusic();
+    CreateMusicBars(wheel_of_fortune_bg);
+};
+
 function unlockSound1() {
     unlock_sound1.pause();
     unlock_sound1.currentTime = 0;
@@ -214,4 +219,11 @@ function play_GameAnimationSound() {
     sound1.currentTime = 0;
     sound1.volume = sfxVolume;
     sound1.play();
+};
+
+function play_door_open_sound() {
+    door_open_sound.pause();
+    door_open_sound.currentTime = 0;
+    door_open_sound.volume = sfxVolume;
+    door_open_sound.play();
 };
