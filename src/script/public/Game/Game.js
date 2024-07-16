@@ -1913,8 +1913,19 @@ wheel_scene_close_btn.addEventListener("click", () => {
     });
 });
 
-wheel_bet_input.addEventListener("click", () => {
-    wheel_of_fortune_handler.bet = wheel_bet_input.value;
+wheel_bet_input.addEventListener("input", () => {
+    wheel_of_fortune_handler.bet = Number(wheel_bet_input.value);
+});
+
+wheel_play_btn.addEventListener("click", () => {
+    if (wheel_of_fortune_handler.bet != 0) {
+        playBtn_Audio_2();
+        wheel_of_fortune_handler.spin();
+
+    } else {
+        AlertText.textContent = "You have to input a bet";
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    };
 });
 
 class WheelOfFortuneHandler {
@@ -1949,6 +1960,24 @@ class WheelOfFortuneHandler {
         };
 
         this.reward = null;
+
+        // from local storage
+        this.storage_gems = Number(localStorage.getItem("GemsItem"));
+        this.storage_x = Number(localStorage.getItem("ItemX"));
+        this.storage_keys = Number(localStorage.getItem("keys"));
+    };
+
+    init_scene() {
+        wheel_right_wrapper_header.appendChild(CurrencySkinShopDisplay.cloneNode(true));
+        wheel_right_wrapper_header.querySelector(".exploredItems_bookBtn").addEventListener("click", () => {
+            DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", false);
+            exploredItems_preview(0);
+        });
+
+        wheel_right_wrapper_header.querySelector(".KEYicon_skinShop").textContent = this.storage_keys;
+        wheel_right_wrapper_header.querySelector(".xIcon_skinShop").textContent = this.storage_x;
+        wheel_right_wrapper_header.querySelector(".gemsIcon_skinShop").textContent = this.storage_gems;
+        // wheel_right_wrapper_header.querySelector(".CurrencySkinShopDisplay").appendChild(storeIcon.cloneNode(true));
     };
 
     open() {
@@ -1956,18 +1985,19 @@ class WheelOfFortuneHandler {
     };
 
     init_slots() {
-        [...wheel_slot_contents].map(slot => {
+        [...wheel_slot_contents].map((slot, i) => {
 
             let rnd_index = Math.floor(Math.random() * Object.keys(this.possible_slots).length);
             let slot_reward = this.possible_slots[rnd_index];
 
-            this.init_slot_content(slot, slot_reward);
+            this.init_slot_content(slot, slot_reward, i);
         });
     };
 
-    init_slot_content(slot_content, slot_reward) {
+    init_slot_content(slot_content, slot_reward, slot_index) {
         slot_content.textContent = null;
         slot_content.className = "wheel_slot_content";
+        slot_content.style.opacity = "1";
         slot_content.querySelector("img") && slot_content.querySelector("img").remove();
 
         slot_content.setAttribute("slot_type", slot_reward.type);
@@ -1978,18 +2008,24 @@ class WheelOfFortuneHandler {
 
                 slot_content.classList.add("fa-solid");
                 slot_content.classList.add("fa-gem");
+
+                wheel_left_wrapper_text_els[slot_index].textContent = "... 10+ gems";
                 break;
 
             case "keys":
 
                 slot_content.classList.add("fa-solid");
                 slot_content.classList.add("fa-key");
+
+                wheel_left_wrapper_text_els[slot_index].textContent = "... 1+ gems";
                 break;
 
             case "x":
 
                 slot_content.classList.add("fa-solid");
                 slot_content.classList.add("fa-x");
+
+                wheel_left_wrapper_text_els[slot_index].textContent = "... 1+ X";
                 break;
 
             case "skin":
@@ -1998,6 +2034,8 @@ class WheelOfFortuneHandler {
 
                 slot_content.classList.add("fa-solid");
                 slot_content.classList.add(`fa-${rnd_skin}`);
+
+                wheel_left_wrapper_text_els[slot_index].innerHTML = `... the <i class="fas fa-${rnd_skin}"></i> skin`;
                 break;
 
             case "free spin":
@@ -2005,11 +2043,12 @@ class WheelOfFortuneHandler {
                 img.src = "assets/game/sun-spear.svg";
 
                 slot_content.appendChild(img);
+                wheel_left_wrapper_text_els[slot_index].innerHTML = `... <img src="assets/game/sun-spear.svg"> free spins`;
                 break;
 
             case "explored_item":
 
-                slot_content = this.explored_items_reward_handle(slot_content);
+                slot_content = this.explored_items_reward_handle(slot_content, slot_index);
                 break;
         };
     };
@@ -2023,7 +2062,7 @@ class WheelOfFortuneHandler {
         return reward_skins_list.filter(skin => !skins[skin]);
     };
 
-    explored_items_reward_handle(slot_content) {
+    explored_items_reward_handle(slot_content, slot_index) {
         let items = JSON.parse(localStorage.getItem("ExploredItems"));
 
         items = Object.keys(items).filter(item => item != "abandonedEye");
@@ -2034,13 +2073,262 @@ class WheelOfFortuneHandler {
         let img = document.createElement("img");
         img = display_explored_item_after_storage_name(rnd_item, img);
         slot_content.appendChild(img);
+        slot_content.setAttribute("explored_item_type_for_reward", rnd_item);
+
+        wheel_left_wrapper_text_els[slot_index].textContent = `...`;
+        wheel_left_wrapper_text_els[slot_index].appendChild(img.cloneNode(true));
+        // wheel_left_wrapper_text_els[slot_index].textContent += `${rnd_item}`;
 
         return slot_content;
     };
 
-    spin() {
+    async spin() {
+        const can_spin = this.can_spin();
 
+        if (!can_spin) {
+            AlertText.textContent = "Your bet is too high";
+            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+            return;
+        };
+
+        wheel_play_btn.disabled = true;
+        wheel_play_btn.blur();
+        wheel_play_btn.classList.add('disabled');
+
+        await this.update_gems();
+        await this.spin_animation();
+        const reward_el = await this.find_reward();
+        await this.reward_animation(reward_el);
+        await this.reward_fly(reward_el);
+        await this.confirm_reward(reward_el);
+        await this.wheel_reset();
+
+        wheel_play_btn.disabled = false;
+        wheel_play_btn.focus();
+        wheel_play_btn.classList.remove('disabled');
+    };
+
+    can_spin() {
+        return (this.bet <= this.storage_gems) ? true : false;
+    };
+
+    update_gems() {
+        this.storage_gems = this.storage_gems - this.bet;
+        localStorage.setItem("gemItem", this.storage_gems);
+
+        wheel_right_wrapper_header.querySelector(".gemsIcon_skinShop").textContent = this.storage_gems;
+    };
+
+    async spin_animation() {
+        return new Promise(resolve => {
+            const rnd_spin_time = Math.random() * 4 + 3;
+            let clack_interval = null;
+
+            let totalRotation = 0;
+            const startTime = performance.now();
+            const duration = rnd_spin_time * 1000;
+            const randomOffset = Math.random() * 360;
+
+            function animate(time) {
+                const elapsed = time - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easedProgress = easeOutSine(progress);
+                const rotation = easedProgress * 360 * 5;
+
+                const currentRotation = totalRotation + rotation + randomOffset;
+                wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+
+                } else {
+                    clearInterval(clack_interval);
+                    clack_interval = null;
+                    totalRotation += rotation;
+                    resolve();
+                };
+            };
+
+            clack_interval = setInterval(() => {
+                play_clack_sound();
+            }, 100);
+
+            requestAnimationFrame(animate);
+        });
+    };
+
+    find_reward() {
+        let array = [...wheel_slot_contents].filter((element) => {
+            const aRect = element.getBoundingClientRect();
+            const bRect = wheel_stick.getBoundingClientRect();
+
+            return !(((aRect.top + aRect.height) < (bRect.top)) ||
+                (aRect.top > (bRect.top + bRect.height)) ||
+                ((aRect.left + aRect.width) < bRect.left) ||
+                (aRect.left > (bRect.left + bRect.width)));
+        });
+
+        if (array.length > 1) {
+            const bRect = wheel_stick.getBoundingClientRect();
+            array.sort((a, b) => {
+                const aRect = a.getBoundingClientRect();
+                const bRectA = b.getBoundingClientRect();
+                return getDistance(aRect, bRect) - getDistance(bRectA, bRect);
+            });
+        };
+
+        console.log(array);
+        return array[0];
+    };
+
+    reward_animation(reward_item) {
+        return new Promise(resolve => {
+            console.log(reward_item);
+
+            reward_item.style.animation = `reward_found 1s linear`;
+            reward_item.parentElement.style.animation = `reward_found_parent_ani 1s linear`;
+            reward_item.addEventListener("animationend", () => {
+                reward_item.style.animation = `unset`;
+                reward_item.parentElement.style.animation = `unset`;
+                resolve();
+            });
+        });
+    };
+
+    reward_fly(el) {
+        return new Promise(resolve => {
+            let destination;
+
+            switch (el.getAttribute("slot_type")) {
+
+                case "explored_item":
+                    destination = wheel_right_wrapper_header.querySelector(".exploredItems_bookBtn").getBoundingClientRect();
+                    break;
+
+                case "skin":
+                    destination = headerUserBtn.getBoundingClientRect();
+                    break;
+
+                case "x":
+                    destination = wheel_right_wrapper_header.querySelector(".XBtn").getBoundingClientRect();
+                    break;
+
+                case "gem":
+                    destination = wheel_right_wrapper_header.querySelector(".Gem_Wrapper").getBoundingClientRect();
+                    break;
+
+                case "keys":
+                    destination = wheel_right_wrapper_header.querySelector(".KEYICON_Wrapper").getBoundingClientRect();
+                    break;
+
+                case "free spin":
+                    destination = headerUserBtn.getBoundingClientRect();
+                    break;
+            };
+
+            el.classList.add("floating_reward");
+            document.body.appendChild(el.cloneNode(true));
+            let bodyEl = document.body.querySelectorAll(".floating_reward")[1];
+            let elRect = el.getBoundingClientRect();
+
+            bodyEl.classList.remove("wheel_slot_content");
+            bodyEl.style.zIndex = `1`;
+            bodyEl.style.position = `absolute`;
+            bodyEl.style.top = `calc(${elRect.top}px + 12vh)`;
+            bodyEl.style.right = `${elRect.right}px`;
+            bodyEl.style.bottom = `${elRect.bottom}px`;
+            bodyEl.style.left = `${elRect.left}px`;
+            el.style.opacity = "0";
+
+            setTimeout(() => {
+                bodyEl.classList.add("body_el1");
+
+                bodyEl.style.top = `${destination.top}px`;
+                bodyEl.style.right = `${destination.right}px`;
+                bodyEl.style.bottom = `${destination.bottom}px`;
+                bodyEl.style.left = `${destination.left}px`;
+
+                setTimeout(() => {
+                    bodyEl.remove();
+                    resolve();
+                }, 1000);
+            }, 200);
+        });
+    };
+
+    wheel_reset() {
+        return new Promise(resolve => {
+            wheel.style.opacity = "0";
+
+            setTimeout(() => {
+                this.init_slots();
+                wheel.style.opacity = "1";
+                resolve();
+            }, 1000);
+        });
+    };
+
+    confirm_reward(reward_el) {
+        let type = reward_el.getAttribute("slot_type")
+
+        switch (type) {
+
+            case "explored_item":
+                let explored_item_type = reward_el.getAttribute("explored_item_type_for_reward");
+                this.confirm_reward_explored_item(explored_item_type);
+                break;
+
+            case "skin":
+
+                break;
+
+            case "x":
+
+                break;
+
+            case "gem":
+
+                break;
+
+            case "keys":
+
+                break;
+
+            case "free spin":
+
+                break;
+        };
+    };
+
+    confirm_reward_explored_item(type) {
+        switch (type) {
+
+            case "asteroid":
+
+                break;
+
+            case "minerals":
+
+                break;
+
+            case "ore":
+
+                break;
+
+            case "diamonds":
+
+                break;
+
+            case "encryptedWriting":
+
+                break;
+
+            case "abandonedEye":
+
+                break;
+        };
     };
 };
 
 const wheel_of_fortune_handler = new WheelOfFortuneHandler();
+wheel_of_fortune_handler.init_scene();

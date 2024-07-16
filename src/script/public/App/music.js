@@ -227,3 +227,10 @@ function play_door_open_sound() {
     door_open_sound.volume = sfxVolume;
     door_open_sound.play();
 };
+
+function play_clack_sound() {
+    clack_sound.pause();
+    clack_sound.currentTime = 0;
+    clack_sound.volume = sfxVolume;
+    clack_sound.play();
+};

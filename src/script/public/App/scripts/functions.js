@@ -387,3 +387,18 @@ const display_explored_item_after_storage_name = (name, element) => {
 
     };
 };
+
+function getCenter(rect) {
+    return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+    };
+};
+
+function getDistance(rect1, rect2) {
+    const center1 = getCenter(rect1);
+    const center2 = getCenter(rect2);
+    const dx = center1.x - center2.x;
+    const dy = center1.y - center2.y;
+    return Math.sqrt(dx * dx + dy * dy);
+};

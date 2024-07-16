@@ -23,6 +23,7 @@ let battleAudio = document.querySelector("#battleAudio");
 let ShopTheme = document.querySelector("#ShopTheme");
 let unlock_sound1 = document.querySelector("#unlock_sound1");
 let collect1 = document.querySelector("#collect1");
+const clack_sound = document.querySelector("#clack_sound");
 
 const door_open_sound = document.querySelector("#door_open_sound");
 const wheel_of_fortune_scene = document.querySelector(".wheel_of_fortune_scene");
@@ -31,6 +32,10 @@ const wheel = document.querySelector(".wheel");
 const wheel_of_fortune_bg = document.querySelector("#wheel_of_fortune_bg");
 const wheel_bet_input = document.querySelector(".wheel_bet_input");
 const wheel_slot_contents = document.querySelectorAll(".wheel_slot_content");
+const wheel_stick = document.querySelector(".wheel_stick");
+const wheel_play_btn = document.querySelector(".wheel_play_btn");
+const wheel_right_wrapper_header = document.querySelector(".wheel_right_wrapper_header");
+const wheel_lines = document.querySelectorAll(".wheel_line");
 
 // all skins the user only can get through gambling or achievements
 const reward_skins = document.querySelectorAll(`[skin-type="skin"][price="none"]`);
@@ -93,6 +98,8 @@ let random_loadingText = document.querySelector('.random_loadingText');
 let lobbyFooterText = document.querySelector('.lobby-footer-text');
 let lobbyFooter = document.querySelector(".lobby-footer");
 let HeaderWrapper = document.querySelector(".header-body");
+let wheel_left_wrapper_details = document.querySelector(".wheel_left_wrapper_details");
+let wheel_left_wrapper_text_els = document.querySelectorAll(".wheel_left_wrapper_details p");
 
 let userInfoName = document.querySelector('.userInfo-Name');
 let userInfoIcon = document.querySelector('.userInfo-Icon');

@@ -1,7 +1,5 @@
 // skin logic
 storeIcon.addEventListener('click', () => {
-    DarkLayer.style.display = 'block';
-
     // set back to default
     if (localStorage.getItem('UserIcon')) {
         skinBigItem.textContent = localStorage.getItem('UserIcon');
@@ -15,7 +13,7 @@ storeIcon.addEventListener('click', () => {
         ShopGuideTextInterval();
 
     } else {
-        alertPopUp.style.display = 'flex';
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         AlertText.textContent = "Create an user account first";
     };
 });
@@ -564,6 +562,10 @@ function tryToBuySkin() {
                 checkAndBuySkin('minerals', 'minerals', true);
 
                 break;
+
+            case 'none':
+                AlertText.textContent = "You can get this skin through achievements or the wheel of fortune.";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     };
 };
@@ -584,6 +586,22 @@ const checkAndBuySkin = (currencyType, itemName, special = false) => {
     let balance;
     let price = selected_skin.price;
     let new_user_currency_amount;
+
+    if (!special) {
+        balance = parseInt(localStorage.getItem(itemName));
+
+    } else {
+        let items = JSON.parse(localStorage.getItem("ExploredItems"));
+        balance = items[itemName];
+    };
+
+    if (balance >= parseInt(selected_skin.price)) {
+        buySkin(balance, currencyType);
+
+    } else {
+        buySkinErrorAnimation();
+        return;
+    };
 
     if (!special) {
         balance = parseInt(localStorage.getItem(itemName));
@@ -612,16 +630,7 @@ const checkAndBuySkin = (currencyType, itemName, special = false) => {
 
         localStorage.setItem('ExploredItems', JSON.stringify(items));
     };
-
-
-    if (balance >= parseInt(selected_skin.price)) {
-        buySkin(balance, currencyType);
-
-    } else {
-        buySkinErrorAnimation();
-    };
 };
-
 
 // user buyed skin
 function buySkin(user_currency_amount, currency) {
