@@ -693,8 +693,9 @@ p#name-player1 {
     position: absolute;
     color: red;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 1.7vh;
     top: 30%;
+    left: 8%;
     animation: 2s ease-in-out 0s infinite normal none running alertingWarnText;
 }
 
@@ -1767,11 +1768,19 @@ ol.UserInfo-list img {
     display: flex;
     flex-direction: column;
     width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 2vh;
 }
 
 .general-settings ul {
-    text-align: start;
-    margin: 0.5vh 0 0 0.5vh;
+    text-align: center;
+    display: flex;
+    gap: 1vw;
+    width: 100%;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .general-settings ul li {
@@ -1784,11 +1793,14 @@ ol.UserInfo-list img {
 
 .general-settings h2 {
     font-size: 3vh;
-    margin-bottom: 1vh;
 }
 
 .general-settings ul li {
     font-size: 3vh;
+    display: flex;
+    gap: 1vw;
+    align-items: center;
+    justify-content: center;
 }
 
 li.officialWinPatternsOpenBtn {
@@ -1796,6 +1808,7 @@ li.officialWinPatternsOpenBtn {
 }
 
 .general-settings h2 {
+    margin: 5vh 0 0 0;
     border-bottom: 0;
 }
 
@@ -1842,7 +1855,7 @@ li.officialWinPatternsOpenBtn {
 
 .sett-BGmusic-slider {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
     align-items: start;
     gap: 1.5vh;
@@ -1891,6 +1904,14 @@ li.officialWinPatternsOpenBtn {
     transition: 0.1s ease-in-out;
     border: 2px solid var(--line-color);
     border: 2px solid var(--line-color);
+}
+
+.sett_gameStuff_list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1vw;
 }
 
 
@@ -11141,6 +11162,93 @@ ul.default_sb_list.best_players_list div:first-child {
     position: absolute;
     inset: 90% 6% 0 0;
     font-size: 10vw;
+}
+
+
+/* game log pop up */
+
+.gameLog_popUp {
+    width: 90vw;
+    height: 90vh;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: none;
+    flex-direction: column;
+    z-index: 10005;
+    align-items: center;
+    user-select: none;
+    background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
+    border: 0.7vh solid var(--line-color);
+    border-radius: 4vh;
+    color: var(--font-color);
+    justify-content: space-between;
+    font-size: 3vh;
+}
+
+.gameLog_header {
+    width: 97.5%;
+    height: 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gameLog_header img {
+    width: 3.5vh;
+    height: 3.5vh;
+}
+
+.gameLog_main {
+    width: 100%;
+    height: 92.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.gameLog_list {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    border-bottom-left-radius: 4vh;
+    border-bottom-right-radius: 4vh;
+}
+
+.gameLog_entry {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    border-top: 0.4vh solid white;
+    border-bottom: 0.4vh solid white;
+}
+
+.gameLog_entry_wrapper1 {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 0 0 1.5vw;
+    font-size: 5vh;
+}
+
+.gameLog_entry_wrapper2 {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.gameLog_search_input {
+    margin: 2vw;
+    width: 50vw;
+    height: 10vh;
 }
 
 

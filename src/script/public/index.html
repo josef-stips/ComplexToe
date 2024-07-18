@@ -99,6 +99,7 @@
     <script defer src="App/social_stuff/clan.js"></script>
     <script defer src="App/social_stuff/social_scene.js"></script>
     <script defer src="App/social_stuff/online_level_overview.js"></script>
+    <script defer src="App/GameLog.js"></script>
 </head>
 
 <body>
@@ -3665,6 +3666,7 @@
 
     <!-- Settings pop up -->
     <div class="settings-window">
+
         <div class="settings-header">
             <div class="lol"></div>
             <h1>Settings</h1>
@@ -3672,10 +3674,11 @@
         </div>
 
         <div class="settings-main">
-            <div class="general-settings">
-                <ul>
-                    <h2>General settings</h2>
 
+            <div class="general-settings">
+                <h2>General settings</h2>
+
+                <ul>
                     <li style="display: none;"><i id="sett-roundEdges" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-RoundEdges"></i> round edges</li>
                     <li style="display: none;"><i id="sett-darkMode" marked="true" class="fa-regular fa-check-square checkBox" sett="sett-DarkMode"></i> dark mode</li>
                     <li><i id="sett-secret" marked="false" class="fa-regular fa-square checkBox" sett="sett-Secret"></i> secret</li>
@@ -3688,25 +3691,33 @@
 
                     <!-- <hr align="left" width="70%"> -->
                     <br>
+
                     <li>
                         <div class="sett-BGmusic-slider">
-                            background music
-                            <input type="range" name="music volume" id="bgMusic_slider" value="0" step="0.0005"> sfx
-                            <input type="range" name="music volume" id="sfx_slider" value="0" step="0.0005">
+                            <div>
+                                background music
+                                <input type="range" name="music volume" id="bgMusic_slider" value="0" step="0.0005">
+                            </div>
+                            <div>sfx
+                                <input type="range" name="music volume" id="sfx_slider" value="0" step="0.0005"></div>
                         </div>
                     </li>
-
                     <li style="display: none;"><i id="sett-showPing" marked="false" class="fa-regular fa-square checkBox" sett="sett-ShowPing"></i> Show ping</li>
                 </ul>
 
-                <ul>
-                    <h2 style="margin-top: 0.5em;">Game stuff</h2>
+                <h2>Game stuff</h2>
+                <ul class="sett_gameStuff_list">
+                    <li>
+                        <button class="settingsButton gameLog_btn">Game Log</button>
+                    </li>
                     <li class="officialWinPatternsOpenBtn">Official Win Patterns</li>
+                    <li>
+                        <button class="Settings_CreditsBtn settingsButton">Credits</button>
+                    </li>
                 </ul>
 
                 <div class="ImportantBtnsSection">
                     <button style="display: none;" class="Settings_MailBtn settingsButton">Mail</button>
-                    <button class="Settings_CreditsBtn settingsButton">Credits</button>
                 </div>
             </div>
 
@@ -3721,7 +3732,7 @@
         </div>
 
         <div class="settings-footer">
-            &copy; 2023-2024 by Josef Stips. All Rights Reserved. <br> This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+            &copy; 2023-2024 by Josef Stips. All Rights Reserved. | Some icons and all skin icons are from fontawesome.com
         </div>
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;left: 0;" width="300" height="300">
@@ -8332,6 +8343,38 @@
         <div class="reward_animator_item_wrapper"></div>
         <div class="reward_animator_item_amount"></div>
         <img class="reward_animator_bg_shine" src="assets/game/big-gear.svg">
+    </div>
+
+    <!-- game log pop up -->
+    <div class="gameLog_popUp">
+        <div class="gameLog_header">
+            <img src="assets/game/tied-scroll.svg">
+            <i class="fas fa-x gameLog_closeBtn default_btn"></i>
+        </div>
+
+        <div class="gameLog_main">
+            <h2>Your last 1000 games:</h2>
+
+            <input class="default_sb_input gameLog_search_input" placeholder="search with entry ID">
+
+            <ul class="gameLog_list">
+
+                <li class="gameLog_entry">
+                    <div class="gameLog_entry_bg">
+
+                    </div>
+
+                    <div class="gameLog_entry_wrapper1">
+                        Match vs Bastian
+                    </div>
+
+                    <div class="gameLog_entry_wrapper2">
+
+                    </div>
+                </li>
+
+            </ul>
+        </div>
     </div>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;display:none;" width="450" height="450">

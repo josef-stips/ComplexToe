@@ -704,6 +704,11 @@ let clan_content_request_accepted_clan_name = document.querySelector(".clan_cont
 let reward_pick_up = document.querySelector(".reward_pick_up");
 let spinner = document.querySelector(".spinner");
 let reward_animator_item_amount = document.querySelector(".reward_animator_item_amount");
+let gameLog_btn = document.querySelector(".gameLog_btn");
+let gameLog_main = document.querySelector(".gameLog_main");
+let gameLog_closeBtn = document.querySelector(".gameLog_closeBtn");
+let gameLog_popUp = document.querySelector(".gameLog_popUp");
+let gameLog_search_input = document.querySelector(".gameLog_search_input");
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

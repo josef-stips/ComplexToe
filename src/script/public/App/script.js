@@ -1194,11 +1194,13 @@ Settings_MailBtn.addEventListener('click', () => {
 });
 
 Settings_CreditsBtn.addEventListener('click', () => {
+    settingsWindow.style.display = "none";
     DisplayPopUp_PopAnimation(Credits, "flex");
 });
 
 Credits_closeBtn.addEventListener("click", () => {
     Credits.style.display = "none";
+    DisplayPopUp_PopAnimation(settingsWindow, "flex");
 });
 
 // close buttons
@@ -1894,7 +1896,7 @@ officialWinPatternsOpenBtn.forEach(btn => {
 
 OfficialWinPatterns_closeBtn.addEventListener("click", () => {
     OfficialWinPatternsPopUp.style.display = "none";
-    DarkLayer.style.display = "none";
+    DisplayPopUp_PopAnimation(settingsWindow, "flex", true);
 });
 
 // flow field in game field cards scene
