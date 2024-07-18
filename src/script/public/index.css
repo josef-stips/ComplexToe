@@ -10826,7 +10826,7 @@ ul.default_sb_list.best_players_list div:first-child {
     margin: auto;
     position: relative;
     user-select: none;
-    background: linear-gradient(65deg, var(--bg-app-color), var(--bg-app-color2));
+    background: linear-gradient(180deg, #171023, #4969c712);
     align-items: center;
     justify-content: center;
 }
@@ -10996,6 +10996,12 @@ ul.default_sb_list.best_players_list div:first-child {
     text-align: justify;
 }
 
+.wheel_left_wrapper_details p {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3vw;
+}
+
 .wheel_left_wrapper_details p img {
     width: 3vh;
     height: 3vh;
@@ -11066,8 +11072,119 @@ ul.default_sb_list.best_players_list div:first-child {
     height: 3vw;
 }
 
+.wheel_free_spin_wrapper {
+    width: max-content;
+    height: max-content;
+    position: absolute;
+    display: flex;
+    gap: 0.5vw;
+    font-size: 2.5vw;
+    cursor: pointer;
+    top: 10vh;
+    right: 5vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.wheel_free_spin_wrapper img {
+    width: 4vw;
+    height: 5vh;
+}
+
+
+/* reward animator wrapper */
+
+.reward_animator_wrapper {
+    display: none;
+    position: absolute;
+    width: 50vh;
+    height: 50vh;
+    inset: 0;
+    margin: auto;
+    z-index: 1;
+    color: white;
+    font-size: 20vw;
+}
+
+.reward_animator_bg_shine {
+    opacity: 0.5;
+    transform: scale(2.1);
+}
+
+.reward_animator_wrapper[active_ani="true"] .reward_animator_bg_shine {
+    animation: big_reward_in_sceen 1.5s forwards linear;
+}
+
+.reward_animator_wrapper[active_ani="true"] .reward_animator_item_amount {
+    animation: big_reward_in_sceen_item_ani 1.5s forwards linear;
+}
+
+.reward_animator_wrapper[active_ani="true"] .reward_animator_item_wrapper {
+    animation: big_reward_in_sceen_item_ani 1.5s forwards linear;
+}
+
+.reward_animator_wrapper img {
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+}
+
+.reward_animator_item_wrapper {
+    position: absolute;
+    inset: 10% 0 0 0;
+    margin: auto;
+}
+
+.reward_animator_item_amount {
+    position: absolute;
+    inset: 90% 6% 0 0;
+    font-size: 10vw;
+}
+
 
 /* Animations */
+
+@keyframes big_reward_in_sceen_item_ani {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    85% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+    90% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes big_reward_in_sceen {
+    0% {
+        transform: rotate(0deg) scale(0);
+    }
+    5% {
+        transform: rotate(0deg) scale(2.1);
+        opacity: 0.5;
+    }
+    70% {
+        transform: rotate(360deg) scale(2.1);
+        opacity: 0.5;
+    }
+    85% {
+        transform: rotate(360deg) scale(2.25);
+        opacity: 0.5;
+    }
+    100% {
+        transform: rotate(360deg) scale(0);
+        opacity: 0;
+    }
+}
 
 @keyframes reward_item_fade {
     0% {

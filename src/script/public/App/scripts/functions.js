@@ -402,3 +402,22 @@ function getDistance(rect1, rect2) {
     const dy = center1.y - center2.y;
     return Math.sqrt(dx * dx + dy * dy);
 };
+
+function open_reward_animator(el_to_show, amount) {
+    return new Promise(resolve => {
+        reward_animator_wrapper.style.display = "flex";
+        reward_animator_item_wrapper.textContent = null;
+        el_to_show.classList.remove("wheel_slot_content");
+        reward_animator_item_wrapper.append(el_to_show.cloneNode(true));
+        // reward_animator_item_amount.textContent = amount == 1 ? "" : amount;
+        reward_animator_item_amount.textContent = amount;
+
+        reward_animator_wrapper.setAttribute("active_ani", "true");
+        reward_animator_bg_shine.removeEventListener("animationend", reward_animator_bg_shine.ani_ev);
+        reward_animator_bg_shine.addEventListener("animationend", reward_animator_bg_shine.ani_ev = () => {
+            reward_animator_bg_shine.setAttribute("active_ani", "false");
+            reward_animator_wrapper.style.display = "none";
+            resolve();
+        });
+    });
+};

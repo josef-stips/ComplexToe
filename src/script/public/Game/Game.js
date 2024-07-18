@@ -1914,11 +1914,20 @@ wheel_scene_close_btn.addEventListener("click", () => {
 });
 
 wheel_bet_input.addEventListener("input", () => {
-    wheel_of_fortune_handler.bet = Number(wheel_bet_input.value);
+    if (wheel_of_fortune_handler.allow_to_spin) {
+        wheel_of_fortune_handler.bet = Number(wheel_bet_input.value);
+        wheel_of_fortune_handler.init_slots();
+    };
+});
+
+wheel_bet_input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && wheel_of_fortune_handler.allow_to_spin) {
+        wheel_play_btn.click();
+    };
 });
 
 wheel_play_btn.addEventListener("click", () => {
-    if (wheel_of_fortune_handler.bet != 0) {
+    if (wheel_of_fortune_handler.bet != 0 && wheel_of_fortune_handler.allow_to_spin) {
         playBtn_Audio_2();
         wheel_of_fortune_handler.spin();
 
@@ -1959,7 +1968,9 @@ class WheelOfFortuneHandler {
             5: null
         };
 
+        this.allow_to_spin = true;
         this.reward = null;
+        this.free_spins_amount = 0;
 
         // from local storage
         this.storage_gems = Number(localStorage.getItem("GemsItem"));
@@ -1968,7 +1979,7 @@ class WheelOfFortuneHandler {
     };
 
     init_scene() {
-        wheel_right_wrapper_header.appendChild(CurrencySkinShopDisplay.cloneNode(true));
+        !wheel_right_wrapper_header.querySelector(".KEYicon_skinShop") && wheel_right_wrapper_header.appendChild(CurrencySkinShopDisplay.cloneNode(true));
         wheel_right_wrapper_header.querySelector(".exploredItems_bookBtn").addEventListener("click", () => {
             DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", false);
             exploredItems_preview(0);
@@ -1994,6 +2005,13 @@ class WheelOfFortuneHandler {
         });
     };
 
+    init_slot_content_gem(slot_content, slot_reward, slot_index) {
+        slot_content.classList.add("fa-solid");
+        slot_content.classList.add("fa-gem");
+
+        wheel_left_wrapper_text_els[slot_index].textContent = `... ${Math.floor(1 + (1.5 * this.bet * 0.9))}+ gems`;
+    };
+
     init_slot_content(slot_content, slot_reward, slot_index) {
         slot_content.textContent = null;
         slot_content.className = "wheel_slot_content";
@@ -2005,11 +2023,7 @@ class WheelOfFortuneHandler {
         switch (slot_reward.type) {
 
             case "gem":
-
-                slot_content.classList.add("fa-solid");
-                slot_content.classList.add("fa-gem");
-
-                wheel_left_wrapper_text_els[slot_index].textContent = "... 10+ gems";
+                this.init_slot_content_gem(slot_content, slot_reward, slot_index);
                 break;
 
             case "keys":
@@ -2017,7 +2031,7 @@ class WheelOfFortuneHandler {
                 slot_content.classList.add("fa-solid");
                 slot_content.classList.add("fa-key");
 
-                wheel_left_wrapper_text_els[slot_index].textContent = "... 1+ gems";
+                wheel_left_wrapper_text_els[slot_index].textContent = `... ${ Math.floor(1 + (0.035 * this.bet))}+ keys`;
                 break;
 
             case "x":
@@ -2025,15 +2039,22 @@ class WheelOfFortuneHandler {
                 slot_content.classList.add("fa-solid");
                 slot_content.classList.add("fa-x");
 
-                wheel_left_wrapper_text_els[slot_index].textContent = "... 1+ X";
+                wheel_left_wrapper_text_els[slot_index].textContent = `... ${Math.floor(1 + (1 * this.bet / 300))}+ X`;
                 break;
 
             case "skin":
+
+                if (this.bet < 200) {
+                    this.init_slot_content_gem(slot_content, slot_reward, slot_index);
+                    return;
+                };
+
                 let possible_skins = this.check_skins();
                 let rnd_skin = possible_skins[Math.floor(Math.random() * Object.keys(possible_skins).length)];
 
                 slot_content.classList.add("fa-solid");
                 slot_content.classList.add(`fa-${rnd_skin}`);
+                slot_content.setAttribute("reward_skin_name", rnd_skin);
 
                 wheel_left_wrapper_text_els[slot_index].innerHTML = `... the <i class="fas fa-${rnd_skin}"></i> skin`;
                 break;
@@ -2064,8 +2085,17 @@ class WheelOfFortuneHandler {
 
     explored_items_reward_handle(slot_content, slot_index) {
         let items = JSON.parse(localStorage.getItem("ExploredItems"));
+        let forbidden_items = ["abandonedEye"];
 
-        items = Object.keys(items).filter(item => item != "abandonedEye");
+        if (this.bet < 400) {
+            forbidden_items.push("encryptedWriting");
+            forbidden_items.push("asteroid");
+        };
+        if (this.bet < 100) {
+            forbidden_items.push("diamonds");
+        };
+
+        items = Object.keys(items).filter(item => !forbidden_items.includes(item));
 
         let rnd_index = Math.floor(Math.random() * Object.keys(items).length);
         let rnd_item = items[rnd_index];
@@ -2075,7 +2105,7 @@ class WheelOfFortuneHandler {
         slot_content.appendChild(img);
         slot_content.setAttribute("explored_item_type_for_reward", rnd_item);
 
-        wheel_left_wrapper_text_els[slot_index].textContent = `...`;
+        wheel_left_wrapper_text_els[slot_index].innerHTML = `<p>...</p>`;
         wheel_left_wrapper_text_els[slot_index].appendChild(img.cloneNode(true));
         // wheel_left_wrapper_text_els[slot_index].textContent += `${rnd_item}`;
 
@@ -2094,18 +2124,22 @@ class WheelOfFortuneHandler {
         wheel_play_btn.disabled = true;
         wheel_play_btn.blur();
         wheel_play_btn.classList.add('disabled');
+        this.allow_to_spin = false;
 
         await this.update_gems();
         await this.spin_animation();
-        const reward_el = await this.find_reward();
+        const reward_el = this.find_reward();
         await this.reward_animation(reward_el);
+        let amount = this.confirm_reward(reward_el);
+        // reward_animator_item_amount.textContent = amount;
+        await open_reward_animator(reward_el, amount);
         await this.reward_fly(reward_el);
-        await this.confirm_reward(reward_el);
         await this.wheel_reset();
 
         wheel_play_btn.disabled = false;
         wheel_play_btn.focus();
         wheel_play_btn.classList.remove('disabled');
+        this.allow_to_spin = true;
     };
 
     can_spin() {
@@ -2113,10 +2147,16 @@ class WheelOfFortuneHandler {
     };
 
     update_gems() {
-        this.storage_gems = this.storage_gems - this.bet;
-        localStorage.setItem("gemItem", this.storage_gems);
+        if (this.free_spins_amount > 0) {
+            this.free_spins_amount--;
+            wheel_free_spin_amount_el.textContent = this.free_spins_amount;
 
-        wheel_right_wrapper_header.querySelector(".gemsIcon_skinShop").textContent = this.storage_gems;
+        } else {
+            this.storage_gems = this.storage_gems - this.bet;
+            localStorage.setItem("GemsItem", this.storage_gems);
+
+            wheel_right_wrapper_header.querySelector(".gemsIcon_skinShop").textContent = this.storage_gems;
+        };
     };
 
     async spin_animation() {
@@ -2198,6 +2238,7 @@ class WheelOfFortuneHandler {
     reward_fly(el) {
         return new Promise(resolve => {
             let destination;
+            let is_free_spin = false;
 
             switch (el.getAttribute("slot_type")) {
 
@@ -2222,7 +2263,8 @@ class WheelOfFortuneHandler {
                     break;
 
                 case "free spin":
-                    destination = headerUserBtn.getBoundingClientRect();
+                    is_free_spin = true;
+                    destination = wheel_free_spin_wrapper.getBoundingClientRect();
                     break;
             };
 
@@ -2248,6 +2290,11 @@ class WheelOfFortuneHandler {
                 bodyEl.style.bottom = `${destination.bottom}px`;
                 bodyEl.style.left = `${destination.left}px`;
 
+                if (is_free_spin) {
+                    this.free_spins_amount = 1 + Math.floor(this.free_spins_amount + (1 * this.bet / 200));
+                    wheel_free_spin_amount_el.textContent = this.free_spins_amount;
+                };
+
                 setTimeout(() => {
                     bodyEl.remove();
                     resolve();
@@ -2270,63 +2317,119 @@ class WheelOfFortuneHandler {
 
     confirm_reward(reward_el) {
         let type = reward_el.getAttribute("slot_type")
+        let amount = 1;
 
         switch (type) {
 
             case "explored_item":
                 let explored_item_type = reward_el.getAttribute("explored_item_type_for_reward");
-                this.confirm_reward_explored_item(explored_item_type);
+                amount = this.confirm_reward_explored_item(explored_item_type);
                 break;
 
             case "skin":
-
+                this.confirm_reward_skin(reward_el);
                 break;
 
             case "x":
+                amount = this.confirm_reward_currency(reward_el, type);
+                break;
+
+            case "gem":
+                amount = this.confirm_reward_currency(reward_el, type);
+                break;
+
+            case "keys":
+                amount = this.confirm_reward_currency(reward_el, type);
+                break;
+        };
+
+        return amount;
+    };
+
+    confirm_reward_currency(reward_el, type) {
+        let amount;
+
+        switch (type) {
+
+            case "x":
+                let strg_x = Number(localStorage.getItem("ItemX"));
+                let new_amount = Math.floor(1 + strg_x + (1 * this.bet / 300));
+
+                this.storage_x = new_amount;
+                amount = new_amount - strg_x;
+                localStorage.setItem("ItemX", this.storage_x);
 
                 break;
 
             case "gem":
+                let strg_gem = Number(localStorage.getItem("GemsItem"));
+                let new_amount_gem = Math.floor(strg_gem + (1.5 * this.bet * 0.9));
 
+                this.storage_gems = new_amount_gem;
+                amount = new_amount_gem - strg_gem;
+                localStorage.setItem("GemsItem", this.storage_gems);
                 break;
 
             case "keys":
+                let strg_key = Number(localStorage.getItem("keys"));
+                let new_amount_key = Math.floor(1 + strg_key + (0.035 * this.bet));
 
-                break;
-
-            case "free spin":
-
+                this.storage_keys = new_amount_key;
+                amount = new_amount_key - strg_key;
+                localStorage.setItem("keys", this.storage_keys);
                 break;
         };
+
+        this.init_scene();
+        return amount;
+    };
+
+    confirm_reward_skin(reward_el) {
+        selected_skin = {
+            name: reward_el.getAttribute("reward_skin_name"),
+            skin_type: 'skin',
+            price: 'none',
+            price_type: 'none'
+        };
+        buySkin();
     };
 
     confirm_reward_explored_item(type) {
+        let item_storage = JSON.parse(localStorage.getItem("ExploredItems"));
+        let item_amount = item_storage[type];
+        let new_item_amount;
+
         switch (type) {
 
             case "asteroid":
-
+                new_item_amount = Math.floor(item_amount + (1 * this.bet / 500));
                 break;
 
             case "minerals":
-
+                new_item_amount = Math.floor(item_amount + (1 * this.bet / 3));
                 break;
 
             case "ore":
-
+                new_item_amount = Math.floor(item_amount + (1 * this.bet / 3));
                 break;
 
             case "diamonds":
-
+                new_item_amount = Math.floor(item_amount + (1 * this.bet / 15));
                 break;
 
             case "encryptedWriting":
-
+                new_item_amount = Math.floor(item_amount + (1 * this.bet / 500));
                 break;
 
             case "abandonedEye":
-
+                new_item_amount = Math.floor(item_amount + (1 * this.bet / 3000));
                 break;
         };
+
+        item_storage[type] = new_item_amount;
+        localStorage.setItem("ExploredItems", JSON.stringify(item_storage));
+
+        return new_item_amount - item_amount;
     };
 };
 

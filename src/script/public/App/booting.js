@@ -204,10 +204,10 @@ function AppInit() {
     DisplayUserID();
     localItems();
 
-    setTimeout(() => {
-        gameModeCards_Div.style.display = "none";
-        wheelOfFortuneAfterGameBtn.click();
-    }, 2000);
+    // setTimeout(() => {
+    //     gameModeCards_Div.style.display = "none";
+    //     wheelOfFortuneAfterGameBtn.click();
+    // }, 2000);
 
     return 10;
 };

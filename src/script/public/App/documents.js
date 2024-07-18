@@ -100,6 +100,11 @@ let lobbyFooter = document.querySelector(".lobby-footer");
 let HeaderWrapper = document.querySelector(".header-body");
 let wheel_left_wrapper_details = document.querySelector(".wheel_left_wrapper_details");
 let wheel_left_wrapper_text_els = document.querySelectorAll(".wheel_left_wrapper_details p");
+let wheel_free_spin_amount_el = document.querySelector(".wheel_free_spin_amount_el");
+let wheel_free_spin_wrapper = document.querySelector(".wheel_free_spin_wrapper");
+let reward_animator_wrapper = document.querySelector(".reward_animator_wrapper");
+let reward_animator_item_wrapper = document.querySelector(".reward_animator_item_wrapper");
+let reward_animator_bg_shine = document.querySelector(".reward_animator_bg_shine");
 
 let userInfoName = document.querySelector('.userInfo-Name');
 let userInfoIcon = document.querySelector('.userInfo-Icon');
@@ -698,6 +703,7 @@ let create_clan_btn_use_scene = document.querySelector(".create_clan_btn_use_sce
 let clan_content_request_accepted_clan_name = document.querySelector(".clan_content_request_accepted_clan_name");
 let reward_pick_up = document.querySelector(".reward_pick_up");
 let spinner = document.querySelector(".spinner");
+let reward_animator_item_amount = document.querySelector(".reward_animator_item_amount");
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
