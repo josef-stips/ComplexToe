@@ -288,8 +288,7 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
 });
 
 socket.on("EndOfPlayerTimer", () => {
-    console.log("lol");
-
+    // console.log("lol");
     // removeAccessToAnything();
 
     SecondPlayerTime.style.color = 'var(--font-color)';

@@ -444,6 +444,7 @@ const DisplayFriendRequests = async(FriendRequests) => {
                     try {
                         socket.emit("AcceptFriendRequest", id, localStorage.getItem("PlayerID"), cb => {
                             if (cb) {
+                                OpenedPopUp_WhereAlertPopUpNeeded = true;
                                 AlertText.textContent = `${name} is now your friend!`;
                                 DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 

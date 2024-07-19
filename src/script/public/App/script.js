@@ -702,9 +702,9 @@ const randomItemsOnScreen = () => {
             item.style.cursor = "pointer";
             item.style.animation = "5s fadeInOnRandomPopItem";
             item.style.position = "absolute";
-            item.style.fontSize = "40px";
+            item.style.fontSize = "3vh";
             item.style.zIndex = "0";
-            item.style.padding = "15px";
+            item.style.padding = "0.5vh";
 
             switch (skinType) {
                 case 0:
@@ -963,43 +963,47 @@ settFullscreenBtn.addEventListener('click', () => {
     };
 });
 
+
 // add click sound to gameMode Cards and animation
-Allbtns.forEach((btn) => {
-    if (btn.classList.contains("mainCard")) {
+function load_cardsClick() {
+    Allbtns.forEach((btn) => {
+        if (btn.classList.contains("mainCard")) {
 
-        btn.addEventListener('click', (card) => { // event listener for online card
+            btn.addEventListener('click', (card) => { // event listener for online card
 
-            // audio
-            playBtn_Audio();
-
-            // the main card is the play online card which the player can only play if he has an online account
-            if (!localStorage.getItem("UserName")) {
-                AlertText.textContent = "Create an account to play online";
-                DarkLayer.style.display = "block";
-                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-
-            } else {
-                DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
-            };
-        });
-
-    } else { // event listener for all other cards
-
-        if (localStorage.getItem("UserName")) {
-            btn.addEventListener('click', (card) => {
                 // audio
                 playBtn_Audio();
 
-                // create level or play offline on same computer
-                (btn.classList.contains("create")) ? social_scene.init(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
+                // the main card is the play online card which the player can only play if he has an online account
+                if (!localStorage.getItem("UserName")) {
+                    AlertText.textContent = "Create an account to play online";
+                    DarkLayer.style.display = "block";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+
+                } else {
+                    DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
+                };
             });
 
-        } else {
-            AlertText.textContent = "Create an account to get access to the online stuff";
-            DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+        } else { // event listener for all other cards
+
+            if (localStorage.getItem("UserName")) {
+                btn.addEventListener('click', (card) => {
+                    // audio
+                    playBtn_Audio();
+
+                    // create level or play offline on same computer
+                    (btn.classList.contains("create")) ? social_scene.init(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
+                });
+
+            } else {
+                AlertText.textContent = "Create an account to get access to the online stuff";
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+            };
         };
-    };
-});
+    });
+};
+load_cardsClick();
 
 // event listener
 
@@ -1935,7 +1939,7 @@ function draw() {
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(circle.letter, circle.x, circle.y);
-        }
+        };
 
         // Kreisbewegung aktualisieren
         circle.x += circle.speedX;
@@ -1947,11 +1951,11 @@ function draw() {
         }
         if (circle.y < 0 || circle.y > canvas.height) {
             circle.speedY *= -1;
-        }
-    }
+        };
+    };
 
     requestAnimationFrame(draw);
-}
+};
 
 // Überprüfe Mausklicks auf Buchstaben
 canvas.addEventListener('click', function(event) {
@@ -2048,7 +2052,7 @@ class scene_mode {
 
     default () {
         lobbyMainSec.style.height = "80%";
-        lobbyMainSec.style.margin = "20px 0 0 0";
+        lobbyMainSec.style.margin = "1vh 0 0 0";
         HeaderWrapper.style.margin = "0 0 2% 0";
     };
 

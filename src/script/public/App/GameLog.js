@@ -3,6 +3,11 @@ class gameLogHandler {
     constructor() {
         this.self_player_id = Number(localStorage.getItem("PlayerID"));
         this.log_cache = [];
+        this.loaded = false;
+        this.search_query = "";
+
+        // every time the game log gets updated the server sends a message to let the client know to update the game log
+        this.have_to_update = true;
     };
 
     init() {
@@ -17,7 +22,10 @@ class gameLogHandler {
         gameLog_search_input.addEventListener("keydown", (e) => {
             if (e.key === "Enter") {
                 e.preventDefault();
-                this.search(e.target.value);
+                this.search(this.search_query);
+
+            } else {
+                this.search_query = e.target.value;
             };
         });
     };
@@ -27,8 +35,8 @@ class gameLogHandler {
         settingsWindow.style.display = "none";
         DisplayPopUp_PopAnimation(gameLog_popUp, "flex", true);
 
-        // load entriesfrom server
-        this.load_from_server();
+        // load entries from server or cache
+        this.have_to_update ? this.load_from_server() : this.load_from_cache();
     };
 
     close() {
@@ -46,6 +54,10 @@ class gameLogHandler {
         });
     };
 
+    load_error(err) {
+        gameLog_list.textContent = err;
+    };
+
     load_element(entry) {
 
     };
@@ -56,8 +68,20 @@ class gameLogHandler {
 
     load_from_server() {
         socket.emit("load_gameLog", this.self_player_id, cb => {
+            this.have_to_update = false;
+            console.log(cb);
 
+            if (!cb) {
+                this.load_error("Seems like you have not played a game yet. Every game you played is listed here.");
+                return;
+            };
+
+            this.load_to_DOM(cb);
         });
+    };
+
+    load_from_cache() {
+        this.load_to_DOM(this.log_cache);
     };
 };
 

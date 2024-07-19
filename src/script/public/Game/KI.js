@@ -1045,6 +1045,7 @@ const evaluatingTie = (pattern, Board) => {
 const ki_set = (index, inner_field_index) => {
     index = Number(index);
     inner_field_index = Number(inner_field_index);
+    all_game_moves.push(index);
 
     // console.log("index:", index, "inner field index:", inner_field_index);
 

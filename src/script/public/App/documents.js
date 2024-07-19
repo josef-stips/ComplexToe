@@ -709,6 +709,7 @@ let gameLog_main = document.querySelector(".gameLog_main");
 let gameLog_closeBtn = document.querySelector(".gameLog_closeBtn");
 let gameLog_popUp = document.querySelector(".gameLog_popUp");
 let gameLog_search_input = document.querySelector(".gameLog_search_input");
+let gameLog_list = document.querySelector(".gameLog_list");
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

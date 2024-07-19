@@ -528,6 +528,8 @@ class clan_playground_handler {
     };
 
     async open() {
+        this.self_player_id = self_id();
+
         this.clan_level = await newClan.current_clan_all_data["level"];
         this.playground_height = this.playground.clientHeight;
         this.playground_width = this.playground.clientWidth;

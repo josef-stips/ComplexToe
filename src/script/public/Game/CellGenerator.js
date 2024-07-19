@@ -221,6 +221,8 @@ function Activate_InteractiveBlocker() {
         Grid[RIndex].style.color = "var(--font-color)";
         Grid[RIndex].removeEventListener('click', cellCicked);
 
+        cell_indexes_blocked_by_blocker.push(RIndex);
+
         blockages |= (RIndex << 1); // update bitboard
     };
 };

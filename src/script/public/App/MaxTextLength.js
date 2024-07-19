@@ -468,6 +468,11 @@ Lobby_PointsToWin.addEventListener('keydown', (event) => {
     let isSpecial = utils.isSpecial(event);
     let isNavigational = utils.isNavigational(event);
 
+    if (event.code === "Space" || event.code === "Delete" || event.code === "Enter") {
+        event.preventDefault();
+        return false;
+    };
+
     if (selection) {
         hasSelection = !!selection.toString();
     };

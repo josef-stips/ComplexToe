@@ -121,6 +121,10 @@ let max_amount_of_moves = null;
 
 let patterns_used = [];
 
+// all moves every player makes in one object
+let all_game_moves = [];
+let cell_indexes_blocked_by_blocker = [];
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -131,6 +135,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // to have all info globally
     allGameData = [];
     patterns_used = [];
+    cell_indexes_blocked_by_blocker = [];
     GameSeconds = 0;
 
     player2_lastBarRelation = 0;
@@ -1092,7 +1097,6 @@ socket.on('player_clicked', Goptions => {
     if (running) {
         // update cell
         options = Goptions[0];
-
         let cells = [...cellGrid.children];
 
         for (let i = 0; i < options.length; i++) {
@@ -1111,6 +1115,8 @@ socket.on('player_clicked', Goptions => {
                 cells[i].style.opacity = "1";
                 cells[i].classList.add("draw");
 
+                all_game_moves.push(i);
+
             } else if (element != '' && !cells[i].classList.contains('colored-cell') && Goptions[3] != "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
 
                 cells[i].style.color = "var(--font-color)";
@@ -1119,6 +1125,8 @@ socket.on('player_clicked', Goptions => {
 
                 cells[i].style.opacity = "1";
                 cells[i].classList.add("draw");
+
+                all_game_moves.push(i);
             };
         };
 
@@ -1149,6 +1157,7 @@ socket.on('player_clicked', Goptions => {
 // normal update cell function when player in offline mode clicks cell
 function updateCell(index) {
     options[index] = currentPlayer;
+    all_game_moves.push(index);
 
     MovesAmount_PlayerAndKi++;
 
@@ -1222,6 +1231,7 @@ socket.on('blockerCombat_action', Goptions => {
             Grid[i].classList = "cell death-cell";
             Grid[i].style.backgroundColor = "var(--font-color)";
             Grid[i].removeEventListener('click', cellCicked);
+            all_game_moves.push(i);
 
             // This just deletes all '%%' from the options array that were used to block the game cells by their index
             // no callback or something on this one
@@ -1979,15 +1989,20 @@ class WheelOfFortuneHandler {
     };
 
     init_scene() {
-        !wheel_right_wrapper_header.querySelector(".KEYicon_skinShop") && wheel_right_wrapper_header.appendChild(CurrencySkinShopDisplay.cloneNode(true));
-        wheel_right_wrapper_header.querySelector(".exploredItems_bookBtn").addEventListener("click", () => {
-            DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", false);
-            exploredItems_preview(0);
-        });
+        try {
+            !wheel_right_wrapper_header.querySelector(".KEYicon_skinShop") && wheel_right_wrapper_header.appendChild(CurrencySkinShopDisplay.cloneNode(true));
+            wheel_right_wrapper_header.querySelector(".exploredItems_bookBtn").addEventListener("click", () => {
+                DisplayPopUp_PopAnimation(exploredItems_PopUp, "flex", false);
+                exploredItems_preview(0);
+            });
 
-        wheel_right_wrapper_header.querySelector(".KEYicon_skinShop").textContent = this.storage_keys;
-        wheel_right_wrapper_header.querySelector(".xIcon_skinShop").textContent = this.storage_x;
-        wheel_right_wrapper_header.querySelector(".gemsIcon_skinShop").textContent = this.storage_gems;
+            wheel_right_wrapper_header.querySelector(".KEYicon_skinShop").textContent = this.storage_keys;
+            wheel_right_wrapper_header.querySelector(".xIcon_skinShop").textContent = this.storage_x;
+            wheel_right_wrapper_header.querySelector(".gemsIcon_skinShop").textContent = this.storage_gems;
+
+        } catch (error) {
+            console.log(error);
+        };
         // wheel_right_wrapper_header.querySelector(".CurrencySkinShopDisplay").appendChild(storeIcon.cloneNode(true));
     };
 

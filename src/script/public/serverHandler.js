@@ -1445,11 +1445,12 @@ Lobby_PointsToWin.addEventListener('keyup', (e) => {
         return;
     };
 
-    if (e.code === "Space") {
+    if (e.code === "Space" || e.code === "Delete" || e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
+        return;
     };
 
-    socket.emit("AdminChangesPointsToWin_InLobby", personal_GameData.currGameID, Lobby_PointsToWin.textContent);
+    typeof Number(Lobby_PointsToWin.textContent) == Number && socket.emit("AdminChangesPointsToWin_InLobby", personal_GameData.currGameID, Lobby_PointsToWin.textContent);
 });
 
 // admin changed the required amount of points in lobby: update value for all in the lobby

@@ -200,16 +200,20 @@ let current_used_skin = '';
 
     if (Skins) {
         skins = Skins;
+        switch_skins(current_used_skin, UserIcon);
     };
-
-    switch_skins(current_used_skin, UserIcon);
 })();
 
 function switch_skins(current_used_skin, UserIcon) {
 
     let name = current_used_skin;
     let color = skins_display[name];
-    let skinType = name.startsWith('chess-') || name === 'jedi' || name === 'fish' || name === 'crown' || name === 'spaghetti-monster-flying' || name === 'hand-fist' || name === 'heart' || name === 'bug' || name === 'handshake' || name === 'thumbs-up' || name === 'face-smile' ? color : "empty";
+    let skinType;
+    try {
+        skinType = name.startsWith('chess-') || name === 'jedi' || name === 'fish' || name === 'crown' || name === 'spaghetti-monster-flying' || name === 'hand-fist' || name === 'heart' || name === 'bug' || name === 'handshake' || name === 'thumbs-up' || name === 'face-smile' ? color : "empty";
+    } catch (error) {
+        console.log(error);
+    };
 
     switch (current_used_skin) {
         case 'skin-default':

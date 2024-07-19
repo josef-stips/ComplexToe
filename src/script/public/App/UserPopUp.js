@@ -270,6 +270,7 @@ UserGivesData_IconInput.addEventListener('keydown', e => {
             SearchUser_Btn.addEventListener('click', OpenSearchUserPopUp);
 
             OpenOwnUserProfile();
+            load_cardsClick();
         };
     };
 

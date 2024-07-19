@@ -1172,7 +1172,45 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
 
         WinCombination && (WinCombination = JSON.parse(WinCombination));
 
-        UltimateGameWinFirstAnimation(player1_won, player2_won)
+        UltimateGameWinFirstAnimation(player1_won, player2_won);
+
+        if (personal_GameData.role == 'admin') {
+
+            let all_game_data_for_log = [
+
+                allGameData[2][1], // level name
+                allGameData[3], // allowed patterns
+                [xCell_Amount, yCell_Amount], // x and y: field_size
+                allGameData[2][3], // player 1 name
+                allGameData[2][4], // player 2 name
+                allGameData[2][8] == "empty" ? allGameData[2][5] : allGameData[2][8], // player 1 icon
+                allGameData[2][9] == "empty" ? allGameData[2][6] : allGameData[2][9], // player 2 icon
+                allGameData[2][7], // player clock
+                allGameData[2][5], // points to win
+                allGameData[2][10], // p1 color
+                allGameData[2][11], // p2 color
+                allGameData[2][12] ? true : false, // blocker boolean
+                allGameData[2][12], // blocker name
+                NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns ? 'created_online_level' : 'official_online_level', // game mode,
+                GameData.InnerGameMode, // field mode
+                all_game_moves, // moves
+                patterns_used,
+                bgcolor1, // first bg color
+                bgcolor2, // second bg color
+                player1_score, // p1 points
+                player2_score, // p2 points
+                max_amount_of_moves, // max amount of moves
+                killAllDrawnCells, // kill cells after point
+                GameSeconds, // game duration
+                cell_indexes_blocked_by_blocker
+            ];
+
+            socket.emit("update_gameLog", all_game_data_for_log, cb => {
+                if (!cb) new Error("Something went wrong while inserting into the gamelogs table");
+
+                game_log_handler.have_to_update = true;
+            });
+        };
 
         setTimeout(() => {
             cellGrid.style.display = 'none';

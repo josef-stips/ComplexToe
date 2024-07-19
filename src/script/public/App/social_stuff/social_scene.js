@@ -88,7 +88,8 @@ class social_scene_class {
 
             if (this.clan_handler.clan_pop_up_opened_in_pop_up &&
                 getComputedStyle(userInfoPopUp).display != "none" ||
-                getComputedStyle(FriendsListPopUp).display != "none"
+                getComputedStyle(FriendsListPopUp).display != "none" ||
+                getComputedStyle(scoreboard_pop_up).display != "none"
             ) {
                 DarkLayer.style.display = "flex";
 

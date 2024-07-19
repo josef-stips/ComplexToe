@@ -962,28 +962,55 @@ p#name-player1 {
 #AllowedPatternsOuter {
     display: flex;
     flex-direction: column;
-    align-items: start;
-    justify-content: start;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: unset;
+    height: unset;
+}
+
+#AllowedPatternsOuter span {
+    width: 100%;
+    font-weight: 600;
+    text-decoration: underline;
+    margin: 1vh 0 3vh 0;
 }
 
 .Lobby_PointsToWin {
-    padding: 0 50px 0 0;
     outline: none;
+    padding: 0 2vw 0 2vw;
+}
+
+.LobbyGameData_SingleOuterContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25vh;
+    width: max-content;
+    justify-content: center;
+    align-items: center;
+}
+
+.LobbyGameData_SingleOuterContainer span:first-child {
+    display: block;
+    font-weight: 600;
+    max-height: max-content;
+    min-height: 5vh;
+    height: 5vh;
+    min-width: 3vh;
 }
 
 .Lobby_AllowedPatternsScrollContainer {
-    width: 53vw;
-    height: 80%;
-    padding: 1vh 0 0 1vh;
-    margin-top: 5px;
+    width: 70vw !important;
+    height: 80% !important;
+    padding: 1vh 0 1vh 1vh;
     border-top: 0.3vh solid white;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    flex-direction: row;
-    gap: 2.5vh;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: start !important;
+    gap: 2.5vh !important;
     overflow-x: scroll;
     overflow-y: hidden;
+    flex-direction: row !important;
 }
 
 .Lobby_AllowedPatternsScrollContainer::-webkit-scrollbar {
@@ -1000,24 +1027,25 @@ p#name-player1 {
 }
 
 .setPatternWrapperLobby {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: start;
-    gap: 10px;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: start !important;
+    align-items: start !important;
+    gap: 1vh !important;
 }
 
 .SetPatternGridLobby {
-    display: grid;
+    display: grid !important;
     grid-template-columns: repeat(5, auto);
+    gap: 0 !important;
 }
 
 .SetPatternGridLobby .miniCellMini {
     width: 1.7vh;
     height: 1.7vh;
-    font-size: 17px;
+    font-size: 1vw;
 }
 
 .gameModes-cards {
@@ -2675,7 +2703,7 @@ label h3 {
 }
 
 .OnlineGameHeader-center h1 {
-    font-size: 50px;
+    font-size: 6vh;
 }
 
 .OnlineGameHeader-right {
@@ -2710,7 +2738,7 @@ label h3 {
     width: 25%;
     height: 35%;
     color: white;
-    font-size: 45px;
+    font-size: 6vh;
     font-weight: 500;
     display: flex;
     justify-content: center;
@@ -2844,8 +2872,8 @@ label h3 {
 /* Lobby Info pop up */
 
 .Lobby_GameInfo_PopUp {
-    width: 60%;
-    height: 60%;
+    width: 85%;
+    height: 85%;
     top: 0;
     bottom: 0;
     left: 0;
@@ -2886,9 +2914,8 @@ label h3 {
     width: 100%;
     height: 92%;
     display: flex;
-    justify-content: start;
-    align-items: start;
-    margin: 10px 0 0 25px;
+    justify-content: center;
+    align-items: flex-start;
     font-size: 3.33vh;
 }
 
@@ -3057,19 +3084,34 @@ label h3 {
 
 .LobbyGameDataSection {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     flex-direction: column;
     gap: 0.55em;
+    margin: 3vh 0 0 0;
+    width: 100%;
+    height: 92%;
+}
+
+.LobbyGameDataSection div {
+    width: 100%;
+    height: min-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1vh;
 }
 
 .LobbySectionTitle {
     margin: 0 0 0.3em 0;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 4vh;
 }
 
 .LobbyUserFooterInfo {
     margin: 0 1em 0 0;
+    font-size: 4vh;
 }
 
 .SwitchCaret {
@@ -5253,7 +5295,8 @@ h1.stars_pop_up_title {
 .OnlineChat_btn {
     position: absolute;
     left: 70%;
-    font-size: 28.5px;
+    top: 20%;
+    font-size: 3vh;
     display: block;
     transform: scale(1);
     cursor: pointer;
@@ -6118,15 +6161,15 @@ h1.stars_pop_up_title {
     height: 30%;
     background-color: #121518;
     color: white;
-    border: 2px solid white;
-    border-radius: 25px;
+    border: 0.4vh solid white;
+    border-radius: 4vh;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
     gap: 5em;
-    font-size: 22.5px;
-    padding: 10px 0 10px 20px;
+    font-size: 3vh;
+    padding: 1vh 0 1vh 2vh;
 }
 
 .FriendRequestData {
@@ -6143,7 +6186,7 @@ h1.stars_pop_up_title {
     display: flex;
     align-items: center;
     gap: 1em;
-    font-size: 28px;
+    font-size: 3vh;
 }
 
 .AcceptFriendRequest {
@@ -7210,9 +7253,9 @@ span.LevelIconWrapper img {
 
 .chooseModeCloseBtn {
     cursor: pointer;
-    transition: all 0.1 ease-in-out;
-    font-size: var(--Text-font-size);
-    margin: 10px 10px 0 0;
+    transition: color 0.15s ease-in-out;
+    font-size: 3vh;
+    margin: 1vw 1vw 0 0;
 }
 
 .chooseModeCloseBtn:hover {
