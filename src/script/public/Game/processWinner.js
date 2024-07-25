@@ -228,7 +228,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
         let pattern = WinCombination && FindPatternName([...WinCombination]);
 
         if (pattern) {
-            extra_points = patternPoints[pattern];
+            extra_points = patternPoints[pattern] || 1;
             // console.log(extra_points, pattern, patternPoints);
 
         } else {
@@ -236,8 +236,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
         };
 
         patterns_used.push(pattern);
-
-        // console.log(pattern, extra_points);
+        console.log(WinCombination, pattern, extra_points);
     };
 
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);
@@ -1043,7 +1042,52 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             leaveGame_btn.removeEventListener('click', UserleavesGame);
             leaveGame_btn.style.color = '#56565659';
 
-            UltimateGameWinFirstAnimation(player1_won, player2_won)
+            UltimateGameWinFirstAnimation(player1_won, player2_won);
+
+            // game entry for offline game of any kind. player vs player / player vs ki / advanture mode (also ki)
+            let level_id = player_levels_handler.online_level_overview_handler.level.id;
+            let level_icon = player_levels_handler.online_level_overview_handler.level.icon;
+
+            console.log("game seconds: ", GameSeconds);
+
+            let all_game_data_for_log = [
+
+                level_id, // level_id
+                allGameData[2][1], // level name
+                level_icon, // level icon
+                OnlinePlayerIDs[1], // p1 id
+                OnlinePlayerIDs[2], // p2 id
+                allGameData[2][3], // player 1 name
+                allGameData[2][4], // player 2 name
+                !allGameData[2][11] ? "" : allGameData[2][11], // p2 color
+                !allGameData[2][10] ? "" : allGameData[2][10], // p1 color
+                allGameData[2][8] == "empty" ? allGameData[2][5] : allGameData[2][8], // player 1 icon
+                allGameData[2][9] == "empty" ? allGameData[2][6] : allGameData[2][9], // player 2 icon
+                player1_score, // p1 points
+                player2_score, // p2 points
+                allGameData[2][12] ? true : false, // blocker boolean
+                allGameData[2][12], // blocker name
+                JSON.stringify(cell_indexes_blocked_by_blocker), // cells blocked by blocker
+                JSON.stringify(patterns_used), // patterns used
+                JSON.stringify([xCell_Amount, yCell_Amount]), // x and y: field_size
+                bgcolor1, // first bg color
+                bgcolor2, // second bg color
+                GameSeconds, // game duration
+                JSON.stringify(all_game_moves), // moves
+                allGameData[2][7], // player clock
+                allGameData[5], // points to win
+                JSON.stringify(allGameData[3]), // allowed patterns
+                NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns_globalVar ? 'created_online_level' : 'official_online_level', // game mode,
+                GameData.InnerGameMode, // field mode
+                killAllDrawnCells, // kill cells after point
+                !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
+            ];
+
+            socket.emit("update_gameLog", all_game_data_for_log, cb => {
+                if (!cb) new Error("Something went wrong while inserting into the gamelogs table");
+
+                game_log_handler.have_to_update = true;
+            });
 
             setTimeout(() => {
                 cellGrid.style.display = 'none';
@@ -1176,33 +1220,42 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
 
         if (personal_GameData.role == 'admin') {
 
+            let level_id = player_levels_handler.online_level_overview_handler.level.id;
+            let level_icon = player_levels_handler.online_level_overview_handler.level.icon;
+
+            console.log("game seconds: ", GameSeconds);
+
             let all_game_data_for_log = [
 
+                level_id, // level_id
                 allGameData[2][1], // level name
-                allGameData[3], // allowed patterns
-                [xCell_Amount, yCell_Amount], // x and y: field_size
+                level_icon, // level icon
+                OnlinePlayerIDs[1], // p1 id
+                OnlinePlayerIDs[2], // p2 id
                 allGameData[2][3], // player 1 name
                 allGameData[2][4], // player 2 name
+                !allGameData[2][11] ? "" : allGameData[2][11], // p2 color
+                !allGameData[2][10] ? "" : allGameData[2][10], // p1 color
                 allGameData[2][8] == "empty" ? allGameData[2][5] : allGameData[2][8], // player 1 icon
                 allGameData[2][9] == "empty" ? allGameData[2][6] : allGameData[2][9], // player 2 icon
-                allGameData[2][7], // player clock
-                allGameData[2][5], // points to win
-                allGameData[2][10], // p1 color
-                allGameData[2][11], // p2 color
-                allGameData[2][12] ? true : false, // blocker boolean
-                allGameData[2][12], // blocker name
-                NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns ? 'created_online_level' : 'official_online_level', // game mode,
-                GameData.InnerGameMode, // field mode
-                all_game_moves, // moves
-                patterns_used,
-                bgcolor1, // first bg color
-                bgcolor2, // second bg color
                 player1_score, // p1 points
                 player2_score, // p2 points
-                max_amount_of_moves, // max amount of moves
-                killAllDrawnCells, // kill cells after point
+                allGameData[2][12] ? true : false, // blocker boolean
+                allGameData[2][12], // blocker name
+                JSON.stringify(cell_indexes_blocked_by_blocker), // cells blocked by blocker
+                JSON.stringify(patterns_used), // patterns used
+                JSON.stringify([xCell_Amount, yCell_Amount]), // x and y: field_size
+                bgcolor1, // first bg color
+                bgcolor2, // second bg color
                 GameSeconds, // game duration
-                cell_indexes_blocked_by_blocker
+                JSON.stringify(all_game_moves), // moves
+                allGameData[2][7], // player clock
+                allGameData[5], // points to win
+                JSON.stringify(allGameData[3]), // allowed patterns
+                NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns_globalVar ? 'created_online_level' : 'official_online_level', // game mode,
+                GameData.InnerGameMode, // field mode
+                killAllDrawnCells, // kill cells after point
+                !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
             ];
 
             socket.emit("update_gameLog", all_game_data_for_log, cb => {

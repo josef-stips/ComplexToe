@@ -381,16 +381,17 @@ class NewLevel {
         let span = document.createElement("span");
         span.textContent = level.level_name;
         span.style.color = level_theme;
+        span.style.fontWeight = '600';
 
         if (level.level_name.length >= 18) {
-            span.style.fontSize = "var(--Text-font-size)";
+            span.style.fontSize = "3vh";
         } else {
             span.style.fontSize = "4vh";
         };
 
         let span1 = document.createElement("span");
         span1.classList = "LevelIconWrapper"
-        span1.style.border = `5px solid ${level_theme}`;
+        span1.style.border = `0.6vh solid ${level_theme}`;
 
         let div1 = document.createElement("div");
         let div2 = document.createElement("div");
@@ -440,8 +441,6 @@ class NewLevel {
 
         let img = document.createElement("img");
         img.src = this.Settings.levelicon[parseInt(level.icon)];
-        img.width = "32";
-        img.height = "32";
 
         li.addEventListener("click", () => {
             // console.log(level, level.CreatorBeatIt, level.costum_patterns);
@@ -1305,9 +1304,10 @@ const InitCreateLevelScene = () => {
         } else {
             DarkLayerAnimation(online_level_scene, multiple_use_scene).then(async() => {
 
-                await socket.emit("request_level_for_id", NewCreativeLevel.selectedLevel[11], (level) => {
+                await socket.emit("request_level_for_id", NewCreativeLevel.selectedLevel[11], (level, author_data) => {
+                    console.log(level);
 
-                    player_levels_handler.online_level_overview_handler = new onlineLevelOverviewHandler();
+                    player_levels_handler.online_level_overview_handler = new onlineLevelOverviewHandler(level, author_data);
                     player_levels_handler.online_level_overview_handler.level = level;
                     player_levels_handler.online_level_overview_handler.init();
 

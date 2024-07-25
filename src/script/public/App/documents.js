@@ -710,6 +710,12 @@ let gameLog_closeBtn = document.querySelector(".gameLog_closeBtn");
 let gameLog_popUp = document.querySelector(".gameLog_popUp");
 let gameLog_search_input = document.querySelector(".gameLog_search_input");
 let gameLog_list = document.querySelector(".gameLog_list");
+let gameEntry_details_pop_up = document.querySelector(".gameEntry_details_pop_up");
+let gameEntry_details_closeBtn = document.querySelector(".gameEntry_details_closeBtn");
+let best_player_tabs = document.querySelectorAll('.best_player_tab');
+let best_players_filter_wrapper = document.querySelector(".best_players_filter_wrapper");
+let best_player_filter = document.querySelectorAll(".best_player_filter");
+let fetch_spinner = document.querySelector(".fetch_spinner");
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
@@ -737,6 +743,19 @@ const skinsFirstContainer = document.querySelector(".skinsFirstContainer");
 const skin_shop_last_tab = document.querySelector(".skin_shop_last_tab");
 const clan_best_level = document.querySelector(".clan_best_level");
 const wheelOfFortuneAfterGameBtn = document.querySelector(".wheelOfFortuneAfterGameBtn");
+const gameEntry_details_list = document.querySelector(".gameEntry_details_list");
+
+const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
+const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');
+const gameEntry_levelID_el = document.querySelector('.gameEntry_levelID_el');
+const gameEntry_playerPoints_el = document.querySelector('.gameEntry_playerPoints_el');
+const gameEntry_blockerUsed_el = document.querySelector('.gameEntry_blockerUsed_el');
+const gameEntry_fieldMode_el = document.querySelector('.gameEntry_fieldMode_el');
+const gameEntry_fieldSize_el = document.querySelector('.gameEntry_fieldSize_el');
+const gameEntry_patternsUsed_el = document.querySelector('.gameEntry_patternsUsed_el');
+const gameEntry_gameDuration_el = document.querySelector('.gameEntry_gameDuration_el');
+const gameEntry_playerClock_el = document.querySelector('.gameEntry_playerClock_el');
+const gameEntry_pointsToWin_el = document.querySelector('.gameEntry_pointsToWin_el');
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

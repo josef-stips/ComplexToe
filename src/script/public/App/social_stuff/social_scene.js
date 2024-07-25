@@ -394,8 +394,15 @@ class recentPlayersHandler {
 
     async fetch() {
         try {
+            recent_players_list.textContent = null;
+            recent_players_list.append(fetch_spinner);
+            fetch_spinner.setAttribute('in_use', 'true');
+
             await socket.emit("get_recent_players", cb => {
-                this.load(cb);
+                setTimeout(() => {
+                    fetch_spinner.setAttribute('in_use', 'false');
+                    this.load(cb);
+                }, 500);
             });
 
         } catch (error) {
@@ -453,7 +460,7 @@ class recentPlayersHandler {
         let date = formatDate(player_data["last_connection"]).split(",");
 
         lastTimeOnlineEl.textContent = `last time online: ${date[0] + date[1]}`;
-        isInClanEl.textContent = !player_data["clan_data"] ? "loner" : "clan member";
+        isInClanEl.textContent = !player_data["clan_data"].is_in_clan ? "loner" : "clan member";
 
         // wrapper
         div.classList.add("recent_player_item");
@@ -486,11 +493,41 @@ class recentPlayersHandler {
 
 class bestPlayersHandler {
     constructor() {
-
+        this.players_type = 'global';
+        this.filter = null;
     };
 
     events() {
+        best_player_tabs.forEach(el => {
 
+            el.addEventListener('click', () => {
+                best_player_tabs.forEach(ele => ele.setAttribute("active_tap", "false"));
+                el.setAttribute("active_tap", "true");
+
+                this.players_type = el.getAttribute('players_type');
+                this.fetch();
+            });
+        });
+
+        best_player_filter.forEach(el => {
+
+            el.addEventListener('click', () => {
+                let change_to_active = true;
+
+                if (el.getAttribute('active_filter') == 'true') {
+                    change_to_active = false;
+                    this.filter = null;
+
+                } else {
+                    this.filter = el.getAttribute('list_filter_type');
+                };
+
+                best_player_filter.forEach(ele => ele.setAttribute("active_filter", "false"));
+                el.setAttribute('active_filter', change_to_active);
+
+                this.fetch();
+            });
+        });
     };
 
     open() {
@@ -499,8 +536,15 @@ class bestPlayersHandler {
 
     fetch() {
         try {
-            socket.emit("top_100_players", (cb) => {
-                this.load(cb);
+            best_players_list.textContent = null;
+            best_players_list.append(fetch_spinner);
+            fetch_spinner.setAttribute('in_use', 'true');
+
+            socket.emit(`top_100_players_${this.players_type}`, Number(localStorage.getItem("PlayerID")), this.filter, (cb) => {
+                setTimeout(() => {
+                    fetch_spinner.setAttribute('in_use', 'false');
+                    this.load(cb);
+                }, 500);
             });
 
         } catch (error) {
@@ -509,16 +553,14 @@ class bestPlayersHandler {
     };
 
     load(player_data) {
-        best_players_list.textContent = null;
-
         player_data.forEach(data => {
-            console.log(data, best_players_list);
-            recent_players_handler.player(data, best_players_list);
+            // console.log(data, best_players_list);
+            try {
+                recent_players_handler.player(data, best_players_list);
+            } catch (error) {
+                console.log(error);
+            };
         });
-    };
-
-    player() {
-
     };
 
     abort(message) {

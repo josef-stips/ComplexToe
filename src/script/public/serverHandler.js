@@ -545,6 +545,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     };
 
     Lobby.style.background = "";
+    theme.start();
 
     if (inPlayerLevelsScene) {
         player_levels_handler.online_level_overview_handler.init_level_BG();
@@ -956,6 +957,8 @@ socket.on('killed_game', () => {
 
     Lobby_GameCode_display.style.userSelect = 'text';
     Lobby.style.background = "";
+    theme.start();
+
     // close pop ups if there where any open
     CloseOnlinePopUps();
     ChangeGameBG(undefined, undefined, true);
@@ -1032,7 +1035,7 @@ socket.on('SecondPlayer_Joined', message => {
         if (message[4]) {
             Lobby_ThirdPlayer_Wrapper.style.display = "flex";
             // The first player is only higher if there is a third player.
-            Lobby_FirstPlayer_Wrapper.style.margin = "0 0 100px 0";
+            Lobby_FirstPlayer_Wrapper.style.margin = "0 0 2vh 0";
 
             ResetXPlayerWrapper(3);
 
@@ -1050,7 +1053,7 @@ socket.on('SecondPlayer_Joined', message => {
     // if the second player rejoins and the third player is still there
     if (message[5] != "" && message[5] != 'thirdPlayer_RequestsData') {
         // Lobby_ThirdPlayer_Wrapper.style.display = "flex";
-        Lobby_FirstPlayer_Wrapper.style.margin = "0 0 100px 0";
+        Lobby_FirstPlayer_Wrapper.style.margin = "0 0 2vh 0";
         // Display third player with his data
         DisplayXPlayer(3, message[5]);
     };
@@ -1065,7 +1068,7 @@ socket.on('ThirdPlayer_Joined', message => {
     Lobby_SecondPlayer_Wrapper.style.display = "flex";
 
     // display first player in the right way
-    Lobby_FirstPlayer_Wrapper.style.margin = "0 0 100px 0";
+    Lobby_FirstPlayer_Wrapper.style.margin = "0 0 2vh 0";
 
     // display data from third player
     DisplayXPlayer(3, message[0])
@@ -1121,6 +1124,7 @@ socket.on('INFORM_user_left_game', () => {
         // so user can select game code with mouse
         Lobby_GameCode_display.style.userSelect = 'text';
         Lobby.style.background = "";
+        theme.start();
 
         DarkLayer.style.display = 'block';
 
@@ -1164,6 +1168,7 @@ socket.on('INFORM_blocker_left_game', () => {
         friendLeft_text.textContent = 'The blocker left the game';
         Lobby_GameCode_display.style.userSelect = 'text';
         Lobby.style.background = "";
+        theme.start();
 
         DarkLayer.style.display = 'block';
 
@@ -1283,6 +1288,14 @@ socket.on('StartGame', (RoomData) => { // RoomData
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
         PlayerTimer, player1_advancedIcon, player2_advancedIcon, player1_SkinColor, player2_SkinColor, player3_name
     ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY], costumPatterns);
+
+    OnlinePlayerIDs = {
+        1: RoomData[0].player1_id,
+        2: RoomData[0].player2_id,
+        3: RoomData[0].player3_id
+    };
+
+    online_level_scene.style.display = "none";
 
     // play theme music 
     PauseMusic();

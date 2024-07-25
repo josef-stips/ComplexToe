@@ -34,6 +34,12 @@ let PlayerData = {
     },
 };
 
+let OnlinePlayerIDs = {
+    1: null,
+    2: null,
+    3: null
+};
+
 let GameData = {
     "InnerGameMode": "",
     "PlayerClock": "",
@@ -125,6 +131,8 @@ let patterns_used = [];
 let all_game_moves = [];
 let cell_indexes_blocked_by_blocker = [];
 
+let CreativeLevel_from_onlineMode_costumPatterns_globalVar = null;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -140,6 +148,14 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     player2_lastBarRelation = 0;
     player1_lastBarRelation = 0;
+
+    CreativeLevel_from_onlineMode_costumPatterns_globalVar = CreativeLevel_from_onlineMode_costumPatterns;
+
+    OnlinePlayerIDs = {
+        1: null,
+        2: null,
+        3: null
+    };
 
     for (const i of arguments) {
         allGameData.push(i);
@@ -880,7 +896,7 @@ const SetBGColorForCurrentField = (xy) => {
         };
 
     } else {
-        Lobby.style.background = "unset";
+        Lobby.style.background = "";
     };
 };
 

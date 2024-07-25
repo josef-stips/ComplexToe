@@ -362,7 +362,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
         editItemsWrapper.appendChild(checkBox);
 
         gridWrapper.setAttribute("right", "personal");
-        gridWrapper.style.fontSize = "xxx-large";
+        gridWrapper.style.fontSize = "3vh";
 
     } else if (rights == "level") {
 
@@ -372,7 +372,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
 
         editItemsWrapper.appendChild(bin2);
         gridWrapper.setAttribute("right", "remove");
-        gridWrapper.style.fontSize = "xxx-large";
+        gridWrapper.style.fontSize = "3vh";
     };
 
     setTimeout(() => {

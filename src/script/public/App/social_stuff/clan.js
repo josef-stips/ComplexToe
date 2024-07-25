@@ -1531,19 +1531,24 @@ class clan_handler {
             this.title("popular clans");
             clan_search_input.value = null;
 
-            socket.emit("popular_clans", results => {
-                console.log(results);
+            clan_search_list.textContent = null;
+            clan_search_list.append(fetch_spinner);
+            fetch_spinner.setAttribute('in_use', 'true');
 
+            socket.emit("popular_clans", results => {
+                // console.log(results);
                 if (!results) {
                     this.placeholder_text();
                     return;
                 };
 
-                clan_search_list.textContent = null;
+                setTimeout(() => {
+                    fetch_spinner.setAttribute('in_use', 'false');
 
-                results.map(result => {
-                    this.item(result);
-                });
+                    results.map(result => {
+                        this.item(result);
+                    });
+                }, 600);
             });
 
         } catch (error) {

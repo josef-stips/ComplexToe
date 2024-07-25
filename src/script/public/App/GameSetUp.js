@@ -417,7 +417,8 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
-            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells
+            localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
+            Number(localStorage.getItem("PlayerID"))
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
@@ -506,7 +507,7 @@ const UserTriesToEnterOnlineGame = () => {
         // console.log(personal_GameData.role)
 
         socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim(),
-            localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role
+            localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role, Number(localStorage.getItem("PlayerID"))
         ], (m) => {
             // If user name is equal to admins name
             if (m == 'Choose a different name!') {

@@ -177,7 +177,8 @@ const TryToCloseUserInfoPopUp = () => {
         getComputedStyle(comments_pop_up).display == "flex" ||
         getComputedStyle(scoreboard_pop_up).display == "flex" ||
         getComputedStyle(SearchPlayerPopUp).display == "flex" ||
-        getComputedStyle(FriendsListPopUp).display == "flex") {
+        getComputedStyle(FriendsListPopUp).display == "flex" ||
+        getComputedStyle(gameLog_popUp).display != "none") {
 
         DarkLayer.style.display = "block";
 

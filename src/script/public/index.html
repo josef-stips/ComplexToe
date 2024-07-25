@@ -288,13 +288,17 @@
 
                         <div class="best_player_scene" scene="Best Players">
 
+                            <div class="best_players_filter_wrapper">
+                                <i class="best_player_filter" list_filter_type="XP" active_filter="false">XP</i>
+                                <i class="best_player_filter fa-solid fa-trophy" list_filter_type="Games" active_filter="false"></i>
+                            </div>
+
+                            <div class="box_tab_header">
+                                <div class="tab best_player_tab" active_tap="true" players_type="global">Global players</div>
+                                <div class="tab best_player_tab" players_type="local">Friends</div>
+                            </div>
+
                             <div class="default_search_box best_player_box">
-
-                                <div class="default_sb_header">
-                                    <div class="tab best_player_tab" active_tap="true"></div>
-                                    <div class="tab best_player_tab"></div>
-                                </div>
-
                                 <div class="default_sb_main best_players_sb_main">
                                     <div class="default_sb_main_inner best_players_wrapper">
                                         <ul class="default_sb_list best_players_list">
@@ -3595,12 +3599,7 @@
 
                         <div class="LevelList_main">
 
-                            <div style="width: 100%;
-                            height: 90%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            flex-direction: column;">
+                            <div class="levellist_wrapper">
                                 <span class="CurrentSelectedLevel_Display">selected level: </span>
 
                                 <ul class="LevelList_list">
@@ -3608,11 +3607,7 @@
                                 </ul>
                             </div>
 
-                            <div style="    width: 97%;
-                            height: max-content;
-                            display: flex;
-                            justify-content: space-between;
-                            margin: 0 0 5px 0;height: 10%;align-items: end;">
+                            <div class="creative_level_footer_details">
                                 <div class="LevelList_createDateDisplay">creation date </div>
                                 <div class="LevelList_PublishStatusDisplay">published</div>
                             </div>
@@ -7550,7 +7545,7 @@
             <div class="tab_content_main_wrapper" style="position: relative;">
 
                 <div class="tab_content" tab_content="11">
-                    <div class="CreateLevelSceneButton CreateCostumField_btn" style="margin: 20px 0 0 20px;align-self: flex-start;">
+                    <div class="CreateLevelSceneButton CreateCostumField_btn" style="margin: 1vh 0 0 1vw;align-self: flex-start;">
                         Create costum field
                     </div>
 
@@ -7565,7 +7560,7 @@
                             </div>
                         </div>
 
-                        <div class="costum_ui_column" style="border-left: 2px solid var(--line-color);border-left-style: dashed;">
+                        <div class="costum_ui_column" style="border-left: 0.5vh solid var(--line-color);border-left-style: dashed;">
                             <h1 class="PatternsInStorageText">Field used in this level</h1>
                             <br>
 
@@ -7577,7 +7572,7 @@
 
                             <div class="SelectedCostumFieldText" style="
                             position: absolute;
-                            bottom: 0px;
+                            bottom: -3%;
                             right: 0;
                             display: block;
                             left: 50%;">
@@ -7590,13 +7585,13 @@
                 </div>
 
                 <div class="tab_content" tab_content="12">
-                    <div class="CreateLevelSceneButton CreateCostumPattern_btn" style="margin: 20px 0 0 20px;align-self: flex-start;">
+                    <div class="CreateLevelSceneButton CreateCostumPattern_btn" style="margin: 1vh 0 0 1vw;align-self: flex-start;">
                         Create costum pattern
                     </div>
 
                     <div class="costum_pattern_ui">
 
-                        <div class="costum_ui_column" style="border-left: 2px solid var(--line-color);order:2;border-left-style: dashed;">
+                        <div class="costum_ui_column" style="border-left: 0.5vh solid var(--line-color);order:2;border-left-style: dashed;">
                             <h1 class="PatternsUsedInTheLevelText">Patterns used in the level</h1>
                             <br>
 
@@ -8373,8 +8368,12 @@
 
             <ul class="gameLog_list">
 
-                <li class="gameLog_entry">
+                <!-- <li class="gameLog_entry">
                     <div class="gameLog_entry_bg">
+
+                        <div class="gameLog_entry_bg_field">
+
+                        </div>
 
                     </div>
 
@@ -8385,11 +8384,75 @@
                     <div class="gameLog_entry_wrapper2">
 
                     </div>
-                </li>
+                </li> -->
 
             </ul>
         </div>
     </div>
+
+    <!-- details pop up game entry -->
+    <div class="gameEntry_details_pop_up">
+
+        <div class="gameEntry_details_header">
+            <div></div>
+            <h2>Game Details</h2>
+            <i style="margin: 0 1vw;" class="fa-solid fa-x gameEntry_details_closeBtn default_btn"></i>
+        </div>
+
+        <div class="gameEntry_details_main">
+
+            <ul class="gameEntry_details_list">
+                <li>
+                    <b>game type</b>
+                    <p class="gameEntry_gameType_el">created level</p>
+                </li>
+                <li>
+                    <b>level name</b>
+                    <p class="gameEntry_levelName_el">Arestoteles</p>
+                </li>
+                <li>
+                    <b>level id</b>
+                    <p class="gameEntry_levelID_el">240342</p>
+                </li>
+                <li>
+                    <b>points</b>
+                    <p class="gameEntry_playerPoints_el">Josef : 5 , Claudia : 3</p>
+                </li>
+                <li>
+                    <b>blocker used</b>
+                    <p class="gameEntry_blockerUsed_el">no</p>
+                </li>
+                <li>
+                    <b>field mode</b>
+                    <p class="gameEntry_fieldMode_el"></p>
+                </li>
+                <li>
+                    <b>field size</b>
+                    <p class="gameEntry_fieldSize_el"></p>
+                </li>
+                <li>
+                    <b>patterns used</b>
+                    <p class="gameEntry_patternsUsed_el">hor, vert, L1</p>
+                </li>
+                <li>
+                    <b>game duration</b>
+                    <p class="gameEntry_gameDuration_el">172 sec.</p>
+                </li>
+                <li>
+                    <b>player clock</b>
+                    <p class="gameEntry_playerClock_el">30</p>
+                </li>
+                <li>
+                    <b>points to win</b>
+                    <p class="gameEntry_pointsToWin_el">5</p>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!--  spinner on box -->
+    <i class="fetch_spinner fa-solid fa-spinner"></i>
 
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;left: 0;z-index: 0;display:none;" width="450" height="450">
     <img class="bodyBGIMG" src="./assets/game/piercing-sword.svg" style="position: absolute;bottom: 0;right: 0;z-index: 0;transform:rotate(270deg);display:none;" width="450" height="450">

@@ -1164,5 +1164,5 @@ class themes {
     };
 };
 
-const theme = new themes();
+const theme = new themes()
 theme.start();

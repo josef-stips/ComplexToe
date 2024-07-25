@@ -441,7 +441,6 @@ const FindPatternName = (els_list) => {
     let indexesOriginal = els_list.map(el => Number(el.getAttribute("cell-index")));
 
     let indexes = PatternStructureAsOrigin(boundaries, indexesOriginal, xCell_Amount);
-
     let is_official_pattern = false;
 
     // of this pattern its meta data
@@ -465,6 +464,12 @@ const FindPatternName = (els_list) => {
         };
     };
 
+    // player_levels_handler.online_level_overview_handler only works for the admin in an online game
+    if (player_levels_handler.online_level_overview_handler && !pattern_name && !is_official_pattern) {
+        let pattern_as_field5x5 = structureAsNxNstructure(indexes, 5, boundaries);
+        pattern_name = find_costum_pattern_name_with_structure(JSON.parse(player_levels_handler.online_level_overview_handler.level.costum_patterns), pattern_as_field5x5);
+    };
+
     return pattern_name;
 };
 
@@ -478,6 +483,8 @@ const recentUsedPattern_add = (els_list) => { // els_list = array with the cell 
 
     // win pattern with origin indexes of a NxN field
     let indexes = PatternStructureAsOrigin(boundaries, indexesOriginal, xCell_Amount);
+
+    console.log(indexes);
 
     let is_official_pattern = false;
 
@@ -647,4 +654,13 @@ const LobbyInitAnimation = () => {
         document.querySelector(".lobby-cards-header-left").style.animation = "none";
         [...document.querySelectorAll(".homeLobby-iconBtn")].map(el => el.style.animation = "none");
     }, 1200);
+};
+
+function find_costum_pattern_name_with_structure(data, array) {
+    for (let key in data) {
+        if (JSON.stringify(PatternStructureAsOrigin(boundaries, data[key][key].structure, 5)) === JSON.stringify(array)) {
+            return data[key][key].name;
+        };
+    };
+    return null;
 };

@@ -279,14 +279,14 @@ function formatDate(dateString) {
     ];
 
     const date = new Date(dateString);
-    const month = months[date.getUTCMonth()]; // 'June'
-    const day = String(date.getUTCDate()).padStart(2, '0'); // '10'
-    const year = date.getUTCFullYear(); // '2024'
+    const month = months[date.getMonth()]; // 'June'
+    const day = String(date.getDate()).padStart(2, '0'); // '10'
+    const year = date.getFullYear(); // '2024'
 
-    let hours = date.getUTCHours();
-    const minutes = String(date.getUTCMinutes()).padStart(2, '0'); // '48'
-    const seconds = String(date.getUTCSeconds()).padStart(2, '0'); // '29'
-    const milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0'); // '617'
+    let hours = date.getHours(); // Verwende lokale Stunden statt UTC Stunden
+    const minutes = String(date.getMinutes()).padStart(2, '0'); // '48'
+    const seconds = String(date.getSeconds()).padStart(2, '0'); // '29'
+    const milliseconds = String(date.getMilliseconds()).padStart(3, '0'); // '617'
 
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
@@ -294,7 +294,7 @@ function formatDate(dateString) {
 
     const formattedDate = `${month} ${day}, ${year}, ${hours}:${minutes} ${ampm}`;
     return formattedDate;
-};
+}
 
 const roll_animation = (item, class_item) => {
     item.addEventListener('mouseenter', () => {
@@ -319,6 +319,13 @@ function close_all_scenes() {
 function chat_scroll_to_bottom(behavior, chat) {
     chat.scrollTo({
         top: chat.scrollHeight,
+        behavior: behavior
+    });
+};
+
+function chat_scroll_to_top(behavior, chat) {
+    chat.scrollTo({
+        top: 0,
         behavior: behavior
     });
 };
