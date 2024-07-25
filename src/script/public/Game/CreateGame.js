@@ -384,9 +384,9 @@ class NewLevel {
         span.style.fontWeight = '600';
 
         if (level.level_name.length >= 18) {
-            span.style.fontSize = "3vh";
-        } else {
             span.style.fontSize = "4vh";
+        } else {
+            span.style.fontSize = "5vh";
         };
 
         let span1 = document.createElement("span");

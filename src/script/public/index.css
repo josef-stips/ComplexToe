@@ -6897,8 +6897,8 @@ h1.stars_pop_up_title {
 .LevelList_main {
     display: flex;
     width: 100%;
-    /* min-height: 65vh; */
-    /* max-height: 65vh; */
+    min-height: 65vh;
+    max-height: 65vh;
     height: 100%;
     justify-content: flex-end;
     align-items: center;
@@ -6992,6 +6992,7 @@ span.LevelIconWrapper img {
     font-size: 3vh;
     box-shadow: inset 0 0 1vw rgba(0, 0, 0, 0.5);
     cursor: pointer;
+    padding: 1.5vh 0;
 }
 
 .LevelIconWrapper {
@@ -7049,7 +7050,7 @@ span.LevelIconWrapper img {
     align-items: end;
     justify-content: end;
     font-size: 2vh;
-    margin: 0 25px 5px 0;
+    margin: 0 1vw -2vh 0;
     gap: 1vh;
 }
 
