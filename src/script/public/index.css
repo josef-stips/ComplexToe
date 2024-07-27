@@ -2787,6 +2787,18 @@ label h3 {
     background-color: var(--bg-app-color);
 }
 
+.lobby_player_kick_btn {
+    display: none !important;
+}
+
+.lobby_player_kick_btn[active_dis="true"] {
+    display: flex !important;
+}
+
+.lobby_player_kick_btn[active_dis="false"] {
+    display: none !important;
+}
+
 #CodeName_PopUpHeader {
     width: 100%;
     height: 10%;
@@ -9981,6 +9993,8 @@ p.createCostumField_yInput {
     top: calc(100% - 30vh - 1vh);
     height: 5vh;
     width: 7.5vw;
+    max-width: 10vw;
+    min-width: max-content;
     display: flex;
     align-items: center;
     justify-content: start;
@@ -9991,7 +10005,8 @@ p.createCostumField_yInput {
     user-select: none;
     background-color: var(--bg-app-color);
     font-size: 3vh;
-    padding: 1vh 4vw;
+    padding: 1vh 1vw;
+    gap: 1vw;
 }
 
 .level_scene_music_name {

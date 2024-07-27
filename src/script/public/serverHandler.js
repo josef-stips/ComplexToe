@@ -1020,6 +1020,10 @@ socket.on('Admin_Created_And_Joined', message => {
 socket.on('SecondPlayer_Joined', message => {
     console.log("Second Player joined: ", message);
 
+    if (personal_GameData.role == 'admin') {
+        kick_second_player_btn.setAttribute("active_dis", "true");
+    };
+
     // set for second and (third player if he joins) the "inGame" status to the current game id which means true
     socket.emit("setPlayerInRoomStatus", localStorage.getItem("PlayerID"), personal_GameData.currGameID);
 
@@ -1063,6 +1067,10 @@ socket.on('SecondPlayer_Joined', message => {
 socket.on('ThirdPlayer_Joined', message => {
     console.log("Third player joined: ", message);
 
+    if (personal_GameData.role == 'admin') {
+        kick_third_player_btn.setAttribute("active_dis", "true");
+    };
+
     // display for third player the other players
     Lobby_FirstPlayer_Wrapper.style.display = "flex";
     Lobby_SecondPlayer_Wrapper.style.display = "flex";
@@ -1080,13 +1088,41 @@ socket.on('ThirdPlayer_Joined', message => {
 });
 
 // When the normal user leaves the game, the other player need to be informed by that
-socket.on('INFORM_user_left_room', () => {
+socket.on('INFORM_user_left_room', (kick_action) => {
+
+    if (personal_GameData.role == 'user') {
+        Lobby_closeBtn.click();
+
+        if (!kick_action) return;
+
+        AlertText.textContent = 'You got kicked out of the lobby';
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    };
+
+    if (personal_GameData.role == 'admin') {
+        kick_second_player_btn.setAttribute("active_dis", "false");
+    };
+
     // The other players see this after the user left:
     ResetXPlayerWrapper(2);
 });
 
 // When the third player (blocker) leaves the game, the other player need to be informed by that
-socket.on('INFORM_blocker_left_room', () => {
+socket.on('INFORM_blocker_left_room', (kick_action) => {
+
+    if (personal_GameData.role == 'blocker') {
+        Lobby_closeBtn.click();
+
+        if (!kick_action) return;
+
+        AlertText.textContent = 'You got kicked out of the lobby';
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+    };
+
+    if (personal_GameData.role == 'admin') {
+        kick_third_player_btn.setAttribute("active_dis", "false");
+    };
+
     // The other players see this after the user left:
     ResetXPlayerWrapper(3);
 });
@@ -1106,6 +1142,8 @@ socket.on('INFORM_user_left_game', () => {
     // for the admin and blocker, they are in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == "blocker") {
         ChangeGameBG(undefined, undefined, true);
+
+        kick_second_player_btn.setAttribute("active_dis", "false");
 
         // display right things
         if (PlayingInCreatedLevel) {
@@ -1153,6 +1191,8 @@ socket.on('INFORM_blocker_left_game', () => {
     // for the admin, he is in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == 'user') {
         ChangeGameBG(undefined, undefined, true);
+
+        kick_third_player_btn.setAttribute("active_dis", "false");
 
         if (PlayingInCreatedLevel) {
             CreateLevelScene.style.display = "flex"
@@ -1579,3 +1619,34 @@ function createNotificationIcon() {
         OnlineChat_btn.appendChild(div);
     };
 };
+
+// kick btns
+kick_second_player_btn.addEventListener('click', () => {
+    socket.emit('kick_user_from_lobby', 'user', personal_GameData.currGameID, cb => {
+
+    });
+});
+
+kick_third_player_btn.addEventListener('click', () => {
+    socket.emit('kick_user_from_lobby', 'blocker', personal_GameData.currGameID, cb => {
+
+    });
+});
+
+// client (user, blocker) gets kick message
+socket.on('lobby_kick', (user_type) => {
+    if (personal_GameData.role == user_type) {
+        Lobby_closeBtn.click();
+        return;
+    };
+
+    if (user_type == 'user') {
+        // The other players see this after the user left:
+        ResetXPlayerWrapper(2);
+    };
+
+    if (user_type == 'blocker') {
+        // The other players see this after the user left:
+        ResetXPlayerWrapper(3);
+    };
+});

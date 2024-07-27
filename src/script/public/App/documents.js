@@ -717,6 +717,9 @@ let best_players_filter_wrapper = document.querySelector(".best_players_filter_w
 let best_player_filter = document.querySelectorAll(".best_player_filter");
 let fetch_spinner = document.querySelector(".fetch_spinner");
 let level_scene_music_name = document.querySelector(".level_scene_music_name");
+let kick_third_player_btn = document.querySelector(".kick_third_player_btn");
+let kick_second_player_btn = document.querySelector('.kick_second_player_btn');
+let lobby_player_kick_btns = document.querySelectorAll('.lobby_player_kick_btn');
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

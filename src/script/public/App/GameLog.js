@@ -115,7 +115,7 @@ class gameLogHandler {
             this.have_to_update = false;
             console.log(cb);
 
-            if (!cb) {
+            if (!cb || cb.length <= 0) {
                 this.load_error("Seems like you have not played a game yet. Every game you played is listed here.");
                 return;
             };
