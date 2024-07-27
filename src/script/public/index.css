@@ -1943,6 +1943,10 @@ li.officialWinPatternsOpenBtn {
     gap: 1vw;
 }
 
+.KIMode-Pattern-horizontal.PatternGridWrapperForCostumPatterns>div.createCostumField_Field_wrapper.costumPatternsOverview_gridWrapper {
+    padding: 0;
+}
+
 
 /* dark layer */
 
@@ -2520,7 +2524,7 @@ label h3 {
     display: flex;
     flex-direction: column;
     gap: 1vh;
-    height: 10%;
+    height: max-content;
     width: 100%;
     padding: 1vh;
 }
@@ -9919,11 +9923,13 @@ p.createCostumField_yInput {
 .level_scene_btn {
     font-size: 3vh;
     transition: transform 0.15s ease-in-out;
-    border-radius: 35px;
+    border-radius: 1vh;
     width: max-content;
     display: flex;
     flex-direction: column;
     gap: 1vh;
+    align-items: center;
+    justify-content: center;
 }
 
 .level_scene_btn:hover {
@@ -9935,8 +9941,14 @@ p.createCostumField_yInput {
 .level_scene_btn>i {
     border: 0.5vh solid;
     padding: 1.8vh;
-    border-radius: 5vh;
+    border-radius: 3vh;
     font-size: 4vh;
+    background: var(--bg-app-color2);
+    width: 2vw;
+    height: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .level_scene_btn>p {

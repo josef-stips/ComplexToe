@@ -428,3 +428,37 @@ function open_reward_animator(el_to_show, amount) {
         });
     });
 };
+
+function addAlphaToColor(color, alpha) {
+    // Überprüfen, ob der Alpha-Wert im gültigen Bereich liegt
+    if (alpha < 0.0 || alpha > 1.0) {
+        throw new Error('Alpha-Wert muss zwischen 0.0 und 1.0 liegen');
+    }
+
+    let r, g, b;
+
+    // Wenn die Farbe im HEX-Format vorliegt
+    if (color.startsWith('#')) {
+        // Entferne das '#' Zeichen
+        color = color.slice(1);
+
+        // Wenn die Farbe im Kurzformat (z.B. #FFF) vorliegt
+        if (color.length === 3) {
+            color = color.split('').map(char => char + char).join('');
+        }
+
+        // Umwandlung der HEX-Farbe in RGB
+        r = parseInt(color.slice(0, 2), 16);
+        g = parseInt(color.slice(2, 4), 16);
+        b = parseInt(color.slice(4, 6), 16);
+    } else if (color.startsWith('rgb(') && color.endsWith(')')) {
+        // Wenn die Farbe im RGB-Format vorliegt
+        const rgbValues = color.slice(4, -1).split(',').map(Number);
+        [r, g, b] = rgbValues;
+    } else {
+        throw new Error('Ungültiges Farbformat. Verwenden Sie entweder HEX oder RGB.');
+    }
+
+    // Rückgabe der Farbe im RGBA-Format
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}

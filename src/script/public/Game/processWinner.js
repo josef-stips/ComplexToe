@@ -71,6 +71,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                 } else {
                     // belongs to second player => first player must be warned
                     if (curr_mode == GameMode[2].opponent) {
+
                         // online mode
                         if (personal_GameData.role == "admin") {
                             CheckmateWarnText.style.display = 'block';
@@ -81,6 +82,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
                     } else {
                         // other mode
                         CheckmateWarnText.style.display = 'block';
+
                         // KI Mode
                         if (curr_mode == GameMode[1].opponent) {
                             if (inAdvantureMode) { // in advanture mode
@@ -1004,7 +1006,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
         // send message to server
         if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won,
-            WinCombination ? JSON.stringify([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))) : undefined, score_Player1_numb, score_Player2_numb
+            WinCombination ? JSON.stringify([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))) : undefined, score_Player1_numb, score_Player2_numb, GameSeconds
         ]);
         return;
 
@@ -1047,26 +1049,25 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             // game entry for offline game of any kind. player vs player / player vs ki / advanture mode (also ki)
             let level_id = player_levels_handler.online_level_overview_handler.level.id;
             let level_icon = player_levels_handler.online_level_overview_handler.level.icon;
-
-            console.log("game seconds: ", GameSeconds);
+            let level_name = player_levels_handler.online_level_overview_handler.level.level_name;
+            let game_mode = inAdvantureMode && curr_mode == GameMode[1].opponent ? 'advanture_mode' : !inAdvantureMode && curr_mode == GameMode[1].opponent ? 'training_arena' : 'fun_offline_game';
 
             let all_game_data_for_log = [
-
                 level_id, // level_id
-                allGameData[2][1], // level name
+                level_name, // level name
                 level_icon, // level icon
-                OnlinePlayerIDs[1], // p1 id
-                OnlinePlayerIDs[2], // p2 id
-                allGameData[2][3], // player 1 name
-                allGameData[2][4], // player 2 name
-                !allGameData[2][11] ? "" : allGameData[2][11], // p2 color
-                !allGameData[2][10] ? "" : allGameData[2][10], // p1 color
-                allGameData[2][8] == "empty" ? allGameData[2][5] : allGameData[2][8], // player 1 icon
-                allGameData[2][9] == "empty" ? allGameData[2][6] : allGameData[2][9], // player 2 icon
-                player1_score, // p1 points
-                player2_score, // p2 points
-                allGameData[2][12] ? true : false, // blocker boolean
-                allGameData[2][12], // blocker name
+                Number(localStorage.getItem("PlayerID")), // p1 id
+                -1, // p2 id // player two has no id (p2 = ki | rnd player on same pc)
+                PlayerData[1].PlayerName, // player 1 name
+                PlayerData[2].PlayerName, // player 2 name
+                curr_mode == GameMode[1].opponent ? 'gold' : 'white', // p2 color
+                localStorage.getItem('userInfoColor'), // p1 color
+                PlayerData[1].AdvancedSkin == "cell empty" ? PlayerData[1].PlayerForm : PlayerData[1].AdvancedSkin.replace('cell', ''), // player 1 icon
+                PlayerData[2].AdvancedSkin == "cell empty" ? PlayerData[2].PlayerForm : PlayerData[2].AdvancedSkin.replace('cell', ''), // player 2 icon
+                score_Player1_numb, // p1 points
+                score_Player2_numb, // p2 points
+                curr_innerGameMode == GameMode[2] ? true : false, // blocker boolean
+                curr_innerGameMode == GameMode[2] ? 'bot' : ' ', // blocker name
                 JSON.stringify(cell_indexes_blocked_by_blocker), // cells blocked by blocker
                 JSON.stringify(patterns_used), // patterns used
                 JSON.stringify([xCell_Amount, yCell_Amount]), // x and y: field_size
@@ -1074,20 +1075,16 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                 bgcolor2, // second bg color
                 GameSeconds, // game duration
                 JSON.stringify(all_game_moves), // moves
-                allGameData[2][7], // player clock
-                allGameData[5], // points to win
+                GameData.PlayerClock, // player clock
+                points_to_win, // points to win
                 JSON.stringify(allGameData[3]), // allowed patterns
-                NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns_globalVar ? 'created_online_level' : 'official_online_level', // game mode,
+                game_mode, // game mode,
                 GameData.InnerGameMode, // field mode
                 killAllDrawnCells, // kill cells after point
                 !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
             ];
 
-            socket.emit("update_gameLog", all_game_data_for_log, cb => {
-                if (!cb) new Error("Something went wrong while inserting into the gamelogs table");
-
-                game_log_handler.have_to_update = true;
-            });
+            game_log_handler.load_to_server(all_game_data_for_log);
 
             setTimeout(() => {
                 cellGrid.style.display = 'none';
@@ -1186,7 +1183,7 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
 
 // the admin called the ultimate game win
 // this message recieve all clients
-socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score) => {
+socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score, gameSeconds) => {
     setTimeout(() => {
 
         // to prevent bugs
@@ -1223,7 +1220,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
             let level_id = player_levels_handler.online_level_overview_handler.level.id;
             let level_icon = player_levels_handler.online_level_overview_handler.level.icon;
 
-            console.log("game seconds: ", GameSeconds);
+            console.log("game seconds: ", gameSeconds);
 
             let all_game_data_for_log = [
 
@@ -1247,7 +1244,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
                 JSON.stringify([xCell_Amount, yCell_Amount]), // x and y: field_size
                 bgcolor1, // first bg color
                 bgcolor2, // second bg color
-                GameSeconds, // game duration
+                gameSeconds, // game duration
                 JSON.stringify(all_game_moves), // moves
                 allGameData[2][7], // player clock
                 allGameData[5], // points to win

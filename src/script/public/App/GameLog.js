@@ -21,13 +21,13 @@ class gameLogHandler {
             this.close();
         });
 
-        gameLog_search_input.addEventListener("keydown", (e) => {
+        gameLog_search_input.addEventListener("keyup", (e) => {
             if (e.key === "Enter") {
                 e.preventDefault();
-                this.search(this.search_query);
 
             } else {
                 this.search_query = e.target.value;
+                this.search(this.search_query);
             };
         });
     };
@@ -44,16 +44,36 @@ class gameLogHandler {
     close() {
         gameLog_popUp.style.display = "none";
         DisplayPopUp_PopAnimation(settingsWindow, "flex", true);
+
+        gameLog_list.textContent = null;
     };
 
     search(query) {
+        this.entries.map((entry, idx) => {
+            console.log(idx, entry);
 
+            if (query.length <= 0) {
+                gameLog_list.children[0].style.borderTop = '0.4vh solid white';
+                entry.list_el.style.display = 'flex';
+                return;
+            };
+
+            if (entry.id != query) {
+                entry.list_el.style.display = 'none'
+                entry.list_el.style.borderTop = 'none';
+
+            } else {
+                entry.list_el.style.display = 'flex';
+                entry.list_el.style.borderTop = '0.4vh solid white';
+            };
+        });
     };
 
     load_to_DOM(logs) {
         gameLog_list.textContent = null;
+        this.log_cache = [];
 
-        logs.map(async entry => {
+        logs.map(async(entry, i) => {
             // add entry data to cache
             this.log_cache.push(entry);
 
@@ -76,13 +96,20 @@ class gameLogHandler {
         });
     };
 
-    load_to_server() {
-
+    load_to_server(all_game_data_for_log) {
+        socket.emit("update_gameLog", all_game_data_for_log, cb => {
+            if (!cb) new Error("Something went wrong while inserting into the gamelogs table");
+            game_log_handler.have_to_update = true;
+        });
     };
 
     load_from_server() {
         this.log_cache = [];
         this.entries = [];
+
+        gameLog_list.textContent = null;
+        gameLog_list.append(fetch_spinner);
+        gameLog_list.setAttribute('in_use', 'true');
 
         socket.emit("load_gameLog", this.self_player_id, cb => {
             this.have_to_update = false;
@@ -93,7 +120,12 @@ class gameLogHandler {
                 return;
             };
 
-            this.load_to_DOM(cb);
+            setTimeout(() => {
+                fetch_spinner.setAttribute('in_use', 'false');
+                gameLog_list.textContent = null;
+                this.load_to_DOM(cb);
+            }, 900);
+
         });
     };
 
@@ -106,92 +138,102 @@ class gameLogEntry {
     constructor(entry_data, entry_handler) {
         this.entry = entry_data;
         this.entry_handler = entry_handler;
+        this.id = entry_data.id;
+        this.list_el = undefined;
     };
 
-    async load() {
-        let opponent_id = this.entry.p1_id == this.entry_handler.self_player_id ? this.entry.p2_id : this.entry.p1_id;
-        console.log(this.entry, opponent_id);
+    load() {
+        return new Promise(async resolve => {
+            let opponent_id = this.entry.p1_id == this.entry_handler.self_player_id ? this.entry.p2_id : this.entry.p1_id;
+            // console.log(this.entry, opponent_id);
 
-        let l_item = document.createElement("li");
-        let div1 = document.createElement("div");
-        let div2 = document.createElement("div");
-        let div2_innerWrapper = document.createElement("div");
-        let div3 = document.createElement("div");
-        let div4 = document.createElement("div");
-        let field_wrapper = document.createElement("div");
-        let opponent_name_el = document.createElement("p");
-        let points_el = document.createElement('p');
-        let btns_list = document.createElement('ul');
-        let list_btn1 = document.createElement('li');
-        let list_btn2 = document.createElement('li');
-        let play_btn = document.createElement('i');
-        let details_btn = document.createElement('i');
-        let date_el = document.createElement('p');
-        let match_won_el = document.createElement('p');
+            let l_item = document.createElement("li");
+            let div1 = document.createElement("div");
+            let div2 = document.createElement("div");
+            let div2_innerWrapper = document.createElement("div");
+            let div3 = document.createElement("div");
+            let div4 = document.createElement("div");
+            let field_wrapper = document.createElement("div");
+            let opponent_name_el = document.createElement("p");
+            let points_el = document.createElement('p');
+            let btns_list = document.createElement('ul');
+            let list_btn1 = document.createElement('li');
+            let list_btn2 = document.createElement('li');
+            let play_btn = document.createElement('i');
+            let details_btn = document.createElement('i');
+            let date_el = document.createElement('p');
+            let match_won_el = document.createElement('p');
 
-        l_item.classList.add('gameLog_entry');
-        div1.classList.add('gameLog_entry_bg');
-        div2.classList.add('gameLog_entry_wrapper1');
-        div3.classList.add('gameLog_entry_wrapper2');
-        field_wrapper.classList.add('gameLog_entry_bg_field');
-        opponent_name_el.classList.add('cursor_pointer');
-        btns_list.classList.add('gameEntry_btns_list');
-        match_won_el.classList.add('gameEntry_match_state_el');
-        div2_innerWrapper.classList.add('gameEntry_wrapper1_inner')
+            l_item.classList.add('gameLog_entry');
+            div1.classList.add('gameLog_entry_bg');
+            div2.classList.add('gameLog_entry_wrapper1');
+            div3.classList.add('gameLog_entry_wrapper2');
+            field_wrapper.classList.add('gameLog_entry_bg_field');
+            opponent_name_el.classList.add('cursor_pointer');
+            btns_list.classList.add('gameEntry_btns_list');
+            match_won_el.classList.add('gameEntry_match_state_el');
+            div2_innerWrapper.classList.add('gameEntry_wrapper1_inner')
 
-        // div1 things
-        generateField_preview(this.entry.field_size[0], this.entry.field_size[1], field_wrapper, null);
-        [...field_wrapper.querySelectorAll(`.cell`)].map(el => el.style.boxShadow = `0 0 0 0.2vh ${this.entry.bg1}`);
+            this.list_el = l_item;
 
-        // div2 things
-        let opponent_data = !this.entry_handler.opponent_data_cache[opponent_id] ? await this.entry_handler.get_data_from_opponent(opponent_id) : this.entry_handler.opponent_data_cache[opponent_id];
+            // div1 things
+            generateField_preview(this.entry.field_size[0], this.entry.field_size[1], field_wrapper, null);
+            [...field_wrapper.querySelectorAll(`.cell`)].map(el => el.style.boxShadow = `0 0 0 0.2vh ${this.entry.bg1}`);
 
-        // load other id also to cache so client has not to load it from the server again
-        await this.entry_handler.get_data_from_opponent(opponent_id == this.entry.p1_id ? this.entry.p2_id : this.entry.p1_id);
+            // div2 things
+            let opponent_data = !this.entry_handler.opponent_data_cache[opponent_id] ? opponent_id != -1 ? await this.entry_handler.get_data_from_opponent(opponent_id) : null : this.entry_handler.opponent_data_cache[opponent_id];
 
-        div2_innerWrapper.textContent = `Match vs\xa0`;
+            // load other id also to cache so client has not to load it from the server again
+            await this.entry_handler.get_data_from_opponent(opponent_id == this.entry.p1_id ? this.entry.p2_id : this.entry.p1_id);
 
-        opponent_name_el.textContent = `${opponent_data.player_name}`;
-        opponent_name_el.style.color = `${this.entry.bg1}`;
-        points_el.textContent = opponent_id != this.entry.p1_id ? `\xa0 ${this.entry.p1_points} : ${this.entry.p2_points}` : `\xa0 ${this.entry.p2_points} : ${this.entry.p1_points}`;
+            div2_innerWrapper.textContent = `Match vs\xa0`;
 
-        match_won_el.textContent = opponent_id != this.entry.p1_id ? this.entry.p1_points > this.entry.p2_points ? `match won` : `match lost` : `match lost`;
+            opponent_name_el.textContent = `${this.entry.p2_name}`;
+            opponent_name_el.style.color = `${this.entry.bg1}`;
+            points_el.textContent = opponent_id != this.entry.p1_id ? `\xa0 ${this.entry.p1_points} : ${this.entry.p2_points}` : `\xa0 ${this.entry.p2_points} : ${this.entry.p1_points}`;
 
-        opponent_name_el.addEventListener('click', () => {
-            ClickedOnPlayerInfo(opponent_data);
+            match_won_el.textContent = opponent_id != this.entry.p1_id ? this.entry.p1_points > this.entry.p2_points ? `match won` : `match lost` : `match lost`;
+
+            play_btn.className = 'fas fa-play default_btn';
+            details_btn.className = 'fa-solid fa-ellipsis-vertical default_btn';
+
+            // div3 things
+            date_el.textContent = `played on ${formatDate(this.entry.match_date)} |\xa0 entry ID: ${this.entry.id}`;
+
+            div1.appendChild(field_wrapper);
+            div2_innerWrapper.appendChild(opponent_name_el);
+            div2_innerWrapper.appendChild(points_el);
+            div2_innerWrapper.appendChild(btns_list);
+            btns_list.appendChild(list_btn1);
+            btns_list.appendChild(list_btn2);
+            list_btn1.appendChild(play_btn);
+            list_btn2.appendChild(details_btn);
+            div2.appendChild(div2_innerWrapper);
+            div2.appendChild(match_won_el);
+            l_item.appendChild(div1);
+            l_item.appendChild(div2);
+            l_item.appendChild(div3);
+            div3.appendChild(date_el);
+            gameLog_list.appendChild(l_item);
+
+            opponent_name_el.addEventListener('click', () => {
+                opponent_id != -1 && ClickedOnPlayerInfo(opponent_data);
+            });
+
+            details_btn.addEventListener('click', async() => {
+                DisplayPopUp_PopAnimation(gameEntry_details_pop_up, "flex", true);
+                gameLog_popUp.style.display = "none";
+
+                await this.open_details(this.entry);
+
+                resolve();
+            });
         });
-
-        details_btn.addEventListener('click', () => {
-            DisplayPopUp_PopAnimation(gameEntry_details_pop_up, "flex", true);
-            gameLog_popUp.style.display = "none";
-
-            this.open_details(this.entry);
-        });
-
-        play_btn.className = 'fas fa-play default_btn';
-        details_btn.className = 'fa-solid fa-ellipsis-vertical default_btn';
-
-        // div3 things
-        date_el.textContent = `played on ${formatDate(this.entry.match_date)} |\xa0 entry ID: ${this.entry.id}`;
-
-        div1.appendChild(field_wrapper);
-        div2_innerWrapper.appendChild(opponent_name_el);
-        div2_innerWrapper.appendChild(points_el);
-        div2_innerWrapper.appendChild(btns_list);
-        btns_list.appendChild(list_btn1);
-        btns_list.appendChild(list_btn2);
-        list_btn1.appendChild(play_btn);
-        list_btn2.appendChild(details_btn);
-        div2.appendChild(div2_innerWrapper);
-        div2.appendChild(match_won_el);
-        l_item.appendChild(div1);
-        l_item.appendChild(div2);
-        l_item.appendChild(div3);
-        div3.appendChild(date_el);
-        gameLog_list.appendChild(l_item);
     };
 
     async open_details(entry) {
+        let p2_final_name = entry.p2_id != -1 ? this.entry_handler.opponent_data_cache[entry.p2_id].player_name : entry.p2_name;
+
         gameEntry_gameType_el.textContent = entry.game_mode;
         gameEntry_pointsToWin_el.textContent = entry.points_to_win;
         gameEntry_fieldMode_el.textContent = entry.field_mode;
@@ -202,7 +244,7 @@ class gameLogEntry {
         gameEntry_levelName_el.textContent = `${entry.level_name}`;
         gameEntry_levelID_el.textContent = `${entry.level_id}`;
         gameEntry_playerPoints_el.textContent = `
-            ${this.entry_handler.opponent_data_cache[entry.p1_id].player_name} : ${entry.p1_points}, ${this.entry_handler.opponent_data_cache[entry.p2_id].player_name} : ${entry.p2_points}
+            ${this.entry_handler.opponent_data_cache[entry.p1_id].player_name} : ${entry.p1_points}, ${p2_final_name} : ${entry.p2_points}
         `;
         gameEntry_blockerUsed_el.textContent = `${entry.p3_id == -1 ? "nope" : await this.player3_name_display(entry.p3_id)}`;
 

@@ -510,6 +510,8 @@ class levelPatternsOverviewHandler {
 
                 if (this.level_all_pattern_names.includes(cb)) {
                     createPattern_preview(name, structure, level_avg_inner_wrapper, "level");
+
+                    level_avg_inner_wrapper.children[0].style.padding = 'unset';
                 };
             });
 

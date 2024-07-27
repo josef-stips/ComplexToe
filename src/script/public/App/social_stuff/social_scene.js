@@ -275,13 +275,14 @@ class player_levels_handler_wrapper extends NewLevel {
         li.classList = "player_level_result_item";
 
         let level_theme = (level.bg1 == "0") ? "white" : this.PossibleColors[parseInt(level.bg1)];
+        let secondary_color = (level.bg2 == "0") ? "white" : this.PossibleColors[parseInt(level.bg2)];
 
         let span = document.createElement("span");
         span.textContent = level.level_name;
         span.style.color = level_theme;
 
         if (level.level_name.length >= 18) {
-            span.style.fontSize = "var(--Text-font-size)";
+            span.style.fontSize = "4vh";
         } else {
             span.style.fontSize = "6vh";
         };
@@ -289,6 +290,7 @@ class player_levels_handler_wrapper extends NewLevel {
         let span1 = document.createElement("span");
         span1.classList = "LevelIconWrapper"
         span1.style.border = `0.7vh solid ${level_theme}`;
+        li.style.background = `${addAlphaToColor(secondary_color, 0.15)}`;
 
         let div1 = document.createElement("div");
         let div2 = document.createElement("div");
@@ -298,6 +300,7 @@ class player_levels_handler_wrapper extends NewLevel {
 
         div1.classList = "LevelListItem_InnerWrapper1";
         div2.classList = "LevelListItem_InnerWrapper2";
+        div2.style.marginBottom = '1vh';
 
         // Display from which player the level is. User can also click on the name of player to look at this profile
         if (correspondPlayer) {
@@ -401,6 +404,7 @@ class recentPlayersHandler {
             await socket.emit("get_recent_players", cb => {
                 setTimeout(() => {
                     fetch_spinner.setAttribute('in_use', 'false');
+                    recent_players_list.textContent = null;
                     this.load(cb);
                 }, 500);
             });
@@ -543,6 +547,7 @@ class bestPlayersHandler {
             socket.emit(`top_100_players_${this.players_type}`, Number(localStorage.getItem("PlayerID")), this.filter, (cb) => {
                 setTimeout(() => {
                     fetch_spinner.setAttribute('in_use', 'false');
+                    best_players_list.textContent = null;
                     this.load(cb);
                 }, 500);
             });
