@@ -9822,6 +9822,7 @@ p.createCostumField_yInput {
     justify-content: flex-start;
     margin: 30vh 2vh 0 0;
     align-items: flex-end;
+    position: relative;
 }
 
 .online_level_scene_wrapper[pos="center"] {
@@ -9916,10 +9917,6 @@ p.createCostumField_yInput {
     font-size: 4vh;
 }
 
-.level_scene_player_conquered_btn {}
-
-.level_scene_common_pattern_btn {}
-
 .level_scene_btn {
     font-size: 3vh;
     transition: transform 0.15s ease-in-out;
@@ -9977,6 +9974,29 @@ p.createCostumField_yInput {
 .active_like_btn:hover {
     transform: unset !important;
     transition: unset !important;
+}
+
+.level_scene_music_name_display {
+    position: absolute;
+    top: calc(100% - 30vh - 1vh);
+    height: 5vh;
+    width: 7.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin: 0 0 0 1vw;
+    border: 0.4vh solid white;
+    border-radius: 3vh;
+    pointer-events: none;
+    user-select: none;
+    background-color: var(--bg-app-color);
+    font-size: 3vh;
+    padding: 1vh 4vw;
+}
+
+.level_scene_music_name {
+    color: white;
+    font-weight: 500;
 }
 
 

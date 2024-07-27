@@ -716,6 +716,7 @@ let best_player_tabs = document.querySelectorAll('.best_player_tab');
 let best_players_filter_wrapper = document.querySelector(".best_players_filter_wrapper");
 let best_player_filter = document.querySelectorAll(".best_player_filter");
 let fetch_spinner = document.querySelector(".fetch_spinner");
+let level_scene_music_name = document.querySelector(".level_scene_music_name");
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

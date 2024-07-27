@@ -15,6 +15,7 @@ class onlineLevelOverviewHandler {
 
         this.init_DOM();
         this.init_grid();
+        this.init_music_display();
         await this.init_personal_data_for_level();
         this.events();
 
@@ -84,6 +85,12 @@ class onlineLevelOverviewHandler {
 
         online_level_scene_title.textContent = this.level["level_name"];
         online_level_scene_author.textContent = `by ${this.author["player_name"]}`;
+    };
+
+    init_music_display() {
+        // console.log(player_levels_handler.Settings.bgmusic[this.level.bg_music].replace(/assets\/Maps\/\.mp3/g, ''), player_levels_handler.Settings.bgmusic[this.level.bg_music]);
+        let new_text = player_levels_handler.Settings.bgmusic[this.level.bg_music];
+        level_scene_music_name.textContent = new_text.replace('assets/Maps/', '').replace('.mp3', '').trim();
     };
 
     init_level_BG() {
