@@ -203,6 +203,7 @@ function AppInit() {
     checkForSettings();
     DisplayUserID();
     localItems();
+    other();
 
     // dev.
     // setTimeout(() => {
@@ -211,6 +212,18 @@ function AppInit() {
     // }, 2000);
 
     return 10;
+};
+
+function other() {
+    OnlineGame_Lobby.appendChild(OnlineChat_btn.cloneNode(true));
+    OnlineGame_Lobby.querySelector('.OnlineChat_btn').style = `
+    top: 10%;
+    right: -20%;
+    font-size: 6vh;`
+
+    OnlineGame_Lobby.querySelector('.OnlineChat_btn').addEventListener('click', () => {
+        open_chat_window();
+    });
 };
 
 function checkForSettings() {

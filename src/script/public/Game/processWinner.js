@@ -1105,7 +1105,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
     };
 };
 
-// player 1 won online gamef
+// player 1 won online game
 const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination) => {
     if (curr_mode == GameMode[2].opponent) { // online friend 
         // only the user which is the winner in this case, earns skill points
@@ -1114,7 +1114,9 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
         };
 
         if (personal_GameData.role == 'user') {
-            minus_SkillPoints(5);
+            let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[1] / PlayerXP[2]) / -1;
+
+            minus_SkillPoints(Math.floor(5 * XP_multiplicator));
             UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
         };
     };
@@ -1132,7 +1134,9 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
         };
 
         if (personal_GameData.role == 'admin') {
-            minus_SkillPoints(5);
+            let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[1] / PlayerXP[2]) / -1;
+
+            minus_SkillPoints(Math.floor(5 * XP_multiplicator));
             UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
         };
     };
@@ -1145,7 +1149,16 @@ const OnlineGame_UltimateWin_GG = (player1_won, player2_won, WinCombination) => 
 
 // code to execute for the player who won in online game
 function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
-    setNew_SkillPoints(10);
+    let XP_multiplicator;
+
+    if (player2_won) {
+        XP_multiplicator = PlayerXP[1] != null && PlayerXP[1] / PlayerXP[2];
+
+    } else if (Player1_won) {
+        XP_multiplicator = PlayerXP[1] != null && PlayerXP[2] / PlayerXP[1];
+    };
+
+    setNew_SkillPoints(Math.floor(10 * XP_multiplicator));
 
     UltimateWinAnimation(`You won it `);
 

@@ -2080,7 +2080,7 @@ li.officialWinPatternsOpenBtn {
     font-size: 5vh;
     font-weight: 600;
     margin: 0 0.5em 0.75em 0;
-    padding: 10px;
+    padding: 1vh;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -2868,7 +2868,7 @@ label h3 {
     width: 55%;
     height: 20%;
     border: none;
-    border-bottom: 2px white solid;
+    border-bottom: 0.4vh white solid;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2880,9 +2880,17 @@ label h3 {
 .OnlineGameLobby_alertText {
     display: none;
     color: red;
-    font-size: 18px;
+    font-size: 2.5vh;
     font-weight: 500;
     margin: 0 0.5em 0.5em 0;
+}
+
+.InnerGameMode_NegativeSwitcher {
+    display: none !important;
+}
+
+.InnerGameMode_PositiveSwitcher {
+    display: none !important;
 }
 
 
@@ -3192,7 +3200,7 @@ label h3 {
 }
 
 .friendLeft_OK_btn:hover {
-    border: 2px solid var(--hover-item);
+    border: 0.4vh solid var(--hover-item);
     transition: all 0.1s ease-in-out;
 }
 
@@ -5336,9 +5344,8 @@ h1.stars_pop_up_title {
 .Chat {
     width: 85%;
     height: 80%;
-    border: 3px solid var(--line-color);
-    border: 3px solid var(--line-color);
-    border-radius: 30px;
+    border: 0.5vh solid var(--line-color);
+    border-radius: 4vh;
     background-color: var(--bg-app-color);
     z-index: 1000;
     position: absolute;
@@ -5354,13 +5361,13 @@ h1.stars_pop_up_title {
 }
 
 .ChatHeader {
-    font-size: 22.5px;
+    font-size: 3vh;
     height: 10%;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid white;
+    border-bottom: 0.5vh solid var(--line-color);
 }
 
 .closeChat_btn {
@@ -5396,34 +5403,34 @@ h1.stars_pop_up_title {
     justify-content: start;
     align-items: start;
     overflow: auto;
-    border-bottom: 2px solid white;
+    border-bottom: 0.5vh solid var(--line-color);
 }
 
 .message {
     width: 100%;
     min-height: 5%;
-    font-size: 22px;
-    border-bottom: 2px solid white;
-    padding: 10px 0 10px 0;
+    font-size: 3vh;
+    border-bottom: 0.5vh solid white;
+    padding: 1vh 0 1vh 0;
 }
 
 .messageFrom {
-    font-size: 25px;
+    font-size: 3vh;
     font-weight: 500;
-    padding: 10px 0 0 10px;
+    padding: 1vh 0 0 1vw;
     text-align: start;
 }
 
 .ChatMessage {
     outline: none;
-    font-size: 25px;
+    font-size: 3vh;
     font-weight: 600;
     margin: 0 0 0 0.5em;
-    padding: 0 0 10px 0;
+    padding: 0 0 1vh 0;
     width: 100%;
     height: 20%;
     border: none;
-    border-bottom: 2px white solid;
+    border-bottom: 0.5vh white solid;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -5435,12 +5442,12 @@ h1.stars_pop_up_title {
 .Submit_chatMessageBtn {
     outline: none;
     color: #121518;
-    border: 2px solid white;
-    border-radius: 20px;
+    border: 0.4vh solid white;
+    border-radius: 4vh;
     font-weight: 400;
-    margin-right: 35px;
-    padding: 5px 20px 5px 20px;
-    font-size: 30px;
+    margin-right: 2vw;
+    padding: 1vh 2vw;
+    font-size: 3vh;
     cursor: pointer;
     background: unset;
     font-weight: 600;
@@ -5449,7 +5456,7 @@ h1.stars_pop_up_title {
 
 .Submit_chatMessageBtn:hover {
     transition: all 0.1s ease-in-out;
-    border: 2px solid var(--hover-item);
+    border: 0.5vh solid var(--hover-item);
 }
 
 .messageText {
@@ -5469,19 +5476,20 @@ h1.stars_pop_up_title {
 }
 
 .notification-icon {
-    width: 20px;
-    height: 20px;
+    width: 1vw;
+    height: 1vw;
     background-color: red;
-    border-radius: 40px;
-    border: 1px red solid;
+    border-radius: 100%;
+    border: 0.1vw red solid;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     position: absolute;
-    top: 17px;
-    right: -5px;
-    font-size: 12px;
+    top: 1vh;
+    right: -0.7vw;
+    font-size: 1.5vh;
+    padding: 0.1vw;
 }
 
 
@@ -5505,23 +5513,25 @@ h1.stars_pop_up_title {
     margin: auto auto auto auto;
     top: 0;
     bottom: 0;
+    font-size: 2.5vh;
     right: 0;
     left: 0;
-    width: 35%;
-    height: 30%;
-    border: 2px solid var(--font-color);
+    width: 55%;
+    height: 50%;
+    border: 0.5vh solid var(--font-color);
     color: var(--font-color);
-    border-radius: 25px;
+    border-radius: 4vh;
     background-color: var(--bg-app-color);
     z-index: 10001;
     display: none;
     flex-direction: column;
+    align-items: center;
 }
 
 .giveUp_header {
-    height: 10%;
-    width: 100%;
-    border-bottom: 2px solid var(--font-color);
+    height: 15%;
+    width: 94%;
+    border-bottom: 0.5vh solid var(--font-color);
     display: flex;
     align-items: center;
     justify-content: end;
@@ -5543,8 +5553,8 @@ h1.stars_pop_up_title {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 60%;
-    font-size: 26px;
+    height: 45%;
+    font-size: 3vw;
 }
 
 .giveUp_footer {
@@ -5556,10 +5566,10 @@ h1.stars_pop_up_title {
 }
 
 .giveUpChooseBtn {
-    padding: 5px 15px;
-    font-size: 22px;
-    border-radius: 20px;
-    border: 2px solid var(--font-color);
+    padding: 1vh 1vw;
+    font-size: 3vw;
+    border-radius: 3vh;
+    /* border: 0.4vh solid var(--font-color); */
     cursor: pointer;
     transition: color 0.1s ease-in-out;
 }

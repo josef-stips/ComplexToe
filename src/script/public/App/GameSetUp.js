@@ -418,7 +418,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
             localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
-            Number(localStorage.getItem("PlayerID"))
+            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO'))
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
@@ -486,6 +486,12 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             });
             togglePatternBtnLobby.forEach(el => el.style.display = "none");
             Lobby_PointsToWin.contentEditable = false;
+
+        } else {
+            togglePatternBtnLobby.forEach(el => el.style.display = "flex");
+            SwitchCaret.forEach(caret => {
+                caret.style.display = 'flex';
+            });
         };
 
     } else {
@@ -507,7 +513,7 @@ const UserTriesToEnterOnlineGame = () => {
         // console.log(personal_GameData.role)
 
         socket.emit('CONFIRM_enter_room', [personal_GameData.currGameID, Player1_NameInput.value.trim(), Player1_IconInput.value.trim(),
-            localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role, Number(localStorage.getItem("PlayerID"))
+            localStorage.getItem('userInfoClass'), localStorage.getItem('userInfoColor'), personal_GameData.role, Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO'))
         ], (m) => {
             // If user name is equal to admins name
             if (m == 'Choose a different name!') {
@@ -694,6 +700,7 @@ const SetGameData_CheckConfirm = () => {
             Clock = e.getAttribute('value');
         };
     });
+
     Array.from(SetGameModeList.children).forEach(e => {
         if (e.getAttribute('selected') == "true") {
             Check2 = true;

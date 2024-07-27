@@ -286,6 +286,8 @@ Lobby_closeBtn.addEventListener('click', () => {
     OnlineGame_Lobby.style.display = 'none';
     DarkLayer.style.display = 'none';
     OnlineGameLobby_alertText.style.display = 'none';
+    Lobby_GameInfo_PopUp.style.display = 'none';
+    Chat_PopUp.style.display = 'none';
 
     // Check if player unlocked one of these fields
     locked_25x25();
@@ -1088,15 +1090,10 @@ socket.on('ThirdPlayer_Joined', message => {
 });
 
 // When the normal user leaves the game, the other player need to be informed by that
-socket.on('INFORM_user_left_room', (kick_action) => {
+socket.on('INFORM_user_left_room', () => {
 
     if (personal_GameData.role == 'user') {
         Lobby_closeBtn.click();
-
-        if (!kick_action) return;
-
-        AlertText.textContent = 'You got kicked out of the lobby';
-        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
 
     if (personal_GameData.role == 'admin') {
@@ -1108,15 +1105,10 @@ socket.on('INFORM_user_left_room', (kick_action) => {
 });
 
 // When the third player (blocker) leaves the game, the other player need to be informed by that
-socket.on('INFORM_blocker_left_room', (kick_action) => {
+socket.on('INFORM_blocker_left_room', () => {
 
     if (personal_GameData.role == 'blocker') {
         Lobby_closeBtn.click();
-
-        if (!kick_action) return;
-
-        AlertText.textContent = 'You got kicked out of the lobby';
-        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
 
     if (personal_GameData.role == 'admin') {
@@ -1327,7 +1319,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
         PlayerTimer, player1_advancedIcon, player2_advancedIcon, player1_SkinColor, player2_SkinColor, player3_name
-    ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY], costumPatterns);
+    ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY], costumPatterns, RoomData[0].p1_XP, RoomData[0].p2_XP);
 
     OnlinePlayerIDs = {
         1: RoomData[0].player1_id,
@@ -1530,22 +1522,19 @@ socket.on("RandomPlayerID_generated", id => {
 });
 
 // online game chat button
-OnlineChat_btn.addEventListener('click', () => {
+function open_chat_window() {
+    personalname = localStorage.getItem('UserName');
     DisplayPopUp_PopAnimation(Chat_PopUp, "flex", true);
 
     openedChat = true;
     recievedUnseenMessages = 0;
     if (document.querySelector(".notification-icon")) document.querySelector(".notification-icon").remove();
 
-    // Name of other player
-    personal_GameData.role == "admin" ? ChatTitle.textContent = `A chat between you and ${PlayerData[2].PlayerName}` : ChatTitle.textContent = `A chat between you and ${PlayerData[1].PlayerName}`;
+    ChatTitle.textContent = `Lobby chat`;
+};
 
-
-    if (curr_innerGameMode == InnerGameModes[2]) { // three players
-        personal_GameData.role == "admin" ? ChatTitle.textContent = `A chat between you, ${PlayerData[2].PlayerName} and the blocker ${PlayerData[3].PlayerName}` : ChatTitle.textContent = `A chat between you, ${PlayerData[1].PlayerName} and the blocker ${PlayerData[3].PlayerName}`;
-
-        personal_GameData.role == "blocker" && (ChatTitle.textContent = `A chat between you, ${PlayerData[1].PlayerName} and ${PlayerData[2].PlayerName}`);
-    };
+OnlineChat_btn.addEventListener('click', () => {
+    open_chat_window();
 });
 
 // close chat pop up
@@ -1637,6 +1626,9 @@ kick_third_player_btn.addEventListener('click', () => {
 socket.on('lobby_kick', (user_type) => {
     if (personal_GameData.role == user_type) {
         Lobby_closeBtn.click();
+
+        AlertText.textContent = 'You got kicked out of the lobby';
+        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         return;
     };
 

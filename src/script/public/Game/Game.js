@@ -34,6 +34,11 @@ let PlayerData = {
     },
 };
 
+let PlayerXP = {
+    1: null,
+    2: null
+};
+
 let OnlinePlayerIDs = {
     1: null,
     2: null,
@@ -136,7 +141,7 @@ let CreativeLevel_from_onlineMode_costumPatterns_globalVar = null;
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
-    CreativeLevel_from_onlineMode_costumPatterns) {
+    CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP) {
 
     sceneMode.default();
 
@@ -155,6 +160,11 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         1: null,
         2: null,
         3: null
+    };
+
+    PlayerXP = {
+        1: p1_XP,
+        2: p2_XP
     };
 
     for (const i of arguments) {

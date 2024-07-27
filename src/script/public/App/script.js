@@ -434,7 +434,7 @@ let patternPoints = {
 // everything about the online chat in online game mode
 let openedChat = false;
 let recievedUnseenMessages = 0;
-let personalname;
+let personalname = localStorage.getItem('UserName');
 
 // Inner Game Modes
 let InnerGameModes = {
