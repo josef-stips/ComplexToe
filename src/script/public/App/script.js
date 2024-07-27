@@ -1028,7 +1028,7 @@ fieldsArea_back_btn.addEventListener('click', () => {
     CheckTreasureCanBeOpened();
 
     // animation
-    DarkLayerAnimation(gameModeCards_Div, gameModeFields_Div);
+    DarkLayerAnimation(gameModeCards_Div, gameModeFields_Div).then(sceneMode.default);
 
     CheckForMessages(); // Check for messages in database
     CheckForFriendRequests(); // check for friend requests
@@ -1057,9 +1057,6 @@ gameMode_KI_card.addEventListener('click', () => {
         //     InitCreateLevelScene();
 
         // bug fix if user was in advanced mode:
-        goToAdvancedFields.style.display = 'none';
-        goToAdvancedFields.classList = "fa-solid fa-caret-down";
-        secondTierModes.style.marginBottom = "0";
         isInAdvancedGameModes = false;
         bossModeIsActive = false;
 
@@ -1072,9 +1069,8 @@ gameMode_KI_card.addEventListener('click', () => {
     };
 });
 
-gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
+gameMode_TwoPlayerOnline_card.addEventListener('click', async() => {
     curr_mode = GameMode[2].opponent;
-    goToAdvancedFields.style.display = 'block';
 
     // visibility for Ki Fields and GameMode fields
     ThreexThree_Field.style.display = 'none';
@@ -1090,11 +1086,13 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', () => {
 
     JoinGame_btn.style.display = "flex";
     SearchRandomOpponent_btn.style.display = "flex";
+
+    await sleep(200);
+    sceneMode.full();
 });
 
-gameMode_OneVsOne_card.addEventListener('click', () => {
+gameMode_OneVsOne_card.addEventListener('click', async() => {
     curr_mode = GameMode[3].opponent;
-    goToAdvancedFields.style.display = 'block';
 
     // visibility for Ki Fields and GameMode fields
     ThreexThree_Field.style.display = 'none';
@@ -1110,6 +1108,9 @@ gameMode_OneVsOne_card.addEventListener('click', () => {
 
     JoinGame_btn.style.display = "none";
     SearchRandomOpponent_btn.style.display = "none";
+
+    await sleep(300);
+    sceneMode.full();
 });
 
 // field-cards click event
@@ -1572,39 +1573,39 @@ friendLeft_OK_btn.addEventListener('click', () => {
 });
 
 let isInAdvancedGameModes = false;
-goToAdvancedFields.addEventListener('click', () => {
+// goToAdvancedFields.addEventListener('click', () => { // legacy
 
-    // If the player is in the advanced game modes
-    if (isInAdvancedGameModes) {
-        goToAdvancedFields.classList = "fa-solid fa-caret-down";
-        secondTierModes.style.marginBottom = "0";
-        isInAdvancedGameModes = false;
-        bossModeIsActive = false;
-        playGameTheme();
+//     // If the player is in the advanced game modes
+//     if (isInAdvancedGameModes) {
+//         goToAdvancedFields.classList = "fa-solid fa-caret-down";
+//         secondTierModes.style.marginBottom = "0";
+//         isInAdvancedGameModes = false;
+//         bossModeIsActive = false;
+//         playGameTheme();
 
-        // If not
-    } else {
-        goToAdvancedFields.classList = "fa-solid fa-caret-up";
-        secondTierModes.style.marginBottom = "var(--width-for-goToAdvancedModes-btn)";
-        isInAdvancedGameModes = true;
+//         // If not
+//     } else {
+//         goToAdvancedFields.classList = "fa-solid fa-caret-up";
+//         secondTierModes.style.marginBottom = "var(--width-for-goToAdvancedModes-btn)";
+//         isInAdvancedGameModes = true;
 
-        // animation
-        DarkLayer.style.display = 'block';
-        DarkLayer.style.backgroundColor = "rgba(0,0,0,0)";
-        animatedPopUp.style.display = 'block';
-        animatedPopUp.style.opacity = '0';
+//         // animation
+//         DarkLayer.style.display = 'block';
+//         DarkLayer.style.backgroundColor = "rgba(0,0,0,0)";
+//         animatedPopUp.style.display = 'block';
+//         animatedPopUp.style.opacity = '0';
 
-        setTimeout(() => {
-            setTimeout(() => {
-                animatedPopUp.style.opacity = '1';
-            }, 400);
-            DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
-        }, 700)
+//         setTimeout(() => {
+//             setTimeout(() => {
+//                 animatedPopUp.style.opacity = '1';
+//             }, 400);
+//             DarkLayer.style.backgroundColor = "rgba(0, 0, 0, 0.87)";
+//         }, 700)
 
-        bossModeIsActive = true;
-        playBossTheme();
-    };
-});
+//         bossModeIsActive = true;
+//         playBossTheme();
+//     };
+// });
 
 let ContBtnCount = 1;
 let TextIsEpilogue = false;
