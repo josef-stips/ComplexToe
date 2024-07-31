@@ -3714,10 +3714,25 @@ label h3 {
     justify-content: center;
     width: 100%;
     height: 15%;
+    position: relative;
 }
 
 .skinUserNameDisplay {
     font-size: 10vh;
+}
+
+.skinShop_wheelOfFortune {
+    position: absolute;
+    top: 12%;
+    left: 12%;
+    pointer-events: all;
+    width: 5vw;
+    height: 5vw;
+    cursor: pointer;
+}
+
+.skinShop_wheelOfFortune:hover {
+    animation: item_roll 0.65s ease-in-out forwards;
 }
 
 .skinShopCloseBtn {

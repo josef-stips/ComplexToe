@@ -1939,12 +1939,26 @@ wheelOfFortuneAfterGameBtn.addEventListener("click", () => {
 wheel_scene_close_btn.addEventListener("click", () => {
     playBtn_Audio_2();
 
-    DarkLayerAnimation(GameField, wheel_of_fortune_scene).then(() => {
+    let open_scnene = !wheel_of_fortune_handler.entered_scene ? GameField : gameModeCards_Div;
+
+    DarkLayerAnimation(open_scnene, wheel_of_fortune_scene).then(() => {
+
+        wheel_of_fortune_handler.entered_scene && DisplayPopUp_PopAnimation(skinShop, "flex");
+
         setTimeout(() => {
             sceneMode.default();
-            endGameStatsPopUp.style.display = "flex";
-            DarkLayer.style.display = "flex";
-            playBattleEndTheme();
+
+            if (!wheel_of_fortune_handler.entered_scene) {
+
+                endGameStatsPopUp.style.display = "flex";
+                DarkLayer.style.display = "flex";
+                playBattleEndTheme();
+
+            } else {
+                playShopTheme();
+            };
+
+            wheel_of_fortune_handler.entered_scene = null;
         }, 500);
     });
 });
@@ -2012,6 +2026,8 @@ class WheelOfFortuneHandler {
         this.storage_gems = Number(localStorage.getItem("GemsItem"));
         this.storage_x = Number(localStorage.getItem("ItemX"));
         this.storage_keys = Number(localStorage.getItem("keys"));
+
+        this.entered_scene = null;
     };
 
     init_scene() {

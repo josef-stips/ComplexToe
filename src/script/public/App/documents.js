@@ -724,6 +724,7 @@ let official_cards_pop_up = document.querySelector(".official_cards_pop_up");
 let WatchGame_btn = document.querySelector('.WatchGame_btn');
 let UserCreated_btn = document.querySelector(".UserCreated_btn");
 let ArenaBuilding = document.querySelector(".ArenaBuilding");
+let skinShop_wheelOfFortune = document.querySelector(".skinShop_wheelOfFortune");
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

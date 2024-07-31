@@ -45,6 +45,13 @@ skin_shop_last_tab.addEventListener("click", () => {
     skinsFirstContainer.style.display = "flex";
 });
 
+skinShop_wheelOfFortune.addEventListener('click', () => {
+    wheel_of_fortune_handler.entered_scene = 'skin-shop'
+    wheelOfFortuneAfterGameBtn.click();
+    skinShop.style.display = "none";
+    gameModeCards_Div.style.display = "none";
+});
+
 let selected_skin = {
     name: '',
     skin_type: '', // color or skin
