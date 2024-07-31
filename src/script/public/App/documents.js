@@ -725,6 +725,11 @@ let WatchGame_btn = document.querySelector('.WatchGame_btn');
 let UserCreated_btn = document.querySelector(".UserCreated_btn");
 let ArenaBuilding = document.querySelector(".ArenaBuilding");
 let skinShop_wheelOfFortune = document.querySelector(".skinShop_wheelOfFortune");
+let review_mode_forth_btn = document.querySelector('.review_mode_forth_btn');
+let review_mode_back_btn = document.querySelector('.review_mode_back_btn');
+let review_moves_wrapper = document.querySelector(".review_moves_wrapper");
+let review_mode_action_wrapper = document.querySelector('.review_mode_action_wrapper');
+let review_moves_list = document.querySelector(".review_moves_list");
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

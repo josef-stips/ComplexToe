@@ -53,7 +53,7 @@ class gameLogHandler {
             console.log(idx, entry);
 
             if (query.length <= 0) {
-                gameLog_list.children[0].style.borderTop = '0.4vh solid white';
+                gameLog_list.children[gameLog_list.children.length - 1].style.borderTop = '0.4vh solid white';
                 entry.list_el.style.display = 'flex';
                 return;
             };
@@ -145,6 +145,8 @@ class gameLogEntry {
     load() {
         return new Promise(async resolve => {
             let opponent_id = this.entry.p1_id == this.entry_handler.self_player_id ? this.entry.p2_id : this.entry.p1_id;
+            let is_match_won = opponent_id != this.entry.p1_id ? this.entry.p1_points > this.entry.p2_points ? true : false : false;
+            let primary_color = is_match_won ? 'royalblue' : 'red';
             // console.log(this.entry, opponent_id);
 
             let l_item = document.createElement("li");
@@ -178,7 +180,7 @@ class gameLogEntry {
 
             // div1 things
             generateField_preview(this.entry.field_size[0], this.entry.field_size[1], field_wrapper, null);
-            [...field_wrapper.querySelectorAll(`.cell`)].map(el => el.style.boxShadow = `0 0 0 0.2vh ${this.entry.bg1}`);
+            [...field_wrapper.querySelectorAll(`.cell`)].map(el => el.style.boxShadow = `0 0 0 0.2vh ${primary_color}`);
 
             // div2 things
             let opponent_data = !this.entry_handler.opponent_data_cache[opponent_id] ? opponent_id != -1 ? await this.entry_handler.get_data_from_opponent(opponent_id) : null : this.entry_handler.opponent_data_cache[opponent_id];
@@ -189,16 +191,16 @@ class gameLogEntry {
             div2_innerWrapper.textContent = `Match vs\xa0`;
 
             opponent_name_el.textContent = `${this.entry.p2_name}`;
-            opponent_name_el.style.color = `${this.entry.bg1}`;
+            opponent_name_el.style.color = `${primary_color}`;
             points_el.textContent = opponent_id != this.entry.p1_id ? `\xa0 ${this.entry.p1_points} : ${this.entry.p2_points}` : `\xa0 ${this.entry.p2_points} : ${this.entry.p1_points}`;
 
-            match_won_el.textContent = opponent_id != this.entry.p1_id ? this.entry.p1_points > this.entry.p2_points ? `match won` : `match lost` : `match lost`;
+            match_won_el.textContent = is_match_won ? 'match won' : 'match lost';
 
             play_btn.className = 'fas fa-play default_btn';
             details_btn.className = 'fa-solid fa-ellipsis-vertical default_btn';
 
             // div3 things
-            date_el.textContent = `played on ${formatDate(this.entry.match_date)} |\xa0 entry ID: ${this.entry.id}`;
+            date_el.textContent = `${formatDate(this.entry.match_date)} |\xa0 entry ID: ${this.entry.id}`;
 
             div1.appendChild(field_wrapper);
             div2_innerWrapper.appendChild(opponent_name_el);
@@ -228,6 +230,10 @@ class gameLogEntry {
 
                 resolve();
             });
+
+            play_btn.addEventListener('click', () => {
+                this.start_game_preview(this.entry.field_size[0], this.entry);
+            });
         });
     };
 
@@ -249,6 +255,23 @@ class gameLogEntry {
         gameEntry_blockerUsed_el.textContent = `${entry.p3_id == -1 ? "nope" : await this.player3_name_display(entry.p3_id)}`;
 
         chat_scroll_to_top("instant", gameEntry_details_list);
+    };
+
+    async start_game_preview(x, entry) {
+        curr_field_ele = DataFields[`${x}x${x}`];
+
+        review_mode = true;
+
+        gameLog_popUp.style.display = 'none';
+        DarkLayerAnimation(GameField, gameModeCards_Div);
+
+        initializeGame(null, null, null, null, null, null, null, null, null, null, null, null, true, entry);
+
+        OnlinePlayerIDs = {
+            1: entry.p1_id,
+            2: entry.p2_id,
+            3: entry.p3_id
+        };
     };
 
     async player3_name_display(p3_id) {

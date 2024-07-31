@@ -508,6 +508,19 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
 
     ChangeGameBG(undefined, undefined, true);
 
+    if (review_mode) {
+        DarkLayerAnimation(gameModeCards_Div, GameField).then(() => {
+            setTimeout(() => {
+                DisplayPopUp_PopAnimation(gameLog_popUp, "flex", true);
+            }, 400);
+        });
+
+        Lobby.style.background = "";
+        theme.start();
+        review_mode = false;
+        return;
+    };
+
     if (personal_GameData.role == "admin") {
 
         if (PlayingInCreatedLevel && !inPlayerLevelsScene) {

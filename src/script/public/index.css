@@ -743,6 +743,83 @@ p#name-player1 {
     margin: 0 0 0 5px;
 }
 
+.review_mode_action_wrapper {
+    position: absolute;
+    bottom: 15%;
+    left: 15%;
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+    font-size: 3vh;
+}
+
+.review_moves_wrapper {
+    position: absolute;
+    right: 4%;
+    top: 20%;
+    background: var(--bg-app-color);
+    border-radius: 4vh;
+    border: 0.5vh solid white;
+    width: 25%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 3vh;
+    padding: 0.1vw;
+    clip-path: border-box;
+}
+
+.review_moves_header {
+    width: 97.5%;
+    height: 9%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 0.4vh solid white;
+}
+
+.review_moves_main {
+    width: 100%;
+    height: 92.5%;
+    padding: 1vw;
+}
+
+.review_moves_list {
+    width: 100%;
+    height: 90%;
+    overflow: hidden scroll;
+}
+
+.review_moves_list li {
+    width: calc(100% - 0.75vw);
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-weight: 500;
+    margin: 0 0 0 0.5vw;
+    padding: 0 0 0 0.5vw;
+}
+
+.review_moves_list li:nth-child(even) {
+    background-color: var(--bg-app-color2);
+}
+
+.review_moves_list::-webkit-scrollbar {
+    width: 1vw;
+    height: 1vh;
+    background-color: #121518;
+    cursor: pointer;
+    border-radius: 1vh;
+}
+
+.review_moves_list::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 1vh;
+}
+
 
 /* LOBBY */
 
@@ -1019,12 +1096,12 @@ p#name-player1 {
     height: 10px;
     background-color: #121518;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 1vh;
 }
 
 .Lobby_AllowedPatternsScrollContainer::-webkit-scrollbar-thumb {
     background-color: white;
-    border-radius: 10px;
+    border-radius: 1vh;
 }
 
 .setPatternWrapperLobby {
@@ -1954,6 +2031,11 @@ li.officialWinPatternsOpenBtn {
 
 .KIMode-Pattern-horizontal.PatternGridWrapperForCostumPatterns>div.createCostumField_Field_wrapper.costumPatternsOverview_gridWrapper {
     padding: 0;
+}
+
+.p_icon_wrapper {
+    font-size: 3vh !important;
+    margin-left: 0.5vw;
 }
 
 
@@ -5126,7 +5208,7 @@ h1.stars_pop_up_title {
 }
 
 .exploredItems_main::-webkit-scrollbar {
-    height: 10px;
+    height: 1vh;
     background-color: #121518;
 }
 
@@ -7414,18 +7496,18 @@ span.LevelIconWrapper img {
 }
 
 .Achievements_main::-webkit-scrollbar {
-    width: 20px;
-    height: 100px;
+    width: 1vw;
+    height: 5vh;
     background-color: #121518;
     cursor: pointer;
 }
 
 .Achievements_main::-webkit-scrollbar-thumb {
-    border-radius: 5px;
+    border-radius: 1vh;
     color: white;
     background: white;
-    width: 100px;
-    height: 30px;
+    width: 2vw;
+    height: 2vh;
     cursor: pointer;
 }
 
@@ -7901,18 +7983,18 @@ p.createCostumField_yInput {
 }
 
 .createCostumField_Field_wrapper::-webkit-scrollbar {
-    width: 20px;
-    height: 100px;
+    width: 1vw;
+    height: 3vh;
     background-color: #121518;
     cursor: pointer;
 }
 
 .createCostumField_Field_wrapper::-webkit-scrollbar-thumb {
-    border-radius: 5px;
+    border-radius: 1vh;
     color: white;
     background: white;
-    width: 100px;
-    height: 30px;
+    width: 2vw;
+    height: 2vh;
     cursor: pointer;
 }
 
@@ -7945,7 +8027,7 @@ p.createCostumField_yInput {
 
 .createCostumField_title {
     outline: none;
-    padding: 3px 30px 3px 30px;
+    padding: 1vh 2vw;
     background-color: rgba(255, 255, 255, 0.055);
 }
 
@@ -11419,7 +11501,7 @@ ul.default_sb_list.best_players_list div:first-child {
     height: 100%;
     overflow: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     border-bottom-left-radius: 4vh;
     border-bottom-right-radius: 4vh;
 }
@@ -11434,7 +11516,7 @@ ul.default_sb_list.best_players_list div:first-child {
     clip-path: border-box;
 }
 
-.gameLog_entry:first-child {
+.gameLog_entry:last-child {
     border-top: 0.4vh solid white;
 }
 
@@ -11457,7 +11539,7 @@ ul.default_sb_list.best_players_list div:first-child {
 }
 
 .gameLog_entry_wrapper2 {
-    width: 50%;
+    width: -webkit-fill-available;
     height: 100%;
     display: flex;
     align-items: flex-end;

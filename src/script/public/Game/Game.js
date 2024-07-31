@@ -17,6 +17,8 @@ let player1_lastBarRelation = 0;
 
 let GameSeconds = 0;
 
+let review_mode = false;
+
 // Player 1 is always X and can start first
 let PlayerData = {
     1: {
@@ -138,12 +140,20 @@ let cell_indexes_blocked_by_blocker = [];
 
 let CreativeLevel_from_onlineMode_costumPatterns_globalVar = null;
 
+let fieldIndex;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
-    CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP) {
+    CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP, review_mode, review_mode_data) {
 
     sceneMode.default();
+
+    if (review_mode) {
+        const review_mode_handler = new reviewModeHandler(review_mode_data);
+        review_mode_handler.init();
+        return;
+    };
 
     // to have all info globally
     allGameData = [];
@@ -178,7 +188,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // Define field data for game
 
     // If online game set online game data, if not set normal data
-    let fieldIndex = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[0] : field.getAttribute('index');
+    fieldIndex = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[0] : field.getAttribute('index');
     let fieldTitle = Array.isArray(OnlineGameDataArray) ? OnlineGameDataArray[1] : field.getAttribute('title');
 
     if (inAdvantureMode) {
@@ -429,6 +439,10 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     HeaderWrapper.style.height = '7.5%';
     lobbyFooter.style.background = "#15171a";
     lobbyFooter.style.width = "100%";
+    cellGrid.style.pointerEvents = 'all';
+
+    review_mode_action_wrapper.style.display = "none";
+    review_moves_wrapper.style.display = "none";
 
     pointsToAchieve_ScoreBar.forEach(textEl => {
         textEl.textContent = ` / ${points_to_win}`;
@@ -2492,3 +2506,181 @@ class WheelOfFortuneHandler {
 
 const wheel_of_fortune_handler = new WheelOfFortuneHandler();
 wheel_of_fortune_handler.init_scene();
+
+// review mode
+class reviewModeHandler {
+    constructor(entry) {
+        this.entry = entry;
+        this.moves = entry.moves;
+        this.curr_move_idx = 0;
+        this.curr_move_val = 0;
+
+        this.list = review_moves_list;
+        this.cells = [...cellGrid.children];
+    };
+
+    init() {
+        this.events();
+
+        this.init_doc(this.entry);
+        this.init_player_icon(this.entry);
+        this.init_player(this.entry);
+        this.init_field(this.entry);
+        this.init_moves_list(this.entry, this.moves);
+
+        this.current_move(this.entry);
+    };
+
+    events() {
+        review_mode_back_btn.removeEventListener('click', review_mode_back_btn.ev);
+        review_mode_forth_btn.removeEventListener('click', review_mode_forth_btn.ev);
+
+        review_mode_back_btn.addEventListener('click', review_mode_back_btn.ev = () => {
+            this.curr_move_idx > 0 && this.curr_move_idx--;
+            this.current_move(this.entry);
+        });
+
+        review_mode_forth_btn.addEventListener('click', review_mode_forth_btn.ev = () => {
+            this.curr_move_idx < this.moves.length - 1 && this.curr_move_idx++;
+            this.current_move(this.entry);
+        });
+
+        review_moves_wrapper.addEventListener('keydown', (e) => {
+            if (e.code == "ArrowDown") {
+                e.preventDefault();
+                review_mode_forth_btn.click();
+            };
+
+            if (e.code == "ArrowUp") {
+                e.preventDefault();
+                review_mode_back_btn.click();
+            };
+        });
+    };
+
+    init_doc(entry) {
+        CloseOnlinePopUps(true);
+
+        document.querySelector('.GameField-info-corner').style.display = "none";
+        OnlineChat_btn.style.display = "none";
+        GameFieldHeaderUnder.style.display = 'none';
+        AdvantureMode_SpellDisplay.style.display = 'none';
+        MaxAmountOfMovesGameDisplay.style.display = 'none';
+        chooseWinnerWindowBtn.style.display = 'none';
+        GiveUp_btn.style.display = 'none';
+        restartBtn.style.display = 'none';
+        cellGrid.style.display = 'grid';
+        cellGrid.style.pointerEvents = 'none';
+        lobbyFooter.style.background = "#15171a";
+        lobbyFooter.style.width = "100%";
+        review_moves_wrapper.style.display = 'flex';
+        review_mode_action_wrapper.style.display = 'flex';
+
+        pointsToAchieve_ScoreBar[0].textContent = `/ ${entry.points_to_win}`;
+        pointsToAchieve_ScoreBar[1].textContent = `/ ${entry.points_to_win}`;
+
+        ChangeGameBG(entry.bg1, entry.bg2, false);
+        PauseMusic();
+        CreateMusicBars(Fields[entry.field_index].theme_name);
+    };
+
+    init_player_icon(entry) {
+        let p1_icon_wrapper = document.createElement('i');
+        let p2_icon_wrapper = document.createElement('i');
+
+        if (entry.p1_icon.length > 1) {
+            DisplayPlayerIcon_at_el(p1_icon_wrapper, entry.p1_icon, entry.p1_color, entry.p1_icon);
+
+        } else {
+            p1_icon_wrapper.textContent = `- ${entry.p1_icon}`;
+        };
+
+        if (entry.p2_icon.length > 1) {
+            DisplayPlayerIcon_at_el(p2_icon_wrapper, entry.p2_icon, entry.p2_color, entry.p2_icon);
+
+        } else {
+            p2_icon_wrapper.textContent = `- ${entry.p2_icon}`;
+        };
+
+        namePlayer1.textContent = entry.p1_name;
+        namePlayer2.textContent = entry.p2_name;
+
+        p1_icon_wrapper.classList.add('p_icon_wrapper');
+        p2_icon_wrapper.classList.add('p_icon_wrapper');
+
+        namePlayer1.append(p1_icon_wrapper);
+        namePlayer2.append(p2_icon_wrapper);
+    };
+
+    init_player(entry) {
+
+        // Player Name
+        PlayerData[1].PlayerName = entry.p1_name;
+        PlayerData[2].PlayerName = entry.p2_name;
+
+        // Player Form
+        PlayerData[1].PlayerForm = entry.p1_icon.toUpperCase();
+        PlayerData[2].PlayerForm = entry.p2_icon.toUpperCase();
+    };
+
+    init_field(entry) {
+        xCell_Amount = entry.field_size[0];
+        yCell_Amount = entry.field_size[1];
+
+        CreateOptions();
+        CalculateBoundaries();
+        CreateField();
+
+        this.cells = [...cellGrid.children];
+
+        setTimeout(() => {
+            const cellWidth = this.cells[0].getBoundingClientRect().width;
+            this.cells.forEach(cell => {
+                cell.style.width = `${cellWidth}px`;
+                cell.style.height = `${cellWidth}px`;
+            });
+        }, 500);
+    };
+
+    init_moves_list(entry, moves) {
+        this.list.textContent = null;
+
+        moves.map((move, i) => {
+            let player_x_move = i % 2 == 0 ? entry.p1_name : entry.p2_name;
+
+            let item = document.createElement('li');
+            item.textContent = `${i + 1}: ${player_x_move} | idx: ${move}`;
+
+            this.list.append(item);
+        });
+    };
+
+    current_move(entry) {
+        this.curr_move_val = this.moves[this.curr_move_idx];
+
+        this.moves.map((move, i) => {
+            this.list.children[i].style.borderLeft = `none`;
+            this.cells[move].textContent = null;
+            this.cells[move].className = 'cell';
+            this.cells[move].style.color = 'white';
+        });
+
+        [...this.list.children][this.curr_move_idx].style.borderLeft = `0.3vh solid #009fff`;
+
+        this.moves.map((move, i) => {
+            if (i > this.curr_move_idx) return;
+
+            let player_x_move = i % 2 == 0 ? entry.p1_icon : entry.p2_icon;
+            let player_x_color = i % 2 == 0 ? entry.p1_color : entry.p2_color;
+
+            if (player_x_move.length > 1) {
+                DisplayPlayerIcon_at_el(this.cells[move], player_x_move, player_x_color, player_x_move);
+                this.cells[move].classList.add('cell');
+
+            } else {
+                this.cells[move].textContent = player_x_move;
+                this.cells[move].style.color = player_x_color;
+            };
+        });
+    };
+};

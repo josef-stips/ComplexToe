@@ -1052,6 +1052,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             let level_name = player_levels_handler.online_level_overview_handler.level.level_name;
             let game_mode = inAdvantureMode && curr_mode == GameMode[1].opponent ? 'advanture_mode' : !inAdvantureMode && curr_mode == GameMode[1].opponent ? 'training_arena' : 'fun_offline_game';
 
+            console.log(Number(fieldIndex));
+
             let all_game_data_for_log = [
                 level_id, // level_id
                 level_name, // level name
@@ -1078,10 +1080,13 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                 GameData.PlayerClock, // player clock
                 points_to_win, // points to win
                 JSON.stringify(allGameData[3]), // allowed patterns
+                JSON.stringify({}),
                 game_mode, // game mode,
                 GameData.InnerGameMode, // field mode
                 killAllDrawnCells, // kill cells after point
                 !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
+                -1,
+                Number(fieldIndex)
             ];
 
             game_log_handler.load_to_server(all_game_data_for_log);
@@ -1262,10 +1267,13 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
                 allGameData[2][7], // player clock
                 allGameData[5], // points to win
                 JSON.stringify(allGameData[3]), // allowed patterns
+                player_levels_handler.online_level_overview_handler && player_levels_handler.online_level_overview_handler.level["costum_patterns"], // costum patterns when exist
                 NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns_globalVar ? 'created_online_level' : 'official_online_level', // game mode,
                 GameData.InnerGameMode, // field mode
                 killAllDrawnCells, // kill cells after point
                 !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
+                OnlinePlayerIDs[3] ? OnlinePlayerIDs[3] : -1,
+                Number(fieldIndex)
             ];
 
             socket.emit("update_gameLog", all_game_data_for_log, cb => {
