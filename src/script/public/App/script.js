@@ -1087,6 +1087,8 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', async() => {
     JoinGame_btn.style.display = "flex";
     SearchRandomOpponent_btn.style.display = "flex";
 
+    officical_cards_handler.open();
+
     await sleep(200);
     sceneMode.full();
 });
@@ -1493,6 +1495,12 @@ JoinGame_btn.addEventListener("click", () => {
     Player2_IconInput.style.display = "none";
 
     setUpOnlineGame('enter');
+});
+
+UserCreated_btn.addEventListener('click', () => {
+    gameModeFields_Div.style.display = 'none';
+    social_stuff_cards[3].click();
+    sceneMode.default()
 });
 
 ChooseWinnerWindowCloseBtn.addEventListener('click', () => {
@@ -1909,12 +1917,12 @@ const canvas = GameModeFields_flowField;
 const ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.height = window.innerHeight * 0.89;
 
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Das englische Alphabet in Großbuchstaben
 
 const circles = [];
-const numCircles = 4;
+const numCircles = 10;
 
 // Erstelle zufällige Buchstaben-Kreise
 for (let i = 0; i < numCircles; i++) {
@@ -1970,8 +1978,8 @@ canvas.addEventListener('click', function(event) {
         // Überprüfe, ob der Mausklick innerhalb des Kreises liegt
         if (distance <= circle.radius) {
             circle.visible = false; // Markiere den Buchstaben als unsichtbar
-        }
-    }
+        };
+    };
 });
 
 draw();

@@ -1251,6 +1251,17 @@ ol.UserInfo-list img {
     font-size: 2.5vh;
 }
 
+.ArenaBuilding {
+    position: absolute;
+    top: -18%;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    width: 40vw;
+    height: 40vw;
+}
+
 .GameMode-fields {
     font-size: 3vh;
     position: relative;
