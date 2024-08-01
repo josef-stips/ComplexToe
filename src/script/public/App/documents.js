@@ -730,6 +730,12 @@ let review_mode_back_btn = document.querySelector('.review_mode_back_btn');
 let review_moves_wrapper = document.querySelector(".review_moves_wrapper");
 let review_mode_action_wrapper = document.querySelector('.review_mode_action_wrapper');
 let review_moves_list = document.querySelector(".review_moves_list");
+let game_footer_blocker_used_el = document.querySelector('.game_footer_blocker_used_el');
+let game_footer_field_mode_el = document.querySelector('.game_footer_field_mode_el');
+let game_footer_game_type_el = document.querySelector('.game_footer_game_type_el');
+let review_mode_game_footer = document.querySelector(".review_mode_game_footer");
+let game_footer_date = document.querySelector('.game_footer_date');
+let game_footer_winner_el = document.querySelector('.game_footer_winner_el');
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

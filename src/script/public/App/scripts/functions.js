@@ -462,3 +462,5 @@ function addAlphaToColor(color, alpha) {
     // Rückgabe der Farbe im RGBA-Format
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
+
+const XML_serializer = new XMLSerializer();

@@ -491,11 +491,15 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
 // User leaves game on leave game btn event
 function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     running = false;
+
     // remove any pop up display
     CloseOnlinePopUps(true);
+
     // header style
     HeaderWrapper.style.height = '9%';
     lobbyFooter.style.background = "";
+
+    gameLog_btn.classList.remove('blured');
 
     // if there was general boss, delete instance
     if (current_level_boss) {
@@ -517,6 +521,8 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
 
         Lobby.style.background = "";
         theme.start();
+        PauseMusic();
+        CreateMusicBars(audio);
         review_mode = false;
         return;
     };
@@ -1329,10 +1335,17 @@ socket.on('StartGame', (RoomData) => { // RoomData
 
     (killdrawnCells == 0) ? killAllDrawnCells = false: killAllDrawnCells = true;
 
+    // play theme music 
+    PauseMusic();
+    curr_music_name = Fields[FieldIndex].theme_name;
+    // CreateMusicBars(curr_music_name);
+
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
         PlayerTimer, player1_advancedIcon, player2_advancedIcon, player1_SkinColor, player2_SkinColor, player3_name
     ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY], costumPatterns, RoomData[0].p1_XP, RoomData[0].p2_XP);
+
+    points_to_win = required_points_to_win;
 
     OnlinePlayerIDs = {
         1: RoomData[0].player1_id,
@@ -1341,10 +1354,6 @@ socket.on('StartGame', (RoomData) => { // RoomData
     };
 
     online_level_scene.style.display = "none";
-
-    // play theme music 
-    PauseMusic();
-    CreateMusicBars(Fields[FieldIndex].theme_name);
 });
 
 // When admin starts game, all clients recieve the global availible options

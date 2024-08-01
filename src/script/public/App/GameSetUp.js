@@ -641,18 +641,20 @@ function SetPlayerData_ConfirmEvent() {
             DarkLayer.style.display = 'none';
             online_level_scene.style.display = 'none';
 
-            initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
-
             // play theme music 
             PauseMusic();
             if (PlayingInCreatedLevel) {
                 if (creative_level_instance.selectedLevel[5] != 0) {
-                    CreateMusicBars(document.querySelector(`[src="${creative_level_instance.Settings["bgmusic"][creative_level_instance.selectedLevel[5]]}"]`));
+                    curr_music_name = document.querySelector(`[src="${creative_level_instance.Settings["bgmusic"][creative_level_instance.selectedLevel[5]]}"]`);
+                    // CreateMusicBars(curr_music_name);
                 };
 
             } else {
-                CreateMusicBars(Fields[fieldIndex].theme_name);
+                curr_music_name = Fields[fieldIndex].theme_name;
+                // CreateMusicBars(curr_music_name);
             };
+
+            initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
 
         } else {
             return;
@@ -677,13 +679,14 @@ function CreateGame_KIMode() {
         curr_name1 = YourName_Input_KI_mode.value;
         curr_name2 = 'Bot';
         curr_form1 = Your_IconInput.value;
-        curr_form2 = 'O' // Bot        
-
-        initializeGame(curr_field_ele, undefined, undefined, JSON.parse(localStorage.getItem('unlocked_mapLevels'))[1][6]);
+        curr_form2 = 'O' // Bot    
 
         // play theme music 
         PauseMusic();
-        CreateMusicBars(Fields[fieldIndex].theme_name);
+        curr_music_name = Fields[fieldIndex].theme_name;
+        // CreateMusicBars();
+
+        initializeGame(curr_field_ele, undefined, undefined, JSON.parse(localStorage.getItem('unlocked_mapLevels'))[1][6]);
     };
 };
 

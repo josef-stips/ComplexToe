@@ -1222,7 +1222,7 @@ gameInfo_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'flex';
     DisplayPopUp_PopAnimation(GameInfoPopUp, "flex", true);
 
-    if (!NewCreativeLevel && !inPlayerLevelsScene) {
+    if (!NewCreativeLevel && !inPlayerLevelsScene && !review_mode) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
     } else if (NewCreativeLevel || PlayingInCreatedLevel_AsGuest) {
@@ -1230,6 +1230,9 @@ gameInfo_btn.addEventListener('click', () => {
 
     } else if (inPlayerLevelsScene) {
         GameInfo_HeaderTitle.textContent = `${player_levels_handler.online_level_overview_handler.level.level_name} - Game Info`;
+
+    } else if (review_mode) {
+        GameInfo_HeaderTitle.textContent = `${review_mode_handler.entry.level_name} - Game Info`;
     };
 
     // not in advanture mode

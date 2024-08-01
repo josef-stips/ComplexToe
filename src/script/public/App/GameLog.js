@@ -109,7 +109,7 @@ class gameLogHandler {
 
         gameLog_list.textContent = null;
         gameLog_list.append(fetch_spinner);
-        gameLog_list.setAttribute('in_use', 'true');
+        fetch_spinner.setAttribute('in_use', 'true');
 
         socket.emit("load_gameLog", this.self_player_id, cb => {
             this.have_to_update = false;
@@ -124,7 +124,7 @@ class gameLogHandler {
                 fetch_spinner.setAttribute('in_use', 'false');
                 gameLog_list.textContent = null;
                 this.load_to_DOM(cb);
-            }, 900);
+            }, 500);
 
         });
     };
@@ -262,9 +262,9 @@ class gameLogEntry {
 
         review_mode = true;
 
-        gameLog_popUp.style.display = 'none';
-        DarkLayerAnimation(GameField, gameModeCards_Div);
+        close_all_scenes();
 
+        DarkLayerAnimation(GameField, gameModeCards_Div);
         initializeGame(null, null, null, null, null, null, null, null, null, null, null, null, true, entry);
 
         OnlinePlayerIDs = {
@@ -272,6 +272,8 @@ class gameLogEntry {
             2: entry.p2_id,
             3: entry.p3_id
         };
+
+        gameLog_popUp.style.display = 'none';
     };
 
     async player3_name_display(p3_id) {

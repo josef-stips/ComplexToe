@@ -471,6 +471,38 @@ img {
     display: flex;
 }
 
+.review_mode_game_details_list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 0.5vw;
+    height: 100%;
+    width: max-content;
+    font-size: 1.2vw;
+    font-weight: 500;
+}
+
+ul.review_mode_game_details_list li {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5vw;
+}
+
+.gameLog_btn {
+    border-color: white;
+    color: white;
+    pointer-events: all;
+    cursor: pointer;
+}
+
+.gameLog_btn.blured {
+    border-color: slategray;
+    color: slategray;
+    pointer-events: none;
+    cursor: default;
+}
+
 .Gamefield-sideCont {
     height: 100%;
     width: 25vw;
@@ -11498,10 +11530,10 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .gameLog_list {
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    height: 95%;
+    overflow: scroll;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     border-bottom-left-radius: 4vh;
     border-bottom-right-radius: 4vh;
 }

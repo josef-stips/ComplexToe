@@ -1086,7 +1086,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                 killAllDrawnCells, // kill cells after point
                 !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
                 -1,
-                Number(fieldIndex)
+                Number(fieldIndex),
+                curr_music_name.id,
             ];
 
             game_log_handler.load_to_server(all_game_data_for_log);
@@ -1273,7 +1274,8 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
                 killAllDrawnCells, // kill cells after point
                 !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
                 OnlinePlayerIDs[3] ? OnlinePlayerIDs[3] : -1,
-                Number(fieldIndex)
+                Number(fieldIndex),
+                curr_music_name.id
             ];
 
             socket.emit("update_gameLog", all_game_data_for_log, cb => {

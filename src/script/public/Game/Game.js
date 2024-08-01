@@ -142,18 +142,26 @@ let CreativeLevel_from_onlineMode_costumPatterns_globalVar = null;
 
 let fieldIndex;
 
+let curr_music_name;
+
+let review_mode_handler;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
     CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP, review_mode, review_mode_data) {
 
+    console.log(arguments)
+
     sceneMode.default();
 
     if (review_mode) {
-        const review_mode_handler = new reviewModeHandler(review_mode_data);
+        review_mode_handler = new reviewModeHandler(review_mode_data);
         review_mode_handler.init();
         return;
     };
+
+    review_mode = false;
 
     // to have all info globally
     allGameData = [];
@@ -423,9 +431,11 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 1.5vw";
     };
 
+    console.log(fieldIndex);
+
     // play theme music 
     PauseMusic();
-    CreateMusicBars(Fields[fieldIndex].theme_name);
+    CreateMusicBars(curr_music_name);
 };
 
 function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns, costumCoords) {
@@ -440,9 +450,12 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     lobbyFooter.style.background = "#15171a";
     lobbyFooter.style.width = "100%";
     cellGrid.style.pointerEvents = 'all';
+    review_mode_game_footer.style.display = 'none';
 
     review_mode_action_wrapper.style.display = "none";
     review_moves_wrapper.style.display = "none";
+
+    gameLog_btn.classList.add('blured');
 
     pointsToAchieve_ScoreBar.forEach(textEl => {
         textEl.textContent = ` / ${points_to_win}`;
@@ -1378,6 +1391,8 @@ function restartGame() {
         cellGrid.classList.remove('cellGrid_opacity');
         changePlayer(true);
         setTimeout(() => {
+            console.log(allGameData);
+
             initializeGame(allGameData[0], allGameData[1], allGameData[2], allGameData[3], allGameData[4], allGameData[5], allGameData[6], allGameData[7], allGameData[8], allGameData[9]);
 
             // bug fix
@@ -2517,6 +2532,8 @@ class reviewModeHandler {
 
         this.list = review_moves_list;
         this.cells = [...cellGrid.children];
+
+        this.blocker = null;
     };
 
     init() {
@@ -2575,13 +2592,30 @@ class reviewModeHandler {
         lobbyFooter.style.width = "100%";
         review_moves_wrapper.style.display = 'flex';
         review_mode_action_wrapper.style.display = 'flex';
+        review_mode_game_footer.style.display = 'flex';
+        statusText.style.display = 'flex';
+
+        gameLog_btn.classList.remove('blured');
+
+        player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
+        player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
+
+        this.blocker = entry.blocker_name.trim().length > 0 ? entry.blocker_name : 'None';
+
+        game_footer_blocker_used_el.textContent = `${this.blocker}`;
+        game_footer_field_mode_el.textContent = `${entry.field_mode}`;
+        game_footer_game_type_el.textContent = `${entry.game_mode}`;
+        game_footer_date.textContent = `${formatDate(entry.match_date)}`;
+        game_footer_winner_el.textContent = `${entry.p1_points > entry.p2_points ? entry.p1_name : entry.p2_name}`;
 
         pointsToAchieve_ScoreBar[0].textContent = `/ ${entry.points_to_win}`;
         pointsToAchieve_ScoreBar[1].textContent = `/ ${entry.points_to_win}`;
 
-        ChangeGameBG(entry.bg1, entry.bg2, false);
+        ChangeGameBG(entry.bg1, entry.bg2);
         PauseMusic();
-        CreateMusicBars(Fields[entry.field_index].theme_name);
+
+        curr_music_name = document.querySelector(`audio#${entry.music_name}`);
+        CreateMusicBars(curr_music_name);
     };
 
     init_player_icon(entry) {
@@ -2621,6 +2655,8 @@ class reviewModeHandler {
         // Player Form
         PlayerData[1].PlayerForm = entry.p1_icon.toUpperCase();
         PlayerData[2].PlayerForm = entry.p2_icon.toUpperCase();
+
+        points_to_win = entry.points_to_win;
     };
 
     init_field(entry) {
@@ -2670,8 +2706,11 @@ class reviewModeHandler {
         this.moves.map((move, i) => {
             if (i > this.curr_move_idx) return;
 
+            let player_x_name = i % 2 == 0 ? entry.p1_name : entry.p2_name;
             let player_x_move = i % 2 == 0 ? entry.p1_icon : entry.p2_icon;
             let player_x_color = i % 2 == 0 ? entry.p1_color : entry.p2_color;
+
+            statusText.textContent = `${player_x_name}'s turn`;
 
             if (player_x_move.length > 1) {
                 DisplayPlayerIcon_at_el(this.cells[move], player_x_move, player_x_color, player_x_move);
