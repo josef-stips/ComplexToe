@@ -237,8 +237,9 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             extra_points = 1;
         };
 
-        patterns_used.push(pattern);
-        console.log(WinCombination, pattern, extra_points);
+        patterns_used.push({ 'pattern': pattern, 'by': Player1_won ? PlayerData[1].PlayerName : PlayerData[2].PlayerName, 'indexes': [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))), 'on_nth_move': [...all_game_moves.entries()][all_game_moves.length - 1][0] });
+
+        console.log(WinCombination, pattern, extra_points, winner[0], PlayerData[1].PlayerForm, all_game_moves);
     };
 
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);

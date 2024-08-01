@@ -17,8 +17,6 @@ let player1_lastBarRelation = 0;
 
 let GameSeconds = 0;
 
-let review_mode = false;
-
 // Player 1 is always X and can start first
 let PlayerData = {
     1: {
@@ -152,8 +150,7 @@ let boneyard_array = [];
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
     CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP, review_mode, review_mode_data) {
-
-    console.log(arguments)
+    // console.log(arguments)
 
     sceneMode.default();
 
@@ -455,6 +452,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     lobbyFooter.style.width = "100%";
     cellGrid.style.pointerEvents = 'all';
     review_mode_game_footer.style.display = 'none';
+    localStorage.getItem('sett-ShowFieldData') == 'true' && (document.querySelector('.GameField-info-corner').style.display = "flex");
 
     review_mode_action_wrapper.style.display = "none";
     review_moves_wrapper.style.display = "none";
@@ -462,8 +460,12 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     gameLog_btn.classList.add('blured');
 
     pointsToAchieve_ScoreBar.forEach(textEl => {
+        textEl.style.display = 'block';
         textEl.textContent = ` / ${points_to_win}`;
     });
+
+    scorePlayer1.style.display = 'block';
+    scorePlayer2.style.display = 'block';
 
     // Initialize leaderboard scores
     leaderboard_player1_score.textContent = "0";
@@ -2539,9 +2541,16 @@ class reviewModeHandler {
 
         this.blocker = null;
         this.total_moves_length = this.moves.length + entry.cells_blocked_by_blocker.length
+
+        this.board
+        this.bitboard = BigInt(0b0);
+        this.patterns = []; // patterns as bigint binarys
+        this.original_patterns = []; // patterns as arrays 
+        this.win_patterns_on_nth_move = []; // associate every pattern on their move index that realised them
     };
 
     init() {
+        this.init_patterns_list(this.entry);
         this.events();
 
         this.init_doc(this.entry);
@@ -2551,6 +2560,60 @@ class reviewModeHandler {
         this.init_moves_list(this.entry, this.moves);
 
         this.current_move(this.entry);
+    };
+
+    init_patterns_list(entry) {
+        this.original_patterns = entry.patterns_used.map(obj => obj.indexes);
+        this.patterns = convertToBinary(this.original_patterns);
+        this.win_patterns_on_nth_move = entry.patterns_used.map(obj => obj.on_nth_move);
+    };
+
+    create_bitmap() {
+        let board = [...review_mode_handler.cells].map(el => el.textContent.length > 0 || el.classList.contains('fa-solid') ? 1 : 0);
+
+        this.bitboard = BigInt(0b0);
+        for (const [i, val] of board.entries()) val && (this.bitboard |= (BigInt(1) << BigInt(i)));
+
+        console.log(board, this.bitboard, this.bitboard.toString(2));
+    };
+
+    check_winnner() {
+        console.log(this.patterns);
+
+        for (const [i, pattern] of this.patterns.entries()) {
+            console.log(pattern, this.original_patterns[i]);
+
+            if ((this.bitboard & pattern) == pattern) {
+                this.blacken_cells(this.original_patterns[i], this.win_patterns_on_nth_move[i]);
+            };
+        };
+    };
+
+    blacken_cells(pattern, on_nth_move) {
+        console.log(pattern);
+
+        if (!this.entry.kill_cells_after_point) { // only blacken cells of pattern
+
+            for (const i of pattern) {
+                this.blacken_cell(this.cells[i]);
+            };
+
+        } else {
+            this.moves.map((i, index) => { // blacken all cells on the field
+                if (index > on_nth_move) return;
+
+                if (this.cells[i].textContent.length > 0 || this.cells[i].classList.contains('fa-solid')) {
+                    this.blacken_cell(this.cells[i]);
+                };
+            });
+        };
+    };
+
+    blacken_cell(cell) {
+        cell.style.background = `white`;
+        cell.style.color = `white`;
+        cell.textContent = ``;
+        cell.className = 'cell';
     };
 
     events() {
@@ -2601,6 +2664,13 @@ class reviewModeHandler {
         review_mode_action_wrapper.style.display = 'flex';
         review_mode_game_footer.style.display = 'flex';
         statusText.style.display = 'flex';
+
+        pointsToAchieve_ScoreBar.forEach(textEl => {
+            textEl.style.display = 'none';
+        });
+
+        scorePlayer1.style.display = 'none';
+        scorePlayer2.style.display = 'none';
 
         setTimeout(() => {
             review_mode_handler.list.scrollTo({
@@ -2661,6 +2731,9 @@ class reviewModeHandler {
     };
 
     init_player(entry) {
+
+        player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${100}%, transparent ${5}%)`;
+        player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${100}%, transparent ${5}%)`;
 
         // Player Name
         PlayerData[1].PlayerName = entry.p1_name;
@@ -2759,8 +2832,9 @@ class reviewModeHandler {
             this.cells[move].style.color = 'white';
         });
 
-        this.entry.cells_blocked_by_blocker.map((move, i) => {
-            !entry.boneyard_arr.includes(move) && (this.cells[move].style.background = 'unset');
+        this.cells.map((val, i, arr) => {
+            let move = Number(val.getAttribute('cell-index'));
+            !entry.boneyard_arr.includes(move) && (val.style.background = 'unset');
         });
 
         [...this.list.children].forEach(el => {
@@ -2776,7 +2850,7 @@ class reviewModeHandler {
         let move_lenght_sum = this.moves.length + entry.cells_blocked_by_blocker.length;
 
         for (let i = 0; i < move_lenght_sum; i++) {
-            if (i > this.curr_move_idx) return;
+            if (i > this.curr_move_idx) break;
 
             let move = this.moves[k];
 
@@ -2832,36 +2906,8 @@ class reviewModeHandler {
             };
         };
 
-        // this.moves.map((move, i) => {
-        //     if (i > this.curr_move_idx) return;
-
-        //     let blocker_exists = entry.blocker == 0 ? false : true;
-        //     let blocker_index = i % 3 === 2;
-        //     let modulator_numb = blocker_exists ? 3 : 2;
-
-        //     let player_x_name = i % modulator_numb == 0 ? entry.p1_name : entry.p2_name;
-        //     let player_x_move = i % modulator_numb == 0 ? entry.p1_icon : entry.p2_icon;
-        //     let player_x_color = i % modulator_numb == 0 ? entry.p1_color : entry.p2_color;
-
-        //     statusText.textContent = `${player_x_name}'s turn`;
-
-        //     if (blocker_index && blocker_exists) {
-        //         this.cells[entry.cells_blocked_by_blocker[j]].style.background = 'white';
-        //         j++;
-
-        //         statusText.textContent = `${entry.blocker_name} blocks`;
-        //         return;
-        //     };
-
-        //     if (player_x_move.length > 1) {
-        //         DisplayPlayerIcon_at_el(this.cells[move], player_x_move, player_x_color, player_x_move);
-        //         this.cells[move].classList.add('cell');
-
-        //     } else {
-        //         this.cells[move].textContent = player_x_move;
-        //         this.cells[move].style.color = player_x_color;
-        //     };
-        // });
+        this.create_bitmap();
+        this.check_winnner();
     };
 };
 

@@ -584,17 +584,19 @@ const toggleMainCardAnimation = (setting) => {
     };
 };
 
+let review_mode = false;
+
 // toggle field data in game 
 const toggleFieldDataInGame = (setting) => {
     if (localStorage.getItem(setting) == "true") { // if setting is enabled
-        document.querySelector('.GameField-info-corner').style.display = "block";
+        !review_mode && (document.querySelector('.GameField-info-corner').style.display = "block");
 
         localStorage.setItem(setting, "true");
         sett_ShowGameDataInGame.classList = "fa-regular fa-check-square checkBox";
         sett_ShowGameDataInGame.setAttribute("marked", "true");
 
     } else if (localStorage.getItem(setting) == "false") {
-        document.querySelector('.GameField-info-corner').style.display = "none";
+        !review_mode && (document.querySelector('.GameField-info-corner').style.display = "none");
 
         localStorage.setItem(setting, "false");
         sett_ShowGameDataInGame.classList = "fa-regular fa-square checkBox";

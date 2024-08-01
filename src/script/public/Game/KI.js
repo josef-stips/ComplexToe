@@ -90,13 +90,17 @@ const TMA_InitBigBoards = (opt, blocks) => {
 // convert win conditions for boards bigger than 32-bits 
 function convertToBinary(winPatterns) {
     const binaryPatterns = [];
+
     for (const pattern of winPatterns) {
         let binaryRepresentation = BigInt(0);
+
         for (const position of pattern) {
             binaryRepresentation += BigInt(1) << BigInt(position)
-        }
+        };
+
         binaryPatterns.push(binaryRepresentation)
-    }
+    };
+
     return binaryPatterns;
 };
 
@@ -1099,16 +1103,16 @@ const ki_set = (index, inner_field_index) => {
 };
 
 // check if player has won
-function minimax_checkWinner(Player_B, winnerIcon) { // give player big bit boards (type BigInt)
+function minimax_checkWinner(Player_Board, winnerIcon) { // give player big bit boards (type BigInt)
     let winner = null;
     let tie = 0; // 1 || 0
 
     for (let i = 0; i < WinConds.length; i++) {
         let pattern = WinConds[i];
 
-        if (tie == 0) tie = evaluatingTie(pattern, Player_B)
+        if (tie == 0) tie = evaluatingTie(pattern, Player_Board)
 
-        if ((Player_B & pattern) == pattern) {
+        if ((Player_Board & pattern) == pattern) {
             winner = winnerIcon
             break
         }
