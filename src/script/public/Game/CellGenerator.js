@@ -164,12 +164,14 @@ function Start_Blocker(onlineGame) {
         // Anzahl der Elemente, die schwarz gefärbt werden sollen
         for (i = 0; i < result.length; i++) {
             let RIndex = Math.floor(Math.random() * result[i].length);
-            let Index = result[i][RIndex]
+            let Index = result[i][RIndex];
 
             // Zufälliges Kind-Element auswählen und Hintergrundfarbe auf Schwarz setzen
             Grid[Index].style.backgroundColor = "var(--font-color)";
             Grid[Index].classList = "cell death-cell";
             Grid[Index].removeEventListener('click', cellCicked);
+
+            boneyard_array.push(Index);
 
             setTimeout(() => {
                 Grid[Index].textContent = null;

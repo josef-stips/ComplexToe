@@ -835,6 +835,10 @@ p#name-player1 {
     padding: 0 0 0 0.5vw;
 }
 
+.review_moves_list li.bot_move_entry {
+    color: slategray;
+}
+
 .review_moves_list li:nth-child(even) {
     background-color: var(--bg-app-color2);
 }

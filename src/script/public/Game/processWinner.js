@@ -1068,8 +1068,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                 PlayerData[2].AdvancedSkin == "cell empty" ? PlayerData[2].PlayerForm : PlayerData[2].AdvancedSkin.replace('cell', ''), // player 2 icon
                 score_Player1_numb, // p1 points
                 score_Player2_numb, // p2 points
-                curr_innerGameMode == GameMode[2] ? true : false, // blocker boolean
-                curr_innerGameMode == GameMode[2] ? 'bot' : ' ', // blocker name
+                GameData.InnerGameMode == 'Blocker Combat' ? true : false, // blocker boolean
+                GameData.InnerGameMode == 'Blocker Combat' ? 'bot' : ' ', // blocker name
                 JSON.stringify(cell_indexes_blocked_by_blocker), // cells blocked by blocker
                 JSON.stringify(patterns_used), // patterns used
                 JSON.stringify([xCell_Amount, yCell_Amount]), // x and y: field_size
@@ -1088,6 +1088,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                 -1,
                 Number(fieldIndex),
                 curr_music_name.id,
+                JSON.stringify(boneyard_array)
             ];
 
             game_log_handler.load_to_server(all_game_data_for_log);
@@ -1275,7 +1276,8 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
                 !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
                 OnlinePlayerIDs[3] ? OnlinePlayerIDs[3] : -1,
                 Number(fieldIndex),
-                curr_music_name.id
+                curr_music_name.id,
+                JSON.stringify(boneyard_array)
             ];
 
             socket.emit("update_gameLog", all_game_data_for_log, cb => {

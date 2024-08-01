@@ -252,7 +252,8 @@ class gameLogEntry {
         gameEntry_playerPoints_el.textContent = `
             ${this.entry_handler.opponent_data_cache[entry.p1_id].player_name} : ${entry.p1_points}, ${p2_final_name} : ${entry.p2_points}
         `;
-        gameEntry_blockerUsed_el.textContent = `${entry.p3_id == -1 ? "nope" : await this.player3_name_display(entry.p3_id)}`;
+
+        gameEntry_blockerUsed_el.textContent = `${entry.p3_id == -1 && entry.blocker_name.length <= 1 ? "nope" : await this.player3_name_display(entry.p3_id) || entry.blocker_name}`;
 
         chat_scroll_to_top("instant", gameEntry_details_list);
     };
@@ -264,6 +265,8 @@ class gameLogEntry {
 
         close_all_scenes();
 
+        gameLog_popUp.style.display = 'none';
+
         DarkLayerAnimation(GameField, gameModeCards_Div);
         initializeGame(null, null, null, null, null, null, null, null, null, null, null, null, true, entry);
 
@@ -272,14 +275,19 @@ class gameLogEntry {
             2: entry.p2_id,
             3: entry.p3_id
         };
-
-        gameLog_popUp.style.display = 'none';
     };
 
     async player3_name_display(p3_id) {
         if (!this.entry_handler.opponent_data_cache[p3_id]) {
-            let data = await this.entry_handler.get_data_from_opponent(p3_id);
-            return data.player_name;
+
+            try {
+                let data = await this.entry_handler.get_data_from_opponent(p3_id);
+                return data.player_name;
+
+            } catch (error) {
+                console.log(error);
+                return false;
+            };
         };
 
         return this.entry_handler.opponent_data_cache[p3_id].player_name;

@@ -146,6 +146,8 @@ let curr_music_name;
 
 let review_mode_handler;
 
+let boneyard_array = [];
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -171,6 +173,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     player2_lastBarRelation = 0;
     player1_lastBarRelation = 0;
+
+    boneyard_array = [];
 
     CreativeLevel_from_onlineMode_costumPatterns_globalVar = CreativeLevel_from_onlineMode_costumPatterns;
 
@@ -2534,6 +2538,7 @@ class reviewModeHandler {
         this.cells = [...cellGrid.children];
 
         this.blocker = null;
+        this.total_moves_length = this.moves.length + entry.cells_blocked_by_blocker.length
     };
 
     init() {
@@ -2555,11 +2560,13 @@ class reviewModeHandler {
         review_mode_back_btn.addEventListener('click', review_mode_back_btn.ev = () => {
             this.curr_move_idx > 0 && this.curr_move_idx--;
             this.current_move(this.entry);
+            centerCurrentMove((window.innerHeight / 17) / -1);
         });
 
         review_mode_forth_btn.addEventListener('click', review_mode_forth_btn.ev = () => {
-            this.curr_move_idx < this.moves.length - 1 && this.curr_move_idx++;
+            this.curr_move_idx < this.total_moves_length - 1 && this.curr_move_idx++;
             this.current_move(this.entry);
+            centerCurrentMove(window.innerHeight / 17);
         });
 
         review_moves_wrapper.addEventListener('keydown', (e) => {
@@ -2594,6 +2601,13 @@ class reviewModeHandler {
         review_mode_action_wrapper.style.display = 'flex';
         review_mode_game_footer.style.display = 'flex';
         statusText.style.display = 'flex';
+
+        setTimeout(() => {
+            review_mode_handler.list.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }, 600);
 
         gameLog_btn.classList.remove('blured');
 
@@ -2676,50 +2690,184 @@ class reviewModeHandler {
                 cell.style.height = `${cellWidth}px`;
             });
         }, 500);
+
+        if (entry.field_mode == 'Boneyard') {
+            entry.boneyard_arr.map((index, i) => {
+                this.cells[index].style.background = 'white';
+            });
+        };
     };
 
     init_moves_list(entry, moves) {
         this.list.textContent = null;
 
-        moves.map((move, i) => {
-            let player_x_move = i % 2 == 0 ? entry.p1_name : entry.p2_name;
+        let j = 0;
+        let k = 0;
+        let move_lenght_sum = moves.length + entry.cells_blocked_by_blocker.length;
 
-            let item = document.createElement('li');
-            item.textContent = `${i + 1}: ${player_x_move} | idx: ${move}`;
+        for (let i = 0; i < move_lenght_sum; i++) {
+            let move = moves[k];
 
-            this.list.append(item);
-        });
+            let player_index = i % 3;
+            let normal_player_index = i % 2;
+            let player_x_move;
+            let move_idx;
+
+            if (entry.field_mode === 'Blocker Combat') {
+
+                if (player_index === 0) {
+                    player_x_move = entry.p1_name;
+                    move_idx = move;
+                    k++;
+
+                } else if (player_index === 1) {
+                    player_x_move = entry.p2_name;
+                    move_idx = move;
+                    k++;
+
+                } else if (player_index === 2) {
+                    player_x_move = entry.blocker_name;
+                    move_idx = entry.cells_blocked_by_blocker[j];
+                    j++;
+                };
+
+            } else {
+                player_x_move = normal_player_index == 0 ? entry.p1_name : entry.p2_name;
+                move_idx = move;
+                k++;
+            };
+
+            this.create_list_item(i, player_x_move, move_idx);
+        };
+    };
+
+    create_list_item(i, player_x_move, move) {
+        let item = document.createElement('li');
+        item.textContent = `${i + 1}: ${player_x_move} | idx: ${move}`;
+
+        player_x_move != this.entry.p1_name && player_x_move != this.entry.p2_name && item.classList.add('bot_move_entry');
+
+        this.list.append(item);
     };
 
     current_move(entry) {
         this.curr_move_val = this.moves[this.curr_move_idx];
 
         this.moves.map((move, i) => {
-            this.list.children[i].style.borderLeft = `none`;
             this.cells[move].textContent = null;
             this.cells[move].className = 'cell';
             this.cells[move].style.color = 'white';
         });
 
-        [...this.list.children][this.curr_move_idx].style.borderLeft = `0.3vh solid #009fff`;
+        this.entry.cells_blocked_by_blocker.map((move, i) => {
+            !entry.boneyard_arr.includes(move) && (this.cells[move].style.background = 'unset');
+        });
 
-        this.moves.map((move, i) => {
+        [...this.list.children].forEach(el => {
+            el.style.borderLeft = `none`;
+            el.setAttribute("current", "true");
+        });
+
+        [...this.list.children][this.curr_move_idx].style.borderLeft = `0.3vh solid #009fff`;
+        [...this.list.children][this.curr_move_idx].setAttribute("current", "true");
+
+        let j = 0;
+        let k = 0;
+        let move_lenght_sum = this.moves.length + entry.cells_blocked_by_blocker.length;
+
+        for (let i = 0; i < move_lenght_sum; i++) {
             if (i > this.curr_move_idx) return;
 
-            let player_x_name = i % 2 == 0 ? entry.p1_name : entry.p2_name;
-            let player_x_move = i % 2 == 0 ? entry.p1_icon : entry.p2_icon;
-            let player_x_color = i % 2 == 0 ? entry.p1_color : entry.p2_color;
+            let move = this.moves[k];
+
+            let player_index = i % 3;
+            let normal_player_index = i % 2;
+            let player_x_move;
+            let player_x_color;
+            let player_x_name;
+            let move_idx;
+
+            if (entry.field_mode === 'Blocker Combat') {
+
+                if (player_index === 0) {
+                    player_x_move = entry.p1_icon;
+                    player_x_color = entry.p1_color;
+                    player_x_name = entry.p1_name;
+                    move_idx = move;
+                    k++;
+
+                } else if (player_index === 1) {
+                    player_x_move = entry.p2_icon;
+                    player_x_color = entry.p2_color;
+                    player_x_name = entry.p2_name;
+                    move_idx = move;
+                    k++;
+
+                } else if (player_index === 2) {
+                    this.cells[entry.cells_blocked_by_blocker[j]].style.background = 'white';
+                    j++;
+
+                    statusText.textContent = `${entry.blocker_name} blocks`;
+                    continue;
+                };
+
+            } else {
+                player_x_move = normal_player_index == 0 ? entry.p1_icon : entry.p2_icon;
+                player_x_color = normal_player_index == 0 ? entry.p1_color : entry.p1_color;
+                player_x_name = normal_player_index == 0 ? entry.p1_name : entry.p2_name;
+
+                move_idx = move;
+                k++;
+            };
 
             statusText.textContent = `${player_x_name}'s turn`;
 
             if (player_x_move.length > 1) {
-                DisplayPlayerIcon_at_el(this.cells[move], player_x_move, player_x_color, player_x_move);
-                this.cells[move].classList.add('cell');
+                DisplayPlayerIcon_at_el(this.cells[move_idx], player_x_move, player_x_color, player_x_move);
+                this.cells[move_idx].classList.add('cell');
 
             } else {
-                this.cells[move].textContent = player_x_move;
-                this.cells[move].style.color = player_x_color;
+                this.cells[move_idx].textContent = player_x_move;
+                this.cells[move_idx].style.color = player_x_color;
             };
-        });
+        };
+
+        // this.moves.map((move, i) => {
+        //     if (i > this.curr_move_idx) return;
+
+        //     let blocker_exists = entry.blocker == 0 ? false : true;
+        //     let blocker_index = i % 3 === 2;
+        //     let modulator_numb = blocker_exists ? 3 : 2;
+
+        //     let player_x_name = i % modulator_numb == 0 ? entry.p1_name : entry.p2_name;
+        //     let player_x_move = i % modulator_numb == 0 ? entry.p1_icon : entry.p2_icon;
+        //     let player_x_color = i % modulator_numb == 0 ? entry.p1_color : entry.p2_color;
+
+        //     statusText.textContent = `${player_x_name}'s turn`;
+
+        //     if (blocker_index && blocker_exists) {
+        //         this.cells[entry.cells_blocked_by_blocker[j]].style.background = 'white';
+        //         j++;
+
+        //         statusText.textContent = `${entry.blocker_name} blocks`;
+        //         return;
+        //     };
+
+        //     if (player_x_move.length > 1) {
+        //         DisplayPlayerIcon_at_el(this.cells[move], player_x_move, player_x_color, player_x_move);
+        //         this.cells[move].classList.add('cell');
+
+        //     } else {
+        //         this.cells[move].textContent = player_x_move;
+        //         this.cells[move].style.color = player_x_color;
+        //     };
+        // });
     };
+};
+
+function centerCurrentMove(numb) {
+    review_mode_handler.list.scrollTo({
+        top: review_mode_handler.list.scrollTop + numb,
+        behavior: 'smooth'
+    });
 };
