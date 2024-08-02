@@ -2573,8 +2573,6 @@ class reviewModeHandler {
 
         this.bitboard = BigInt(0b0);
         for (const [i, val] of board.entries()) val && (this.bitboard |= (BigInt(1) << BigInt(i)));
-
-        console.log(board, this.bitboard, this.bitboard.toString(2));
     };
 
     check_winnner() {
@@ -2642,6 +2640,21 @@ class reviewModeHandler {
                 e.preventDefault();
                 review_mode_back_btn.click();
             };
+        });
+
+        review_mode_start_move_btn.removeEventListener('click', review_mode_start_move_btn.ev);
+        review_mode_end_move_btn.removeEventListener('click', review_mode_end_move_btn.ev);
+
+        review_mode_start_move_btn.addEventListener('click', review_mode_start_move_btn.ev = () => {
+            this.curr_move_idx = 0;
+            this.current_move(this.entry);
+            centerCurrentMove((this.list.scrollTop) / -1);
+        });
+
+        review_mode_end_move_btn.addEventListener('click', review_mode_end_move_btn.ev = () => {
+            this.curr_move_idx = this.total_moves_length - 1
+            this.current_move(this.entry);
+            centerCurrentMove(this.list.scrollHeight);
         });
     };
 

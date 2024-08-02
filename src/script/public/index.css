@@ -799,7 +799,7 @@ p#name-player1 {
     align-items: center;
     font-size: 3vh;
     padding: 0.1vw;
-    clip-path: border-box;
+    /* clip-path: border-box; */
 }
 
 .review_moves_header {
@@ -854,6 +854,17 @@ p#name-player1 {
 .review_moves_list::-webkit-scrollbar-thumb {
     background-color: white;
     border-radius: 1vh;
+}
+
+.review_mode_mv_wrapper_btns {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5vw;
+    margin: 0.5vh 0.5vw;
+    z-index: 1;
+    position: absolute;
+    bottom: -9.5vh;
+    left: 0;
 }
 
 

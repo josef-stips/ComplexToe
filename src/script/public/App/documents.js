@@ -736,6 +736,8 @@ let game_footer_game_type_el = document.querySelector('.game_footer_game_type_el
 let review_mode_game_footer = document.querySelector(".review_mode_game_footer");
 let game_footer_date = document.querySelector('.game_footer_date');
 let game_footer_winner_el = document.querySelector('.game_footer_winner_el');
+let review_mode_end_move_btn = document.querySelector('.review_mode_end_move_btn');
+let review_mode_start_move_btn = document.querySelector('.review_mode_start_move_btn');
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
