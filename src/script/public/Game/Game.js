@@ -2622,12 +2622,14 @@ class reviewModeHandler {
             this.curr_move_idx > 0 && this.curr_move_idx--;
             this.current_move(this.entry);
             centerCurrentMove((window.innerHeight / 17) / -1);
+            playBtn_Audio_2();
         });
 
         review_mode_forth_btn.addEventListener('click', review_mode_forth_btn.ev = () => {
             this.curr_move_idx < this.total_moves_length - 1 && this.curr_move_idx++;
             this.current_move(this.entry);
             centerCurrentMove(window.innerHeight / 17);
+            playBtn_Audio_2();
         });
 
         review_moves_wrapper.addEventListener('keydown', (e) => {
@@ -2649,12 +2651,20 @@ class reviewModeHandler {
             this.curr_move_idx = 0;
             this.current_move(this.entry);
             centerCurrentMove((this.list.scrollTop) / -1);
+            playBtn_Audio_2();
         });
 
         review_mode_end_move_btn.addEventListener('click', review_mode_end_move_btn.ev = () => {
             this.curr_move_idx = this.total_moves_length - 1
             this.current_move(this.entry);
             centerCurrentMove(this.list.scrollHeight);
+            playBtn_Audio_2();
+        });
+
+        review_mode_question_btn.removeEventListener('click', review_mode_question_btn.ev);
+        review_mode_question_btn.addEventListener('click', review_mode_question_btn.ev = () => {
+            let QA_box = new QABOX(3, ['W: winning move', 'L: misleading move', 'N: neutral move'], { 'W': 'green', 'L': 'red', 'N': 'slategray' }, { 'W': [0, 0.5, 0, 0], 'N': [0, 0.5, 0, 0], 'L': [0, 0.5, 0, 0] });
+            QA_box.open();
         });
     };
 
@@ -2828,11 +2838,40 @@ class reviewModeHandler {
     };
 
     create_list_item(i, player_x_move, move) {
-        let item = document.createElement('li');
-        item.textContent = `${i + 1}: ${player_x_move} | idx: ${move}`;
+        let state = {};
 
+        let item = document.createElement('li');
+        let wrapper1 = document.createElement('div');
+        let wrapper2 = document.createElement('div');
+        let state_el = document.createElement('p');
+        let data_el = document.createElement('p');
+
+        data_el.textContent = `${i + 1}: ${player_x_move} | idx: ${move}`;
+
+        state['bin'] = this.win_patterns_on_nth_move.includes(i) ? 0b10 : this.win_patterns_on_nth_move.includes(i + 1) ? 0b01 : 0b0;
         player_x_move != this.entry.p1_name && player_x_move != this.entry.p2_name && item.classList.add('bot_move_entry');
 
+        // determine move state | evaluate
+        if ((state['bin'] & 0b11) === 0b10) {
+            state['color'] = 'green';
+            state['text'] = 'W';
+
+        } else if ((state['bin'] & 0b11) === 0b00) {
+            state['color'] = 'slategray';
+            state['text'] = 'N';
+
+        } else {
+            state['color'] = 'red';
+            state['text'] = 'L';
+        };
+
+        state_el.style.color = state['color'];
+        state_el.textContent = state['text'];
+
+        wrapper1.append(data_el);
+        wrapper2.append(state_el);
+        item.append(wrapper1);
+        item.append(wrapper2);
         this.list.append(item);
     };
 

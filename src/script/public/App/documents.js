@@ -738,6 +738,10 @@ let game_footer_date = document.querySelector('.game_footer_date');
 let game_footer_winner_el = document.querySelector('.game_footer_winner_el');
 let review_mode_end_move_btn = document.querySelector('.review_mode_end_move_btn');
 let review_mode_start_move_btn = document.querySelector('.review_mode_start_move_btn');
+let review_mode_question_btn = document.querySelector('.review_mode_question_btn');
+let uni_answer_box = document.querySelector('.uni_answer_box');
+let uniAnswerBox_closeBtn = document.querySelector('.uniAnswerBox_closeBtn');
+let uni_answer_box_list = document.querySelector('.uni_answer_box_list');
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
