@@ -2547,11 +2547,17 @@ class reviewModeHandler {
         this.patterns = []; // patterns as bigint binarys
         this.original_patterns = []; // patterns as arrays 
         this.win_patterns_on_nth_move = []; // associate every pattern on their move index that realised them
+
+        this.settings = {
+            'allow_music': 'true'
+        };
     };
 
     init() {
         this.init_patterns_list(this.entry);
+
         this.events();
+        this.init_settings();
 
         this.init_doc(this.entry);
         this.init_player_icon(this.entry);
@@ -2560,6 +2566,17 @@ class reviewModeHandler {
         this.init_moves_list(this.entry, this.moves);
 
         this.current_move(this.entry);
+    };
+
+    init_settings() {
+        let sett0 = localStorage.getItem('sett-MusicInReview');
+
+        if (sett0 == null) {
+            localStorage.setItem('sett-MusicInReview', 'true');
+
+        } else {
+            this.settings['allow_music'] = sett0;
+        };
     };
 
     init_patterns_list(entry) {
@@ -2721,8 +2738,10 @@ class reviewModeHandler {
         ChangeGameBG(entry.bg1, entry.bg2);
         PauseMusic();
 
-        curr_music_name = document.querySelector(`audio#${entry.music_name}`);
-        CreateMusicBars(curr_music_name);
+        if (this.settings['allow_music'] == 'true') {
+            curr_music_name = document.querySelector(`audio#${entry.music_name}`);
+            CreateMusicBars(curr_music_name);
+        };
     };
 
     init_player_icon(entry) {

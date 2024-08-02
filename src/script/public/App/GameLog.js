@@ -244,7 +244,7 @@ class gameLogEntry {
         gameEntry_pointsToWin_el.textContent = entry.points_to_win;
         gameEntry_fieldMode_el.textContent = entry.field_mode;
         gameEntry_fieldSize_el.textContent = `${entry.field_size[0]}x${entry.field_size[1]}`;
-        gameEntry_patternsUsed_el.textContent = `${entry.patterns_used.join(', ')}`;
+        gameEntry_patternsUsed_el.textContent = `${entry.patterns_used.map(i => i.pattern).join(', ')}`;
         gameEntry_gameDuration_el.textContent = `${entry.game_duration} sec.`;
         gameEntry_playerClock_el.textContent = `${entry.player_clock} sec.`;
         gameEntry_levelName_el.textContent = `${entry.level_name}`;
