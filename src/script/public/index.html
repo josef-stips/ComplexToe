@@ -48,6 +48,7 @@
     <audio src="assets/door_open.mp3" id="door_open_sound"></audio>
     <audio src="assets/Maps/wheel_of_fortune_bg.mp3" id="wheel_of_fortune_bg"></audio>
     <audio src="assets/clack.mp3" id="clack_sound"></audio>
+    <audio src="assets/btn4.mp3" id="btn4"></audio>
 
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,6 +66,7 @@
     <script defer src="App/scripts/functions.js"></script>
     <script defer src="App/script.js"></script>
     <script defer src="App/universal_stuff/Q&A_box.js"></script>
+    <script defer src="App/features/pop_ups/current_online_games.js"></script>
     <script defer src="App/features/GameFieldScenery.js"></script>
     <script defer src="App/scripts/mail.js"></script>
     <script defer src="App/features/bosses/BossClass.js"></script>
@@ -8555,6 +8557,30 @@
 
         <div class="uni_answer_box_footer">
             <p style="width: 10%;" class="CreateLevelSceneButton uniAnswerBox_closeBtn">OK</p>
+        </div>
+    </div>
+
+    <!-- current games list -->
+    <div class="current_games_pop_up">
+
+        <div class="curr_games_header">
+            <div>
+                <i class="fa-solid fa-question curr_games_pop_up_quest_btn scale_btn"></i>
+                <i class="fa-solid fa-x curr_games_pop_up_close_btn scale_btn"></i>
+            </div>
+        </div>
+
+        <div class="curr_games_main">
+            <ul class="curr_games_list">
+
+            </ul>
+        </div>
+
+        <div class="curr_games_footer">
+            <i class="fa-solid fa-dragon"></i>
+            <i class="fa-solid fa-dragon"></i>
+
+            <p class="curr_games_watch_btn CreateLevelSceneButton scale_btn">watch</p>
         </div>
     </div>
 

@@ -1072,6 +1072,8 @@ gameMode_KI_card.addEventListener('click', () => {
 });
 
 gameMode_TwoPlayerOnline_card.addEventListener('click', async() => {
+    if (!localStorage.getItem('UserName')) return;
+
     curr_mode = GameMode[2].opponent;
 
     // visibility for Ki Fields and GameMode fields
@@ -1096,6 +1098,8 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', async() => {
 });
 
 gameMode_OneVsOne_card.addEventListener('click', async() => {
+    if (!localStorage.getItem('UserName')) return;
+
     curr_mode = GameMode[3].opponent;
 
     // visibility for Ki Fields and GameMode fields
@@ -1485,6 +1489,7 @@ EnterGame_btn.addEventListener('click', () => {
     OnlineGame_iniPopUp.style.display = 'none';
 
     setUpOnlineGame('enter');
+    play_btn4_sound();
 });
 
 CreateGame_btn.addEventListener('click', () => {
@@ -1500,9 +1505,11 @@ JoinGame_btn.addEventListener("click", () => {
     Player2_IconInput.style.display = "none";
 
     setUpOnlineGame('enter');
+    play_btn4_sound();
 });
 
 UserCreated_btn.addEventListener('click', () => {
+    play_btn4_sound();
     gameModeFields_Div.style.display = 'none';
     social_stuff_cards[3].click();
     sceneMode.default()

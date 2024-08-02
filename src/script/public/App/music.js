@@ -234,3 +234,10 @@ function play_clack_sound() {
     clack_sound.volume = sfxVolume;
     clack_sound.play();
 };
+
+function play_btn4_sound() {
+    btn4_sound.pause();
+    btn4_sound.currentTime = 0;
+    btn4_sound.volume = sfxVolume;
+    btn4_sound.play();
+};

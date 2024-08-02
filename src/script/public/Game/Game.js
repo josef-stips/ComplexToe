@@ -2593,10 +2593,7 @@ class reviewModeHandler {
     };
 
     check_winnner() {
-        console.log(this.patterns);
-
         for (const [i, pattern] of this.patterns.entries()) {
-            console.log(pattern, this.original_patterns[i]);
 
             if ((this.bitboard & pattern) == pattern) {
                 this.blacken_cells(this.original_patterns[i], this.win_patterns_on_nth_move[i]);
@@ -2627,8 +2624,11 @@ class reviewModeHandler {
     blacken_cell(cell) {
         cell.style.background = `white`;
         cell.style.color = `white`;
-        cell.textContent = ``;
-        cell.className = 'cell';
+
+        setTimeout(() => {
+            cell.textContent = ``;
+            cell.className = 'cell';
+        }, 200);
     };
 
     events() {
@@ -2904,6 +2904,7 @@ class reviewModeHandler {
         });
 
         this.cells.map((val, i, arr) => {
+            val.style.transition = 'background 0.2s linear';
             let move = Number(val.getAttribute('cell-index'));
             !entry.boneyard_arr.includes(move) && (val.style.background = 'unset');
         });

@@ -5304,11 +5304,22 @@ h1.stars_pop_up_title {
     cursor: pointer;
     transition: transform 0.2s ease-out;
     font-size: 4vh;
-    margin: 20px 20px 0 0;
+    margin: 1vh 1vw 0 0;
     align-self: flex-start;
 }
 
 .exploredItemPopUp_closeBtn:hover {
+    transition: transform 0.2s ease-out;
+    transform: scale(1.1);
+}
+
+.scale_btn {
+    transition: transform 0.2s ease-out;
+    transform: scale(1);
+    cursor: pointer;
+}
+
+.scale_btn:hover {
     transition: transform 0.2s ease-out;
     transform: scale(1.1);
 }
@@ -11785,14 +11796,14 @@ ul.default_sb_list.best_players_list div:first-child {
 /* universal Q&A box */
 
 .uni_answer_box {
+    display: none;
     width: 50vw;
     height: 50vh;
     position: absolute;
     inset: 0;
     margin: auto;
-    display: none;
     flex-direction: column;
-    z-index: 10000;
+    z-index: 110000;
     align-items: center;
     user-select: none;
     background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
@@ -11829,6 +11840,116 @@ ul.default_sb_list.best_players_list div:first-child {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+/* current_games_pop_up */
+
+.current_games_pop_up {
+    display: none;
+    width: 50vw;
+    height: 90vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: 10000;
+    color: white;
+}
+
+.curr_games_header {
+    width: 100%;
+    height: 10%;
+    background: var(--line-color);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4vh;
+    /* border: 0.4vh solid var(--line-color); */
+    position: absolute;
+    top: 0;
+}
+
+.curr_games_header div {
+    width: 95%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.curr_games_main {
+    width: 90%;
+    height: 80%;
+    background-color: var(--bg-app-color);
+    border: white solid 0.4vh;
+}
+
+.curr_games_list {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.curr_games_list li {
+    --first-color: white;
+    --second-color: red;
+    width: 100%;
+    height: 22.5%;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 0.4vh solid white;
+    background: linear-gradient(45deg, var(--first-color), var(--second-color));
+}
+
+.curr_games_footer {
+    width: 100%;
+    height: 10%;
+    background: var(--line-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4vh;
+    /* border: 0.4vh solid var(--line-color); */
+    position: absolute;
+    bottom: 0;
+}
+
+.curr_games_footer>p {
+    margin: 0;
+}
+
+.curr_games_footer>i {
+    font-size: 10vh;
+    top: -10vh;
+    color: var(--line-color);
+    position: absolute;
+}
+
+.curr_games_footer>i:first-child {
+    left: 1.1vw;
+    transform: scaleX(-1);
+}
+
+.curr_games_footer>i:nth-child(2) {
+    right: 1.1vw;
+}
+
+.curr_games_watch_btn {
+    color: white;
+    border-color: white;
+}
+
+.curr_games_watch_btn.blured {
+    color: gray;
+    border-color: gray;
 }
 
 

@@ -1005,6 +1005,7 @@ socket.on("Updated_AllowedPatterns", patternsArray => {
 
 // random game opponent button
 SearchRandomOpponent_btn.addEventListener("click", () => {
+    play_btn4_sound();
     AlertText.textContent = "this feature is availible soon";
     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 });

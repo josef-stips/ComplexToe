@@ -1,11 +1,12 @@
 // everything about the universal Q&A box for question btn's
 class QABOX {
-    constructor(amount_of_entries, content_array, color_assignment, margin_assignment) {
+    constructor(amount_of_entries, content_array, color_assignment, margin_assignment, close_dark_layer = true) {
         this.list = uni_answer_box_list;
         this.amount_of_entries = amount_of_entries;
         this.content = content_array;
         this.color_assignment = color_assignment;
         this.margin_assignment = margin_assignment;
+        this.close_dark_layer = close_dark_layer;
 
         this.events();
     };
@@ -54,6 +55,6 @@ class QABOX {
 
     close() {
         uni_answer_box.style.display = 'none';
-        DarkLayer.style.display = 'none';
+        this.close_dark_layer && (DarkLayer.style.display = 'none');
     };
 };

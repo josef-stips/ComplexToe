@@ -24,6 +24,7 @@ let ShopTheme = document.querySelector("#ShopTheme");
 let unlock_sound1 = document.querySelector("#unlock_sound1");
 let collect1 = document.querySelector("#collect1");
 const clack_sound = document.querySelector("#clack_sound");
+const btn4_sound = document.querySelector(`#btn4`);
 
 const door_open_sound = document.querySelector("#door_open_sound");
 const wheel_of_fortune_scene = document.querySelector(".wheel_of_fortune_scene");
@@ -742,6 +743,11 @@ let review_mode_question_btn = document.querySelector('.review_mode_question_btn
 let uni_answer_box = document.querySelector('.uni_answer_box');
 let uniAnswerBox_closeBtn = document.querySelector('.uniAnswerBox_closeBtn');
 let uni_answer_box_list = document.querySelector('.uni_answer_box_list');
+let curr_games_pop_up_quest_btn = document.querySelector('.curr_games_pop_up_quest_btn');
+let curr_games_pop_up_close_btn = document.querySelector('.curr_games_pop_up_close_btn');
+let curr_games_list = document.querySelector('.curr_games_list');
+let curr_games_watch_btn = document.querySelector('.curr_games_watch_btn');
+let current_games_pop_up = document.querySelector('.current_games_pop_up');
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
