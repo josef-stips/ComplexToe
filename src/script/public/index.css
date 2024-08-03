@@ -2322,6 +2322,7 @@ li.officialWinPatternsOpenBtn {
     justify-content: start;
     align-items: start;
     gap: 1vw;
+    font-size: 3vh;
 }
 
 .togglePatternBtn {
@@ -6648,8 +6649,9 @@ h1.stars_pop_up_title {
     align-items: center;
     justify-content: space-between;
     width: 97.5%;
-    height: 15%;
+    height: 10%;
     min-height: 10%;
+    max-height: 10%;
 }
 
 .CreateLevel_main {
@@ -6699,27 +6701,31 @@ h1.stars_pop_up_title {
 
 .Workbench_main {
     position: relative;
-    height: 70vh;
+    height: 90%;
     width: 97.5%;
     display: flex;
     align-items: center;
     justify-content: center;
     justify-content: space-between;
+    margin: 0 0 1vh 0;
 }
 
 .CreateLevel_Title {
+    display: none !important;
     font-size: 4.5vh;
     display: none;
 }
 
 .Workbench_footer {
     display: flex;
-    border-top: 2px solid;
-    padding: 15px 15px 0 15px;
+    border-top: 0.5vh solid white;
+    padding: 1.5vh 1vw 0 1vw;
     gap: 1em;
     align-self: flex-start;
     width: 100%;
-    height: min-content;
+    height: 10vh;
+    min-height: 10vh;
+    max-height: 10vh;
 }
 
 .PlayLevelBtn {
@@ -6770,23 +6776,23 @@ h1.stars_pop_up_title {
 }
 
 .CreateLevel_helpPopUp {
-    width: 60%;
-    height: 60%;
+    width: 70%;
+    height: 70%;
     position: absolute;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid var(--line-color);
+    border: 0.7vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
     justify-content: center;
     color: white;
-    font-size: 25px;
+    font-size: 3vh;
     z-index: 10006;
-    border-radius: 25px;
+    border-radius: 4vh;
     align-items: center;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
@@ -6794,7 +6800,7 @@ h1.stars_pop_up_title {
 .CreateLevel_HelpPopUpCloseBtn {
     transition: color 0.1s ease-in-out;
     cursor: pointer;
-    margin-right: 15px;
+    margin-right: 1.5vw;
 }
 
 .CreateLevel_HelpPopUpCloseBtn:hover {
@@ -6809,15 +6815,15 @@ h1.stars_pop_up_title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid white;
+    border-bottom: 0.7vh solid var(--line-color);
 }
 
 .CreateLevelHelpHeader i {
-    font-size: var(--button-font-size);
+    font-size: 1.75vw;
 }
 
 .CreateLevelHelpHeader i:first-child {
-    margin: 0 0 0 15px;
+    margin: 0 0 0 1.5vw;
 }
 
 .CreateLevelHelpPopUpMain {
@@ -6826,8 +6832,8 @@ h1.stars_pop_up_title {
     display: flex;
     justify-content: start;
     align-items: start;
-    margin: 10px 0 0 0;
-    padding: 0 10px 40px 10px;
+    padding: 0 1vw;
+    margin: 1vh 0 0 0;
     overflow: scroll;
     text-align: left;
 }
@@ -6836,6 +6842,7 @@ h1.stars_pop_up_title {
     display: flex;
     flex-direction: column;
     gap: 1em;
+    padding: 0 0 0 3vw;
 }
 
 .CreateLevelHelpPopUpMain ol li {
@@ -6843,7 +6850,7 @@ h1.stars_pop_up_title {
 }
 
 .workbenchLevelSettingsList {
-    font-size: var(--Text-font-size);
+    font-size: 2vh;
     flex-direction: column;
     display: flex;
     gap: 1em;
@@ -6858,7 +6865,7 @@ h1.stars_pop_up_title {
 }
 
 .workbench_AllowedPatternsContainerWrapper {
-    margin: 10px 0 0 0;
+    margin: 1vh 0 0 0;
 }
 
 .CreateLevel_5x5_AllowedPatterns {
@@ -6866,7 +6873,7 @@ h1.stars_pop_up_title {
     flex-direction: column;
     gap: 1em;
     overflow: scroll;
-    height: var(--CreateLevel-ScrollContainerHeight-max);
+    height: 50vh;
 }
 
 .CreateLevel_5x5_AllowedPatterns>div>div {
@@ -6874,7 +6881,7 @@ h1.stars_pop_up_title {
 }
 
 .CreateLevel_5x5_AllowedPatterns>div {
-    gap: 15px !important;
+    gap: 1vw !important;
 }
 
 .CreateLevel_4x4_AllowedPatterns {
@@ -6900,6 +6907,7 @@ h1.stars_pop_up_title {
 .AllowedPatternsContainer_ScrollBtn {
     cursor: pointer;
     transition: transform 0.1s ease-in-out;
+    font-size: 3vh;
 }
 
 .AllowedPatternsContainer_ScrollBtn:hover {
@@ -6990,10 +6998,10 @@ h1.stars_pop_up_title {
     align-items: center;
     justify-content: center;
     background-color: var(--bg-app-color2);
-    border-radius: 50px;
-    border: 3px solid white;
+    border-radius: 4vh;
+    border: 0.5vh solid white;
     align-self: baseline;
-    margin-top: 3em;
+    margin-top: 3vh;
 }
 
 .workbenchMain_right {
@@ -7012,8 +7020,6 @@ h1.stars_pop_up_title {
     justify-content: center;
     width: -webkit-fill-available;
     gap: 1.5em;
-    height: 150%;
-    margin-right: 3%;
 }
 
 .creative_level_footer_details {
@@ -7028,11 +7034,16 @@ h1.stars_pop_up_title {
 }
 
 .workbenchMain_middle [for="cellgrid"] {
-    font-size: 35px;
+    font-size: 6vh;
 }
 
 .levelRequiredPointsToWinDisplay {
     outline: none;
+}
+
+[from="levelicon"] {
+    width: 2vw;
+    height: 2vw;
 }
 
 
@@ -7040,7 +7051,7 @@ h1.stars_pop_up_title {
 
 .workbench_LevelName_Display {
     outline: none;
-    padding: 0 85px;
+    padding: 0 2vw;
 }
 
 .workbench_cellGrid {
@@ -7052,7 +7063,7 @@ h1.stars_pop_up_title {
 }
 
 .workbench_LevelFieldSize_Display {
-    font-size: var(--Text-font-size);
+    font-size: 3vh;
 }
 
 .worbench_LevelStatusWrapper span {
@@ -7062,20 +7073,20 @@ h1.stars_pop_up_title {
 }
 
 .worbench_LevelStatus {
-    padding: 0 0 10px 0;
-    font-size: var(--Text-font-size);
+    padding: 0 0 1vh 0;
+    font-size: 3vh;
 }
 
 .workbenchMiddle_top {
-    font-size: var(--button-font-size);
+    font-size: 2vh;
 }
 
 .workbench_levelID_display {
     position: absolute;
     bottom: 0;
     left: 0;
-    margin: auto auto 10px 10px;
-    font-size: var(--Text-font-size);
+    margin: auto auto 0.5vh 0.5vw;
+    font-size: 3vh;
 }
 
 
@@ -7285,38 +7296,35 @@ span.LevelIconWrapper img {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid var(--line-color);
+    border: 0.4vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
+    align-items: flex-start;
     gap: 3em;
     color: white;
-    font-size: 25px;
+    font-size: 3vh;
     z-index: 10006;
-    border-radius: 25px;
-    align-items: center;
+    border-radius: 4vh;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .saveLevelWarning_main {
-    height: 40%;
+    height: 35%;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     gap: 1.5em;
     flex-direction: column;
-    font-size: var(--Text-font-size);
+    font-size: 3vh;
 }
 
 .saveLevel_mainInnerWrapper {
-    width: 100%;
+    width: 90%;
     height: 70%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
+    padding: 1vh;
 }
 
 .saveLevel_bottomInnerWrapper {
@@ -7330,7 +7338,7 @@ span.LevelIconWrapper img {
 }
 
 .saveLevelWarning_header {
-    height: 10%;
+    height: 13%;
     width: 100%;
     display: flex;
     justify-content: end;
@@ -7338,8 +7346,8 @@ span.LevelIconWrapper img {
 }
 
 .closeSaveLevelWarning {
-    margin: 10px 20px 0 0;
-    font-size: var(--button-font-size);
+    margin: 2vh 1vw 0 0;
+    font-size: 3vh;
     cursor: pointer;
 }
 
@@ -7757,15 +7765,15 @@ span.LevelIconWrapper img {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid var(--line-color);
+    border: 0.4vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
     align-items: center;
     color: white;
-    font-size: 25px;
+    font-size: 3vh;
     z-index: 10006;
-    border-radius: 25px;
+    border-radius: 4vh;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -7775,8 +7783,8 @@ span.LevelIconWrapper img {
     align-items: center;
     flex-direction: row;
     width: 95%;
-    height: 10%;
-    border-bottom: 2px solid var(--line-color);
+    height: 15%;
+    border-bottom: 0.4vh solid var(--line-color);
 }
 
 .MusicPreview_closeBtn {
@@ -7799,19 +7807,25 @@ span.LevelIconWrapper img {
 }
 
 .CreateLevel_musicPreviewBtn {
-    font-size: 15px;
+    font-size: 1.5vh;
     cursor: pointer;
     border-radius: 50%;
-    border: 2px solid white;
-    padding: 10px;
+    border: 0.6vh solid white;
+    padding: 1vh;
 }
 
 .AudioSlider {
     background-color: #121518;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 1vw;
+    border-radius: 4vh;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     color: white;
+    width: 15vw;
+    /* height: 5vh; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5vh;
 }
 
 .AudioSlider::-webkit-media-controls-panel {
@@ -7939,7 +7953,7 @@ span.LevelIconWrapper img {
 .CreateLevel_CreateOwnStuff_btn {
     position: absolute;
     left: 17.5%;
-    top: 91%;
+    top: 88%;
 }
 
 .tab_content {
@@ -7960,16 +7974,15 @@ span.LevelIconWrapper img {
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid var(--line-color);
-    border: 2px solid var(--line-color);
+    border: 0.5vh solid var(--line-color);
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
     align-items: center;
     color: white;
-    font-size: 25px;
+    font-size: 3vh;
     z-index: 10006;
-    border-radius: 25px;
+    border-radius: 4vh;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     justify-content: space-between;
 }
@@ -7981,8 +7994,7 @@ span.LevelIconWrapper img {
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    border-bottom: 2px solid var(--line-color);
-    border-bottom: 2px solid var(--line-color);
+    border-bottom: 0.4vh solid var(--line-color);
 }
 
 .createCostumMain {
@@ -7992,7 +8004,7 @@ span.LevelIconWrapper img {
     align-items: center;
     flex-direction: column;
     justify-content: space-around;
-    margin: 10px 0 0 0;
+    margin: 1vh 0 0 0;
 }
 
 .createCostumField_Mainfooter {

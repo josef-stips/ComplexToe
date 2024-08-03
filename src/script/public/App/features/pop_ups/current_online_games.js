@@ -17,7 +17,7 @@ class GlobalOnlineGames_PopUp {
     };
 
     fetch() {
-        // this.list.textContent = null;
+        this.list.textContent = null;
 
         return new Promise(resolve => {
             socket.emit('get_curr_online_games', cb => {
