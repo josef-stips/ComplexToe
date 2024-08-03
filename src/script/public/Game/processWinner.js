@@ -623,6 +623,15 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 scorePlayer1.textContent = score_Player1_numb;
                 scoreUp_animation(1, score_Player1_numb, points_to_win);
 
+                try {
+                    if (personal_GameData.role == 'admin') {
+                        socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb);
+                    };
+
+                } catch (error) {
+                    console.log(error);
+                };
+
                 // player made a point in advanture mode
                 if (inAdvantureMode) {
                     statusText.textContent = `You just gained a point!`;
@@ -681,6 +690,15 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 score_Player2_numb = score_Player2_numb + extra_points;
                 scorePlayer2.textContent = score_Player2_numb;
                 scoreUp_animation(2, score_Player2_numb, points_to_win);
+
+                try {
+                    if (personal_GameData.role == 'admin') {
+                        socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb);
+                    };
+
+                } catch (error) {
+                    console.log(error);
+                };
 
                 // the opponent made a point in advanture mode
                 if (inAdvantureMode) {

@@ -11885,7 +11885,8 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .curr_games_main {
     width: 90%;
-    height: 80%;
+    height: 82%;
+    margin: 1vh 0 0 0;
     background-color: var(--bg-app-color);
     border: white solid 0.4vh;
 }
@@ -11902,7 +11903,9 @@ ul.default_sb_list.best_players_list div:first-child {
     --first-color: white;
     --second-color: red;
     width: 100%;
-    height: 22.5%;
+    height: 14vh;
+    min-height: 14vh;
+    max-height: 14vh;
     display: flex;
     flex-direction: row;
     border-bottom: 0.4vh solid white;
@@ -11928,7 +11931,7 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .curr_games_footer>i {
     font-size: 10vh;
-    top: -10vh;
+    top: -9.5vh;
     color: var(--line-color);
     position: absolute;
 }
@@ -11950,6 +11953,73 @@ ul.default_sb_list.best_players_list div:first-child {
 .curr_games_watch_btn.blured {
     color: gray;
     border-color: gray;
+}
+
+.game_item_wrapper1 {
+    /* border-right: 0.4vh solid white; */
+    width: 18%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vw;
+}
+
+.game_item_wrapper2 {
+    height: 100%;
+    width: 82%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.game_item_wrapper2 h1 {
+    font-size: 3vw;
+    color: white;
+    text-wrap: nowrap;
+    width: min-content;
+}
+
+.game_item_wrapper2 p {
+    font-size: 1.5vw;
+    color: rgb(139, 155, 172);
+    text-wrap: nowrap;
+}
+
+.game_item_wrapper1 img {
+    width: 4vw;
+    height: 4vw;
+    padding: 1vw;
+    border-radius: 100%;
+    border: 0.4vh solid white;
+}
+
+.game_item_player_wrapper {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5vw;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.game_item_wrapper22 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh;
+    width: -webkit-fill-available;
+}
+
+.game_item_wrapper21 {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 20%;
+    height: 100%;
 }
 
 
