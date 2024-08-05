@@ -1138,6 +1138,16 @@ document.querySelector('#fortyxforty').addEventListener('click', () => { playBtn
 ForxFor_Field.addEventListener('click', () => { playBtn_Audio(); });
 ThreexThree_Field.addEventListener('click', () => { playBtn_Audio(); });
 
+firstTierModesCaret.addEventListener('click', () => {
+    secondTierModes.style.display = 'flex';
+    firstTierModes.style.display = 'none';
+});
+
+secondTierModesCaret.addEventListener('click', () => {
+    secondTierModes.style.display = 'none';
+    firstTierModes.style.display = 'flex';
+});
+
 // settings checkbox events
 checkBox.forEach(box => {
     box.addEventListener('click', () => {

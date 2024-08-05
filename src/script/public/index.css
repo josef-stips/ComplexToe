@@ -1386,6 +1386,7 @@ ol.UserInfo-list img {
 }
 
 .ArenaBuilding {
+    display: none;
     position: absolute;
     top: -18%;
     bottom: 0;
@@ -1422,39 +1423,62 @@ ol.UserInfo-list img {
 }
 
 .GameMode-fields-area {
-    width: 100%;
-    height: 40%;
+    width: 200%;
+    height: 80%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
     /* border-bottom: 3vh solid white; */
     /* border-radius: 500%; */
 }
 
 .first-tier-modes {
-    width: 100%;
+    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 2vw;
+    transform: scale(0.9);
 }
 
 .second-tier-modes {
-    width: 100%;
+    display: none;
+    width: 50%;
     height: 100%;
-    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 3.5em;
+    gap: 2vw;
     transition: all 2s ease-in-out;
     margin: 0 0 0 0;
+    transform: scale(0.9);
+}
+
+.secondTierModesCaret {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -4.5%;
+    margin: auto;
+    font-size: 8vh;
+    height: min-content;
+}
+
+.firstTierModesCaret {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -4.5%;
+    margin: auto;
+    font-size: 8vh;
+    height: min-content;
 }
 
 .secondTierModeCardsTowerWrapper {
+    display: none;
     position: absolute;
     margin: auto auto auto auto;
     bottom: 0;
@@ -1479,7 +1503,7 @@ ol.UserInfo-list img {
     align-items: center;
     width: 100%;
     height: 20%;
-    font-size: 4vh;
+    font-size: 2.2vw;
 }
 
 #fields-area-back-btn {
@@ -1548,6 +1572,8 @@ ol.UserInfo-list img {
     gap: 1vw;
     border-bottom: 3vh solid white;
     border-radius: 20%;
+    position: absolute;
+    bottom: 2%;
 }
 
 #goTo-advancedFields {
@@ -1717,7 +1743,7 @@ ol.UserInfo-list img {
 
 #random_MiniBoard .miniCellMini {
     width: 1.8vh;
-    font-size: 21px;
+    font-size: 1vw;
     height: 1.8vh;
 }
 
