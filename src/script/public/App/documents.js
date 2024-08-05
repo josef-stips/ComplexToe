@@ -751,6 +751,7 @@ let current_games_pop_up = document.querySelector('.current_games_pop_up');
 let secondTierModesCaret = document.querySelector('.secondTierModesCaret');
 let firstTierModesCaret = document.querySelector('.firstTierModesCaret');
 let firstTierModes = document.querySelector('.first-tier-modes');
+let SearchCurrentGame = document.querySelector('.SearchCurrentGame');
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

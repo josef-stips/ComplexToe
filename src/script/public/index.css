@@ -12060,6 +12060,10 @@ ul.default_sb_list.best_players_list div:first-child {
     height: 100%;
 }
 
+.SearchCurrentGame {
+    background: var(--bg-app-color);
+}
+
 
 /* Animations */
 

@@ -2,8 +2,11 @@
 class GlobalOnlineGames_PopUp {
     constructor() {
         this.list = curr_games_list;
+        this.search_input = SearchCurrentGame;
         this.game_instances = [];
         this.current_selected_game_instance = null;
+
+        this.cache = [];
     };
 
     async open() {
@@ -18,6 +21,11 @@ class GlobalOnlineGames_PopUp {
 
     fetch() {
         this.list.textContent = null;
+        this.cache = [];
+
+        this.list.textContent = null;
+        this.list.append(fetch_spinner);
+        fetch_spinner.setAttribute('in_use', 'true');
 
         return new Promise(resolve => {
             socket.emit('get_curr_online_games', cb => {
@@ -26,8 +34,14 @@ class GlobalOnlineGames_PopUp {
                     return;
                 };
 
-                cb.map(game => this.generate_item(game));
-                resolve();
+                setTimeout(() => {
+                    fetch_spinner.setAttribute('in_use', 'false');
+
+                    this.list.textContent = null;
+                    this.cache = cb;
+                    cb.map(game => this.generate_item(game));
+                    resolve();
+                }, 600);
             });
         });
     };
@@ -43,6 +57,17 @@ class GlobalOnlineGames_PopUp {
 
     generate_item(game_data) {
         this.game_instances.push(new OnlineGame(this, game_data));
+    };
+
+    search(query) {
+        this.list.textContent = null;
+
+        if (query.trim().length <= 0) {
+            this.cache.map(game => this.generate_item(game));
+            return;
+        };
+
+        this.cache.map(game => game.RoomID == Number(query) && this.generate_item(game));
     };
 };
 
@@ -70,6 +95,7 @@ class OnlineGame {
         let player2_display = document.createElement('p');
         let point_relation = document.createElement('p');
         let blocker_el = document.createElement('p');
+        let roomID_el = document.createElement('p');
 
         wrapper1.classList.add('game_item_wrapper1');
         wrapper2.classList.add('game_item_wrapper2');
@@ -86,9 +112,11 @@ class OnlineGame {
         player2_display.textContent = `${data.player2_name}`;
         point_relation.textContent = `${data.p1_points ? data.p1_points : 0}:${data.p2_points ? data.p2_points : 0}`;
         blocker_el.textContent = `blocker: ${data.player3_id ? data.player3_name : 'None'}`;
+        roomID_el.textContent = `ID: ${data.RoomID}`;
 
         blocker_el.style.margin = `0.5vw`;
         point_relation.style.margin = `0.5vw`;
+        roomID_el.style.width = `max-content`;
 
         this.declare_css_values(item);
         this.init_player_events(player1_display, player2_display, data.player1_id, data.player2_id);
@@ -102,6 +130,7 @@ class OnlineGame {
         level_player_display.appendChild(player1_display);
         level_player_display.appendChild(player2_display);
         wrapper2.appendChild(wrapper22);
+        wrapper22.appendChild(roomID_el);
         wrapper2.appendChild(wrapper21);
         wrapper21.appendChild(point_relation);
         wrapper21.appendChild(blocker_el);
@@ -175,4 +204,8 @@ curr_games_pop_up_close_btn.addEventListener('click', () => {
 curr_games_pop_up_quest_btn.addEventListener('click', () => {
     let box = new QABOX(2, [`You can only watch online games.`, `select a game by clicking its row and click on "watch".`], { 'online games': 'green', 'select': 'green' }, { 'Y': [0, 0, 0, 0], 's': [0, 0, 0, 0] }, false);
     box.open();
+});
+
+SearchCurrentGame.addEventListener('keyup', (e) => {
+    global_online_games_handler.search(e.target.value);
 });
