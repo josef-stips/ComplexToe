@@ -146,6 +146,8 @@ let review_mode_handler;
 
 let boneyard_array = [];
 
+let watch_mode = false;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -431,8 +433,11 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         boss.style.display = "none";
         document.querySelector('#GameArea-FieldCircle').style.margin = "0 0 0 1.5vw";
     };
+    // console.log(fieldIndex);
 
-    console.log(fieldIndex);
+    if (personal_GameData.role == 'admin') {
+        socket.emit('update_room_x_and_y', personal_GameData.currGameID, [xCell_Amount, yCell_Amount]);
+    };
 
     // play theme music 
     PauseMusic();
@@ -453,6 +458,8 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     cellGrid.style.pointerEvents = 'all';
     review_mode_game_footer.style.display = 'none';
     localStorage.getItem('sett-ShowFieldData') == 'true' && (document.querySelector('.GameField-info-corner').style.display = "flex");
+    watching_count_el.style.display = 'flex';
+    watching_count_el.textContent = `watching: ${0}`;
 
     review_mode_action_wrapper.style.display = "none";
     review_moves_wrapper.style.display = "none";
@@ -877,7 +884,12 @@ socket.on("GetBgcolors", (bg1, bg2) => {
 });
 
 // Change backgroundColor
-const ChangeGameBG = (bg1, bg2, reset) => {
+const ChangeGameBG = (bg1, bg2, reset, to_standard) => {
+    if (to_standard) {
+        Lobby.style.background = ``;
+        return;
+    };
+
     if (reset || reset && personal_GameData.role == "user" && personal_GameData.currGameID != null || localStorage.getItem("sett-ShowBGColor") == "false") {
         Lobby.style.background = `unset`;
         // lobbyHeader.style.backgroundColor = "#15171a";
@@ -2704,6 +2716,8 @@ class reviewModeHandler {
         review_mode_action_wrapper.style.display = 'flex';
         review_mode_game_footer.style.display = 'flex';
         statusText.style.display = 'flex';
+        watching_count_el.style.display = 'none';
+        watching_count_el.textContent = `watching: None`;
 
         pointsToAchieve_ScoreBar.forEach(textEl => {
             textEl.style.display = 'none';

@@ -34,6 +34,7 @@ let Fields = {
         "averagePlayTime": "30 seconds",
         "theme": ".../assets/Maps/Quick_Death.mp3",
         "theme_name": Quick_death_Theme,
+        'icon-img': './assets/game/warlord-helmet.svg'
     },
     2: {
         "name": "March into fire",
@@ -44,6 +45,7 @@ let Fields = {
         "averagePlayTime": "5 minutes",
         "theme": ".../assets/Maps/March_into_fire.mp3",
         "theme_name": March_into_fire_Theme,
+        'icon-img': './assets/game/wolf-head.svg'
     },
     3: {
         "name": "Tunnel of truth",
@@ -54,6 +56,7 @@ let Fields = {
         "averagePlayTime": "10 minutes",
         "theme": ".../assets/Maps/Tunnel_of_truth.mp3",
         "theme_name": Tunnel_of_truth_Theme,
+        'icon-img': './assets/game/shattered-sword.svg'
     },
     4: {
         "name": "Long funeral",
@@ -64,6 +67,7 @@ let Fields = {
         "averagePlayTime": "20 minutes",
         "theme": ".../assets/Maps/Long_Funeral.mp3",
         "theme_name": Long_funeral_Theme,
+        'icon-img': "./assets/game/dragon-head.svg"
     },
     5: {
         "name": "Small Price",
@@ -124,6 +128,7 @@ let Fields = {
         "averagePlayTime": "5+ hours",
         "theme": ".../assets/Maps/Merciful_slaughter.mp3",
         "theme_name": Merciful_slaughter_Theme,
+        'icon-img': './assets/game/semi-closed-eye.svg'
     },
 };
 

@@ -199,13 +199,16 @@ function update2() {
 };
 
 // from the server to all clients in online mode
-socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer) => {
+socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer, watching_count) => {
     FirstPlayerTime.textContent = `${player1_timer} `;
     SecondPlayerTime.textContent = `${player2_timer}`;
+    watching_count_el.textContent = `watching: ${watching_count}`;
 
     // console.log(player1_timer, player2_timer, currentPlayer, running);
 
     ChangePlayerOnNumber(currentPlayer);
+
+    if (watch_mode) return;
 
     if (running) {
 

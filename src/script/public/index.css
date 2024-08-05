@@ -877,6 +877,17 @@ p#name-player1 {
     right: 0;
 }
 
+.watching_count_el {
+    font-size: 1.5vw;
+    font-weight: 500;
+    position: absolute;
+    bottom: 1%;
+    right: 4%;
+    height: max-content;
+    width: max-content;
+    margin: auto;
+}
+
 
 /* LOBBY */
 
@@ -1429,6 +1440,7 @@ ol.UserInfo-list img {
     flex-direction: row;
     justify-content: center;
     align-items: baseline;
+    z-index: 1901;
     /* border-bottom: 3vh solid white; */
     /* border-radius: 500%; */
 }
@@ -3170,7 +3182,7 @@ label h3 {
     transition: all 0.1s ease-out;
     transform: scaleX(-1);
     width: 10vh;
-    height: 10vh;
+    height: 10vh
 }
 
 #Lobby_closeBtn:hover {
@@ -3185,7 +3197,6 @@ label h3 {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    font-size: 21.5px;
     height: 80%;
     font-weight: 400;
     border-bottom: 0.7vh solid var(--line-color);
@@ -11948,6 +11959,7 @@ ul.default_sb_list.best_players_list div:first-child {
     flex-direction: row;
     border-bottom: 0.4vh solid white;
     background: linear-gradient(45deg, var(--first-color), var(--second-color));
+    position: relative;
 }
 
 .curr_games_footer {
@@ -12033,6 +12045,13 @@ ul.default_sb_list.best_players_list div:first-child {
     border: 0.4vh solid white;
 }
 
+.game_item_wrapper1 i {
+    font-size: 4vw;
+    padding: 1vw;
+    border-radius: 100%;
+    border: 0.4vh solid white;
+}
+
 .game_item_player_wrapper {
     width: 50%;
     height: 100%;
@@ -12048,6 +12067,16 @@ ul.default_sb_list.best_players_list div:first-child {
     flex-direction: column;
     gap: 0.5vh;
     width: -webkit-fill-available;
+    position: relative;
+}
+
+.game_item_watcher_count_el {
+    position: absolute;
+    bottom: 2%;
+    right: 40%;
+    margin: auto;
+    text-transform: lowercase;
+    letter-spacing: 0.4vw;
 }
 
 .game_item_wrapper21 {
@@ -12062,6 +12091,23 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .SearchCurrentGame {
     background: var(--bg-app-color);
+}
+
+.curr_selected_online_game_el {
+    position: absolute;
+    margin: auto !important;
+    top: 0;
+    bottom: 0;
+    left: 5%;
+    font-size: 2vw;
+    font-weight: 500;
+    height: min-content;
+}
+
+.allow_players_watch_el {
+    display: flex;
+    font-size: 1.4vw;
+    gap: 0.5vw;
 }
 
 

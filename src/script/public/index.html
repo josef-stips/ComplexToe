@@ -66,7 +66,6 @@
     <script defer src="App/scripts/functions.js"></script>
     <script defer src="App/script.js"></script>
     <script defer src="App/universal_stuff/Q&A_box.js"></script>
-    <script defer src="App/features/pop_ups/current_online_games.js"></script>
     <script defer src="App/features/GameFieldScenery.js"></script>
     <script defer src="App/scripts/mail.js"></script>
     <script defer src="App/features/bosses/BossClass.js"></script>
@@ -96,6 +95,7 @@
     <script defer src="Game/PlayerClocks.js"></script>
     <script defer src="Game/Game.js"></script>
     <script defer src="Game/processWinner.js"></script>
+    <script defer src="App/features/pop_ups/current_online_games.js"></script>
     <script defer src="App/features/DailyChallenges.js"></script>
     <script defer src="App/features/bosses/eye.js"></script>
     <script defer src="App/features//AdvantureMap_scripts/stars.js"></script>
@@ -2559,6 +2559,8 @@
                             <div class="boss_attckingBeam">
 
                             </div>
+
+                            <div class="watching_count_el">watching: None</div>
                         </div>
 
                     </div>
@@ -6538,6 +6540,8 @@
             <div class="LobbyBottomRowWrapper">
                 <img src="assets/game/direction-sign.svg" width="100" height="100" id="Lobby_closeBtn" draggable="false" title="back">
             </div>
+
+            <div class="allow_players_watch_el"><i class="fa-regular fa-check-square"></i> allow players to watch game</div>
         </div>
 
         <div class="Lobby_footer">
@@ -8584,6 +8588,7 @@
             <i class="fa-solid fa-dragon"></i>
             <i class="fa-solid fa-dragon"></i>
 
+            <p class="curr_selected_online_game_el">selected: None</p>
             <p class="curr_games_watch_btn CreateLevelSceneButton scale_btn">watch</p>
         </div>
     </div>

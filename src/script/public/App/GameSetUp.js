@@ -411,14 +411,21 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             fieldTitle = creative_level_instance.selectedLevel[8];
 
             UserSetPointsToWinGameInput.value = creative_level_instance.selectedLevel[2];
+
+            if (creative_level_instance.selectedLevel[5] != 0) {
+                curr_music_name = document.querySelector(`[src="${creative_level_instance.Settings["bgmusic"][creative_level_instance.selectedLevel[5]]}"]`).id;
+
+            };
+        } else {
+            curr_music_name = Fields[fieldIndex].theme_name.id;
         };
 
-        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon);
+        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon, curr_music_name);
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
             localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
-            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO'))
+            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
@@ -478,6 +485,8 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
                 };
             });
         });
+
+        allow_players_watch_el.style.display = "flex";
 
         // admin and no player is allowed to change the data from the level
         if (readOnlyLevel) {

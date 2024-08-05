@@ -1,4 +1,5 @@
 // This script is to handle the communication between client and server
+
 // All EventListener on html elements that send and recieve data from the servers
 socket.on('connect', () => {
     console.log('connected!  ' + socket.id);
@@ -122,6 +123,7 @@ const InitStyleForUserEntersLobby = (message) => {
     OnlineGame_NameWarnText[1].style.display = 'none';
 
     SetPlayerNames_AdditionalSettings.style.display = "none";
+    allow_players_watch_el.style.display = "none";
 };
 
 // Init and display all game info for user enters the lobby
@@ -428,7 +430,7 @@ const UserLeftGameInOnlineMode = () => {
     // user left the game
     // Many things are happening in server.js on this emit
     socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
-        ChangeGameBG(undefined, undefined, true);
+        ChangeGameBG(undefined, undefined, null, true);
 
         // only if the user that left is not the admin
         if (personal_GameData.role == 'user' || personal_GameData.role == "blocker") {
@@ -510,7 +512,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
     // XP Journey reward
     CheckIfUserCanGetReward();
 
-    ChangeGameBG(undefined, undefined, true);
+    ChangeGameBG(undefined, undefined, null, true);
 
     if (review_mode) {
         DarkLayerAnimation(gameModeCards_Div, GameField).then(() => {
@@ -524,6 +526,28 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
         PauseMusic();
         CreateMusicBars(audio);
         review_mode = false;
+        return;
+    };
+
+    if (watch_mode) {
+        DarkLayerAnimation(gameModeFields_Div, GameField).then(() => {
+            setTimeout(() => {
+                DisplayPopUp_PopAnimation(current_games_pop_up, "flex", true);
+            }, 400);
+        });
+
+        socket.emit('watcher_left_game', personal_GameData.currGameID, cb => {
+            watch_mode = false;
+            personal_GameData.role = 'user';
+            personal_GameData.currGameID = null;
+            personal_GameData.EnterOnlineGame = false;
+            PlayingInCreatedLevel_AsGuest = false;
+
+            Lobby.style.background = "";
+            theme.start();
+            PauseMusic();
+            CreateMusicBars(audio);
+        });
         return;
     };
 
@@ -1337,7 +1361,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
 
     // play theme music 
     PauseMusic();
-    curr_music_name = Fields[FieldIndex].theme_name;
+    curr_music_name = document.querySelector(`#${RoomData[0].curr_music_name}`);
     // CreateMusicBars(curr_music_name);
 
     // initialize game with given data
@@ -1662,5 +1686,20 @@ socket.on('lobby_kick', (user_type) => {
     if (user_type == 'blocker') {
         // The other players see this after the user left:
         ResetXPlayerWrapper(3);
+    };
+});
+
+// allow other players to watch game toggle btn
+allow_players_watch_el.addEventListener('click', (e) => {
+    let toggle_btn = allow_players_watch_el.querySelector('i');
+
+    if (toggle_btn.className == 'fa-regular fa-check-square') {
+        toggle_btn.className = 'fa-regular fa-square';
+
+        socket.emit('update_can_watch_game', personal_GameData.currGameID, false);
+
+    } else {
+        toggle_btn.className = 'fa-regular fa-check-square';
+        socket.emit('update_can_watch_game', personal_GameData.currGameID, true);
     };
 });
