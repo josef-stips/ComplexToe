@@ -3241,15 +3241,15 @@ label h3 {
 }
 
 .LobbyPlayerSection {
-    transform: var(--max-responsive-scale);
+    transform: scale(1);
     margin: 0.35em 0 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    gap: 3em;
+    gap: 10vw;
     width: 95%;
-    font-size: 20vh;
+    font-size: 10vw;
     height: 100%;
 }
 
@@ -3628,7 +3628,7 @@ label h3 {
 }
 
 #userInfoIcon {
-    padding: 1vh 1vh;
+    padding: 1vw 2vw;
     border: 0.3vh solid white;
     border-radius: 100vh;
 }
@@ -12108,6 +12108,22 @@ ul.default_sb_list.best_players_list div:first-child {
     display: flex;
     font-size: 1.4vw;
     gap: 0.5vw;
+}
+
+.YouWatchGameEl {
+    padding: 0.5vh 1vw;
+    border: 0.4vh solid white;
+    border-radius: 4vh;
+    font-weight: 500;
+    font-size: 1.5vw;
+    background: var(--bg-app-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25vw;
+    position: absolute;
+    bottom: 10%;
 }
 
 

@@ -244,8 +244,8 @@ const Get_XPReward_Animation = async(type, src, amount, element) => {
     let start_position = XPJourneyBtn.getBoundingClientRect();
     let item_pos = IconsForItems[element][2].getBoundingClientRect();
 
-    item_pos.top == 0 && await reward_pickup.show();
-    let destination_position = item_pos.top == 0 ? reward_pick_up.getBoundingClientRect() : item_pos;
+    getComputedStyle(gameModeCards_Div).display == 'none' && await reward_pickup.show();
+    let destination_position = getComputedStyle(gameModeCards_Div).display == 'none' ? reward_pick_up.getBoundingClientRect() : item_pos;
 
     let counter = 0;
     let ItemForAmount = setInterval(() => {
@@ -318,7 +318,7 @@ const Get_XPReward_Animation = async(type, src, amount, element) => {
         // add to document
         document.body.appendChild(item);
 
-        reward_pick_up.style.top = "12vh";
+        // reward_pick_up.style.top = "12vh";
 
         // clear interval on max amount
         if (counter >= amount) {

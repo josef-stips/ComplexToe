@@ -42,7 +42,7 @@ function CreateField() {
 // Generates a cell for the field
 function generateCell(index) {
     let cell = document.createElement('div');
-    cell.classList = "cell";
+    cell.className = "cell";
     cell.setAttribute('cell-index', index);
 
     cell.addEventListener('click', () => {
@@ -50,7 +50,6 @@ function generateCell(index) {
     });
 
     let Cell = ConfigureCellSize(cell, xCell_Amount);
-
     cellGrid.appendChild(Cell);
 
     if (xCell_Amount > yCell_Amount) {
@@ -66,7 +65,7 @@ function generateCell(index) {
         ComplexToeField.style.alignItems = "";
         ComplexToeField.style.justifyContent = "";
         document.querySelector(".GameArea-SideInfo-Footer").style.margin = "0 0 7.5% 0";
-        document.querySelector("#GameArea-FieldIcon").style.margin = "20px 0 30px 0";
+        document.querySelector("#GameArea-FieldIcon").style.margin = "0.75vh 0 1vh 0";
         Game_Upper_Field_Icon.style.margin = "0 0 5px 0";
 
     } else {
@@ -78,7 +77,7 @@ function generateCell(index) {
         ComplexToeField.style.alignItems = "flex-start";
         ComplexToeField.style.justifyContent = "center";
         document.querySelector(".GameArea-SideInfo-Footer").style.margin = "";
-        document.querySelector("#GameArea-FieldIcon").style.margin = "0 0 30px 0";
+        document.querySelector("#GameArea-FieldIcon").style.margin = "0 0 1vh 0";
     };
 };
 

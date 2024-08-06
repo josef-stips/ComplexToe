@@ -152,6 +152,9 @@ let watch_mode = false;
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
     CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP, review_mode, review_mode_data) {
+
+    player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
+    player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
     // console.log(arguments)
 
     sceneMode.default();
@@ -458,8 +461,9 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     cellGrid.style.pointerEvents = 'all';
     review_mode_game_footer.style.display = 'none';
     localStorage.getItem('sett-ShowFieldData') == 'true' && (document.querySelector('.GameField-info-corner').style.display = "flex");
-    watching_count_el.style.display = 'flex';
     watching_count_el.textContent = `watching: ${0}`;
+    YouWatchGameEl.style.display = 'none';
+    watching_count_el.style.display = 'none';
 
     review_mode_action_wrapper.style.display = "none";
     review_moves_wrapper.style.display = "none";
@@ -629,6 +633,17 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     } else if (curr_mode == GameMode[3].opponent) {
 
         globalChooseWinnerBtn.style.display = "block";
+    };
+
+    if (onlineMode) {
+        if (allow_players_watch_el.querySelector('i').className != 'fa-regular fa-check-square') {
+            watching_count_el.style.display = 'none';
+            restartBtn.style.display = 'flex';
+
+        } else {
+            watching_count_el.style.display = 'flex';
+            restartBtn.style.display = 'none';
+        };
     };
 
     // Adjust cell width and height
@@ -1168,7 +1183,12 @@ socket.on('player_clicked', Goptions => {
     if (running) {
         // update cell
         options = Goptions[0];
-        let cells = [...cellGrid.children];
+        cells = [...cellGrid.children];
+
+        if (watch_mode) {
+            global_online_games_handler.current_selected_game_instance.watch_mode_handler.init_cells(options, global_online_games_handler.current_selected_game_instance.game_data);
+            return;
+        };
 
         for (let i = 0; i < options.length; i++) {
             const element = options[i];
@@ -1202,6 +1222,11 @@ socket.on('player_clicked', Goptions => {
         };
 
         AllUsersClickedSum++;
+
+        if (watch_mode) {
+            checkWinner(false, "fromClick");
+            return;
+        };
 
         // Check which inner game mode is activated
         if (GameData.InnerGameMode == InnerGameModes[2] && AllUsersClickedSum % 2 == 0) { // blocker combat inner game mode
@@ -1281,7 +1306,12 @@ function thirdPlayerSets() {
         cells.forEach(cell => {
             cell.removeEventListener('click', cellCicked);
         });
+
         statusText.textContent = `Wait for ${PlayerData[3].PlayerName} to block.`;
+
+        if (watch_mode) {
+            statusText.textContent = `Wait for ${global_online_games_handler.current_selected_game_instance.game_data.player3_name} to block.`;
+        };
     };
 };
 
@@ -1302,7 +1332,8 @@ socket.on('blockerCombat_action', Goptions => {
             Grid[i].classList = "cell death-cell";
             Grid[i].style.backgroundColor = "var(--font-color)";
             Grid[i].removeEventListener('click', cellCicked);
-            all_game_moves.push(i);
+
+            cell_indexes_blocked_by_blocker.push(i);
 
             // This just deletes all '%%' from the options array that were used to block the game cells by their index
             // no callback or something on this one
@@ -1413,6 +1444,9 @@ function restartGame() {
 
             initializeGame(allGameData[0], allGameData[1], allGameData[2], allGameData[3], allGameData[4], allGameData[5], allGameData[6], allGameData[7], allGameData[8], allGameData[9]);
 
+            player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
+            player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
+
             // bug fix
             restartTimeout();
         }, 50);
@@ -1453,6 +1487,14 @@ function UserGivesUp(user_role) {
 // Online Game
 // reload game for all clients
 socket.on('Reload_GlobalGame', (Goptions) => {
+
+    if (watch_mode) {
+        setTimeout(() => {
+            // global_online_games_handler.current_selected_game_instance.open_game();
+        }, 1000);
+        return;
+    };
+
     // update options
     options = Goptions
     OnlineGameData[2] = Goptions;
@@ -1486,11 +1528,12 @@ function single_CellBlock(cell, fromMap, WinCombination) {
     cell.style.color = "white";
     cell.style.borderColor = "white";
 
-
     cell.removeEventListener('click', cellCicked);
     // setTimeout(() => {
     cell.textContent = null;
     // }, 2000);
+
+    if (watch_mode) return;
 
     // Bug Fix
     if (curr_mode == GameMode[2].opponent) {
@@ -1969,6 +2012,20 @@ const ChangePlayerOnNumber = (currPlayer) => { // 1,2,3 instead of PlayerForms
         currentPlayer = PlayerData[2].PlayerForm;
         statusText.textContent = `${PlayerData[2].PlayerName}'s turn`;
     };
+
+    if (watch_mode) {
+        if (currPlayer == 1) {
+            statusText.textContent = `${global_online_games_handler.current_selected_game_instance.game_data.player1_name}'s turn`;
+        };
+
+        if (currPlayer == 2) {
+            statusText.textContent = `${global_online_games_handler.current_selected_game_instance.game_data.player2_name}'s turn`;
+        };
+
+        if (player3_can_set) {
+            statusText.textContent = `${global_online_games_handler.current_selected_game_instance.game_data.player3_name}'s turn`;
+        };
+    };
 };
 
 // wheel of fortune after game
@@ -2024,7 +2081,7 @@ wheel_bet_input.addEventListener("keydown", (e) => {
 });
 
 wheel_play_btn.addEventListener("click", () => {
-    if (wheel_of_fortune_handler.bet != 0 && wheel_of_fortune_handler.allow_to_spin) {
+    if (wheel_of_fortune_handler.bet != 0 && wheel_of_fortune_handler.allow_to_spin || wheel_of_fortune_handler.allow_to_spin && wheel_of_fortune_handler.free_spins_amount > 0) {
         playBtn_Audio_2();
         wheel_of_fortune_handler.spin();
 
@@ -2595,6 +2652,16 @@ class reviewModeHandler {
         this.original_patterns = entry.patterns_used.map(obj => obj.indexes);
         this.patterns = convertToBinary(this.original_patterns);
         this.win_patterns_on_nth_move = entry.patterns_used.map(obj => obj.on_nth_move);
+
+        if (entry.cells_blocked_by_blocker.length > 0) {
+
+            // in blocker combat mode, every 3rd move is a blockage move
+            this.win_patterns_on_nth_move = this.win_patterns_on_nth_move.map(move => {
+                let n_blockages = (move / 3) + 1;
+
+                return move + n_blockages
+            });
+        };
     };
 
     create_bitmap() {
@@ -2692,7 +2759,7 @@ class reviewModeHandler {
 
         review_mode_question_btn.removeEventListener('click', review_mode_question_btn.ev);
         review_mode_question_btn.addEventListener('click', review_mode_question_btn.ev = () => {
-            let QA_box = new QABOX(3, ['W: winning move', 'L: misleading move', 'N: neutral move'], { 'W': 'green', 'L': 'red', 'N': 'slategray' }, { 'W': [0, 0.5, 0, 0], 'N': [0, 0.5, 0, 0], 'L': [0, 0.5, 0, 0] });
+            let QA_box = new QABOX(4, ['W: winning move', 'L: misleading move', 'N: neutral move', 'B: blocker move'], { 'W': 'green', 'L': 'red', 'N': 'slategray', 'B': 'slategrey' }, { 'W': [0, 0.5, 0, 0], 'N': [0, 0.5, 0, 0], 'L': [0, 0.5, 0, 0], 'B': [0, 0.5, 0, 0] });
             QA_box.open();
         });
     };
@@ -2700,6 +2767,7 @@ class reviewModeHandler {
     init_doc(entry) {
         CloseOnlinePopUps(true);
 
+        cellGrid.style.opacity = '1';
         document.querySelector('.GameField-info-corner').style.display = "none";
         OnlineChat_btn.style.display = "none";
         GameFieldHeaderUnder.style.display = 'none';
@@ -2718,6 +2786,7 @@ class reviewModeHandler {
         statusText.style.display = 'flex';
         watching_count_el.style.display = 'none';
         watching_count_el.textContent = `watching: None`;
+        YouWatchGameEl.style.display = 'none';
 
         pointsToAchieve_ScoreBar.forEach(textEl => {
             textEl.style.display = 'none';
@@ -2866,12 +2935,16 @@ class reviewModeHandler {
                 k++;
             };
 
-            this.create_list_item(i, player_x_move, move_idx);
+            this.create_list_item(i, player_x_move, move_idx, j, k);
         };
     };
 
-    create_list_item(i, player_x_move, move) {
+    create_list_item(i, player_x_move, move, blockages_in, k) { // k: player moves counter
+        let bot_move = false;
         let state = {};
+        blockages_in = blockages_in + 1;
+
+        console.log(i, player_x_move, move, blockages_in, k)
 
         let item = document.createElement('li');
         let wrapper1 = document.createElement('div');
@@ -2881,8 +2954,23 @@ class reviewModeHandler {
 
         data_el.textContent = `${i + 1}: ${player_x_move} | idx: ${move}`;
 
-        state['bin'] = this.win_patterns_on_nth_move.includes(i) ? 0b10 : this.win_patterns_on_nth_move.includes(i + 1) ? 0b01 : 0b0;
-        player_x_move != this.entry.p1_name && player_x_move != this.entry.p2_name && item.classList.add('bot_move_entry');
+        if (player_x_move != this.entry.p1_name && player_x_move != this.entry.p2_name) {
+            bot_move = true;
+            item.classList.add('bot_move_entry');
+            state['bin'] = 0b011
+
+        } else {
+
+            if (this.win_patterns_on_nth_move.includes(i)) {
+                state['bin'] = 0b10
+
+            } else if (this.win_patterns_on_nth_move.includes(i + 1) || this.win_patterns_on_nth_move.includes(i + 2)) {
+                state['bin'] = 0b01;
+
+            } else {
+                state['bin'] = 0b0;
+            };
+        };
 
         // determine move state | evaluate
         if ((state['bin'] & 0b11) === 0b10) {
@@ -2892,6 +2980,10 @@ class reviewModeHandler {
         } else if ((state['bin'] & 0b11) === 0b00) {
             state['color'] = 'slategray';
             state['text'] = 'N';
+
+        } else if (state['bin'] == 0b011) {
+            state['color'] = 'slategrey';
+            state['text'] = 'B';
 
         } else {
             state['color'] = 'red';

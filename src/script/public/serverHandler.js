@@ -425,11 +425,12 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
 };
 
 // in online mode, some player left the game
-const UserLeftGameInOnlineMode = () => {
+const UserLeftGameInOnlineMode = (from_cont_btn) => {
     DarkLayer.style.display = "block";
+
     // user left the game
     // Many things are happening in server.js on this emit
-    socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
+    socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, from_cont_btn, message => {
         ChangeGameBG(undefined, undefined, null, true);
 
         // only if the user that left is not the admin
@@ -491,7 +492,7 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
 };
 
 // User leaves game on leave game btn event
-function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
+function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode, from_continue_btn) {
     running = false;
 
     // remove any pop up display
@@ -526,13 +527,14 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
         PauseMusic();
         CreateMusicBars(audio);
         review_mode = false;
+        running = false;
         return;
     };
 
     if (watch_mode) {
         DarkLayerAnimation(gameModeFields_Div, GameField).then(() => {
             setTimeout(() => {
-                DisplayPopUp_PopAnimation(current_games_pop_up, "flex", true);
+                global_online_games_handler.open();
             }, 400);
         });
 
@@ -542,6 +544,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
             personal_GameData.currGameID = null;
             personal_GameData.EnterOnlineGame = false;
             PlayingInCreatedLevel_AsGuest = false;
+            running = false;
 
             Lobby.style.background = "";
             theme.start();
@@ -568,7 +571,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode) {
 
         // If in online mode
         if (curr_mode == GameMode[2].opponent) {
-            UserLeftGameInOnlineMode();
+            UserLeftGameInOnlineMode(from_continue_btn);
         } else { // in offline mode
             UserLeftGameInOfflineMode(userWonInAdvantureMode, LevelIndex_AdvantureMode);
         };
@@ -964,8 +967,81 @@ const SetClickOnProfileListeners = (fromAdmin) => {
     };
 };
 
+function watch_mode_close_game(no_close, from_continue_btn) {
+    if (watch_mode) {
+        socket.emit('watcher_left_game', personal_GameData.currGameID, cb => {
+            // OpenedPopUp_WhereAlertPopUpNeeded = true;
+            // AlertText.textContent = `Game ${personal_GameData.currGameID} ended`;
+            // DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+
+            // watch_mode = false; // leads to bug on continue button
+            personal_GameData.role = 'user';
+            personal_GameData.currGameID = null;
+            personal_GameData.EnterOnlineGame = false;
+            PlayingInCreatedLevel_AsGuest = false;
+            running = false;
+            win_found = false;
+            alertPopUp.style.display = 'none';
+            wheel_of_fortune_scene.style.display = 'none';
+        });
+
+        if (!no_close) {
+            watch_mode = false;
+            DarkLayerAnimation(gameModeFields_Div, GameField).then(() => {
+                CloseOnlinePopUps(true);
+                lobbyFooter.style.background = "";
+                lobbyFooterText.style.display = 'flex';
+
+                Lobby.style.background = "";
+                theme.start();
+                PauseMusic();
+                CreateMusicBars(audio);
+
+                setTimeout(() => {
+                    global_online_games_handler.open();
+                }, 400);
+            });
+
+        } else {
+
+            if (!from_continue_btn) {
+                watch_mode = false;
+                DarkLayerAnimation(gameModeFields_Div, GameField).then(() => {
+                    CloseOnlinePopUps(true);
+                    lobbyFooter.style.background = "";
+                    lobbyFooterText.style.display = 'flex';
+
+                    Lobby.style.background = "";
+                    theme.start();
+                    PauseMusic();
+                    CreateMusicBars(audio);
+
+                    setTimeout(() => {
+                        global_online_games_handler.open();
+                    }, 400);
+                });
+
+                return true;
+            };
+
+            GameField.style.display = 'flex';
+            DarkLayer.style.display = 'flex';
+            endGameStatsPopUp.style.display = 'flex';
+        };
+
+        return true;
+    };
+    return false;
+};
+
 // This message goes to all users in a room and gets callen when the admin of the room leaves it
 socket.on('killed_room', () => {
+    pause_clack_sound();
+    wheel_of_fortune_scene.style.display = 'none';
+
+    let watch = watch_mode_close_game();
+    if (watch) return;
+
     // some things
     OnlineGame_Lobby.style.display = 'none';
     SetPlayerNamesPopUp.style.display = 'none';
@@ -986,7 +1062,16 @@ socket.on('killed_room', () => {
 
 // if they were in a game in the admin left the game
 // When the admin leaves, he and all other clients are in the lobby again
-socket.on('killed_game', () => {
+socket.on('killed_game', (from_continue_btn) => {
+
+    gameLog_btn.classList.remove('blured');
+
+    let watch = watch_mode_close_game('no_close', from_continue_btn);
+    if (watch) return;
+
+    pause_clack_sound();
+    wheel_of_fortune_scene.style.display = 'none';
+
     // leave game field
     GameField.style.display = 'none';
     // enter lobby
@@ -1006,7 +1091,7 @@ socket.on('killed_game', () => {
 
     // close pop ups if there where any open
     CloseOnlinePopUps();
-    ChangeGameBG(undefined, undefined, true);
+    ChangeGameBG(undefined, undefined, null, true);
 
     running = false;
     // clear timer and stuff to prevent bugs
@@ -1135,6 +1220,14 @@ socket.on('ThirdPlayer_Joined', message => {
 // When the normal user leaves the game, the other player need to be informed by that
 socket.on('INFORM_user_left_room', () => {
 
+    gameLog_btn.classList.remove('blured');
+
+    pause_clack_sound();
+    wheel_of_fortune_scene.style.display = 'none';
+
+    let watch = watch_mode_close_game();
+    if (watch) return;
+
     if (personal_GameData.role == 'user') {
         Lobby_closeBtn.click();
     };
@@ -1150,6 +1243,14 @@ socket.on('INFORM_user_left_room', () => {
 // When the third player (blocker) leaves the game, the other player need to be informed by that
 socket.on('INFORM_blocker_left_room', () => {
 
+    gameLog_btn.classList.remove('blured');
+
+    pause_clack_sound();
+    wheel_of_fortune_scene.style.display = 'none';
+
+    let watch = watch_mode_close_game();
+    if (watch) return;
+
     if (personal_GameData.role == 'blocker') {
         Lobby_closeBtn.click();
     };
@@ -1164,6 +1265,14 @@ socket.on('INFORM_blocker_left_room', () => {
 
 // User just left the game but during a match
 socket.on('INFORM_user_left_game', () => {
+    gameLog_btn.classList.remove('blured');
+
+    pause_clack_sound();
+    wheel_of_fortune_scene.style.display = 'none';
+
+    let watch = watch_mode_close_game();
+    if (watch) return;
+
     // The admin sees this after the user left:
     ResetXPlayerWrapper(2);
 
@@ -1176,7 +1285,7 @@ socket.on('INFORM_user_left_game', () => {
     running = false;
     // for the admin and blocker, they are in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == "blocker") {
-        ChangeGameBG(undefined, undefined, true);
+        ChangeGameBG(undefined, undefined, null, true);
 
         kick_second_player_btn.setAttribute("active_dis", "false");
 
@@ -1214,6 +1323,14 @@ socket.on('INFORM_user_left_game', () => {
 
 // The third player (blocker) left the game but during a match
 socket.on('INFORM_blocker_left_game', () => {
+    gameLog_btn.classList.remove('blured');
+
+    pause_clack_sound();
+    wheel_of_fortune_scene.style.display = 'none';
+
+    let watch = watch_mode_close_game();
+    if (watch) return;
+
     // The admin sees this after the user left:
     ResetXPlayerWrapper(3);
 
@@ -1225,7 +1342,7 @@ socket.on('INFORM_blocker_left_game', () => {
     running = false;
     // for the admin, he is in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == 'user') {
-        ChangeGameBG(undefined, undefined, true);
+        ChangeGameBG(undefined, undefined, null, true);
 
         kick_third_player_btn.setAttribute("active_dis", "false");
 
@@ -1261,13 +1378,21 @@ socket.on('INFORM_blocker_left_game', () => {
 // When the ADMIN leaves the game, the other user needs to be informed by that
 // This message goes only to the other user
 socket.on('INFORM_admin_left_room', () => {
+    gameLog_btn.classList.remove('blured');
+
+    pause_clack_sound();
+    wheel_of_fortune_scene.style.display = 'none';
+
+    let watch = watch_mode_close_game();
+    if (watch) return;
+
     // server
     personal_GameData.role = 'user';
     personal_GameData.currGameID = null;
     personal_GameData.EnterOnlineGame = false;
 
     // some things
-    ChangeGameBG(undefined, undefined, true);
+    ChangeGameBG(undefined, undefined, null, true);
     OnlineGame_Lobby.style.display = 'none';
     GameField.style.display = 'none';
 
@@ -1339,7 +1464,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     allowedPatternsFromUser = allowed_patterns; // make it global for single user
 
     // required points to win a game
-    let required_points_to_win = parseInt(Lobby_PointsToWin.textContent);
+    let required_points_to_win = parseInt(Lobby_PointsToWin.textContent.trim());
 
     // user costum data (NewCreativeLevel stuff)
 
@@ -1378,6 +1503,11 @@ socket.on('StartGame', (RoomData) => { // RoomData
     };
 
     online_level_scene.style.display = "none";
+
+    player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
+    player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
+
+    gameLog_btn.classList.add('blured');
 });
 
 // When admin starts game, all clients recieve the global availible options
@@ -1404,12 +1534,20 @@ socket.on('recieveGlobalOptions', message => {
                 el = '';
 
             }, 100);
+
+        } else {
+            Grid[i].textContent = null;
+            el = '';
+            Grid[i].style.backgroundColor = "";
+            Grid[i].classList = "cell";
+            Grid[i].addEventListener('click', cellCicked);
         };
     };
 
+    // legacy code:
     // This just deletes all '%%' from the options array that were used to block the
     // game cells by their index
-    socket.emit('BoneyardFinalProcess', personal_GameData.currGameID);
+    // socket.emit('BoneyardFinalProcess', personal_GameData.currGameID);
 });
 
 // carets
@@ -1531,17 +1669,17 @@ socket.on('ChangeGameData', (display, SpecificData, Selection) => {
 
 // admin is in lobby and changes the required amount of points to win a game
 Lobby_PointsToWin.addEventListener('keyup', (e) => {
-    if (e.code === "Backspace" && Lobby_PointsToWin.textContent == "") {
+    if (e.code === "Backspace" && Lobby_PointsToWin.textContent.length <= 0) {
+        e.preventDefault();
+        // return;
+    };
+
+    if (e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
         return;
     };
 
-    if (e.code === "Space" || e.code === "Delete" || e.code === "Space" || e.code === "Enter") {
-        e.preventDefault();
-        return;
-    };
-
-    typeof Number(Lobby_PointsToWin.textContent) == Number && socket.emit("AdminChangesPointsToWin_InLobby", personal_GameData.currGameID, Lobby_PointsToWin.textContent);
+    typeof Number(Lobby_PointsToWin.textContent) === 'number' && socket.emit("AdminChangesPointsToWin_InLobby", personal_GameData.currGameID, Lobby_PointsToWin.textContent.trim());
 });
 
 // admin changed the required amount of points in lobby: update value for all in the lobby

@@ -25,6 +25,8 @@ class GlobalOnlineGames_PopUp {
     fetch() {
         this.list.textContent = null;
         this.cache = [];
+        this.game_instances = [];
+        this.current_selected_game_instance = null;
 
         this.list.textContent = null;
         this.list.append(fetch_spinner);
@@ -221,12 +223,15 @@ class OnlineGame {
     };
 
     open_game(data = this.game_data) {
-        let watch_mode_handler = new watchModeHandler(data);
-        watch_mode_handler.init();
+        StartLoad(GameField, gameModeFields_Div);
+
+        this.watch_mode_handler = new watchModeHandler(data);
+        this.watch_mode_handler.init();
 
         watch_mode = true;
         CloseOnlinePopUps(true);
 
+        cellGrid.style.opacity = '1';
         gameLog_btn.classList.add('blured');
         document.querySelector('.GameField-info-corner').style.display = "flex";
         OnlineChat_btn.style.display = "none";
@@ -256,15 +261,22 @@ class OnlineGame {
         pointsToAchieve_ScoreBar[1].style.display = 'flex';
         watching_count_el.style.display = 'flex';
         watching_count_el.textContent = `watching: ${data.watching_count}`;
+        YouWatchGameEl.style.display = 'flex';
+        GameFieldHeaderUnderBody.style.display = 'flex';
 
         sceneMode.default();
-        DarkLayerAnimation(GameField, gameModeFields_Div);
 
         ChangeGameBG(data.bgcolor1, data.bgcolor2);
         PauseMusic();
 
         curr_music_name = document.querySelector(`audio#${data.curr_music_name}`);;
         CreateMusicBars(curr_music_name);
+
+        points_to_win = data.pointsToWin;
+        running = true;
+        win_found = false;
+
+        StartLoad(GameField, gameModeFields_Div);
     };
 };
 
@@ -299,8 +311,11 @@ class watchModeHandler {
         namePlayer1.textContent = entry.player1_name;
         namePlayer2.textContent = entry.player2_name;
 
-        scorePlayer1.textContent = entry.p1_score;
-        scorePlayer2.textContent = entry.p2_score;
+        namePlayer1.style.color = entry.player1_IconColor;
+        namePlayer2.style.color = entry.player2_IconColor;
+
+        scorePlayer1.textContent = entry.p1_points;
+        scorePlayer2.textContent = entry.p2_points;
 
         p1_icon_wrapper.classList.add('p_icon_wrapper');
         p2_icon_wrapper.classList.add('p_icon_wrapper');
@@ -308,11 +323,25 @@ class watchModeHandler {
         namePlayer1.append(p1_icon_wrapper);
         namePlayer2.append(p2_icon_wrapper);
 
-        player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${(entry.p1_score / this.data.pointsToWin) * 100}%, transparent ${5}%)`;
-        player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${(entry.p2_score / this.data.pointsToWin) * 100}%, transparent ${5}%)`;
+        player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${(entry.p1_points / this.data.pointsToWin) * 100}%, transparent ${5}%)`;
+        player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${(entry.p2_points / this.data.pointsToWin) * 100}%, transparent ${5}%)`;
 
         pointsToAchieve_ScoreBar[0].textContent = `/ ${this.data.pointsToWin}`;
         pointsToAchieve_ScoreBar[1].textContent = `/ ${this.data.pointsToWin}`;
+
+        PlayerData[1].AdvancedSkin = `cell ${entry.player1_advancedIcon}`;
+        PlayerData[2].AdvancedSkin = `cell ${entry.player2_advancedIcon}`;
+
+        PlayerData[1].PlayerForm = entry.player1_icon;
+        PlayerData[2].PlayerForm = entry.player2_icon;
+
+        PlayerData[1].PlayerName = entry.player1_name;
+        PlayerData[2].PlayerName = entry.player2_name;
+
+        PlayerData[3].PlayerName = entry.player3_name;
+
+        score_Player1_numb = entry.p1_points;
+        score_Player2_numb = entry.p2_points;
     };
 
     init_field(entry) {
@@ -322,22 +351,89 @@ class watchModeHandler {
         CreateOptions();
         CalculateBoundaries();
         CreateField();
+        CreateWinConditions(entry.x_and_y[0], entry.x_and_y[1], JSON.parse(entry.win_patterns));
 
         this.cells = [...cellGrid.children];
+        cells = this.cells;
+
+        GameData.InnerGameMode = entry.InnerGameMode;
 
         setTimeout(() => {
             const cellWidth = this.cells[0].getBoundingClientRect().width;
-            this.cells.forEach(cell => {
+            cells.forEach(cell => {
                 cell.style.width = `${cellWidth}px`;
                 cell.style.height = `${cellWidth}px`;
             });
-        }, 500);
+        }, 1000);
 
-        // if (entry.field_mode == 'Boneyard') {
-        //     entry.boneyard_arr.map((index, i) => {
-        //         this.cells[index].style.background = 'white';
-        //     });
-        // };
+        if (entry.boneyard_arr != null) {
+            entry.boneyard_arr.map((index, i) => {
+                index == "%%" && (cells[i].style.background = 'white');
+            });
+        };
+
+        options = JSON.parse(entry.fieldoptions);
+
+        this.init_cells(options, entry);
+
+        setTimeout(() => {
+            FinishLoad(GameField, gameModeFields_Div);
+        }, 1000);
+    };
+
+    init_cells(options, entry) {
+        for (let i = 0; i < options.length; i++) {
+            let element = options[i];
+            let px = null;
+            let px_adv_icon = null;
+            let px_color = null;
+
+            if (element == entry.player1_icon.toUpperCase() || element == entry.player1_advancedIcon) {
+                px = entry.player1_icon;
+                px_adv_icon = entry.player1_advancedIcon;
+                px_color = entry.player1_IconColor;
+
+            } else if (element == entry.player2_icon.toUpperCase() || element == entry.player2_advancedIcon) {
+                px = entry.player2_icon;
+                px_adv_icon = entry.player2_advancedIcon;
+                px_color = entry.player2_IconColor;
+            };
+
+            if (!px) continue;
+
+            if (element != '' && !cells[i].classList.contains('colored-cell') && px_adv_icon == "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
+
+                cells[i].style.color = px_color;
+                cells[i].classList.add('colored-cell');
+
+                cells[i].textContent = element;
+
+                cells[i].className = cells[i].className.replace(px_adv_icon, "");
+                cells[i].className = cells[i].className.replace(px_adv_icon, "");
+
+                cells[i].style.opacity = "1";
+                cells[i].classList.add("draw");
+
+                all_game_moves.push(i);
+
+            } else if (element != '' && !cells[i].classList.contains('colored-cell') && px_adv_icon != "empty" && !cells[i].classList.contains("draw") && !cells[i].classList.contains("death-cell")) {
+
+                cells[i].style.color = "var(--font-color)";
+                cells[i].className = `cell ${px_adv_icon}`;
+                cells[i].textContent = "";
+
+                cells[i].style.opacity = "1";
+                cells[i].classList.add("draw");
+
+                all_game_moves.push(i);
+            };
+
+            checkWinner(false, "fromClick");
+
+            if (entry.win_combinations) {
+                entry.win_combinations.forEach((comb, index) => JSON.parse(comb).forEach(i => single_CellBlock(cells[i], undefined, comb)));
+            };
+        };
     };
 };
 

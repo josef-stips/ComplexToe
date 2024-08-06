@@ -755,6 +755,7 @@ let SearchCurrentGame = document.querySelector('.SearchCurrentGame');
 let curr_selected_online_game_el = document.querySelector('.curr_selected_online_game_el');
 let watching_count_el = document.querySelector('.watching_count_el');
 let allow_players_watch_el = document.querySelector('.allow_players_watch_el');
+let YouWatchGameEl = document.querySelector('.YouWatchGameEl');
 
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');

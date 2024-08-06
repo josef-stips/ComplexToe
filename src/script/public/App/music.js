@@ -235,6 +235,11 @@ function play_clack_sound() {
     clack_sound.play();
 };
 
+function pause_clack_sound() {
+    clack_sound.pause();
+    clack_sound.currentTime = 0;
+};
+
 function play_btn4_sound() {
     btn4_sound.pause();
     btn4_sound.currentTime = 0;

@@ -144,9 +144,25 @@ class gameLogEntry {
 
     load() {
         return new Promise(async resolve => {
-            let opponent_id = this.entry.p1_id == this.entry_handler.self_player_id ? this.entry.p2_id : this.entry.p1_id;
-            let is_match_won = opponent_id != this.entry.p1_id ? this.entry.p1_points > this.entry.p2_points ? true : false : false;
+            let opponent_id = this.entry.p1_id == self_id() ? this.entry.p2_id : this.entry.p1_id;
+            let is_match_won;
+            let self_is_blocker = (self_id() != this.entry.p1_id && self_id() != this.entry.p2_id) ? true : false;
+
+            console.log(self_is_blocker);
+
+            if (self_id() == this.entry.p1_id && this.entry.p1_points > this.entry.p2_points) {
+                is_match_won = true;
+
+            } else if (self_id() != this.entry.p1_id && this.entry.p1_points > this.entry.p2_points) {
+                is_match_won = false;
+
+            } else if (self_id() != this.entry.p1_id && this.entry.p1_points < this.entry.p2_points) {
+                is_match_won = true;
+            };
+
             let primary_color = is_match_won ? 'royalblue' : 'red';
+
+            if (self_is_blocker) primary_color = 'slategray';
             // console.log(this.entry, opponent_id);
 
             let l_item = document.createElement("li");
@@ -178,6 +194,8 @@ class gameLogEntry {
 
             this.list_el = l_item;
 
+            let won_player = this.entry.p1_points > this.entry.p2_points ? this.entry.p1_name : this.entry.p2_name;
+
             // div1 things
             generateField_preview(this.entry.field_size[0], this.entry.field_size[1], field_wrapper, null);
             [...field_wrapper.querySelectorAll(`.cell`)].map(el => el.style.boxShadow = `0 0 0 0.2vh ${primary_color}`);
@@ -188,13 +206,23 @@ class gameLogEntry {
             // load other id also to cache so client has not to load it from the server again
             await this.entry_handler.get_data_from_opponent(opponent_id == this.entry.p1_id ? this.entry.p2_id : this.entry.p1_id);
 
-            div2_innerWrapper.textContent = `Match vs\xa0`;
+            let Matchvs_text = self_id() != this.entry.p1_id && self_id() != this.entry.p2_id ? this.entry.p1_name : 'Match';
 
-            opponent_name_el.textContent = `${this.entry.p2_name}`;
+            div2_innerWrapper.textContent = `${Matchvs_text} vs\xa0`;
+
+            opponent_name_el.textContent = `${self_id() != this.entry.p2_id ? this.entry.p2_name : this.entry.p1_name}`;
             opponent_name_el.style.color = `${primary_color}`;
             points_el.textContent = opponent_id != this.entry.p1_id ? `\xa0 ${this.entry.p1_points} : ${this.entry.p2_points}` : `\xa0 ${this.entry.p2_points} : ${this.entry.p1_points}`;
 
+            if (Matchvs_text != 'Match') opponent_name_el.textContent = `${this.entry.p2_name}`;
+
             match_won_el.textContent = is_match_won ? 'match won' : 'match lost';
+
+            if (self_is_blocker) {
+                match_won_el.textContent = `You were blocker.`;
+
+                points_el.textContent = `\xa0 ${this.entry.p1_points} : ${this.entry.p2_points}`;
+            };
 
             play_btn.className = 'fas fa-play default_btn';
             details_btn.className = 'fa-solid fa-ellipsis-vertical default_btn';

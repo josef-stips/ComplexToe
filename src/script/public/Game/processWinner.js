@@ -604,7 +604,11 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
         CheckmateWarnText.style.display = 'none';
         // animation
-        FloatingIconAnimation(Player1_won, Player2_won, WinCombination[0].getBoundingClientRect(), WinCombination.length);
+        try {
+            FloatingIconAnimation(Player1_won, Player2_won, WinCombination[0].getBoundingClientRect(), WinCombination.length);
+        } catch (error) {
+            console.log(error, Player1_won, Player2_won);
+        };
 
         // win pattern stuff
         WinCombination.forEach(Ele => {
@@ -625,7 +629,8 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
                 try {
                     if (personal_GameData.role == 'admin') {
-                        socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb);
+                        console.log(WinCombination);
+                        socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb, [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))));
                     };
 
                 } catch (error) {
@@ -693,7 +698,8 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
                 try {
                     if (personal_GameData.role == 'admin') {
-                        socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb);
+                        console.log(WinCombination);
+                        socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb, [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))));
                     };
 
                 } catch (error) {
@@ -816,6 +822,11 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
 
         if (!stopStatusTextInterval) {
 
+            if (watch_mode) {
+                endGame_statusText.textContent = rnd_text;
+                return;
+            };
+
             // in Advanture mode or in online mode
             if (inAdvantureMode || curr_mode == GameMode[2].opponent) {
 
@@ -863,6 +874,11 @@ continueGameBtn.addEventListener("click", () => {
 const continueGame = () => {
     endGameStatsPopUp.style.display = "none";
 
+    if (watch_mode) {
+        UserleavesGame(null, null, 'from_continue_btn');
+        return;
+    };
+
     // not advanture mode
     if (!inAdvantureMode) {
 
@@ -897,7 +913,7 @@ const continueGame = () => {
 
             // when user wants to leave from the game on game finished he must wait for the admin to leave the game
             // But if user clicked "continue", a text aappears to wait for the admin
-            if (personal_GameData.role == "user") {
+            if (personal_GameData.role == "user" || personal_GameData.role == "blocker") {
 
                 let bigText = document.createElement("h1");
                 bigText.classList.add("bigScreenText");
@@ -1133,6 +1149,11 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
 // player 1 won online game
 const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination) => {
+    if (watch_mode || personal_GameData.role == 'blocker') {
+        UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
+        return;
+    };
+
     if (curr_mode == GameMode[2].opponent) { // online friend 
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'admin') {
@@ -1140,7 +1161,7 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
         };
 
         if (personal_GameData.role == 'user') {
-            let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[1] / PlayerXP[2]) / -1;
+            let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[2] / PlayerXP[1]) / -1;
 
             minus_SkillPoints(Math.floor(5 * XP_multiplicator));
             UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
@@ -1153,6 +1174,11 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
 
 // player 2 won online game
 const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination) => {
+    if (watch_mode || personal_GameData.role == 'blocker') {
+        UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
+        return;
+    };
+
     if (curr_mode == GameMode[2].opponent) { // online friend
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'user') {
@@ -1256,8 +1282,13 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
 
         if (personal_GameData.role == 'admin') {
 
-            let level_id = player_levels_handler.online_level_overview_handler.level.id;
-            let level_icon = player_levels_handler.online_level_overview_handler.level.icon;
+            let level_id;
+            let level_icon;
+
+            if (player_levels_handler.online_level_overview_handler) {
+                level_id = player_levels_handler.online_level_overview_handler.level.id;
+                level_icon = player_levels_handler.online_level_overview_handler.level.icon;
+            };
 
             console.log("game seconds: ", gameSeconds);
 
@@ -1324,6 +1355,8 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
 // Update skill points for player after a successful game
 // This function is only availible in the online mode and KI mode because it makes only sense there
 function setNew_SkillPoints(plus) {
+    console.log("plus", plus);
+
     let old_Elo = parseInt(localStorage.getItem('ELO'));
     let ELO_point = 0;
 
@@ -1435,6 +1468,8 @@ function setNew_SkillPoints(plus) {
 // Other player who loses gets -5 skill points
 // This function is only availible in the online mode and KI mode because it makes only sense there
 function minus_SkillPoints(minus) {
+    console.log("minus", minus);
+
     let old_Elo = parseInt(localStorage.getItem('ELO'));
     let ELO_point = 0;
 

@@ -42,6 +42,8 @@ async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, 
 
 // remove acccess to anything
 function removeAccessToAnything() {
+    if (watch_mode) return;
+
     globalChooseWinnerBtn.removeEventListener('click', openChooseWinnerWindow);
     restartBtn.removeEventListener('click', restartGame);
     leaveGame_btn.removeEventListener('click', UserleavesGame);
@@ -84,6 +86,12 @@ function removeAccessToAnything() {
 
 // add excess to anything
 function addAccessToAnything(TimerEnded, fromBeginning, FromGameAnimation) {
+    if (watch_mode) {
+        leaveGame_btn.style.color = 'white';
+        leaveGame_btn.addEventListener('click', UserleavesGame);
+        return;
+    };
+
     globalChooseWinnerBtn.addEventListener('click', openChooseWinnerWindow);
     restartBtn.addEventListener('click', restartGame);
     leaveGame_btn.addEventListener('click', UserleavesGame);
@@ -106,6 +114,8 @@ function addAccessToAnything(TimerEnded, fromBeginning, FromGameAnimation) {
 
 // add excess to anything in online mode
 function addAccesOnlineMode(TimerEnded, fromBeginning) {
+    if (watch_mode) return;
+
     // allowed to leave againW
     leaveGame_btn.addEventListener('click', UserleavesGame);
     leaveGame_btn.style.color = 'var(--font-color)';
@@ -121,6 +131,7 @@ function addAccesOnlineMode(TimerEnded, fromBeginning) {
     };
 
     running = true;
+
     // player gets access to set again
     cells.forEach(cell => {
         cell.addEventListener('click', cellCicked);
