@@ -11181,6 +11181,7 @@ ul.default_sb_list.best_players_list div:first-child {
     padding: 0.5vh;
     align-items: flex-end;
     justify-content: flex-end;
+    gap: 2vw;
 }
 
 

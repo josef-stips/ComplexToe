@@ -1172,6 +1172,7 @@ class clan_handler {
         let item_img = document.createElement("img");
         let details_wrapper = document.createElement("div");
         let member_count_el = document.createElement("p");
+        let clan_id_el = document.createElement("p");
 
         let colors = this.create_clan_css_propertys(data);
 
@@ -1201,7 +1202,9 @@ class clan_handler {
         item_text.textContent = data["name"];
 
         member_count_el.textContent = `${Object.keys(data.members).length} members`;
+        clan_id_el.textContent = `ID: ${data.id}`;
 
+        details_wrapper.appendChild(clan_id_el);
         details_wrapper.appendChild(member_count_el);
         list_item.appendChild(item_img);
         list_item.appendChild(item_text);

@@ -597,6 +597,7 @@ class OnlineLevelPlayerScoreBoardHandler {
         let span3 = document.createElement("span");
         let level_data1 = document.createElement("div");
         let level_data2 = document.createElement("div");
+        let conquered_label = document.createElement("div");
 
         div.addEventListener('click', () => {
             if (player_data["player_id"] == Number(localStorage.getItem("PlayerID"))) {
@@ -634,9 +635,14 @@ class OnlineLevelPlayerScoreBoardHandler {
         level_data1.textContent = `points: ${level_player_data.points_made} / ${this.required_points} `;
         level_data2.textContent = `best time: ${level_player_data.best_time} s.`;
 
+        level_data2.style = `display: flex;gap: 5vw;`
+
+        conquered_label.textContent = level_player_data.points_made >= this.required_points ? 'Level Conquered' : '';
+
         // add to document
         span3.appendChild(level_data1);
         span3.appendChild(level_data2);
+        level_data2.appendChild(conquered_label);
         div.appendChild(span2);
         div.appendChild(span1);
         div.appendChild(span3);

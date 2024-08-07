@@ -1691,7 +1691,14 @@ socket.on("AdminChanged_PointsToWin", value => {
 // check if the player already was in the game once
 socket.on('CheckIfPlayerAlreadyExists', () => {
     if (localStorage.getItem('PlayerOpenedThisGameAtleastOnceInHisLife')) {
-        socket.emit("PlayerAlreadyExists", localStorage.getItem("PlayerID"), localStorage.getItem('treasureIsAvailible'));
+        socket.emit("PlayerAlreadyExists", localStorage.getItem("PlayerID"), localStorage.getItem('treasureIsAvailible'), cb => {
+
+            if (cb) {
+                closeAlertPopUpBtn.style.display = "none";
+                AlertText.textContent = 'You are banned';
+                DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+            };
+        });
 
     } else {
         socket.emit("PlayerNotExisted");
