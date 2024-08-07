@@ -490,3 +490,10 @@ function formatDateZ(dateString) {
 }
 
 const XML_serializer = new XMLSerializer();
+
+function BindPatternsWithCostumPatternsToIndexes(patterns, costum_patterns, xy) {
+    let GamePatterns = LoopInPatternList(xy);
+
+    let pattern_structures = patterns.map(pattern_name => GamePatterns[pattern_name]);
+    return [...Object.values(costum_patterns).map(pattern => Object.values(pattern)[0].structure), ...pattern_structures];
+};

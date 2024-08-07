@@ -104,6 +104,7 @@
     <script defer src="App/social_stuff/social_scene.js"></script>
     <script defer src="App/social_stuff/online_level_overview.js"></script>
     <script defer src="App/GameLog.js"></script>
+    <script defer src="Game/CreateGameLibrary/BotMode.js"></script>
 </head>
 
 <body>
@@ -2918,6 +2919,8 @@
                                 </div>
 
                                 <div class="workbenchMiddle_footer">
+
+                                    <div class="CreateLevelSceneButton CreateLevelKiBtn">Bot Mode</div>
 
                                     <div class="CreateLevel_CreateOwnStuff_btn CreateLevelSceneButton">
                                         Create my stuff
@@ -8610,6 +8613,40 @@
             <div class="GamePlayerBarInnerWrapper">
 
             </div>
+        </div>
+    </div>
+
+
+    <div class="CreateLevel_BotMode_PopUp">
+        <div class="CreateLevel_BotMode_header">
+            <i class="BotMode_popUp_questBtn scale_btn fa-solid fa-question"></i>
+            <i class="BotMode_popUp_closeBtn scale_btn fa-solid fa-x"></i>
+        </div>
+
+        <div class="CreateLevel_BotMode_main">
+
+            <div class="BotMode_mainHead">
+                <p>Allow Bot Mode</p>
+                <i class="fa-regular fa-square BotMode_toggle_btn" active_toggle="false"></i>
+            </div>
+
+            <div class="BotMode_mainWrapper blur">
+
+                <div class="BotMode_patternWrapper">
+
+                    <p>Choose maximum 2 patterns</p>
+
+                    <div class="BotMode_patternSelectionWrapper">
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="BotMode_footerWrapper">
+                <div style="padding: 1vh 3vw;" class="CreateLevelSceneButton scale_btn BotMode_OK_btn">OK</div>
+            </div>
+
         </div>
     </div>
 

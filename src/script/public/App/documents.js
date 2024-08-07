@@ -787,6 +787,14 @@ const gameEntry_details_list = document.querySelector(".gameEntry_details_list")
 const gameStartAnimation_el = document.querySelector('.gameStartAnimation');
 const GameStartAnimationPlayerBars = document.querySelectorAll('.GameStartAnimationPlayerBar');
 const GamePlayerBarInnerWrappers = document.querySelectorAll('.GamePlayerBarInnerWrapper');
+const CreateLevelKiBtn = document.querySelector('.CreateLevelKiBtn');
+const CreateLevel_BotMode_PopUp = document.querySelector('.CreateLevel_BotMode_PopUp');
+const BotMode_popUp_questBtn = document.querySelector('.BotMode_popUp_questBtn');
+const BotMode_popUp_closeBtn = document.querySelector('.BotMode_popUp_closeBtn');
+const BotMode_toggle_btn = document.querySelector('.BotMode_toggle_btn');
+const BotMode_mainWrapper = document.querySelector('.BotMode_mainWrapper');
+const BotMode_OK_btn = document.querySelector('.BotMode_OK_btn');
+const BotMode_patternSelectionWrapper = document.querySelector('.BotMode_patternSelectionWrapper');
 
 const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
 const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');
