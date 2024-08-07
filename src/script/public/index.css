@@ -10073,6 +10073,10 @@ p.createCostumField_yInput {
 
 .online_level_scene_title {
     font-size: 7vh;
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+    align-items: center;
 }
 
 .level_scene_start_wrapper {
@@ -10240,6 +10244,11 @@ p.createCostumField_yInput {
 .level_scene_music_name {
     color: white;
     font-weight: 500;
+}
+
+.level_title_icon {
+    width: 3.3vw;
+    height: 3.3vw;
 }
 
 

@@ -148,8 +148,6 @@ class gameLogEntry {
             let is_match_won;
             let self_is_blocker = (self_id() != this.entry.p1_id && self_id() != this.entry.p2_id) ? true : false;
 
-            console.log(self_is_blocker);
-
             if (self_id() == this.entry.p1_id && this.entry.p1_points > this.entry.p2_points) {
                 is_match_won = true;
 

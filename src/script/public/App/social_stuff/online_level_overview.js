@@ -85,6 +85,12 @@ class onlineLevelOverviewHandler {
 
         online_level_scene_title.textContent = this.level["level_name"];
         online_level_scene_author.textContent = `by ${this.author["player_name"]}`;
+
+        let level_icon = document.createElement('img');
+        level_icon.classList.add('level_title_icon');
+
+        level_icon.src = player_levels_handler.Settings.levelicon[this.level.icon];
+        online_level_scene_title.appendChild(level_icon);
     };
 
     init_music_display() {

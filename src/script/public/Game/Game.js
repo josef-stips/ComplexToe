@@ -980,7 +980,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
                 img.src = "./assets/game/warlord-helmet.svg";
                 img.width = "35";
                 img.height = "35";
-                img.style.margin = "7px 0 0 0";
+                img.style.margin = "0.5vh 0 0 0";
                 img.style.transform = "rotate(90deg)";
                 Game_Upper_Field_Icon.appendChild(img);
                 Game_Upper_Field_Icon.classList = "";
@@ -992,7 +992,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
                 img1.src = "./assets/game/wolf-head.svg";
                 img1.width = "35";
                 img1.height = "35";
-                img1.style.margin = "7px 0 0 0";
+                img1.style.margin = "0.5vh 0 0 0";
                 Game_Upper_Field_Icon.appendChild(img1);
                 Game_Upper_Field_Icon.classList = "";
                 break;
@@ -1003,7 +1003,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
                 img3.src = "./assets/game/shattered-sword.svg";
                 img3.width = "31";
                 img3.height = "31";
-                img3.style.margin = "7px 4px 0 0";
+                img3.style.margin = "0.5vh 0.1vw 0 0";
                 img3.style.transform = "scaleX(-1)";
                 Game_Upper_Field_Icon.appendChild(img3);
                 Game_Upper_Field_Icon.classList = "";
@@ -1015,7 +1015,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
                 img2.src = "./assets/game/dragon-head.svg";
                 img2.width = "35";
                 img2.height = "35";
-                img2.style.margin = "7px 0 0 0";
+                img2.style.margin = "0.5vh 0 0 0";
                 img2.style.transform = "rotate(90deg) scaleY(-1)";
                 Game_Upper_Field_Icon.appendChild(img2);
                 Game_Upper_Field_Icon.classList = "";
@@ -1037,7 +1037,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
                 img4.src = "./assets/game/semi-closed-eye.svg";
                 img4.width = "40";
                 img4.height = "40";
-                img4.style.margin = "2px 0 0 0";
+                img4.style.margin = "0.3vh 0 0 0";
                 Game_Upper_Field_Icon.appendChild(img4);
                 Game_Upper_Field_Icon.classList = "";
                 break;
@@ -1050,7 +1050,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
         img5.src = NewCreativeLevel.Settings.levelicon[NewCreativeLevel.selectedLevel[4]];
         img5.width = "31";
         img5.height = "31";
-        img5.style.margin = "4px 0 0 0";
+        img5.style.margin = "0.5vh 0 0 0";
         Game_Upper_Field_Icon.appendChild(img5);
         Game_Upper_Field_Icon.classList = "";
     };
@@ -1062,7 +1062,18 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
         img5.src = costumLevelIcon;
         img5.width = "31";
         img5.height = "31";
-        img5.style.margin = "4px 0 0 0";
+        img5.style.margin = "0.5vh 0 0 0";
+        Game_Upper_Field_Icon.appendChild(img5);
+        Game_Upper_Field_Icon.classList = "";
+    };
+
+    if (review_mode && review_mode_handler.entry.level_icon) {
+        if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+        let img5 = document.createElement("img");
+        img5.src = review_mode_handler.levelicons[review_mode_handler.entry.level_icon];
+        img5.width = "31";
+        img5.height = "31";
+        img5.style.margin = "0.5vh 0 0 0";
         Game_Upper_Field_Icon.appendChild(img5);
         Game_Upper_Field_Icon.classList = "";
     };
@@ -2620,15 +2631,36 @@ class reviewModeHandler {
         this.settings = {
             'allow_music': 'true'
         };
+
+        this.levelicons = {
+            0: "assets/game/wolf-head.svg",
+            1: "assets/game/winged-sword.svg",
+            2: "assets/game/warlock-eye.svg",
+            3: "assets/game/sunken-eye.svg",
+            4: "assets/game/ore.svg",
+            5: "assets/game/minerals.svg",
+            6: "assets/game/crystal-eye.svg",
+            7: "assets/game/fangs.svg",
+            8: "assets/game/bleeding-eye.svg",
+            9: "assets/game/crystal-bars.svg",
+            10: "assets/game/battle-axe.svg",
+            11: "assets/game/tribal-mask.svg",
+            12: "assets/game/shattered-sword.svg",
+            13: "assets/game/gluttonous-smile.svg",
+            14: "assets/game/book-cover.svg"
+        };
     };
 
     init() {
+        console.log(this.entry);
+
         this.init_patterns_list(this.entry);
 
         this.events();
         this.init_settings();
 
         this.init_doc(this.entry);
+        this.init_game_field_icon(this.entry);
         this.init_player_icon(this.entry);
         this.init_player(this.entry);
         this.init_field(this.entry);
@@ -2827,6 +2859,10 @@ class reviewModeHandler {
         };
     };
 
+    init_game_field_icon(entry) {
+        SetGameFieldIconForCurrentField(entry.field_size[0], entry.field_index, false);
+    };
+
     init_player_icon(entry) {
         let p1_icon_wrapper = document.createElement('i');
         let p2_icon_wrapper = document.createElement('i');
@@ -2943,8 +2979,7 @@ class reviewModeHandler {
         let bot_move = false;
         let state = {};
         blockages_in = blockages_in + 1;
-
-        console.log(i, player_x_move, move, blockages_in, k)
+        // console.log(i, player_x_move, move, blockages_in, k)
 
         let item = document.createElement('li');
         let wrapper1 = document.createElement('div');
