@@ -462,6 +462,31 @@ function addAlphaToColor(color, alpha) {
 
     // Rückgabe der Farbe im RGBA-Format
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+function formatDateZ(dateString) {
+    // Entferne zusätzliche Anführungszeichen falls vorhanden
+    if (dateString.startsWith("'") && dateString.endsWith("'")) {
+        dateString = dateString.slice(1, -1);
+    } else if (dateString.startsWith("\"") && dateString.endsWith("\"")) {
+        dateString = dateString.slice(1, -1);
+    }
+
+    // Erstelle ein neues Datum-Objekt aus dem bereinigten Datum-String
+    const date = new Date(dateString);
+
+    // Überprüfe, ob das Datum gültig ist
+    if (isNaN(date)) {
+        throw new Error("Ungültiges Datum: " + dateString);
+    }
+
+    // Hole das Jahr, den Monat und den Tag aus dem Datum-Objekt
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Monate sind 0-basiert, daher +1
+    const day = String(date.getUTCDate()).padStart(2, '0');
+
+    // Baue das Datum im gewünschten Format zusammen
+    return `${year}-${month}-${day}`;
 }
 
 const XML_serializer = new XMLSerializer();

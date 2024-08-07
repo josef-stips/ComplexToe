@@ -1082,12 +1082,28 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             UltimateGameWinFirstAnimation(player1_won, player2_won);
 
             // game entry for offline game of any kind. player vs player / player vs ki / advanture mode (also ki)
-            let level_id = player_levels_handler.online_level_overview_handler.level.id;
-            let level_icon = player_levels_handler.online_level_overview_handler.level.icon;
-            let level_name = player_levels_handler.online_level_overview_handler.level.level_name;
+            let level_id;
+            let level_icon;
+            let level_name;
+
+            if (player_levels_handler.online_level_overview_handler) {
+                level_id = player_levels_handler.online_level_overview_handler.level.id;
+                level_icon = player_levels_handler.online_level_overview_handler.level.icon;
+                level_name = player_levels_handler.online_level_overview_handler.level.level_name;
+
+            } else {
+                level_name = curr_field;
+            };
+
             let game_mode = inAdvantureMode && curr_mode == GameMode[1].opponent ? 'advanture_mode' : !inAdvantureMode && curr_mode == GameMode[1].opponent ? 'training_arena' : 'fun_offline_game';
 
-            console.log(Number(fieldIndex));
+            console.log(Number(fieldIndex), "lool", score_Player1_numb, score_Player2_numb);
+
+            let score1 = score_Player1_numb;
+            let score2 = score_Player2_numb;
+
+            if (score_Player1_numb == Infinity) score1 = 999;
+            if (score_Player2_numb == Infinity) score2 = 999;
 
             let all_game_data_for_log = [
                 level_id, // level_id
@@ -1101,8 +1117,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                 localStorage.getItem('userInfoColor'), // p1 color
                 PlayerData[1].AdvancedSkin == "cell empty" ? PlayerData[1].PlayerForm : PlayerData[1].AdvancedSkin.replace('cell', ''), // player 1 icon
                 PlayerData[2].AdvancedSkin == "cell empty" ? PlayerData[2].PlayerForm : PlayerData[2].AdvancedSkin.replace('cell', ''), // player 2 icon
-                score_Player1_numb, // p1 points
-                score_Player2_numb, // p2 points
+                score1 != -Infinity && score1 != Infinity ? score1 : 0, // p1 points
+                score2 != -Infinity && score2 != Infinity ? score2 : 0, // p2 points
                 GameData.InnerGameMode == 'Blocker Combat' ? true : false, // blocker boolean
                 GameData.InnerGameMode == 'Blocker Combat' ? 'bot' : ' ', // blocker name
                 JSON.stringify(cell_indexes_blocked_by_blocker), // cells blocked by blocker

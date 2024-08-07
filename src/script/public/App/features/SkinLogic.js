@@ -1014,6 +1014,7 @@ class themes {
     };
 
     book_btn() {
+        CurrencySkinShopDisplay.querySelector('.exploredItems_bookBtn') && CurrencySkinShopDisplay.querySelector('.exploredItems_bookBtn').remove();
         CurrencySkinShopDisplay.appendChild(exploredItems_bookBtn.cloneNode(true));
 
         let btn = CurrencySkinShopDisplay.querySelector(".exploredItems_bookBtn");

@@ -266,7 +266,7 @@ class NewLevel {
         };
 
         // If other level selected paste its data into current settings
-        if (this.selectedLevel != undefined) {
+        if (this.selectedLevel != undefined && !this.selectedLevel[13]) {
 
             this.InitCurrentSettings(this.selectedLevel[5], this.selectedLevel[0], this.selectedLevel[1], this.selectedLevel[2], this.selectedLevel[3], this.selectedLevel[4],
                 this.selectedLevel[7], this.selectedLevel[6], this.selectedLevel[9], this.selectedLevel[8], this.selectedLevel[11], this.selectedLevel[15], this.selectedLevel[16]);
@@ -361,7 +361,7 @@ class NewLevel {
                 PublishLevelBtn.style.display = "none";
                 unpublishLevelBtn.style.display = "block";
 
-                LevelList_PublishStatusDisplay.textContent = `published - ${this.selectedLevel[12]}`;
+                LevelList_PublishStatusDisplay.textContent = `published - ${formatDateZ(this.selectedLevel[12])}`;
                 LevelList_PublishStatusDisplay.style.color = "lawngreen";
             };
 
@@ -455,6 +455,9 @@ class NewLevel {
             LevelList_createDateDisplay.style.display = "block";
 
             if (level.level_status == 0) {
+
+                PlayLevelBtn_ListBtn.style.display = 'flex';
+
                 // Display publish level buttons right
                 if (!this.Searching) {
                     PublishLevelBtn.style.display = "block";
@@ -474,6 +477,8 @@ class NewLevel {
                 LevelList_PublishStatusDisplay.style.color = "rgb(255, 152, 0)";
 
             } else {
+                PlayLevelBtn_ListBtn.style.display = 'none';
+
                 // Display publish level buttons right
                 if (!this.Searching) {
                     PublishLevelBtn.style.display = "none";
@@ -508,6 +513,12 @@ class NewLevel {
         li.appendChild(div1);
         li.appendChild(div2);
         LevelList_list.appendChild(li);
+
+        this.set_levellist_item_color(li, level);
+    };
+
+    set_levellist_item_color(el, data) {
+        el.style.background = `linear-gradient(45deg, ${this.PossibleColors[parseInt(data.bg1)]}, ${this.PossibleColors[parseInt(data.bg2)]})`;
     };
 
     // Generate field on given xy length

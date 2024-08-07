@@ -173,6 +173,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     cell_indexes_blocked_by_blocker = [];
     GameSeconds = 0;
 
+    all_game_moves = [];
+
     player2_lastBarRelation = 0;
     player1_lastBarRelation = 0;
 
@@ -803,7 +805,44 @@ function initializePlayers(OnlineGameDataArray) {
         cell.addEventListener('click', cellCicked);
         cell.style.cursor = "pointer";
     });
+
+    StartGameAnimation();
 };
+
+const StartGameAnimation = () => {
+    let player1_iconWrapper = document.createElement('span');
+    let player2_iconWrapper = document.createElement('span');
+
+    gameStartAnimation_el.style.display = 'flex';
+    gameStartAnimation_el.style.opacity = '1';
+
+    GamePlayerBarInnerWrappers[0].textContent = `${PlayerData[2].PlayerName}`;
+    GamePlayerBarInnerWrappers[1].textContent = `${PlayerData[1].PlayerName}`;
+
+    if (PlayerData[2].AdvancedSkin != "cell empty") {
+        DisplayPlayerIcon_at_el(player2_iconWrapper, PlayerData[2].AdvancedSkin, 'white', PlayerData[2].PlayerForm);
+    } else {
+        player2_iconWrapper.textContent = `- ${PlayerData[2].PlayerForm}`;
+    };
+
+    if (PlayerData[1].AdvancedSkin != "cell empty") {
+        DisplayPlayerIcon_at_el(player1_iconWrapper, PlayerData[1].AdvancedSkin, 'white', PlayerData[1].PlayerForm);
+    } else {
+        player1_iconWrapper.textContent = `- ${PlayerData[1].PlayerForm}`;
+    };
+
+    player1_iconWrapper.classList.remove('cell');
+    player2_iconWrapper.classList.remove('cell');
+    player1_iconWrapper.style.fontSize = '8vw';
+    player2_iconWrapper.style.fontSize = '8vw';
+
+    GamePlayerBarInnerWrappers[0].appendChild(player2_iconWrapper);
+    GamePlayerBarInnerWrappers[1].appendChild(player1_iconWrapper);
+};
+
+gameStartAnimation_el.addEventListener('animationend', () => {
+    gameStartAnimation_el.style.display = 'none';
+});
 
 // cell mouse enter
 function cell_mouseEnter(cell) {
@@ -2999,7 +3038,7 @@ class reviewModeHandler {
             if (this.win_patterns_on_nth_move.includes(i)) {
                 state['bin'] = 0b10
 
-            } else if (this.win_patterns_on_nth_move.includes(i + 1) || this.win_patterns_on_nth_move.includes(i + 2)) {
+            } else if (this.win_patterns_on_nth_move.includes(i + 1) || this.win_patterns_on_nth_move.includes(i + 2) && this.entry.blocker) {
                 state['bin'] = 0b01;
 
             } else {

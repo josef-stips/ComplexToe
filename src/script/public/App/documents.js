@@ -784,6 +784,9 @@ const skin_shop_last_tab = document.querySelector(".skin_shop_last_tab");
 const clan_best_level = document.querySelector(".clan_best_level");
 const wheelOfFortuneAfterGameBtn = document.querySelector(".wheelOfFortuneAfterGameBtn");
 const gameEntry_details_list = document.querySelector(".gameEntry_details_list");
+const gameStartAnimation_el = document.querySelector('.gameStartAnimation');
+const GameStartAnimationPlayerBars = document.querySelectorAll('.GameStartAnimationPlayerBar');
+const GamePlayerBarInnerWrappers = document.querySelectorAll('.GamePlayerBarInnerWrapper');
 
 const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
 const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');
