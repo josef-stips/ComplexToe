@@ -420,12 +420,22 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             curr_music_name = Fields[fieldIndex].theme_name.id;
         };
 
+        let level_id;
+
+        if (inPlayerLevelsScene) {
+            level_id = player_levels_handler.online_level_overview_handler.level.id;
+        };
+
+        if (NewCreativeLevel) {
+            level_id = NewCreativeLevel.selectedLevel[11];
+        };
+
         console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon, curr_music_name);
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
             localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
-            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name
+            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;

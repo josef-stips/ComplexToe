@@ -1031,6 +1031,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
     // Online or offline mode
     if (curr_mode == GameMode[2].opponent) { // in online mode
 
+        console.log(GameSeconds);
+
         // send message to server
         if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won,
             WinCombination ? JSON.stringify([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))) : undefined, score_Player1_numb, score_Player2_numb, GameSeconds
@@ -1039,9 +1041,10 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
     } else {
         setTimeout(() => {
-            if (inPlayerLevelsScene) {
-                update_personal_level_data(player1_won);
-            };
+            // do not entcomment. do not touch. legacy code
+            // if (inPlayerLevelsScene) {
+            //     update_personal_level_data(player1_won);
+            // };
 
             // console.log(current_level_boss);
             current_level_boss && current_level_boss.stop_attack_interval();
@@ -1143,7 +1146,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 };
 
 // player 1 won online game
-const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination) => {
+const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination, game_sec) => {
     if (watch_mode || personal_GameData.role == 'blocker') {
         UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
         return;
@@ -1153,11 +1156,12 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'admin') {
             PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
-
-            update_personal_level_data(player1_won);
+            update_personal_level_data(player1_won, game_sec, score_Player1_numb);
         };
 
         if (personal_GameData.role == 'user') {
+            update_personal_level_data(player2_won, game_sec, score_Player2_numb);
+
             let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[2] / PlayerXP[1]) / -1;
 
             minus_SkillPoints(Math.floor(5 * XP_multiplicator));
@@ -1170,7 +1174,7 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
 };
 
 // player 2 won online game
-const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination) => {
+const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination, game_sec) => {
     if (watch_mode || personal_GameData.role == 'blocker') {
         UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
         return;
@@ -1180,11 +1184,12 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'user') {
             PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
-
-            update_personal_level_data(player2_won);
+            update_personal_level_data(player2_won, game_sec, score_Player2_numb);
         };
 
         if (personal_GameData.role == 'admin') {
+            update_personal_level_data(player1_won, game_sec, score_Player1_numb);
+
             let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[1] / PlayerXP[2]) / -1;
 
             minus_SkillPoints(Math.floor(5 * XP_multiplicator));
@@ -1194,13 +1199,17 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
 };
 
 // update costum level player data (best score etc.)
-function update_personal_level_data(playerX_won) {
-    if (NewCreativeLevel) return;
+function update_personal_level_data(playerX_won, game_sec, score) {
+    if (NewCreativeLevel) {
+        return;
+    };
+
+    console.log(inPlayerLevelsScene);
 
     if (inPlayerLevelsScene || PlayingInCreatedLevel_AsGuest) {
-        socket.emit("update_online_level_data", playerX_won, GameSeconds,
-            score_Player1_numb, Number(localStorage.getItem("PlayerID")),
-            global_creative_level_data["id"], patterns_used, (newData) => {
+        socket.emit("update_online_level_data", playerX_won, game_sec,
+            score, Number(localStorage.getItem("PlayerID")),
+            globalLevelID, patterns_used, (newData) => {
 
                 if (personal_GameData.role == 'admin' || !PlayingInCreatedLevel_AsGuest) {
                     level_scene_best_time.textContent = `best time: ${newData["best_time"]} seconds`;
@@ -1213,7 +1222,8 @@ function update_personal_level_data(playerX_won) {
 };
 
 // tie in online game 
-const OnlineGame_UltimateWin_GG = (player1_won, player2_won, WinCombination) => {
+const OnlineGame_UltimateWin_GG = (player1_won, player2_won, WinCombination, game_sec) => {
+    update_personal_level_data(false, game_sec);
     UltimateWinAnimation(`GG Well played `);
 };
 
@@ -1296,6 +1306,8 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
 
         UltimateGameWinFirstAnimation(player1_won, player2_won);
 
+        WinCombination = JSON.parse(WinCombination).map(x => document.querySelector(`.cell[cell-index="${x}"]`));
+
         if (personal_GameData.role == 'admin') {
 
             let level_id;
@@ -1356,13 +1368,13 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
         setTimeout(() => {
             cellGrid.style.display = 'none';
             if (player1_won && !player2_won) { // player 1 won (admin)
-                OnlineGame_UltimateWin_Player1(player1_won, player2_won, WinCombination);
+                OnlineGame_UltimateWin_Player1(player1_won, player2_won, WinCombination, gameSeconds);
 
             } else if (player2_won && !player1_won) { // player 2 won (user)
-                OnlineGame_UltimateWin_Player2(player1_won, player2_won, WinCombination);
+                OnlineGame_UltimateWin_Player2(player1_won, player2_won, WinCombination, gameSeconds);
 
             } else if (player1_won && player2_won) { // GG
-                OnlineGame_UltimateWin_GG(player1_won, player2_won, WinCombination);
+                OnlineGame_UltimateWin_GG(player1_won, player2_won, WinCombination, gameSeconds);
             };
         }, 1000);
     }, 1000);

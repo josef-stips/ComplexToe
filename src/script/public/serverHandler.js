@@ -1078,10 +1078,12 @@ socket.on('killed_game', (from_continue_btn) => {
     OnlineGame_Lobby.style.display = 'flex';
 
     if (PlayingInCreatedLevel_AsGuest) {
+        sceneMode.full();
         close_all_scenes();
         gameModeFields_Div.style.display = 'flex';
 
     } else if (inPlayerLevelsScene) {
+        sceneMode.default();
         close_all_scenes();
         online_level_scene.style.display = 'flex';
     };
@@ -1516,9 +1518,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
         watching_count_el.style.display = 'flex';
     };
 
-    if (PlayingInCreatedLevel) {
-        global_creative_level_data = player_levels_handler.online_level_overview_handler.level;
-    };
+    globalLevelID = RoomData[0].level_id;
 });
 
 // When admin starts game, all clients recieve the global availible options

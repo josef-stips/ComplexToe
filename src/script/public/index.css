@@ -3871,7 +3871,7 @@ label h3 {
     position: absolute;
     z-index: 90301;
     color: var(--font-color);
-    font-size: 24px;
+    font-size: 3vh;
 }
 
 
@@ -11264,7 +11264,7 @@ ul.default_sb_list.best_players_list div:first-child {
 .reward_pick_up {
     position: absolute;
     margin: 0 auto auto auto;
-    inset: -7vh 0 100vh 50vw;
+    inset: -7vh 0 100vh 58vw;
     display: block;
     z-index: 10001;
     transition: top 0.5s ease-in-out;

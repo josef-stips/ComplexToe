@@ -154,6 +154,8 @@ let all_patterns_in_game = {
 
 let global_creative_level_data = null;
 
+let globalLevelID = null;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -954,6 +956,7 @@ function cell_mouseLeave(cell) {
 // when the game starts, for all players in the game, 
 // the global game timer recieves the global timer from the server and displays it
 socket.on('display_GlobalGameTimer', timer => {
+    GameSeconds++;
     GameField_TimeMonitor.textContent = `${timer} s.`;
 });
 

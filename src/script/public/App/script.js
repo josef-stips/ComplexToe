@@ -2149,7 +2149,7 @@ create_clan_btn_use_scene.addEventListener("click", () => {
 class rewardPickUp {
     show() {
         return new Promise(resolve => {
-            reward_pick_up.style.top = "12vh";
+            reward_pick_up.style.top = "15vh";
             setTimeout(() => {
                 resolve();
             }, 500);
