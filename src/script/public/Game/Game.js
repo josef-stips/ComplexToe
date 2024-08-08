@@ -2930,7 +2930,12 @@ class reviewModeHandler {
     };
 
     init_game_field_icon(entry) {
-        SetGameFieldIconForCurrentField(entry.field_size[0], entry.field_index, false);
+        if (entry.p2_id > 0) {
+            costumLevelIcon = this.levelicons[entry.level_icon];
+            SetGameFieldIconForCurrentField(entry.field_size[0], entry.field_index, true);
+        } else {
+            SetGameFieldIconForCurrentField(entry.field_size[0], entry.field_index, false);
+        };
     };
 
     init_player_icon(entry) {

@@ -1245,14 +1245,14 @@ gameInfo_btn.addEventListener('click', () => {
     if (!NewCreativeLevel && !inPlayerLevelsScene && !review_mode && !watch_mode) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
+    } else if (review_mode) {
+        GameInfo_HeaderTitle.textContent = `${review_mode_handler.entry.level_name} - Game Info`;
+
     } else if (NewCreativeLevel || PlayingInCreatedLevel_AsGuest) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
     } else if (inPlayerLevelsScene) {
         GameInfo_HeaderTitle.textContent = `${player_levels_handler.online_level_overview_handler.level.level_name} - Game Info`;
-
-    } else if (review_mode) {
-        GameInfo_HeaderTitle.textContent = `${review_mode_handler.entry.level_name} - Game Info`;
 
     } else if (watch_mode) {
         let l = global_online_games_handler.current_selected_game_instance.game_data.fieldTitle;
@@ -1289,7 +1289,7 @@ gameInfo_btn.addEventListener('click', () => {
         });
 
         // how to win text
-        if (PlayingInCreatedLevel || PlayingInCreatedLevel_AsGuest) {
+        if (PlayingInCreatedLevel || PlayingInCreatedLevel_AsGuest || review_mode) {
             NewCreativeLevel && (HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points or score more points than your opponent if he gives up.`);
             !NewCreativeLevel && (HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`);
 
@@ -1330,6 +1330,8 @@ gameInfo_btn.addEventListener('click', () => {
 GameInfoClose_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'none';
     GameInfoPopUp.style.display = 'none';
+
+    PatternGridWrapperForCostumPatterns.textContent = null;
 });
 
 GameModelistItem_Boneyard.addEventListener('click', () => {

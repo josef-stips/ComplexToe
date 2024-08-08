@@ -1132,7 +1132,22 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
         grid.remove();
     });
 
-    Object.keys(all_patterns_in_game).forEach((name, i) => {
+    let patterns = all_patterns_in_game;
+
+    if (review_mode) {
+        if (Object.keys(review_mode_handler.entry.costum_patterns).length <= 0) return;
+
+        patterns = Object.keys(review_mode_handler.entry.costum_patterns).map((p, i, arr) => {
+            let name = p;
+            let s = review_mode_handler.entry.costum_patterns[name][name].structure;
+            let v = review_mode_handler.entry.costum_patterns[name][name].value;
+
+            createPattern_preview(name, s, PatternGridWrapperForCostumPatterns, "level", "ingame_preview", undefined, undefined, undefined, undefined, undefined, undefined, v);
+        });
+        return;
+    };
+
+    Object.keys(patterns).forEach((name, i) => {
         if (Object.keys(GamePatternsList).includes(name)) return;
 
         let structure = PatternStructureAsOrigin(boundaries, all_patterns_in_game[name].structure, 5, 5);
