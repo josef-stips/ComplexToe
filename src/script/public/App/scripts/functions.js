@@ -470,15 +470,15 @@ function formatDateZ(dateString) {
         dateString = dateString.slice(1, -1);
     } else if (dateString.startsWith("\"") && dateString.endsWith("\"")) {
         dateString = dateString.slice(1, -1);
-    }
+    };
 
     // Erstelle ein neues Datum-Objekt aus dem bereinigten Datum-String
     const date = new Date(dateString);
 
     // Überprüfe, ob das Datum gültig ist
     if (isNaN(date)) {
-        throw new Error("Ungültiges Datum: " + dateString);
-    }
+        throw new Error("invalid date: " + dateString);
+    };
 
     // Hole das Jahr, den Monat und den Tag aus dem Datum-Objekt
     const year = date.getUTCFullYear();
@@ -487,13 +487,30 @@ function formatDateZ(dateString) {
 
     // Baue das Datum im gewünschten Format zusammen
     return `${year}-${month}-${day}`;
-}
+};
 
 const XML_serializer = new XMLSerializer();
 
-function BindPatternsWithCostumPatternsToIndexes(patterns, costum_patterns, xy) {
-    let GamePatterns = LoopInPatternList(xy);
+function BindPatternsWithCostumPatternsToIndexes(patterns, costum_patterns, x, y) {
+    let GamePatterns = GamePatternsList;
 
     let pattern_structures = patterns.map(pattern_name => GamePatterns[pattern_name]);
-    return [...Object.values(costum_patterns).map(pattern => Object.values(pattern)[0].structure), ...pattern_structures];
+    let official_pattern_points = patterns.map(pattern_name => patternPoints[pattern_name]);
+
+    let all_pattern_structures;
+    let all_pattern_names;
+    let all_pattern_values;
+
+    if (costum_patterns) {
+        all_pattern_structures = [...Object.values(costum_patterns).map(pattern => Object.values(pattern)[0].structure), ...pattern_structures];
+        all_pattern_names = [...Object.values(costum_patterns).map(pattern => Object.values(pattern)[0].name), ...patterns];
+        all_pattern_values = [...Object.values(costum_patterns).map(pattern => Object.values(pattern)[0].value), ...official_pattern_points]
+
+    } else {
+        all_pattern_structures = [...pattern_structures];
+        all_pattern_names = [...patterns];
+        all_pattern_values = [...official_pattern_points];
+    };
+
+    return [all_pattern_structures, all_pattern_names, all_pattern_values];
 };

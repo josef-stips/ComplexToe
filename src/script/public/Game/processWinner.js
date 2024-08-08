@@ -226,20 +226,12 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             Player2_won = true;
         };
 
-        // init. extra_points based on pattern: points for pattern list
-        let pattern = WinCombination && FindPatternName([...WinCombination]);
+        let pattern_name = WinCombination && FindPatternName([...WinCombination], xCell_Amount, yCell_Amount);
+        extra_points = all_patterns_in_game[pattern_name].value || 1;
 
-        if (pattern) {
-            extra_points = patternPoints[pattern] || 1;
-            // console.log(extra_points, pattern, patternPoints);
+        patterns_used.push({ 'pattern': pattern_name, 'by': Player1_won ? PlayerData[1].PlayerName : PlayerData[2].PlayerName, 'indexes': [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))), 'on_nth_move': [...all_game_moves.entries()][all_game_moves.length - 1][0], 'value': all_patterns_in_game[pattern_name].value });
 
-        } else {
-            extra_points = 1;
-        };
-
-        patterns_used.push({ 'pattern': pattern, 'by': Player1_won ? PlayerData[1].PlayerName : PlayerData[2].PlayerName, 'indexes': [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))), 'on_nth_move': [...all_game_moves.entries()][all_game_moves.length - 1][0] });
-
-        console.log(WinCombination, pattern, extra_points, winner[0], PlayerData[1].PlayerForm, all_game_moves);
+        console.log(WinCombination, pattern_name, extra_points, winner[0], PlayerData[1].PlayerForm, all_game_moves);
     };
 
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);
@@ -568,7 +560,7 @@ const FloatingIconAnimation = (player1_won, player2_won, StartPos, amount) => {
         (iconIsAdvanced) ? span.classList = icon: span.textContent = icon; // if icon is advanced. modify classlist otherwise text
         span.classList.add("floating-item");
         // position
-        span.style.fontSize = "35px";
+        span.style.fontSize = "2.87vh";
         span.style.position = "absolute";
         span.style.animation = "1.9s SmallToBigToSmallQuickly ease-in-out";
         span.style.zIndex = "10001";
@@ -676,7 +668,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                     statusText.textContent = `You just gained a point!`;
 
-                    recentUsedPattern_add([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))); // add used pattern to recently used pattern list
+                    recentUsedPattern_add(WinCombination, xCell_Amount, yCell_Amount); // add used pattern to recently used pattern list
 
                 } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `${PlayerData[1].PlayerName} just gained a point!`;
@@ -728,7 +720,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'user') {
                     statusText.textContent = `You just gained a point!`;
 
-                    recentUsedPattern_add([...WinCombination].map(el => parseInt(el.getAttribute("cell-index")))); // add used pattern to recently used pattern list
+                    recentUsedPattern_add(WinCombination, xCell_Amount, yCell_Amount); // add used pattern to recently used pattern list
 
                 } else if (curr_mode == GameMode[2].opponent && personal_GameData.role == 'admin') {
                     statusText.textContent = `${PlayerData[2].PlayerName} just gained a point!`;
@@ -1047,21 +1039,8 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
     } else {
         setTimeout(() => {
-
-            console.log(player1_won, GameSeconds, score_Player1_numb);
-
             if (inPlayerLevelsScene) {
-                console.log(player_levels_handler.online_level_overview_handler.level["id"], patterns_used);
-
-                socket.emit("update_online_level_data", player1_won, GameSeconds,
-                    score_Player1_numb, Number(localStorage.getItem("PlayerID")),
-                    player_levels_handler.online_level_overview_handler.level["id"], patterns_used, (newData) => {
-
-                        level_scene_best_time.textContent = `best time: ${newData["best_time"]} seconds`;
-                        player_levels_handler.online_level_overview_handler.progress_bar(
-                            newData["points"], player_levels_handler.online_level_overview_handler.level["required_points"]
-                        );
-                    });
+                update_personal_level_data(player1_won);
             };
 
             // console.log(current_level_boss);
@@ -1174,6 +1153,8 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'admin') {
             PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
+
+            update_personal_level_data(player1_won);
         };
 
         if (personal_GameData.role == 'user') {
@@ -1199,6 +1180,8 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
         // only the user which is the winner in this case, earns skill points
         if (personal_GameData.role == 'user') {
             PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
+
+            update_personal_level_data(player2_won);
         };
 
         if (personal_GameData.role == 'admin') {
@@ -1207,6 +1190,25 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
             minus_SkillPoints(Math.floor(5 * XP_multiplicator));
             UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
         };
+    };
+};
+
+// update costum level player data (best score etc.)
+function update_personal_level_data(playerX_won) {
+    if (NewCreativeLevel) return;
+
+    if (inPlayerLevelsScene || PlayingInCreatedLevel_AsGuest) {
+        socket.emit("update_online_level_data", playerX_won, GameSeconds,
+            score_Player1_numb, Number(localStorage.getItem("PlayerID")),
+            global_creative_level_data["id"], patterns_used, (newData) => {
+
+                if (personal_GameData.role == 'admin' || !PlayingInCreatedLevel_AsGuest) {
+                    level_scene_best_time.textContent = `best time: ${newData["best_time"]} seconds`;
+                    player_levels_handler.online_level_overview_handler.progress_bar(
+                        newData["points"], global_creative_level_data["required_points"]
+                    );
+                };
+            });
     };
 };
 
@@ -1236,7 +1238,7 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
     localStorage.setItem('onlineMatches-won', wins_storage);
 
     // all previous 100 patterns the player used
-    WinCombination && recentUsedPattern_add(WinCombination); // add used pattern to recently used pattern list
+    WinCombination && recentUsedPattern_add(WinCombination, xCell_Amount, yCell_Amount); // add used pattern to recently used pattern list
 
     // add online win to "last 24 hours online wins" for daily challenges
     let lastOnlineWins = parseInt(localStorage.getItem("Last24Hours_Won_OnlineGames"));
@@ -1291,8 +1293,6 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
         // set score from server
         score_Player1_numb = player1_score;
         score_Player2_numb = player2_score;
-
-        WinCombination && (WinCombination = JSON.parse(WinCombination));
 
         UltimateGameWinFirstAnimation(player1_won, player2_won);
 

@@ -1509,6 +1509,19 @@ ol.UserInfo-list img {
     height: 5%;
 }
 
+.iconsWrapper {
+    position: absolute;
+    width: 100%;
+    height: max-content;
+    top: 0;
+    transform: rotate(180deg);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 3vw;
+}
+
 .field-card-title {
     justify-content: center;
     display: flex;
@@ -2876,7 +2889,7 @@ label h3 {
 .ini_onlineGame_header {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     width: 100%;
     height: 30%;
@@ -2884,7 +2897,7 @@ label h3 {
 
 .onlineGame-header-cont {
     height: 100%;
-    width: 33.33%;
+    width: max-content;
     color: white;
 }
 
@@ -2895,7 +2908,7 @@ label h3 {
 }
 
 .OnlineGameHeader-center h1 {
-    font-size: 6vh;
+    font-size: 4vw;
 }
 
 .OnlineGameHeader-right {
@@ -2923,32 +2936,41 @@ label h3 {
     align-items: center;
     justify-content: space-around;
     width: 100%;
-    height: 50%;
+    height: 60%;
 }
 
 .onlineGame_main-btn {
-    width: 25%;
+    width: max-content;
     height: 35%;
     color: white;
-    font-size: 6vh;
-    font-weight: 500;
+    font-size: 4.5vw;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: all 0.1s ease-out;
     cursor: pointer;
+    position: relative;
 }
 
 .onlineGame_main-btn:hover {
     transition: all 0.1s ease-out;
-    color: var(--hover-item);
-    width: 25.5%;
-    height: 36%;
+    transform: scale(1.1);
 }
 
 .ini_onlineGame_footer {
     width: 100%;
-    height: 20%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.ini_onlineGame_footer>p {
+    color: white;
+    font-size: 3vw;
 }
 
 
@@ -7515,7 +7537,7 @@ span.LevelIconWrapper img {
     display: none;
     z-index: 10000;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     height: 100%;
@@ -7539,6 +7561,32 @@ span.LevelIconWrapper img {
     color: var(--line-color);
     color: var(--line-color);
     transform: scale(1.05);
+}
+
+.chooseModePopUpTriangle {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    transform: rotate(45deg);
+    bottom: 5%;
+    width: 28vw;
+    height: 28vw;
+    border: 0.6vh solid white;
+    background: transparent;
+    opacity: 0.5;
+    filter: blur(10px);
+}
+
+.onlineGame_main_btn_bg_cover {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    top: 20%;
+    width: 100%;
+    height: auto;
+    background: #191c2026;
+    border-radius: 100%;
+    filter: blur(100px);
 }
 
 
@@ -8257,6 +8305,27 @@ p.createCostumField_yInput {
     justify-content: center;
 }
 
+.createCostumPatternPointsInputWrapper {
+    width: max-content;
+    display: flex;
+    gap: 0.4vw;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.createPattern_ValueInput {
+    outline: none;
+    border: none;
+    width: 10vw;
+    height: 3vh;
+    background: transparent;
+    border-bottom: 0.4vh solid white;
+    color: white;
+    font-size: 3vh;
+    padding: 0.2vw;
+}
+
 .costum_patterns_overview_from_level {
     display: grid;
     gap: 2em;
@@ -8300,7 +8369,7 @@ p.createCostumField_yInput {
     align-items: end;
     margin-bottom: 3%;
     gap: 0.25em;
-    font-size: 50%;
+    font-size: 2.5vh;
 }
 
 .editItemsWrapper {
@@ -8321,7 +8390,6 @@ p.createCostumField_yInput {
 
 .item:hover {
     transition: color 0.15s ease-in-out;
-    color: var(--line-color);
     color: var(--line-color);
 }
 
@@ -8599,18 +8667,18 @@ p.createCostumField_yInput {
 
 .dailyChallenges_notifyBtn {
     display: none;
-    padding: 1px 12.5px;
+    padding: 0.3vw 0.7vw;
     background-color: red;
-    border-radius: 100px;
-    border: 1px solid white;
-    font-size: 22px;
+    border-radius: 100%;
+    border: 0.3vh solid white;
+    font-size: 1vw;
     position: absolute;
     color: white;
     width: fit-content;
     height: fit-content;
     position: absolute;
-    top: -7.5px;
-    right: -12.5px;
+    top: -1vh;
+    left: 2vw;
 }
 
 
@@ -12299,7 +12367,7 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .BotMode_patternWrapper {
     width: calc(100% - 1vw);
-    height: 40%;
+    height: 70%;
     overflow: auto hidden;
     display: flex;
     flex-direction: column;
@@ -12309,12 +12377,18 @@ ul.default_sb_list.best_players_list div:first-child {
 }
 
 .BotMode_patternSelectionWrapper {
-    width: 100%;
+    width: 98.5%;
     height: 100%;
-    display: flex;
-    flex-direction: row;
+    display: grid;
     gap: 1vw;
-    align-items: center;
+    align-items: flex-start;
+    overflow: scroll hidden;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+}
+
+.BotMode_patternSelectionWrapper>div {
+    height: 100% !important;
 }
 
 .BotMode_mainHead {

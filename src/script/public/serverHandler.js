@@ -1050,6 +1050,7 @@ socket.on('killed_room', () => {
     CloseOnlinePopUps(true);
 
     if (personal_GameData.role != "admin") {
+        sceneMode.full();
         AlertText.textContent = "Admin killed the lobby.";
         DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
     };
@@ -1063,7 +1064,6 @@ socket.on('killed_room', () => {
 // if they were in a game in the admin left the game
 // When the admin leaves, he and all other clients are in the lobby again
 socket.on('killed_game', (from_continue_btn) => {
-
     gameLog_btn.classList.remove('blured');
 
     let watch = watch_mode_close_game('no_close', from_continue_btn);
@@ -1077,12 +1077,13 @@ socket.on('killed_game', (from_continue_btn) => {
     // enter lobby
     OnlineGame_Lobby.style.display = 'flex';
 
-    if (PlayingInCreatedLevel) {
-        CreateLevelScene.style.display = "flex"
-        sceneMode.full();
-
-    } else {
+    if (PlayingInCreatedLevel_AsGuest) {
+        close_all_scenes();
         gameModeFields_Div.style.display = 'flex';
+
+    } else if (inPlayerLevelsScene) {
+        close_all_scenes();
+        online_level_scene.style.display = 'flex';
     };
 
     Lobby_GameCode_display.style.userSelect = 'text';
@@ -1112,7 +1113,7 @@ socket.on('killed_game', (from_continue_btn) => {
 
     // play music
     PauseMusic();
-    if (!PlayingInCreatedLevel) CreateMusicBars(audio);
+    if (!NewCreativeLevel) CreateMusicBars(audio);
 });
 
 // Admin created the game and now waits for the second player
@@ -1492,7 +1493,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     // initialize game with given data
     initializeGame(curr_field_ele, 'OnlineMode', [FieldIndex, FieldTitle, options, player1, player2, player1_icon, player2_icon,
         PlayerTimer, player1_advancedIcon, player2_advancedIcon, player1_SkinColor, player2_SkinColor, player3_name
-    ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY], costumPatterns, RoomData[0].p1_XP, RoomData[0].p2_XP);
+    ], allowed_patterns, undefined, required_points_to_win, undefined, undefined, [costumX, costumY], costumPatterns, RoomData[0].p1_XP || 1, RoomData[0].p2_XP || 1);
 
     points_to_win = required_points_to_win;
 
@@ -1508,6 +1509,16 @@ socket.on('StartGame', (RoomData) => { // RoomData
     player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
 
     gameLog_btn.classList.add('blured');
+
+    if (!RoomData[0].can_watch) {
+        watching_count_el.style.display = 'none';
+    } else {
+        watching_count_el.style.display = 'flex';
+    };
+
+    if (PlayingInCreatedLevel) {
+        global_creative_level_data = player_levels_handler.online_level_overview_handler.level;
+    };
 });
 
 // When admin starts game, all clients recieve the global availible options

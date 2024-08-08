@@ -6,12 +6,14 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let n = Fieldx * Fieldy;
 
     xCell_Amount = 5;
+    yCell_Amount = 5;
     CalculateBoundaries();
 
     // pattern in its origin form
-    let structure = PatternStructureAsOrigin(boundaries, PatternStructure, Fieldx);
+    let structure = PatternStructureAsOrigin(boundaries, PatternStructure, Fieldx, Fieldy);
 
     xCell_Amount = Fieldx;
+    yCell_Amount = Fieldy;
     CalculateBoundaries();
 
     // last Index of boundary data 
@@ -61,12 +63,11 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
 // the user can draw every pattern he likes on a 5x5 field
 // For the pattern to be used in the right way by the game, the indexes should all have the minimum possible number
 // Ex. [7, 13, 18, 22] -> [0, 6, 11, 15]
-const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
-    // console.log(boundaries, Structure, Fieldx)
+const PatternStructureAsOrigin = (boundaries, Structure, Fieldx, Fieldy) => {
+    // console.log(boundaries, Structure, Fieldx, Fieldy)
 
     // sort structure. small first biggest at the end
     let PatternStructure = Structure.sort((a, b) => a - b);
-    // console.log(PatternStructure, Fieldx);
 
     // literally the first index of the pattern and its corresponding lower boundary
     let x = Structure[0];
@@ -94,21 +95,21 @@ const PatternStructureAsOrigin = (boundaries, Structure, Fieldx) => {
         return index - steps;
     });
 
-    if (Fieldx > 5) PatternStructure = structureAsNxNstructure(PatternStructure, Fieldx, boundaries);
+    if (Fieldx > 5) PatternStructure = structureAsNxNstructure(PatternStructure, Fieldx, Fieldy, boundaries);
 
     return PatternStructure;
 };
 
 // user created structures are 5x5 field based. To generate win patterns from this pattern on fields bigger than 5x5,
 // rearange pattern to NxN
-const structureAsNxNstructure = (PatternStructure, Fieldx, Initboundaries) => {
-
+const structureAsNxNstructure = (PatternStructure, Fieldx, Fieldy, Initboundaries) => {
     let structure = PatternStructure.map((index, i) => {
+        // console.log(PatternStructure, Initboundaries, Fieldx, Fieldy);
         let [lowerBoundary, BoundaryIndex] = findLowerBoundary(index, Initboundaries, true);
-
         let boundaryIndexDifference = index - lowerBoundary;
 
         xCell_Amount = Fieldx;
+        yCell_Amount = Fieldy;
         CalculateBoundaries();
 
         let newBoundaryIndex = boundaries[BoundaryIndex];

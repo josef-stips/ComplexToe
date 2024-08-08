@@ -148,6 +148,12 @@ let boneyard_array = [];
 
 let watch_mode = false;
 
+let all_patterns_in_game = {
+    // "pattern_name": {'structure': [0,1,2,3], 'value': 2},
+};
+
+let global_creative_level_data = null;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -155,7 +161,6 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
     player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
-    // console.log(arguments)
 
     sceneMode.default();
 
@@ -181,6 +186,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     boneyard_array = [];
 
     CreativeLevel_from_onlineMode_costumPatterns_globalVar = CreativeLevel_from_onlineMode_costumPatterns;
+
+    global_creative_level_data = null;
 
     OnlinePlayerIDs = {
         1: null,
@@ -288,7 +295,10 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         CreateOptions();
     };
 
+    console.log(xCell_Amount, yCell_Amount);
+
     //Creates TicTacToe field etc.
+    let [pattern_structures, pattern_names, pattern_values] = initAllPatterns(Allowed_Patterns, CreativeLevel_from_onlineMode_costumPatterns_globalVar, xCell_Amount, yCell_Amount);
     CalculateBoundaries();
     CreateField();
 
@@ -307,17 +317,11 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     //     CreateWinConditions(costumX, Allowed_Patterns);
 
     // } else {
-    CreateWinConditions(xCell_Amount, yCell_Amount, Allowed_Patterns);
+    CreateWinConditions(xCell_Amount, yCell_Amount, pattern_structures);
     // };
 
     // user costum patterns are only availible in user costum levels
-    if (NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns) {
-        // check and initialize user costum patterns
-        NewCreativeLevel_GenerateCostumPatterns(CreativeLevel_from_onlineMode_costumPatterns, costumCoords[0]);
-
-        creativeLevel_online_costumPatterns = CreativeLevel_from_onlineMode_costumPatterns;
-        costumXFromThirdParty = costumCoords[0];
-
+    if (NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns || PlayingInCreatedLevel) {
         if (personal_GameData.role == "user") {
             PlayingInCreatedLevel_AsGuest = true;
         };
@@ -447,6 +451,27 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // play theme music 
     PauseMusic();
     CreateMusicBars(curr_music_name);
+};
+
+function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy) {
+    xCell_Amount = 5;
+    yCell_Amount = 5;
+    CalculateBoundaries();
+
+    let [pattern_structures, pattern_names, pattern_values] = BindPatternsWithCostumPatternsToIndexes(official_patterns, costum_patterns, Fieldx, Fieldy);
+
+    console.log(pattern_structures, pattern_names, costum_patterns, pattern_values);
+
+    pattern_structures.forEach((s, i) => {
+        all_patterns_in_game[pattern_names[i]] = { 'structure': s, 'value': pattern_values[i] };
+    });
+
+    console.log(all_patterns_in_game);
+
+    xCell_Amount = Fieldx;
+    yCell_Amount = Fieldy;
+
+    return [pattern_structures, pattern_names, pattern_values];
 };
 
 function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns, costumCoords) {
@@ -1492,10 +1517,10 @@ function restartGame() {
         setTimeout(() => {
             console.log(allGameData);
 
-            initializeGame(allGameData[0], allGameData[1], allGameData[2], allGameData[3], allGameData[4], allGameData[5], allGameData[6], allGameData[7], allGameData[8], allGameData[9]);
-
             player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
             player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
+
+            initializeGame(allGameData[0], allGameData[1], allGameData[2], allGameData[3], allGameData[4], allGameData[5], allGameData[6], allGameData[7], allGameData[8], allGameData[9]);
 
             // bug fix
             restartTimeout();
@@ -1554,6 +1579,9 @@ socket.on('Reload_GlobalGame', (Goptions) => {
     cellGrid.classList.remove('cellGrid_opacity');
     changePlayer(true);
     setTimeout(() => {
+        player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
+        player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
+
         initializeGame(allGameData[0], allGameData[1], allGameData[2], allGameData[3], allGameData[4], allGameData[5], allGameData[6], allGameData[7], allGameData[8], allGameData[9]);
 
         if (personal_GameData.role == 'admin') {

@@ -608,9 +608,16 @@ function SetPlayerData_ConfirmEvent() {
 
         let Check = SetGameData_CheckConfirm();
 
+        if (curr_mode == GameMode[1].opponent) {
+            SetGameData_BotMode(Check);
+            return;
+        };
+
         // costum x and y
         let costumX;
         let costumY;
+
+        let costum_patterns;
 
         // check if this is user created level
         if (PlayingInCreatedLevel) {
@@ -628,6 +635,8 @@ function SetPlayerData_ConfirmEvent() {
                 costumX = creative_level_instance.selectedLevel[16]["x"];
                 costumY = creative_level_instance.selectedLevel[16]["y"];
             };
+
+            costum_patterns = creative_level_instance.selectedLevel[15];
         };
 
         // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
@@ -663,7 +672,7 @@ function SetPlayerData_ConfirmEvent() {
                 // CreateMusicBars(curr_music_name);
             };
 
-            initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
+            initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY], costum_patterns);
 
         } else {
             return;
@@ -671,7 +680,61 @@ function SetPlayerData_ConfirmEvent() {
     };
 };
 
-//If you play against a bot in the KI Mode
+function SetGameData_BotMode(Check) {
+    if (Player1_NameInput.value != "" && Player1_IconInput.value != "" && Player1_IconInput.value != "Y" && Check[1] == true) {
+
+        let fieldIndex = curr_field_ele.getAttribute('index');
+        curr_mode = GameMode[1].opponent;
+        curr_name1 = MapLevel_NameInput.value;
+        curr_name2 = 'The unknown'; // Bot
+        curr_form1 = Player1_NameInput.value.toUpperCase();
+        curr_form2 = 'Y'; // Bot        
+        curr_innerGameMode = Check[3];
+
+        // costum x and y
+        let costumX;
+        let costumY;
+
+        // check if this is user created level
+        if (PlayingInCreatedLevel) {
+            Check[0] = true;
+            Check[2] = creative_level_instance.Settings.playertimer[creative_level_instance.selectedLevel[3]];
+            UserSetPointsToWinGameInput.value = creative_level_instance.selectedLevel[2];
+            allowedPatternsFromUser = creative_level_instance.selectedLevel[6];
+
+            // set up x and y coordinates. case: default field is choosen
+            if (creative_level_instance.selectedLevel[16] == {}) {
+                costumX = creative_level_instance.Settings.cellgrid[creative_level_instance.selectedLevel[7]];
+                costumY = creative_level_instance.Settings.cellgrid[creative_level_instance.selectedLevel[7]];
+
+            } else {
+                costumX = creative_level_instance.selectedLevel[16]["x"];
+                costumY = creative_level_instance.selectedLevel[16]["y"];
+            };
+        };
+
+        DarkLayer.style.display = 'none';
+        online_level_scene.style.display = 'none';
+        SetPlayerNamesPopUp.style.display = 'none';
+
+        // play theme music 
+        PauseMusic();
+        if (PlayingInCreatedLevel) {
+            if (creative_level_instance.selectedLevel[5] != 0) {
+                curr_music_name = document.querySelector(`[src="${creative_level_instance.Settings["bgmusic"][creative_level_instance.selectedLevel[5]]}"]`);
+            };
+
+        } else {
+            curr_music_name = Fields[fieldIndex].theme_name;
+        };
+
+        console.log(allowedPatternsFromUser);
+
+        initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
+    };
+};
+
+// If you play against a bot in the KI Mode
 SetPlayerName_confBTN_KIMode.addEventListener('click', () => {
     CreateGame_KIMode();
 });

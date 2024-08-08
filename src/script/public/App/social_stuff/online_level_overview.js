@@ -632,8 +632,11 @@ class OnlineLevelPlayerScoreBoardHandler {
         // level data wrapper
         span3.classList.add("scoreboard_player_data_wrapper");
 
-        level_data1.textContent = `points: ${level_player_data.points_made} / ${this.required_points} `;
-        level_data2.textContent = `best time: ${level_player_data.best_time} s.`;
+        let besttime = level_player_data.best_time ? level_player_data.best_time : 0;
+        let pointsmade = level_player_data.points_made ? level_player_data.points_made : 0;
+
+        level_data1.textContent = `points: ${pointsmade} / ${this.required_points} `;
+        level_data2.textContent = `best time: ${besttime} s.`;
 
         level_data2.style = `display: flex;gap: 5vw;`
 
@@ -665,6 +668,10 @@ OnlineModeBtn.addEventListener("click", () => {
 
 OfflineModeBtn.addEventListener("click", () => {
     !NewCreativeLevel ? player_levels_handler.startGame(0) : NewCreativeLevel.startGame(0);
+});
+
+BotModeBtn.addEventListener("click", () => {
+    !NewCreativeLevel ? player_levels_handler.startGame(2) : NewCreativeLevel.startGame(2);
 });
 
 level_patterns_close_btn.removeEventListener("click", level_patterns_close_btn.ev);

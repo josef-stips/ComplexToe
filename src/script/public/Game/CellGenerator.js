@@ -97,17 +97,11 @@ const ConfigureCellSize = (cell, xCell_Amount) => {
 };
 
 // Generates an 2-dimensional array with all possible win combination for a 10x10 field
-function CreateWinConditions(x, y, Allowed_Patterns) {
-    xCell_Amount = x;
-    CalculateBoundaries();
+function CreateWinConditions(x, y, structures) {
+    console.log(xCell_Amount, yCell_Amount, boundaries, structures);
 
-    WinConditions.length = 0;
-
-    let list = GamePatternsList;
-    let patterns = Allowed_Patterns.map(name => list[name]);
-
-    // console.log(NxN, Allowed_Patterns, list, patterns);
-    patterns.forEach(pattern => CostumWinPattern(pattern, x, y));
+    WinConditions.length = 0; // reset
+    structures.forEach(pattern => CostumWinPattern(pattern, x, y)); // create
 };
 
 // Create Options that are live in the game  

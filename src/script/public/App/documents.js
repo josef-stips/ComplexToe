@@ -795,6 +795,10 @@ const BotMode_toggle_btn = document.querySelector('.BotMode_toggle_btn');
 const BotMode_mainWrapper = document.querySelector('.BotMode_mainWrapper');
 const BotMode_OK_btn = document.querySelector('.BotMode_OK_btn');
 const BotMode_patternSelectionWrapper = document.querySelector('.BotMode_patternSelectionWrapper');
+const iconsWrapper = document.querySelector('.iconsWrapper');
+const chooseModePopUp_qust_btn = document.querySelector('.chooseModePopUp_qust_btn');
+const BotModeBtn = document.querySelector('.BotModeBtn');
+const createPattern_ValueInput = document.querySelector('.createPattern_ValueInput');
 
 const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
 const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');

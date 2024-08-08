@@ -450,102 +450,51 @@ function Init_RecentUsedPatterns() {
 };
 
 // find pattern name
-const FindPatternName = (els_list) => {
+const FindPatternName = (els_list, x, y) => {
     let indexesOriginal = els_list.map(el => Number(el.getAttribute("cell-index")));
+    let indexes = PatternStructureAsOrigin(boundaries, indexesOriginal, 5, 5);
+    let neutralised_indexes = structureAsNxNstructure(indexes, 5, 5, boundaries);
 
-    let indexes = PatternStructureAsOrigin(boundaries, indexesOriginal, xCell_Amount);
-    let is_official_pattern = false;
+    return Object.keys(all_patterns_in_game).filter((name, i) => {
+        let structure = PatternStructureAsOrigin(boundaries, all_patterns_in_game[name].structure, 5, 5);
 
-    // of this pattern its meta data
-    let pattern_name;
-    let pattern_indexes;
+        if (JSON.stringify(structure) == JSON.stringify(neutralised_indexes)) {
 
-    // which patterns list (5, 10, 15, 20 etc.) to loop through
-    let Patternslist = LoopInPatternList(xCell_Amount);
+            xCell_Amount = x;
+            yCell_Amount = y;
+            CalculateBoundaries();
 
-    if (Patternslist) {
-        // check if this pattern is officical game pattern
-        for (const [key, val] of Object.entries(Patternslist)) {
-            // console.log(key, val, indexes);
-
-            if (JSON.stringify(val) === JSON.stringify(indexes)) {
-                is_official_pattern = true;
-                pattern_name = key;
-                pattern_indexes = val;
-                break;
-            };
+            return name;
         };
-    };
-
-    // player_levels_handler.online_level_overview_handler only works for the admin in an online game
-    if (player_levels_handler.online_level_overview_handler && !pattern_name && !is_official_pattern) {
-        let pattern_as_field5x5 = structureAsNxNstructure(indexes, 5, boundaries);
-        pattern_name = find_costum_pattern_name_with_structure(JSON.parse(player_levels_handler.online_level_overview_handler.level.costum_patterns), pattern_as_field5x5);
-    };
-
-    return pattern_name;
+    })[0];
 };
 
 // player made a point with a win combination
-const recentUsedPattern_add = (els_list) => { // els_list = array with the cell indexes
-    console.log(els_list);
+// Purpose of function: add name of win pattern to local storage
+const recentUsedPattern_add = (els_list, x, y) => {
+    console.log(boundaries, x, y, els_list);
 
-    // pattern index array like normal win pattern array
-    let indexesOriginal = els_list;
-    // console.log(boundaries, indexesOriginal, xCell_Amount);
+    let pattern_name = FindPatternName(els_list, x, y);
 
-    // win pattern with origin indexes of a NxN field
-    let indexes = PatternStructureAsOrigin(boundaries, indexesOriginal, xCell_Amount);
+    console.log(boundaries, x, y, els_list);
 
-    console.log(indexes);
+    let indexes = all_patterns_in_game[pattern_name].indexes;
 
-    let is_official_pattern = false;
-
-    // if pattern is not official, it cannot be added to the recent used pattern list
     let patternStorage = JSON.parse(localStorage.getItem("100RecentUsedPatterns"));
+    let patternStorageLength = Object.keys(patternStorage).length;
 
-    // of this pattern its meta data
-    let pattern_name;
-    let pattern_indexes;
-
-    // which patterns list (5, 10, 15, 20 etc.) to loop through
-    let Patternslist = LoopInPatternList(xCell_Amount);
-
-    // check if this pattern is officical game pattern
-    if (Patternslist) {
-        for (const [key, val] of Object.entries(Patternslist)) {
-            // console.log(key, val, indexes);
-
-            if (JSON.stringify(val) === JSON.stringify(indexes)) {
-                is_official_pattern = true;
-                pattern_name = key;
-                pattern_indexes = val;
-                break;
-            };
-        };
+    // add win pattern to local storage
+    if (patternStorageLength <= 0) {
+        patternStorage[0] = [pattern_name, indexes];
     };
-    // console.log(indexes, is_official_pattern, pattern_name, pattern_indexes);
 
-    // add just used win pattern to local storage
-    if (is_official_pattern) {
-        let origin_pattern_indexes = GamePatternsList[pattern_name]; // pattern indexes as origin 5x5
-        let patternStorageLength = Object.keys(patternStorage).length;
+    if (patternStorageLength == 100) {
+        delete patternStorage[Object.keys(patternStorage)[0]];
+        patternStorage[patternStorageLength] = [pattern_name, indexes];
+    };
 
-        if (patternStorageLength > 0) {
-
-            if (patternStorageLength == 100) {
-                delete obj[Object.keys(patternStorage)[0]];
-
-                patternStorage[patternStorageLength] = [pattern_name, origin_pattern_indexes];
-
-            } else if (patternStorageLength < 100) {
-                patternStorage[patternStorageLength] = [pattern_name, origin_pattern_indexes];
-            };
-
-        } else {
-
-            patternStorage[0] = [pattern_name, origin_pattern_indexes];
-        };
+    if (patternStorageLength < 100) {
+        patternStorage[patternStorageLength] = [pattern_name, indexes];
     };
 
     // save updated version in local storage

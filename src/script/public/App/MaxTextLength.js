@@ -531,7 +531,7 @@ wheel_bet_input.addEventListener('keydown', (event) => {
 
 Player1_NameInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -541,7 +541,7 @@ Player1_NameInput.addEventListener("input", function(event) {
 
 Player2_NameInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -551,7 +551,7 @@ Player2_NameInput.addEventListener("input", function(event) {
 
 Player1_IconInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -561,7 +561,7 @@ Player1_IconInput.addEventListener("input", function(event) {
 
 Player2_IconInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -571,7 +571,7 @@ Player2_IconInput.addEventListener("input", function(event) {
 
 YourName_Input_KI_mode.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -581,7 +581,7 @@ YourName_Input_KI_mode.addEventListener("input", function(event) {
 
 Your_IconInput.addEventListener("input", function(event) {
     const inputValue = event.target.value;
-    const validInput = inputValue.replace(/[^A-Za-z]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
+    const validInput = inputValue.replace(/[^A-Za-z0-9]/g, ""); // Entfernen Sie alle Zeichen außer Buchstaben
 
     if (inputValue !== validInput) {
         // Wenn ungültige Zeichen eingegeben wurden, setzen Sie das Eingabefeld auf den gültigen Wert
@@ -672,7 +672,7 @@ levelRequiredPointsToWinDisplay.addEventListener('keydown', (event) => {
 
 workbench_LevelName_Display.addEventListener("input", (event) => {
     const inputValue = event.target.textContent;
-    const validInput = inputValue.replace(/[^A-Za-z\s]/g, "");
+    const validInput = inputValue.replace(/[^A-Za-z0-9\s]/g, "");
 
     if (inputValue !== validInput) {
         event.target.textContent = validInput;
@@ -900,6 +900,22 @@ createCostumField_title.addEventListener("keyup", (event) => {
     if (inputValue !== validInput) {
         event.target.textContent = validInput;
     };
+});
+
+createPattern_ValueInput.addEventListener('keydown', e => {
+    const inputValue = e.target.value;
+    const validInput = inputValue.replace(/[^0-9]/g, "")
+    const isNavigational = utils.isNavigational(e);
+    const isSpecial = utils.isSpecial(e);
+
+    if (e.code === 'Space') e.preventDefault();
+
+    if (e.target.value.length > 1 && !isNavigational && !isSpecial) {
+        e.preventDefault();
+        return;
+    };
+
+    e.target.value = validInput;
 });
 
 function isNumericKey(key) {

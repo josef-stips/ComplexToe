@@ -287,14 +287,13 @@ class NewLevel {
 
     // display level list
     StartLevelList = (Display, DisplayList) => {
-
-        console.log(DisplayList);
+        // console.log(DisplayList);
 
         // get levels user created
         if (DisplayList == undefined) {
             try {
                 socket.emit("RequestLevels", localStorage.getItem("PlayerID"), levels => {
-                    console.log(levels);
+                    // console.log(levels);
 
                     if (levels.length <= 0) { // no levels
                         [...LevelList_list.querySelectorAll("li")].forEach(el => el.remove());
@@ -792,7 +791,7 @@ class NewLevel {
         for (const [pattern, index] of Object.entries(costumPatterns)) {
             console.log(pattern, index);
 
-            createPattern_preview(pattern, index[pattern]["structure"].map(i => Number(i)), costum_patterns_overview_from_level, "remove");
+            createPattern_preview(pattern, index[pattern]["structure"].map(i => Number(i)), costum_patterns_overview_from_level, "remove", undefined, undefined, undefined, undefined, undefined, undefined, undefined, index[pattern].value);
         };
     };
 
@@ -864,6 +863,13 @@ class NewLevel {
                 // // initialize game with given data and start game
                 // UserCreateRoom(true, this.Settings.playertimer[this.selectedLevel[3]], "Boneyard", localStorage.getItem("UserName"), false,
                 //     this.selectedLevel[2], this.selectedLevel[6]); // create lobby with data from current selected level. the user can't change anything
+                break;
+
+            case 2:
+                curr_mode = GameMode[1].opponent;
+
+                UserClicksNxNDefaultSettings(true); // true: player can only change his name and icon  
+                InitGameDataForPopUp(false);
                 break;
         };
 
@@ -1017,7 +1023,9 @@ class NewLevel {
     };
 
     // about costum patterns
-    toggle_costum_pattern = (method, patternName, patternStructure) => {
+    toggle_costum_pattern = (method, patternName, patternStructure, patternValue) => {
+        console.log(method, patternName, patternStructure, patternValue);
+
         // toggle pattern in meta data of this level
         if (method == "add") {
             // add pattern to object
@@ -1025,7 +1033,8 @@ class NewLevel {
                 [patternName]: {
 
                     name: patternName,
-                    structure: patternStructure
+                    structure: patternStructure,
+                    value: patternValue
                 }
             };
 
@@ -1033,7 +1042,6 @@ class NewLevel {
             // delete pattern from object
             if (this.CurrentSelectedSetting.costumPatterns[patternName]) {
                 delete this.CurrentSelectedSetting.costumPatterns[patternName];
-
             };
         };
 
@@ -1111,105 +1119,27 @@ class NewLevel {
     };
 };
 
-// add user costum pattern to win conditions
-const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, costumXCoordFromThirdParty) => { // costumPatternsFromThirdParty : from database for online game
-    console.log(costumPatternsFromThirdParty, NewCreativeLevel, costumXCoordFromThirdParty);
-
-    let patterns;
-    if (NewCreativeLevel) {
-        patterns = NewCreativeLevel.selectedLevel[15];
-
-    } else if (!NewCreativeLevel && !inPlayerLevelsScene) {
-        patterns = costumPatternsFromThirdParty;
-
-    } else if (inPlayerLevelsScene) {
-        patterns = JSON.parse(player_levels_handler.online_level_overview_handler.level["costum_patterns"]);
-    };
-
-    if (patterns && NewCreativeLevel) {
-        // generate
-        for (const [pattern, index] of Object.entries(patterns)) {
-            // console.log(pattern, index);
-
-            let structure = index[pattern]["structure"];
-            let xCellAmount;
-
-            if (!isNaN(costumXCoordFromThirdParty)) {
-                xCellAmount = costumXCoordFromThirdParty;
-
-            } else {
-                xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
-            };
-
-            console.log(structure, xCellAmount);
-
-            CostumWinPattern(structure, xCellAmount, yCell_Amount);
-        };
-
-    } else if (costumPatternsFromThirdParty) {
-
-        // generate
-        for (const [pattern, index] of Object.entries(patterns)) {
-            // console.log(pattern, index);
-
-            let structure = index[pattern]["structure"]
-            let xCellAmount = costumXCoordFromThirdParty;
-
-            console.log(structure, xCellAmount);
-
-            CostumWinPattern(structure, xCellAmount, yCell_Amount);
-        };
-    };
+// legacy code:
+const NewCreativeLevel_GenerateCostumPatterns = (costumPatternsFromThirdParty, costumXCoordFromThirdParty) => {
+    return;
 };
 
 // show patterns in game info pop up
 const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
-    let patterns;
-    if (NewCreativeLevel) {
-        patterns = NewCreativeLevel.selectedLevel[15];
-
-    } else if (!NewCreativeLevel && !inPlayerLevelsScene) {
-        patterns = costumPatternsFromThirdParty;
-
-    } else if (inPlayerLevelsScene) {
-        patterns = JSON.parse(player_levels_handler.online_level_overview_handler.level["costum_patterns"]);
-    };
-
     // delete previous costum user cell grids 
     let previousCellGrids = document.querySelectorAll(`[ingame_preview="true"]`);
-
     [...previousCellGrids].forEach(grid => {
         grid.remove();
     });
 
-    if (patterns && NewCreativeLevel) {
-        // generate
-        for (const [pattern, index] of Object.entries(patterns)) {
-            console.log(pattern, index);
+    Object.keys(all_patterns_in_game).forEach((name, i) => {
+        if (Object.keys(GamePatternsList).includes(name)) return;
 
-            let structure = index[pattern]["structure"];
-            let xCellAmount = NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]];
+        let structure = PatternStructureAsOrigin(boundaries, all_patterns_in_game[name].structure, 5, 5);
+        let value = all_patterns_in_game[name].value;
 
-            // console.log(structure, xCellAmount);
-
-            // show in game info pop up
-            createPattern_preview(pattern, structure, PatternGridWrapperForCostumPatterns, "level", "ingame_preview");
-        };
-
-    } else {
-        // generate
-        for (const [pattern, index] of Object.entries(patterns)) {
-            console.log(pattern, index);
-
-            let structure = index[pattern]["structure"];
-            let xCellAmount = costumXFromThirdParty;
-
-            // console.log(structure, xCellAmount);
-
-            // show in game info pop up
-            createPattern_preview(pattern, structure, PatternGridWrapperForCostumPatterns, "level", "ingame_preview");
-        };
-    };
+        createPattern_preview(name, structure, PatternGridWrapperForCostumPatterns, "level", "ingame_preview", undefined, undefined, undefined, undefined, undefined, undefined, value);
+    });
 };
 
 // initialize general scene
@@ -1676,17 +1606,18 @@ const InitCreateLevelScene = () => {
         let existsInGame = checkCostumPatternAlreadyInGame();
         let minimumIndexesRequiremementCheck = minimumIndexesRequiremement(3);
         let CorrespondingPattenStoragePattern = document.querySelector(`[costum_pattern_name="${createCostumPattern_title.textContent}"][right="personal"]`);
+        let SetPointsOnWin = createPattern_ValueInput.value.length > 0;
 
         // console.log(drawed, createCostumPattern_title.textContent, minimumIndexesRequiremementCheck, existsInGame, " exists ?", CorrespondingPattenStoragePattern);
 
         // user must provide costum name and atleast one drawed pattern
-        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck) {
+        if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck && SetPointsOnWin) {
             createNewCostumPattern();
 
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
-            AlertText.textContent = "Draw your new pattern and provide a custom name for it. Minimum drawing on 3 cells is required. You cannot draw a pattern already existing in the game.";
+            AlertText.textContent = "Draw your new pattern and provide a custom name for it. Minimum drawing on 3 cells is required. You cannot draw a pattern already existing in the game. Provide an amont of points a player achieves on using the pattern.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
@@ -1711,12 +1642,16 @@ const InitCreateLevelScene = () => {
                 e.target.setAttribute('active_toggle', 'false');
                 e.target.className = 'fa-regular fa-square BotMode_toggle_btn';
                 BotMode_mainWrapper.classList.add('blur');
+                NewCreativeLevel.CurrentSelectedSetting.BotMode = 0;
+                NewCreativeLevel.SaveInHistory('bot_mode', 0);
                 break;
 
             case 'false':
                 e.target.setAttribute('active_toggle', 'true');
                 e.target.className = 'fa-regular fa-check-square BotMode_toggle_btn';
                 BotMode_mainWrapper.classList.remove('blur');
+                NewCreativeLevel.CurrentSelectedSetting.BotMode = 1;
+                NewCreativeLevel.SaveInHistory('bot_mode', 1);
                 break;
         };
     });

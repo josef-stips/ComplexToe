@@ -433,7 +433,6 @@ let patternPoints = {
     "branch2": 3,
     "branch3": 3,
     "branch4": 3,
-
 };
 
 // everything about the online chat in online game mode
@@ -1498,6 +1497,22 @@ AdditionalSetting_item_killAllCells.addEventListener("click", () => {
 });
 
 chooseWinnerWindowBtn.addEventListener('click', openChooseWinnerWindow);
+
+chooseModePopUp_qust_btn.addEventListener('click', () => {
+    let qabox = new QABOX(
+        1, [`The Online Mode is the official mode to play a user-created level. However, you can also play the restricted Bot Mode when the creator activated it. Every match in the Offline Mode will not be judged, and its only purpose is to play with someone on the same device for fun. You can land on the scoreboard only through the Online Mode.`], {
+            'Online Mode': 'var(--line-color)',
+            'Bot Mode': 'goldenrod',
+            'Offline Mode': 'forestgreen'
+        }, {
+            'Online Mode': [0, 0, 0, 0],
+            'Bot Mode': [0, 0, 0, 0],
+            'Offline Mode': [0, 0, 0, 0]
+        },
+        false
+    );
+    qabox.open();
+});
 
 onlineGame_closeBtn.addEventListener('click', () => {
     DarkLayer.style.display = 'none';

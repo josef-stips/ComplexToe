@@ -736,6 +736,15 @@
                 <canvas class="GameModeFields_flowField"></canvas>
 
                 <div class="GameMode-fields-header">
+                    <div class="iconsWrapper">
+                        <i class="fa-solid fa-chess-pawn"></i>
+                        <i class="fa-solid fa-chess-king"></i>
+                        <i class="fa-solid fa-chess-knight"></i>
+                        <i class="fa-solid fa-chess-queen"></i>
+                        <i class="fa-solid fa-chess-rook"></i>
+                        <i class="fa-solid fa-chess-bishop"></i>
+                    </div>
+
                     <div class="fields-header-icons">
                         <i id="fields-area-back-btn" class="fa-solid fa-arrow-left"></i>
                     </div>
@@ -7531,14 +7540,21 @@
 
     <!-- choose between modes pop up -->
     <div class="ChooseBetweenModesPopUp">
+        <div class="chooseModePopUpTriangle"></div>
+
         <div class="ini_onlineGame_header">
 
-            <div class="OnlineGameHeader-right onlineGame-header-cont">
-                <div></div>
+            <div class="OnlineGameHeader-right onlineGame-header-cont" style="justify-content: flex-start;
+    font-size: 3vh;">
+                <i style="margin: 1vw 1vw;" class="fa-solid fa-question chooseModePopUp_qust_btn default_btn"></i>
             </div>
 
             <div class="OnlineGameHeader-center onlineGame-header-cont">
                 <h1>Choose an option</h1>
+
+                <div class="onlineGame_main_btn_bg_cover">
+                    Bot Mode
+                </div>
             </div>
 
             <div class="OnlineGameHeader-right onlineGame-header-cont">
@@ -7549,17 +7565,32 @@
 
         <div class="ini_onlineGame_main">
 
-            <div class="onlineGame_main-btn OfflineModeBtn">
-                <p>Offline Mode</p>
+            <div class="onlineGame_main-btn BotModeBtn">
+                <p>Bot Mode</p>
+
+                <div class="onlineGame_main_btn_bg_cover">
+                    Bot Mode
+                </div>
             </div>
 
             <div class="onlineGame_main-btn OnlineModeBtn">
                 <p>Online Mode</p>
+
+                <div class="onlineGame_main_btn_bg_cover">
+                    Bot Mode
+                </div>
             </div>
         </div>
 
         <div class="ini_onlineGame_footer">
+            <p>or</p>
+            <div class="onlineGame_main-btn OfflineModeBtn">
+                <p>Offline Mode</p>
 
+                <div class="onlineGame_main_btn_bg_cover">
+                    Bot Mode
+                </div>
+            </div>
         </div>
     </div>
 
@@ -7666,7 +7697,7 @@
 
                             <div class="SelectedCostumFieldText" style="
                             position: absolute;
-                            bottom: -3%;
+                            bottom: -6%;
                             right: 0;
                             display: block;
                             left: 50%;">
@@ -7772,6 +7803,11 @@
 
                 </div>
 
+            </div>
+
+            <div class="createCostumPatternPointsInputWrapper">
+                <p>points to get:</p>
+                <input type="text" class="createPattern_ValueInput" placeholder="1">
             </div>
 
         </div>
