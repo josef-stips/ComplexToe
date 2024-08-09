@@ -7730,13 +7730,14 @@ span.LevelIconWrapper img {
     color: white;
     font-size: 3vh;
     z-index: 10006;
-    border-radius: 3vh;
+    border-radius: 4vh;
     align-items: center;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
     transition: top 0.15s ease-in, opacity 0.75s ease-in;
     opacity: 0;
     display: flex;
     gap: 1em;
+    padding: 1vw 2vw;
 }
 
 .newAchievementUnlockedPopUp>h2 {

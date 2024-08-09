@@ -1,8 +1,8 @@
 {
     "name": "ComplexToe",
     "productName": "ComplexToe",
-    "version": "1.0.0",
-    "description": "The game you have waited for.",
+    "version": "1.1.0",
+    "description": "A strategic and fun board game.",
     "main": "src/index.js",
     "build": {
         "appId": "com.josefstips.ComplexToe",
@@ -48,7 +48,7 @@
         "electron-squirrel-startup": "^1.0.0",
         "socket.io": "^4.7.1",
         "socket.io-client": "^4.7.1",
-        "steam-js-api": "^1.1.0"
+        "steamworks.js": "^0.0.12"
     },
     "devDependencies": {
         "@electron-forge/cli": "^6.2.1",

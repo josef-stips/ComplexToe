@@ -2,28 +2,38 @@
 class Achievements {
     constructor() {
         this.achievementNames = [
-            "The wanderer",
-            "The warrior",
-            "The ambitious",
-            "The extreme",
-            "First steps",
-            "Getting better…",
-            "Woah! Professional",
-            "Master",
-            "Champion",
-            "Invincible",
-            "Perfectionist",
-            "gras?",
-            "The chosen",
-            "Shop keeper",
-            "The conquerer",
-            "The creator",
-            "Mysterious paper"
+            "The wanderer", // 0
+            "The warrior", // 1
+            "The ambitious", // 2
+            "The extreme", // 3
+            "First steps", // 4
+            "Getting better…", // 5
+            "Woah! Professional", // 6
+            "Master", // 7
+            "Champion", // 8
+            "Invincible", // 9
+            "Perfectionist", // 10
+            "gras?", // 11
+            "The chosen", // 12
+            "Shop keeper", // 13
+            "The conquerer", // 14
+            "The creator", // 15
+            "Mysterious paper", // 16
+
+            "The player", // 17
+            "The embracer", // 18
+            "The supporter", // 19
+            "The enjoyer", // 20
+            "The socialiser", // 21
+            "The creative", // 22
+            "The builder", // 23
+            "Never Give Up?", // 24
+            "Criminal or just social?", // 25
         ];
 
         this.taskList = [
             "Complete the advanture map", // 0
-            "Beat Oculum Solis from the advanture map", // 1
+            "Beat Oculum Solis on the adventure map", // 1
             "Unlock 30x30 field", // 2
             "Unlock 40x40 field", // 3
             "Get 1 online game win", // 4
@@ -35,10 +45,20 @@ class Achievements {
             "Get 400 online game wins", // 10
             "Get 500 online game wins", // 11
             "Get 5000 online game wins", // 12
-            "Buy a skin for the first time", // 13
+            "Purchase a skin for the first time using in-game currency", // 13
             "Verify a level for the first time", // 14
             "Publish a level for the first time", // 15
-            "Collect 10 encrypted writings" // 16
+            "Collect 10 encrypted writings", // 16
+
+            "Complete 10 user created level", // 17
+            "Complete 50 user created level", // 18
+            "Give 20 levels a rating", // 19
+            "Play against 10 random player", // 20
+            "Play against 50 random player", // 21
+            "Create 5 costum patterns", // 22
+            "Create 5 costum fields", // 23
+            "Loose 100 times", // 24
+            "Get a clan member", // 25
         ];
 
         this.reward_amount = {
