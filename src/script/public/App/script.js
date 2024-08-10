@@ -210,6 +210,8 @@ let UserIsOnProfileFromOtherPlayer = false;
 let AmountOfReceivedMessages = 0;
 let AmountOfReceivedRequests = 0;
 
+let random_player_mode = false;
+
 // The Alert pop up is a general pop up you can use for any scenario with personalized text
 // Sometimes you open alert pop up while being in normal pop up and you don't want that the darkLayer in the background disapears
 let OpenedPopUp_WhereAlertPopUpNeeded = false;
@@ -1521,19 +1523,49 @@ chooseModePopUp_qust_btn.addEventListener('click', () => {
 onlineGame_closeBtn.addEventListener('click', () => {
     DarkLayer.style.display = 'none';
     OnlineGame_iniPopUp.style.display = 'none';
+    random_player_mode = false;
 });
 
 EnterGame_btn.addEventListener('click', () => {
     OnlineGame_iniPopUp.style.display = 'none';
+    play_btn4_sound();
+    UserClicksNxNDefaultSettings();
+
+    if (random_player_mode) {
+        socket.emit('random_player_join_entry', Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), (cb, room_id) => {
+            console.log(cb, room_id);
+
+            if (cb.length <= 0) {
+                AlertText.textContent = 'There are no rooms on your XP level to join sadly. May create your own or play another mode?';
+                DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                random_player_mode = false;
+                return;
+            };
+
+            Player2_NameInput.style.display = "none";
+            Player2_IconInput.style.display = "none";
+
+            try_to_join_lobby(room_id);
+        });
+        return;
+    };
 
     setUpOnlineGame('enter');
-    play_btn4_sound();
 });
 
 CreateGame_btn.addEventListener('click', () => {
     OnlineGame_iniPopUp.style.display = 'none';
 
     setUpOnlineGame('create');
+    UserClicksNxNDefaultSettings();
+    curr_field_ele = DataFields['20x20'];
+    InitGameDataForPopUp();
+
+    if (random_player_mode) {
+        GameModeListItem_BlockerCombat.style.display = 'none';
+    } else {
+        GameModeListItem_BlockerCombat.style.display = 'flex';
+    };
 });
 
 JoinGame_btn.addEventListener("click", () => {

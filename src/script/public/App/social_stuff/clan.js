@@ -1547,8 +1547,8 @@ class clan_handler {
 
                 setTimeout(() => {
                     fetch_spinner.setAttribute('in_use', 'false');
-
                     clan_search_list.textContent = null;
+
                     results.map(result => {
                         this.item(result);
                     });

@@ -140,8 +140,10 @@ function Start_Blocker(onlineGame) {
         let targetNumber = Grid.length - 1; // Hier kannst du die gewünschte Zielzahl angeben
         let result = continueArray(XbyX, targetNumber);
 
+        console.log(result, "result");
+
         // random option indexes 
-        socket.emit('Global_Boneyard', [personal_GameData.currGameID, result, options, xCell_Amount]);
+        socket.emit('Global_Boneyard', [personal_GameData.currGameID, result, options]);
 
         // !! The final part is in serverHandler.js
 

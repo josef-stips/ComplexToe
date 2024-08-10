@@ -247,7 +247,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     if (costumCoords) {
         // console.log(costumCoords[0], costumCoords);
 
-        // for costum coords that have a different value e.g: 9x11 , 15x10
+        // for costum coords that have a different value e.g: 9x12 , 15x10
         let costumX = costumCoords[0];
         let costumY = costumCoords[1];
 
@@ -446,9 +446,9 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     };
     // console.log(fieldIndex);
 
-    if (personal_GameData.role == 'admin') {
-        socket.emit('update_room_x_and_y', personal_GameData.currGameID, [xCell_Amount, yCell_Amount]);
-    };
+    // if (personal_GameData.role == 'admin') {
+    //     socket.emit('update_room_x_and_y', personal_GameData.currGameID, [xCell_Amount, yCell_Amount]);
+    // };
 
     // play theme music 
     PauseMusic();
@@ -681,6 +681,10 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         cell.style.width = `${cellWidth}px`;
         cell.style.height = `${cellWidth}px`;
     });
+
+    fetch_spinner.setAttribute('in_use', 'false');
+    fetch_spinner.setAttribute('in_use_in_lobby', 'false');
+    Lobby_footer.querySelector('.fetch_spinner') && Lobby_footer.querySelector('.fetch_spinner').remove();
 
     // Initialize players
     initializePlayers(OnlineGameDataArray);

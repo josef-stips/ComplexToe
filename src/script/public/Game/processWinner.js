@@ -1232,10 +1232,10 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
     let XP_multiplicator;
 
     if (player2_won) {
-        XP_multiplicator = PlayerXP[1] != null && PlayerXP[1] / PlayerXP[2];
+        XP_multiplicator = PlayerXP[1] != null ? (PlayerXP[1] / PlayerXP[2]) : 1;
 
     } else if (Player1_won) {
-        XP_multiplicator = PlayerXP[1] != null && PlayerXP[2] / PlayerXP[1];
+        XP_multiplicator = PlayerXP[1] != null ? (PlayerXP[2] / PlayerXP[1]) : 1;
     };
 
     setNew_SkillPoints(Math.floor(10 * XP_multiplicator));

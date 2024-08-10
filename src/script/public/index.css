@@ -987,7 +987,7 @@ p#name-player1 {
 }
 
 .ELO_ani {
-    font-size: 37px;
+    transform: scale(1.1);
     transition: all 0.15s ease-out;
 }
 
@@ -2919,7 +2919,7 @@ label h3 {
 
 #onlineGame_closeBtn {
     margin: 0.5em 0.5em 0 0;
-    font-size: 23px;
+    font-size: 3vh;
     cursor: pointer;
     transition: color 0.1s ease-out;
     color: white;
@@ -3231,6 +3231,7 @@ label h3 {
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+    position: relative;
 }
 
 .Lobby_startGame_btn {
@@ -3366,6 +3367,20 @@ label h3 {
     position: absolute;
     bottom: 14vh;
     left: 5%;
+}
+
+.LobbyUserFooterInfoRndPlayer {
+    display: none;
+    font-size: 2vw;
+    font-weight: 500;
+    margin: 0 1vw 0 0;
+}
+
+.Lobby_RndPlayer_Lobby_display {
+    display: none;
+    font-size: 2vw;
+    font-weight: 500;
+    padding: 0.1em 0.2em 0.1em 1.75em;
 }
 
 
@@ -11902,6 +11917,10 @@ ul.default_sb_list.best_players_list div:first-child {
 .fetch_spinner[in_use="false"] {
     transform: translate(-50%, -50%);
     opacity: 0;
+}
+
+.fetch_spinner[in_use_in_lobby="true"] {
+    inset: 35% 0 0 90%;
 }
 
 

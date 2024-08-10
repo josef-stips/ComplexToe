@@ -799,6 +799,9 @@ const iconsWrapper = document.querySelector('.iconsWrapper');
 const chooseModePopUp_qust_btn = document.querySelector('.chooseModePopUp_qust_btn');
 const BotModeBtn = document.querySelector('.BotModeBtn');
 const createPattern_ValueInput = document.querySelector('.createPattern_ValueInput');
+const LobbyUserFooterInfoRndPlayer = document.querySelector('.LobbyUserFooterInfoRndPlayer');
+const Lobby_RndPlayer_Lobby_display = document.querySelector('.Lobby_RndPlayer_Lobby_display');
+const Lobby_footer = document.querySelector('.Lobby_footer');
 
 const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
 const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');

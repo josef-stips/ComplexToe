@@ -134,6 +134,12 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
         Player1_IconInput.value = localStorage.getItem('UserIcon');
     };
 
+    if (random_player_mode) {
+        GameModeListItem_BlockerCombat.style.display = 'none';
+    } else {
+        GameModeListItem_BlockerCombat.style.display = 'flex';
+    };
+
     // console.log(curr_field_ele);
 
     // User shouldn't play 40x40 field with 5 second player clock
@@ -268,6 +274,12 @@ const UserClicksOfflineModeCard = (target) => {
 
         SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
     };
+
+    if (random_player_mode) {
+        GameModeListItem_BlockerCombat.style.display = 'none';
+    } else {
+        GameModeListItem_BlockerCombat.style.display = 'flex';
+    };
 };
 
 // When the user unlocks a specific field, the click event for this field needs to be unlocked
@@ -321,6 +333,12 @@ function Click_single_NxN(e) {
     if (localStorage.getItem('UserName')) {
         Player1_NameInput.value = localStorage.getItem('UserName');
         Player1_IconInput.value = localStorage.getItem('UserIcon');
+    };
+
+    if (random_player_mode) {
+        GameModeListItem_BlockerCombat.style.display = 'none';
+    } else {
+        GameModeListItem_BlockerCombat.style.display = 'flex';
     };
 };
 
@@ -430,12 +448,24 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             level_id = NewCreativeLevel.selectedLevel[11];
         };
 
+        // console.log(costumCoords[0], costumCoords);
+
+        if (costumX != undefined && !isNaN(costumX)) {
+            // set user costum level coordinates
+            xCell_Amount = costumX;
+            yCell_Amount = costumY;
+
+        } else {
+            xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+            yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
+        };
+
         console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon, curr_music_name);
 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
             localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
-            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id
+            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id, random_player_mode, [xCell_Amount, yCell_Amount] /* x_and_y column */
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
@@ -448,6 +478,20 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
 
             Lobby_startGame_btn.style.display = 'block';
             LobbyUserFooterInfo.style.display = 'none';
+
+            if (random_player_mode) {
+                Lobby_GameCode_display.style.display = 'none';
+                Lobby_startGame_btn.style.display = 'none';
+                LobbyUserFooterInfoRndPlayer.style.display = 'flex';
+                Lobby_RndPlayer_Lobby_display.style.display = 'flex';
+                random_player_handler.create_lobby();
+
+            } else {
+                Lobby_GameCode_display.style.display = 'block';
+                Lobby_startGame_btn.style.display = 'block';
+                LobbyUserFooterInfoRndPlayer.style.display = 'none';
+                Lobby_RndPlayer_Lobby_display.style.display = 'none';
+            };
         });
 
         // general stuff
@@ -796,7 +840,7 @@ const SetGameData_CheckConfirm = () => {
     return [Check1, Check2, Clock, InnerGameMode];
 };
 
-// open set up game data pop up with online game code
+// open set up game data pop up
 function setUpOnlineGame(from) {
     if (from == 'create') {
         // other
@@ -837,6 +881,12 @@ function setUpOnlineGame(from) {
             SkinInputDisplay.style.display = 'block';
 
             SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
+        };
+
+        if (random_player_mode) {
+            GameModeListItem_BlockerCombat.style.display = 'none';
+        } else {
+            GameModeListItem_BlockerCombat.style.display = 'flex';
         };
 
     } else if (from == 'enter') {
@@ -1083,11 +1133,4 @@ socket.on("Updated_AllowedPatterns", patternsArray => {
             };
         });
     });
-});
-
-// random game opponent button
-SearchRandomOpponent_btn.addEventListener("click", () => {
-    play_btn4_sound();
-    AlertText.textContent = "this feature is availible soon";
-    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
 });

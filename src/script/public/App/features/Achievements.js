@@ -20,7 +20,7 @@ class Achievements {
             "The creator", // 15
             "Mysterious paper", // 16
 
-            "The player", // 17
+            /*"The player", // 17
             "The embracer", // 18
             "The supporter", // 19
             "The enjoyer", // 20
@@ -28,7 +28,7 @@ class Achievements {
             "The creative", // 22
             "The builder", // 23
             "Never Give Up?", // 24
-            "Criminal or just social?", // 25
+            "Criminal or just social?", // 25*/
         ];
 
         this.taskList = [
@@ -50,7 +50,7 @@ class Achievements {
             "Publish a level for the first time", // 15
             "Collect 10 encrypted writings", // 16
 
-            "Complete 10 user created level", // 17
+            /*"Complete 10 user created level", // 17
             "Complete 50 user created level", // 18
             "Give 20 levels a rating", // 19
             "Play against 10 random player", // 20
@@ -58,7 +58,7 @@ class Achievements {
             "Create 5 costum patterns", // 22
             "Create 5 costum fields", // 23
             "Loose 100 times", // 24
-            "Get a clan member", // 25
+            "Get a clan member", // 25*/
         ];
 
         this.reward_amount = {

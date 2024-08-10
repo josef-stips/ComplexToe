@@ -124,6 +124,19 @@ const InitStyleForUserEntersLobby = (message) => {
 
     SetPlayerNames_AdditionalSettings.style.display = "none";
     allow_players_watch_el.style.display = "none";
+
+    if (random_player_mode) {
+        LobbyUserFooterInfo.style.display = 'none';
+        Lobby_GameCode_display.style.display = 'none';
+        LobbyUserFooterInfoRndPlayer.style.display = 'none';
+        Lobby_RndPlayer_Lobby_display.style.display = 'flex';
+
+    } else {
+        LobbyUserFooterInfo.style.display = 'block';
+        Lobby_GameCode_display.style.display = 'flex';
+        LobbyUserFooterInfoRndPlayer.style.display = 'none';
+        Lobby_RndPlayer_Lobby_display.style.display = 'none';
+    };
 };
 
 // Init and display all game info for user enters the lobby
@@ -182,77 +195,80 @@ function EnterCodeName() {
     if (EnterGameCode_Input.value != null && EnterGameCode_Input.value != '' && EnterGameCode_Input.value != undefined) {
         // server stuff
         // console.log(EnterGameCode_Input.value.trim());
-
-        socket.emit('TRY_enter_room', EnterGameCode_Input.value.trim(), message => {
-
-            // Handle callback message
-            if (message[0] == 'room exists') { // room exists
-                personal_GameData.EnterOnlineGame = true;
-                personal_GameData.currGameID = message[1]; // the game id
-
-                // if he joined as blocker, his role is blocker, otherwise his role is user
-                // console.log(message[5]);
-
-                if (message[5] == "thirdplayer") {
-                    // set role
-                    personal_GameData.role = 'blocker'
-                    Player1_IconInput.style.display = "none";
-                    document.querySelector(`[for="Player1_IconInput"]`).style.display = "none";
-
-                    // display third player wrapper 
-                    Lobby_ThirdPlayer_Wrapper.style.display = "flex";
-
-                } else {
-                    // set role
-                    personal_GameData.role = 'user';
-                    Lobby_ThirdPlayer_Wrapper.style.display = "none";
-                    Lobby_FirstPlayer_Wrapper.style.margin = "0";
-                };
-
-                // Initialize lobby display
-                // GameID, FieldSize, PlayerTimer, InnerGameMode
-                InitStyleForUserEntersLobby(message);
-
-                // so the user sees all the current game info the admin (first player) setted
-                InitGameInfoForUserEntersLobby();
-
-                // Aftet this the user only needs to set his user data (name, icon) and clicks confirm
-                // So the next socket connection is at SetPlayerName_ConfirmButton in "script.js" with the "CONFIRM_enter_room" emit
-
-            } else if (message[0] == 'no room found') { // no room found
-                OnlineGameLobby_alertText.style.display = 'block';
-                OnlineGameLobby_alertText.textContent = 'No room found!';
-
-            } else if (message[0] == `You can't join`) { // room is full
-                OnlineGameLobby_alertText.style.display = 'block';
-                OnlineGameLobby_alertText.textContent = `You can't join this room.`;
-            };
-        });
-
-        // for better user experience 
-        Player1_NameInput.value = null;
-        Player1_IconInput.value = null;
-
-        // default data
-        Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
-
-        if (localStorage.getItem('UserName')) {
-            Player1_NameInput.value = localStorage.getItem('UserName');
-            Player1_IconInput.value = localStorage.getItem('UserIcon');
-        };
-
-        if (localStorage.getItem('userInfoClass') != "empty") {
-            Player1_IconInput.style.display = 'none';
-            SkinInputDisplay.style.display = 'block';
-
-            SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
-
-        } else { // player uses normal skin just with a color
-            Player1_IconInput.style.display = 'block';
-        };
+        try_to_join_lobby(EnterGameCode_Input.value.trim());
 
     } else {
         return;
+    };
+};
+
+function try_to_join_lobby(room_id) {
+    socket.emit('TRY_enter_room', room_id, message => {
+
+        // Handle callback message
+        if (message[0] == 'room exists') { // room exists
+            personal_GameData.EnterOnlineGame = true;
+            personal_GameData.currGameID = message[1]; // the game id
+
+            // if he joined as blocker, his role is blocker, otherwise his role is user
+            // console.log(message[5]);
+
+            if (message[5] == "thirdplayer") {
+                // set role
+                personal_GameData.role = 'blocker'
+                Player1_IconInput.style.display = "none";
+                document.querySelector(`[for="Player1_IconInput"]`).style.display = "none";
+
+                // display third player wrapper 
+                Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+
+            } else {
+                // set role
+                personal_GameData.role = 'user';
+                Lobby_ThirdPlayer_Wrapper.style.display = "none";
+                Lobby_FirstPlayer_Wrapper.style.margin = "0";
+            };
+
+            // Initialize lobby display
+            // GameID, FieldSize, PlayerTimer, InnerGameMode
+            InitStyleForUserEntersLobby(message);
+
+            // so the user sees all the current game info the admin (first player) setted
+            InitGameInfoForUserEntersLobby();
+
+            // Aftet this the user only needs to set his user data (name, icon) and clicks confirm
+            // So the next socket connection is at SetPlayerName_ConfirmButton in "script.js" with the "CONFIRM_enter_room" emit
+
+        } else if (message[0] == 'no room found') { // no room found
+            OnlineGameLobby_alertText.style.display = 'block';
+            OnlineGameLobby_alertText.textContent = 'No room found!';
+
+        } else if (message[0] == `You can't join`) { // room is full
+            OnlineGameLobby_alertText.style.display = 'block';
+            OnlineGameLobby_alertText.textContent = `You can't join this room.`;
+        };
+    });
+
+    // for better user experience 
+    Player1_NameInput.value = null;
+    Player1_IconInput.value = null;
+
+    // default data
+    Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
+
+    if (localStorage.getItem('UserName')) {
+        Player1_NameInput.value = localStorage.getItem('UserName');
+        Player1_IconInput.value = localStorage.getItem('UserIcon');
+    };
+
+    if (localStorage.getItem('userInfoClass') != "empty") {
+        Player1_IconInput.style.display = 'none';
+        SkinInputDisplay.style.display = 'block';
+
+        SkinInputDisplaySkin.className = 'fa-solid fa-' + localStorage.getItem('current_used_skin');
+
+    } else { // player uses normal skin just with a color
+        Player1_IconInput.style.display = 'block';
     };
 };
 
@@ -279,7 +295,11 @@ Lobby_closeBtn.addEventListener('click', () => {
         personal_GameData.role = 'user';
         personal_GameData.currGameID = null;
         personal_GameData.EnterOnlineGame = false;
+
+        random_player_mode = false;
     });
+
+    random_player_mode = false;
 
     // remove "inGame" status from player
     socket.emit("removePlayerInRoomStatus", localStorage.getItem("PlayerID"));
@@ -311,6 +331,8 @@ const CloseSetGameDataPopUp = () => {
             personal_GameData.role = 'user';
             personal_GameData.currGameID = null;
             personal_GameData.EnterOnlineGame = false;
+
+            random_player_mode = false;
         });
     };
 };
@@ -332,7 +354,7 @@ Lobby_startGame_btn.addEventListener('click', () => {
     try {
         // First, send an emit to the server to inform it about it
         // The server sends a message to all clients in the lobby 
-        socket.emit('request_StartGame', [personal_GameData.currGameID, xyAmount, curr_field_ele, allowedPatternsFromUser]);
+        socket.emit('request_StartGame', [personal_GameData.currGameID, xCell_Amount, yCell_Amount]);
 
     } catch (error) {
         AlertText.textContent = "Uhm... Something went wrong.";
@@ -433,6 +455,8 @@ const UserLeftGameInOnlineMode = (from_cont_btn) => {
     socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, from_cont_btn, message => {
         ChangeGameBG(undefined, undefined, null, true);
 
+        random_player_mode = false;
+
         // only if the user that left is not the admin
         if (personal_GameData.role == 'user' || personal_GameData.role == "blocker") {
             // Do things after room was killed
@@ -442,6 +466,10 @@ const UserLeftGameInOnlineMode = (from_cont_btn) => {
             personal_GameData.EnterOnlineGame = false;
 
             PlayingInCreatedLevel_AsGuest = false;
+        };
+
+        if (getComputedStyle(gameModeFields_Div).display != 'none') {
+            sceneMode.full();
         };
 
         // remove "inGame" status from player
@@ -1053,6 +1081,9 @@ socket.on('killed_room', () => {
         sceneMode.full();
         AlertText.textContent = "Admin killed the lobby.";
         DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+
+        close_all_scenes();
+        gameModeFields_Div.style.display = 'flex'
     };
 
     // server
@@ -1112,6 +1143,16 @@ socket.on('killed_game', (from_continue_btn) => {
     lobbyFooterText.style.display = 'flex';
 
     PlayingInCreatedLevel_AsGuest = false;
+
+    if (random_player_mode) {
+
+        if (personal_GameData.role == 'admin') {
+            Lobby_startGame_btn.style.display = 'block';
+
+        } else if (personal_GameData.role == 'user') {
+            LobbyUserFooterInfo.style.display = 'flex';
+        };
+    };
 
     // play music
     PauseMusic();
@@ -1193,6 +1234,13 @@ socket.on('SecondPlayer_Joined', message => {
         Lobby_FirstPlayer_Wrapper.style.margin = "0 0 2vh 0";
         // Display third player with his data
         DisplayXPlayer(3, message[5]);
+    };
+
+    if (random_player_mode) {
+        LobbyUserFooterInfoRndPlayer.style.display = "none";
+        Lobby_footer.append(fetch_spinner);
+        fetch_spinner.setAttribute('in_use', 'true');
+        fetch_spinner.setAttribute('in_use_in_lobby', 'true');
     };
 });
 
@@ -1298,6 +1346,7 @@ socket.on('INFORM_user_left_game', () => {
             sceneMode.full();
 
         } else {
+            sceneMode.full();
             gameModeFields_Div.style.display = 'flex';
         };
 
@@ -1317,6 +1366,10 @@ socket.on('INFORM_user_left_game', () => {
         lobbyFooterText.style.display = 'flex';
 
         PlayingInCreatedLevel_AsGuest = false;
+
+        if (getComputedStyle(gameModeFields_Div).display != 'none') {
+            sceneMode.full();
+        };
 
         // play music
         PauseMusic();
@@ -1641,6 +1694,9 @@ socket.on('ChangeGameData', (display, SpecificData, Selection) => {
             };
 
             curr_field_ele = DataFields[SpecificData];
+
+            xCell_Amount = parseInt(SpecificData.split('x')[0]);
+            yCell_Amount = parseInt(SpecificData.split('x')[1]);
 
             fieldIndex = curr_field_ele.getAttribute('index');
             fieldTitle = curr_field_ele.getAttribute('title');
