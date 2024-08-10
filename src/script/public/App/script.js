@@ -1098,6 +1098,12 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', async() => {
 
     JoinGame_btn.style.display = "flex";
     SearchRandomOpponent_btn.style.display = "flex";
+    WatchGame_btn.style.display = "flex";
+    UserCreated_btn.style.display = "flex";
+
+    firstTierModes.style.display = "flex";
+    secondTierModes.style.display = "none";
+    TrainingArenaFields.style.display = 'none';
 
     officical_cards_handler.open();
 
@@ -1124,9 +1130,24 @@ gameMode_OneVsOne_card.addEventListener('click', async() => {
 
     JoinGame_btn.style.display = "none";
     SearchRandomOpponent_btn.style.display = "none";
+    WatchGame_btn.style.display = "none";
+    UserCreated_btn.style.display = "none";
+    TrainingArenaFields.style.display = 'flex';
+
+    firstTierModes.style.display = "none";
+    secondTierModes.style.display = "none";
 
     await sleep(300);
     sceneMode.full();
+});
+
+let training_arena;
+
+TrainingArenaDifficultyModeCards.forEach(card => {
+    card.addEventListener('click', () => {
+        training_arena = new TrainingArena(card.getAttribute('mode'));
+        training_arena.generate_patterns();
+    });
 });
 
 // field-cards click event

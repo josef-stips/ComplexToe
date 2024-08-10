@@ -25,6 +25,7 @@
     /* for dynamic gradients f.e on hover */
     --gradient-first-color: white;
     --gradient-second-color: red;
+    --shiny-card: 31vw;
 }
 
 .dark-mode {
@@ -1469,6 +1470,111 @@ ol.UserInfo-list img {
     transform: scale(0.9);
 }
 
+.TrainingArenaFields {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+}
+
+.TrainingArenaDifficultyModeCard {
+    width: 30%;
+    height: 70%;
+    border-radius: 4vh;
+    border: 0.7vh solid white;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out;
+    background: repeating-linear-gradient(45deg, var(--bg-app-color), var(--bg-app-color2) 31vw);
+    background-size: 200% 200%;
+}
+
+.TrainingArenaDifficultyModeCard:hover {
+    animation: shiny-card-ani 0.3s linear forwards;
+    transform: scale(1.05);
+}
+
+.TrainingArenaDifficultyModeCard {
+    transition: transform 0.15s ease-in-out, background-size 0.3s linear;
+}
+
+.TrainingArenaDifficultyModeCard:hover {
+    background-size: 190% 190%;
+    transform: scale(1.05);
+}
+
+.TrainingArenaDifficultyModeCard:hover {
+    animation: shiny-card-ani 0.3s linear forwards;
+}
+
+.TrainingArenaDifficultyModeCard:not(:hover) {
+    animation: shiny-card-reverse-ani 0.3s linear forwards;
+}
+
+@keyframes shiny-card-ani {
+    from {
+        background-size: 200% 200%;
+    }
+    to {
+        background-size: 190% 190%;
+    }
+}
+
+@keyframes shiny-card-reverse-ani {
+    from {
+        background-size: 190% 190%;
+    }
+    to {
+        background-size: 200% 200%;
+    }
+}
+
+.TA_DifficultyModeCard_header {
+    width: 100%;
+    height: 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.TA_DifficultyModeCard_main {
+    width: 100%;
+    height: 77.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.TA_DifficultyModeCard_main img {
+    height: 20vw;
+    width: 20vw;
+}
+
+.TA_DifficultyModeCard_footer {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vw;
+    font-weight: 600;
+}
+
+.TrainingArenaDifficultyModeCard[mode="normal"] .TA_DifficultyModeCard_footer {
+    color: #1a9b1a;
+}
+
+.TrainingArenaDifficultyModeCard[mode="medium"] .TA_DifficultyModeCard_footer {
+    color: #cbb127;
+}
+
+.TrainingArenaDifficultyModeCard[mode="hard"] .TA_DifficultyModeCard_footer {
+    color: #c91313;
+}
+
 .secondTierModesCaret {
     position: absolute;
     top: 0;
@@ -1884,6 +1990,71 @@ ol.UserInfo-list img {
 }
 
 
+/* training arena patterns pop up */
+
+.TrainingArena_Patterns_popUp {
+    width: 90vw;
+    height: 90vh;
+    border: 0.6vh solid var(--line-color);
+    background-color: var(--bg-app-color);
+    border-radius: 5vh;
+    z-index: 1000;
+    position: absolute;
+    margin: auto;
+    inset: 0;
+    flex-direction: column;
+    display: none;
+    color: var(--font-color);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    font-size: 3vh;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.TA_patterns_header {
+    width: 97.5%;
+    height: 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.TA_patterns_main {
+    position: relative;
+    width: 97.5%;
+    height: 92.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+.TA_patterns_wrapper {
+    width: 100%;
+    height: 80%;
+    overflow: hidden scroll;
+    display: grid;
+    grid-template-columns: repeat(5, max-content);
+    column-gap: 1.5vw;
+    align-items: center;
+    justify-content: center;
+}
+
+.TA_patterns_wrapper>div {
+    width: min-content;
+    width: -webkit-fill-available;
+}
+
+.TA_patterns_btn {
+    background: var(--bg-app-color3);
+    padding: 1vw 3vw;
+    border-radius: 4vh;
+    border: 0.4vh solid white;
+    margin: 1vw;
+}
+
+
 /* FOOTER */
 
 .lobby-footer {
@@ -2083,8 +2254,6 @@ li.officialWinPatternsOpenBtn {
     align-items: start;
     gap: 1.5vh;
 }
-
-#bgMusic_slider {}
 
 #bgMusic_slider::-webkit-slider-thumb {
     cursor: pointer;
@@ -2340,8 +2509,6 @@ li.officialWinPatternsOpenBtn {
     overflow: scroll;
 }
 
-.SetPlayerNamesMain-wrapper label {}
-
 .SetAllowedPatternsWrapper {
     padding: 1vh 0 0 1vw;
     margin: 10px 0 0 0;
@@ -2566,8 +2733,6 @@ li.officialWinPatternsOpenBtn {
     margin: 0.1em 0 0.1em 15.5em;
     display: none;
 }
-
-.UserSetPointsToWinGameInput {}
 
 
 /* for online game. default display: none */
@@ -8360,14 +8525,14 @@ p.createCostumField_yInput {
 }
 
 .preview_cell {
-    width: auto !important;
+    /* width: auto !important; */
     /* height: auto !important; */
 }
 
 .small_createCostumField_Field {
     display: grid;
     width: 100%;
-    /* height: 100%; */
+    height: 100%;
 }
 
 .preview_pattern_title {
@@ -12408,7 +12573,8 @@ ul.default_sb_list.best_players_list div:first-child {
 }
 
 .BotMode_patternSelectionWrapper>div {
-    height: 100% !important;
+    /* height: 100% !important; */
+    width: -webkit-fill-available;
 }
 
 .BotMode_mainHead {

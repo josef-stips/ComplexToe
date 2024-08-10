@@ -106,6 +106,7 @@
     <script defer src="App/GameLog.js"></script>
     <script defer src="Game/CreateGameLibrary/BotMode.js"></script>
     <script defer src="Game/RandomPlayer.js"></script>
+    <script defer src="Game/OfflineArena/BotArena.js"></script>
 
     <script src="./narratGameLoop.js"></script>
 </head>
@@ -763,6 +764,51 @@
                 </div>
 
                 <div class="GameMode-fields-area">
+
+                    <div class="TrainingArenaFields">
+                        <div class="TrainingArenaDifficultyModeCard" mode="normal">
+                            <div class="TA_DifficultyModeCard_header">
+
+                            </div>
+
+                            <div class="TA_DifficultyModeCard_main">
+                                <img src="assets/game/coliseum-green.svg">
+                            </div>
+
+                            <div class="TA_DifficultyModeCard_footer">
+                                normal
+                            </div>
+                        </div>
+
+                        <div class="TrainingArenaDifficultyModeCard" mode="medium">
+                            <div class="TA_DifficultyModeCard_header">
+
+                            </div>
+
+                            <div class="TA_DifficultyModeCard_main">
+                                <img src="assets/game/coliseum-y.svg">
+                            </div>
+
+                            <div class="TA_DifficultyModeCard_footer">
+                                medium
+                            </div>
+                        </div>
+
+                        <div class="TrainingArenaDifficultyModeCard" mode="hard">
+                            <div class="TA_DifficultyModeCard_header">
+
+                            </div>
+
+                            <div class="TA_DifficultyModeCard_main">
+                                <img src="assets/game/coliseum-red.svg">
+                            </div>
+
+                            <div class="TA_DifficultyModeCard_footer">
+                                hard
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="first-tier-modes">
 
                         <i class="fa-solid fa-caret-right scale_btn firstTierModesCaret"></i>
@@ -8688,6 +8734,23 @@
                 <div style="padding: 1vh 3vw;" class="CreateLevelSceneButton scale_btn BotMode_OK_btn">OK</div>
             </div>
 
+        </div>
+    </div>
+
+    <div class="TrainingArena_Patterns_popUp">
+        <div class="TA_patterns_header">
+            <i class="fa-solid fa-question TA_patterns_qust_btn cursor_btn"></i>
+            <i class="fa-solid fa-x TA_patterns_closeBtn cursor_btn"></i>
+        </div>
+
+        <div class="TA_patterns_main">
+            <div class="TA_patterns_wrapper">
+
+            </div>
+
+            <div class="TA_patterns_btn scale_btn">
+                OK
+            </div>
         </div>
     </div>
 

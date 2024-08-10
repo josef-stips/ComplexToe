@@ -802,6 +802,13 @@ const createPattern_ValueInput = document.querySelector('.createPattern_ValueInp
 const LobbyUserFooterInfoRndPlayer = document.querySelector('.LobbyUserFooterInfoRndPlayer');
 const Lobby_RndPlayer_Lobby_display = document.querySelector('.Lobby_RndPlayer_Lobby_display');
 const Lobby_footer = document.querySelector('.Lobby_footer');
+const TrainingArenaFields = document.querySelector('.TrainingArenaFields');
+const TrainingArenaDifficultyModeCards = document.querySelectorAll('.TrainingArenaDifficultyModeCard')
+const TrainingArena_Patterns_popUp = document.querySelector('.TrainingArena_Patterns_popUp');
+const TA_patterns_wrapper = document.querySelector('.TA_patterns_wrapper');
+const TA_patterns_btn = document.querySelector('.TA_patterns_btn');
+const TA_patterns_closeBtn = document.querySelector('.TA_patterns_closeBtn');
+const TA_patterns_qust_btn = document.querySelector('.TA_patterns_qust_btn');
 
 const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
 const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');
