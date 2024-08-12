@@ -622,6 +622,8 @@ const editCostumField = (field_check, name, x, y) => {
 
 // toggle wether costum pattern should be used as pattern in new create level from user
 const toggleCustomPatternInNewLevel = (box, structure, name, value) => {
+    if (!NewCreativeLevel) return;
+
     // box logic
     if (box.getAttribute("activated") == "true") {
         box.setAttribute("activated", "false");

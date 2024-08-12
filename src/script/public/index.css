@@ -1487,8 +1487,13 @@ ol.UserInfo-list img {
     border: 0.7vh solid white;
     cursor: pointer;
     transition: transform 0.15s ease-in-out;
-    background: repeating-linear-gradient(45deg, var(--bg-app-color), var(--bg-app-color2) 31vw);
+    background: repeating-linear-gradient(45deg, var(--bg-app-color), var(--bg-app-color2) 51vw);
     background-size: 200% 200%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10vh 0 0 0;
 }
 
 .TrainingArenaDifficultyModeCard:hover {
@@ -1506,11 +1511,11 @@ ol.UserInfo-list img {
 }
 
 .TrainingArenaDifficultyModeCard:hover {
-    animation: shiny-card-ani 0.3s linear forwards;
+    animation: shiny-card-ani 0.2s linear forwards;
 }
 
 .TrainingArenaDifficultyModeCard:not(:hover) {
-    animation: shiny-card-reverse-ani 0.3s linear forwards;
+    animation: shiny-card-reverse-ani 0.2s linear forwards;
 }
 
 @keyframes shiny-card-ani {
@@ -1518,13 +1523,13 @@ ol.UserInfo-list img {
         background-size: 200% 200%;
     }
     to {
-        background-size: 190% 190%;
+        background-size: 210% 210%;
     }
 }
 
 @keyframes shiny-card-reverse-ani {
     from {
-        background-size: 190% 190%;
+        background-size: 210% 210%;
     }
     to {
         background-size: 200% 200%;
@@ -1532,12 +1537,22 @@ ol.UserInfo-list img {
 }
 
 .TA_DifficultyModeCard_header {
-    width: 100%;
-    height: 7.5%;
+    width: 9vw;
+    height: 5vw;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: row;
+    border: 0.7vh solid white;
+    border-top: none;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+}
+
+.TA_DifficultyModeCard_header img {
+    width: 5vw;
+    height: 5vw;
+    transform: scale(0.9) rotate(136deg);
 }
 
 .TA_DifficultyModeCard_main {
@@ -1573,6 +1588,41 @@ ol.UserInfo-list img {
 
 .TrainingArenaDifficultyModeCard[mode="hard"] .TA_DifficultyModeCard_footer {
     color: #c91313;
+}
+
+.TrainingArenaDifficultyModeCard[mode="normal"] {
+    border-color: #1a9b1a;
+}
+
+.TrainingArenaDifficultyModeCard[mode="medium"] {
+    border-color: #cbb127;
+}
+
+.TrainingArenaDifficultyModeCard[mode="hard"] {
+    border-color: #c91313;
+}
+
+.TrainingArenaDifficultyModeCard[mode="normal"] .TA_DifficultyModeCard_header {
+    border-color: #1a9b1a;
+}
+
+.TrainingArenaDifficultyModeCard[mode="medium"] .TA_DifficultyModeCard_header {
+    border-color: #cbb127;
+}
+
+.TrainingArenaDifficultyModeCard[mode="hard"] .TA_DifficultyModeCard_header {
+    border-color: #c91313;
+}
+
+.TA_title {
+    position: absolute;
+    inset: 0;
+    bottom: 65vh;
+    margin: auto;
+    font-size: 3vw;
+    font-weight: 500;
+    width: max-content;
+    height: max-content;
 }
 
 .secondTierModesCaret {
@@ -2875,7 +2925,7 @@ label h3 {
 }
 
 .GameInfo-AllowedPatterns {
-    width: auto;
+    width: 90%;
     height: 100%;
     font-size: 3vh;
 }
@@ -2931,6 +2981,7 @@ label h3 {
     font-size: 3vh;
     padding: 1vh 0 2vh 0;
     border-bottom: 0.4vh solid var(--font-color);
+    border-radius: 6%;
 }
 
 
@@ -8917,6 +8968,15 @@ p.createCostumField_yInput {
     overflow-y: auto;
 }
 
+.WinPatternsOverviewWrapper>div {
+    align-items: center;
+    justify-content: center;
+}
+
+.WinPatternsOverviewWrapper>div>div.small_createCostumField_Field {
+    width: min-content;
+}
+
 .officialWinPatternsOpenBtn {
     padding: 10px;
     background: var(--bg-app-color2);
@@ -10711,8 +10771,8 @@ p.createCostumField_yInput {
     align-items: flex-start;
     justify-content: center;
     grid-template-columns: repeat(auto-fill, 25vh);
-    column-gap: 2em;
-    row-gap: 2em;
+    column-gap: 2vw;
+    row-gap: 1vh;
     overflow-y: auto;
     justify-content: center;
 }
@@ -12429,8 +12489,10 @@ ul.default_sb_list.best_players_list div:first-child {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     gap: 4vw;
     position: absolute;
+    text-wrap: nowrap;
 }
 
 .GameStartAnimationPlayerBar[player_x_bar="1"] {
@@ -12448,6 +12510,7 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .GameStartAnimationPlayerBar[player_x_bar="1"]>div {
     bottom: 40%;
+    left: 25%;
 }
 
 .GameStartAnimationPlayerBar[player_x_bar="1"]>img {
@@ -12475,6 +12538,7 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .GameStartAnimationPlayerBar[player_x_bar="2"]>div {
     top: 50%;
+    right: 10%;
 }
 
 .GameStartAnimationPlayerBar[player_x_bar="2"]>img {
@@ -12582,6 +12646,12 @@ ul.default_sb_list.best_players_list div:first-child {
     margin: 1vw;
     gap: 1vw;
     align-items: center;
+}
+
+.TrainingArenaDifficutlyModeGameDisplay {
+    display: flex;
+    position: absolute;
+    bottom: 10vh;
 }
 
 

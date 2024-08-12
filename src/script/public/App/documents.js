@@ -756,7 +756,10 @@ let curr_selected_online_game_el = document.querySelector('.curr_selected_online
 let watching_count_el = document.querySelector('.watching_count_el');
 let allow_players_watch_el = document.querySelector('.allow_players_watch_el');
 let YouWatchGameEl = document.querySelector('.YouWatchGameEl');
+let SetPlayerNamesClockInput = document.querySelector('.SetPlayerNames-ClockInput');
 
+const TrainingArenaDifficutlyModeGameDisplay = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay');
+const TrainingArenaDifficutlyModeGameDisplayText = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay>p');
 const clan_info_pen = document.querySelector(".clan_info_pen");
 const clan_action_reason_pop_up = document.querySelector('.clan_action_reason_pop_up');
 const clan_reason_header = document.querySelector('.clan_reason_header');
@@ -809,6 +812,7 @@ const TA_patterns_wrapper = document.querySelector('.TA_patterns_wrapper');
 const TA_patterns_btn = document.querySelector('.TA_patterns_btn');
 const TA_patterns_closeBtn = document.querySelector('.TA_patterns_closeBtn');
 const TA_patterns_qust_btn = document.querySelector('.TA_patterns_qust_btn');
+const HelpTA_btn = document.querySelector('.HelpTA_btn');
 
 const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
 const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');

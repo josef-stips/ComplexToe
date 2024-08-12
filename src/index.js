@@ -1,16 +1,19 @@
 const { app, BrowserWindow, ipcMain, Menu, webContents } = require('electron');
 const path = require('path');
 
-const steamworks = require("steamworks.js")
-const client = steamworks.init(2940750);
+let steam = false;
+if (steam) {
+    const steamworks = require("steamworks.js")
+    const client = steamworks.init(2940750);
 
-console.log("steamworks, ", steamworks)
-console.log("client", client)
-console.log(client.getName())
+    console.log("steamworks, ", steamworks)
+    console.log("client", client)
+    console.log(client.getName())
 
-app.commandLine.appendSwitch("in-process-gpu")
-app.commandLine.appendSwitch("disable-direct-composition")
-app.allowRendererProcessReuse = false
+    app.commandLine.appendSwitch("in-process-gpu")
+    app.commandLine.appendSwitch("disable-direct-composition")
+    app.allowRendererProcessReuse = false
+};
 
 let mainWindow;
 const createWindow = () => {

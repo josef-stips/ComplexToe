@@ -156,6 +156,8 @@ let global_creative_level_data = null;
 
 let globalLevelID = null;
 
+let arena_mode = false;
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -207,6 +209,8 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     };
 
     max_amount_of_moves = maxAmoOfMoves;
+
+    PatternGridWrapperForCostumPatterns.textContent = null;
 
     // console.log(allGameData);
 
@@ -364,7 +368,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // In the online game mode the curr_innerGameMode gets its right value in serverHandler.js
     GameData.InnerGameMode = curr_innerGameMode;
 
-    if (curr_mode != GameMode[1].opponent && !inAdvantureMode) { // If not in KI Mode and not in advanture mode
+    if (!inAdvantureMode) { // If not in KI Mode and not in advanture mode
         // Inner game Mode
         if (GameData.InnerGameMode == InnerGameModes[1]) { // Boneyard
             Start_Blocker(onlineGame);
@@ -459,6 +463,8 @@ function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy) {
     xCell_Amount = 5;
     yCell_Amount = 5;
     CalculateBoundaries();
+
+    all_patterns_in_game = {};
 
     let [pattern_structures, pattern_names, pattern_values] = BindPatternsWithCostumPatternsToIndexes(official_patterns, costum_patterns, Fieldx, Fieldy);
 
@@ -686,6 +692,17 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     fetch_spinner.setAttribute('in_use_in_lobby', 'false');
     Lobby_footer.querySelector('.fetch_spinner') && Lobby_footer.querySelector('.fetch_spinner').remove();
 
+    if (arena_mode) {
+        chooseWinnerWindowBtn.style.display = 'none';
+        GiveUp_btn.style.display = 'none';
+        TrainingArenaDifficutlyModeGameDisplay.style.display = 'flex';
+        TrainingArenaDifficutlyModeGameDisplayText.textContent = training_arena.mode.toUpperCase();
+        TrainingArenaDifficutlyModeGameDisplayText.style.color = training_arena.mode_color;
+
+    } else {
+        TrainingArenaDifficutlyModeGameDisplay.style.display = 'none';
+    };
+
     // Initialize players
     initializePlayers(OnlineGameDataArray);
 };
@@ -788,6 +805,10 @@ function initializePlayers(OnlineGameDataArray) {
         // set color of player icon
         namePlayer1.style.color = localStorage.getItem('userInfoColor');
         curr_mode == GameMode[1].opponent ? namePlayer2.style.color = "gold" : namePlayer2.style.color = "white";
+
+        if (arena_mode) {
+            namePlayer2.style.color = "white";
+        };
     };
 
     currentName = PlayerData[1].PlayerName;

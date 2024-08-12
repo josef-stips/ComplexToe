@@ -226,6 +226,7 @@ const UserClicksNxNDefaultSettings = (readonly) => {
         document.querySelector(".SetPlayerNames-InputArea").style.gap = "1.3em";
         UserSetPointsToWinGameInput.style.display = "none";
         SetClockList.style.display = 'none';
+        SetPlayerNamesClockInput.style.display = 'none';
 
     } else if (readonly == undefined) {
         SetAllowedPatternsWrapper.style.display = 'flex';
@@ -239,6 +240,15 @@ const UserClicksNxNDefaultSettings = (readonly) => {
         UserSetPointsToWinGameInput.style.display = "block";
         SetClockList.style.display = 'flex';
         SetPlayerNames_AdditionalSettings.style.display = "flex";
+        SetPlayerNamesClockInput.style.display = 'flex';
+    };
+
+    if (arena_mode) {
+        SetAllowedPatternsWrapper.style.display = 'none';
+        SetPlayerNamesClockInput.style.display = 'none';
+
+    } else {
+        SetAllowedPatternsWrapper.style.display = 'flex';
     };
 };
 
@@ -739,11 +749,16 @@ function SetGameData_BotMode(Check) {
 
         let fieldIndex = curr_field_ele.getAttribute('index');
         curr_mode = GameMode[1].opponent;
-        curr_name1 = MapLevel_NameInput.value;
+        curr_name1 = Player1_NameInput.value;
         curr_name2 = 'The unknown'; // Bot
         curr_form1 = Player1_NameInput.value.toUpperCase();
         curr_form2 = 'Y'; // Bot        
         curr_innerGameMode = Check[3];
+
+        if (arena_mode) {
+            curr_name2 = 'Bob the Bot'; // Bot
+            curr_form2 = 'Y'; // Bot        
+        };
 
         // costum x and y
         let costumX;
@@ -783,6 +798,8 @@ function SetGameData_BotMode(Check) {
         };
 
         console.log(allowedPatternsFromUser);
+
+        allowedPatternsFromUser = [...Object.keys(training_arena.selected_patterns)];
 
         initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
     };

@@ -324,6 +324,8 @@ const CloseSetGameDataPopUp = () => {
     ConfirmName_Btn.style.height = '45%';
     SetPlayerNames_Header.style.height = '21%';
 
+    arena_mode = false;
+
     if (personal_GameData.EnterOnlineGame) {
         socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
             // Do things after room was killed
@@ -412,13 +414,20 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
                         CreateLevelScene.style.display = "flex"
                         sceneMode.full();
 
-                    } else {
+                    } else if (!arena_mode) {
                         if (inPlayerLevelsScene) {
                             online_level_scene.style.display = "flex";
+                            sceneMode.default();
 
                         } else {
                             gameModeFields_Div.style.display = 'flex'
+                            sceneMode.full();
                         };
+                    };
+
+                    if (arena_mode) {
+                        arena_mode = false;
+                        gameMode_OneVsOne_card.click();
                     };
 
                 } else {
@@ -493,7 +502,7 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
     // bug fix
     setTimeout(() => {
         if (inAdvantureMode) {
-            lobbyHeader.style.borderBottom = '3px solid var(--font-color)';
+            lobbyHeader.style.borderBottom = '0.4vh solid var(--font-color)';
         };
 
         // user won a level in advanture mode
@@ -590,6 +599,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode, from_c
 
         } else {
             gameModeFields_Div.style.display = 'flex';
+            sceneMode.full();
         };
 
         GameField.style.display = "none";
@@ -1408,6 +1418,7 @@ socket.on('INFORM_blocker_left_game', () => {
 
         } else {
             gameModeFields_Div.style.display = 'flex';
+            sceneMode.full();
         };
 
         OnlineGame_Lobby.style.display = 'flex';
@@ -1458,6 +1469,7 @@ socket.on('INFORM_admin_left_room', () => {
 
     } else {
         gameModeFields_Div.style.display = 'flex';
+        sceneMode.full();
     };
 
     SetPlayerNamesPopUp.style.display = 'none';

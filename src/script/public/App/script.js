@@ -1100,6 +1100,7 @@ gameMode_TwoPlayerOnline_card.addEventListener('click', async() => {
     SearchRandomOpponent_btn.style.display = "flex";
     WatchGame_btn.style.display = "flex";
     UserCreated_btn.style.display = "flex";
+    HelpTA_btn.style.display = 'none';
 
     firstTierModes.style.display = "flex";
     secondTierModes.style.display = "none";
@@ -1133,6 +1134,7 @@ gameMode_OneVsOne_card.addEventListener('click', async() => {
     WatchGame_btn.style.display = "none";
     UserCreated_btn.style.display = "none";
     TrainingArenaFields.style.display = 'flex';
+    HelpTA_btn.style.display = 'flex';
 
     firstTierModes.style.display = "none";
     secondTierModes.style.display = "none";
@@ -1145,7 +1147,7 @@ let training_arena;
 
 TrainingArenaDifficultyModeCards.forEach(card => {
     card.addEventListener('click', () => {
-        training_arena = new TrainingArena(card.getAttribute('mode'));
+        training_arena = new TrainingArena(card.getAttribute('mode'), card.getAttribute('mode-color'));
         training_arena.generate_patterns();
     });
 });
@@ -1267,7 +1269,7 @@ gameInfo_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'flex';
     DisplayPopUp_PopAnimation(GameInfoPopUp, "flex", true);
 
-    if (!NewCreativeLevel && !inPlayerLevelsScene && !review_mode && !watch_mode) {
+    if (!NewCreativeLevel && !inPlayerLevelsScene && !review_mode && !watch_mode && !arena_mode) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
     } else if (review_mode) {
@@ -1282,6 +1284,9 @@ gameInfo_btn.addEventListener('click', () => {
     } else if (watch_mode) {
         let l = global_online_games_handler.current_selected_game_instance.game_data.fieldTitle;
         GameInfo_HeaderTitle.textContent = `${l} - Game Info`;
+
+    } else if (arena_mode) {
+        GameInfo_HeaderTitle.textContent = `Training Arena - Game Info`;
     };
 
     // not in advanture mode
@@ -1314,16 +1319,16 @@ gameInfo_btn.addEventListener('click', () => {
         });
 
         // how to win text
-        if (PlayingInCreatedLevel || PlayingInCreatedLevel_AsGuest || review_mode) {
-            NewCreativeLevel && (HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points or score more points than your opponent if he gives up.`);
-            !NewCreativeLevel && (HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`);
+        if (PlayingInCreatedLevel || PlayingInCreatedLevel_AsGuest || review_mode || watch_mode) {
+            NewCreativeLevel && (HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points.`);
+            !NewCreativeLevel && (HowToWinText.textContent = `Get ${points_to_win} points.`);
 
             setTimeout(() => {
                 NewCreativeLevel_DisplayCostumPatternsInGamePopUp();
             }, 100);
 
         } else {
-            HowToWinText.textContent = `Get ${points_to_win} points or score more points than your opponent if he gives up.`
+            HowToWinText.textContent = `Get ${points_to_win} points.`
         };
 
     } else { // in advanture mode
