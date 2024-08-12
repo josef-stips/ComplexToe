@@ -243,6 +243,7 @@ let ClockListItemCheckMark_70sec_KI = document.querySelector('#ClockListItemChec
 
 let OnlineGame_iniPopUp = document.querySelector('.OnlineGame_iniPopUp');
 let onlineGame_closeBtn = document.querySelector('#onlineGame_closeBtn');
+let Lobby_AllowedPatternsScrollContainer = document.querySelector('.Lobby_AllowedPatternsScrollContainer');
 
 let agree_ToS_btn = document.querySelector(".agree_ToS_btn");
 let AGB_PopUp = document.querySelector(".AGB_PopUp");

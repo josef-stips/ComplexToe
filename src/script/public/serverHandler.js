@@ -147,7 +147,7 @@ const InitGameInfoForUserEntersLobby = () => {
     });
 
     // so the user sees the current allowed win patterns
-    socket.emit("Request_AllowedPatterns", personal_GameData.currGameID, cb => { // cb: array with all names of the allowed patterns
+    socket.emit("Request_AllowedPatterns", personal_GameData.currGameID, (cb, costum_patterns) => { // cb: array with all names of the allowed patterns
         // console.log(cb);
         // abstract data from the originall array with the names of all win patterns and copy it to own array
         allowedPatternsFromUser = cb;
@@ -163,6 +163,26 @@ const InitGameInfoForUserEntersLobby = () => {
             ele.children[1].setAttribute("active", "false");
             ele.children[1].className = "fa-regular fa-square togglePatternBtnLobby";
         });
+
+        document.querySelectorAll('.costum_pattern_grid_in_lobby') && document.querySelectorAll('.costum_pattern_grid_in_lobby').forEach(p => p.remove());
+
+        setTimeout(() => {
+            costum_patterns = JSON.parse(costum_patterns);
+
+            Object.keys(costum_patterns).map(n => {
+                let v = costum_patterns[n][n]['value'];
+                let s = costum_patterns[n][n]['structure'];
+
+                createPattern_preview(n, s, Lobby_AllowedPatternsScrollContainer, 'level', 'ingame_preview', 5, null, null, 5, 'pattern', false, v, false);
+            });
+
+            [...document.querySelectorAll('.Lobby_AllowedPatternsScrollContainer .createCostumField_Field_wrapper')].forEach(p => {
+                p.childNodes[0].classList.add("SetPatternGridLobby");
+                p.classList.remove("createCostumField_Field_wrapper");
+                p.classList.remove("costumPatternsOverview_gridWrapper");
+                p.classList.add("costum_pattern_grid_in_lobby");
+            });
+        }, 500);
 
         // display of check boxes equal none so the user can't modify them, only the admin is expected to do it
         togglePatternBtnLobby.forEach(el => el.style.display = "none");

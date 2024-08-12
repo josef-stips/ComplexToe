@@ -2777,10 +2777,10 @@ li.officialWinPatternsOpenBtn {
 
 .OnlineGame_NameWarnText {
     position: absolute;
-    font-size: 18px;
+    font-size: 1.5vw;
     color: red;
     font-weight: 400;
-    margin: 0.1em 0 0.1em 15.5em;
+    margin: 0 0 0 10vw;
     display: none;
 }
 
@@ -4764,8 +4764,6 @@ label h3 {
     height: 40vh;
     color: var(--font-color);
 }
-
-.bossLifeBar {}
 
 .bossIMG_container {
     transition: all 1s ease-out;

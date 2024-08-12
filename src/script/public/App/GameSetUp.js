@@ -535,6 +535,24 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
             ele.children[1].className = "fa-regular fa-square togglePatternBtnLobby";
         });
 
+        document.querySelectorAll('.costum_pattern_grid_in_lobby') && document.querySelectorAll('.costum_pattern_grid_in_lobby').forEach(p => p.remove());
+
+        setTimeout(() => {
+            Object.keys(costumPatterns).map(n => {
+                let v = costumPatterns[n][n]['value'];
+                let s = costumPatterns[n][n]['structure'];
+
+                createPattern_preview(n, s, Lobby_AllowedPatternsScrollContainer, 'level', 'ingame_preview', 5, null, null, 5, 'pattern', false, v, false);
+            });
+
+            [...document.querySelectorAll('.Lobby_AllowedPatternsScrollContainer .createCostumField_Field_wrapper')].forEach(p => {
+                p.childNodes[0].classList.add("SetPatternGridLobby");
+                p.classList.remove("createCostumField_Field_wrapper");
+                p.classList.remove("costumPatternsOverview_gridWrapper");
+                p.classList.add("costum_pattern_grid_in_lobby");
+            });
+        }, 500);
+
         allowedPatternsFromUser.forEach(p => {
             setPatternWrapperLobby.forEach(el => {
                 if (el.classList[0] == p) {
