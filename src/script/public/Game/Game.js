@@ -161,7 +161,7 @@ let arena_mode = false;
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
-    CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP, review_mode, review_mode_data) {
+    CreativeLevel_from_onlineMode_costumPatterns, p1_XP, p2_XP, review_mode, review_mode_data, creativeLevel_costumBotPatterns) {
 
     player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
     player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
@@ -304,7 +304,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     console.log(xCell_Amount, yCell_Amount);
 
     //Creates TicTacToe field etc.
-    let [pattern_structures, pattern_names, pattern_values] = initAllPatterns(Allowed_Patterns, CreativeLevel_from_onlineMode_costumPatterns_globalVar, xCell_Amount, yCell_Amount);
+    let [pattern_structures, pattern_names, pattern_values] = initAllPatterns(Allowed_Patterns, CreativeLevel_from_onlineMode_costumPatterns_globalVar, xCell_Amount, yCell_Amount, creativeLevel_costumBotPatterns || {});
     CalculateBoundaries();
     CreateField();
 
@@ -455,11 +455,15 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     // };
 
     // play theme music 
-    PauseMusic();
-    CreateMusicBars(curr_music_name);
+    try {
+        PauseMusic();
+        CreateMusicBars(curr_music_name);
+    } catch (error) {
+        console.log('music name not found.');
+    };
 };
 
-function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy) {
+function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy, costum_bot_patterns) {
     xCell_Amount = 5;
     yCell_Amount = 5;
     CalculateBoundaries();
@@ -472,6 +476,10 @@ function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy) {
 
     pattern_structures.forEach((s, i) => {
         all_patterns_in_game[pattern_names[i]] = { 'structure': s, 'value': pattern_values[i] };
+    });
+
+    Object.keys(costum_bot_patterns).forEach(n => {
+        all_patterns_in_game[n] = { 'structure': costum_bot_patterns[n]['structure'], 'value': costum_bot_patterns[n]['value'] };
     });
 
     console.log(all_patterns_in_game);

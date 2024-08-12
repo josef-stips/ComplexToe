@@ -273,7 +273,7 @@ const Display_CostumPatterns = () => {
 
         let pattStructure = patterns[pattName].structure;
         let pattValue = patterns[pattName].value;
-        createPattern_preview(pattName, pattStructure, costum_patterns_overview, "personal", undefined, undefined, undefined, undefined, undefined, undefined, undefined, pattValue);
+        createPattern_preview(pattName, pattStructure, costum_patterns_overview, "personal", undefined, undefined, undefined, undefined, undefined, undefined, undefined, pattValue, true);
     });
 
     NewCreativeLevel.InitCostumPatterns(NewCreativeLevel.CurrentSelectedSetting.costumPatterns);
@@ -308,7 +308,7 @@ const Display_CostumFields = () => {
 };
 
 // create pattern preview element
-const createPattern_preview = (patternName, patternStructure, parent, rights, special_class, gridRows = 5, Yscroll, Xscroll, y = 5, gridType, forBotMode, patternValue) => {
+const createPattern_preview = (patternName, patternStructure, parent, rights, special_class, gridRows = 5, Yscroll, Xscroll, y = 5, gridType, forBotMode, patternValue, showPointsOfPattern) => {
     // create elements
     const gridWrapper = document.createElement("div");
     const grid = document.createElement("div");
@@ -316,6 +316,7 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     const headerWrapper = document.createElement("div");
     const flexDiv = document.createElement("div");
     const editItemsWrapper = document.createElement("div");
+    const pointsOfPatternWrapper = document.createElement('div');
 
     // items
     const pen = document.createElement("i");
@@ -326,9 +327,11 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
     const bin2 = document.createElement("i");
     bin2.className = "fa-solid fa-trash item";
 
+    pointsOfPatternWrapper.textContent = `value: ${patternValue}`;
+
     // add classes, attributes and style to the pattern grid
     createPattern_addAttributes(gridWrapper, patternName, grid, title, headerWrapper,
-        editItemsWrapper, special_class, checkBox, pen, bin, costum_patterns_overview, gridRows, flexDiv);
+        editItemsWrapper, special_class, checkBox, pen, bin, costum_patterns_overview, gridRows, flexDiv, pointsOfPatternWrapper);
 
     // check if pattern is in current level being edited
     createPattern_checkPatternInLevel(checkBox, patternName, patternStructure, gridType, forBotMode);
@@ -382,11 +385,15 @@ const createPattern_preview = (patternName, patternStructure, parent, rights, sp
         // give static height/ scale whatever
         special_class != "ingame_preview" && StaticCellScale(grid);
     }, 250);
+
+    if (showPointsOfPattern) {
+        gridWrapper.appendChild(pointsOfPatternWrapper);
+    };
 };
 
 // add classes, attributes and style to the pattern grid
 const createPattern_addAttributes = (gridWrapper, patternName, grid, title, headerWrapper,
-    editItemsWrapper, special_class, checkBox, pen, bin, costum_patterns_overview, gridRows, flexDiv) => {
+    editItemsWrapper, special_class, checkBox, pen, bin, costum_patterns_overview, gridRows, flexDiv, pointsOfPatternWrapper) => {
     // add attributes and style
     gridWrapper.setAttribute("costum_pattern_name", patternName.replace(" ", "_"));
     gridWrapper.classList.add("createCostumField_Field_wrapper");
@@ -399,6 +406,8 @@ const createPattern_addAttributes = (gridWrapper, patternName, grid, title, head
     NewCreativeLevel && (checkBox.title = `use pattern in ${NewCreativeLevel.CurrentSelectedSetting.name}`);
     pen.className = "fa-solid fa-pen item";
     bin.className = "fa-solid fa-trash item";
+
+    pointsOfPatternWrapper.className = 'pattern_preview_points_display';
 
     // set attributes and style
     costum_patterns_overview.setAttribute("costum_pattern_name", patternName);

@@ -2938,6 +2938,7 @@ label h3 {
 .Pattern-Div {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1vh;
     height: max-content;
     width: 100%;
@@ -2959,6 +2960,7 @@ label h3 {
     justify-content: flex-start;
     grid-template-columns: repeat(4, auto);
     align-items: center;
+    width: auto;
 }
 
 .PatternGrid-Three {
@@ -8480,6 +8482,13 @@ p.createCostumField_yInput {
 
 .costumFieldCurrentLevelGrid {
     height: inherit;
+}
+
+.pattern_preview_points_display {
+    font-size: 1.5vw;
+    font-weight: 500;
+    color: white;
+    margin: 0.75vh 0 0 0;
 }
 
 

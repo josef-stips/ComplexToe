@@ -241,14 +241,14 @@ const UserClicksNxNDefaultSettings = (readonly) => {
         SetClockList.style.display = 'flex';
         SetPlayerNames_AdditionalSettings.style.display = "flex";
         SetPlayerNamesClockInput.style.display = 'flex';
-    };
 
-    if (arena_mode) {
-        SetAllowedPatternsWrapper.style.display = 'none';
-        SetPlayerNamesClockInput.style.display = 'none';
+        if (arena_mode) {
+            SetAllowedPatternsWrapper.style.display = 'none';
+            SetPlayerNamesClockInput.style.display = 'none';
 
-    } else {
-        SetAllowedPatternsWrapper.style.display = 'flex';
+        } else {
+            SetAllowedPatternsWrapper.style.display = 'flex';
+        };
     };
 };
 
@@ -764,6 +764,8 @@ function SetGameData_BotMode(Check) {
         let costumX;
         let costumY;
 
+        let costum_creativeLevel_botPatterns = {};
+
         // check if this is user created level
         if (PlayingInCreatedLevel) {
             Check[0] = true;
@@ -779,6 +781,33 @@ function SetGameData_BotMode(Check) {
             } else {
                 costumX = creative_level_instance.selectedLevel[16]["x"];
                 costumY = creative_level_instance.selectedLevel[16]["y"];
+            };
+
+            // about bot patterns in a creative level
+            if (NewCreativeLevel) {
+
+                if (NewCreativeLevel.selectedLevel[17]) {
+                    allowedPatternsFromUser = Object.keys(NewCreativeLevel.selectedLevel[18]).filter((n, i) => {
+                        console.log(n, i, Object.keys(GamePatternsList)[i])
+                        if (Object.keys(GamePatternsList).includes(n)) {
+                            return n;
+                        } else {
+                            costum_creativeLevel_botPatterns[n] = NewCreativeLevel.selectedLevel[18][n];
+                        };
+                    });
+                };
+
+            } else if (!NewCreativeLevel && player_levels_handler.online_level_overview_handler) {
+
+                if (player_levels_handler.online_level_overview_handler.level.bot_mode) {
+                    allowedPatternsFromUser = Object.keys(player_levels_handler.online_level_overview_handler.level.bot_patterns).filter((n, i) => {
+                        if (Object.keys(GamePatternsList).includes(n)) {
+                            return n;
+                        } else {
+                            costum_creativeLevel_botPatterns[n] = player_levels_handler.online_level_overview_handler.level.bot_patterns[n];
+                        };
+                    });
+                };
             };
         };
 
@@ -799,9 +828,11 @@ function SetGameData_BotMode(Check) {
 
         console.log(allowedPatternsFromUser);
 
-        allowedPatternsFromUser = [...Object.keys(training_arena.selected_patterns)];
+        if (training_arena) {
+            allowedPatternsFromUser = [...Object.keys(training_arena.selected_patterns)];
+        };
 
-        initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY]);
+        initializeGame(curr_field_ele, undefined, undefined, allowedPatternsFromUser, undefined, UserSetPointsToWinGameInput.value, undefined, undefined, [costumX, costumY], undefined, undefined, undefined, undefined, undefined, costum_creativeLevel_botPatterns);
     };
 };
 

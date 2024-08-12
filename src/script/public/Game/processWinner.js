@@ -824,7 +824,7 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
 
                 if (PlayingInCreatedLevel) { // Player played user created level
 
-                    if (creative_level_instance.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
+                    if (creative_level_instance.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb && !player_levels_handler.online_level_overview_handler) {
                         endGame_statusText.textContent = `It's conquered! Level is ready to publish`;
 
                     } else if (creative_level_instance.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
@@ -836,19 +836,11 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
                 };
 
             } else if (!inAdvantureMode && curr_mode != GameMode[2].opponent) { // not in advanture and not in online mode
+                endGame_statusText.textContent = rnd_text;
+            };
 
-                if (PlayingInCreatedLevel) { // Player played user created level
-                    if (creative_level_instance.selectedLevel[9] == 0 && score_Player1_numb != score_Player2_numb) {
-
-                        endGame_statusText.textContent = `You beat it! Level is ready to publish`;
-
-                    } else if (creative_level_instance.selectedLevel[9] == 1 || score_Player1_numb == score_Player2_numb) {
-                        endGame_statusText.textContent = rnd_text;
-                    };
-
-                } else { // user played standard card level from game
-                    endGame_statusText.textContent = rnd_text;
-                };
+            if (PlayingInCreatedLevel && curr_mode == GameMode[3].opponent) {
+                endGame_statusText.textContent = "Note that this match will not count as an official match, and your score will not be shown on the scoreboard.";
             };
 
         } else {
@@ -1087,44 +1079,46 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             if (score_Player1_numb == Infinity) score1 = 999;
             if (score_Player2_numb == Infinity) score2 = 999;
 
-            let all_game_data_for_log = [
-                level_id, // level_id
-                level_name, // level name
-                level_icon, // level icon
-                Number(localStorage.getItem("PlayerID")), // p1 id
-                -1, // p2 id // player two has no id (p2 = ki | rnd player on same pc)
-                PlayerData[1].PlayerName, // player 1 name
-                PlayerData[2].PlayerName, // player 2 name
-                curr_mode == GameMode[1].opponent ? 'gold' : 'white', // p2 color
-                localStorage.getItem('userInfoColor'), // p1 color
-                PlayerData[1].AdvancedSkin == "cell empty" ? PlayerData[1].PlayerForm : PlayerData[1].AdvancedSkin.replace('cell', ''), // player 1 icon
-                PlayerData[2].AdvancedSkin == "cell empty" ? PlayerData[2].PlayerForm : PlayerData[2].AdvancedSkin.replace('cell', ''), // player 2 icon
-                score1 != -Infinity && score1 != Infinity ? score1 : 0, // p1 points
-                score2 != -Infinity && score2 != Infinity ? score2 : 0, // p2 points
-                GameData.InnerGameMode == 'Blocker Combat' ? true : false, // blocker boolean
-                GameData.InnerGameMode == 'Blocker Combat' ? 'bot' : ' ', // blocker name
-                JSON.stringify(cell_indexes_blocked_by_blocker), // cells blocked by blocker
-                JSON.stringify(patterns_used), // patterns used
-                JSON.stringify([xCell_Amount, yCell_Amount]), // x and y: field_size
-                bgcolor1, // first bg color
-                bgcolor2, // second bg color
-                GameSeconds, // game duration
-                JSON.stringify(all_game_moves), // moves
-                GameData.PlayerClock, // player clock
-                points_to_win, // points to win
-                JSON.stringify(allGameData[3]), // allowed patterns
-                JSON.stringify({}),
-                game_mode, // game mode,
-                GameData.InnerGameMode, // field mode
-                killAllDrawnCells, // kill cells after point
-                !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
-                -1,
-                Number(fieldIndex),
-                curr_music_name.id,
-                JSON.stringify(boneyard_array)
-            ];
+            if (!NewCreativeLevel) {
+                let all_game_data_for_log = [
+                    level_id, // level_id
+                    level_name, // level name
+                    level_icon, // level icon
+                    Number(localStorage.getItem("PlayerID")), // p1 id
+                    -1, // p2 id // player two has no id (p2 = ki | rnd player on same pc)
+                    PlayerData[1].PlayerName, // player 1 name
+                    PlayerData[2].PlayerName, // player 2 name
+                    curr_mode == GameMode[1].opponent ? 'gold' : 'white', // p2 color
+                    localStorage.getItem('userInfoColor'), // p1 color
+                    PlayerData[1].AdvancedSkin == "cell empty" ? PlayerData[1].PlayerForm : PlayerData[1].AdvancedSkin.replace('cell', ''), // player 1 icon
+                    PlayerData[2].AdvancedSkin == "cell empty" ? PlayerData[2].PlayerForm : PlayerData[2].AdvancedSkin.replace('cell', ''), // player 2 icon
+                    score1 != -Infinity && score1 != Infinity ? score1 : 0, // p1 points
+                    score2 != -Infinity && score2 != Infinity ? score2 : 0, // p2 points
+                    GameData.InnerGameMode == 'Blocker Combat' ? true : false, // blocker boolean
+                    GameData.InnerGameMode == 'Blocker Combat' ? 'bot' : ' ', // blocker name
+                    JSON.stringify(cell_indexes_blocked_by_blocker), // cells blocked by blocker
+                    JSON.stringify(patterns_used), // patterns used
+                    JSON.stringify([xCell_Amount, yCell_Amount]), // x and y: field_size
+                    bgcolor1, // first bg color
+                    bgcolor2, // second bg color
+                    GameSeconds, // game duration
+                    JSON.stringify(all_game_moves), // moves
+                    GameData.PlayerClock, // player clock
+                    points_to_win, // points to win
+                    JSON.stringify(allGameData[3]), // allowed patterns
+                    JSON.stringify({}),
+                    game_mode, // game mode,
+                    GameData.InnerGameMode, // field mode
+                    killAllDrawnCells, // kill cells after point
+                    !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
+                    -1,
+                    Number(fieldIndex),
+                    curr_music_name ? curr_music_name.id : 'null',
+                    JSON.stringify(boneyard_array)
+                ];
 
-            game_log_handler.load_to_server(all_game_data_for_log);
+                game_log_handler.load_to_server(all_game_data_for_log);
+            };
 
             setTimeout(() => {
                 cellGrid.style.display = 'none';
@@ -1308,7 +1302,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
 
         WinCombination = JSON.parse(WinCombination).map(x => document.querySelector(`.cell[cell-index="${x}"]`));
 
-        if (personal_GameData.role == 'admin') {
+        if (personal_GameData.role == 'admin' && !NewCreativeLevel) {
 
             let level_id;
             let level_icon;
@@ -1354,7 +1348,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
                 !max_amount_of_moves ? -1 : max_amount_of_moves, // max amount of moves
                 OnlinePlayerIDs[3] ? OnlinePlayerIDs[3] : -1,
                 Number(fieldIndex),
-                curr_music_name.id,
+                curr_music_name ? curr_music_name.id : 'null',
                 JSON.stringify(boneyard_array)
             ];
 

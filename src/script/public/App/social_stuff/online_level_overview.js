@@ -265,14 +265,21 @@ class level_comments_handler {
     };
 
     submit(text) {
-        try {
-            socket.emit("submit_comment_to_level", text, this.parent.level["id"], Number(localStorage.getItem("PlayerID")), localStorage.getItem("UserName"), this.parent.personal_data_for_level, cb => {
-                this.add(cb);
-                chat_scroll_to_bottom("smooth", comments_list);
-            });
+        if (this.parent.personal_data_for_level) {
+            try {
+                socket.emit("submit_comment_to_level", text, this.parent.level["id"], Number(localStorage.getItem("PlayerID")), localStorage.getItem("UserName"), this.parent.personal_data_for_level, cb => {
+                    this.add(cb);
+                    chat_scroll_to_bottom("smooth", comments_list);
+                });
 
-        } catch (error) {
-            console.log(error);
+            } catch (error) {
+                console.log(error);
+            };
+
+        } else {
+            OpenedPopUp_WhereAlertPopUpNeeded = true;
+            AlertText.textContent = 'You cannot write a comment.';
+            DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
         };
     };
 
@@ -500,9 +507,10 @@ class levelPatternsOverviewHandler {
         // costum patterns
         for (const [pattern, index] of Object.entries(patterns)) {
             let structure = index[pattern]["structure"];
+            let value = index[pattern]["value"];
             costum_patterns_n++;
 
-            createPattern_preview(pattern, structure, level_patterns_inner_wrapper, "level");
+            createPattern_preview(pattern, structure, level_patterns_inner_wrapper, "level", undefined, undefined, undefined, undefined, undefined, undefined, undefined, value, true);
         };
 
         // official patterns
@@ -511,8 +519,9 @@ class levelPatternsOverviewHandler {
 
         for (const [index, structure] of off_patterns.entries()) {
             let pattern = off_pattern_names[index];
+            let value = patternPoints[off_pattern_names[index]]
 
-            createPattern_preview(pattern, structure, level_patterns_inner_wrapper, "level");
+            createPattern_preview(pattern, structure, level_patterns_inner_wrapper, "level", undefined, undefined, undefined, undefined, undefined, undefined, undefined, value, true);
         };
 
         level_patterns_header_title.textContent =

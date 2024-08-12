@@ -457,8 +457,8 @@ function addAlphaToColor(color, alpha) {
         const rgbValues = color.slice(4, -1).split(',').map(Number);
         [r, g, b] = rgbValues;
     } else {
-        throw new Error('Ungültiges Farbformat. Verwenden Sie entweder HEX oder RGB.');
-    }
+        return color;
+    };
 
     // Rückgabe der Farbe im RGBA-Format
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;

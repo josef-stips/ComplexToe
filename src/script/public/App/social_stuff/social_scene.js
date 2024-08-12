@@ -290,7 +290,7 @@ class player_levels_handler_wrapper extends NewLevel {
         let span1 = document.createElement("span");
         span1.classList = "LevelIconWrapper"
         span1.style.border = `0.7vh solid ${level_theme}`;
-        li.style.background = `${addAlphaToColor(secondary_color, 0.15)}`;
+        li.style.background = `${addAlphaToColor(secondary_color == "white" ? "#777777" : secondary_color, 0.15)}`;
 
         let div1 = document.createElement("div");
         let div2 = document.createElement("div");

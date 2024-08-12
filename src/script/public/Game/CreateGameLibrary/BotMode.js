@@ -5,6 +5,7 @@ class CreativeLevel_BotMode {
         this.level = level;
         this.all_patterns = null;
         this.all_pattern_names = null;
+        this.all_pattern_values = null;
         this.all_pattern_data = [];
         this.x_and_y = typeof level[16] == "object" ? [level[16].x, level[16].y] : [parent.Settings.cellgrid[level[7]], parent.Settings.cellgrid[level[7]]];
 
@@ -47,11 +48,11 @@ class CreativeLevel_BotMode {
     load_patterns(level_data) {
         BotMode_patternSelectionWrapper.textContent = null;
 
-        this.all_pattern_data = [this.all_patterns, this.all_pattern_names] = BindPatternsWithCostumPatternsToIndexes(level_data[6], level_data[15], 5);
-        console.log(this.all_patterns, this.all_pattern_names, this.x_and_y);
+        this.all_pattern_data = [this.all_patterns, this.all_pattern_names, this.all_pattern_values] = BindPatternsWithCostumPatternsToIndexes(level_data[6], level_data[15], 5);
+        console.log(this.all_patterns, this.all_pattern_names, this.all_pattern_values, this.x_and_y);
 
         this.all_pattern_data[0].map((structure, index) => {
-            createPattern_preview(this.all_pattern_data[1][index], structure, BotMode_patternSelectionWrapper, 'toggle', undefined, 5, null, null, 5, 'pattern', true);
+            createPattern_preview(this.all_pattern_data[1][index], structure, BotMode_patternSelectionWrapper, 'toggle', undefined, 5, null, null, 5, 'pattern', true, this.all_pattern_data[2][index], true);
         });
 
         this.load_patterns_toggle([...BotMode_patternSelectionWrapper.children], [...BotMode_patternSelectionWrapper.children].map(w => w.childNodes[0].children[2].children[0]), this.all_pattern_data);
@@ -81,11 +82,10 @@ class CreativeLevel_BotMode {
                         e.target.className = 'fa-regular fa-check-square BotMode_toggle_btn';
                         this.selected_patterns_count++;
 
-                        this.selected_patterns[patterns[i].getAttribute('costum_pattern_name')] = { 'structure': patterns_data[0][i], 'value': 1 };
+                        this.selected_patterns[patterns[i].getAttribute('costum_pattern_name')] = { 'structure': patterns_data[0][i], 'value': patterns_data[2][i] };
                         break;
                 };
 
-                // init_bot_mode_patterns(patterns, toggle_btns, patterns_data); 
                 NewCreativeLevel.SaveInHistory('bot_patterns', this.selected_patterns);
                 NewCreativeLevel.CurrentSelectedSetting.BotPatterns = this.selected_patterns;
             });
@@ -102,16 +102,5 @@ class CreativeLevel_BotMode {
             toggle_btn.setAttribute('active_toggle', 'true');
             toggle_btn.className = 'fa-regular fa-check-square BotMode_toggle_btn';
         });
-    };
-};
-
-function init_bot_mode_patterns(patterns, toggle_btns, pattern_data) {
-
-
-    if (NewCreativeLevel) {
-        console.log(arguments);
-
-    } else {
-        throw Error('No creative level initialized');
     };
 };
