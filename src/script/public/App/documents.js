@@ -757,6 +757,9 @@ let watching_count_el = document.querySelector('.watching_count_el');
 let allow_players_watch_el = document.querySelector('.allow_players_watch_el');
 let YouWatchGameEl = document.querySelector('.YouWatchGameEl');
 let SetPlayerNamesClockInput = document.querySelector('.SetPlayerNames-ClockInput');
+let ini_onlineGame_main = document.querySelectorAll('.ini_onlineGame_main')[1];
+let ini_onlineGame_footer = document.querySelectorAll('.ini_onlineGame_footer')[1];
+let level_scene_bot_mode_text = document.querySelector('.level_scene_bot_mode_text');
 
 const TrainingArenaDifficutlyModeGameDisplay = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay');
 const TrainingArenaDifficutlyModeGameDisplayText = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay>p');

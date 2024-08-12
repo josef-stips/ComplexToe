@@ -865,7 +865,7 @@ class NewLevel {
                 //     this.selectedLevel[2], this.selectedLevel[6]); // create lobby with data from current selected level. the user can't change anything
                 break;
 
-            case 2:
+            case 2: // bot mode
                 curr_mode = GameMode[1].opponent;
 
                 UserClicksNxNDefaultSettings(true); // true: player can only change his name and icon  

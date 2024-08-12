@@ -23,7 +23,7 @@ let mapLevels = {
             "The winning patterns that require five moves yield 3 more points than regular ones.",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 7, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
-        30
+        40
     ],
     4: [false, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["diamond"],
         ["The first three levels where too boring huh?",
@@ -43,19 +43,19 @@ let mapLevels = {
             "Most of the players here have already given up or lost their way. Do you really want to continue or give up?", "btw. are you a discord mod?", "Anyway...",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
         ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 2400, 'asteroids': 1, 'diamonds': 40 },
-        30
+        50
     ],
     7: [false, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["branch4", "star"],
         ["I hear steps behind me!", "Or just my fart", "...", "The playing field has become larger. More room for your frustration to spread.",
             "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point."
         ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 3500, 'asteroids': 1, 'minerals': 4000 },
-        50
+        70
     ],
     8: [false, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["branch2", "hor"],
         ["Arrg", "Only the top players reached this level. Congratulations! But don't be too optimistic..",
             "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and will not get the point."
         ], 7, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 2, 'encrypted writings': 4 },
-        45
+        75
     ],
     9: [false, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["W2", "star"],
         ["hihihi... ", "This is the last step before you are never seen again. No one knows if you can do that.",
@@ -74,7 +74,7 @@ let mapLevels = {
             `In the depths of my realm lies a labyrinth that harbors the unexplored terrors of darkness.Your courage may have brought you this far, but the question is: Are you ready to face the shadows that lurk beyond the visible darkness ? `,
             "To conquer this level you have to score 15 points and defeat Oculus Irae. The unknown can beat you in less moves."
         ], 15, InnerGameModes[3], true, { 'keys': 55, 'asteroids': 5, 'encrypted writings': 6, 'ores': 7000, 'abandoned eye': 1 },
-        90
+        100
     ],
 };
 

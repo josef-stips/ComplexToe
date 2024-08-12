@@ -63,12 +63,12 @@ class stars_handler {
                 },
                 2: {
                     requirementText: "Win with minimum 20 moves left.",
-                    requirementCondition: 10,
+                    requirementCondition: 20,
                     requirementType: 1
                 },
                 3: {
-                    requirementText: "Win in maximum 100 seconds.",
-                    requirementCondition: 40,
+                    requirementText: "Win in maximum 120 seconds.",
+                    requirementCondition: 120,
                     requirementType: 2
                 }
             },
@@ -79,51 +79,17 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with minimum 5 moves left.",
-                    requirementCondition: 5,
+                    requirementText: "Win with minimum 10 moves left.",
+                    requirementCondition: 10,
                     requirementType: 1
                 },
                 3: {
-                    requirementText: "Win in maximum 35 seconds.",
-                    requirementCondition: 35,
+                    requirementText: "Win in maximum 120 seconds.",
+                    requirementCondition: 120,
                     requirementType: 2
                 }
             },
             3: {
-                1: {
-                    requirementText: "Win without using a spell.",
-                    requirementCondition: 0,
-                    requirementType: 0
-                },
-                2: {
-                    requirementText: "Win with minimum 8 moves left.",
-                    requirementCondition: 8,
-                    requirementType: 1
-                },
-                3: {
-                    requirementText: "Win in maximum 30 seconds.",
-                    requirementCondition: 30,
-                    requirementType: 2
-                }
-            },
-            4: {
-                1: {
-                    requirementText: "Win without using a spell.",
-                    requirementCondition: 0,
-                    requirementType: 0
-                },
-                2: {
-                    requirementText: "Win with minimum 12 moves left.",
-                    requirementCondition: 12,
-                    requirementType: 1
-                },
-                3: {
-                    requirementText: "Win in maximum 25 seconds.",
-                    requirementCondition: 25,
-                    requirementType: 2
-                }
-            },
-            5: {
                 1: {
                     requirementText: "Win without using a spell.",
                     requirementCondition: 0,
@@ -135,8 +101,42 @@ class stars_handler {
                     requirementType: 1
                 },
                 3: {
-                    requirementText: "Win in maximum 20 seconds.",
+                    requirementText: "Win in maximum 160 seconds.",
+                    requirementCondition: 160,
+                    requirementType: 2
+                }
+            },
+            4: {
+                1: {
+                    requirementText: "Win without using a spell.",
+                    requirementCondition: 0,
+                    requirementType: 0
+                },
+                2: {
+                    requirementText: "Win with minimum 7 moves left.",
+                    requirementCondition: 7,
+                    requirementType: 1
+                },
+                3: {
+                    requirementText: "Win in maximum 180 seconds.",
+                    requirementCondition: 180,
+                    requirementType: 2
+                }
+            },
+            5: {
+                1: {
+                    requirementText: "Win without using a spell.",
+                    requirementCondition: 0,
+                    requirementType: 0
+                },
+                2: {
+                    requirementText: "Win with minimum 20 moves left.",
                     requirementCondition: 20,
+                    requirementType: 1
+                },
+                3: {
+                    requirementText: "Win in maximum 120 seconds.",
+                    requirementCondition: 120,
                     requirementType: 2
                 }
             },
@@ -152,8 +152,8 @@ class stars_handler {
                     requirementType: 1
                 },
                 3: {
-                    requirementText: "Win in maximum 50 seconds.",
-                    requirementCondition: 50,
+                    requirementText: "Win in maximum 150 seconds.",
+                    requirementCondition: 150,
                     requirementType: 2
                 }
             },
@@ -186,8 +186,8 @@ class stars_handler {
                     requirementType: 1
                 },
                 3: {
-                    requirementText: "Win in maximum 60 seconds.",
-                    requirementCondition: 60,
+                    requirementText: "Win in maximum 130 seconds.",
+                    requirementCondition: 130,
                     requirementType: 2
                 }
             },
@@ -198,13 +198,13 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with minimum 4 moves left.",
-                    requirementCondition: 4,
+                    requirementText: "Win with minimum 5 moves left.",
+                    requirementCondition: 5,
                     requirementType: 1
                 },
                 3: {
-                    requirementText: "Win in maximum 55 seconds.",
-                    requirementCondition: 55,
+                    requirementText: "Win in maximum 150 seconds.",
+                    requirementCondition: 150,
                     requirementType: 2
                 }
             },
@@ -215,13 +215,13 @@ class stars_handler {
                     requirementType: 0
                 },
                 2: {
-                    requirementText: "Win with minimum 3 moves left.",
-                    requirementCondition: 3,
+                    requirementText: "Win with minimum 10 moves left.",
+                    requirementCondition: 10,
                     requirementType: 1
                 },
                 3: {
-                    requirementText: "Win in maximum 70 seconds.",
-                    requirementCondition: 70,
+                    requirementText: "Win in maximum 200 seconds.",
+                    requirementCondition: 200,
                     requirementType: 2
                 }
             }

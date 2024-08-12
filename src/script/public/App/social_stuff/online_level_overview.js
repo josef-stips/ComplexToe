@@ -54,6 +54,17 @@ class onlineLevelOverviewHandler {
 
         level_scene_start_btn.addEventListener("click", level_scene_start_btn.ev = () => {
             DisplayPopUp_PopAnimation(ChooseBetweenModesPopUp, "flex", true);
+
+            if (this.level.bot_mode) {
+                BotModeBtn.style.display = 'flex';
+                document.querySelector('.ini_onlineGame_main > p') && ini_onlineGame_footer.appendChild(ini_onlineGame_main.querySelector('.ini_onlineGame_main > p'));
+                ini_onlineGame_main.querySelector('.OfflineModeBtn') && ini_onlineGame_footer.appendChild(ini_onlineGame_main.querySelector('.OfflineModeBtn'));
+
+            } else {
+                BotModeBtn.style.display = 'none';
+                ini_onlineGame_main.appendChild(ini_onlineGame_footer.children[0]);
+                ini_onlineGame_main.appendChild(OfflineModeBtn);
+            };
         });
 
         level_scene_comments_btn.removeEventListener("click", level_scene_comments_btn.ev);
@@ -91,6 +102,8 @@ class onlineLevelOverviewHandler {
 
         level_icon.src = player_levels_handler.Settings.levelicon[this.level.icon];
         online_level_scene_title.appendChild(level_icon);
+
+        level_scene_bot_mode_text.textContent = `Bot mode: ${this.level.bot_mode == 0 ? 'Nope' : 'Yep'}`;
     };
 
     init_music_display() {
@@ -583,9 +596,27 @@ class OnlineLevelPlayerScoreBoardHandler {
     display(level_player_data, player_data) {
         scoreboard_list.textContent = null;
 
+        level_player_data.forEach((item, i) => {
+            item['player_info'] = player_data[i];
+        });
+
+        level_player_data.sort(this.sort_scoreboard);
+
         for (const [i, val] of level_player_data.entries()) {
-            this.element(val, player_data[i]);
+            this.element(val, val.player_info);
         };
+    };
+
+    sort_scoreboard(a, b) {
+        if (b.points_made !== a.points_made) {
+            return b.points_made - a.points_made;
+        };
+
+        if (a.beat !== b.beat) {
+            return a.beat - b.beat;
+        };
+
+        return a.best_time - b.best_time;
     };
 
     element(level_player_data, player_data) {
