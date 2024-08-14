@@ -20,7 +20,7 @@ class Achievements {
             "The creator", // 15
             "Mysterious paper", // 16
 
-            /*"The player", // 17
+            "The player", // 17
             "The embracer", // 18
             "The supporter", // 19
             "The enjoyer", // 20
@@ -28,7 +28,7 @@ class Achievements {
             "The creative", // 22
             "The builder", // 23
             "Never Give Up?", // 24
-            "Criminal or just social?", // 25*/
+            "Criminal or just social?", // 25
         ];
 
         this.taskList = [
@@ -50,7 +50,7 @@ class Achievements {
             "Publish a level for the first time", // 15
             "Collect 10 encrypted writings", // 16
 
-            /*"Complete 10 user created level", // 17
+            "Complete 10 user created level", // 17
             "Complete 50 user created level", // 18
             "Give 20 levels a rating", // 19
             "Play against 10 random player", // 20
@@ -58,7 +58,7 @@ class Achievements {
             "Create 5 costum patterns", // 22
             "Create 5 costum fields", // 23
             "Loose 100 times", // 24
-            "Get a clan member", // 25*/
+            "Get a clan member", // 25
         ];
 
         this.reward_amount = {
@@ -78,7 +78,16 @@ class Achievements {
                 13: [50, 1],
                 14: [100, 1],
                 15: [250],
-                16: [100, 1, 20]
+                16: [100, 1, 20],
+                17: [1],
+                18: [1],
+                19: [1],
+                20: [1],
+                21: [1],
+                22: [1],
+                23: [1],
+                24: [1],
+                25: [1]
             },
 
             this.reward_names = {
@@ -98,7 +107,17 @@ class Achievements {
                 13: ["GemsItem", "ItemX"],
                 14: ["GemsItem", "ItemX"],
                 15: ["GemsItem"],
-                16: ["GemsItem", "ItemX", "keys"]
+                16: ["GemsItem", "ItemX", "keys"],
+
+                17: ['bone'],
+                18: ['atom'],
+                19: ['calendar-check'],
+                20: ['poo'],
+                21: ['face-meh'],
+                22: ['cat'],
+                23: ['frog'],
+                24: ['dog'],
+                25: ['paint-roller'],
             },
 
             this.achievementImg = [
@@ -110,6 +129,16 @@ class Achievements {
                 "assets/game/semi-closed-eye.svg",
                 "assets/game/crystal-eye.svg",
                 "assets/game/wolf-head.svg",
+                "assets/game/fire-iris.svg",
+                "assets/game/minerals.svg",
+                "assets/game/laurels-trophy.svg",
+                "assets/game/crystal-bars.svg",
+                "assets/game/lock-spy.svg",
+                "assets/game/tied-scroll.svg",
+                "assets/game/stone-crafting-white.svg",
+                "assets/game/holy-grail.svg",
+                "assets/game/wax-tablet.svg",
+
                 "assets/game/fire-iris.svg",
                 "assets/game/minerals.svg",
                 "assets/game/laurels-trophy.svg",
@@ -139,7 +168,15 @@ class Achievements {
             14: false,
             15: false,
             16: false,
-            17: false
+            17: false,
+            18: false,
+            19: false,
+            20: false,
+            21: false,
+            22: false,
+            23: false,
+            24: false,
+            25: false
         };
 
         this.achievements = {};
@@ -204,7 +241,7 @@ class Achievements {
             i_abso.style.position = "absolute";
             i_abso.style.fontWeight = "600";
             i_abso.className = "fa-solid fa-check";
-            i_abso.style.fontSize = "28px";
+            i_abso.style.fontSize = "3vh";
             i_abso.style.right = "20px";
             i_abso.style.top = "0";
             i_abso.style.bottom = "0";
@@ -230,7 +267,7 @@ class Achievements {
             let img = document.createElement("img");
             img.src = achievement["img"];
             img.style = `    width: 10vh;
-    height: 10vh;`;
+                            height: 10vh;`;
 
             for (let i = 0; i < achievement.reward_names.length; i++) {
                 // list item style depends on its completion
@@ -255,6 +292,18 @@ class Achievements {
 
                 const p = document.createElement('p');
                 p.textContent = achievement.reward_amount[i];
+
+                if (achievement.reward_names[i] != "GemsItem" && achievement.reward_names[i] != "ItemX") {
+                    let user_has_skin = skins[achievement.reward_names[i]];
+
+                    if (user_has_skin) {
+                        fontawesome_code = "fa-solid fa-gem";
+                        p.textContent = '250';
+
+                    } else {
+                        fontawesome_code = `fa solid fa-${achievement.reward_names[i]}`;
+                    };
+                };
 
                 span.appendChild(i_el);
                 span.appendChild(p);
@@ -360,6 +409,34 @@ class Achievements {
             case 16: // collect 10 encrypted writings
                 (!localStorage.getItem("UserGot10EncryptedWritings") && !this.unlocked[index]) && this.unlock_achievement(index);
                 break;
+
+            case 17:
+                if (ConqueredPlayerCreatedLevel() >= 10) this.unlock_achievement(index);
+                break;
+            case 18:
+                if (ConqueredPlayerCreatedLevel() >= 50) this.unlock_achievement(index);
+                break;
+            case 19:
+                if (GiveRatingToLevel() >= 20) this.unlock_achievement(index);
+                break;
+            case 20:
+                if (PlayedAgainstNRandomPlayer() >= 10) this.unlock_achievement(index);
+                break;
+            case 21:
+                if (PlayedAgainstNRandomPlayer() >= 50) this.unlock_achievement(index);
+                break;
+            case 22:
+                if (CreateCostumPatternCounter() >= 5) this.unlock_achievement(index);
+                break;
+            case 23:
+                if (CreateCostumFieldCounter() >= 5) this.unlock_achievement(index);
+                break;
+            case 24:
+                if (LooseCounter() >= 100) this.unlock_achievement(index);
+                break;
+            case 25:
+                OnceAClanMember() && this.unlock_achievement(index);
+                break;
         };
     };
 
@@ -389,6 +466,16 @@ class Achievements {
 
             } else if (name_of_item == "keys") {
                 keys = keys + amount[i];
+
+            } else { // skin
+
+                if (skins[name_of_item]) { // user already has that skin
+                    Gems = Gems + 250;
+
+                } else { // user has not owned the skin. Now he gets it
+                    skins[name_of_item] = true;
+                    localStorage.setItem('Skins', JSON.stringify(skins));
+                };
             };
         });
 
@@ -403,9 +490,11 @@ class Achievements {
 
     // user gets reward + cool pop up animation from above
     unlock_achievement = (index) => {
+
         // first of all, save in storage
         this.unlocked[index] = true;
         localStorage.setItem("AchievementLockState", JSON.stringify(this.unlocked));
+
         // add reward to storage
         this.add_reward(this.achievements[index]);
 

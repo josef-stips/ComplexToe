@@ -112,6 +112,8 @@ let skins = {
     'dollar-sign': false,
     'hand-middle-finger': false,
     'face-surprise': false,
+
+    // reward skins
     'bone': false,
     'atom': false,
     'calendar-check': false,

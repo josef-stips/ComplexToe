@@ -1285,7 +1285,7 @@ gameInfo_btn.addEventListener('click', () => {
     } else if (NewCreativeLevel || PlayingInCreatedLevel_AsGuest && !player_levels_handler.online_level_overview_handler) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
-    } else if (inPlayerLevelsScene) {
+    } else if (inPlayerLevelsScene || !PlayingInCreatedLevel_AsGuest) {
         GameInfo_HeaderTitle.textContent = `${player_levels_handler.online_level_overview_handler.level.level_name} - Game Info`;
 
     } else if (watch_mode) {

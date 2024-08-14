@@ -76,7 +76,7 @@ treasureIcon2.addEventListener('click', () => {
             ItemAnimation('fa-solid fa-x', positionOf_XIcon, undefined, undefined, true);
 
         } else {
-            // Spieler gains diamants
+            // Spieler gains diamonds
             let counter = 0;
             let count = setInterval(() => {
                 counter++;

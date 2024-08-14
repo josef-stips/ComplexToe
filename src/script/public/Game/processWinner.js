@@ -1150,9 +1150,19 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
         if (personal_GameData.role == 'admin') {
             PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
             update_personal_level_data(player1_won, game_sec, score_Player1_numb);
+
+            if (PlayingInCreatedLevel) {
+                ConqueredPlayerCreatedLevel(global_creative_level_data["level_name"]);
+                Achievement.new(17);
+                Achievement.new(18);
+            };
         };
 
         if (personal_GameData.role == 'user') {
+
+            LooseCounter(true);
+            Achievement.new(24);
+
             update_personal_level_data(player2_won, game_sec, score_Player2_numb);
 
             let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[2] / PlayerXP[1]) / -1;
@@ -1178,9 +1188,19 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
         if (personal_GameData.role == 'user') {
             PlayerWon_UpdateHisData(player1_won, player2_won, WinCombination);
             update_personal_level_data(player2_won, game_sec, score_Player2_numb);
+
+            if (PlayingInCreatedLevel) {
+                ConqueredPlayerCreatedLevel(curr_field);
+                Achievement.new(17);
+                Achievement.new(18);
+            };
         };
 
         if (personal_GameData.role == 'admin') {
+
+            LooseCounter(true);
+            Achievement.new(24);
+
             update_personal_level_data(player1_won, game_sec, score_Player1_numb);
 
             let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[1] / PlayerXP[2]) / -1;

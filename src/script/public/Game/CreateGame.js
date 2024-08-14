@@ -1634,6 +1634,9 @@ const InitCreateLevelScene = () => {
         if (createCostumField_title.textContent != "field name" && !FieldIsTooSmallForPatterns()) {
             createNewCostumField();
 
+            CreateCostumFieldCounter(true);
+            Achievement.new(23);
+
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
@@ -1651,6 +1654,9 @@ const InitCreateLevelScene = () => {
         // user must provide costum name and atleast one drawed pattern
         if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck && SetPointsOnWin) {
             createNewCostumPattern();
+
+            CreateCostumPatternCounter(true);
+            Achievement.new(22);
 
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;

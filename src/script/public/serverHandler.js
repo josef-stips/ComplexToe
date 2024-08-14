@@ -1604,6 +1604,12 @@ socket.on('StartGame', (RoomData) => { // RoomData
     };
 
     globalLevelID = RoomData[0].level_id;
+
+    if (random_player_mode) {
+        PlayedAgainstNRandomPlayer(true);
+        Achievement.new(20);
+        Achievement.new(21);
+    };
 });
 
 // When admin starts game, all clients recieve the global availible options

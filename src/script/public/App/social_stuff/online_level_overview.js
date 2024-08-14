@@ -199,6 +199,9 @@ class onlineLevelOverviewHandler {
                 level_scene_likes_btn.setAttribute("like_level_btn_is_active", "true");
                 level_scene_likes_btn.classList.add("active_like_btn");
                 level_likes_text.textContent = cb;
+
+                GiveRatingToLevel(this.level.level_name);
+                Achievement.new(19);
             });
 
         } catch (error) {

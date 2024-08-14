@@ -522,3 +522,117 @@ function patternsEqual(a, b) {
     };
     return true;
 };
+
+function ConqueredPlayerCreatedLevel(level_name = null) {
+    let finishedUserLevels = localStorage.getItem('finishedUserLevels');
+
+    if (finishedUserLevels) {
+        finishedUserLevels = JSON.parse(finishedUserLevels);
+
+        if (!finishedUserLevels.includes(level_name) && typeof level_name == 'string') finishedUserLevels.push(level_name);
+
+        localStorage.setItem('finishedUserLevels', JSON.stringify(finishedUserLevels));
+
+        return finishedUserLevels.length;
+
+    } else {
+        localStorage.setItem('finishedUserLevels', JSON.stringify([level_name]));
+
+        return 1;
+    };
+};
+
+function GiveRatingToLevel(level_name = null) {
+    let levelsWithRating = localStorage.getItem('levelsWithRating');
+
+    if (levelsWithRating) {
+        levelsWithRating = JSON.parse(levelsWithRating);
+
+        if (!levelsWithRating.includes(level_name) && typeof level_name == 'string') levelsWithRating.push(level_name);
+
+        localStorage.setItem('levelsWithRating', JSON.stringify(levelsWithRating));
+
+        return levelsWithRating.length;
+
+    } else {
+        localStorage.setItem('levelsWithRating', JSON.stringify([level_name]));
+        return 1;
+    };
+};
+
+function OnceAClanMember(bool) {
+    let OnceAClanMemberStorage = localStorage.getItem('OnceAClanMemberStorage');
+
+    if (OnceAClanMemberStorage == "true") {
+        bool && localStorage.setItem('OnceAClanMemberStorage', bool);
+        return true;
+
+    } else {
+        bool && localStorage.setItem('OnceAClanMemberStorage', bool);
+        return false;
+    };
+};
+
+function PlayedAgainstNRandomPlayer(increase) {
+    let PlayedAgainstRandomPlayer = localStorage.getItem('PlayedAgainstRandomPlayer');
+
+    if (PlayedAgainstRandomPlayer) {
+        PlayedAgainstRandomPlayer = Number(PlayedAgainstRandomPlayer);
+
+        increase && PlayedAgainstRandomPlayer++;
+        localStorage.setItem('PlayedAgainstRandomPlayer', PlayedAgainstRandomPlayer);
+        return PlayedAgainstRandomPlayer;
+
+    } else {
+        increase && localStorage.setItem('PlayedAgainstRandomPlayer', 1);
+        return 1;
+    };
+};
+
+function CreateCostumPatternCounter(increase) {
+    let CreateCostumPatternCount = localStorage.getItem('CreateCostumPatternCount');
+
+    if (CreateCostumPatternCount) {
+        CreateCostumPatternCount = Number(CreateCostumPatternCount);
+
+        increase && CreateCostumPatternCount++;
+        localStorage.setItem('CreateCostumPatternCount', CreateCostumPatternCount);
+        return CreateCostumPatternCount;
+
+    } else {
+        increase && localStorage.setItem('CreateCostumPatternCount', 1);
+        return 1;
+    };
+};
+
+function CreateCostumFieldCounter(increase) {
+    let CreateCostumFieldCount = localStorage.getItem('CreateCostumFieldCount');
+
+    if (CreateCostumFieldCount) {
+        CreateCostumFieldCount = Number(CreateCostumFieldCount);
+
+        increase && CreateCostumFieldCount++;
+        localStorage.setItem('CreateCostumFieldCount', CreateCostumFieldCount);
+        return CreateCostumFieldCount;
+
+    } else {
+        increase && localStorage.setItem('CreateCostumFieldCount', 1);
+        return 1;
+    };
+};
+
+function LooseCounter(increase) {
+    let LooseCount = localStorage.getItem('LooseCount');
+
+    if (LooseCount) {
+        LooseCount = Number(LooseCount);
+
+        increase && LooseCount++;
+        localStorage.setItem('LooseCount', LooseCount);
+        return LooseCount;
+
+    } else {
+        increase && localStorage.setItem('LooseCount', 1);
+        return 1;
+    };
+};

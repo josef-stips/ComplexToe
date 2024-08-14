@@ -172,6 +172,9 @@ class social_scene_class {
                                     }, 1200);
                                 });
 
+                                OnceAClanMember(true);
+                                Achievement.new(25)
+
                             } else if (can_join == "request_sended") {
 
                                 OpenedPopUp_WhereAlertPopUpNeeded = true;

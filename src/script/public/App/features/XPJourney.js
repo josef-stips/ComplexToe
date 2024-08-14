@@ -207,8 +207,8 @@ const ClickPoint = (Point, PointValue) => {
         if (IconsForItems[object][0] == 'img') {
             icon = document.createElement('img');
             icon.src = IconsForItems[object][1];
-            icon.width = "30";
-            icon.height = "30";
+            icon.style.width = "2vw";
+            icon.style.height = "2vw";
 
         } else {
             icon = document.createElement('i');
@@ -240,6 +240,8 @@ const UserGetsJourneyItems = (Items) => {
 
 // animation + save in storage
 const Get_XPReward_Animation = async(type, src, amount, element) => {
+    XPJourneyBtn.style.pointerEvents = "none";
+
     // position
     let start_position = XPJourneyBtn.getBoundingClientRect();
     let item_pos = IconsForItems[element][2].getBoundingClientRect();
@@ -326,6 +328,10 @@ const Get_XPReward_Animation = async(type, src, amount, element) => {
 
             setTimeout(() => {
                 reward_pickup.hide();
+
+                setTimeout(() => {
+                    XPJourneyBtn.style.pointerEvents = "all";
+                }, 1000);
             }, 1500);
         };
     }, 50);

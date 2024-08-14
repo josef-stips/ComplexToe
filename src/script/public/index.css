@@ -1004,7 +1004,7 @@ p#name-player1 {
 }
 
 .XP_JourneyBtn {
-    pointer-events: all !important;
+    pointer-events: all;
     transform: scale(1);
     transition: transform 0.15s ease-in-out;
     cursor: pointer;
