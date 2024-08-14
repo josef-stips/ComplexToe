@@ -214,24 +214,26 @@ class NewLevel {
                     SavedLevels[this.CurrentSelectedSetting.id] = this.CurrentSelectedSetting;
                     localStorage.setItem("SavedLevels", JSON.stringify(SavedLevels));
 
+                    this.selectedLevel = this.selectedLevel || [];
+
                     // copy saved information from current settings object to current selected level object so everything is equally updated
-                    if (this.selectedLevel != undefined) {
-                        this.selectedLevel[0] = this.CurrentSelectedSetting.bgcolor1;
-                        this.selectedLevel[1] = this.CurrentSelectedSetting.bgcolor2;
-                        this.selectedLevel[2] = this.CurrentSelectedSetting.requiredpoints;
-                        this.selectedLevel[3] = this.CurrentSelectedSetting.playertimer
-                        this.selectedLevel[4] = this.CurrentSelectedSetting.levelicon
-                        this.selectedLevel[5] = this.CurrentSelectedSetting.bgmusic
-                        this.selectedLevel[6] = this.CurrentSelectedSetting.allowedpatterns
-                        this.selectedLevel[7] = this.CurrentSelectedSetting.cellgrid
-                        this.selectedLevel[8] = this.CurrentSelectedSetting.name
-                        this.selectedLevel[9] = this.CurrentSelectedSetting.status
-                        this.selectedLevel[11] = this.CurrentSelectedSetting.id
-                        this.selectedLevel[15] = this.CurrentSelectedSetting.costumPatterns
-                        this.selectedLevel[16] = this.CurrentSelectedSetting.costumField
-                        this.selectedLevel[17] = this.CurrentSelectedSetting.BotMode
-                        this.selectedLevel[18] = this.CurrentSelectedSetting.BotPatterns
-                    };
+                    this.selectedLevel[0] = this.CurrentSelectedSetting.bgcolor1;
+                    this.selectedLevel[1] = this.CurrentSelectedSetting.bgcolor2;
+                    this.selectedLevel[2] = this.CurrentSelectedSetting.requiredpoints;
+                    this.selectedLevel[3] = this.CurrentSelectedSetting.playertimer
+                    this.selectedLevel[4] = this.CurrentSelectedSetting.levelicon
+                    this.selectedLevel[5] = this.CurrentSelectedSetting.bgmusic
+                    this.selectedLevel[6] = this.CurrentSelectedSetting.allowedpatterns
+                    this.selectedLevel[7] = this.CurrentSelectedSetting.cellgrid
+                    this.selectedLevel[8] = this.CurrentSelectedSetting.name
+                    this.selectedLevel[9] = this.CurrentSelectedSetting.status
+                    this.selectedLevel[11] = this.CurrentSelectedSetting.id
+                    this.selectedLevel[15] = this.CurrentSelectedSetting.costumPatterns
+                    this.selectedLevel[16] = this.CurrentSelectedSetting.costumField
+                    this.selectedLevel[17] = this.CurrentSelectedSetting.BotMode
+                    this.selectedLevel[18] = this.CurrentSelectedSetting.BotPatterns
+
+                    creative_level_instance.selectedLevel = this.selectedLevel;
 
                     this.history = {};
                     setTimeout(() => {
@@ -1537,18 +1539,20 @@ const InitCreateLevelScene = () => {
     });
 
     CreateLevel_CreateOwnStuff_btn.addEventListener("click", () => {
-        let tab_index = 1;
+        NewCreativeLevel.Save().then(() => {
+            let tab_index = 1;
 
-        let tab = document.querySelector(`.tab[target_container="${tab_index}"]`);
-        let container = document.querySelector(`.tab_container[content_container="${tab_index}"]`);
+            let tab = document.querySelector(`.tab[target_container="${tab_index}"]`);
+            let container = document.querySelector(`.tab_container[content_container="${tab_index}"]`);
 
-        deactivateTabs();
-        default_tab_content_view(container); // target container where all the tab content displays
+            deactivateTabs();
+            default_tab_content_view(container); // target container where all the tab content displays
 
-        DisplayPopUp_PopAnimation(CreateOwnStuffPopUp, "flex", true);
+            DisplayPopUp_PopAnimation(CreateOwnStuffPopUp, "flex", true);
 
-        // activate tab element visualy
-        tab.setAttribute("active_tap", "true");
+            // activate tab element visualy
+            tab.setAttribute("active_tap", "true");
+        });
     });
 
     tabContainer1_closeBtn.addEventListener("click", () => {
@@ -1627,17 +1631,13 @@ const InitCreateLevelScene = () => {
     });
 
     CreateField_createField_btn.addEventListener("click", () => {
-        // let sameCoord = createCostumField_xInput.textContent == createCostumField_yInput.textContent;
-        let sameCoord = true;
-
-        if (createCostumField_title.textContent != "field name" && sameCoord) {
+        if (createCostumField_title.textContent != "field name" && !FieldIsTooSmallForPatterns()) {
             createNewCostumField();
 
         } else {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
 
-            // AlertText.textContent = "Build your new field and provide a costum name for it. The x and y axes should be the same.";
-            AlertText.textContent = "Build your new field and provide a costum name for it.";
+            AlertText.textContent = "Build your new field and provide a custom name for it. Ensure that your current patterns do not exceed the boundaries of the field's x and y coordinates.";
             DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
         };
     });
@@ -1646,10 +1646,7 @@ const InitCreateLevelScene = () => {
         let drawed = checkUserDrawnPattern();
         let existsInGame = checkCostumPatternAlreadyInGame();
         let minimumIndexesRequiremementCheck = minimumIndexesRequiremement(3);
-        let CorrespondingPattenStoragePattern = document.querySelector(`[costum_pattern_name="${createCostumPattern_title.textContent}"][right="personal"]`);
         let SetPointsOnWin = createPattern_ValueInput.value.length > 0;
-
-        // console.log(drawed, createCostumPattern_title.textContent, minimumIndexesRequiremementCheck, existsInGame, " exists ?", CorrespondingPattenStoragePattern);
 
         // user must provide costum name and atleast one drawed pattern
         if (createCostumPattern_title.textContent != "pattern name" && createCostumPattern_title.textContent != "" && drawed && !existsInGame && minimumIndexesRequiremementCheck && SetPointsOnWin) {
@@ -1664,7 +1661,10 @@ const InitCreateLevelScene = () => {
     });
 
     CreateLevelKiBtn.addEventListener('click', () => {
-        NewCreativeLevel.BotMode_instance = new CreativeLevel_BotMode(NewCreativeLevel, NewCreativeLevel.selectedLevel);
+        NewCreativeLevel.Save()
+            .then(() => {
+                NewCreativeLevel.BotMode_instance = new CreativeLevel_BotMode(NewCreativeLevel, NewCreativeLevel.selectedLevel);
+            });
     });
 
     BotMode_popUp_questBtn.addEventListener('click', () => {
@@ -1698,6 +1698,9 @@ const InitCreateLevelScene = () => {
 
         if (Object.keys(NewCreativeLevel.CurrentSelectedSetting.BotPatterns).length <= 0) {
             NewCreativeLevel.CurrentSelectedSetting.BotMode = 0;
+
+        } else {
+            NewCreativeLevel.Save();
         };
     });
 

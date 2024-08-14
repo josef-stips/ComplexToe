@@ -840,7 +840,12 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
             };
 
             if (PlayingInCreatedLevel && curr_mode == GameMode[3].opponent) {
-                endGame_statusText.textContent = "Note that this match will not count as an official match, and your score will not be shown on the scoreboard.";
+
+                if (NewCreativeLevel) {
+                    endGame_statusText.textContent = "Note that this match will not count as an official match, and you cannot verify it through the offline mode.";
+                } else {
+                    endGame_statusText.textContent = "Note that this match will not count as an official match, and your score will not be shown on the scoreboard.";
+                };
             };
 
         } else {
@@ -910,13 +915,7 @@ const continueGame = () => {
         } else if (curr_mode != GameMode[2].opponent) {
 
             if (PlayingInCreatedLevel) { // Player played user created level
-                if (creative_level_instance.selectedLevel[9] == 0) {
-                    score_Player1_numb != score_Player2_numb && creative_level_instance.verified(); // User beat his own created level and can publish it now
-                    UserleavesGame();
-
-                } else if (creative_level_instance.selectedLevel[9] == 1) {
-                    restartGame();
-                };
+                UserleavesGame();
 
             } else { // user played standard card level from game
                 restartGame();

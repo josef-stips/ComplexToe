@@ -514,3 +514,11 @@ function BindPatternsWithCostumPatternsToIndexes(patterns, costum_patterns, x, y
 
     return [all_pattern_structures, all_pattern_names, all_pattern_values];
 };
+
+function patternsEqual(a, b) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false;
+    };
+    return true;
+};

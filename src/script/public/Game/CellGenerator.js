@@ -52,10 +52,6 @@ function generateCell(index) {
     let Cell = ConfigureCellSize(cell, xCell_Amount);
     cellGrid.appendChild(Cell);
 
-    if (xCell_Amount > yCell_Amount) {
-        cellGrid.style.gridAutoRows = "min-content";
-    };
-
     if (xCell_Amount < yCell_Amount) {
         cellGrid.style.overflowY = "visible";
         cellGrid.style.margin = "auto";
@@ -64,20 +60,36 @@ function generateCell(index) {
         ComplexToeField.style.display = "grid";
         ComplexToeField.style.alignItems = "";
         ComplexToeField.style.justifyContent = "";
-        document.querySelector(".GameArea-SideInfo-Footer").style.margin = "0 0 7.5% 0";
-        document.querySelector("#GameArea-FieldIcon").style.margin = "0.75vh 0 1vh 0";
-        Game_Upper_Field_Icon.style.margin = "0 0 5px 0";
+        document.querySelector("#GameArea-FieldIcon").style.margin = "1.5vh 0 1vh 0";
+        document.querySelector(".GameArea-SideInfo-Footer").style.margin = "0 0 5% 0";
+        document.querySelector(".GameArea-SideInfo-Footer").style.marginTop = "2vh";
+
+        cellGrid.style.minWidth = `var(--max-cellGrid-size)`;
+        cellGrid.style.minHeight = `var(--max-cellGrid-size)`;
+
+        ComplexToeField.style.padding = "1vh";
+        ComplexToeField.style.height = "70%";
 
     } else {
         cellGrid.style.overflowY = "unset";
-        cellGrid.style.margin = "-15px auto";
+        cellGrid.style.margin = "auto";
         ComplexToeField.style.height = "55vh";
         ComplexToeField.style.overflowY = "unset";
         ComplexToeField.style.display = "flex";
         ComplexToeField.style.alignItems = "flex-start";
         ComplexToeField.style.justifyContent = "center";
-        document.querySelector(".GameArea-SideInfo-Footer").style.margin = "";
         document.querySelector("#GameArea-FieldIcon").style.margin = "0 0 1vh 0";
+        document.querySelector(".GameArea-SideInfo-Footer").style.margin = "0 0 0 0";
+        document.querySelector(".GameArea-SideInfo-Footer").style.marginTop = "0";
+
+        ComplexToeField.style.padding = "";
+        ComplexToeField.style.height = "";
+    };
+
+    if (xCell_Amount > yCell_Amount) {
+        cellGrid.style.gridAutoRows = "min-content";
+        document.querySelector(".GameArea-SideInfo-Footer").style.margin = "0 0 0 0";
+        ComplexToeField.style.height = "70%";
     };
 };
 

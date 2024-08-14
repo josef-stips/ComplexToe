@@ -642,6 +642,13 @@ const toggleCustomPatternInNewLevel = (box, structure, name, value) => {
         NewCreativeLevel.toggle_costum_pattern("remove", name, structure, value);
 
     } else {
+        if (FieldIsTooSmallForPatterns(Number(NewCreativeLevel.selectedLevel[16].x), Number(NewCreativeLevel.selectedLevel[16].y)), [structure]) {
+            OpenedPopUp_WhereAlertPopUpNeeded = true;
+            AlertText.textContent = `This pattern exceeds the boundaries of the level's field`;
+            DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+            return;
+        };
+
         box.setAttribute("activated", "true");
         box.className = "fa-regular fa-square-check item";
 
@@ -663,6 +670,13 @@ const toggleCostumFieldInNewLevel = (box, name, x, y) => {
         NewCreativeLevel.toggle_costum_field("remove", name, x, y);
 
     } else {
+        if (FieldIsTooSmallForPatterns(Number(x), Number(y))) {
+            OpenedPopUp_WhereAlertPopUpNeeded = true;
+            AlertText.textContent = 'The current patterns exceed the boundaries of this field';
+            DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+            return;
+        };
+
         // uncheck all chechboxes 
         let AllFieldBoxes = document.querySelectorAll(`[corresponding_field]`);
 
@@ -699,33 +713,38 @@ const checkUserDrawnPattern = () => {
     return false;
 };
 
-// check if the costum pattern the user wants to create is already a normal win pattern in the game
+// check if the costum pattern the user wants to create is already an official win pattern in the game
 const checkCostumPatternAlreadyInGame = () => {
     const cells = [...createCostumPattern_Field.children];
-
-    // output data
     let indexes = [];
 
-    // get pattern indexes
     cells.forEach(cell => {
         if (cell.classList.contains("draw")) {
-            indexes.push(cell.getAttribute("cell-index"));
+            indexes.push(Number(cell.getAttribute("cell-index")));
         };
     });
 
-    // take pattern drawn by the user to its origin field indexes
-    xCell_Amount = 5;
-    yCell_Amount = 5;
+    let normalized_indexes = PatternStructureAsOrigin([0, 5, 10, 15, 20, 25], indexes, 5, 5);
+
+    console.log(indexes, normalized_indexes, OfficialGamePatterns, OfficialGamePatterns.some(pattern => patternsEqual(pattern, normalized_indexes)));
+
+    return OfficialGamePatterns.some(pattern => patternsEqual(pattern, normalized_indexes));
+};
+
+const FieldIsTooSmallForPatterns = (x = Number(createCostumField_xInput.textContent), y = Number(createCostumField_yInput.textContent),
+    structures = Object.keys(NewCreativeLevel.selectedLevel[15]).map(n => NewCreativeLevel.selectedLevel[15][n][n].structure)) => {
+
+    structures = structures.map(i => PatternStructureAsOrigin([0, 5, 10, 15, 20, 25], i, x, y));
+    xCell_Amount = x;
+    yCell_Amount = y;
     CalculateBoundaries();
-    let OriginPattern = PatternStructureAsOrigin(boundaries, indexes.map(i => Number(i)), xCell_Amount);
-    let InGamePatterns = OfficialGamePatterns;
+    structures = structures.map(i => structureAsNxNstructure(i, x, y, [0, 5, 10, 15, 20, 25]));
 
-    // console.log(InGamePatterns.find(pattern => OriginPattern.every((value, index) => value === pattern[index])));
+    console.log(structures);
 
-    // check if users pattern is already in game
-    return InGamePatterns.find(pattern => OriginPattern.every((value, index) => value === pattern[index])) !== undefined && true;
+    let patternThatIsOutOfBoundary = structures.find(s => Math.max(...s) > x * y || s.some(i => isNaN(i)));
 
-    // if users pattern is not in the game, function returns undefined and test is completed successfully
+    return patternThatIsOutOfBoundary; // [n,n, ...] || undefined
 };
 
 // check if the costum pattern that being rendered in the costum pattern preview is in the current level

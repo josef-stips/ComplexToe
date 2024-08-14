@@ -1038,7 +1038,13 @@ fieldsArea_back_btn.addEventListener('click', () => {
     CheckTreasureCanBeOpened();
 
     // animation
-    DarkLayerAnimation(gameModeCards_Div, gameModeFields_Div).then(sceneMode.default);
+    DarkLayerAnimation(gameModeCards_Div, gameModeFields_Div).then(() => {
+        sceneMode.default();
+        if (curr_mode == 'CreateLevel') {
+            Lobby.style.background = '';
+            curr_mode = '';
+        };
+    });
 
     CheckForMessages(); // Check for messages in database
     CheckForFriendRequests(); // check for friend requests
@@ -1141,6 +1147,7 @@ gameMode_OneVsOne_card.addEventListener('click', async() => {
 
     await sleep(300);
     sceneMode.full();
+    Lobby.style.background = `linear-gradient(180deg, var(--bg-gradient), #4969c712)`;
 });
 
 let training_arena;
