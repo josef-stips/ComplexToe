@@ -8597,7 +8597,7 @@ p.createCostumField_yInput {
 }
 
 .preview_pattern_title {
-    font-size: 5vh !important;
+    /* font-size: 5vh !important; */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -12707,6 +12707,372 @@ ul.default_sb_list.best_players_list div:first-child {
     display: flex;
     position: absolute;
     bottom: 10vh;
+}
+
+
+/* tournaments scene */
+
+.tournaments_scene {
+    display: none;
+    flex-direction: column;
+    width: 100vw;
+    height: 100%;
+    inset: 0;
+    margin: auto;
+    position: relative;
+    user-select: none;
+    background: linear-gradient(180deg, #171023, #4969c712);
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 3vh;
+    color: white;
+    font-weight: 500;
+}
+
+.tournament_scene_main {
+    width: 100%;
+    height: 72.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tournament_tournaments_list_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.tournaments_list {
+    width: 70%;
+    height: 100%;
+    overflow: hidden scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+.tournaments_list li {
+    width: -webkit-fill-available;
+    height: 10vh;
+    min-height: 10vh;
+    max-height: 10vh;
+    border-radius: 4vh;
+    border: 0.5vh solid white;
+    background: linear-gradient(180deg, var(--bg-app-color2), var(--bg-app-color));
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1vh 2vw;
+}
+
+.tournaments_list li .firstWrapper {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    color: white;
+}
+
+.tournaments_list li .secondWrapper {
+    width: -webkit-fill-available;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    flex-direction: row;
+    color: slategrey;
+    text-wrap: nowrap;
+    font-size: 2vh;
+}
+
+.tournaments_list li.active_t {
+    border-color: goldenrod;
+}
+
+.tournaments_list li.finished_t {
+    border-color: #535353;
+}
+
+.tournaments_list li.finished_t .firstWrapper {
+    color: #535353;
+}
+
+.tournament_scene_header {
+    width: 97.5%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    font-size: 3.3vh;
+}
+
+.tournament_scene_footer {
+    border-bottom: 0.5vh solid white;
+    padding: 1vh 0 1vh 1vw;
+    margin-bottom: 15vh;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: end;
+    justify-content: flex-start;
+    color: slategrey;
+    flex-direction: row;
+}
+
+.tournament_list_item_details_wrapper {
+    width: 100%;
+    text-wrap: nowrap;
+    display: flex;
+    gap: 1vw;
+    flex-direction: row;
+    align-items: self-end;
+    justify-content: flex-start;
+}
+
+
+/* create tournament pop up */
+
+.create_tournament_pop_up {
+    display: none;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 90vw;
+    height: 90vh;
+    background-color: var(--bg-app-color);
+    border: 0.5vh solid white;
+    border-radius: 4vh;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 3vh;
+    color: white;
+    font-weight: 500;
+    z-index: 10050;
+}
+
+.create_tournament_pop_up input {
+    color: white;
+}
+
+.create_tournament_header {
+    width: 97.5%;
+    height: 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.create_tournament_main {
+    border-top: 0.5vh solid white;
+    width: 100%;
+    height: 87.5%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.create_t_main_wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 2vh 1.5vw;
+}
+
+.create_t_form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 1vh;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.ct_form_wrapper {
+    width: 100%;
+    height: 10vh;
+    min-height: 10vh;
+    max-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1vh;
+}
+
+.ct_form_wrapper>div {
+    display: flex;
+    flex-direction: row;
+}
+
+.ct_form_wrapper>div.starting_date_inner_wrapper {
+    gap: 2vw;
+}
+
+.dateInput {
+    width: 3em;
+    border: none;
+    border-bottom: 0.3vh solid black;
+    text-align: center;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    outline: none;
+}
+
+.T_dateInputYear {
+    width: 4em;
+}
+
+.create_tournament_footer {
+    height: 5%;
+    width: 100%;
+}
+
+.label_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5vw;
+    text-wrap: nowrap;
+}
+
+.label_wrapper i {
+    font-size: 2vh;
+}
+
+.t_name_input {
+    width: 10em;
+}
+
+.ct_participantInput {
+    width: 7em;
+}
+
+.ct_patterns_wrapper {
+    width: 97.5%;
+    height: 100%;
+}
+
+.ct_allowed_patterns_wrapper {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    column-gap: 2vw;
+    grid-template-columns: repeat(20, 1fr);
+    overflow: scroll hidden;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0 0 1vh 0;
+}
+
+.ct_allowed_patterns_wrapper>div {
+    width: 10%;
+    max-width: 4em;
+}
+
+.ct_allowed_patterns_wrapper div.small_createCostumField_Field {
+    width: min-content;
+    width: 8em;
+    height: 8em;
+    font-size: 1vw;
+}
+
+.ct_allowed_patterns_wrapper div.headerWrapper {
+    width: 70%;
+}
+
+.ct_allowed_patterns_wrapper .preview_pattern_title {
+    font-size: 2.5vh !important;
+}
+
+.ct_allowed_patterns_wrapper .editItemsWrapper i {
+    font-size: 2.5vh !important;
+}
+
+.ct_allowed_patterns_wrapper div.headerWrapper {
+    width: 5.5em;
+    padding: 0 0 1vh 0;
+}
+
+.ct_allowed_patterns_wrapper::-webkit-scrollbar {
+    width: 0.5vw;
+    height: 2vh;
+    background-color: #121518;
+    cursor: pointer;
+}
+
+.ct_allowed_patterns_wrapper::-webkit-scrollbar-thumb {
+    border-radius: 1vh;
+    color: white;
+    background: white;
+    width: 1vw;
+    height: 1vh;
+    cursor: pointer;
+}
+
+.ct_form_wrapper_patterns {
+    height: 25vh;
+    max-height: 25vh;
+    min-height: 25vh;
+}
+
+.ct_form_wrapper_wrapper {
+    width: 100%;
+    height: 14vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.ct_form_wrapper_wrapper>div.ct_form_wrapper {
+    width: 20%;
+}
+
+.starting_date_inner_wrapper>div {
+    display: flex;
+    flex-direction: row;
+}
+
+.ct_btn {
+    position: absolute;
+    inset: 95% 5% 0 0;
+    color: white;
+    margin: auto calc(50% - 3vw);
+    margin-bottom: 1.5%;
+}
+
+.fieldInput_wrapper {
+    margin-left: 5vw;
+}
+
+.fieldSize_input {
+    width: 12em;
+}
+
+.clockInput_wrapper {
+    margin-left: 5vw;
+}
+
+.PlayerClock_input {
+    width: 8em;
+}
+
+.ct_pointsToGetInput {
+    width: 5em;
+}
+
+.pointsInputWrapper {
+    width: 13vw !important;
 }
 
 

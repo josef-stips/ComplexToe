@@ -59,6 +59,10 @@ class social_scene_class {
             inPlayerLevelsScene = true;
         });
 
+        social_stuff_cards[4].addEventListener("click", () => {
+            tournament_handler.tournament_btn_click_ev();
+        });
+
         social_stuff_cards[5].addEventListener("click", () => {
             this.clan_handler.popular_view();
             DarkLayerAnimation(clan_search_pop_up, online_stuff_scene);

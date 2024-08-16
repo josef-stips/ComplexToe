@@ -66,6 +66,7 @@
     <script defer src="App/scripts/functions.js"></script>
     <script defer src="App/script.js"></script>
     <script defer src="App/universal_stuff/Q&A_box.js"></script>
+    <script defer src="App/social_stuff/tournaments.js"></script>
     <script defer src="App/features/GameFieldScenery.js"></script>
     <script defer src="App/scripts/mail.js"></script>
     <script defer src="App/features/bosses/BossClass.js"></script>
@@ -529,6 +530,29 @@
                             <p>clans</p>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- tournaments scene -->
+            <div class="tournaments_scene">
+                <div class="tournament_scene_header">
+                    <i class="fa-solid fa-caret-left tournament_scene_back_btn scale_btn"></i>
+                    <i class="fa-solid fa-plus tournament_scene_plus_btn scale_btn"></i>
+                </div>
+                <div class="tournament_scene_main">
+
+                    <div class="tournament_tournaments_list_wrapper">
+                        <ul class="tournaments_list">
+
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="tournament_scene_footer">
+                    <ul class="tournament_list_item_details_wrapper">
+                        <li>Current tournament:</li>
+                        <li class="curr_t_display">None</li>
+                    </ul>
                 </div>
             </div>
 
@@ -8762,6 +8786,148 @@
             <div class="TA_patterns_btn scale_btn">
                 OK
             </div>
+        </div>
+    </div>
+
+    <!-- create tournament pop up -->
+    <div class="create_tournament_pop_up">
+        <div class="create_tournament_header">
+            <i class="fa-solid fa-question scale_btn create_tournament_quest_btn"></i>
+            <h1>Create Tournament</h1>
+            <i class="fa-solid fa-x scale_btn create_tournament_close_btn"></i>
+        </div>
+
+        <div class="create_tournament_main">
+            <div class="create_t_main_wrapper">
+                <form class="create_t_form">
+
+                    <div class="ct_form_wrapper_wrapper">
+                        <!--  -->
+                        <div class="ct_form_wrapper">
+                            <label>tournament name</label>
+
+                            <div>
+                                <input type="text" class="dateInput t_name_input" placeholder="tournament name">
+                            </div>
+                        </div>
+
+                        <!--  -->
+                        <div class="ct_form_wrapper" style="margin-left:2em;">
+                            <label>starting date</label>
+
+                            <div class="starting_date_inner_wrapper">
+                                <div>
+                                    <i class="fa-solid fa-caret-left"></i>
+                                    <input type="text" class="dateInput" maxlength="2" placeholder="DD">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </div>
+
+                                <div>
+                                    <i class="fa-solid fa-caret-left"></i>
+                                    <input type="text" class="dateInput" maxlength="2" placeholder="MM">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </div>
+
+                                <div>
+                                    <i class="fa-solid fa-caret-left"></i>
+                                    <input type="text" class="dateInput T_dateInputYear" maxlength="4" placeholder="YYYY">
+                                    <i class="fa-solid fa-caret-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ct_form_wrapper_wrapper">
+                        <!--  -->
+                        <div class="ct_form_wrapper">
+                            <label>duration (in days)</label>
+
+                            <div>
+                                <input type="text" class="dateInput ct_duration_input" placeholder="DD">
+                            </div>
+                        </div>
+
+                        <!--  -->
+                        <div class="ct_form_wrapper">
+                            <div class="label_wrapper">
+                                <label>amount of participants</label>
+                                <i class="fa-solid fa-question-circle cursor_btn ct_participant_amount_qust_btn" style="display: none;"></i>
+                            </div>
+
+                            <div>
+                                <input type="text" class="dateInput ct_participantInput" placeholder="4, 8, 16, 32">
+                            </div>
+                        </div>
+
+                        <!--  -->
+                        <div class="ct_form_wrapper fieldInput_wrapper">
+                            <div class="label_wrapper">
+                                <label>field size</label>
+                            </div>
+
+                            <div>
+                                <input type="text" class="dateInput fieldSize_input" placeholder="5, 10, 15, 20, 25, 30, 40">
+                            </div>
+                        </div>
+
+                        <!--  -->
+                        <div class="ct_form_wrapper clockInput_wrapper">
+                            <div class="label_wrapper">
+                                <label>player clock</label>
+                            </div>
+
+                            <div>
+                                <input type="text" class="dateInput PlayerClock_input" placeholder="5, 15, 30, 50, 70">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ct_form_wrapper_wrapper" style="height: 10.5vh;">
+
+                        <!--  -->
+                        <div class="ct_form_wrapper pointsInputWrapper">
+                            <div class="label_wrapper">
+                                <label>points to get</label>
+                            </div>
+
+                            <div>
+                                <input type="text" class="dateInput ct_pointsToGetInput" placeholder="1-50">
+                            </div>
+                        </div>
+
+                        <!--  -->
+                        <div class="ct_form_wrapper">
+                            <div class="label_wrapper">
+                                <label>amount of gems to put in the pot</label>
+                                <i class="fa-solid fa-question-circle cursor_btn ct_gems_pot_qust_btn"></i>
+                            </div>
+
+                            <div>
+                                <input type="text" class="dateInput ct_potGems_input" placeholder="1-999">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  -->
+                    <div class="ct_form_wrapper ct_form_wrapper_patterns">
+                        <div class="label_wrapper">
+                            <label>allowed patterns</label>
+                        </div>
+
+                        <div class="ct_patterns_wrapper">
+                            <div class="ct_allowed_patterns_wrapper">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="CreateLevelSceneButton ct_btn">create</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="create_tournament_footer">
+
         </div>
     </div>
 
