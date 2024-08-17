@@ -259,6 +259,7 @@ let ct_allowed_patterns_wrapper = document.querySelector('.ct_allowed_patterns_w
 let fieldSize_input = document.querySelector('.fieldSize_input');
 let PlayerClock_input = document.querySelector('.PlayerClock_input');
 let ct_pointsToGetInput = document.querySelector('.ct_pointsToGetInput');
+let tournament_pop_up = document.querySelector('.tournament_pop_up');
 
 let agree_ToS_btn = document.querySelector(".agree_ToS_btn");
 let AGB_PopUp = document.querySelector(".AGB_PopUp");
@@ -777,6 +778,10 @@ let ini_onlineGame_main = document.querySelectorAll('.ini_onlineGame_main')[1];
 let ini_onlineGame_footer = document.querySelectorAll('.ini_onlineGame_footer')[1];
 let level_scene_bot_mode_text = document.querySelector('.level_scene_bot_mode_text');
 let curr_t_display = document.querySelector('.curr_t_display');
+let tournament_close_btn = document.querySelector('.tournament_close_btn');
+let tournament_qust_btn = document.querySelector('.tournament_qust_btn');
+let tournament_name_title = document.querySelector('.tournament_name_title');
+let tournament_tree_wrapper = document.querySelector('.tournament_tree_wrapper');
 
 const TrainingArenaDifficutlyModeGameDisplay = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay');
 const TrainingArenaDifficutlyModeGameDisplayText = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay>p');

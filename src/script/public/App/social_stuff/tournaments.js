@@ -25,7 +25,7 @@ class TournamentHandler {
 
         tournament_scene_plus_btn.addEventListener('click', e => {
             if (this.tournaments_instances.length >= 4) {
-                AlertText.textContent = "You can create a maximum of 4 tournaments at a time.";
+                AlertText.textContent = "You can create a maximum of 4 tournaments at a time. An expired tournament will be removed after 3 days.";
                 DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
                 return;
             };
@@ -46,6 +46,16 @@ class TournamentHandler {
             let box = new QABOX();
             box.open();
         });
+
+        tournament_close_btn.addEventListener('click', () => {
+            tournament_pop_up.style.display = 'none';
+            DarkLayer.style.display = 'none';
+        });
+
+        tournament_qust_btn.addEventListener('click', () => {
+            let box = new QABOX(1, [`.`], { '': 'green' }, { 'c': [0, 0, 0, 0] }, false);
+            box.open();
+        });
     };
 
     open_create_tournament_pop_up() {
@@ -61,7 +71,6 @@ class TournamentHandler {
 
         ts.forEach(t => {
             let t_instance = new tournament(t);
-            this.tournaments_instances.push(t_instance);
             t_instance.generate(this.list, t);
         });
     };
@@ -81,13 +90,15 @@ class TournamentHandler {
 
         if (clan_data.role == 'leader') {
             this.fetch_tournaments().then((cb) => {
-                if (!cb) {
+                let t = cb || [];
+
+                if (t.length <= 0) {
                     this.open_create_tournament_pop_up();
                     return;
                 };
 
                 this.open_tournaments_scene();
-                this.tournaments = cb;
+                this.tournaments = t;
                 this.generate_tournaments(this.tournaments);
             });
         };
@@ -115,8 +126,143 @@ class TournamentHandler {
             tournament_scene_plus_btn.style.display = 'none';
             return;
         };
-
         tournament_scene_plus_btn.style.display = 'flex';
+    };
+
+    open_tournament(state, data) {
+        DisplayPopUp_PopAnimation(tournament_pop_up, 'flex', true);
+        this.generate_tree(state, data);
+        this.init_tournament_document(state, data);
+
+        switch (state) {
+            case 'waiting':
+                break;
+
+            case 'active':
+                break;
+
+            case 'expired':
+                break;
+
+            case 'full':
+                break;
+        };
+    };
+
+    generate_tree(state, tour_data) {
+        const data = tour_data.current_state;
+        let vertHeight = null;
+
+        switch (data.rounds.length) {
+            case 3:
+                vertHeight = 60;
+                break;
+
+            case 4:
+                vertHeight = 120;
+                break;
+
+            case 5:
+                vertHeight = 240;
+                break;
+
+            case 6:
+                vertHeight = 480;
+                break;
+        };
+
+        console.log(data);
+
+        const treeContainer = document.createElement('div');
+        treeContainer.classList.add('tournament_tree');
+
+        data.rounds.forEach((round, round_idx) => {
+            const roundColumn = document.createElement('div');
+            roundColumn.classList.add('tournament_tree_column');
+
+            round.matches.forEach(match => {
+                const matchWrapper = document.createElement('div');
+                matchWrapper.classList.add('tree_match_wrapper');
+
+                // Create match entries and ver lines
+                const player2 = this.createEntry(match.players[1]);
+
+                if (match.players[0]) { // when there is no player 1 and 2 that means there is no match
+
+                    const player1 = this.createEntry(match.players[0]);
+                    matchWrapper.appendChild(player1);
+
+                    const vertLine = document.createElement('div');
+                    vertLine.classList.add('tournament_tree_vert_line');
+                    matchWrapper.appendChild(vertLine);
+
+                    console.log(round.matches.length, round_idx);
+
+                    // length of vert line
+                    vertLine.style.padding = `calc(${vertHeight + ((vertHeight / 2) * round_idx)}% / (${round.matches.length * 2} + ${round.matches.length - 1})) 0.1vw`;
+
+                    if (vertHeight == 480 && round.matches.length == 1) {
+                        vertLine.style.padding = "calc(620%) 0.1vw";
+                    };
+                };
+
+                matchWrapper.appendChild(player2);
+                roundColumn.appendChild(matchWrapper);
+            });
+
+            treeContainer.appendChild(roundColumn);
+
+            // Add horizontal lines to connect to the next round if necessary
+            const rowLines = document.createElement('div');
+
+            if (!round.final) {
+                rowLines.classList.add('tree_row_lines');
+                for (let j = 0; j < round.matches.length; j++) {
+                    const horLine = document.createElement('div');
+                    horLine.classList.add('tournament_tree_hor_line');
+                    rowLines.appendChild(horLine);
+                };
+                treeContainer.appendChild(rowLines);
+            };
+
+            // set height of tree column
+            roundColumn.style.height = `${vertHeight}%`;
+            rowLines.style.height = `${vertHeight}%`;
+        });
+
+        tournament_tree_wrapper.textContent = null;
+        tournament_tree_wrapper.appendChild(treeContainer);
+
+        // doesn't work. typical javascript problem
+        setTimeout(() => {
+            chat_scroll_to_top('smooth', tournament_tree_wrapper);
+            chat_scroll_to_top('smooth', treeContainer);
+            chat_scroll_to_top('smooth', tournament_tree_wrapper);
+            chat_scroll_to_top('smooth', treeContainer);
+        }, 500);
+    };
+
+    createEntry(player) {
+        player = '???';
+
+        const entry = document.createElement('div');
+        entry.classList.add('tournament_tree_entry', 'scale_btn');
+
+        const square = document.createElement('div');
+        square.classList.add('t_tree_entry_square');
+
+        const text = document.createElement('div');
+        text.classList.add('t_tree_entry_text');
+        text.textContent = player || '???';
+
+        entry.appendChild(square);
+        entry.appendChild(text);
+
+        return entry;
+    };
+
+    init_tournament_document(state, data) {
+        tournament_name_title.textContent = data.name;
     };
 };
 
@@ -131,12 +277,13 @@ class tournament {
         let secondWrapper = document.createElement('div');
         let title = document.createElement('h1');
         let dateInfoWrapper = document.createElement('p');
+        let state_display = document.createElement('p');
 
         firstWrapper.classList.add('firstWrapper');
         secondWrapper.classList.add('secondWrapper');
 
         title.textContent = tournament_data.name;
-        dateInfoWrapper.textContent = `${formatDate(tournament_data.start_date)} - ${formatDate(tournament_data.finish_date)}\xa0
+        dateInfoWrapper.textContent = `${formatDate(tournament_data.start_date)} - ${formatDate(tournament_data.finish_date)}\xa0\xa0\xa0\xa0
             Participants: ${tournament_data.participant_amount}
             `;
 
@@ -145,14 +292,18 @@ class tournament {
         let currentDate = new Date();
 
         let cutoffDate = new Date(currentDate);
-        cutoffDate.setDate(currentDate.getDate() - 5);
+        cutoffDate.setDate(currentDate.getDate() - 3); // three days after the tournament finished
 
         if (end_date < cutoffDate) {
             return;
+        } else {
+            tournament_handler.tournaments_instances.push(this);
         };
 
         let offsetDate = new Date(start_date);
         offsetDate.setDate(start_date.getDate());
+
+        let tournament_state = 'waiting';
 
         if (offsetDate <= currentDate && end_date > currentDate) {
             item.classList.add('active_t');
@@ -160,21 +311,36 @@ class tournament {
             this.current_tournament = tournament_data;
 
             item.classList.add('cursor_btn');
+            tournament_state = 'active';
 
         } else if (end_date < currentDate) {
             item.classList.add('finished_t');
+            tournament_state = 'expired';
+
+        } else {
+            item.classList.add('cursor_btn');
         };
+
+        if (tournament_data.participant_amount >= tournament_data.allowed_amount) {
+            tournament_state = 'full';
+            item.classList.add('finished_t');
+        };
+
+        state_display.textContent = tournament_state;
 
         secondWrapper.appendChild(dateInfoWrapper);
         firstWrapper.appendChild(title);
+        firstWrapper.appendChild(state_display);
         item.appendChild(firstWrapper);
         item.appendChild(secondWrapper);
         list.appendChild(item);
+
+        this.list_item_event(item, tournament_data, tournament_state);
     };
 
-    list_item_event(item) {
+    list_item_event(item, data, state) {
         item.addEventListener('click', () => {
-
+            tournament_handler.open_tournament(state, data);
         });
     };
 };
@@ -417,7 +583,8 @@ class CreateTournamentHandler {
                 playerClock: Number(document.querySelector('.PlayerClock_input').value),
                 pointsToGet: Number(document.querySelector('.ct_pointsToGetInput').value),
                 gemsInPot: Number(document.querySelector('[placeholder="1-999"]').value),
-                allowedPatterns: this.allowed_patterns
+                allowedPatterns: this.allowed_patterns,
+                tree_structure: null
             };
 
             const durationInDays = tournamentData.duration;
@@ -434,7 +601,7 @@ class CreateTournamentHandler {
                 let selected_start = new Date(selectedDate);
                 let selected_end = new Date(endDate);
 
-                if (selected_start < t_end && selected_end > t_start) {
+                if (selected_start <= t_end && selected_end >= t_start) {
                     OpenedPopUp_WhereAlertPopUpNeeded = true;
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                     AlertText.textContent = "The selected tournament duration interferes with the duration of other tournaments.";
@@ -450,6 +617,9 @@ class CreateTournamentHandler {
 
     async submit_to_server(data) {
         try {
+            const tree_structure = generateTournamentData(data.participants);
+            data.tree_structure = tree_structure;
+
             await socket.emit('create_clan_tournament', data, JSON.parse(localStorage.getItem('clan_member_data')).clan_id, Number(localStorage.getItem('PlayerID')), cb => {
                 if (!cb) throw new Error();
 
@@ -541,6 +711,66 @@ monthDecrease.addEventListener('click', () => {
 
 yearIncrease.addEventListener('click', () => updateDateInput(yearInput, 1, 1900, 2100));
 yearDecrease.addEventListener('click', () => updateDateInput(yearInput, -1, 1900, 2100));
+
+function generateTournamentData(numPlayers) {
+    if (numPlayers < 2 || numPlayers & (numPlayers - 1)) {
+        throw new Error('Number of players must be a power of 2 (e.g., 2, 4, 8, 16, ...).');
+    };
+
+    const data = {
+        rounds: []
+    };
+
+    let round = 1;
+    let matches = [];
+    let matchNumber = 1;
+
+    for (let i = 0; i < numPlayers; i += 2) {
+        matches.push({
+            match: matchNumber++,
+            players: [`Player ???`, `Player ???`],
+            winner: null
+        });
+    };
+
+    data.rounds.push({
+        round: round++,
+        final: false,
+        matches: matches
+    });
+
+    while (matches.length > 1) {
+        const nextRoundMatches = [];
+
+        for (let i = 0; i < matches.length; i += 2) {
+            nextRoundMatches.push({
+                match: matchNumber++,
+                players: [`Player ???`, `Player ???`],
+                winner: null
+            });
+        };
+
+        data.rounds.push({
+            round: round++,
+            final: false,
+            matches: nextRoundMatches
+        });
+
+        matches = nextRoundMatches;
+    };
+
+    data.rounds.push({
+        round: round++,
+        final: true,
+        matches: [{
+            match: matchNumber++,
+            players: [null, null],
+            winner: null
+        }]
+    });
+
+    return data;
+};
 
 let tournament_handler = new TournamentHandler([]);
 tournament_handler.init();
