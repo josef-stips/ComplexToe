@@ -782,6 +782,13 @@ let tournament_close_btn = document.querySelector('.tournament_close_btn');
 let tournament_qust_btn = document.querySelector('.tournament_qust_btn');
 let tournament_name_title = document.querySelector('.tournament_name_title');
 let tournament_tree_wrapper = document.querySelector('.tournament_tree_wrapper');
+let join_t_close_btn = document.querySelector('.join_t_close_btn');
+let join_tournament_pop_up = document.querySelector('.join_tournament_pop_up');
+let join_t_gems_display = document.querySelector('.join_t_gems_display');
+let join_t_Joinbtn = document.querySelector('.join_t_Joinbtn');
+let tournament_pot_value_display = document.querySelector('.tournament_pot_value_display');
+let tournament_pot = document.querySelector('.tournament_pot');
+let t_participate_bool_display = document.querySelector('.t_participate_bool_display');
 
 const TrainingArenaDifficutlyModeGameDisplay = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay');
 const TrainingArenaDifficutlyModeGameDisplayText = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay>p');

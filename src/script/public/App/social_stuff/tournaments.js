@@ -7,6 +7,8 @@ class TournamentHandler {
         this.current_tournament = null;
 
         this.create_tournament_handler = new CreateTournamentHandler();
+
+        this.clicked_tournament = [];
     };
 
     init() {
@@ -53,8 +55,55 @@ class TournamentHandler {
         });
 
         tournament_qust_btn.addEventListener('click', () => {
-            let box = new QABOX(1, [`.`], { '': 'green' }, { 'c': [0, 0, 0, 0] }, false);
+            let box = new QABOX(2, [`This is the tournament tree.`,
+                `When the tournament starts, each participant receives a message. Every participant must play against their opponent, and the winner advances to the second round.`
+            ], { 'round': 'green', 'winner': 'royalblue' }, { 'winner': [0, 0, 0, 0] }, false);
             box.open();
+        });
+
+        join_t_close_btn.addEventListener('click', () => {
+            join_tournament_pop_up.style.display = 'none';
+            DarkLayer.style.display = 'none';
+        });
+
+        join_t_Joinbtn.addEventListener('click', () => {
+            this.contribute_to_the_pot_and_participate(this.clicked_tournament[1].gems_to_put_in_pot);
+        });
+    };
+
+    contribute_to_the_pot_and_participate(amount) {
+        let gemsLocalStorage = Number(localStorage.getItem('GemsItem'));
+
+        if (gemsLocalStorage < amount) {
+            AlertText.textContent = 'You have not enough gems to participate.';
+            DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+            return;
+        };
+
+        let newAmount = gemsLocalStorage - amount;
+        localStorage.setItem('GemsItem', newAmount);
+
+        socket.emit('contribute_to_put_and_participate', amount, this.clicked_tournament[1].id, Number(localStorage.getItem('PlayerID')), (cb, res, t_data) => {
+            join_t_close_btn.click();
+
+            if (!cb) {
+                AlertText.textContent = res;
+                DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                return;
+            };
+
+            tournament_handler.tournament_btn_click_ev().then(() => {
+                setTimeout(() => {
+                    this.clicked_tournament[1] = t_data;
+                    this.open_tournament(this.clicked_tournament[0], t_data, Number(localStorage.getItem('PlayerID')));
+
+                    setTimeout(() => {
+                        OpenedPopUp_WhereAlertPopUpNeeded = true;
+                        AlertText.textContent = res;
+                        DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                    }, 200);
+                }, 900);
+            });
         });
     };
 
@@ -129,27 +178,53 @@ class TournamentHandler {
         tournament_scene_plus_btn.style.display = 'flex';
     };
 
-    open_tournament(state, data) {
+    async open_tournament(state, data, player_id) {
+        if (!data.participants.includes(player_id) && state == 'waiting') {
+            DisplayPopUp_PopAnimation(join_tournament_pop_up, 'flex', true);
+
+            join_t_gems_display.textContent = this.clicked_tournament[1].gems_to_put_in_pot;
+            return;
+        };
+
         DisplayPopUp_PopAnimation(tournament_pop_up, 'flex', true);
-        this.generate_tree(state, data);
+        await this.generate_tree(state, data);
         this.init_tournament_document(state, data);
+
+        // base case: user participates
+        tournament_pot.removeEventListener('click', tournament_pot.ev);
 
         switch (state) {
             case 'waiting':
+                tournament_pot.addEventListener('click', tournament_pot.ev = () => {
+                    OpenedPopUp_WhereAlertPopUpNeeded = true;
+                    AlertText.textContent = `If you win, you'll receive ${this.clicked_tournament[1].pot_value} gems.`;
+                    DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                });
+
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participate' : "You don't participate";
                 break;
 
             case 'active':
+                tournament_pot.addEventListener('click', tournament_pot.ev = () => {
+                    OpenedPopUp_WhereAlertPopUpNeeded = true;
+                    AlertText.textContent = `If you win, you'll receive ${this.clicked_tournament[1].pot_value} gems.`;
+                    DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                });
+
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participate' : "You don't participate";
                 break;
 
             case 'expired':
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participated' : "You didn't participate";
                 break;
 
             case 'full':
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participate' : "You don't participate";
                 break;
         };
     };
 
-    generate_tree(state, tour_data) {
+    async generate_tree(state, tour_data) {
         const data = tour_data.current_state;
         let vertHeight = null;
 
@@ -176,27 +251,25 @@ class TournamentHandler {
         const treeContainer = document.createElement('div');
         treeContainer.classList.add('tournament_tree');
 
-        data.rounds.forEach((round, round_idx) => {
+        data.rounds.forEach(async(round, round_idx) => {
             const roundColumn = document.createElement('div');
             roundColumn.classList.add('tournament_tree_column');
 
-            round.matches.forEach(match => {
+            round.matches.forEach(async(match, i) => {
                 const matchWrapper = document.createElement('div');
                 matchWrapper.classList.add('tree_match_wrapper');
 
                 // Create match entries and ver lines
-                const player2 = this.createEntry(match.players[1]);
+                const player2 = await this.createEntry(match.players[1], data, round_idx);
 
                 if (match.players[0]) { // when there is no player 1 and 2 that means there is no match
 
-                    const player1 = this.createEntry(match.players[0]);
+                    const player1 = await this.createEntry(match.players[0], data, round_idx);
                     matchWrapper.appendChild(player1);
 
                     const vertLine = document.createElement('div');
                     vertLine.classList.add('tournament_tree_vert_line');
                     matchWrapper.appendChild(vertLine);
-
-                    console.log(round.matches.length, round_idx);
 
                     // length of vert line
                     vertLine.style.padding = `calc(${vertHeight + ((vertHeight / 2) * round_idx)}% / (${round.matches.length * 2} + ${round.matches.length - 1})) 0.1vw`;
@@ -242,27 +315,51 @@ class TournamentHandler {
         }, 500);
     };
 
-    createEntry(player) {
-        player = '???';
+    async createEntry(player, tournament_data, index) {
+        return new Promise(async(res) => {
+            let player_text = player || 'Player ???';
 
-        const entry = document.createElement('div');
-        entry.classList.add('tournament_tree_entry', 'scale_btn');
+            const entry = document.createElement('div');
+            entry.classList.add('tournament_tree_entry', 'scale_btn');
 
-        const square = document.createElement('div');
-        square.classList.add('t_tree_entry_square');
+            const square = document.createElement('div');
+            square.classList.add('t_tree_entry_square');
 
-        const text = document.createElement('div');
-        text.classList.add('t_tree_entry_text');
-        text.textContent = player || '???';
+            const text = document.createElement('div');
+            text.classList.add('t_tree_entry_text');
+            text.textContent = player_text;
 
-        entry.appendChild(square);
-        entry.appendChild(text);
+            if (tournament_data.rounds[index].final) {
+                if (player_text.includes('???')) text.textContent = 'Winner ???';
+                entry.classList.add('t_tree_entry_winner');
+            };
 
-        return entry;
+            entry.appendChild(square);
+            entry.appendChild(text);
+
+            await socket.emit('GetDataByID', Number(player_text.replace('Player ', '')), cb => {
+                cb = cb || {}
+
+                if (cb.player_name) {
+                    console.log(cb);
+                    text.textContent = cb.player_name
+
+                    entry.addEventListener('click', () => {
+                        if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {
+                            OpenOwnUserProfile();
+                        } else {
+                            ClickedOnPlayerInfo(cb);
+                        };
+                    });
+                };
+                res(entry);
+            });
+        });
     };
 
     init_tournament_document(state, data) {
         tournament_name_title.textContent = data.name;
+        tournament_pot_value_display.textContent = data.pot_value;
     };
 };
 
@@ -340,7 +437,11 @@ class tournament {
 
     list_item_event(item, data, state) {
         item.addEventListener('click', () => {
-            tournament_handler.open_tournament(state, data);
+            let pId = Number(localStorage.getItem('PlayerID'));
+            tournament_handler.clicked_tournament = [state, data];
+
+            console.log(data, state);
+            tournament_handler.open_tournament(state, data, pId);
         });
     };
 };

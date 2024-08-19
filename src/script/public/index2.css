@@ -5401,7 +5401,7 @@ ul.default_sb_list.best_players_list div:first-child {
     font-size: 3vh;
     color: white;
     font-weight: 500;
-    z-index: 10050;
+    z-index: 10000;
 }
 
 .tournament_header {
@@ -5422,6 +5422,36 @@ ul.default_sb_list.best_players_list div:first-child {
     justify-content: flex-start;
     /* padding: 3vh; */
     overflow-y: auto;
+}
+
+.tournament_pot {
+    position: absolute;
+    top: 12.7%;
+    right: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1vh;
+    width: 9vw;
+    height: 9vw;
+    z-index: 1;
+    background: var(--bg-app-color2);
+}
+
+.tournament_pot img {
+    width: 7vw;
+    height: 7vw;
+}
+
+.tournament_pot span {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    gap: 0.2vw;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .tournament_tree_wrapper {
@@ -5464,17 +5494,32 @@ ul.default_sb_list.best_players_list div:first-child {
     flex-direction: column;
     gap: 0.5vh;
     text-wrap: nowrap;
+    align-items: center;
+}
+
+.tournament_tree_entry.t_tree_entry_winner {
+    animation: infinite ease-in-out 3s floating-el;
 }
 
 .t_tree_entry_square {
-    padding: 2vw 2vw;
+    padding: 1.5vw 1.5vw;
     background: white;
     border-radius: 2vh;
+    border: 0.7vh solid rgb(124, 124, 124);
+}
+
+.tournament_tree_entry.t_tree_entry_winner .t_tree_entry_square {
+    background: goldenrod;
+    border: 0.7vh solid rgb(218, 116, 32);
 }
 
 .t_tree_entry_text {
     font-size: 2vh;
     font-weight: 500;
+}
+
+.tournament_tree_entry.t_tree_entry_winner .t_tree_entry_text {
+    color: goldenrod;
 }
 
 .tournament_footer {
@@ -5525,6 +5570,80 @@ ul.default_sb_list.best_players_list div:first-child {
     align-items: center;
     justify-content: space-around;
     position: relative;
+}
+
+
+/* join tournament pop up */
+
+.join_tournament_pop_up {
+    display: none;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 55vw;
+    height: 55vh;
+    background-color: var(--bg-app-color);
+    border: 0.5vh solid white;
+    border-radius: 4vh;
+    user-select: none;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    font-size: 3vh;
+    color: white;
+    font-weight: 500;
+    z-index: 10050;
+}
+
+.join_t_header {
+    width: 97.5%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.join_t_main {
+    width: 95%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.join_t_main_InnerWrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.join_t_main_InnerWrapper span {
+    height: max-content;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5vw;
+    /* text-overflow: ellipsis; */
+    /* overflow: auto; */
+    /* width: 100%; */
+    /* line-break: anywhere; */
+}
+
+.join_t_main_InnerWrapper span p {
+    text-wrap: nowrap;
+}
+
+.join_t_gems_display {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
 }
 
 
