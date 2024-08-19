@@ -5454,6 +5454,13 @@ ul.default_sb_list.best_players_list div:first-child {
     justify-content: center;
 }
 
+.t_participate_bool_display {
+    position: absolute;
+    top: 12%;
+    right: 17%;
+    color: slategray;
+}
+
 .tournament_tree_wrapper {
     width: 100%;
     height: 100vh;

@@ -56,8 +56,8 @@ class TournamentHandler {
 
         tournament_qust_btn.addEventListener('click', () => {
             let box = new QABOX(2, [`This is the tournament tree.`,
-                `When the tournament starts, each participant receives a message. Every participant must play against their opponent, and the winner advances to the second round.`
-            ], { 'round': 'green', 'winner': 'royalblue' }, { 'winner': [0, 0, 0, 0] }, false);
+                `When the tournament starts, each participant receives a message. Every participant must play against their opponent, and the winner advances to the next round. If both players did no match together, the better player will advance to the next round but will lose half of their XP!`
+            ], { 'round': 'green', 'winner': 'royalblue', 'lose': 'red', 'XP': 'red' }, { 'winner': [0, 0, 0, 0] }, false);
             box.open();
         });
 
@@ -201,7 +201,7 @@ class TournamentHandler {
                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
                 });
 
-                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participate' : "You don't participate";
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('PlayerID'))) ? 'You participate' : "You don't participate";
                 break;
 
             case 'active':
@@ -211,15 +211,15 @@ class TournamentHandler {
                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
                 });
 
-                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participate' : "You don't participate";
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('PlayerID'))) ? 'You participate' : "You don't participate";
                 break;
 
             case 'expired':
-                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participated' : "You didn't participate";
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('PlayerID'))) ? 'You participated' : "You didn't participate";
                 break;
 
             case 'full':
-                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('GemsItem'))) ? 'You participate' : "You don't participate";
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('PlayerID'))) ? 'You participate' : "You don't participate";
                 break;
         };
     };
