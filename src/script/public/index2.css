@@ -5653,6 +5653,20 @@ ul.default_sb_list.best_players_list div:first-child {
     height: 100%;
 }
 
+.tournament_match_btn {
+    position: absolute;
+    top: auto;
+    right: -25%;
+    width: 2vw;
+    height: 2vw;
+    margin: 0 0 70% 0;
+    padding: 0.6vw;
+    background: var(--bg-app-color2);
+    border-radius: 100%;
+    pointer-events: all;
+    border: 0.2vw solid #ebebeb;
+}
+
 
 /* Animations */
 

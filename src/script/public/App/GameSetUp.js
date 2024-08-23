@@ -201,7 +201,7 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
     };
 };
 
-const UserClicksNxNDefaultSettings = (readonly) => {
+const UserClicksNxNDefaultSettings = (readonly, is_tournament) => {
     killAllDrawnCells = false;
 
     Player1_IconInput.style.color = localStorage.getItem('userInfoColor');
@@ -250,6 +250,11 @@ const UserClicksNxNDefaultSettings = (readonly) => {
             SetAllowedPatternsWrapper.style.display = 'flex';
         };
     };
+
+    if (!is_tournament) {
+        SetPlayerNames_AdditionalSettings.style.display = "flex";
+    };
+    SetPlayerNames_AdditionalSettings.style.display = "none";
 };
 
 const UserClicksOfflineModeCard = (target) => {
@@ -362,7 +367,10 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
     if (Player1_NameInput.value != "" &&
         Player1_IconInput.value != "" &&
         Check[0] == true && Check[1] == true && !PlayingInCreatedLevel || PlayingInCreatedLevel &&
-        Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[1] == true && creative_level_instance.Settings["playertimer"][creative_level_instance.selectedLevel[3]]) {
+        Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[1] == true && creative_level_instance.Settings["playertimer"][creative_level_instance.selectedLevel[3]] ||
+
+        tournament_mode && Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[3]
+    ) {
         // server
         let fieldIndex = curr_field_ele.getAttribute('index');
         let fieldTitle = curr_field_ele.getAttribute('title');

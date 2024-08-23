@@ -1614,7 +1614,7 @@ ol.UserInfo-list img {
     bottom: 65vh;
     margin: auto;
     font-size: 3vw;
-    font-weight: 500;
+    font-weight: 700;
     width: max-content;
     height: max-content;
 }
@@ -2096,6 +2096,10 @@ ol.UserInfo-list img {
     border-radius: 4vh;
     border: 0.4vh solid white;
     margin: 1vw;
+}
+
+.TrainingArena_Patterns_popUp .preview_cell.cell {
+    font-size: 2vh;
 }
 
 

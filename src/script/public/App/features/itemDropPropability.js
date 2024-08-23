@@ -284,7 +284,6 @@ function UserGets_N_Items(n) {
     // for achievements
     if (exploredItems["encryptedWriting"] >= 10 && !localStorage.getItem("UserGot10EncryptedWritings")) {
         Achievement.new(16);
-        window.App.new_achievement(16);
         localStorage.setItem("UserGot10EncryptedWritings", "true");
     };
 

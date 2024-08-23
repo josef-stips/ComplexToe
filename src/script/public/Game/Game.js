@@ -157,6 +157,7 @@ let global_creative_level_data = null;
 let globalLevelID = null;
 
 let arena_mode = false;
+let tournament_mode = false;
 
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns

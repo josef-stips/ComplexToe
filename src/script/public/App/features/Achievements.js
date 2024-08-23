@@ -335,107 +335,159 @@ class Achievements {
             case 0: // complete advanture map
                 if (!completed_mapLevel10 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 1: // beat first map advanture boss and complete the level
                 if (completed_mapLevel4 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 2: // unlocked 30x30 field
                 if (onlineMatches >= 10 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 3: // unlocked 40x40 field
                 if (onlineMatches >= 30 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 4: // online wins 1
                 if (onlineMatches >= 1 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 5: // online wins
                 if (onlineMatches >= 5 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 6: // online wins 
                 if (onlineMatches >= 25 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 7: // online wins 
                 if (onlineMatches >= 70 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 8: // online wins 
                 if (onlineMatches >= 120 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 9: // online wins 
                 if (onlineMatches >= 200 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 10: // online wins 
                 if (onlineMatches >= 400 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 11: // online wins 
                 if (onlineMatches >= 500 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 12: // online wins 
                 if (onlineMatches >= 5000 && !this.unlocked[index]) {
                     this.unlock_achievement(index);
+                    window.App.new_achievement(index);
                 };
                 break;
             case 13: // buy skin for the first time
-                (!localStorage.getItem("UserBoughtSkinForTheFirstTime") && !this.unlocked[index]) && this.unlock_achievement(index);
+                if (!localStorage.getItem("UserBoughtSkinForTheFirstTime") && !this.unlocked[index]) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 14: // beat your own level for the firs time to be able to publish it
-                (!localStorage.getItem("UserVerifiedLevelForTheFirstTime") && !this.unlocked[index]) && this.unlock_achievement(index);
+                if (!localStorage.getItem("UserVerifiedLevelForTheFirstTime") && !this.unlocked[index]) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 15: // publish your own level for the first time
-                (!localStorage.getItem("UserPublishedLevelForTheFirstTime") && !this.unlocked[index]) && this.unlock_achievement(index);
+                if (!localStorage.getItem("UserPublishedLevelForTheFirstTime") && !this.unlocked[index]) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 16: // collect 10 encrypted writings
-                (!localStorage.getItem("UserGot10EncryptedWritings") && !this.unlocked[index]) && this.unlock_achievement(index);
+                if (!localStorage.getItem("UserGot10EncryptedWritings") && !this.unlocked[index]) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
 
             case 17:
-                if (ConqueredPlayerCreatedLevel() >= 10) this.unlock_achievement(index);
+                if (ConqueredPlayerCreatedLevel() >= 10) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 18:
-                if (ConqueredPlayerCreatedLevel() >= 50) this.unlock_achievement(index);
+                if (ConqueredPlayerCreatedLevel() >= 50) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 19:
-                if (GiveRatingToLevel() >= 20) this.unlock_achievement(index);
+                if (GiveRatingToLevel() >= 20) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 20:
-                if (PlayedAgainstNRandomPlayer() >= 10) this.unlock_achievement(index);
+                if (PlayedAgainstNRandomPlayer() >= 10) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 21:
-                if (PlayedAgainstNRandomPlayer() >= 50) this.unlock_achievement(index);
+                if (PlayedAgainstNRandomPlayer() >= 50) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 22:
-                if (CreateCostumPatternCounter() >= 5) this.unlock_achievement(index);
+                if (CreateCostumPatternCounter() >= 5) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 23:
-                if (CreateCostumFieldCounter() >= 5) this.unlock_achievement(index);
+                if (CreateCostumFieldCounter() >= 5) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 24:
-                if (LooseCounter() >= 100) this.unlock_achievement(index);
+                if (LooseCounter() >= 100) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
             case 25:
-                OnceAClanMember() && this.unlock_achievement(index);
+                if (OnceAClanMember()) {
+                    this.unlock_achievement(index);
+                    window.App.new_achievement(index);
+                };
                 break;
         };
     };

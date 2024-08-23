@@ -655,7 +655,6 @@ function buySkin(user_currency_amount, currency) {
     // console.log(allFalse, skins, SkinsCopy);
     if (allFalse && !localStorage.getItem("UserBoughtSkinForTheFirstTime")) {
         Achievement.new(13);
-        window.App.new_achievement(13);
     };
 
     skins[selected_skin.name] = true;

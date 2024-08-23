@@ -67,8 +67,8 @@ const SpellFoundAnimation = (index) => {
     // create spell item 
     let img = document.createElement('img');
     img.src = "../public/assets/game/spell.svg";
-    img.width = "24";
-    img.height = "24";
+    img.style.width = "3vh";
+    img.style.height = "3vh";
     img.style.transition = "transform 1s ease-in-out, opacity 1.2s linear";
     img.style.zIndex = "10001"
     img.style.position = "absolute"

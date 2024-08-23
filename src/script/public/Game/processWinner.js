@@ -1452,63 +1452,54 @@ function setNew_SkillPoints(plus) {
         case 1:
             if (!localStorage.getItem("wonOnlineMatches_1")) {
                 Achievement.new(4);
-                window.App.new_achievement(4);
                 localStorage.setItem("wonOnlineMatches_1", "true");
             };
             break;
         case 5:
             if (!localStorage.getItem("wonOnlineMatches_5")) {
                 Achievement.new(5);
-                window.App.new_achievement(5);
                 localStorage.setItem("wonOnlineMatches_5", "true");
             };
             break;
         case 25:
             if (!localStorage.getItem("wonOnlineMatches_25")) {
                 Achievement.new(6);
-                window.App.new_achievement(6);
                 localStorage.setItem("wonOnlineMatches_25", "true");
             };
             break;
         case 70:
             if (!localStorage.getItem("wonOnlineMatches_70")) {
                 Achievement.new(7);
-                window.App.new_achievement(7);
                 localStorage.setItem("wonOnlineMatches_70", "true");
             };
             break;
         case 120:
             if (!localStorage.getItem("wonOnlineMatches_120")) {
                 Achievement.new(8);
-                window.App.new_achievement(8);
                 localStorage.setItem("wonOnlineMatches_120", "true");
             };
             break;
         case 200:
             if (!localStorage.getItem("wonOnlineMatches_200")) {
                 Achievement.new(9);
-                window.App.new_achievement(9);
                 localStorage.setItem("wonOnlineMatches_200", "true");
             };
             break;
         case 400:
             if (!localStorage.getItem("wonOnlineMatches_400")) {
                 Achievement.new(10);
-                window.App.new_achievement(10);
                 localStorage.setItem("wonOnlineMatches_400", "true");
             };
             break;
         case 500:
             if (!localStorage.getItem("wonOnlineMatches_500")) {
                 Achievement.new(11);
-                window.App.new_achievement(11);
                 localStorage.setItem("wonOnlineMatches_500", "true");
             };
             break;
         case 5000:
             if (!localStorage.getItem("wonOnlineMatches_5000")) {
                 Achievement.new(12);
-                window.App.new_achievement(12);
                 localStorage.setItem("wonOnlineMatches_5000", "true");
             };
             break;

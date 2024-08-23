@@ -985,7 +985,6 @@ class NewLevel {
 
                 if (!localStorage.getItem("UserVerifiedLevelForTheFirstTime")) {
                     Achievement.new(14);
-                    window.App.new_achievement(14);
                     localStorage.setItem("UserVerifiedLevelForTheFirstTime", "true");
                 };
             });
@@ -1174,7 +1173,6 @@ const InitCreateLevelScene = () => {
                         socket.emit("PublishLevel", NewCreativeLevel.selectedLevel[11], cb => {
                             if (!localStorage.getItem("UserPublishedLevelForTheFirstTime")) {
                                 Achievement.new(15);
-                                window.App.new_achievement(15);
                                 localStorage.setItem("UserPublishedLevelForTheFirstTime", "true");
                             };
 

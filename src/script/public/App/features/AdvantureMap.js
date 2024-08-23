@@ -795,7 +795,6 @@ function UserWon_AdvantureLevel(won_levelIndex) {
                 // for achievement 
                 if (won_levelIndex == 4) {
                     Achievement.new(1);
-                    window.App.new_achievement(1);
                 };
 
             } else {

@@ -9,6 +9,8 @@ class TournamentHandler {
         this.create_tournament_handler = new CreateTournamentHandler();
 
         this.clicked_tournament = [];
+        this.this_tournament_started = false;
+        this.your_opponent = null;
     };
 
     init() {
@@ -222,6 +224,17 @@ class TournamentHandler {
                 t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('PlayerID'))) ? 'You participate' : "You don't participate";
                 break;
         };
+
+        this.init_rounds_time(state, data, player_id);
+    };
+
+    init_rounds_time(state, data, player_id) {
+        let startd = new Date(data.start_date);
+        let endd = new Date(data.finish_date);
+
+        if (new Date(data.start_date) >= new Date()) {
+            this.this_tournament_started = true;
+        };
     };
 
     async generate_tree(state, tour_data) {
@@ -248,6 +261,8 @@ class TournamentHandler {
 
         console.log(data);
 
+        data.rounds[1].matches[0].players[1] = 'Player 123'
+
         const treeContainer = document.createElement('div');
         treeContainer.classList.add('tournament_tree');
 
@@ -257,14 +272,19 @@ class TournamentHandler {
 
             round.matches.forEach(async(match, i) => {
                 const matchWrapper = document.createElement('div');
+                const MatchBtn = document.createElement('img');
+
                 matchWrapper.classList.add('tree_match_wrapper');
+                MatchBtn.classList.add('tournament_match_btn');
+                MatchBtn.classList.add('scale_btn');
+                MatchBtn.src = 'assets/game/crossed-swords copy.svg';
 
                 // Create match entries and ver lines
-                const player2 = await this.createEntry(match.players[1], data, round_idx);
+                const player2 = await this.createEntry(match.players[1], data, round_idx, match.players[0]);
 
                 if (match.players[0]) { // when there is no player 1 and 2 that means there is no match
 
-                    const player1 = await this.createEntry(match.players[0], data, round_idx);
+                    const player1 = await this.createEntry(match.players[0], data, round_idx, match.players[1]);
                     matchWrapper.appendChild(player1);
 
                     const vertLine = document.createElement('div');
@@ -277,6 +297,19 @@ class TournamentHandler {
                     if (vertHeight == 480 && round.matches.length == 1) {
                         vertLine.style.padding = "calc(620%) 0.1vw";
                     };
+                };
+
+                try {
+                    if (!round.final && match.players[0].replace('Player ', '') == this.your_opponent || match.players[1].replace('Player ', '') == this.your_opponent) {
+                        matchWrapper.appendChild(MatchBtn);
+
+                        MatchBtn.addEventListener('click', () => {
+                            tournament_pop_up.style.display = 'none';
+                            this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
+                        });
+                    };
+                } catch (error) {
+                    console.log(error);
                 };
 
                 matchWrapper.appendChild(player2);
@@ -310,12 +343,44 @@ class TournamentHandler {
         setTimeout(() => {
             chat_scroll_to_top('smooth', tournament_tree_wrapper);
             chat_scroll_to_top('smooth', treeContainer);
-            chat_scroll_to_top('smooth', tournament_tree_wrapper);
-            chat_scroll_to_top('smooth', treeContainer);
         }, 500);
     };
 
-    async createEntry(player, tournament_data, index) {
+    createLobby(state, data, player_id, opponent_id) {
+        let FieldSize = `${data.field_size}x${data.field_size}`;
+        var user_unlocked_Advanced_fields_online = true;
+
+        // If player haven't unlocked advanced fields but the level is an advanced field, unlock it and delete it later after level creation
+        if (DataFields[FieldSize] == undefined) {
+            DataFields['25x25'] = document.querySelector('#twentyfivextwentyfive');
+            DataFields['30x30'] = document.querySelector('#thirtyxthirty');
+            DataFields['40x40'] = document.querySelector('#fortyxforty');
+            user_unlocked_Advanced_fields_online = false;
+        };
+
+        // Playing in created level true
+        tournament_mode = true;
+        bgcolor1 = "#171023";
+        bgcolor2 = "#4969c712";
+
+        SetGameData_Label[2].style.display = "block";
+        SetGameModeList.style.display = "block";
+
+        // set game data
+        curr_field_ele = DataFields[FieldSize];
+
+        curr_mode = GameMode[2].opponent;
+        UserClicksNxNDefaultSettings(true, true); // true: player can only change his name and icon  
+        InitGameDataForPopUp(false);
+
+        if (!user_unlocked_Advanced_fields_online) {
+            delete DataFields['25x25'];
+            delete DataFields['30x30'];
+            delete DataFields['40x40'];
+        };
+    };
+
+    async createEntry(player, tournament_data, index, opponent_text) {
         return new Promise(async(res) => {
             let player_text = player || 'Player ???';
 
@@ -341,8 +406,12 @@ class TournamentHandler {
                 cb = cb || {}
 
                 if (cb.player_name) {
-                    console.log(cb);
+                    // console.log(cb);
                     text.textContent = cb.player_name
+
+                    if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {
+                        this.your_opponent = opponent_text.replace('Player ', '');
+                    };
 
                     entry.addEventListener('click', () => {
                         if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {

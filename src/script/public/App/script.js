@@ -861,7 +861,6 @@ function locked_30x30() {
             setTimeout(() => {
                 // for achievement
                 Achievement.new(2);
-                window.App.new_achievement(2);
 
                 // bug fix
                 lockedIcon30.style.animation = 'unset';
@@ -925,7 +924,6 @@ function locked_40x40() {
             setTimeout(() => {
                 // for achievement
                 Achievement.new(3);
-                window.App.new_achievement(3);
 
                 // bug fix
                 lockedIcon40.style.animation = 'unset';
