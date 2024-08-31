@@ -5459,6 +5459,7 @@ ul.default_sb_list.best_players_list div:first-child {
     top: 12%;
     right: 17%;
     color: slategray;
+    z-index: 1;
 }
 
 .tournament_tree_wrapper {
@@ -5665,6 +5666,28 @@ ul.default_sb_list.best_players_list div:first-child {
     border-radius: 100%;
     pointer-events: all;
     border: 0.2vw solid #ebebeb;
+}
+
+.tournamentRoundDuration_display {
+    position: absolute;
+    top: 12%;
+    right: 37%;
+    color: slategray;
+    z-index: 1;
+}
+
+.tournament_online_lobby_title {
+    position: absolute;
+    inset: 0;
+    top: -90%;
+    margin: auto;
+    width: max-content;
+    height: max-content;
+    pointer-events: none;
+    color: white;
+    font-weight: 700;
+    font-size: 6vw;
+    text-shadow: 20px 10px black;
 }
 
 

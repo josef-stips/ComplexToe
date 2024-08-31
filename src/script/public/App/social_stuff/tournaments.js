@@ -24,6 +24,7 @@ class TournamentHandler {
         });
 
         tournament_scene_back_btn.addEventListener('click', e => {
+            tournament_mode = false;
             DarkLayerAnimation(online_stuff_scene, tournaments_scene).then(sceneMode.default);
         });
 
@@ -229,12 +230,15 @@ class TournamentHandler {
     };
 
     init_rounds_time(state, data, player_id) {
-        let startd = new Date(data.start_date);
-        let endd = new Date(data.finish_date);
-
-        if (new Date(data.start_date) >= new Date()) {
-            this.this_tournament_started = true;
+        if (this.tournamentRoundsHandler) {
+            clearInterval(this.tournamentRoundsHandler.intervalId);
+            this.tournamentRoundsHandler.intervalId = null;
+            this.tournamentRoundsHandler = null;
         };
+
+        const roundSchedule = data.round_schedule;
+        this.tournamentRoundsHandler = new TournamentRoundsHandler(roundSchedule, player_id);
+        this.tournamentRoundsHandler.startCountdown();
     };
 
     async generate_tree(state, tour_data) {
@@ -260,8 +264,6 @@ class TournamentHandler {
         };
 
         console.log(data);
-
-        data.rounds[1].matches[0].players[1] = 'Player 123'
 
         const treeContainer = document.createElement('div');
         treeContainer.classList.add('tournament_tree');
@@ -300,14 +302,37 @@ class TournamentHandler {
                 };
 
                 try {
-                    if (!round.final && match.players[0].replace('Player ', '') == this.your_opponent || match.players[1].replace('Player ', '') == this.your_opponent) {
+                    // console.log(findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')), this.your_opponent, match.players[0].replace('Player', ''), match.players[1].replace('Player', ''))
+
+                    if (!round.final && findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')) == match.players[0].replace('Player', '').trim() ||
+                        findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')) == match.players[1].replace('Player', '').trim() && this.your_opponent) {
                         matchWrapper.appendChild(MatchBtn);
 
-                        MatchBtn.addEventListener('click', () => {
-                            tournament_pop_up.style.display = 'none';
-                            this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
+                        MatchBtn.addEventListener('click', async() => {
+                            // tournament has not started
+                            if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule) == 'no current round') {
+                                OpenedPopUp_WhereAlertPopUpNeeded = true;
+                                AlertText.textContent = `The tournament hasn't started yet`;
+                                DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                                // return;
+                            };
+
+                            socket.emit('tournament_match_lobby_exists', await generateTournamentLobbyHash(), cb => {
+                                console.log(cb);
+
+                                // create lobby
+                                tournament_pop_up.style.display = 'none';
+                                this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
+
+                                // else: join existing lobby
+                                if (cb) {
+                                    tournament_mode = true;
+                                    try_to_join_lobby(cb.RoomID);
+                                };
+                            });
                         });
                     };
+
                 } catch (error) {
                     console.log(error);
                 };
@@ -346,6 +371,53 @@ class TournamentHandler {
         }, 500);
     };
 
+    async createEntry(player, tournament_data, index, opponent_text) {
+        return new Promise(async(res) => {
+            let player_text = player || 'Player ???';
+
+            const entry = document.createElement('div');
+            entry.classList.add('tournament_tree_entry', 'scale_btn');
+
+            const square = document.createElement('div');
+            square.classList.add('t_tree_entry_square');
+
+            const text = document.createElement('div');
+            text.classList.add('t_tree_entry_text');
+            text.textContent = player_text;
+
+            if (tournament_data.rounds[index].final) {
+                if (player_text.includes('???')) text.textContent = 'Winner ???';
+                entry.classList.add('t_tree_entry_winner');
+            };
+
+            entry.appendChild(square);
+            entry.appendChild(text);
+
+            await socket.emit('GetDataByID', Number(player_text.replace('Player ', '')), cb => {
+                cb = cb || {}
+
+                if (cb.player_name) {
+                    // console.log(cb);
+                    text.textContent = cb.player_name
+
+                    if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {
+                        square.style.background = 'var(--line-color)';
+                        this.your_opponent = findOpponentNumber(tournament_data.rounds, player_text.replace('Player', ''));
+                    };
+
+                    entry.addEventListener('click', () => {
+                        if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {
+                            OpenOwnUserProfile();
+                        } else {
+                            ClickedOnPlayerInfo(cb);
+                        };
+                    });
+                };
+                res(entry);
+            });
+        });
+    };
+
     createLobby(state, data, player_id, opponent_id) {
         let FieldSize = `${data.field_size}x${data.field_size}`;
         var user_unlocked_Advanced_fields_online = true;
@@ -380,52 +452,6 @@ class TournamentHandler {
         };
     };
 
-    async createEntry(player, tournament_data, index, opponent_text) {
-        return new Promise(async(res) => {
-            let player_text = player || 'Player ???';
-
-            const entry = document.createElement('div');
-            entry.classList.add('tournament_tree_entry', 'scale_btn');
-
-            const square = document.createElement('div');
-            square.classList.add('t_tree_entry_square');
-
-            const text = document.createElement('div');
-            text.classList.add('t_tree_entry_text');
-            text.textContent = player_text;
-
-            if (tournament_data.rounds[index].final) {
-                if (player_text.includes('???')) text.textContent = 'Winner ???';
-                entry.classList.add('t_tree_entry_winner');
-            };
-
-            entry.appendChild(square);
-            entry.appendChild(text);
-
-            await socket.emit('GetDataByID', Number(player_text.replace('Player ', '')), cb => {
-                cb = cb || {}
-
-                if (cb.player_name) {
-                    // console.log(cb);
-                    text.textContent = cb.player_name
-
-                    if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {
-                        this.your_opponent = opponent_text.replace('Player ', '');
-                    };
-
-                    entry.addEventListener('click', () => {
-                        if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {
-                            OpenOwnUserProfile();
-                        } else {
-                            ClickedOnPlayerInfo(cb);
-                        };
-                    });
-                };
-                res(entry);
-            });
-        });
-    };
-
     init_tournament_document(state, data) {
         tournament_name_title.textContent = data.name;
         tournament_pot_value_display.textContent = data.pot_value;
@@ -449,7 +475,7 @@ class tournament {
         secondWrapper.classList.add('secondWrapper');
 
         title.textContent = tournament_data.name;
-        dateInfoWrapper.textContent = `${formatDate(tournament_data.start_date)} - ${formatDate(tournament_data.finish_date)}\xa0\xa0\xa0\xa0
+        dateInfoWrapper.textContent = `${formatDateNormalButShort(tournament_data.start_date)} - ${formatDateNormalButShort(tournament_data.finish_date)}\xa0\xa0\xa0\xa0
             Participants: ${tournament_data.participant_amount}
             `;
 
@@ -635,7 +661,7 @@ class CreateTournamentHandler {
         });
 
         document.querySelector('.ct_participantInput').addEventListener('blur', (e) => {
-            const allowedValues = [4, 8, 16, 32];
+            const allowedValues = [2, 4, 8, 16, 32];
             const value = parseInt(e.target.value, 10);
             if (!allowedValues.includes(value)) {
                 e.target.value = '';
@@ -729,12 +755,12 @@ class CreateTournamentHandler {
 
             currentDate.setDate(currentDate.getDate() + 5);
 
-            if (selectedDate < currentDate) {
-                OpenedPopUp_WhereAlertPopUpNeeded = true;
-                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-                AlertText.textContent = "The selected start date must be at least 5 days in the future.";
-                return;
-            };
+            // if (selectedDate < currentDate) {
+            //     OpenedPopUp_WhereAlertPopUpNeeded = true;
+            //     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+            //     AlertText.textContent = "The selected start date must be at least 5 days in the future.";
+            //     return;
+            // };
 
             if (this.allowed_patterns.length <= 0) {
                 OpenedPopUp_WhereAlertPopUpNeeded = true;
@@ -940,6 +966,103 @@ function generateTournamentData(numPlayers) {
     });
 
     return data;
+};
+
+class TournamentRoundsHandler {
+    constructor(roundSchedule, playerId, simulatedDate = null) {
+        this.roundSchedule = roundSchedule;
+        this.playerId = playerId;
+        this.currentRound = null;
+        this.intervalId = null;
+        this.simulatedDate = simulatedDate;
+
+        this.roundSchedule = Object.fromEntries(
+            Object.entries(this.roundSchedule).map(([round, { startDate, endDate }]) => [
+                round,
+                {
+                    startDate: this.extendDateByOneDay(startDate).toISOString(),
+                    endDate: this.extendDateByOneDay(endDate).toISOString()
+                }
+            ])
+        );
+    };
+
+    getCurrentTime() {
+        return this.simulatedDate ? new Date(this.simulatedDate) : new Date();
+    };
+
+    getTimeDifference(startDate, endDate) {
+        const totalMilliseconds = endDate - startDate;
+        const totalSeconds = Math.floor(totalMilliseconds / 1000);
+        const days = Math.floor(totalSeconds / (60 * 60 * 24));
+        const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+        const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+        const seconds = totalSeconds % 60;
+
+        return { days, hours, minutes, seconds };
+    };
+
+    displayCountdown(round, timeDiff) {
+        displayElement.textContent = `Current round ${round.replace('round_', '')}: ${timeDiff.days} d, ${timeDiff.hours} h, ${timeDiff.minutes} m, ${timeDiff.seconds} s`;
+    };
+
+    displayFirstRoundCountdown(timeDiff) {
+        displayElement.textContent = `First round begins in: ${timeDiff.days} d, ${timeDiff.hours} h, ${timeDiff.minutes} m, ${timeDiff.seconds} s`;
+    };
+
+    extendDateByOneDay(dateStr) {
+        const date = new Date(dateStr);
+        date.setDate(date.getDate() + 1);
+        return date;
+    };
+
+    updateCountdown() {
+        const now = this.getCurrentTime();
+        let currentRound = null;
+        let nextRound = null;
+
+        for (let [round, { startDate, endDate }] of Object.entries(this.roundSchedule)) {
+            const roundStartDate = new Date(startDate);
+            const roundEndDate = new Date(endDate);
+
+            if (now >= roundStartDate && now <= roundEndDate) {
+                currentRound = round;
+                const timeDiff = this.getTimeDifference(now, roundEndDate);
+                this.displayCountdown(currentRound, timeDiff);
+                break;
+            };
+
+            if (now < roundStartDate && !nextRound) {
+                nextRound = round;
+            };
+        };
+
+        if (!currentRound && nextRound) {
+            const { startDate } = this.roundSchedule[nextRound];
+            const timeDiff = this.getTimeDifference(now, new Date(startDate));
+
+            if (nextRound === 'round_1') {
+                this.displayFirstRoundCountdown(timeDiff);
+            } else {
+                this.displayCountdown(nextRound, timeDiff);
+            };
+
+        } else if (!currentRound && !nextRound) {
+            alert("Das Turnier ist vorbei!");
+            clearInterval(this.intervalId);
+        };
+    };
+
+    startCountdown() {
+        this.updateCountdown();
+        this.intervalId = setInterval(() => this.updateCountdown(), 1000);
+    };
+
+    stopCountdown() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        };
+    };
 };
 
 let tournament_handler = new TournamentHandler([]);

@@ -712,6 +712,10 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
         TrainingArenaDifficutlyModeGameDisplay.style.display = 'none';
     };
 
+    if (tournament_mode) {
+        ChangeGameBG(bgcolor1, bgcolor2);
+    };
+
     // Initialize players
     initializePlayers(OnlineGameDataArray);
 };
@@ -1018,7 +1022,7 @@ const ChangeGameBG = (bg1, bg2, reset, to_standard) => {
 
 // the normal card level in complex toe als have bg colors to make them more unique etc.
 const SetBGColorForCurrentField = (xy) => {
-    if (localStorage.getItem("sett-ShowBGColor") == "true" && !NewCreativeLevel) {
+    if (localStorage.getItem("sett-ShowBGColor") == "true" && !NewCreativeLevel && !tournament_mode) {
         switch (xy) {
             case 5:
                 bgcolor1 = "#e9967a57";
@@ -1069,11 +1073,16 @@ const SetBGColorForCurrentField = (xy) => {
     } else {
         Lobby.style.background = "";
     };
+
+    if (tournament_mode) {
+        bgcolor1 = "#171023";
+        bgcolor2 = "rgb(151 135 53 / 7%)";
+    };
 };
 
 // every card field has its own img icon or fontawesome icon
 const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
-    if (!NewCreativeLevel) {
+    if (!NewCreativeLevel && !tournament_mode) {
         switch (xy) {
             case 5:
                 if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
@@ -1144,7 +1153,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
                 break;
         };
 
-    } else {
+    } else if (NewCreativeLevel) {
 
         if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
         let img5 = document.createElement("img");
@@ -1153,6 +1162,17 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
         img5.height = "31";
         img5.style.margin = "0.5vh 0 0 0";
         Game_Upper_Field_Icon.appendChild(img5);
+        Game_Upper_Field_Icon.classList = "";
+    };
+
+    if (tournament_mode) {
+        if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
+        let img11 = document.createElement("img");
+        img11.src = "assets/game/sunken-eye.svg";
+        img11.width = "31";
+        img11.height = "31";
+        img11.style.margin = "0.5vh 0 0 0";
+        Game_Upper_Field_Icon.appendChild(img11);
         Game_Upper_Field_Icon.classList = "";
     };
 

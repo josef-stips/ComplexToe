@@ -137,6 +137,15 @@ const InitStyleForUserEntersLobby = (message) => {
         LobbyUserFooterInfoRndPlayer.style.display = 'none';
         Lobby_RndPlayer_Lobby_display.style.display = 'none';
     };
+
+    if (tournament_mode) {
+        tournament_online_lobby_title.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule).replace('round_', '')}`;
+        Lobby_GameCode_display.style.display = 'none';
+
+    } else {
+        tournament_online_lobby_title.textContent = ``;
+        Lobby_GameCode_display.style.display = 'flex';
+    };
 };
 
 // Init and display all game info for user enters the lobby
@@ -169,12 +178,16 @@ const InitGameInfoForUserEntersLobby = () => {
         setTimeout(() => {
             costum_patterns = JSON.parse(costum_patterns);
 
-            Object.keys(costum_patterns).map(n => {
-                let v = costum_patterns[n][n]['value'];
-                let s = costum_patterns[n][n]['structure'];
+            try {
+                Object.keys(costum_patterns).map(n => {
+                    let v = costum_patterns[n][n]['value'];
+                    let s = costum_patterns[n][n]['structure'];
 
-                createPattern_preview(n, s, Lobby_AllowedPatternsScrollContainer, 'level', 'ingame_preview', 5, null, null, 5, 'pattern', false, v, false);
-            });
+                    createPattern_preview(n, s, Lobby_AllowedPatternsScrollContainer, 'level', 'ingame_preview', 5, null, null, 5, 'pattern', false, v, false);
+                });
+            } catch (error) {
+                console.log(error);
+            };
 
             [...document.querySelectorAll('.Lobby_AllowedPatternsScrollContainer .createCostumField_Field_wrapper')].forEach(p => {
                 p.childNodes[0].classList.add("SetPatternGridLobby");
@@ -1510,8 +1523,10 @@ socket.on('StartGame', (RoomData) => { // RoomData
 
     // simple things
     CloseOnlinePopUps(true);
+    tournament_mode && close_all_scenes();
     OnlineGame_Lobby.style.display = "none";
     CreateLevelScene.style.display = "none";
+    tournaments_scene.style.display = "none";
 
     // better user experience, you can call them bug fixes:
     ChatMain.textContent = null;

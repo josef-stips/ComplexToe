@@ -84,6 +84,10 @@ function generateCell(index) {
 
         ComplexToeField.style.padding = "";
         ComplexToeField.style.height = "";
+
+        if (xCell_Amount == yCell_Amount) {
+            ComplexToeField.style.height = "auto";
+        };
     };
 
     if (xCell_Amount > yCell_Amount) {

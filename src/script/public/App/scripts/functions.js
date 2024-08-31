@@ -489,6 +489,14 @@ function formatDateZ(dateString) {
     return `${year}-${month}-${day}`;
 };
 
+function formatDateNormalButShort(dateString) {
+    const date = new Date(dateString);
+    const month = date.getMonth() + 1; // 'June'
+    const day = String(date.getDate()).padStart(2, '0'); // '10'
+    const year = date.getFullYear(); // '2024'
+    return `${year}-${month}-${day}`;;
+};
+
 const XML_serializer = new XMLSerializer();
 
 function BindPatternsWithCostumPatternsToIndexes(patterns, costum_patterns, x, y) {
@@ -635,4 +643,95 @@ function LooseCounter(increase) {
         increase && localStorage.setItem('LooseCount', 1);
         return 1;
     };
+};
+
+function getCurrentTournamentRound(schedule) {
+    const currentDate = new Date();
+    let lastRound = '';
+
+    for (const [round, dates] of Object.entries(schedule)) {
+        const startDate = new Date(dates.startDate);
+        const endDate = new Date(dates.endDate);
+
+        lastRound = round;
+
+        if (currentDate >= startDate && currentDate <= endDate) {
+            if (round === lastRound) {
+                return 'final round';
+            };
+
+            return `round ${round}`;
+        };
+    };
+
+    return 'no current round';
+};
+
+function findOpponent(rounds, id) {
+    const idString = id.toString();
+
+    for (const round of rounds) {
+        for (const match of round.matches) {
+            const players = match.players;
+
+            if (players[0] && players[0].includes(idString)) return players[1];
+            if (players[1] && players[1].includes(idString)) return players[0];
+        }
+    }
+
+    return null;
+};
+
+function findOpponentNumber(rounds, id) {
+    const idString = id.toString();
+
+    for (const round of rounds) {
+        for (const match of round.matches) {
+            const players = match.players;
+
+            const player1 = players[0];
+            const player2 = players[1];
+
+            if (player1 && player1.includes(idString) && /\d$/.test(player1)) {
+                const match = player2.match(/\d+$/);
+                return match ? match[0] : null;
+            };
+
+            if (player2 && player2.includes(idString) && /\d$/.test(player2)) {
+                const match = player1.match(/\d+$/);
+                return match ? match[0] : null;
+            };
+        };
+    };
+
+    return null;
+};
+
+function findMatchByPlayerID(rounds, id) {
+    const idString = id.toString();
+
+    for (const round of rounds) {
+        for (const match of round.matches) {
+            const players = match.players;
+
+            if (players[0] && players[0].includes(idString)) return match.players;
+            if (players[1] && players[1].includes(idString)) return match.players;
+        };
+    };
+
+    return null;
+};
+
+async function generateTournamentLobbyHash() {
+    const clanId = JSON.parse(localStorage.getItem('clan_member_data')).clan_id;
+    const tournamentName = tournament_handler.clicked_tournament[1].name;
+    const currentMatch = JSON.stringify(findMatchByPlayerID(tournament_handler.clicked_tournament[1].current_state.rounds, localStorage.getItem('PlayerID')));
+
+    const data = clanId + tournamentName + currentMatch;
+    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
+
+    // Convert ArrayBuffer to Hex String
+    return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
 };

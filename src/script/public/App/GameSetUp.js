@@ -215,6 +215,12 @@ const UserClicksNxNDefaultSettings = (readonly, is_tournament) => {
     // for skins in online mode
     SkinInputDisplay.style.display = 'none';
 
+    if (!is_tournament) {
+        document.querySelector('.SetPlayerNames-ModeInput.SetPlayerDataContainer').style.display = "flex";
+    } else {
+        document.querySelector('.SetPlayerNames-ModeInput.SetPlayerDataContainer').style.display = "none";
+    };
+
     if (readonly) {
         SetAllowedPatternsWrapper.style.display = 'none';
         // SetGameModeList.style.display = 'none';
@@ -360,7 +366,7 @@ function Click_single_NxN(e) {
 // From the Confirm Button of the "create game button" in the SetUpGameData Window
 // User set all the game data for the game and his own player data. The confirm button calls this function
 // Room gets created and the creater gets joined in "index.js"
-function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequired, PointsToWinGame, patterns) {
+async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequired, PointsToWinGame, patterns) {
     let Check = SetGameData_CheckConfirm();
 
     // if Player1 Namefield and Player2 Namefield isn't empty etc., initialize Game
@@ -369,7 +375,7 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         Check[0] == true && Check[1] == true && !PlayingInCreatedLevel || PlayingInCreatedLevel &&
         Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[1] == true && creative_level_instance.Settings["playertimer"][creative_level_instance.selectedLevel[3]] ||
 
-        tournament_mode && Player1_NameInput.value != "" && Player1_IconInput.value != "" && Check[3]
+        tournament_mode && Player1_NameInput.value != "" && Player1_IconInput.value != ""
     ) {
         // server
         let fieldIndex = curr_field_ele.getAttribute('index');
@@ -480,10 +486,43 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
 
         console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon, curr_music_name);
 
+        // hash
+        // player1 + player2 + clan_id + tournament_name + current round
+        let tournament_hash = "";
+
+        if (tournament_mode) {
+            let tournament_data = tournament_handler.clicked_tournament[1];
+
+            readOnlyLevel = true;
+            Check[2] = tournament_data.player_clock;
+            Check[3] = InnerGameModes[3];
+            xyCell_Amount = tournament_data.field_size;
+            fieldTitle = `Tournament ${getCurrentTournamentRound(tournament_data.round_schedule).replace('round_', '')}`;
+            thirdPlayer_required = false;
+            allowedPatternsFromUser = tournament_data.allowed_patterns;
+            costumPatterns = null;
+            costumIcon = null;
+            killAllDrawnCells = false;
+            curr_music_name = tournament_theme.id;
+            level_id = null;
+            random_player_mode = false;
+            UserSetPointsToWinGameInput.value = tournament_data.points_to_win;
+            tournament_online_lobby_title.textContent = `Tournament ${getCurrentTournamentRound(tournament_data.round_schedule).replace('round_', '')}`;
+            tournament_hash = await generateTournamentLobbyHash();
+            Lobby_GameCode_display.style.display = 'none';
+
+        } else {
+            tournament_online_lobby_title.textContent = null;
+            Lobby_GameCode_display.style.display = 'flex';
+        };
+
+        console.log(tournament_hash);
+
+        // Check[2] = , Check[3] = 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
             localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
-            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id, random_player_mode, [xCell_Amount, yCell_Amount] /* x_and_y column */
+            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id, random_player_mode, [xCell_Amount, yCell_Amount], tournament_hash /* x_and_y column */
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
@@ -596,6 +635,9 @@ function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayerRequir
         };
 
     } else {
+        OpenedPopUp_WhereAlertPopUpNeeded = true;
+        AlertText.textContent = 'Fulfill all requirements';
+        DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
         return;
     };
 };

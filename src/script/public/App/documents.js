@@ -25,6 +25,7 @@ let unlock_sound1 = document.querySelector("#unlock_sound1");
 let collect1 = document.querySelector("#collect1");
 const clack_sound = document.querySelector("#clack_sound");
 const btn4_sound = document.querySelector(`#btn4`);
+const tournament_theme = document.querySelector('#tournament_theme');
 
 const door_open_sound = document.querySelector("#door_open_sound");
 const wheel_of_fortune_scene = document.querySelector(".wheel_of_fortune_scene");
@@ -845,6 +846,7 @@ const TA_patterns_btn = document.querySelector('.TA_patterns_btn');
 const TA_patterns_closeBtn = document.querySelector('.TA_patterns_closeBtn');
 const TA_patterns_qust_btn = document.querySelector('.TA_patterns_qust_btn');
 const HelpTA_btn = document.querySelector('.HelpTA_btn');
+const tournament_online_lobby_title = document.querySelector('.tournament_online_lobby_title');
 
 const gameEntry_gameType_el = document.querySelector('.gameEntry_gameType_el');
 const gameEntry_levelName_el = document.querySelector('.gameEntry_levelName_el');
@@ -857,6 +859,7 @@ const gameEntry_patternsUsed_el = document.querySelector('.gameEntry_patternsUse
 const gameEntry_gameDuration_el = document.querySelector('.gameEntry_gameDuration_el');
 const gameEntry_playerClock_el = document.querySelector('.gameEntry_playerClock_el');
 const gameEntry_pointsToWin_el = document.querySelector('.gameEntry_pointsToWin_el');
+const displayElement = document.querySelector(".tournamentRoundDuration_display");
 
 // Search Player elements
 let SearchPlayerPopUp = document.querySelector('.SearchPlayerPopUp');

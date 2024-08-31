@@ -1274,7 +1274,7 @@ gameInfo_btn.addEventListener('click', () => {
     DarkLayer.style.display = 'flex';
     DisplayPopUp_PopAnimation(GameInfoPopUp, "flex", true);
 
-    if (!NewCreativeLevel && !inPlayerLevelsScene && !review_mode && !watch_mode && !arena_mode) {
+    if (!NewCreativeLevel && !inPlayerLevelsScene && !review_mode && !watch_mode && !arena_mode && !tournament_mode) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
     } else if (review_mode) {
@@ -1292,6 +1292,9 @@ gameInfo_btn.addEventListener('click', () => {
 
     } else if (arena_mode) {
         GameInfo_HeaderTitle.textContent = `Training Arena - Game Info`;
+
+    } else if (tournament_mode) {
+        GameInfo_HeaderTitle.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule).replace('round_', '')} - Game Info`;
     };
 
     // not in advanture mode
