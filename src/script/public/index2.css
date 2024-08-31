@@ -935,7 +935,7 @@ p.createCostumField_yInput {
 /* end game stats pop up */
 
 .endGameStatsPopUp {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     position: absolute;
     top: 0;
@@ -946,9 +946,10 @@ p.createCostumField_yInput {
     display: none;
     flex-direction: column;
     color: white;
-    font-size: 23px;
+    font-size: 3vh;
     z-index: 10001;
     box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(45deg, var(--bg-app-color), var(--bg-app-color));
 }
 
 .endGameStats_main {
@@ -961,11 +962,13 @@ p.createCostumField_yInput {
 
 .continueGameBtn {
     font-size: 5vh;
+    font-weight: 500;
     border-radius: 4vh;
     transition: transform 0.15s ease-in-out;
     text-align: center;
-    border: 3px solid;
+    border: 0.5vh solid;
     padding: 2vh;
+    background: var(--bg-app-color2);
 }
 
 .continueGameBtn:hover {
@@ -976,13 +979,14 @@ p.createCostumField_yInput {
 }
 
 .endGameStatsLeaderBoardWrapper {
-    width: 50%;
+    width: 70%;
     display: flex;
     justify-content: center;
     align-items: start;
-    border-top: 4px solid var(--line-color);
-    border-bottom: 4px solid var(--line-color);
-    padding: 30px;
+    border-top: 0.8vh solid var(--line-color);
+    border-bottom: 0.8vh solid var(--line-color);
+    border-radius: 1vh;
+    padding: 3vh;
     font-size: 3vh;
 }
 
@@ -1007,6 +1011,7 @@ p.createCostumField_yInput {
 
 .endGame_statusText {
     font-size: 3vh;
+    font-weight: 500;
 }
 
 .endgame_level_stars:nth-child(1) {
@@ -5688,6 +5693,23 @@ ul.default_sb_list.best_players_list div:first-child {
     font-weight: 700;
     font-size: 6vw;
     text-shadow: 20px 10px black;
+}
+
+.field_deco_wrapper {
+    width: 100%;
+    height: max-content;
+    font-weight: 600;
+    font-size: 3vh;
+    color: white;
+    position: absolute;
+    top: -2.94vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.field_deco_wrapper img {
+    width: 3vw;
+    height: 3vw;
 }
 
 

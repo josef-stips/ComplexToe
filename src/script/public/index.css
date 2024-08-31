@@ -541,6 +541,7 @@ ul.review_mode_game_details_list li {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .GameField-Header {

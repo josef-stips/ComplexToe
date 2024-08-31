@@ -1283,7 +1283,7 @@ gameInfo_btn.addEventListener('click', () => {
     } else if (NewCreativeLevel || PlayingInCreatedLevel_AsGuest && !player_levels_handler.online_level_overview_handler) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
-    } else if (inPlayerLevelsScene || !PlayingInCreatedLevel_AsGuest) {
+    } else if (inPlayerLevelsScene || !PlayingInCreatedLevel_AsGuest && !tournament_mode) {
         GameInfo_HeaderTitle.textContent = `${player_levels_handler.online_level_overview_handler.level.level_name} - Game Info`;
 
     } else if (watch_mode) {
@@ -1620,8 +1620,13 @@ UserCreated_btn.addEventListener('click', () => {
 });
 
 ChooseWinnerWindowCloseBtn.addEventListener('click', () => {
-    ChooseWinner_popUp.style.display = 'none';
-    DarkLayer.style.display = 'none';
+    if (personal_GameData.currGameID) {
+        console.log('cannot do that in online mode');
+        return;
+    } else {
+        ChooseWinner_popUp.style.display = 'none';
+        DarkLayer.style.display = 'none';
+    };
 });
 
 Player1_ChooseWinnerDisplay.addEventListener('click', () => {

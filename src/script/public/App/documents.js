@@ -26,6 +26,7 @@ let collect1 = document.querySelector("#collect1");
 const clack_sound = document.querySelector("#clack_sound");
 const btn4_sound = document.querySelector(`#btn4`);
 const tournament_theme = document.querySelector('#tournament_theme');
+const field_deco_wrapper = document.querySelector(`.field_deco_wrapper`);
 
 const door_open_sound = document.querySelector("#door_open_sound");
 const wheel_of_fortune_scene = document.querySelector(".wheel_of_fortune_scene");

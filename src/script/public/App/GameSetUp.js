@@ -544,10 +544,14 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
                 random_player_handler.create_lobby();
 
             } else {
-                Lobby_GameCode_display.style.display = 'block';
+                Lobby_GameCode_display.style.display = 'flex';
                 Lobby_startGame_btn.style.display = 'block';
                 LobbyUserFooterInfoRndPlayer.style.display = 'none';
                 Lobby_RndPlayer_Lobby_display.style.display = 'none';
+            };
+
+            if (tournament_mode) {
+                Lobby_GameCode_display.style.display = 'none';
             };
         });
 

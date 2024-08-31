@@ -470,10 +470,8 @@ function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy, cos
     CalculateBoundaries();
 
     all_patterns_in_game = {};
-
     let [pattern_structures, pattern_names, pattern_values] = BindPatternsWithCostumPatternsToIndexes(official_patterns, costum_patterns, Fieldx, Fieldy);
-
-    console.log(pattern_structures, pattern_names, costum_patterns, pattern_values);
+    // console.log(pattern_structures, pattern_names, costum_patterns, pattern_values);
 
     pattern_structures.forEach((s, i) => {
         all_patterns_in_game[pattern_names[i]] = { 'structure': s, 'value': pattern_values[i] };
@@ -482,9 +480,7 @@ function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy, cos
     Object.keys(costum_bot_patterns).forEach(n => {
         all_patterns_in_game[n] = { 'structure': costum_bot_patterns[n]['structure'], 'value': costum_bot_patterns[n]['value'] };
     });
-
-    console.log(all_patterns_in_game);
-
+    // console.log(all_patterns_in_game);
     xCell_Amount = Fieldx;
     yCell_Amount = Fieldy;
 
@@ -714,6 +710,13 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
 
     if (tournament_mode) {
         ChangeGameBG(bgcolor1, bgcolor2);
+    } else {};
+
+    if (tournament_mode || inAdvantureMode) {
+        field_deco_wrapper.style.display = 'flex';
+
+    } else {
+        field_deco_wrapper.style.display = 'flex';
     };
 
     // Initialize players

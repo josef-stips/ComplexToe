@@ -735,3 +735,18 @@ async function generateTournamentLobbyHash() {
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
 };
+
+function setWinnerById(roundData, playerId, player1Won) {
+    const playerString = `Player ${playerId}`;
+
+    for (const match of roundData.matches) {
+        const players = match.players;
+
+        if (players.includes(playerString)) {
+            match.winner = player1Won ? players[0] : players[1];
+            return [roundData, player1Won ? Number(players[0].replace('Player', '')) : Number(players[1].replace('Player', ''))];
+        };
+    };
+
+    return [null, null];
+};

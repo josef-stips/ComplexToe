@@ -517,6 +517,12 @@ const UserLeftGameInOnlineMode = (from_cont_btn) => {
         // remove "inGame" status from player
         socket.emit("removePlayerInRoomStatus", localStorage.getItem("PlayerID"));
 
+        if (tournament_mode) {
+            close_all_scenes();
+            tournaments_scene.style.display = 'flex';
+            sceneMode.full();
+        };
+
         // kill standard timers for all players
         clearTimer();
 
@@ -1133,6 +1139,12 @@ socket.on('killed_room', () => {
     personal_GameData.role = 'user';
     personal_GameData.currGameID = null;
     personal_GameData.EnterOnlineGame = false;
+
+    if (tournament_mode) {
+        close_all_scenes();
+        tournaments_scene.style.display = 'flex';
+        sceneMode.full();
+    };
 });
 
 // if they were in a game in the admin left the game
@@ -1195,6 +1207,12 @@ socket.on('killed_game', (from_continue_btn) => {
         } else if (personal_GameData.role == 'user') {
             LobbyUserFooterInfo.style.display = 'flex';
         };
+    };
+
+    if (tournament_mode) {
+        close_all_scenes();
+        tournaments_scene.style.display = 'flex';
+        sceneMode.full();
     };
 
     // play music
@@ -1332,6 +1350,12 @@ socket.on('INFORM_user_left_room', () => {
 
     // The other players see this after the user left:
     ResetXPlayerWrapper(2);
+
+    if (tournament_mode) {
+        close_all_scenes();
+        tournaments_scene.style.display = 'flex';
+        sceneMode.full();
+    };
 });
 
 // When the third player (blocker) leaves the game, the other player need to be informed by that
@@ -1417,6 +1441,12 @@ socket.on('INFORM_user_left_game', () => {
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
+    };
+
+    if (tournament_mode) {
+        close_all_scenes();
+        tournaments_scene.style.display = 'flex';
+        sceneMode.full();
     };
 });
 
@@ -1515,6 +1545,12 @@ socket.on('INFORM_admin_left_room', () => {
 
     // clear timer and stuff to prevent bugs
     clearTimer();
+
+    if (tournament_mode) {
+        close_all_scenes();
+        tournaments_scene.style.display = 'flex';
+        sceneMode.full();
+    };
 });
 
 // message to all clients that the game just started
@@ -1528,7 +1564,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     CreateLevelScene.style.display = "none";
     tournaments_scene.style.display = "none";
 
-    // better user experience, you can call them bug fixes:
+    // better user experience, you can call them bug fixes
     ChatMain.textContent = null;
     openedChat = false;
     recievedUnseenMessages = 0;

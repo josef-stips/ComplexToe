@@ -1165,7 +1165,10 @@ const OnlineGame_UltimateWin_Player1 = (player1_won, player2_won, WinCombination
 
             update_personal_level_data(player2_won, game_sec, score_Player2_numb);
 
-            let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[2] / PlayerXP[1]) / -1;
+            if (PlayerXP[1] <= 0) PlayerXP[1] = null;
+            if (PlayerXP[2] <= 0) PlayerXP[2] = null;
+
+            let XP_multiplicator = PlayerXP[1] != null ? ((PlayerXP[2] / PlayerXP[1]) / -1) : 1;
 
             minus_SkillPoints(Math.floor(5 * XP_multiplicator));
             UltimateWinAnimation(`${PlayerData[1].PlayerName} won it `);
@@ -1192,7 +1195,7 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
             if (PlayingInCreatedLevel) {
                 ConqueredPlayerCreatedLevel(curr_field);
                 Achievement.new(17);
-                Achievement.new(18);
+                Achievement.new(18)
             };
         };
 
@@ -1203,7 +1206,10 @@ const OnlineGame_UltimateWin_Player2 = (player1_won, player2_won, WinCombination
 
             update_personal_level_data(player1_won, game_sec, score_Player1_numb);
 
-            let XP_multiplicator = PlayerXP[1] != null && (PlayerXP[1] / PlayerXP[2]) / -1;
+            if (PlayerXP[1] <= 0) PlayerXP[1] = null;
+            if (PlayerXP[2] <= 0) PlayerXP[2] = null;
+
+            let XP_multiplicator = PlayerXP[1] != null ? ((PlayerXP[1] / PlayerXP[2]) / -1) : 1;
 
             minus_SkillPoints(Math.floor(5 * XP_multiplicator));
             UltimateWinAnimation(`${PlayerData[2].PlayerName} won it `);
@@ -1243,6 +1249,9 @@ const OnlineGame_UltimateWin_GG = (player1_won, player2_won, WinCombination, gam
 // code to execute for the player who won in online game
 function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
     let XP_multiplicator;
+
+    if (PlayerXP[1] <= 0) PlayerXP[1] = null;
+    if (PlayerXP[2] <= 0) PlayerXP[2] = null;
 
     if (player2_won) {
         XP_multiplicator = PlayerXP[1] != null ? (PlayerXP[1] / PlayerXP[2]) : 1;
@@ -1292,6 +1301,34 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
 socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score, gameSeconds) => {
     setTimeout(() => {
 
+        if (tournament_mode) {
+            let tour_data = tournament_handler.clicked_tournament[1];
+            // let current_round = Number(getCurrentTournamentRound(tour_data.round_schedule).replace('round', '').trim());
+            let current_round_idx = Number('round 1'.replace('round', '').trim()) - 1;
+            let current_round = tour_data.current_state.rounds[current_round_idx];
+            let modified_rounds_dataset = current_round; // Default to the current round dataset
+            let winner_id = null;
+            let next_round = current_round_idx + 1;
+
+            if (player1_won) {
+                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, localStorage.getItem('PlayerID'), true);
+            } else if (player2_won) {
+                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, localStorage.getItem('PlayerID'), false);
+            };
+
+            // Update the current round with the modified dataset
+            tour_data.current_state.rounds[current_round_idx] = modified_rounds_dataset;
+
+            if (winner_id !== null) {
+                socket.emit('tournament_player_to_next_round', tour_data.current_state, winner_id, next_round, cb => {
+                    // cb = updated tournaments data
+                    console.log(cb);
+                });
+            } else {
+                console.error('No winner determined for this round.');
+            };
+        };
+
         // to prevent bugs
         if (current_level_boss) {
             console.log(current_level_boss)
@@ -1319,10 +1356,13 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
 
         UltimateGameWinFirstAnimation(player1_won, player2_won);
 
-        WinCombination = JSON.parse(WinCombination).map(x => document.querySelector(`.cell[cell-index="${x}"]`));
+        try {
+            WinCombination = JSON.parse(WinCombination).map(x => document.querySelector(`.cell[cell-index="${x}"]`));
+        } catch (error) {
+            console.log(error);
+        };
 
         if (personal_GameData.role == 'admin' && !NewCreativeLevel) {
-
             let level_id;
             let level_icon;
 
@@ -1330,8 +1370,6 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
                 level_id = player_levels_handler.online_level_overview_handler.level.id;
                 level_icon = player_levels_handler.online_level_overview_handler.level.icon;
             };
-
-            console.log("game seconds: ", gameSeconds);
 
             let all_game_data_for_log = [
 
