@@ -2392,7 +2392,7 @@ li.officialWinPatternsOpenBtn {
     bottom: 1.5%;
     right: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 10055;
     width: 85%;
     height: 85%;
     background-color: var(--bg-app-color);

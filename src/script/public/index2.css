@@ -3612,7 +3612,7 @@ ul.default_sb_list.best_players_list div:first-child {
     margin: auto;
     display: none;
     flex-direction: column;
-    z-index: 10005;
+    z-index: 10000;
     align-items: center;
     user-select: none;
     background: linear-gradient(45deg, var(--bg-gradient), var(--bg-app-color));
@@ -3767,6 +3767,26 @@ ul.default_sb_list.best_players_list div:first-child {
     font-weight: 700;
     color: var(--line-color);
     cursor: pointer;
+}
+
+.clan_content_tournament_lobby_created_opponent_name {
+    text-shadow: 5px 5px 7px var(--bg-app-color3);
+    font-weight: 700;
+    color: var(--line-color);
+    cursor: pointer;
+}
+
+.clan_universal_content[for="tournament_opponent_created_lobby"]>span {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.clan_universal_content[for="tournament_opponent_created_lobby"]>span>img {
+    width: 20vh;
+    height: 20vh;
 }
 
 .clan_btn_notify_label {
@@ -5710,6 +5730,79 @@ ul.default_sb_list.best_players_list div:first-child {
 .field_deco_wrapper img {
     width: 3vw;
     height: 3vw;
+}
+
+.tournament_details_btn {
+    position: absolute;
+    top: 12%;
+    left: 2%;
+}
+
+
+/* tournament details pop up */
+
+.tournament_details_pop_up {
+    display: none;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 55vw;
+    height: 55vh;
+    background-color: var(--bg-app-color);
+    border: 0.5vh solid white;
+    border-radius: 4vh;
+    user-select: none;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    font-size: 3vh;
+    color: white;
+    font-weight: 500;
+    z-index: 10051;
+}
+
+.tour_details_header {
+    width: 97.5%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.tour_details_main {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    position: relative;
+}
+
+.tour_details_list {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tour_details_list li {
+    width: 100%;
+    padding: 1vh 0;
+    height: max-content;
+    min-height: 5vh;
+    text-align: left;
+    display: list-item;
+    list-style-type: disc;
+}
+
+.tour_details_list li:nth-child(even) {
+    /* background-color: #404447; */
+}
+
+.tour_details_list li:nth-child(odd) {
+    /* background-color: #121316; */
 }
 
 

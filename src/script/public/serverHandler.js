@@ -321,8 +321,14 @@ Lobby_closeBtn.addEventListener('click', () => {
     // if player played in online created level
     PlayingInCreatedLevel = false;
 
+    let tournament_opponent_id;
+
+    if (tournament_mode) {
+        tournament_opponent_id = findOpponentNumber(tournament_handler.clicked_tournament[1].current_state.rounds, localStorage.getItem('PlayerID'));
+    };
+
     // server
-    socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
+    socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, undefined, Number(tournament_opponent_id), message => {
         // Do things after room was killed
         // The client isn't connected to any server so the "current id of the room" is null
         personal_GameData.role = 'user';

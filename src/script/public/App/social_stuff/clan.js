@@ -1700,17 +1700,8 @@ class clan_action_reason_pop_up_handler {
 };
 
 class universal_clan_msg_pop_up_handler {
-    constructor() {
-
-    };
-
     async init() {
-        this.events();
         await this.check(1000);
-    };
-
-    events() {
-
     };
 
     // check for ingoing messages in db
@@ -1747,6 +1738,7 @@ class universal_clan_msg_pop_up_handler {
 
         clan_universal_msg_ok_btn.removeEventListener("click", clan_universal_msg_ok_btn.event);
         clan_universal_kick_content_kicker_name.removeEventListener("click", clan_universal_kick_content_kicker_name.event);
+        clan_content_tournament_lobby_created_opponent_name.removeEventListener('click', clan_content_tournament_lobby_created_opponent_name.ev);
 
         switch (data["msg_type"]) {
 
@@ -1769,7 +1761,28 @@ class universal_clan_msg_pop_up_handler {
             case "request_accepted":
                 this.request_accepted_action(data);
                 break;
+
+            case "tournament_opponent_created_lobby":
+                this.tournament_lobby_action(data);
+                break;
         };
+    };
+
+    tournament_lobby_action(data) {
+        clan_content_tournament_lobby_created_opponent_name.textContent = data.player;
+
+        clan_universal_msg_ok_btn.addEventListener("click", () => {
+            clan_universal_msg_pop_up.style.display = "none";
+
+            tournament_handler.tournament_btn_click_ev().then(cb => {
+                tournament_mode = true;
+                socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
+            });
+        });
+
+        clan_content_tournament_lobby_created_opponent_name.addEventListener('click', clan_content_tournament_lobby_created_opponent_name.ev = () => {
+            socket.emit('GetDataByID', data.player_id, cb => ClickedOnPlayerInfo(cb));
+        });
     };
 
     promote_action(data) {
@@ -1849,6 +1862,19 @@ class universal_clan_msg_pop_up_handler {
     };
 };
 
+// tournament stuff
+socket.on('tournament_opponent_created_lobby', (data) => {
+    DisplayPopUp_PopAnimation(clan_universal_msg_pop_up, "flex", true);
+    universal_clan_msg_handler.init_content(data);
+});
+
+socket.on('universal_clan_msg_abort_lobby', () => {
+    clan_universal_msg_pop_up.style.display = "none";
+    DarkLayer.style.display = "none";
+    socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
+});
+
+// initialize classes
 let newClan = new clan();
 newClan.init();
 

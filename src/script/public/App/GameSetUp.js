@@ -142,6 +142,8 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
 
     // console.log(curr_field_ele);
 
+    if (tournament_mode) return;
+
     // User shouldn't play 40x40 field with 5 second player clock
     if (curr_field_ele.getAttribute("field") == "40x40") {
         document.querySelector("#SetClockListItem-5sec").style.display = "none";
@@ -489,6 +491,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
         // hash
         // player1 + player2 + clan_id + tournament_name + current round
         let tournament_hash = "";
+        let tour_opponent_id = 0;
 
         if (tournament_mode) {
             let tournament_data = tournament_handler.clicked_tournament[1];
@@ -509,6 +512,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
             UserSetPointsToWinGameInput.value = tournament_data.points_to_win;
             tournament_online_lobby_title.textContent = `Tournament ${getCurrentTournamentRound(tournament_data.round_schedule).replace('round_', '')}`;
             tournament_hash = await generateTournamentLobbyHash();
+            tour_opponent_id = findOpponentNumber(tournament_data.current_state.rounds, localStorage.getItem('PlayerID'));
             Lobby_GameCode_display.style.display = 'none';
 
         } else {
@@ -522,7 +526,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
             localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
-            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id, random_player_mode, [xCell_Amount, yCell_Amount], tournament_hash /* x_and_y column */
+            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id, random_player_mode, [xCell_Amount, yCell_Amount], tournament_hash, tour_opponent_id /* x_and_y column */
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;
@@ -677,6 +681,7 @@ const UserTriesToEnterOnlineGame = () => {
             // user can finally enters the online game lobby
             if (m != 'Choose a different name!' && m != 'Choose a different icon!') {
                 UserEntersOnlineGame(m);
+                tournament_pop_up.style.display = "none";
             };
         });
     };

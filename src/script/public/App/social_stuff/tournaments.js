@@ -72,6 +72,24 @@ class TournamentHandler {
         join_t_Joinbtn.addEventListener('click', () => {
             this.contribute_to_the_pot_and_participate(this.clicked_tournament[1].gems_to_put_in_pot);
         });
+
+        tournament_details_btn.addEventListener('click', () => {
+            this.display_tournament_details(this.clicked_tournament[1]);
+            tournament_pop_up.style.display = 'none';
+            DisplayPopUp_PopAnimation(tournament_details_pop_up, 'flex', true);
+        });
+
+        tour_details_close_btn.addEventListener('click', () => {
+            tournament_details_pop_up.style.display = 'none';
+            DisplayPopUp_PopAnimation(tournament_pop_up, 'flex', false);
+        });
+    };
+
+    display_tournament_details(data) {
+        tournament_details_list_items[0].textContent = `Allowed patterns: ${data.allowed_patterns.join(', ')}`;
+        tournament_details_list_items[1].textContent = `Field: ${data.field_size}x${data.field_size}`;
+        tournament_details_list_items[2].textContent = `Points to win a match: ${data.points_to_win} points`;
+        tournament_details_list_items[3].textContent = `Player clock: ${data.player_clock} sec.`;
     };
 
     contribute_to_the_pot_and_participate(amount) {
@@ -320,19 +338,22 @@ class TournamentHandler {
                             socket.emit('tournament_match_lobby_exists', await generateTournamentLobbyHash(), cb => {
                                 console.log(cb);
 
-                                // create lobby
-                                tournament_pop_up.style.display = 'none';
-                                this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
-
                                 // else: join existing lobby
                                 if (cb) {
                                     tournament_mode = true;
+                                    UserClicksNxNDefaultSettings(true, true);
+                                    InitGameDataForPopUp(false);
                                     try_to_join_lobby(cb.RoomID);
+                                    curr_mode = GameMode[2].opponent;
+                                    return;
                                 };
+
+                                // create lobby
+                                tournament_pop_up.style.display = 'none';
+                                this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
                             });
                         });
                     };
-
                 } catch (error) {
                     console.log(error);
                 };

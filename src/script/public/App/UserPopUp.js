@@ -180,7 +180,8 @@ const TryToCloseUserInfoPopUp = () => {
         getComputedStyle(FriendsListPopUp).display == "flex" ||
         getComputedStyle(gameLog_popUp).display != "none" ||
         getComputedStyle(current_games_pop_up).display != "none" ||
-        getComputedStyle(tournament_pop_up).display != "none") {
+        getComputedStyle(tournament_pop_up).display != "none" ||
+        getComputedStyle(clan_universal_msg_pop_up).display != "none") {
 
         DarkLayer.style.display = "block";
 

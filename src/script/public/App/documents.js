@@ -58,6 +58,11 @@ let ELO_Points_AddIcon = document.querySelector('.ELO-Points-AddIcon');
 let gemsIcon = document.querySelector('.gems-icon');
 let Xicon = document.querySelector('.x-icon')
 let KEYicon = document.querySelector('.KEYicon');
+let tournament_details_btn = document.querySelector('.tournament_details_btn');
+let tournament_details_pop_up = document.querySelector('.tournament_details_pop_up');
+let tour_details_close_btn = document.querySelector('.tour_details_close_btn');
+let tournament_details_list_items = document.querySelectorAll('.tour_details_list li');
+let clan_content_tournament_lobby_created_opponent_name = document.querySelector('.clan_content_tournament_lobby_created_opponent_name');
 // let OnlineGame_GameCode_Display = document.querySelector('.OnlineGame_GameCode_Display'); // in the "setupGameData" window, there is already the game id shown, which is not right
 
 // Normal Games
