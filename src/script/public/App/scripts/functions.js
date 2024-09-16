@@ -722,6 +722,21 @@ function findMatchByPlayerID(rounds, id) {
     return null;
 };
 
+function findMatchIndexByPlayerID(rounds, id) {
+    const idString = id.toString();
+
+    for (const round of rounds) {
+        for (const [match_idx, match] of round.matches.entries()) {
+            const players = match.players;
+
+            if (players[0] && players[0].includes(idString)) return match_idx;
+            if (players[1] && players[1].includes(idString)) return match_idx;
+        };
+    };
+
+    return null;
+};
+
 async function generateTournamentLobbyHash() {
     const clanId = JSON.parse(localStorage.getItem('clan_member_data')).clan_id;
     const tournamentName = tournament_handler.clicked_tournament[1].name;
@@ -736,15 +751,17 @@ async function generateTournamentLobbyHash() {
         .join('');
 };
 
-function setWinnerById(roundData, playerId, player1Won) {
+function Tournament_setWinnerById(roundData, playerId, player1Won) {
     const playerString = `Player ${playerId}`;
+
+    console.log(roundData, playerId, player1Won);
 
     for (const match of roundData.matches) {
         const players = match.players;
 
         if (players.includes(playerString)) {
-            match.winner = player1Won ? players[0] : players[1];
-            return [roundData, player1Won ? Number(players[0].replace('Player', '')) : Number(players[1].replace('Player', ''))];
+            match.winner = playerString;
+            return [roundData, Number(match.winner.replace('Player', '').trim())];
         };
     };
 

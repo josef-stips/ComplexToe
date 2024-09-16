@@ -746,7 +746,7 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
 
     if (WinCombination == undefined) {
         setTimeout(() => {
-            console.log(score_Player1_numb, score_Player2_numb);
+            // console.log(score_Player1_numb, score_Player2_numb);
 
             running = false;
             if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
@@ -1021,8 +1021,6 @@ const UltimateWinAnimation = (winText) => {
 function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) {
     // Online or offline mode
     if (curr_mode == GameMode[2].opponent) { // in online mode
-
-        console.log(GameSeconds);
 
         // send message to server
         if (personal_GameData.role == "admin" || UserGivesUp) socket.emit('Call_UltimateWin', personal_GameData.currGameID, [player1_won, player2_won,
@@ -1301,7 +1299,7 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
 socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score, gameSeconds) => {
     setTimeout(() => {
 
-        if (tournament_mode) {
+        if (tournament_mode && personal_GameData.role == 'admin') {
             let tour_data = tournament_handler.clicked_tournament[1];
             // let current_round = Number(getCurrentTournamentRound(tour_data.round_schedule).replace('round', '').trim());
             let current_round_idx = Number('round 1'.replace('round', '').trim()) - 1;
@@ -1309,20 +1307,31 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
             let modified_rounds_dataset = current_round; // Default to the current round dataset
             let winner_id = null;
             let next_round = current_round_idx + 1;
+            let match_player_ids = findMatchByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID')).map(p => parseInt(p.replace('Player', '').trim()));
+            let playerID_toParseIn = localStorage.getItem('PlayerID');
+            let MatchIndex = findMatchIndexByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID'));
+
+            console.log("round idx:", current_round_idx, current_round, "match idx:", MatchIndex);
+            console.log("player1 won:", player1_won, "player2 won:", player2_won);
 
             if (player1_won) {
-                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, localStorage.getItem('PlayerID'), true);
+                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, playerID_toParseIn, true);
+
             } else if (player2_won) {
-                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, localStorage.getItem('PlayerID'), false);
+                let p2_id_to_parse_in = match_player_ids[0] != playerID_toParseIn ? match_player_ids[0] : match_player_ids[1];
+                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, p2_id_to_parse_in, false);
             };
 
             // Update the current round with the modified dataset
             tour_data.current_state.rounds[current_round_idx] = modified_rounds_dataset;
 
+            console.log(tour_data);
+            console.log(tour_data.current_state, winner_id, next_round);
+
             if (winner_id !== null) {
-                socket.emit('tournament_player_to_next_round', tour_data.current_state, winner_id, next_round, cb => {
+                socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, cb => {
                     // cb = updated tournaments data
-                    console.log(cb);
+                    console.log("Ergebnis: ", cb);
                 });
             } else {
                 console.error('No winner determined for this round.');
