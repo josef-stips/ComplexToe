@@ -326,33 +326,35 @@ class TournamentHandler {
                         findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')) == match.players[1].replace('Player', '').trim() && this.your_opponent) {
                         matchWrapper.appendChild(MatchBtn);
 
-                        MatchBtn.addEventListener('click', async() => {
-                            // tournament has not started
-                            if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule) == 'no current round') {
-                                OpenedPopUp_WhereAlertPopUpNeeded = true;
-                                AlertText.textContent = `The tournament hasn't started yet`;
-                                DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
-                                // return;
-                            };
-
-                            socket.emit('tournament_match_lobby_exists', await generateTournamentLobbyHash(), cb => {
-                                console.log(cb);
-
-                                // else: join existing lobby
-                                if (cb) {
-                                    tournament_mode = true;
-                                    UserClicksNxNDefaultSettings(true, true);
-                                    InitGameDataForPopUp(false);
-                                    try_to_join_lobby(cb.RoomID);
-                                    curr_mode = GameMode[2].opponent;
-                                    return;
+                        if (new Date(tour_data.finish_date) > new Date()) {
+                            MatchBtn.addEventListener('click', async() => {
+                                // tournament has not started
+                                if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule) == 'no current round') {
+                                    OpenedPopUp_WhereAlertPopUpNeeded = true;
+                                    AlertText.textContent = `The tournament hasn't started yet`;
+                                    DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                                    // return;
                                 };
 
-                                // create lobby
-                                tournament_pop_up.style.display = 'none';
-                                this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
+                                socket.emit('tournament_match_lobby_exists', await generateTournamentLobbyHash(), cb => {
+                                    console.log(cb);
+
+                                    // else: join existing lobby
+                                    if (cb) {
+                                        tournament_mode = true;
+                                        UserClicksNxNDefaultSettings(true, true);
+                                        InitGameDataForPopUp(false);
+                                        try_to_join_lobby(cb.RoomID);
+                                        curr_mode = GameMode[2].opponent;
+                                        return;
+                                    };
+
+                                    // create lobby
+                                    tournament_pop_up.style.display = 'none';
+                                    this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
+                                });
                             });
-                        });
+                        };
                     };
                 } catch (error) {
                     console.log(error);
@@ -1069,8 +1071,11 @@ class TournamentRoundsHandler {
             };
 
         } else if (!currentRound && !nextRound) {
-            alert("Das Turnier ist vorbei!");
+            OpenedPopUp_WhereAlertPopUpNeeded = true;
+            AlertText.textContent = "The tournament expired";
+            DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
             clearInterval(this.intervalId);
+            return;
         };
     };
 
