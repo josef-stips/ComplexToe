@@ -767,3 +767,22 @@ function Tournament_setWinnerById(roundData, playerId, player1Won) {
 
     return [null, null];
 };
+
+function evaluateCurrentTournamentTreePosition(playerId, tournament) {
+    let latestPosition = { roundIndex: -Infinity, matchIndex: -Infinity };
+
+    tournament.rounds.forEach((round, roundIndex) => {
+        round.matches.forEach((match, matchIndex) => {
+
+            if (match.players.includes(playerId)) {
+
+                if (roundIndex > latestPosition.roundIndex ||
+                    (roundIndex === latestPosition.roundIndex && matchIndex > latestPosition.matchIndex)) {
+                    latestPosition = { roundIndex, matchIndex };
+                };
+            };
+        });
+    });
+
+    return latestPosition;
+};

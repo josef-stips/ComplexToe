@@ -175,7 +175,9 @@ class TournamentHandler {
 
         if (clan_data.role != 'leader') {
             this.fetch_tournaments().then(cb => {
-                if (cb) {
+                let t = cb || [];
+
+                if (t.length > 0) {
                     tournament_handler.open_tournaments_scene();
                     this.tournaments = cb;
                     this.generate_tournaments(this.tournaments);
@@ -261,6 +263,8 @@ class TournamentHandler {
 
     async generate_tree(state, tour_data) {
         const data = tour_data.current_state;
+        const self_current_tree_position = evaluateCurrentTournamentTreePosition(`Player ${localStorage.getItem('PlayerID')}`, data);
+
         let vertHeight = null;
 
         switch (data.rounds.length) {
@@ -280,7 +284,6 @@ class TournamentHandler {
                 vertHeight = 480;
                 break;
         };
-
         console.log(data);
 
         const treeContainer = document.createElement('div');
@@ -293,18 +296,25 @@ class TournamentHandler {
             round.matches.forEach(async(match, i) => {
                 const matchWrapper = document.createElement('div');
                 const MatchBtn = document.createElement('img');
+                const WinnerPreviewBtn = document.createElement('img');
+                const WinnerPreviewName = document.createElement('p');
 
                 matchWrapper.classList.add('tree_match_wrapper');
                 MatchBtn.classList.add('tournament_match_btn');
                 MatchBtn.classList.add('scale_btn');
                 MatchBtn.src = 'assets/game/crossed-swords copy.svg';
 
+                WinnerPreviewBtn.classList.add('tournament_winner_btn');
+                WinnerPreviewBtn.classList.add('scale_btn');
+                WinnerPreviewBtn.src = 'assets/game/crenel-crown.svg'; +
+                WinnerPreviewName.classList.add('tournament_winner_name');
+
                 // Create match entries and ver lines
-                const player2 = await this.createEntry(match.players[1], data, round_idx, match.players[0]);
+                let [player2, player2_data] = await this.createEntry(match.players[1] || match.players[0], data, round_idx, match.players[0] || match.players[1], i, round_idx, self_current_tree_position);
 
-                if (match.players[0]) { // when there is no player 1 and 2 that means there is no match
+                if (match.players[0] && match.players[1]) { // when there is no player 1 and 2 that means there is no match so display no vert line
 
-                    const player1 = await this.createEntry(match.players[0], data, round_idx, match.players[1]);
+                    var [player1, player1_data] = await this.createEntry(match.players[0], data, round_idx, match.players[1], i, round_idx, self_current_tree_position);
                     matchWrapper.appendChild(player1);
 
                     const vertLine = document.createElement('div');
@@ -320,10 +330,17 @@ class TournamentHandler {
                 };
 
                 try {
-                    // console.log(findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')), this.your_opponent, match.players[0].replace('Player', ''), match.players[1].replace('Player', ''))
+                    if (!round.final && !match.winner &&
+                        (findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')) == match.players[0].replace('Player', '').trim() ||
+                            findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')) == match.players[1].replace('Player', '').trim())
 
-                    if (!round.final && findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')) == match.players[0].replace('Player', '').trim() ||
-                        findOpponentNumber(data.rounds, localStorage.getItem('PlayerID')) == match.players[1].replace('Player', '').trim() && this.your_opponent) {
+                        &&
+                        this.your_opponent &&
+
+                        (match.players[0] == `Player ${findOpponentNumber(data.rounds, localStorage.getItem('PlayerID'))}` ||
+                            match.players[1] == `Player ${findOpponentNumber(data.rounds, localStorage.getItem('PlayerID'))}`) &&
+                        round_idx == self_current_tree_position.roundIndex && self_current_tree_position.matchIndex == i) {
+
                         matchWrapper.appendChild(MatchBtn);
 
                         if (new Date(tour_data.finish_date) > new Date()) {
@@ -355,7 +372,21 @@ class TournamentHandler {
                                 });
                             });
                         };
+
+                    } else if (match.winner) {
+                        matchWrapper.appendChild(WinnerPreviewBtn);
+                        matchWrapper.appendChild(WinnerPreviewName);
+
+                        console.log(player2_data.player_name, player1_data.player_name)
+
+                        if (player2_data.player_id == Number(match.winner.replace('Player', '').trim())) {
+                            WinnerPreviewName.textContent = player2_data.player_name;
+
+                        } else {
+                            WinnerPreviewName.textContent = player1_data.player_name;
+                        };
                     };
+
                 } catch (error) {
                     console.log(error);
                 };
@@ -394,7 +425,7 @@ class TournamentHandler {
         }, 500);
     };
 
-    async createEntry(player, tournament_data, index, opponent_text) {
+    async createEntry(player, tournament_data, index, opponent_text, match_idx, round_idx, self_position) {
         return new Promise(async(res) => {
             let player_text = player || 'Player ???';
 
@@ -423,7 +454,8 @@ class TournamentHandler {
                     // console.log(cb);
                     text.textContent = cb.player_name
 
-                    if (cb.player_id == Number(localStorage.getItem('PlayerID'))) {
+                    if (cb.player_id == Number(localStorage.getItem('PlayerID')) &&
+                        round_idx == self_position.roundIndex && self_position.matchIndex == match_idx) {
                         square.style.background = 'var(--line-color)';
                         this.your_opponent = findOpponentNumber(tournament_data.rounds, player_text.replace('Player', ''));
                     };
@@ -436,7 +468,7 @@ class TournamentHandler {
                         };
                     });
                 };
-                res(entry);
+                res([entry, cb]);
             });
         });
     };

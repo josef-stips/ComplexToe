@@ -5693,6 +5693,30 @@ ul.default_sb_list.best_players_list div:first-child {
     border: 0.2vw solid #ebebeb;
 }
 
+.tournament_winner_btn {
+    position: absolute;
+    top: auto;
+    right: -40%;
+    width: 2vw;
+    height: 2vw;
+    margin: 0 0 70% 0;
+    padding: 0.6vw;
+    background: var(--bg-app-color2);
+    border-radius: 100%;
+    pointer-events: all;
+    border: 0.2vw solid #edb87f;
+}
+
+.tournament_winner_name {
+    position: absolute;
+    top: auto;
+    right: -50%;
+    font-size: 2.25vh;
+    font-weight: 600;
+    margin: 0 0 130% 0;
+    pointer-events: all;
+}
+
 .tournamentRoundDuration_display {
     position: absolute;
     top: 12%;

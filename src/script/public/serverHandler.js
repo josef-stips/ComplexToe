@@ -524,9 +524,12 @@ const UserLeftGameInOnlineMode = (from_cont_btn) => {
         socket.emit("removePlayerInRoomStatus", localStorage.getItem("PlayerID"));
 
         if (tournament_mode) {
+            tournament_handler.tournament_btn_click_ev();
             close_all_scenes();
             tournaments_scene.style.display = 'flex';
             sceneMode.full();
+
+            console.log("lol")
         };
 
         // kill standard timers for all players
@@ -582,7 +585,7 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode, from_c
 
     // header style
     HeaderWrapper.style.height = '9%';
-    lobbyFooter.style.background = "";
+    lobbyFooter.style.background = '';
 
     gameLog_btn.classList.remove('blured');
 

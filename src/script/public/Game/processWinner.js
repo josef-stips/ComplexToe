@@ -892,11 +892,14 @@ const continueGame = () => {
 
             } else { // user played standard card level from game
 
+                if (tournament_mode) {
+                    UserleavesGame();
+                };
+
                 // admin leaves game and this info all player get
                 if (personal_GameData.role == "admin") {
                     UserleavesGame();
                 };
-
             };
             DarkLayer.style.display = "block";
 
@@ -1329,7 +1332,7 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
             console.log(tour_data.current_state, winner_id, next_round);
 
             if (winner_id !== null) {
-                socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, cb => {
+                socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, tour_data.id, cb => {
                     // cb = updated tournaments data
                     console.log("Ergebnis: ", cb);
                 });
