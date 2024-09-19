@@ -1297,49 +1297,59 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
     };
 };
 
+// this code block is just for tournament win case
+const tournament_win = async(player1_won, player2_won) => {
+    if (tournament_mode && personal_GameData.role == 'admin') {
+        let tour_data = tournament_handler.clicked_tournament[1];
+        // let current_round = Number(getCurrentTournamentRound(tour_data.round_schedule).replace('round', '').trim());
+        let current_round_idx = Number('round 1'.replace('round', '').trim()) - 1;
+        let current_round = tour_data.current_state.rounds[current_round_idx];
+        let modified_rounds_dataset = current_round; // Default to the current round dataset
+        let winner_id = null;
+        let next_round = current_round_idx + 1;
+        let match_player_ids = findMatchByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID')).map(p => parseInt(p.replace('Player', '').trim()));
+        let playerID_toParseIn = localStorage.getItem('PlayerID');
+        let MatchIndex = findMatchIndexByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID'));
+
+        console.log("round idx:", current_round_idx, current_round, "match idx:", MatchIndex);
+        console.log("player1 won:", player1_won, "player2 won:", player2_won);
+
+        if (player1_won) {
+            [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, playerID_toParseIn, true);
+
+        } else if (player2_won) {
+            let p2_id_to_parse_in = match_player_ids[0] != playerID_toParseIn ? match_player_ids[0] : match_player_ids[1];
+            [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, p2_id_to_parse_in, false);
+        };
+
+        // Update the current round with the modified dataset
+        tour_data.current_state.rounds[current_round_idx] = modified_rounds_dataset;
+
+        console.log(tour_data);
+        console.log(tour_data.current_state, winner_id, next_round);
+
+        if (winner_id !== null) {
+            await socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, tour_data.id, cb => {
+                // cb = updated tournaments data
+                console.log("Ergebnis: ", cb);
+            });
+        } else {
+            console.error('No winner determined for this round.');
+        };
+
+        let tournament_data = { "lol": 1 * 1 };
+        return tournament_data;
+    };
+};
+
 // the admin called the ultimate game win
 // this message recieve all clients
-socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, player1_score, player2_score, gameSeconds) => {
-    setTimeout(() => {
+socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, player1_score, player2_score, gameSeconds) => {
+    setTimeout(async() => {
+        console.log(player1_score, player2_score);
 
-        if (tournament_mode && personal_GameData.role == 'admin') {
-            let tour_data = tournament_handler.clicked_tournament[1];
-            // let current_round = Number(getCurrentTournamentRound(tour_data.round_schedule).replace('round', '').trim());
-            let current_round_idx = Number('round 1'.replace('round', '').trim()) - 1;
-            let current_round = tour_data.current_state.rounds[current_round_idx];
-            let modified_rounds_dataset = current_round; // Default to the current round dataset
-            let winner_id = null;
-            let next_round = current_round_idx + 1;
-            let match_player_ids = findMatchByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID')).map(p => parseInt(p.replace('Player', '').trim()));
-            let playerID_toParseIn = localStorage.getItem('PlayerID');
-            let MatchIndex = findMatchIndexByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID'));
-
-            console.log("round idx:", current_round_idx, current_round, "match idx:", MatchIndex);
-            console.log("player1 won:", player1_won, "player2 won:", player2_won);
-
-            if (player1_won) {
-                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, playerID_toParseIn, true);
-
-            } else if (player2_won) {
-                let p2_id_to_parse_in = match_player_ids[0] != playerID_toParseIn ? match_player_ids[0] : match_player_ids[1];
-                [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, p2_id_to_parse_in, false);
-            };
-
-            // Update the current round with the modified dataset
-            tour_data.current_state.rounds[current_round_idx] = modified_rounds_dataset;
-
-            console.log(tour_data);
-            console.log(tour_data.current_state, winner_id, next_round);
-
-            if (winner_id !== null) {
-                socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, tour_data.id, cb => {
-                    // cb = updated tournaments data
-                    console.log("Ergebnis: ", cb);
-                });
-            } else {
-                console.error('No winner determined for this round.');
-            };
-        };
+        // this code block is just for tournament win case
+        let { tournament_data } = await tournament_win(player1_won, player2_won);
 
         // to prevent bugs
         if (current_level_boss) {
@@ -1384,7 +1394,6 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
             };
 
             let all_game_data_for_log = [
-
                 level_id, // level_id
                 allGameData[2][1], // level name
                 level_icon, // level icon
@@ -1420,6 +1429,8 @@ socket.on('global_UltimateWin', (player1_won, player2_won, WinCombination, playe
                 curr_music_name ? curr_music_name.id : 'null',
                 JSON.stringify(boneyard_array)
             ];
+
+            console.log(all_game_data_for_log);
 
             socket.emit("update_gameLog", all_game_data_for_log, cb => {
                 if (!cb) new Error("Something went wrong while inserting into the gamelogs table");

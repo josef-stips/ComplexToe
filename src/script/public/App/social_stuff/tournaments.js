@@ -83,6 +83,12 @@ class TournamentHandler {
             tournament_details_pop_up.style.display = 'none';
             DisplayPopUp_PopAnimation(tournament_pop_up, 'flex', false);
         });
+
+        tour_winner_close_btn.addEventListener('click', () => {
+            tour_winner_btn_pop_up.style.display = 'none';
+            DarkLayer.style.display = 'none';
+            DisplayPopUp_PopAnimation(tournament_pop_up, 'flex', false);
+        });
     };
 
     display_tournament_details(data) {
@@ -376,6 +382,11 @@ class TournamentHandler {
                     } else if (match.winner) {
                         matchWrapper.appendChild(WinnerPreviewBtn);
                         matchWrapper.appendChild(WinnerPreviewName);
+
+                        WinnerPreviewBtn.addEventListener('click', () => {
+                            tournament_pop_up.style.display = 'none';
+                            DisplayPopUp_PopAnimation(tour_winner_btn_pop_up, 'flex', true);
+                        });
 
                         console.log(player2_data.player_name, player1_data.player_name)
 
