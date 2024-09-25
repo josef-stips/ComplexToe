@@ -1648,8 +1648,13 @@ switchColorMode_btn.addEventListener('click', () => {
 });
 
 function openChooseWinnerWindow() {
-    ChooseWinner_popUp.style.display = 'flex';
-    DarkLayer.style.display = 'block';
+    if (personal_GameData.currGameID) {
+        console.log('cannot do that in online mode');
+        return;
+    } else {
+        ChooseWinner_popUp.style.display = 'flex';
+        DarkLayer.style.display = 'block';
+    };
 };
 
 // Disable all "set player clock" list items
@@ -2151,6 +2156,8 @@ class multiple_use_scenery {
 
     events() {
         use_scene_back_btn.addEventListener("click", () => {
+            inPlayerLevelsScene = false;
+
             switch (multiple_use_scene.getAttribute("open_scene_x")) {
                 case "lobby":
                     DarkLayerAnimation(gameModeCards_Div, multiple_use_scene);

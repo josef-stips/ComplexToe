@@ -495,8 +495,36 @@ const DarkLayerAfterGameAnimation = (advantureModelevelIndex, UserWonAdvantureMo
 };
 
 // in online mode, some player left the game
-const UserLeftGameInOnlineMode = (from_cont_btn) => {
+const UserLeftGameInOnlineMode = async(from_cont_btn) => {
     DarkLayer.style.display = "block";
+
+    if (tournament_mode) {
+        Lobby_closeBtn.click();
+        close_all_scenes();
+        OnlineGame_Lobby.style.display = 'none';
+        tournaments_scene.style.display = 'flex';
+        sceneMode.full();
+
+        await tournament_handler.update_tournaments_var();
+
+        if (personal_GameData.role != 'admin') {
+            personal_GameData.role = 'user';
+            personal_GameData.currGameID = null;
+            personal_GameData.EnterOnlineGame = false;
+        };
+
+        // kill standard timers for all players
+        clearTimer();
+
+        // play music
+        PauseMusic();
+        if (bossModeIsActive) {
+            CreateMusicBars(boss_theme);
+        } else {
+            if (!PlayingInCreatedLevel) CreateMusicBars(audio);
+        };
+        return;
+    };
 
     // user left the game
     // Many things are happening in server.js on this emit
@@ -522,15 +550,6 @@ const UserLeftGameInOnlineMode = (from_cont_btn) => {
 
         // remove "inGame" status from player
         socket.emit("removePlayerInRoomStatus", localStorage.getItem("PlayerID"));
-
-        if (tournament_mode) {
-            tournament_handler.tournament_btn_click_ev();
-            close_all_scenes();
-            tournaments_scene.style.display = 'flex';
-            sceneMode.full();
-
-            console.log("lol")
-        };
 
         // kill standard timers for all players
         clearTimer();
@@ -1122,6 +1141,18 @@ function watch_mode_close_game(no_close, from_continue_btn) {
 
 // This message goes to all users in a room and gets callen when the admin of the room leaves it
 socket.on('killed_room', () => {
+    // "killed room" never gets called in torunament mode. Just... leave the code alone. It doesn't bother you
+    if (tournament_mode) {
+        close_all_scenes();
+        tournaments_scene.style.display = 'flex';
+        sceneMode.full();
+
+        personal_GameData.role = 'user';
+        personal_GameData.currGameID = null;
+        personal_GameData.EnterOnlineGame = false;
+        return;
+    };
+
     pause_clack_sound();
     wheel_of_fortune_scene.style.display = 'none';
 
@@ -1148,18 +1179,45 @@ socket.on('killed_room', () => {
     personal_GameData.role = 'user';
     personal_GameData.currGameID = null;
     personal_GameData.EnterOnlineGame = false;
-
-    if (tournament_mode) {
-        close_all_scenes();
-        tournaments_scene.style.display = 'flex';
-        sceneMode.full();
-    };
 });
 
 // if they were in a game in the admin left the game
 // When the admin leaves, he and all other clients are in the lobby again
-socket.on('killed_game', (from_continue_btn) => {
+socket.on('killed_game', async(from_continue_btn) => {
     gameLog_btn.classList.remove('blured');
+
+    // clear timer and stuff to prevent bugs
+    clearTimer();
+    running = false;
+
+    if (tournament_mode) {
+        Lobby_closeBtn.click();
+        close_all_scenes();
+        OnlineGame_Lobby.style.display = 'none';
+        sceneMode.full();
+
+        personal_GameData.role = 'user';
+        personal_GameData.currGameID = null;
+        personal_GameData.EnterOnlineGame = false;
+
+        GameField.style.display = 'none';
+        Lobby_GameCode_display.style.userSelect = 'text';
+        Lobby.style.background = "";
+        ChangeGameBG(undefined, undefined, null, true);
+        theme.start();
+
+        // remove big screen text if there was one 
+        if (document.querySelector(".bigScreenText")) {
+            document.querySelector(".bigScreenText").remove();
+        };
+
+        // lobby footer remove background
+        lobbyFooter.style.background = "";
+        lobbyFooterText.style.display = 'flex';
+
+        await tournament_handler.update_tournaments_var();
+        return;
+    };
 
     let watch = watch_mode_close_game('no_close', from_continue_btn);
     if (watch) return;
@@ -1191,10 +1249,6 @@ socket.on('killed_game', (from_continue_btn) => {
     CloseOnlinePopUps();
     ChangeGameBG(undefined, undefined, null, true);
 
-    running = false;
-    // clear timer and stuff to prevent bugs
-    clearTimer();
-
     DarkLayer.style.display = "none";
 
     // remove big screen text if there was one 
@@ -1216,12 +1270,6 @@ socket.on('killed_game', (from_continue_btn) => {
         } else if (personal_GameData.role == 'user') {
             LobbyUserFooterInfo.style.display = 'flex';
         };
-    };
-
-    if (tournament_mode) {
-        close_all_scenes();
-        tournaments_scene.style.display = 'flex';
-        sceneMode.full();
     };
 
     // play music
@@ -1360,6 +1408,7 @@ socket.on('INFORM_user_left_room', () => {
     // The other players see this after the user left:
     ResetXPlayerWrapper(2);
 
+    // "INFORM_user_left_room" never gets called in torunament mode. Just... leave the code alone. It doesn't bother you
     if (tournament_mode) {
         close_all_scenes();
         tournaments_scene.style.display = 'flex';
@@ -1391,8 +1440,41 @@ socket.on('INFORM_blocker_left_room', () => {
 });
 
 // User just left the game but during a match
-socket.on('INFORM_user_left_game', () => {
+socket.on('INFORM_user_left_game', async() => {
     gameLog_btn.classList.remove('blured');
+
+    // clear timer and stuff to prevent bugs
+    clearTimer();
+    running = false;
+
+    if (tournament_mode) {
+        Lobby_closeBtn.click();
+        close_all_scenes();
+        OnlineGame_Lobby.style.display = 'none';
+        sceneMode.full();
+
+        personal_GameData.role = 'user';
+        personal_GameData.currGameID = null;
+        personal_GameData.EnterOnlineGame = false;
+
+        GameField.style.display = 'none';
+        Lobby_GameCode_display.style.userSelect = 'text';
+        Lobby.style.background = "";
+        ChangeGameBG(undefined, undefined, null, true);
+        theme.start();
+
+        // remove big screen text if there was one 
+        if (document.querySelector(".bigScreenText")) {
+            document.querySelector(".bigScreenText").remove();
+        };
+
+        // lobby footer remove background
+        lobbyFooter.style.background = "";
+        lobbyFooterText.style.display = 'flex';
+
+        await tournament_handler.update_tournaments_var();
+        return;
+    };
 
     pause_clack_sound();
     wheel_of_fortune_scene.style.display = 'none';
@@ -1406,10 +1488,6 @@ socket.on('INFORM_user_left_game', () => {
     // close pop ups if there where any open
     CloseOnlinePopUps();
 
-    // clear timer and stuff to prevent bugs
-    clearTimer();
-
-    running = false;
     // for the admin and blocker, they are in the lobby again
     if (personal_GameData.role == 'admin' || personal_GameData.role == "blocker") {
         ChangeGameBG(undefined, undefined, null, true);
@@ -1450,12 +1528,6 @@ socket.on('INFORM_user_left_game', () => {
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
-    };
-
-    if (tournament_mode) {
-        close_all_scenes();
-        tournaments_scene.style.display = 'flex';
-        sceneMode.full();
     };
 });
 
@@ -1555,6 +1627,7 @@ socket.on('INFORM_admin_left_room', () => {
     // clear timer and stuff to prevent bugs
     clearTimer();
 
+    // "INFORM_admin_left_room" never gets called in torunament mode. Just... leave the code alone. It doesn't bother you
     if (tournament_mode) {
         close_all_scenes();
         tournaments_scene.style.display = 'flex';

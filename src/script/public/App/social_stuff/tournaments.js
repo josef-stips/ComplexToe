@@ -86,7 +86,6 @@ class TournamentHandler {
 
         tour_winner_close_btn.addEventListener('click', () => {
             tour_winner_btn_pop_up.style.display = 'none';
-            DarkLayer.style.display = 'none';
             DisplayPopUp_PopAnimation(tournament_pop_up, 'flex', false);
         });
     };
@@ -153,6 +152,11 @@ class TournamentHandler {
 
     fetch_tournaments() {
         return new Promise(res => socket.emit('load_tournaments', JSON.parse(localStorage.getItem('clan_member_data')), cb => (!cb) ? res(false) : res(cb)));
+    };
+
+    async update_tournaments_var() {
+        this.tournaments = await this.fetch_tournaments();
+        this.generate_tournaments(this.tournaments);
     };
 
     async tournament_btn_click_ev() {
@@ -360,7 +364,7 @@ class TournamentHandler {
                                 };
 
                                 socket.emit('tournament_match_lobby_exists', await generateTournamentLobbyHash(), cb => {
-                                    console.log(cb);
+                                    tournament_pop_up.style.display = 'none';
 
                                     // else: join existing lobby
                                     if (cb) {
@@ -373,7 +377,6 @@ class TournamentHandler {
                                     };
 
                                     // create lobby
-                                    tournament_pop_up.style.display = 'none';
                                     this.createLobby(state, tour_data, Number(localStorage.getItem('PlayerID')), Number(this.your_opponent));
                                 });
                             });
@@ -383,19 +386,18 @@ class TournamentHandler {
                         matchWrapper.appendChild(WinnerPreviewBtn);
                         matchWrapper.appendChild(WinnerPreviewName);
 
-                        WinnerPreviewBtn.addEventListener('click', () => {
-                            tournament_pop_up.style.display = 'none';
-                            DisplayPopUp_PopAnimation(tour_winner_btn_pop_up, 'flex', true);
-                        });
-
-                        console.log(player2_data.player_name, player1_data.player_name)
-
                         if (player2_data.player_id == Number(match.winner.replace('Player', '').trim())) {
                             WinnerPreviewName.textContent = player2_data.player_name;
 
                         } else {
                             WinnerPreviewName.textContent = player1_data.player_name;
                         };
+
+                        WinnerPreviewBtn.addEventListener('click', () => {
+                            tournament_pop_up.style.display = 'none';
+                            tour_winner_name.textContent = WinnerPreviewName.textContent;
+                            DisplayPopUp_PopAnimation(tour_winner_btn_pop_up, 'flex', true);
+                        });
                     };
 
                 } catch (error) {
@@ -784,6 +786,14 @@ class CreateTournamentHandler {
         create_t_form.removeEventListener('submit', create_t_form.ev);
         create_t_form.addEventListener('submit', create_t_form.ev = async(e) => {
             e.preventDefault();
+
+            // shouldn't have same name as another tournament
+            if (tournament_handler.tournaments.filter(t => t.name == document.querySelector(`input.t_name_input`).value).length > 0) {
+                OpenedPopUp_WhereAlertPopUpNeeded = true;
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                AlertText.textContent = "A tournament with this name already exists.";
+                return;
+            };
 
             const requiredInputs = [
                 '.t_name_input',

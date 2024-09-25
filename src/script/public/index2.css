@@ -5893,7 +5893,7 @@ ul.default_sb_list.best_players_list div:first-child {
 }
 
 .tournament_gameLog_btn {
-    margin: 10vh 0 0 0;
+    margin: 6.5vh 0 0 0;
     font-size: 4vh;
     transition: transform ease-in-out 0.15s;
 }

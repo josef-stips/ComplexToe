@@ -2187,6 +2187,10 @@ wheel_scene_close_btn.addEventListener("click", () => {
 
         wheel_of_fortune_handler.entered_scene && DisplayPopUp_PopAnimation(skinShop, "flex");
 
+        if (!wheel_of_fortune_handler.entered_scene) {
+            DarkLayer.style.display = 'flex';
+        };
+
         setTimeout(() => {
             sceneMode.default();
 
