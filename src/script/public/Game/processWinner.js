@@ -1340,13 +1340,13 @@ const tournament_win = async(player1_won, player2_won) => {
         console.error('No winner determined for this round.');
     };
 
-    let tournament_data = { 
+    let tournament_data = {
         'player1': current_round[MatchIndex],
         'player2': current_round[MatchIndex],
         'tournament_id': tour_data.id,
-        'clan_id': JSON.parse(localStorage.getItem('')).clan_id
-	};
-    
+        'clan_id': JSON.parse(localStorage.getItem('clan_member_data')).clan_id
+    };
+
     console.log(tournament_data);
     return tournament_data;
 };
@@ -1454,7 +1454,7 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
                 Number(fieldIndex),
                 curr_music_name ? curr_music_name.id : 'null',
                 JSON.stringify(boneyard_array),
-				tournament_data || {}
+                tournament_data || {}
             ];
 
             console.log(all_game_data_for_log);

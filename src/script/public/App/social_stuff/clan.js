@@ -232,7 +232,6 @@ class clan_chat_pop_up_class {
     events() {
         clan_chat_back_btn.addEventListener("click", () => {
             socket.emit("leave_clan_room", newClan.roomID, newClan.current_clan_data["clan_id"], clanPlaygroundHandler.self_player_id);
-
             // this.message_cache = [];
             // this.lastDate = null;
 
@@ -271,6 +270,23 @@ class clan_chat_pop_up_class {
         clan_chat_header.addEventListener("click", clan_chat_header.clickEvent = async() => {
             await newClan.get_clan_data();
             await social_scene.clan_handler.item_click(newClan.current_clan_all_data);
+        });
+
+        // display direct btn to tournament if there is a current active one
+        if (getOngoingTournaments(tournament_handler.tournaments)) {
+            clan_chat_tournament_btn.style.display = 'flex';
+            this.init_t_btn();
+
+        } else {
+            clan_chat_tournament_btn.style.display = 'none';
+        };
+    };
+
+    init_t_btn() {
+        clan_chat_tournament_btn.removeEventListener('click', clan_chat_tournament_btn.ev);
+        clan_chat_tournament_btn.addEventListener('click', clan_chat_tournament_btn.ev = async() => {
+            socket.emit("leave_clan_room", newClan.roomID, newClan.current_clan_data["clan_id"], clanPlaygroundHandler.self_player_id);
+            await tournament_handler.tournament_btn_click_ev();
         });
     };
 
@@ -509,6 +525,7 @@ class clan_playground_handler {
 
         this.keys_pressed = {};
         this.can_leave = false;
+        this.can_see_t = false;
 
         this.player_cache = {};
         this.self_player_id = self_id();
@@ -734,7 +751,7 @@ class clan_playground_handler {
         this.animate_character();
     };
 
-    animate_character() {
+    async animate_character() {
         let update_needed = false;
 
         if ((this.keys_pressed['ArrowUp']) && this.self_character_coords.y > 0) {
@@ -757,7 +774,14 @@ class clan_playground_handler {
             update_needed = true;
         };
 
-        if (this.keys_pressed['Enter'] && this.can_leave) this.back_btn.click();
+        if (this.keys_pressed['Enter'] && this.can_leave && !this.can_see_t) this.back_btn.click();
+        if (this.keys_pressed['Enter'] && !this.can_leave && this.can_see_t) {
+            await clan_chat_tournament_btn.click();
+            console.log("lol")
+            this.can_see_t = false;
+            this.can_leave = false;
+        };
+
         if (update_needed) this.send_coords();
 
         requestAnimationFrame(() => this.animate_character());
@@ -781,7 +805,17 @@ class clan_playground_handler {
         this.self_character_rect = character.getBoundingClientRect();
         this.back_btn_rect = this.back_btn.getBoundingClientRect();
 
-        this.check_collision_on_back_btn(this.self_character_rect, this.back_btn_rect) ? this.display_leave_text("block") : this.display_leave_text("none");
+        if (this.check_collision_on_back_btn(this.self_character_rect, this.back_btn_rect)) {
+            this.display_leave_text("block");
+
+        } else {
+            if (this.check_collision_on_back_btn(this.self_character_rect, clan_chat_tournament_btn.getBoundingClientRect())) {
+                this.display_t_text("block");
+
+            } else {
+                this.display_leave_text("none");
+            };
+        };
     };
 
     check_collision_on_back_btn(rect1, rect2) {
@@ -792,8 +826,19 @@ class clan_playground_handler {
     };
 
     display_leave_text(type) {
+        clan_playground_leave_text.textContent = 'Click "Enter" to leave';
         clan_playground_leave_text.style.display = type;
         this.can_leave = type == "none" ? false : true;
+        this.can_see_t = false
+        type == "block" && (this.keys_pressed = []);
+    };
+
+    display_t_text(type) {
+        clan_playground_leave_text.textContent = 'Click "Enter" to see the tournament';
+        clan_playground_leave_text.style.display = type;
+        this.can_leave = false;
+        this.can_see_t = type == "none" ? false : true;
+        type == "block" && (this.keys_pressed = []);
     };
 
     async send_coords() {

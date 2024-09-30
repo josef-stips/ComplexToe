@@ -1283,8 +1283,11 @@ gameInfo_btn.addEventListener('click', () => {
     } else if (NewCreativeLevel || PlayingInCreatedLevel_AsGuest && !player_levels_handler.online_level_overview_handler) {
         GameInfo_HeaderTitle.textContent = `${curr_field} - Game Info`;
 
-    } else if (inPlayerLevelsScene || !PlayingInCreatedLevel_AsGuest && !tournament_mode) {
+    } else if (inPlayerLevelsScene || !PlayingInCreatedLevel_AsGuest && !tournament_mode && curr_mode != 'KI') {
         GameInfo_HeaderTitle.textContent = `${player_levels_handler.online_level_overview_handler.level.level_name} - Game Info`;
+
+    } else if (curr_mode == 'KI' && !inAdvantureMode && !inPlayerLevelsScene && arena_mode) {
+        GameInfo_HeaderTitle.textContent = `Training Arena - Game Info`;
 
     } else if (watch_mode) {
         let l = global_online_games_handler.current_selected_game_instance.game_data.fieldTitle;

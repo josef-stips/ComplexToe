@@ -104,9 +104,11 @@ class social_scene_class {
             this.clan_handler.clan_pop_up_opened_in_pop_up = false;
         });
 
-        leave_clan_btn.addEventListener("click", () => { // user is in this clan
+        leave_clan_btn.addEventListener("click", async() => { // user is in this clan
+            let t_cache = await isInTournaments();
+
             if (newClan.current_clan_data["is_in_clan"] &&
-                newClan.current_clan_data["clan_id"] == newClan.current_selected_clan_id) {
+                newClan.current_clan_data["clan_id"] == newClan.current_selected_clan_id && !t_cache.clientIsIn) {
 
                 try {
                     socket.emit("leave_clan", localStorage.getItem("PlayerID"), newClan.current_clan_data["role"],
@@ -144,12 +146,21 @@ class social_scene_class {
                     AlertText.textContent = "Something went wrong...";
                     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
                 };
+
+            } else {
+                if (Object.keys(t_cache).length > 0 && t_cache.clientIsIn) {
+                    OpenedPopUp_WhereAlertPopUpNeeded = true;
+                    AlertText.textContent = "You cannot leave your clan as a tournament participant.";
+                    DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                };
             };
         });
 
-        join_clan_btn.addEventListener("click", () => {
+        join_clan_btn.addEventListener("click", async() => {
+            let t_cache = await isInTournaments();
+
             if (!newClan.current_clan_data["is_in_clan"] &&
-                newClan.current_clan_data["clan_id"] != newClan.current_selected_clan_id) {
+                newClan.current_clan_data["clan_id"] != newClan.current_selected_clan_id && !t_cache.clientIsIn) {
 
                 try {
                     socket.emit("join_clan", Number(localStorage.getItem("PlayerID")),

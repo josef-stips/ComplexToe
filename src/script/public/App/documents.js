@@ -271,6 +271,7 @@ let tour_winner_btn_pop_up = document.querySelector('.tour_winner_btn_pop_up');
 let tour_winner_close_btn = document.querySelector('.tour_winner_close_btn');
 let tour_winner_name = document.querySelector('.tour_winner_name p');
 let tournament_gameLog_btn = document.querySelector('.tournament_gameLog_btn');
+let clan_chat_tournament_btn = document.querySelector('.clan_chat_tournament_btn');
 
 let agree_ToS_btn = document.querySelector(".agree_ToS_btn");
 let AGB_PopUp = document.querySelector(".AGB_PopUp");

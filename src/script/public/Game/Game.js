@@ -159,6 +159,24 @@ let globalLevelID = null;
 let arena_mode = false;
 let tournament_mode = false;
 
+const universal_level_icons = {
+    0: "assets/game/wolf-head.svg",
+    1: "assets/game/winged-sword.svg",
+    2: "assets/game/warlock-eye.svg",
+    3: "assets/game/sunken-eye.svg",
+    4: "assets/game/ore.svg",
+    5: "assets/game/minerals.svg",
+    6: "assets/game/crystal-eye.svg",
+    7: "assets/game/fangs.svg",
+    8: "assets/game/bleeding-eye.svg",
+    9: "assets/game/crystal-bars.svg",
+    10: "assets/game/battle-axe.svg",
+    11: "assets/game/tribal-mask.svg",
+    12: "assets/game/shattered-sword.svg",
+    13: "assets/game/gluttonous-smile.svg",
+    14: "assets/game/book-cover.svg"
+};
+
 // Initialize Game
 // Allowed_Patterns = array with names of the allowed patterns
 function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns, mapLevelName, required_amount_to_win, AdvantureLevel_InnerGameMode, maxAmoOfMoves, costumCoords,
@@ -1183,7 +1201,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
     if (fromCreativeLevel) {
         if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
         let img5 = document.createElement("img");
-        img5.src = costumLevelIcon;
+        img5.src = universal_level_icons[player_levels_handler.online_level_overview_handler.level.icon];
         img5.width = "31";
         img5.height = "31";
         img5.style.margin = "0.5vh 0 0 0";

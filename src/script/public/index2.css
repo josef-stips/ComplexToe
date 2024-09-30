@@ -886,6 +886,11 @@ p.createCostumField_yInput {
     /* height: auto !important; */
 }
 
+.small_createCostumField_Field .cell {
+    width: 2.5vw !important;
+    height: 2.5vw !important;
+}
+
 .small_createCostumField_Field {
     display: grid;
     width: 100%;
@@ -5902,6 +5907,12 @@ ul.default_sb_list.best_players_list div:first-child {
     transition: transform ease-in-out 0.15s;
     border-color: white !important;
     transform: scale(1.2);
+}
+
+.clan_chat_tournament_btn {
+    height: 3.5vw;
+    width: 5vw;
+    pointer-events: all !important;
 }
 
 

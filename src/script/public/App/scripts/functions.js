@@ -786,3 +786,56 @@ function evaluateCurrentTournamentTreePosition(playerId, tournament) {
 
     return latestPosition;
 };
+
+function getOngoingTournaments(tournaments = tournament_handler.tournaments) {
+    const currentDate = new Date();
+
+    // Filter tournaments that are currently ongoing
+    const ongoingTournaments = tournaments.filter(tournament => {
+        const startDate = new Date(tournament.start_date);
+        const finishDate = new Date(tournament.finish_date);
+
+        return currentDate >= startDate && currentDate <= finishDate;
+    });
+
+    // Return structured result
+    if (ongoingTournaments.length > 0) {
+        return {
+            ongoing: true,
+            tournaments: ongoingTournaments.map(tournament => tournament.name),
+            count: ongoingTournaments.length
+        };
+    } else {
+        return {
+            ongoing: false,
+            tournaments: [],
+            count: 0
+        };
+    };
+};
+
+async function isInTournaments(tournaments = tournament_handler.tournaments) {
+    await tournament_handler.update_tournaments_var();
+    tournaments = tournament_handler.tournaments
+    const client_id = Number(localStorage.getItem('PlayerID'));
+
+    // Filter tournaments that are currently ongoing
+    const ongoingTournaments = tournaments.filter(tournament => {
+        return tournament.participants.includes(client_id);
+    });
+
+    // Return structured result
+    if (ongoingTournaments.length > 0) {
+        return {
+            clientIsIn: true,
+            tournaments: ongoingTournaments.map(tournament => tournament.name),
+            count: ongoingTournaments.length
+        };
+    } else {
+        return {
+            clientIsIn: false,
+            tournaments: [],
+            count: 0
+        };
+    };
+};
