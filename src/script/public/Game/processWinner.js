@@ -990,6 +990,10 @@ const SecondPlayerUltimateWin = (player1_won, player2_won) => {
         // animation
         UltimateWinAnimation(`You have lost`);
 
+        setTimeout(() => {
+            endGameStatsOnLostAdvantureLevel(current_selected_level);
+        }, 4500);
+
     } else {
         // animation
         UltimateWinAnimation(`${PlayerData[2].PlayerName} won it`);
@@ -1083,7 +1087,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             if (score_Player1_numb == Infinity) score1 = 999;
             if (score_Player2_numb == Infinity) score2 = 999;
 
-            if (!NewCreativeLevel) {
+            if (!NewCreativeLevel && !inAdvantureMode) {
                 let all_game_data_for_log = [
                     level_id, // level_id
                     level_name, // level name

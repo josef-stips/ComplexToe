@@ -839,3 +839,15 @@ async function isInTournaments(tournaments = tournament_handler.tournaments) {
         };
     };
 };
+
+function endGameStatsOnLostAdvantureLevel(level = current_selected_level) {
+    level_overview_stars_wrapper.style.opacity = "0";
+
+    setTimeout(() => {
+        level_overview_stars_wrapper.style.display = "none";
+        advanture_level_lost_items.style.display = "flex";
+        setTimeout(() => {
+            advanture_level_lost_items.style.opacity = "1";
+        }, 100);
+    }, 450);
+};

@@ -976,6 +976,26 @@ p.createCostumField_yInput {
     background: var(--bg-app-color2);
 }
 
+.level_overview_stars_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+    transition: opacity 0.40s ease;
+}
+
+.advanture_level_lost_items {
+    opacity: 0;
+    display: none;
+    flex-direction: row;
+    gap: 1vw;
+    transition: opacity 0.40s ease;
+}
+
+.advanture_level_lost_items li {
+    padding: 1.5vw;
+    animation: floating-el 3.5s infinite;
+}
+
 .continueGameBtn:hover {
     transition: transform 0.15s ease-in-out;
     transform: scale(1.075);

@@ -272,6 +272,8 @@ let tour_winner_close_btn = document.querySelector('.tour_winner_close_btn');
 let tour_winner_name = document.querySelector('.tour_winner_name p');
 let tournament_gameLog_btn = document.querySelector('.tournament_gameLog_btn');
 let clan_chat_tournament_btn = document.querySelector('.clan_chat_tournament_btn');
+let advanture_level_lost_items = document.querySelector('.advanture_level_lost_items');
+let level_overview_stars_wrapper = document.querySelectorAll('.level_overview_stars_wrapper')[1];
 
 let agree_ToS_btn = document.querySelector(".agree_ToS_btn");
 let AGB_PopUp = document.querySelector(".AGB_PopUp");
