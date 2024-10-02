@@ -1334,7 +1334,7 @@ const tournament_win = async(player1_won, player2_won) => {
     tour_data.current_state.rounds[current_round_idx] = modified_rounds_dataset;
 
     console.log(tour_data);
-    console.log(tour_data.current_state, winner_id, next_round);
+    console.log(tour_data.current_state, winner_id, next_round, current_round, MatchIndex);
 
     if (winner_id !== null) {
         await socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, tour_data.id, cb => {
@@ -1346,8 +1346,8 @@ const tournament_win = async(player1_won, player2_won) => {
     };
 
     let tournament_data = {
-        'player1': current_round[MatchIndex],
-        'player2': current_round[MatchIndex],
+        'player1': current_round.matches[MatchIndex].players[0],
+        'player2': current_round.matches[MatchIndex].players[1],
         'tournament_id': tour_data.id,
         'clan_id': JSON.parse(localStorage.getItem('clan_member_data')).clan_id
     };

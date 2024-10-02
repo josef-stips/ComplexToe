@@ -897,6 +897,11 @@ p.createCostumField_yInput {
     height: 2.5vw !important;
 }
 
+.ct_form_wrapper .preview_cell.cell {
+    width: 2.1vw !important;
+    height: 2.1vw !important;
+}
+
 .small_createCostumField_Field {
     display: grid;
     width: 100%;
@@ -5419,12 +5424,12 @@ ul.default_sb_list.best_players_list div:first-child {
     height: 100%;
     display: grid;
     align-items: center;
-    column-gap: 2vw;
+    column-gap: 4vw;
     grid-template-columns: repeat(20, 1fr);
     overflow: scroll hidden;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 0 0 1vh 0;
+    padding: 0 0 4.5vh 0;
 }
 
 .ct_allowed_patterns_wrapper>div {
@@ -5434,8 +5439,8 @@ ul.default_sb_list.best_players_list div:first-child {
 
 .ct_allowed_patterns_wrapper div.small_createCostumField_Field {
     width: min-content;
-    width: 8em;
-    height: 8em;
+    width: 5em;
+    height: 5em;
     font-size: 1vw;
 }
 

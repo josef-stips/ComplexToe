@@ -397,6 +397,27 @@ class TournamentHandler {
                             tournament_pop_up.style.display = 'none';
                             tour_winner_name.textContent = WinnerPreviewName.textContent;
                             DisplayPopUp_PopAnimation(tour_winner_btn_pop_up, 'flex', true);
+
+                            tournament_gameLog_btn.removeEventListener('click', tournament_gameLog_btn.ev);
+                            tournament_gameLog_btn.addEventListener('click', tournament_gameLog_btn.ev = () => {
+                                const tournament_match_data = {
+                                    clan_id: JSON.parse(localStorage.getItem('clan_member_data')).clan_id,
+                                    player1: match.players[0],
+                                    player2: match.players[1],
+                                    tournament_id: tour_data.id
+                                };
+
+                                socket.emit('get_gameLog_by_tournament_data', tournament_match_data, (cb) => {
+                                    console.log(cb);
+
+                                    if (!cb) {
+                                        AlertText.textContent = 'Something went wrong';
+                                        DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                                        OpenedPopUp_WhereAlertPopUpNeeded = true;
+                                        return;
+                                    };
+                                });
+                            });
                         });
                     };
 
