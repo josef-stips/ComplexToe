@@ -848,6 +848,9 @@ function endGameStatsOnLostAdvantureLevel(level = current_selected_level) {
         advanture_level_lost_items.style.display = "flex";
         setTimeout(() => {
             advanture_level_lost_items.style.opacity = "1";
+
+            lost_items_handler = new AdvantureModeLostItemsHandler(level);
+            lost_items_handler.init();
         }, 100);
     }, 450);
 };

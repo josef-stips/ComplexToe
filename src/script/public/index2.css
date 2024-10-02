@@ -991,9 +991,22 @@ p.createCostumField_yInput {
     transition: opacity 0.40s ease;
 }
 
-.advanture_level_lost_items li {
+.advanture_level_lost_items li i.CreateLevelSceneButton {
     padding: 1.5vw;
+}
+
+.advanture_level_lost_items li {
+    width: max-content;
+    height: max-content;
     animation: floating-el 3.5s infinite;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh;
+}
+
+.advanture_level_lost_items li p {
+    font-size: 2.5vh;
+    font-weight: 500;
 }
 
 .continueGameBtn:hover {
