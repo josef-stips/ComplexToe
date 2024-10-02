@@ -803,12 +803,13 @@ const UltimateGameWinFirstAnimation = (player1_won, player2_won) => {
     let rnd_text = random_win_text[rnd];
 
     GameFieldHeaderUnderBody.style.display = 'none';
+    statusText.style.display = 'none';
+    field_deco_wrapper.style.display = 'none';
 
     endGame_player1Won = player1_won;
     // console.log(player1_won, player2_won);
 
     setTimeout(() => {
-
         cellGrid.classList.add('Invisible');
         endGame_statusText.style.display = 'block';
 

@@ -374,6 +374,7 @@ planet.addEventListener('click', async() => {
     // animation
     await DarkLayerAnimation(AdvantureMap, gameModeCards_Div);
 
+    Lobby.style.background = "linear-gradient(45deg, #462d4917, #6f452038)";
     bodyBGIMG.forEach(e => e.style.display = "none");
 
     inAdvantureMode = true;
@@ -395,6 +396,7 @@ AdvantureMapBackbtn.addEventListener('click', () => {
     // animation
     DarkLayerAnimation(gameModeCards_Div, AdvantureMap).then(() => {
         bodyBGIMG.forEach(e => e.style.display = "block");
+        Lobby.style.background = "";
 
         inAdvantureMode = false;
         playGameTheme();

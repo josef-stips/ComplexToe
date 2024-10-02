@@ -522,6 +522,7 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     watching_count_el.textContent = `watching: ${0}`;
     YouWatchGameEl.style.display = 'none';
     watching_count_el.style.display = 'none';
+    statusText.style.display = 'flex';
 
     review_mode_action_wrapper.style.display = "none";
     review_moves_wrapper.style.display = "none";
@@ -1698,14 +1699,11 @@ function single_CellBlock(cell, fromMap, WinCombination) {
         });
 
     } else {
-
         if (killAllDrawnCells) {
             CreateOptions("fromMap"); // local options
 
         } else {
-
             if (WinCombination) {
-
                 WinCombination.forEach(cell => options[Number(cell.getAttribute("cell-index"))] = "");
             };
         };

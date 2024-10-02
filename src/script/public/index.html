@@ -2672,38 +2672,6 @@
 
             </div>
 
-            <!-- you found pop up for explored items pop up -->
-            <div class="YouFoundItems_PopUp">
-                <h3 class="YouFoundTitle" style="    border-bottom: 2px solid;
-                border-radius: 10px;
-                width: 90%;
-                padding: 10px;">You found</h3>
-                <div class="YouFoundMain">
-
-                    <div class="foundItemContainer FoundItem1">
-                        <span class="foundItem_Title1">Gold:</span>
-                        <img class="foundItem1_img" src="assets/game/crystal-bars.svg" width="30" height="30">
-                        <span class="FoundItemCount_Display">0</span>
-                    </div>
-
-                    <div class="foundItemContainer FoundItem2">
-                        <span class="foundItem_Title2">Gold:</span>
-                        <img class="foundItem2_img" src="assets/game/crystal-bars.svg" width="30" height="30">
-                        <span class="FoundItemCount_Display">0</span>
-                    </div>
-
-                    <div class="foundItemContainer FoundItem3">
-                        <span class="foundItem_Title3">Gold:</span>
-                        <img class="foundItem3_img" src="assets/game/crystal-bars.svg" width="30" height="30">
-                        <span class="FoundItemCount_Display">0</span>
-                    </div>
-                </div>
-
-                <div class="YouFoundFooter">
-                    <span class="YouFound_OkBtn">OK</span>
-                </div>
-            </div>
-
             <!-- Advanture map scene -->
             <div class="AdvantureMap">
                 <div class="AdvantureMap-header">
@@ -4261,6 +4229,39 @@
 
         <img src="./assets/game/BG_icon_1.svg" style="position: absolute;bottom: 0;" width="200" height="200">
         <img src="./assets/game/BG_icon_4.svg" style="position: absolute;top: 0;right:0;" width="200" height="200">
+    </div>
+
+    <!-- you found pop up for explored items pop up -->
+    <div class="YouFoundItems_PopUp">
+        <h3 class="YouFoundTitle" style="
+    border-bottom: 0.6vh solid;
+    border-radius: 15%;
+    width: 90%;
+    padding: 1vh;">You found</h3>
+        <div class="YouFoundMain">
+
+            <div class="foundItemContainer FoundItem1">
+                <span class="foundItem_Title1">Gold:</span>
+                <img class="foundItem1_img" src="assets/game/crystal-bars.svg" width="30" height="30">
+                <span class="FoundItemCount_Display">0</span>
+            </div>
+
+            <div class="foundItemContainer FoundItem2">
+                <span class="foundItem_Title2">Gold:</span>
+                <img class="foundItem2_img" src="assets/game/crystal-bars.svg" width="30" height="30">
+                <span class="FoundItemCount_Display">0</span>
+            </div>
+
+            <div class="foundItemContainer FoundItem3">
+                <span class="foundItem_Title3">Gold:</span>
+                <img class="foundItem3_img" src="assets/game/crystal-bars.svg" width="30" height="30">
+                <span class="FoundItemCount_Display">0</span>
+            </div>
+        </div>
+
+        <div class="YouFoundFooter">
+            <span class="YouFound_OkBtn">OK</span>
+        </div>
     </div>
 
     <!-- Set player names pop up for normal modes -->
@@ -7938,21 +7939,36 @@
                 <ul class="advanture_level_lost_items">
                     <li class="advan_lost_item">
                         <i class="default_btn fa-solid fa-question advan_lost_item_qust_btn"></i>
-                        <i class="fa-solid fa-crown CreateLevelSceneButton scale_btn"></i>
-                        <p class="advan_lost_item_text">moves</p>
+                        <i class="fa-solid fa-diamond CreateLevelSceneButton scale_btn"></i>
+                        <p class="advan_lost_item_text">lol 1</p>
                     </li>
 
                     <li class="advan_lost_item">
                         <i class="default_btn fa-solid fa-question advan_lost_item_qust_btn"></i>
-                        <i class="fa-solid fa-crown CreateLevelSceneButton scale_btn"></i>
-                        <p class="advan_lost_item_text">deduct opponent</p>
+                        <i class="fa-solid fa-user-minus CreateLevelSceneButton scale_btn"></i>
+                        <p class="advan_lost_item_text">lol 2</p>
                     </li>
 
                     <li class="advan_lost_item">
                         <i class="default_btn fa-solid fa-question advan_lost_item_qust_btn"></i>
-                        <i class="fa-solid fa-crown CreateLevelSceneButton scale_btn"></i>
-                        <p class="advan_lost_item_text"></p>
+                        <i class="fa-solid fa-glass-water CreateLevelSceneButton scale_btn"></i>
+                        <p class="advan_lost_item_text">lol 3</p>
                     </li>
+
+                    <div class="SelectedLostItemWrapper">
+                        <div>
+                            <p>selected retry skill</p>
+                            <span class="selected_lost_item_textfield">na</span>
+                        </div>
+
+                        <div>
+                            <p>retry skill price</p>
+                            <span class="lostitem_priceWrapper">
+                                <p class="selected_lost_item_price_textfield">na</p>
+                                <i class="fa-solid fa-gem"></i>
+                            </span>
+                        </div>
+                    </div>
                 </ul>
             </div>
 
@@ -7985,8 +8001,14 @@
                 </div>
             </div>
 
-            <div class="continueGameBtn">
-                Continue
+            <div class="endGameBtnsWrapper">
+                <div class="retryGameBtn">
+                    Retry
+                </div>
+
+                <div class="continueGameBtn">
+                    Continue
+                </div>
             </div>
         </div>
 

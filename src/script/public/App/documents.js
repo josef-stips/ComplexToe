@@ -277,6 +277,10 @@ let level_overview_stars_wrapper = document.querySelectorAll('.level_overview_st
 let advan_lost_items = document.querySelectorAll('.advan_lost_item');
 let advan_lost_item_text = document.querySelectorAll('.advan_lost_item_text');
 let advan_lost_item_qust_btn = document.querySelectorAll('.advan_lost_item_qust_btn');
+let retryGameBtn = document.querySelector('.retryGameBtn');
+let SelectedLostItemWrapper = document.querySelector('.SelectedLostItemWrapper');
+let selected_lost_item_textfield = document.querySelector('.selected_lost_item_textfield');
+let selected_lost_item_price_textfield = document.querySelector('.selected_lost_item_price_textfield');
 
 let agree_ToS_btn = document.querySelector(".agree_ToS_btn");
 let AGB_PopUp = document.querySelector(".AGB_PopUp");

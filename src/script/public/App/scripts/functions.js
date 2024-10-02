@@ -846,11 +846,27 @@ function endGameStatsOnLostAdvantureLevel(level = current_selected_level) {
     setTimeout(() => {
         level_overview_stars_wrapper.style.display = "none";
         advanture_level_lost_items.style.display = "flex";
+        retryGameBtn.style.display = "flex";
+        SelectedLostItemWrapper.style.display = "flex";
+
         setTimeout(() => {
             advanture_level_lost_items.style.opacity = "1";
+            retryGameBtn.style.opacity = "1";
+            SelectedLostItemWrapper.style.opacity = "1";
 
             lost_items_handler = new AdvantureModeLostItemsHandler(level);
             lost_items_handler.init();
         }, 100);
     }, 450);
+};
+
+function hideEndGameLostItems() {
+    level_overview_stars_wrapper.style.opacity = "1";
+    level_overview_stars_wrapper.style.display = "flex";
+    advanture_level_lost_items.style.display = "none";
+    retryGameBtn.style.display = "none";
+    SelectedLostItemWrapper.style.display = "none";
+    advanture_level_lost_items.style.opacity = "0";
+    retryGameBtn.style.opacity = "0";
+    SelectedLostItemWrapper.style.opacity = "0";
 };

@@ -1205,7 +1205,7 @@ p#name-player1 {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    gap: 14vh;
+    gap: 16vh;
 }
 
 .gameModes-cards-Left {
@@ -5232,7 +5232,8 @@ h1.stars_pop_up_title {
     gap: 0.5em;
     width: 100%;
     height: 100%;
-    border-right: solid 0.4vh var(--line-color);
+    border-right: solid 0.45vh var(--line-color);
+    border-radius: 1%;
     font-size: 3vh;
     margin-top: 2vh;
 }
@@ -5714,20 +5715,20 @@ h1.stars_pop_up_title {
 .YouFoundItems_PopUp {
     transform: scale(0);
     display: none;
-    position: fixed;
+    position: absolute;
     flex-direction: column;
     left: 0;
     bottom: 0;
     top: 0;
     right: 0;
     margin: auto auto auto auto;
-    width: 35%;
-    height: 35%;
+    width: 45%;
+    height: 40%;
     background-color: var(--bg-app-color);
-    border: 2px solid var(--font-color);
-    border-radius: 40px;
-    z-index: 10001;
-    font-size: 35px;
+    border: 0.5vh solid var(--font-color);
+    border-radius: 4vh;
+    z-index: 10500;
+    font-size: 3vh;
     transition: all 0.5s ease-out;
     color: var(--font-color);
     justify-content: center;
@@ -5744,7 +5745,25 @@ h1.stars_pop_up_title {
     justify-content: center;
     align-items: center;
     height: 77%;
-    margin: 0 0 20px 0;
+    font-size: 4.5vh;
+}
+
+img.foundItem1_img {
+    transform: scale(1.6);
+    width: 2vw;
+    height: 3vh;
+}
+
+img.foundItem2_img {
+    transform: scale(1.6);
+    width: 2vw;
+    height: 3vh;
+}
+
+img.foundItem3_img {
+    transform: scale(1.6);
+    width: 2vw;
+    height: 3vh;
 }
 
 .YouFoundTitle {
@@ -5754,7 +5773,7 @@ h1.stars_pop_up_title {
 .YouFoundFooter {
     width: 100%;
     height: 40%;
-    font-size: 25px;
+    font-size: 3vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -5771,9 +5790,9 @@ h1.stars_pop_up_title {
 .YouFound_OkBtn {
     transition: 0.1s all ease-out;
     cursor: pointer;
-    border: 2px solid white;
-    border-radius: 20px;
-    padding: 5px 30px 5px 30px;
+    border: 0.5vh solid white;
+    border-radius: 3vh;
+    padding: 0.5vh 2vw;
 }
 
 .YouFound_OkBtn:hover {
@@ -6047,27 +6066,29 @@ h1.stars_pop_up_title {
 /* Use spell pop up */
 
 .UseSpell_PopUp {
-    width: 30%;
-    height: 25%;
+    width: 40%;
+    height: 35%;
     position: absolute;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
     margin: auto auto auto auto;
-    border: 2px solid white;
+    border: 0.4vh solid white;
     background-color: var(--bg-app-color);
     display: none;
     flex-direction: column;
     color: white;
-    font-size: 23px;
+    font-size: 3vh;
     z-index: 10001;
-    border-radius: 25px;
+    border-radius: 4vh;
+    align-items: center;
 }
 
 .UseSpell_PopUp_header {
-    width: 100%;
+    width: 95%;
     height: 15%;
+    font-size: 2.8vh;
 }
 
 .UseSpell_InnerHeader {
@@ -6077,33 +6098,25 @@ h1.stars_pop_up_title {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: 0 10px 0 10px;
-}
-
-.UseSpell_CloseBtn {
-    margin: 0 20px 0 0;
-    font-size: 20px;
-    cursor: pointer;
 }
 
 .UseSpell_questionBtn {
-    font-size: 20px;
     cursor: pointer;
-    margin: 0 0 0 5px;
 }
 
 .UseSpell_btn {
     cursor: pointer;
     color: rgb(206, 178, 23);
-    border-radius: 15px;
-    border: 2px #26282b solid;
-    padding: 5px 10px 5px 10px;
+    border-radius: 3vh;
+    border: 0.7vh #26282b solid;
+    padding: 1vh 2vw;
+    font-weight: 500;
     transition: border 0.1s ease-in;
 }
 
 .UseSpell_btn:hover {
     transition: border 0.1s ease-in;
-    border: 2px rgb(206, 178, 23) solid;
+    border: 0.25vh rgb(206, 178, 23) solid;
 }
 
 .UseSpell_PopUp_main {
