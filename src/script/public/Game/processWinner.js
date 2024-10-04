@@ -1319,9 +1319,6 @@ const tournament_win = async(player1_won, player2_won) => {
     let playerID_toParseIn = localStorage.getItem('PlayerID');
     let MatchIndex = findMatchIndexByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID'));
 
-    console.log("round idx:", current_round_idx, current_round, "match idx:", MatchIndex);
-    console.log("player1 won:", player1_won, "player2 won:", player2_won);
-
     if (player1_won) {
         [modified_rounds_dataset, winner_id] = Tournament_setWinnerById(current_round, playerID_toParseIn, true);
 
@@ -1332,9 +1329,6 @@ const tournament_win = async(player1_won, player2_won) => {
 
     // Update the current round with the modified dataset
     tour_data.current_state.rounds[current_round_idx] = modified_rounds_dataset;
-
-    console.log(tour_data);
-    console.log(tour_data.current_state, winner_id, next_round, current_round, MatchIndex);
 
     if (winner_id !== null) {
         await socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, tour_data.id, cb => {
@@ -1352,7 +1346,6 @@ const tournament_win = async(player1_won, player2_won) => {
         'clan_id': JSON.parse(localStorage.getItem('clan_member_data')).clan_id
     };
 
-    console.log(tournament_data);
     return tournament_data;
 };
 
@@ -1423,6 +1416,8 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
             };
 
             console.log(player_levels_handler.online_level_overview_handler);
+
+            console.log(patterns_used);
 
             let all_game_data_for_log = [
                 level_id, // level_id

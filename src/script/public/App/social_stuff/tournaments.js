@@ -416,6 +416,9 @@ class TournamentHandler {
                                         OpenedPopUp_WhereAlertPopUpNeeded = true;
                                         return;
                                     };
+
+                                    review_mode_handler = new reviewModeHandler(cb);
+                                    review_mode_handler.init();
                                 });
                             });
                         });
