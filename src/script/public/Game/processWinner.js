@@ -1309,7 +1309,6 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
 // this code block is just for tournament win case
 const tournament_win = async(player1_won, player2_won) => {
     let tour_data = tournament_handler.clicked_tournament[1];
-    // let current_round = Number(getCurrentTournamentRound(tour_data.round_schedule).replace('round', '').trim());
     let current_round_idx = Number('round 1'.replace('round', '').trim()) - 1;
     let current_round = tour_data.current_state.rounds[current_round_idx];
     let modified_rounds_dataset = current_round; // Default to the current round dataset

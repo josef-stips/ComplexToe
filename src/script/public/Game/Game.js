@@ -188,7 +188,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     sceneMode.default();
 
     if (review_mode) {
-        review_mode_handler = new reviewModeHandler(review_mode_data);
+        review_mode_handler = new reviewModeHandler(review_mode_data, 'normal');
         review_mode_handler.init();
         return;
     };
@@ -1103,7 +1103,7 @@ const SetBGColorForCurrentField = (xy) => {
 };
 
 // every card field has its own img icon or fontawesome icon
-const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
+const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel, forTournamentMode_fromReviewMode) => {
     if (!NewCreativeLevel && !tournament_mode) {
         switch (xy) {
             case 5:
@@ -1187,7 +1187,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel) => {
         Game_Upper_Field_Icon.classList = "";
     };
 
-    if (tournament_mode) {
+    if (tournament_mode || forTournamentMode_fromReviewMode) {
         if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
         let img11 = document.createElement("img");
         img11.src = "assets/game/sunken-eye.svg";
@@ -2757,7 +2757,7 @@ wheel_of_fortune_handler.init_scene();
 
 // review mode
 class reviewModeHandler {
-    constructor(entry) {
+    constructor(entry, entry_opened_from_scene_x) {
         this.entry = entry;
         this.moves = entry.moves;
         this.curr_move_idx = 0;
@@ -2796,6 +2796,8 @@ class reviewModeHandler {
             13: "assets/game/gluttonous-smile.svg",
             14: "assets/game/book-cover.svg"
         };
+
+        this.entry_opened_from_scene_x = entry_opened_from_scene_x;
     };
 
     init() {
@@ -2811,9 +2813,9 @@ class reviewModeHandler {
         this.init_player_icon(this.entry);
         this.init_player(this.entry);
         this.init_field(this.entry);
-        this.init_moves_list(this.entry, this.moves);
 
-        this.current_move(this.entry);
+        this.entry.moves.length > 0 && this.init_moves_list(this.entry, this.moves);
+        this.entry.moves.length > 0 && this.current_move(this.entry);
     };
 
     init_settings() {
@@ -2894,17 +2896,25 @@ class reviewModeHandler {
         review_mode_forth_btn.removeEventListener('click', review_mode_forth_btn.ev);
 
         review_mode_back_btn.addEventListener('click', review_mode_back_btn.ev = () => {
-            this.curr_move_idx > 0 && this.curr_move_idx--;
-            this.current_move(this.entry);
-            centerCurrentMove((window.innerHeight / 17) / -1);
-            playBtn_Audio_2();
+            try {
+                this.curr_move_idx > 0 && this.curr_move_idx--;
+                this.current_move(this.entry);
+                centerCurrentMove((window.innerHeight / 17) / -1);
+                playBtn_Audio_2();
+            } catch (error) {
+                console.log(error);
+            };
         });
 
         review_mode_forth_btn.addEventListener('click', review_mode_forth_btn.ev = () => {
-            this.curr_move_idx < this.total_moves_length - 1 && this.curr_move_idx++;
-            this.current_move(this.entry);
-            centerCurrentMove(window.innerHeight / 17);
-            playBtn_Audio_2();
+            try {
+                this.curr_move_idx < this.total_moves_length - 1 && this.curr_move_idx++;
+                this.current_move(this.entry);
+                centerCurrentMove(window.innerHeight / 17);
+                playBtn_Audio_2();
+            } catch (error) {
+                console.log(error);
+            };
         });
 
         review_moves_wrapper.addEventListener('keydown', (e) => {
@@ -2923,17 +2933,25 @@ class reviewModeHandler {
         review_mode_end_move_btn.removeEventListener('click', review_mode_end_move_btn.ev);
 
         review_mode_start_move_btn.addEventListener('click', review_mode_start_move_btn.ev = () => {
-            this.curr_move_idx = 0;
-            this.current_move(this.entry);
-            centerCurrentMove((this.list.scrollTop) / -1);
-            playBtn_Audio_2();
+            try {
+                this.curr_move_idx = 0;
+                this.current_move(this.entry);
+                centerCurrentMove((this.list.scrollTop) / -1);
+                playBtn_Audio_2();
+            } catch (error) {
+                console.log(error);
+            };
         });
 
         review_mode_end_move_btn.addEventListener('click', review_mode_end_move_btn.ev = () => {
-            this.curr_move_idx = this.total_moves_length - 1
-            this.current_move(this.entry);
-            centerCurrentMove(this.list.scrollHeight);
-            playBtn_Audio_2();
+            try {
+                this.curr_move_idx = this.total_moves_length - 1
+                this.current_move(this.entry);
+                centerCurrentMove(this.list.scrollHeight);
+                playBtn_Audio_2();
+            } catch (error) {
+                console.log(error);
+            };
         });
 
         review_mode_question_btn.removeEventListener('click', review_mode_question_btn.ev);
@@ -2966,6 +2984,7 @@ class reviewModeHandler {
         watching_count_el.style.display = 'none';
         watching_count_el.textContent = `watching: None`;
         YouWatchGameEl.style.display = 'none';
+        TrainingArenaDifficutlyModeGameDisplay.style.display = 'none';
 
         pointsToAchieve_ScoreBar.forEach(textEl => {
             textEl.style.display = 'none';
@@ -3007,6 +3026,11 @@ class reviewModeHandler {
     };
 
     init_game_field_icon(entry) {
+        if (Object.keys(entry.tournament_data).length > 0) {
+            SetGameFieldIconForCurrentField(entry.field_size[0], entry.field_index, false, true);
+            return;
+        };
+
         if (entry.p2_id > 0) {
             costumLevelIcon = this.levelicons[entry.level_icon];
             SetGameFieldIconForCurrentField(entry.field_size[0], entry.field_index, true);

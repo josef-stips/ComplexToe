@@ -356,7 +356,7 @@ class TournamentHandler {
                         if (new Date(tour_data.finish_date) > new Date()) {
                             MatchBtn.addEventListener('click', async() => {
                                 // tournament has not started
-                                if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule) == 'no current round') {
+                                if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1]) == 'no current round') {
                                     OpenedPopUp_WhereAlertPopUpNeeded = true;
                                     AlertText.textContent = `The tournament hasn't started yet`;
                                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
@@ -407,9 +407,7 @@ class TournamentHandler {
                                     tournament_id: tour_data.id
                                 };
 
-                                socket.emit('get_gameLog_by_tournament_data', tournament_match_data, (cb) => {
-                                    console.log(cb);
-
+                                socket.emit('get_gameLog_by_tournament_data', tournament_match_data, async(cb) => {
                                     if (!cb) {
                                         AlertText.textContent = 'Something went wrong';
                                         DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
@@ -417,8 +415,21 @@ class TournamentHandler {
                                         return;
                                     };
 
-                                    review_mode_handler = new reviewModeHandler(cb);
+                                    review_mode = true;
+                                    tour_winner_btn_pop_up.style.display = 'none';
+
+                                    await StartLoad(GameField, tournaments_scene);
+
+                                    tournaments_scene.style.display = 'none';
+                                    sceneMode.default();
+                                    review_mode_handler = new reviewModeHandler(cb, 'tournament_scene');
+                                    await sleep(500);
+
                                     review_mode_handler.init();
+                                    player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
+                                    player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
+
+                                    await FinishLoad(GameField, tournaments_scene);
                                 });
                             });
                         });

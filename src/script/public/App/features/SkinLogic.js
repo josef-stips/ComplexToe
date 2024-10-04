@@ -966,7 +966,7 @@ class themes {
                 "unlocked": false,
                 "inUse": false
             },
-            "black": {
+            "universe": {
                 "id": 6,
                 "line-color": "rgb(22,22,22)",
                 "bg": null,

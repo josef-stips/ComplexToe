@@ -139,7 +139,7 @@ const InitStyleForUserEntersLobby = (message) => {
     };
 
     if (tournament_mode) {
-        tournament_online_lobby_title.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule).replace('round_', '')}`;
+        tournament_online_lobby_title.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1]).replace('round_', '')}`;
         Lobby_GameCode_display.style.display = 'none';
 
     } else {
@@ -621,10 +621,17 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode, from_c
     ChangeGameBG(undefined, undefined, null, true);
 
     if (review_mode) {
-        DarkLayerAnimation(gameModeCards_Div, GameField).then(() => {
-            setTimeout(() => {
-                DisplayPopUp_PopAnimation(gameLog_popUp, "flex", true);
-            }, 400);
+        let display_el = review_mode_handler.entry_opened_from_scene_x == 'tournament_scene' ? tournaments_scene : GameField;
+
+        DarkLayerAnimation(display_el, GameField).then(() => {
+            if (review_mode_handler.entry_opened_from_scene_x != 'tournament_scene') {
+                setTimeout(() => {
+                    DisplayPopUp_PopAnimation(gameLog_popUp, "flex", true);
+                }, 400);
+
+            } else {
+                sceneMode.full();
+            };
         });
 
         Lobby.style.background = "";

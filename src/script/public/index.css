@@ -202,21 +202,21 @@ body[theme="blue"] .gameMode-card {
     animation: none;
 }
 
-body[theme="black"] {
+body[theme="universe"] {
     --line-color: rgb(19, 19, 114);
     --hover-item: var(--line-color);
 }
 
-body[theme="black"] .Lobby {
+body[theme="universe"] .Lobby {
     background: linear-gradient(150deg, rgba(22, 22, 22, 0.493), rgba(14, 14, 14, 0.342));
 }
 
-body[theme="black"] .gameMode-card {
+body[theme="universe"] .gameMode-card {
     border: 0.7vh solid rgb(45, 45, 146) !important;
     animation-name: animatedBorder_jungleTheme !important;
 }
 
-body[theme="black"] .imgBG {
+body[theme="universe"] .imgBG {
     background: url("assets/images/space_prev.jpg");
 }
 

@@ -645,24 +645,8 @@ function LooseCounter(increase) {
     };
 };
 
-function getCurrentTournamentRound(schedule) {
-    const currentDate = new Date();
-    let lastRound = '';
-
-    for (const [round, dates] of Object.entries(schedule)) {
-        const startDate = new Date(dates.startDate);
-        const endDate = new Date(dates.endDate);
-
-        lastRound = round;
-
-        if (currentDate >= startDate && currentDate <= endDate) {
-            if (round === lastRound) {
-                return 'final round';
-            };
-
-            return `round ${round}`;
-        };
-    };
+function getCurrentTournamentRound(tournament_data) {
+    console.log(tournament_data);
 
     return 'no current round';
 };
@@ -676,8 +660,8 @@ function findOpponent(rounds, id) {
 
             if (players[0] && players[0].includes(idString)) return players[1];
             if (players[1] && players[1].includes(idString)) return players[0];
-        }
-    }
+        };
+    };
 
     return null;
 };

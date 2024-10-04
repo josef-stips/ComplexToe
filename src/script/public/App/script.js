@@ -1145,7 +1145,7 @@ gameMode_OneVsOne_card.addEventListener('click', async() => {
 
     await sleep(300);
     sceneMode.full();
-    Lobby.style.background = `linear-gradient(180deg, var(--bg-gradient), #4969c712)`;
+    Lobby.style.background = "linear-gradient(45deg, #462d4917, #6f452038)";
 });
 
 let training_arena;
@@ -1297,7 +1297,7 @@ gameInfo_btn.addEventListener('click', () => {
         GameInfo_HeaderTitle.textContent = `Training Arena - Game Info`;
 
     } else if (tournament_mode) {
-        GameInfo_HeaderTitle.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1].round_schedule).replace('round_', '')} - Game Info`;
+        GameInfo_HeaderTitle.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1]).replace('round_', '')} - Game Info`;
     };
 
     // not in advanture mode
