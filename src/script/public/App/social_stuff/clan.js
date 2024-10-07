@@ -873,6 +873,11 @@ socket.on("player_got_kicked", (player_name, kicker_name, player_id, clanData) =
     };
 });
 
+// player won tournament
+socket.on('player_won_tournament', (player_name, tournament_name) => {
+    clan_chat.clan_msg(`${player_name} won the clan tournament ${tournament_name}!`);
+});
+
 // player joined clan
 socket.on("player_joined_clan", player_name => {
     clan_chat.clan_msg(`${player_name} joined the clan`);
@@ -1795,12 +1800,8 @@ class universal_clan_msg_pop_up_handler {
                 this.promote_action(data);
                 break;
 
-            case "tournament":
-
-                break;
-
-            case "clan_level":
-
+            case "tournament_won":
+                this.tournament_won_action(data);
                 break;
 
             case "request_accepted":
@@ -1811,6 +1812,25 @@ class universal_clan_msg_pop_up_handler {
                 this.tournament_lobby_action(data);
                 break;
         };
+    };
+
+    tournament_won_action(data) {
+        tournament_won_pop_up_price_text_el.textContent = `You won ${data.pot_value} gems`;
+
+        // player gets the pot value after klicking the OK btn
+        clan_universal_msg_ok_btn.addEventListener("click", () => {
+            clan_universal_msg_pop_up.style.display = "none";
+
+            // current local gem value 
+            let current_gems = Number(localStorage.getItem('GemsItem'));
+            let new_value = current_gems + Number(data.pot_value);
+            localStorage.setItem('GemsItem', new_value);
+            gemsIcon.textContent = new_value;
+            gemsIcon_skinShop.textContent = new_value;
+
+            // clean personal msgs
+            socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
+        });
     };
 
     tournament_lobby_action(data) {
@@ -1917,6 +1937,11 @@ socket.on('universal_clan_msg_abort_lobby', () => {
     clan_universal_msg_pop_up.style.display = "none";
     DarkLayer.style.display = "none";
     socket.emit("clean_personal_clan_msgs", clanPlaygroundHandler.self_player_id);
+});
+
+socket.on('player_won_tournament', (data) => {
+    DisplayPopUp_PopAnimation(clan_universal_msg_pop_up, "flex", true);
+    universal_clan_msg_handler.init_content(data);
 });
 
 // initialize classes

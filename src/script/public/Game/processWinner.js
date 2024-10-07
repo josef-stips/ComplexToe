@@ -1330,10 +1330,11 @@ const tournament_win = async(player1_won, player2_won) => {
     tour_data.current_state.rounds[current_round_idx] = modified_rounds_dataset;
 
     if (winner_id !== null) {
-        await socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, next_round, MatchIndex, tour_data.id, cb => {
-            // cb = updated tournaments data
-            console.log("Ergebnis: ", cb);
-        });
+        await socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, winner_id, next_round, MatchIndex, tour_data.id, JSON.parse(localStorage.getItem('clan_member_data')).clan_id,
+            cb => {
+                // cb = updated tournament data
+                console.log("Ergebnis: ", cb);
+            });
     } else {
         console.error('No winner determined for this round.');
     };

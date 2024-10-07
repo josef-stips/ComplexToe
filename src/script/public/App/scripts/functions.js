@@ -646,9 +646,7 @@ function LooseCounter(increase) {
 };
 
 function getCurrentTournamentRound(tournament_data) {
-    console.log(tournament_data);
-
-    return 'no current round';
+    return `round ${tournament_handler.tournamentRoundsHandler.getCurrentRound()}`;
 };
 
 function findOpponent(rounds, id) {

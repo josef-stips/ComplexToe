@@ -810,6 +810,7 @@ let join_t_Joinbtn = document.querySelector('.join_t_Joinbtn');
 let tournament_pot_value_display = document.querySelector('.tournament_pot_value_display');
 let tournament_pot = document.querySelector('.tournament_pot');
 let t_participate_bool_display = document.querySelector('.t_participate_bool_display');
+let tournament_won_pop_up_price_text_el = document.querySelector('.tournament_won_pop_up_price_text_el');
 
 const TrainingArenaDifficutlyModeGameDisplay = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay');
 const TrainingArenaDifficutlyModeGameDisplayText = document.querySelector('.TrainingArenaDifficutlyModeGameDisplay>p');

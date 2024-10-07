@@ -356,11 +356,11 @@ class TournamentHandler {
                         if (new Date(tour_data.finish_date) > new Date()) {
                             MatchBtn.addEventListener('click', async() => {
                                 // tournament has not started
-                                if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1]) == 'no current round') {
+                                if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1]) == null) {
                                     OpenedPopUp_WhereAlertPopUpNeeded = true;
                                     AlertText.textContent = `The tournament hasn't started yet`;
                                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
-                                    // return;
+                                    return;
                                 };
 
                                 socket.emit('tournament_match_lobby_exists', await generateTournamentLobbyHash(), cb => {
@@ -864,14 +864,14 @@ class CreateTournamentHandler {
                 return;
             };
 
-            currentDate.setDate(currentDate.getDate() + 5);
+            currentDate.setDate(currentDate.getDate() + 3);
 
-            // if (selectedDate < currentDate) {
-            //     OpenedPopUp_WhereAlertPopUpNeeded = true;
-            //     DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-            //     AlertText.textContent = "The selected start date must be at least 5 days in the future.";
-            //     return;
-            // };
+            if (selectedDate < currentDate) {
+                OpenedPopUp_WhereAlertPopUpNeeded = true;
+                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                AlertText.textContent = "The selected start date must be at least 3 days in the future.";
+                return;
+            };
 
             if (this.allowed_patterns.length <= 0) {
                 OpenedPopUp_WhereAlertPopUpNeeded = true;
@@ -1086,6 +1086,7 @@ class TournamentRoundsHandler {
         this.currentRound = null;
         this.intervalId = null;
         this.simulatedDate = simulatedDate;
+        this.currentRound = null;
 
         this.roundSchedule = Object.fromEntries(
             Object.entries(this.roundSchedule).map(([round, { startDate, endDate }]) => [
@@ -1096,6 +1097,10 @@ class TournamentRoundsHandler {
                 }
             ])
         );
+    };
+
+    getCurrentRound() {
+        return this.currentRound;
     };
 
     getCurrentTime() {
@@ -1114,6 +1119,7 @@ class TournamentRoundsHandler {
     };
 
     displayCountdown(round, timeDiff) {
+        this.currentRound = round.replace('round_', '');
         displayElement.textContent = `Current round ${round.replace('round_', '')}: ${timeDiff.days} d, ${timeDiff.hours} h, ${timeDiff.minutes} m, ${timeDiff.seconds} s`;
     };
 
