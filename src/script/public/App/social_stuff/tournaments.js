@@ -61,7 +61,7 @@ class TournamentHandler {
 
         tournament_qust_btn.addEventListener('click', () => {
             let box = new QABOX(2, [`This is the tournament tree.`,
-                `When the tournament starts, each participant receives a message. Every participant must play against their opponent, and the winner advances to the next round. If both players did no match together, the better player will advance to the next round but will lose half of their XP!`
+                `When the tournament starts, each participant receives a message. Every participant must play against their opponent, and the winner advances to the next round.`
             ], { 'round': 'green', 'winner': 'royalblue', 'lose': 'red', 'XP': 'red' }, { 'winner': [0, 0, 0, 0] }, false);
             box.open();
         });
