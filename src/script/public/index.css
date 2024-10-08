@@ -4560,6 +4560,7 @@ label h3 {
     align-items: center;
     justify-content: center;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    display: none;
 }
 
 #closeAlertPopUpBtn {

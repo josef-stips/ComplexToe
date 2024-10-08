@@ -500,7 +500,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
             Check[2] = tournament_data.player_clock;
             Check[3] = InnerGameModes[3];
             xyCell_Amount = tournament_data.field_size;
-            fieldTitle = `Tournament ${getCurrentTournamentRound(tournament_data.round_schedule).replace('round_', '')}`;
+            fieldTitle = `Tournament match`;
             thirdPlayer_required = false;
             allowedPatternsFromUser = tournament_data.allowed_patterns;
             costumPatterns = null;
@@ -510,7 +510,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
             level_id = null;
             random_player_mode = false;
             UserSetPointsToWinGameInput.value = tournament_data.points_to_win;
-            tournament_online_lobby_title.textContent = `Tournament ${getCurrentTournamentRound(tournament_data.round_schedule).replace('round_', '')}`;
+            tournament_online_lobby_title.textContent = `Tournament match`;
             tournament_hash = await generateTournamentLobbyHash();
             tour_opponent_id = findOpponentNumber(tournament_data.current_state.rounds, localStorage.getItem('PlayerID'));
             Lobby_GameCode_display.style.display = 'none';

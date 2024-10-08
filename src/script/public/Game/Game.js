@@ -518,11 +518,12 @@ function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGam
     lobbyFooter.style.width = "100%";
     cellGrid.style.pointerEvents = 'all';
     review_mode_game_footer.style.display = 'none';
-    localStorage.getItem('sett-ShowFieldData') == 'true' && (document.querySelector('.GameField-info-corner').style.display = "flex");
+    localStorage.getItem('sett-ShowFieldData') == 'true' ? document.querySelector('.GameField-info-corner').style.display = "flex" : document.querySelector('.GameField-info-corner').style.display = "none";
     watching_count_el.textContent = `watching: ${0}`;
     YouWatchGameEl.style.display = 'none';
     watching_count_el.style.display = 'none';
     statusText.style.display = 'flex';
+    GameFieldHeaderUnder.style.display = 'flex';
 
     review_mode_action_wrapper.style.display = "none";
     review_moves_wrapper.style.display = "none";
@@ -2188,6 +2189,7 @@ wheelOfFortuneAfterGameBtn.addEventListener("click", () => {
     play_wheel_theme();
 
     endGameStatsPopUp.style.display = "none";
+    tournaments_scene.style.display = 'none';
     DarkLayerAnimation(wheel_of_fortune_scene, GameField);
     sceneMode.full();
 

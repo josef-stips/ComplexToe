@@ -3749,6 +3749,36 @@ ul.default_sb_list.best_players_list div:first-child {
     justify-content: space-between;
 }
 
+.clan_universal_content[for="tournament_won"]>span {
+    margin: 4% 0 0 0;
+}
+
+.clan_universal_content[for="tournament_won"]>span {
+    display: flex;
+    gap: 25vw;
+    flex-direction: row;
+}
+
+.clan_universal_content[for="tournament_won"]>span>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.clan_universal_content[for="tournament_won"]>span>div>img {
+    width: 20vh;
+    height: 20vh;
+}
+
+.clan_universal_content[for="tournament_won"]>span>div>img:nth-child(2) {
+    position: fixed;
+    bottom: 23.5%;
+    animation: floating-el 3.5s ease infinite;
+}
+
+.clan_universal_content[for="tournament_won"]>span>div>img:nth-child(1) {
+    animation: floating-el 3.5s ease infinite;
+}
+
 
 /* .clan_universal_msg_header {
     width: 97%;
@@ -3916,7 +3946,10 @@ ul.default_sb_list.best_players_list div:first-child {
     height: 20vh;
 }
 
-.clan_universal_content[for="tournament_won"] {}
+.clan_universal_content[for="tournament_won"]>span>img {
+    width: 20vh;
+    height: 20vh;
+}
 
 .clan_universal_msg_tournament_won_title {
     text-shadow: 5px 5px 7px var(--bg-app-color3);
@@ -5851,11 +5884,12 @@ ul.default_sb_list.best_players_list div:first-child {
 .tournament_winner_name {
     position: absolute;
     top: auto;
-    right: -50%;
+    left: 90%;
     font-size: 2.25vh;
     font-weight: 600;
     margin: 0 0 130% 0;
     pointer-events: all;
+    transform: translate(2.25vh, -0.25vh);
 }
 
 .tournamentRoundDuration_display {

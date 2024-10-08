@@ -139,7 +139,7 @@ const InitStyleForUserEntersLobby = (message) => {
     };
 
     if (tournament_mode) {
-        tournament_online_lobby_title.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1]).replace('round_', '')}`;
+        tournament_online_lobby_title.textContent = `Tournament match`;
         Lobby_GameCode_display.style.display = 'none';
 
     } else {
@@ -325,6 +325,7 @@ Lobby_closeBtn.addEventListener('click', () => {
 
     if (tournament_mode) {
         tournament_opponent_id = findOpponentNumber(tournament_handler.clicked_tournament[1].current_state.rounds, localStorage.getItem('PlayerID'));
+        universal_clan_msg_handler.check(1000);
     };
 
     // server
@@ -618,10 +619,8 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode, from_c
     // XP Journey reward
     CheckIfUserCanGetReward();
 
-    ChangeGameBG(undefined, undefined, null, true);
-
     if (review_mode) {
-        let display_el = review_mode_handler.entry_opened_from_scene_x == 'tournament_scene' ? tournaments_scene : GameField;
+        let display_el = review_mode_handler.entry_opened_from_scene_x == 'tournament_scene' ? tournaments_scene : gameModeCards_Div;
 
         DarkLayerAnimation(display_el, GameField).then(() => {
             if (review_mode_handler.entry_opened_from_scene_x != 'tournament_scene') {
@@ -635,11 +634,13 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode, from_c
         });
 
         Lobby.style.background = "";
+        document.querySelector('.GameField-info-corner').style.display = "flex";
         theme.start();
         PauseMusic();
         CreateMusicBars(audio);
         review_mode = false;
         running = false;
+        ChangeGameBG(undefined, undefined, null, true);
         return;
     };
 
@@ -663,8 +664,11 @@ function UserleavesGame(userWonInAdvantureMode, LevelIndex_AdvantureMode, from_c
             PauseMusic();
             CreateMusicBars(audio);
         });
+        ChangeGameBG(undefined, undefined, null, true);
         return;
     };
+
+    ChangeGameBG(undefined, undefined, null, true);
 
     if (personal_GameData.role == "admin") {
 
@@ -1224,6 +1228,10 @@ socket.on('killed_game', async(from_continue_btn) => {
         lobbyFooterText.style.display = 'flex';
 
         await tournament_handler.update_tournaments_var();
+
+        PauseMusic();
+        CreateMusicBars(audio);
+        tournaments_scene.style.display = 'flex';
         return;
     };
 
@@ -1481,6 +1489,10 @@ socket.on('INFORM_user_left_game', async() => {
         lobbyFooterText.style.display = 'flex';
 
         await tournament_handler.update_tournaments_var();
+
+        PauseMusic();
+        CreateMusicBars(audio);
+        tournaments_scene.style.display = 'flex';
         return;
     };
 

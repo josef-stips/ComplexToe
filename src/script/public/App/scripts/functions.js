@@ -667,7 +667,8 @@ function findOpponent(rounds, id) {
 function findOpponentNumber(rounds, id) {
     const idString = id.toString();
 
-    for (const round of rounds) {
+    for (let i = rounds.length - 1; i >= 0; i--) {
+        const round = rounds[i];
         for (const match of round.matches) {
             const players = match.players;
 
@@ -685,14 +686,15 @@ function findOpponentNumber(rounds, id) {
             };
         };
     };
-
     return null;
 };
 
 function findMatchByPlayerID(rounds, id) {
     const idString = id.toString();
 
-    for (const round of rounds) {
+    for (let i = rounds.length - 1; i >= 0; i--) {
+        const round = rounds[i];
+
         for (const match of round.matches) {
             const players = match.players;
 
@@ -700,14 +702,15 @@ function findMatchByPlayerID(rounds, id) {
             if (players[1] && players[1].includes(idString)) return match.players;
         };
     };
-
     return null;
 };
 
 function findMatchIndexByPlayerID(rounds, id) {
     const idString = id.toString();
 
-    for (const round of rounds) {
+    for (let i = rounds.length - 1; i >= 0; i--) {
+        const round = rounds[i];
+
         for (const [match_idx, match] of round.matches.entries()) {
             const players = match.players;
 
@@ -715,8 +718,23 @@ function findMatchIndexByPlayerID(rounds, id) {
             if (players[1] && players[1].includes(idString)) return match_idx;
         };
     };
-
     return null;
+};
+
+function findCurrentRoundByPlayerID(rounds, id) {
+    const idString = id.toString();
+
+    for (let i = rounds.length - 1; i >= 0; i--) {
+        const round = rounds[i];
+
+        for (const [match_idx, match] of round.matches.entries()) {
+            const players = match.players;
+
+            if (players[0] && players[0].includes(idString)) return i;
+            if (players[1] && players[1].includes(idString)) return i;
+        };
+    };
+    return -1;
 };
 
 async function generateTournamentLobbyHash() {

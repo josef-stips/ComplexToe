@@ -1297,7 +1297,7 @@ gameInfo_btn.addEventListener('click', () => {
         GameInfo_HeaderTitle.textContent = `Training Arena - Game Info`;
 
     } else if (tournament_mode) {
-        GameInfo_HeaderTitle.textContent = `Tournament ${getCurrentTournamentRound(tournament_handler.clicked_tournament[1]).replace('round_', '')} - Game Info`;
+        GameInfo_HeaderTitle.textContent = `Tournament match - Game Info`;
     };
 
     // not in advanture mode

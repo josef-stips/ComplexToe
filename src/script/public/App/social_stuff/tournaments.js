@@ -11,6 +11,8 @@ class TournamentHandler {
         this.clicked_tournament = [];
         this.this_tournament_started = false;
         this.your_opponent = null;
+
+        this.playerByID = {};
     };
 
     init() {
@@ -254,6 +256,10 @@ class TournamentHandler {
             case 'full':
                 t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('PlayerID'))) ? 'You participate' : "You don't participate";
                 break;
+
+            case 'finished':
+                t_participate_bool_display.textContent = data.participants.includes(Number(localStorage.getItem('PlayerID'))) ? 'You participated' : "You didn't participate";
+                break;
         };
 
         this.init_rounds_time(state, data, player_id);
@@ -356,7 +362,7 @@ class TournamentHandler {
                         if (new Date(tour_data.finish_date) > new Date()) {
                             MatchBtn.addEventListener('click', async() => {
                                 // tournament has not started
-                                if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1]) == null) {
+                                if (getCurrentTournamentRound(tournament_handler.clicked_tournament[1]) == 'round null') {
                                     OpenedPopUp_WhereAlertPopUpNeeded = true;
                                     AlertText.textContent = `The tournament hasn't started yet`;
                                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
@@ -499,13 +505,17 @@ class TournamentHandler {
                 cb = cb || {}
 
                 if (cb.player_name) {
+                    this.playerByID[Number(player_text.replace('Player ', ''))] = cb.player_name;
                     // console.log(cb);
                     text.textContent = cb.player_name
 
                     if (cb.player_id == Number(localStorage.getItem('PlayerID')) &&
                         round_idx == self_position.roundIndex && self_position.matchIndex == match_idx) {
                         square.style.background = 'var(--line-color)';
-                        this.your_opponent = findOpponentNumber(tournament_data.rounds, player_text.replace('Player', ''));
+
+                        if (!tournament_data.rounds[index].final) {
+                            this.your_opponent = findOpponentNumber(tournament_data.rounds, player_text.replace('Player', ''));
+                        };
                     };
 
                     entry.addEventListener('click', () => {
@@ -600,8 +610,14 @@ class tournament {
 
         let tournament_state = 'waiting';
 
+        if (tournament_data.participant_amount >= tournament_data.allowed_amount) {
+            tournament_state = 'full';
+            item.classList.add('finished_t');
+        };
+
         if (offsetDate <= currentDate && end_date > currentDate) {
             item.classList.add('active_t');
+            item.classList.remove('finished_t');
             curr_t_display.textContent = tournament_data.name;
             this.current_tournament = tournament_data;
 
@@ -616,9 +632,9 @@ class tournament {
             item.classList.add('cursor_btn');
         };
 
-        if (tournament_data.participant_amount >= tournament_data.allowed_amount) {
-            tournament_state = 'full';
+        if (tournament_data.winner_player_id != null && tournament_data.winner_player_id > -1) {
             item.classList.add('finished_t');
+            tournament_state = 'finished';
         };
 
         state_display.textContent = tournament_state;
@@ -1127,6 +1143,12 @@ class TournamentRoundsHandler {
         displayElement.textContent = `First round begins in: ${timeDiff.days} d, ${timeDiff.hours} h, ${timeDiff.minutes} m, ${timeDiff.seconds} s`;
     };
 
+    finishedTournament() {
+        let p = tournament_handler.playerByID[tournament_handler.clicked_tournament[1].winner_player_id];
+        let pName = p == localStorage.getItem("UserName") ? 'You' : p;
+        displayElement.textContent = `Winner: ${pName}`;
+    };
+
     extendDateByOneDay(dateStr) {
         const date = new Date(dateStr);
         date.setDate(date.getDate() + 1);
@@ -1137,6 +1159,11 @@ class TournamentRoundsHandler {
         const now = this.getCurrentTime();
         let currentRound = null;
         let nextRound = null;
+
+        if (tournament_handler.clicked_tournament[1].winner_player_id > -1) {
+            this.finishedTournament();
+            return;
+        };
 
         for (let [round, { startDate, endDate }] of Object.entries(this.roundSchedule)) {
             const roundStartDate = new Date(startDate);
@@ -1174,6 +1201,13 @@ class TournamentRoundsHandler {
     };
 
     startCountdown() {
+        if (tournament_handler.clicked_tournament[1].winner_player_id > -1) {
+            setTimeout(() => {
+                this.finishedTournament();
+            }, 250);
+            return;
+        };
+
         this.updateCountdown();
         this.intervalId = setInterval(() => this.updateCountdown(), 1000);
     };
