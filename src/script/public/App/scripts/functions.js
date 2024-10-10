@@ -873,16 +873,23 @@ function hideEndGameLostItems() {
 
 // input: date1, date2 output: Text (e.g: ... 3 days ago)
 function dateToDateText(date2, curr_date) {
-    const diffTime = date2 - curr_date;
+    // Setze beide Datumswerte auf Mitternacht, um nur die Tage zu vergleichen
+    const d1 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    const d2 = new Date(curr_date.getFullYear(), curr_date.getMonth(), curr_date.getDate());
+
+    // Berechne den Unterschied in Millisekunden
+    const diffTime = d1 - d2;
+
+    // Berechne die Differenz in Tagen
     const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays > 0) {
         return `in ${diffDays} day${diffDays > 1 ? 's' : ''}`;
     };
-    
+
     if (diffDays < 0) {
         return `${Math.abs(diffDays)} day${Math.abs(diffDays) > 1 ? 's' : ''} ago`;
     };
-    
+
     return 'today';
 };

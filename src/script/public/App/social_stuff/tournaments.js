@@ -23,27 +23,34 @@ class TournamentHandler {
     async check_wether_tournament_started_ended() {
         return new Promise(async res => {
             let curr_date = new Date();
-            let activated_tournaments_storage = localStorage.getItem('activated_tournaments') || {};
-    
+            let activated_tournaments_storage = localStorage.getItem('activated_tournaments') || "{}";
+            activated_tournaments_storage = JSON.parse(activated_tournaments_storage);
+
             await this.update_tournaments_var();
-            await sleep(500);
-            console.log(this.tournaments);
-    
+            await sleep(900);
+
             this.tournaments.forEach(t => {
-                if(new Date(t.startDate) > curr_date && !activated_tournaments_storage[`${t.name} ${t.id}`]) {
+                if (new Date(t.start_date) < curr_date && new Date(t.finish_date) > curr_date && !activated_tournaments_storage[`${t.name} ${t.id}`] &&
+                    t.winner_player_id == -1) {
                     // check wether tournament is not full but started. In that case delete tournament
-                    // 1. remove tournament, 2. clan chat msg (! remove if its not already removed)
-                    socket.emit('delete_tournament', t, cb => {
-                        // notify user
-                        AlertText.textContent = `The tournament ${t.name} has been removed and will not take place due to lack of participants`;
-                        DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
-                        res(false);
-                    });
-    
+                    // 1. remove tournament, 2. clan chat msg
+
+                    // if tournament is not full but started, delete it
+                    if (t.participants.length < t.allowed_amount) {
+                        socket.emit('delete_tournament_due_to_participants', t, JSON.parse(localStorage.getItem('clan_member_data')).clan_id, cb => {
+                            // notify user
+                            AlertText.textContent = `The tournament ${t.name} has been removed and will not take place due to lack of participants`;
+                            if (!cb.success) return;
+
+                            DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                            res(false);
+                        });
+                    };
+
                     // notify user
-                    AlertText.textContent = `The tournament ${t.name} started ${dateToDateText(new Date(t.startDate), curr_date)}`;
+                    AlertText.textContent = `The tournament ${t.name} started ${dateToDateText(new Date(t.start_date), curr_date)}`;
                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
-    
+
                     // save in storage that the user already got 
                     activated_tournaments_storage[`${t.name} ${t.id}`] = true;
                     localStorage.setItem('activated_tournaments', JSON.stringify(activated_tournaments_storage));
