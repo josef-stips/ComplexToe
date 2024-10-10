@@ -572,6 +572,7 @@ const UserLeftGameInOfflineMode = (userWonInAdvantureMode, LevelIndex_AdvantureM
         if (inAdvantureMode) {
             lobbyHeader.style.borderBottom = '0.4vh solid var(--font-color)';
             Lobby.style.background = "linear-gradient(45deg, #462d4917, #6f452038)";
+            sceneMode.full();
         };
 
         // user won a level in advanture mode
