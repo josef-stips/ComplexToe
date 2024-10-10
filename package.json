@@ -46,6 +46,8 @@
     "dependencies": {
         "@socket.io/admin-ui": "^0.5.1",
         "electron-squirrel-startup": "^1.0.0",
+        "instead": "^1.0.3",
+        "puppeteer": "^23.5.2",
         "socket.io": "^4.7.1",
         "socket.io-client": "^4.7.1",
         "steamworks.js": "^0.0.12"
