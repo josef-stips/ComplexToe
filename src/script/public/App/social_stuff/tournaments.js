@@ -17,6 +17,41 @@ class TournamentHandler {
 
     init() {
         this.events();
+        this.check_wether_tournament_started_ended();
+    };
+
+    async check_wether_tournament_started_ended() {
+        return new Promise(async res => {
+            let curr_date = new Date();
+            let activated_tournaments_storage = localStorage.getItem('activated_tournaments') || {};
+    
+            await this.update_tournaments_var();
+            await sleep(500);
+            console.log(this.tournaments);
+    
+            this.tournaments.forEach(t => {
+                if(new Date(t.startDate) > curr_date && !activated_tournaments_storage[`${t.name} ${t.id}`]) {
+                    // check wether tournament is not full but started. In that case delete tournament
+                    // 1. remove tournament, 2. clan chat msg (! remove if its not already removed)
+                    socket.emit('delete_tournament', t, cb => {
+                        // notify user
+                        AlertText.textContent = `The tournament ${t.name} has been removed and will not take place due to lack of participants`;
+                        DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                        res(false);
+                    });
+    
+                    // notify user
+                    AlertText.textContent = `The tournament ${t.name} started ${dateToDateText(new Date(t.startDate), curr_date)}`;
+                    DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+    
+                    // save in storage that the user already got 
+                    activated_tournaments_storage[`${t.name} ${t.id}`] = true;
+                    localStorage.setItem('activated_tournaments', JSON.stringify(activated_tournaments_storage));
+
+                    res(true);
+                };
+            });
+        });
     };
 
     events() {

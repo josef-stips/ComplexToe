@@ -870,3 +870,19 @@ function hideEndGameLostItems() {
     retryGameBtn.style.opacity = "0";
     SelectedLostItemWrapper.style.opacity = "0";
 };
+
+// input: date1, date2 output: Text (e.g: ... 3 days ago)
+function dateToDateText(date2, curr_date) {
+    const diffTime = date2 - curr_date;
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays > 0) {
+        return `in ${diffDays} day${diffDays > 1 ? 's' : ''}`;
+    };
+    
+    if (diffDays < 0) {
+        return `${Math.abs(diffDays)} day${Math.abs(diffDays) > 1 ? 's' : ''} ago`;
+    };
+    
+    return 'today';
+};
