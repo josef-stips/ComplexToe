@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, Menu, webContents } = require('electron');
 const path = require('path');
 
-let steam = true;
+let steam = false;
 if (steam) {
     const steamworks = require("steamworks.js")
     const client = steamworks.init(2940750);

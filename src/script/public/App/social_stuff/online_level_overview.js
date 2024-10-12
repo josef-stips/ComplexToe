@@ -684,6 +684,7 @@ class OnlineLevelPlayerScoreBoardHandler {
         level_data2.style = `display: flex;gap: 5vw;`
 
         conquered_label.textContent = level_player_data.points_made >= this.required_points ? 'Level Conquered' : '';
+        conquered_label.style = 'position: absolute;right: 5%;'
 
         // add to document
         span3.appendChild(level_data1);

@@ -1759,6 +1759,10 @@ socket.on('StartGame', (RoomData) => { // RoomData
 
     globalLevelID = RoomData[0].level_id;
 
+    global_creative_level_data = {};
+    global_creative_level_data['level_name'] = FieldTitle;
+    global_creative_level_data['required_points'] = required_points_to_win;
+
     if (random_player_mode) {
         PlayedAgainstNRandomPlayer(true);
         Achievement.new(20);

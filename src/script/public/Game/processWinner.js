@@ -1487,6 +1487,8 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
 function setNew_SkillPoints(plus) {
     console.log("plus", plus);
 
+    if (plus > 100) plus = 100;
+
     let old_Elo = parseInt(localStorage.getItem('ELO'));
     let ELO_point = 0;
 

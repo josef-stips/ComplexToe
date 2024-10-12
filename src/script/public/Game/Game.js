@@ -506,6 +506,10 @@ function initAllPatterns(official_patterns, costum_patterns, Fieldx, Fieldy, cos
 };
 
 function initializeDocument(field, fieldIndex, fieldTitle, onlineMode, OnlineGameDataArray, maxAmoOfMoves, CreativeLevel_from_onlineMode_costumPatterns, costumCoords) {
+    if (localStorage.getItem('sett-ShowFieldData') == null) {
+        localStorage.setItem('sett-ShowFieldData', 'true');
+    };
+
     // Hide unnecessary elements
     GameField.style.display = 'flex';
     gameModeFields_Div.style.display = 'none';
@@ -1203,9 +1207,18 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel, forT
 
     // online game in creative level
     if (fromCreativeLevel) {
+        let icon = null;
+
+        if (PlayingInCreatedLevel_AsGuest) {
+            icon = costumLevelIcon;
+
+        } else if (player_levels_handler.online_level_overview_handler) {
+            icon = universal_level_icons[player_levels_handler.online_level_overview_handler.level.icon];
+        };
+
         if (Game_Upper_Field_Icon.querySelector("img")) Game_Upper_Field_Icon.querySelector("img").remove();
         let img5 = document.createElement("img");
-        img5.src = universal_level_icons[player_levels_handler.online_level_overview_handler.level.icon];
+        img5.src = icon;
         img5.width = "31";
         img5.height = "31";
         img5.style.margin = "0.5vh 0 0 0";
@@ -1591,7 +1604,7 @@ function check_draw(options, cells) {
             for (let shift_idx = 0; shift_idx < shift; shift_idx++) {
 
                 if (((bigboard >> BigInt(shift_idx)) & bit_condition) == BigInt(0)) {
-                    console.log("es kann noch gesetzt werden:", shift_idx, ((bigboard >> BigInt(i)) & bit_condition), ((bigboard >> BigInt(i)) & bit_condition).toString(2), shift, bigboard, i, bit_condition, bit_condition.toString(2), bit_condition.toString(2).length);
+                    // console.log("es kann noch gesetzt werden:", shift_idx, ((bigboard >> BigInt(i)) & bit_condition), ((bigboard >> BigInt(i)) & bit_condition).toString(2), shift, bigboard, i, bit_condition, bit_condition.toString(2), bit_condition.toString(2).length);
                     return false;
                 };
             };
