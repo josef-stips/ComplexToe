@@ -1179,6 +1179,18 @@ socket.on('killed_room', () => {
 
     CloseOnlinePopUps(true);
 
+    if (PlayingInCreatedLevel_AsGuest) {
+        sceneMode.full();
+        close_all_scenes();
+        gameModeFields_Div.style.display = 'flex';
+
+    } else if (inPlayerLevelsScene) {
+        sceneMode.default();
+        close_all_scenes();
+        online_level_scene.style.display = 'flex';
+        Lobby.style.background = `linear-gradient(45deg, ${bgcolor1}, ${bgcolor2})`;
+    };
+
     if (personal_GameData.role != "admin") {
         sceneMode.full();
         AlertText.textContent = "Admin killed the lobby.";
@@ -1247,17 +1259,6 @@ socket.on('killed_game', async(from_continue_btn) => {
     // enter lobby
     OnlineGame_Lobby.style.display = 'flex';
 
-    if (PlayingInCreatedLevel_AsGuest) {
-        sceneMode.full();
-        close_all_scenes();
-        gameModeFields_Div.style.display = 'flex';
-
-    } else if (inPlayerLevelsScene) {
-        sceneMode.default();
-        close_all_scenes();
-        online_level_scene.style.display = 'flex';
-    };
-
     Lobby_GameCode_display.style.userSelect = 'text';
     Lobby.style.background = "";
     theme.start();
@@ -1267,6 +1268,18 @@ socket.on('killed_game', async(from_continue_btn) => {
     ChangeGameBG(undefined, undefined, null, true);
 
     DarkLayer.style.display = "none";
+
+    if (PlayingInCreatedLevel_AsGuest) {
+        sceneMode.full();
+        close_all_scenes();
+        gameModeFields_Div.style.display = 'flex';
+
+    } else if (inPlayerLevelsScene) {
+        sceneMode.default();
+        close_all_scenes();
+        online_level_scene.style.display = 'flex';
+        Lobby.style.background = `linear-gradient(45deg, ${bgcolor1}, ${bgcolor2})`;
+    };
 
     // remove big screen text if there was one 
     if (document.querySelector(".bigScreenText")) {
@@ -1546,6 +1559,18 @@ socket.on('INFORM_user_left_game', async() => {
             sceneMode.full();
         };
 
+        if (PlayingInCreatedLevel_AsGuest) {
+            sceneMode.full();
+            close_all_scenes();
+            gameModeFields_Div.style.display = 'flex';
+
+        } else if (inPlayerLevelsScene) {
+            sceneMode.default();
+            close_all_scenes();
+            online_level_scene.style.display = 'flex';
+            Lobby.style.background = `linear-gradient(45deg, ${bgcolor1}, ${bgcolor2})`;
+        };
+
         // play music
         PauseMusic();
         if (!PlayingInCreatedLevel) CreateMusicBars(audio);
@@ -1600,6 +1625,18 @@ socket.on('INFORM_blocker_left_game', () => {
         lobbyFooterText.style.display = 'flex';
 
         PlayingInCreatedLevel_AsGuest = false;
+
+        if (PlayingInCreatedLevel_AsGuest) {
+            sceneMode.full();
+            close_all_scenes();
+            gameModeFields_Div.style.display = 'flex';
+
+        } else if (inPlayerLevelsScene) {
+            sceneMode.default();
+            close_all_scenes();
+            online_level_scene.style.display = 'flex';
+            Lobby.style.background = `linear-gradient(45deg, ${bgcolor1}, ${bgcolor2})`;
+        };
 
         // play music
         PauseMusic();

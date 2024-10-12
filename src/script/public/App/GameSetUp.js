@@ -526,7 +526,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
         socket.emit('create_room', [Check[2], Check[3], xyCell_Amount, Player1_NameInput.value, curr_form1, fieldIndex, fieldTitle, localStorage.getItem('userInfoClass'),
             localStorage.getItem('userInfoColor'), thirdPlayer_required, UserSetPointsToWinGameInput.value, allowedPatternsFromUser, [costumX, costumY], costumPatterns, costumIcon, killAllDrawnCells,
-            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name, level_id, random_player_mode, [xCell_Amount, yCell_Amount], tournament_hash, tour_opponent_id /* x_and_y column */
+            Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), curr_music_name || 'no_music', level_id, random_player_mode, [xCell_Amount, yCell_Amount], tournament_hash, tour_opponent_id /* x_and_y column */
         ], message => {
 
             Lobby_GameCode_display.textContent = `Game Code: ${message}`;

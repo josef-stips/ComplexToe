@@ -268,21 +268,17 @@ class level_comments_handler {
     };
 
     submit(text) {
-        if (this.parent.personal_data_for_level) {
-            try {
-                socket.emit("submit_comment_to_level", text, this.parent.level["id"], Number(localStorage.getItem("PlayerID")), localStorage.getItem("UserName"), this.parent.personal_data_for_level, cb => {
-                    this.add(cb);
-                    chat_scroll_to_bottom("smooth", comments_list);
-                });
+        try {
+            socket.emit("submit_comment_to_level", text, this.parent.level["id"], Number(localStorage.getItem("PlayerID")), localStorage.getItem("UserName"), this.parent.personal_data_for_level || {}, cb => {
+                this.add(cb);
+                chat_scroll_to_bottom("smooth", comments_list);
+            });
 
-            } catch (error) {
-                console.log(error);
-            };
-
-        } else {
+        } catch (error) {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
             AlertText.textContent = 'You cannot write a comment.';
             DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+            console.log(error);
         };
     };
 
@@ -543,10 +539,17 @@ class levelPatternsOverviewHandler {
                     return;
                 };
 
-                let name = cb;
-                let structure = GamePatternsList[cb];
+                let name = cb.pattern;
+                let structure = cb.indexes;
 
-                if (this.level_all_pattern_names.includes(cb)) {
+                xCell_Amount = player_levels_handler.Settings.cellgrid[this.parent.level.field];
+                yCell_Amount = player_levels_handler.Settings.cellgrid[this.parent.level.field];
+                CalculateBoundaries();
+                PatternStructureAsOrigin(boundaries, [290, 291, 292, 316], 5, 5)
+
+                console.log(player_levels_handler.Settings.cellgrid[this.parent.level.field])
+
+                if (this.level_all_pattern_names.includes(cb.pattern)) {
                     createPattern_preview(name, structure, level_avg_inner_wrapper, "level");
 
                     level_avg_inner_wrapper.children[0].style.padding = 'unset';

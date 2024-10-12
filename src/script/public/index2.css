@@ -3395,7 +3395,7 @@ i.fa-solid.fa-ranking-star {
 .scoreboard_player_data_wrapper {
     display: flex;
     width: 30%;
-    height: 100%;
+    height: max-content;
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
