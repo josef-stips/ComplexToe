@@ -132,16 +132,16 @@ input[type=range]:focus::-ms-fill-upper {
     background: #ccc;
 }
 
-body[theme="jungle"] {
+body[theme="green"] {
     --line-color: green;
     --hover-item: var(--line-color);
 }
 
-body[theme="jungle"] .Lobby {
+body[theme="green"] .Lobby {
     background: linear-gradient(150deg, #1e2f1c, #142116);
 }
 
-body[theme="jungle"] .gameMode-card {
+body[theme="green"] .gameMode-card {
     border: 0.7vh solid rgba(50, 100, 35, 0.856) !important;
     animation-name: animatedBorder_jungleTheme !important;
 }

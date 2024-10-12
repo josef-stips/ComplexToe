@@ -28,7 +28,7 @@ class Achievements {
             "The creative", // 22
             "The builder", // 23
             "Never Give Up?", // 24
-            "Criminal or just social?", // 25
+            "Criminal or social?", // 25
         ];
 
         this.taskList = [
@@ -79,6 +79,7 @@ class Achievements {
                 14: [100, 1],
                 15: [250],
                 16: [100, 1, 20],
+
                 17: [1],
                 18: [1],
                 19: [1],
@@ -168,6 +169,7 @@ class Achievements {
             14: false,
             15: false,
             16: false,
+
             17: false,
             18: false,
             19: false,
@@ -242,7 +244,7 @@ class Achievements {
             i_abso.style.fontWeight = "600";
             i_abso.className = "fa-solid fa-check";
             i_abso.style.fontSize = "3vh";
-            i_abso.style.right = "20px";
+            i_abso.style.right = "1vh";
             i_abso.style.top = "0";
             i_abso.style.bottom = "0";
             i_abso.style.margin = "auto 0 auto auto";
@@ -288,15 +290,15 @@ class Achievements {
                 let fontawesome_code = (achievement.reward_names[i] === "GemsItem") ? "fa-solid fa-gem" : (achievement.reward_names[i] === "ItemX") ? "fa-solid fa-x" : "fa-solid fa-key";
 
                 const i_el = document.createElement('i');
-                i_el.classList = fontawesome_code;
 
                 const p = document.createElement('p');
                 p.textContent = achievement.reward_amount[i];
 
+                // get skin on achievement
                 if (achievement.reward_names[i] != "GemsItem" && achievement.reward_names[i] != "ItemX") {
                     let user_has_skin = skins[achievement.reward_names[i]];
 
-                    if (user_has_skin) {
+                    if (user_has_skin && !achievement.unlocked) {
                         fontawesome_code = "fa-solid fa-gem";
                         p.textContent = '250';
 
@@ -305,6 +307,7 @@ class Achievements {
                     };
                 };
 
+                i_el.classList = fontawesome_code;
                 span.appendChild(i_el);
                 span.appendChild(p);
                 rewardContainer.appendChild(span);
