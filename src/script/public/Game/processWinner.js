@@ -238,14 +238,14 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
 };
 
 function ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick) {
-    // check if there are still availible cells remaining
-    let ava_cells = check_RemainingCells();
+    // check draw
+    let is_draw = check_draw(options, cells);
 
     if (roundWon) { // someone won the round
         processResult_RoundWon(Player1_won, Player2_won, WinCombination, extra_points, fromRestart, fromClick);
 
-    } else if (ava_cells.length <= 0) { // there are literally no availible cells on the field to set => process who is the winner now
-        Call_UltimateWin(WinCombination);
+    } else if (is_draw) { // draw: No player can possibly make a point 
+        Call_UltimateWin();
         return;
 
     } else if (inAdvantureMode) { // In the advanture mode there are special win conditions

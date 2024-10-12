@@ -209,7 +209,7 @@ class bot_config {
                 PLAYERBOARD |= (BigInt(1) << i);
             };
 
-            if (cells[i].classList == "cell death-cell") {
+            if (cells[i].className == "cell death-cell") {
                 BLOCKAGES |= (BigInt(1) << i);
             };
         };

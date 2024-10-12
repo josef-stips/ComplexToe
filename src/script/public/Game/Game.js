@@ -370,7 +370,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
     PlayerIsAllowedToSetTwoTimes = false;
 
     // add Event Listener
-    const el_cells = document.querySelectorAll('.cell');
+    const el_cells = [...cellGrid.children];
     cells = el_cells;
 
     // set up restart button
@@ -1186,6 +1186,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel, forT
         img5.style.margin = "0.5vh 0 0 0";
         Game_Upper_Field_Icon.appendChild(img5);
         Game_Upper_Field_Icon.classList = "";
+        return
     };
 
     if (tournament_mode || forTournamentMode_fromReviewMode) {
@@ -1197,6 +1198,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel, forT
         img11.style.margin = "0.5vh 0 0 0";
         Game_Upper_Field_Icon.appendChild(img11);
         Game_Upper_Field_Icon.classList = "";
+        return;
     };
 
     // online game in creative level
@@ -1209,6 +1211,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel, forT
         img5.style.margin = "0.5vh 0 0 0";
         Game_Upper_Field_Icon.appendChild(img5);
         Game_Upper_Field_Icon.classList = "";
+        return;
     };
 
     if (review_mode && review_mode_handler.entry.level_icon) {
@@ -1220,6 +1223,7 @@ const SetGameFieldIconForCurrentField = (xy, fieldIndex, fromCreativeLevel, forT
         img5.style.margin = "0.5vh 0 0 0";
         Game_Upper_Field_Icon.appendChild(img5);
         Game_Upper_Field_Icon.classList = "";
+        return;
     };
 };
 
@@ -1560,7 +1564,7 @@ async function changePlayer(from_restart, fromClick) {
         };
     };
 
-    const el_cells = document.querySelectorAll('.cell');
+    const el_cells = [...cellGrid.children];
     cells = el_cells;
 
     el_cells.forEach(cell => {
@@ -1572,14 +1576,30 @@ async function changePlayer(from_restart, fromClick) {
 };
 
 // check remaining white cells
-function check_RemainingCells() {
-    let availible_cells = [];
-    [...cellGrid.children].forEach(cell => {
-        if (cell.classList.length <= 1 && cell.textContent == "") {
-            availible_cells.push(cell);
+function check_draw(options, cells) {
+    const bigboard = convert_board_into_bit_board(options, cells);
+    const bit_conditions = convert_conditions_into_bits(WinConditions);
+    const boardSize = xCell_Amount * yCell_Amount;
+
+    // check on every positon of the board every pattern of its validation
+    for (let i = 0; i < boardSize; i++) {
+        for (let bit_condition of bit_conditions) {
+
+            // let shift = i - (bit_condition.toString(2).length);
+            let shift = boardSize - (bit_condition.toString(2).length);
+
+            for (let shift_idx = 0; shift_idx < shift; shift_idx++) {
+
+                if (((bigboard >> BigInt(shift_idx)) & bit_condition) == BigInt(0)) {
+                    console.log("es kann noch gesetzt werden:", shift_idx, ((bigboard >> BigInt(i)) & bit_condition), ((bigboard >> BigInt(i)) & bit_condition).toString(2), shift, bigboard, i, bit_condition, bit_condition.toString(2), bit_condition.toString(2).length);
+                    return false;
+                };
+            };
         };
-    });
-    return availible_cells;
+    };
+
+    console.log("es kann nicht mehr gesetzt werden");
+    return true;
 };
 
 // restart game

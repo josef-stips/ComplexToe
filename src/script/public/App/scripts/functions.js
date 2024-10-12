@@ -18,6 +18,40 @@ function getRandomIndexes(array, count) {
     return result;
 };
 
+function convert_board_into_bit_board(options_array, cells) {
+    let board = BigInt(0);
+
+    for (let i = BigInt(0); i < options_array.length; i++) {
+
+        if (options_array[i] === PlayerData[2].PlayerForm) {
+            board |= (BigInt(1) << i)
+        };
+
+        if (options_array[i] === PlayerData[1].PlayerForm) {
+            board |= (BigInt(1) << i);
+        };
+
+        if (cells[i].classList.contains('death-cell')) {
+            board |= (BigInt(1) << i);
+        };
+    };
+
+    return board;
+};
+
+function convert_conditions_into_bits(WinConditions) {
+    const binaryPatterns = [];
+
+    for (const pattern of WinConditions) {
+        let binaryRepresentation = BigInt(0);
+
+        for (const position of pattern) binaryRepresentation += BigInt(1) << BigInt(position);
+        binaryPatterns.push(binaryRepresentation)
+    };
+
+    return binaryPatterns;
+};
+
 // pop up animation
 const DisplayPopUp_PopAnimation = (pop_up, type, darkLayer) => {
     pop_up.style.display = type;
