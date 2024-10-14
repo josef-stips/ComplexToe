@@ -244,7 +244,7 @@ function try_to_join_lobby(room_id) {
             personal_GameData.currGameID = message[1]; // the game id
 
             // if he joined as blocker, his role is blocker, otherwise his role is user
-            // console.log(message[5]);
+            console.log(message[5]);
 
             if (message[5] == "thirdplayer") {
                 // set role
@@ -269,8 +269,7 @@ function try_to_join_lobby(room_id) {
             // so the user sees all the current game info the admin (first player) setted
             InitGameInfoForUserEntersLobby();
 
-            // Aftet this the user only needs to set his user data (name, icon) and clicks confirm
-            // So the next socket connection is at SetPlayerName_ConfirmButton in "script.js" with the "CONFIRM_enter_room" emit
+            // After this the user only needs to set his user data (name, icon) and clicks confirm
 
         } else if (message[0] == 'no room found') { // no room found
             OnlineGameLobby_alertText.style.display = 'block';

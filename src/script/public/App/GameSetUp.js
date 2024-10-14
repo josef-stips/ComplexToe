@@ -680,6 +680,22 @@ const UserTriesToEnterOnlineGame = () => {
 
             // user can finally enters the online game lobby
             if (m != 'Choose a different name!' && m != 'Choose a different icon!') {
+                if (m[7] == 'user') {
+                    personal_GameData.role = 'user';
+                    Lobby_FirstPlayer_Wrapper.style.margin = "0";
+
+                    if (m[8] == true) {
+                        Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+                    } else {
+                        Lobby_ThirdPlayer_Wrapper.style.display = "none";
+                    };
+
+                } else if (m[7] == 'blocker') {
+                    personal_GameData.role = 'blocker';
+                    // display third player wrapper 
+                    Lobby_ThirdPlayer_Wrapper.style.display = "flex";
+                };
+
                 UserEntersOnlineGame(m);
                 tournament_pop_up.style.display = "none";
             };
