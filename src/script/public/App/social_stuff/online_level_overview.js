@@ -541,12 +541,17 @@ class levelPatternsOverviewHandler {
 
                 let name = cb.pattern;
                 let structure = cb.indexes;
+                let isCostum = true;
 
                 xCell_Amount = player_levels_handler.Settings.cellgrid[this.parent.level.field];
                 yCell_Amount = player_levels_handler.Settings.cellgrid[this.parent.level.field];
                 CalculateBoundaries();
-                PatternStructureAsOrigin(boundaries, [290, 291, 292, 316], 5, 5)
 
+                (!GamePatternsList[name]) ? isCostum = true: isCostum = false
+
+                structure = PatternStructureAsOrigin(boundaries, structure, 5, 5, true);
+
+                console.log(structure);
                 console.log(player_levels_handler.Settings.cellgrid[this.parent.level.field])
 
                 if (this.level_all_pattern_names.includes(cb.pattern)) {

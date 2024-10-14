@@ -363,7 +363,6 @@ class player_levels_handler_wrapper extends NewLevel {
                     true, level.id, level.publish_date, level.CreatorBeatIt, level.creation_date, JSON.parse(level.costum_patterns), JSON.parse(level.costum_field)
                 ];
 
-
                 this.online_level_overview_handler = new onlineLevelOverviewHandler(level, correspondPlayer);
                 this.online_level_overview_handler.init();
             });

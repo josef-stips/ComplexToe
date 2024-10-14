@@ -3285,6 +3285,23 @@ i.fa-solid.fa-ranking-star {
     font-size: 3.5vh;
 }
 
+.level_avg_pattern_pop_up .small_createCostumField_Field {
+    width: min-content !important;
+}
+
+.level_avg_pattern_pop_up .createCostumField_Field_wrapper.costumPatternsOverview_gridWrapper {
+    align-items: center;
+    justify-content: center;
+}
+
+.level_avg_pattern_pop_up .headerWrapper {
+    display: block;
+}
+
+.level_avg_pattern_pop_up h2.preview_pattern_title {
+    font-size: 3vh !important;
+}
+
 
 /* scoreboard pop up*/
 

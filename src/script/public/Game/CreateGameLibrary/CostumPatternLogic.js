@@ -63,7 +63,7 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
 // the user can draw every pattern he likes on a 5x5 field
 // For the pattern to be used in the right way by the game, the indexes should all have the minimum possible number
 // Ex. [7, 13, 18, 22] -> [0, 6, 11, 15]
-const PatternStructureAsOrigin = (boundaries, Structure, Fieldx, Fieldy) => {
+const PatternStructureAsOrigin = (boundaries, Structure, Fieldx, Fieldy, toLower) => {
     // console.log(boundaries, Structure, Fieldx, Fieldy)
 
     // sort structure. small first biggest at the end
@@ -95,9 +95,31 @@ const PatternStructureAsOrigin = (boundaries, Structure, Fieldx, Fieldy) => {
         return index - steps;
     });
 
+    if (toLower) PatternStructure = structureAs5x5structure(PatternStructure, Fieldx, Fieldy, boundaries);
+
     if (Fieldx > 5) PatternStructure = structureAsNxNstructure(PatternStructure, Fieldx, Fieldy, boundaries);
 
     return PatternStructure;
+};
+
+const structureAs5x5structure = (PatternStructure, Fieldx, Fieldy, Initboundaries) => {
+    let structure = PatternStructure.map((index, i) => {
+        // console.log(PatternStructure, Initboundaries, Fieldx, Fieldy);
+        let [lowerBoundary, BoundaryIndex] = findLowerBoundary(index, Initboundaries, true);
+        let boundaryIndexDifference = index - lowerBoundary;
+
+        xCell_Amount = Fieldx;
+        yCell_Amount = Fieldy;
+        CalculateBoundaries();
+
+        let newBoundaryIndex = boundaries[BoundaryIndex];
+        let newIndex = boundaryIndexDifference + newBoundaryIndex
+
+        // replace 5x5 based index with rearranged index based on Fieldx 
+        return newIndex;
+    });
+
+    return structure;
 };
 
 // user created structures are 5x5 field based. To generate win patterns from this pattern on fields bigger than 5x5,
@@ -208,6 +230,22 @@ const findLowerBoundary = (index, boundaries, findIndex) => {
             lowerBoundary = boundaries[i - 1];
 
             return !findIndex ? lowerBoundary : [lowerBoundary, i - 1];
+        };
+    };
+
+    return;
+};
+
+const findHigherBoundary = (index, boundaries, findIndex) => {
+    let higherBoundary = null;
+
+    for (let i = 0; i < boundaries.length; i++) {
+        const boundary = boundaries[i];
+
+        if (index < boundary) {
+            higherBoundary = boundary;
+
+            return !findIndex ? higherBoundary : [higherBoundary, i];
         };
     };
 
