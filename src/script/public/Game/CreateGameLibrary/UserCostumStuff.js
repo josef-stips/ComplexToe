@@ -642,9 +642,9 @@ const toggleCustomPatternInNewLevel = (box, structure, name, value) => {
         NewCreativeLevel.toggle_costum_pattern("remove", name, structure, value);
 
     } else {
-        if (FieldIsTooSmallForPatterns(Number(NewCreativeLevel.selectedLevel[16].x), Number(NewCreativeLevel.selectedLevel[16].y)), [structure]) {
+        if (FieldIsTooSmallForPatterns(Number(NewCreativeLevel.selectedLevel[16].x), Number(NewCreativeLevel.selectedLevel[16].y), [structure])) {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
-            AlertText.textContent = `This pattern exceeds the boundaries of the level's field`;
+            AlertText.textContent = `There are two reasons why this pattern may not be selectable: 1. The pattern exceeds the boundaries of the level's field, or 2. The pattern is too complex in nature.`;
             DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
             return;
         };
@@ -672,7 +672,7 @@ const toggleCostumFieldInNewLevel = (box, name, x, y) => {
     } else {
         if (FieldIsTooSmallForPatterns(Number(x), Number(y))) {
             OpenedPopUp_WhereAlertPopUpNeeded = true;
-            AlertText.textContent = 'The current patterns exceed the boundaries of this field';
+            AlertText.textContent = 'The current patterns exceed the boundaries of this field.';
             DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
             return;
         };
@@ -725,26 +725,21 @@ const checkCostumPatternAlreadyInGame = () => {
     });
 
     let normalized_indexes = PatternStructureAsOrigin([0, 5, 10, 15, 20, 25], indexes, 5, 5);
-
-    console.log(indexes, normalized_indexes, OfficialGamePatterns, OfficialGamePatterns.some(pattern => patternsEqual(pattern, normalized_indexes)));
+    // console.log(indexes, normalized_indexes, OfficialGamePatterns, OfficialGamePatterns.some(pattern => patternsEqual(pattern, normalized_indexes)));
 
     return OfficialGamePatterns.some(pattern => patternsEqual(pattern, normalized_indexes));
 };
 
-const FieldIsTooSmallForPatterns = (x = Number(createCostumField_xInput.textContent), y = Number(createCostumField_yInput.textContent),
-    structures = Object.keys(NewCreativeLevel.selectedLevel[15]).map(n => NewCreativeLevel.selectedLevel[15][n][n].structure)) => {
+const FieldIsTooSmallForPatterns = (x = Number(createCostumField_xInput.textContent), y = Number(createCostumField_yInput.textContent), structures) => {
+    if (structures == undefined) {
+        // all used patterns in the level
+        structures = [...Object.keys(NewCreativeLevel.selectedLevel[15]).map(n => NewCreativeLevel.selectedLevel[15][n][n].structure),
+            ...NewCreativeLevel.CurrentSelectedSetting.allowedpatterns.map(name => GamePatternsList[name])
+        ]
+    };
 
-    structures = structures.map(i => PatternStructureAsOrigin([0, 5, 10, 15, 20, 25], i, x, y));
-    xCell_Amount = x;
-    yCell_Amount = y;
-    CalculateBoundaries();
-    structures = structures.map(i => structureAsNxNstructure(i, x, y, [0, 5, 10, 15, 20, 25]));
-
-    console.log(structures);
-
-    let patternThatIsOutOfBoundary = structures.find(s => Math.max(...s) > x * y || s.some(i => isNaN(i)));
-
-    return patternThatIsOutOfBoundary; // [n,n, ...] || undefined
+    CreateWinConditions(x, y, structures);
+    return WinConditions.length <= 0 ? true : undefined;
 };
 
 // check if the costum pattern that being rendered in the costum pattern preview is in the current level

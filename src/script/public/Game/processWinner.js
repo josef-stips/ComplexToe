@@ -226,12 +226,18 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             Player2_won = true;
         };
 
-        let pattern_name = WinCombination && FindPatternName([...WinCombination], xCell_Amount, yCell_Amount);
-        extra_points = all_patterns_in_game[pattern_name].value || 1;
+        try {
+            let pattern_name = WinCombination && FindPatternName([...WinCombination], xCell_Amount, yCell_Amount);
+            extra_points = all_patterns_in_game[pattern_name].value || 1;
 
-        patterns_used.push({ 'pattern': pattern_name, 'by': Player1_won ? PlayerData[1].PlayerName : PlayerData[2].PlayerName, 'indexes': [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))), 'on_nth_move': [...all_game_moves.entries()][all_game_moves.length - 1][0], 'value': all_patterns_in_game[pattern_name].value });
+            patterns_used.push({ 'pattern': pattern_name, 'by': Player1_won ? PlayerData[1].PlayerName : PlayerData[2].PlayerName, 'indexes': [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))), 'on_nth_move': [...all_game_moves.entries()][all_game_moves.length - 1][0], 'value': all_patterns_in_game[pattern_name].value });
+            console.log(WinCombination, pattern_name, extra_points, winner[0], PlayerData[1].PlayerForm, all_game_moves);
 
-        console.log(WinCombination, pattern_name, extra_points, winner[0], PlayerData[1].PlayerForm, all_game_moves);
+        } catch (error) {
+            console.log(error);
+            ProcessResult(false, false, roundWon, null, [], 0, fromRestart, fromClick);
+            return;
+        };
     };
 
     ProcessResult(Player1_won, Player2_won, roundWon, winner, WinCombination, extra_points, fromRestart, fromClick);

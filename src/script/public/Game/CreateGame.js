@@ -1410,6 +1410,15 @@ const InitCreateLevelScene = () => {
                     break;
 
                 case "false":
+                    let x = Number(workbench_LevelFieldSize_Display.textContent.split('x')[0]);
+                    let y = Number(workbench_LevelFieldSize_Display.textContent.split('x')[1]);
+
+                    if (FieldIsTooSmallForPatterns(x, y, [GamePatternsList[target]])) {
+                        AlertText.textContent = `This pattern exceeds the boundaries of the level's field`;
+                        DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                        return;
+                    };
+
                     toggler.setAttribute("active", "true");
                     toggler.classList.replace("fa-square", "fa-square-check");
 

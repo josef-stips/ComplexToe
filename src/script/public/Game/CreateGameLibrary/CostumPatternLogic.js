@@ -1,7 +1,7 @@
 // user can create costum patterns for his own created levels he can upload to the public server
 // This script provides the functionality to such patterns
 
-// Win pattern X functionality on field X
+// Win pattern Z functionality on field XY
 const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
     let n = Fieldx * Fieldy;
 
@@ -47,6 +47,11 @@ const CostumWinPattern = (PatternStructure, Fieldx, Fieldy) => {
 
         // generate new pattern structure
         structure.forEach(index => {
+            if (isNaN(index)) {
+                console.log(index, structure);
+                WinConditions.length = 0;
+                return false;
+            };
             pattern.push(index + i);
         });
 

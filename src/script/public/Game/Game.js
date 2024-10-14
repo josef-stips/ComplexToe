@@ -2510,6 +2510,8 @@ class WheelOfFortuneHandler {
             localStorage.setItem("GemsItem", this.storage_gems);
 
             wheel_right_wrapper_header.querySelector(".gemsIcon_skinShop").textContent = this.storage_gems;
+            gemsIcon_skinShop.textContent = this.storage_gems;
+            gemsIcon.textContent = this.storage_gems;
         };
     };
 

@@ -210,6 +210,9 @@ let current_used_skin = '';
     if (Skins) {
         skins = Skins;
         switch_skins(current_used_skin, UserIcon);
+
+    } else {
+        localStorage.setItem('Skins', JSON.stringify(skins));
     };
 })();
 

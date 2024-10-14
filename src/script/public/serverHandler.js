@@ -365,6 +365,7 @@ const CloseSetGameDataPopUp = () => {
     SetPlayerNames_Header.style.height = '21%';
 
     arena_mode = false;
+    random_player_mode = false;
 
     if (personal_GameData.EnterOnlineGame) {
         socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {

@@ -69,6 +69,7 @@ function generateCell(index) {
 
         ComplexToeField.style.padding = "1vh";
         ComplexToeField.style.height = "70%";
+        document.querySelectorAll('.score_bar_wrapper').forEach(el => el.style.marginTop = "1vh");
 
     } else {
         cellGrid.style.overflowY = "unset";
@@ -88,6 +89,8 @@ function generateCell(index) {
         if (xCell_Amount == yCell_Amount) {
             ComplexToeField.style.height = "auto";
         };
+
+        document.querySelectorAll('.score_bar_wrapper').forEach(el => el.style.marginTop = "0");
     };
 
     if (xCell_Amount > yCell_Amount) {
@@ -114,7 +117,7 @@ const ConfigureCellSize = (cell, xCell_Amount) => {
 
 // Generates an 2-dimensional array with all possible win combination for a 10x10 field
 function CreateWinConditions(x, y, structures) {
-    console.log(xCell_Amount, yCell_Amount, boundaries, structures);
+    console.log(xCell_Amount, yCell_Amount, boundaries, structures, x, y);
 
     WinConditions.length = 0; // reset
     structures.forEach(pattern => CostumWinPattern(pattern, x, y)); // create
