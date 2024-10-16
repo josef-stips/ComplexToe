@@ -408,7 +408,7 @@ class TournamentHandler {
                                     OpenedPopUp_WhereAlertPopUpNeeded = true;
                                     AlertText.textContent = `The tournament hasn't started yet`;
                                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
-                                    return;
+                                    // return;
                                 };
 
                                 socket.emit('tournament_match_lobby_exists', await generateTournamentLobbyHash(), cb => {

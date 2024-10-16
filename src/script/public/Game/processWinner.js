@@ -1314,6 +1314,9 @@ function PlayerWon_UpdateHisData(Player1_won, player2_won, WinCombination) {
 
 // this code block is just for tournament win case
 const tournament_win = async(player1_won, player2_won) => {
+    // in case nobody won
+    if (player1_won && player2_won) return;
+
     let tour_data = tournament_handler.clicked_tournament[1];
     let current_round_idx = findCurrentRoundByPlayerID(tour_data.current_state.rounds, localStorage.getItem('PlayerID'));
     let current_round = tour_data.current_state.rounds[current_round_idx];
@@ -1359,7 +1362,7 @@ const tournament_win = async(player1_won, player2_won) => {
 // this message recieve all clients
 socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, player1_score, player2_score, gameSeconds) => {
     setTimeout(async() => {
-        if (!player1_score && !player2_score) {
+        if (!player1_score && !player2_score && (player1_won != player2_won)) {
             if (player1_won) {
                 player1_score = Infinity;
                 player2_score = -Infinity;
