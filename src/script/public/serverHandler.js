@@ -366,8 +366,14 @@ const CloseSetGameDataPopUp = () => {
     arena_mode = false;
     random_player_mode = false;
 
+    let tournament_opponent_id;
+
+    if (tournament_mode) {
+        tournament_opponent_id = findOpponentNumber(tournament_handler.clicked_tournament[1].current_state.rounds, localStorage.getItem('PlayerID'));
+    };
+
     if (personal_GameData.EnterOnlineGame) {
-        socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, message => {
+        socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, undefined, Number(tournament_opponent_id), message => {
             // Do things after room was killed
             // The client isn't connected to any server now so the "current id of the room" is null
             personal_GameData.role = 'user';
@@ -527,9 +533,16 @@ const UserLeftGameInOnlineMode = async(from_cont_btn) => {
         return;
     };
 
+    let tournament_opponent_id;
+
+    if (tournament_mode) {
+        tournament_opponent_id = findOpponentNumber(tournament_handler.clicked_tournament[1].current_state.rounds, localStorage.getItem('PlayerID'));
+        universal_clan_msg_handler.check(1000);
+    };
+
     // user left the game
     // Many things are happening in server.js on this emit
-    socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, from_cont_btn, message => {
+    socket.emit('user_left_lobby', personal_GameData.role, personal_GameData.currGameID, from_cont_btn, Number(tournament_opponent_id), message => {
         ChangeGameBG(undefined, undefined, null, true);
 
         random_player_mode = false;
