@@ -1094,6 +1094,12 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
             if (score_Player1_numb == Infinity) score1 = 999;
             if (score_Player2_numb == Infinity) score2 = 999;
 
+            // game log feature is not available for advanture mode due to spells that make the moves evaluation harder
+            // if (inAdvantureMode) {
+            //     let advanture_level = mapLevels[current_selected_level];
+            //     level_name = advanture_level[2];
+            // };
+
             if (!NewCreativeLevel && !inAdvantureMode) {
                 let all_game_data_for_log = [
                     level_id, // level_id

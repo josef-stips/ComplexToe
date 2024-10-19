@@ -478,6 +478,7 @@ let close_stars_pop_up_btn = document.querySelector(".close_stars_pop_up_btn");
 let level_overview_stars = document.querySelectorAll(".level_overview_stars");
 let endgame_level_stars = document.querySelectorAll(".endgame_level_stars");
 let clan_universal_msg_tournament_won_title_tour_name = document.querySelector('.clan_universal_msg_tournament_won_title_tour_name');
+let UserCostumPatternsTitle = document.querySelector('.UserCostumPatternsTitle');
 // create level etc. elements
 let CreateLevel_helpPopUp = document.querySelector(".CreateLevel_helpPopUp");
 let CreateLevel_HelpPopUpCloseBtn = document.querySelector(".CreateLevel_HelpPopUpCloseBtn");

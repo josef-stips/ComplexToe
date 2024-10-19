@@ -1136,6 +1136,7 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
     });
 
     let patterns = all_patterns_in_game;
+    let costum_patterns = [];
 
     if (review_mode) {
         if (Object.keys(review_mode_handler.entry.costum_patterns).length <= 0) return;
@@ -1156,8 +1157,17 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
         let structure = PatternStructureAsOrigin(boundaries, all_patterns_in_game[name].structure, 5, 5);
         let value = all_patterns_in_game[name].value;
 
+        costum_patterns.push(name);
+
         createPattern_preview(name, structure, PatternGridWrapperForCostumPatterns, "level", "ingame_preview", undefined, undefined, undefined, undefined, undefined, undefined, value, true);
     });
+
+    if (costum_patterns.length <= 0) { // no costum patterns
+        UserCostumPatternsTitle.style.display = 'none';
+
+    } else { // costum patterns in level exist
+        UserCostumPatternsTitle.style.display = 'flex';
+    };
 };
 
 // initialize general scene

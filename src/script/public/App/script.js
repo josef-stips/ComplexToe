@@ -1334,12 +1334,14 @@ gameInfo_btn.addEventListener('click', () => {
             NewCreativeLevel && (HowToWinText.textContent = `Get ${NewCreativeLevel.selectedLevel[2]} points.`);
             !NewCreativeLevel && (HowToWinText.textContent = `Get ${points_to_win} points.`);
 
+            UserCostumPatternsTitle.style.display = 'flex';
             setTimeout(() => {
                 NewCreativeLevel_DisplayCostumPatternsInGamePopUp();
             }, 100);
 
         } else {
             HowToWinText.textContent = `Get ${points_to_win} points.`
+            UserCostumPatternsTitle.style.display = 'none';
         };
 
     } else { // in advanture mode
@@ -1365,6 +1367,7 @@ gameInfo_btn.addEventListener('click', () => {
 
         // how to win text
         HowToWinText.textContent = unlocked_mapLevels[current_selected_level][7][unlocked_mapLevels[current_selected_level][7].length - 1];
+        UserCostumPatternsTitle.style.display = 'none';
     };
 });
 

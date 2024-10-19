@@ -8,58 +8,58 @@ let mapLevels = {
                                 "W1", "W2", "W3", "W4", "star", "diamond", "branch1", "branch2", "branch3", "branch4", "special1", "special2"*/
         ],
         ["U paused your Roblox game to be here?", "This is nothing for average explorer but for those who want to know the truth with all their heart", "Here begins the journey to become king and defeat the lord of darkness. Do you really think you will survive this?",
-            "To conquer this level you have to score 3 points against the unknown. And... It is a really rare case but.. sometimes your win combination will be not accepted and you don't get the point!"
+            "To conquer this level you have to score 3 points against the unknown."
         ], 3, InnerGameModes[3], false, {},
         40
     ], // level 1 is unlocked by default
     2: [false, 10, "extinct happiness", 30, 20, "fa-solid fa-skull", ["dia2", "vert"],
         ["Congrats on winning the first level in this deadly journey. But this is still only the beginning... The unknown is going to show his face soon but for now you must remember to stay focused!",
-            "To conquer this level you have to score 5 points against the unknown. The unknown can beat you in less moves. As you know, in some rare cases your win combination will be not accepted and you don't get the point!"
+            "To conquer this level you have to score 5 points against the unknown."
         ], 5, InnerGameModes[3], false, { 'keys': 10 },
         40
     ],
     3: [false, 15, "villain steps", 35, 25, "fa-solid fa-skull", ["diamond", "branch1"],
         ["Some thoughts on becoming a Discord mod?", "Do not let your focus wander through the fog of the darkness", "With every level it gets more serious now. Keep your eyes open and your mouth closed!",
             "The winning patterns that require five moves yield 3 more points than regular ones.",
-            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+            "To conquer this level you have to score 7 points against the unknown."
         ], 7, InnerGameModes[1], false, { 'keys': 15, 'ores': 400, 'minerals': 200 },
         40
     ],
     4: [false, 20, "traces of the eye", 55, 25, "fa-solid fa-skull", ["diamond"],
         ["The first three levels where too boring huh?",
             "You entered the really dangerous side of this journey now. Will you survive?",
-            "To conquer this level you have to score 5 points against the unknown and defeat Oculum Solis. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+            "To conquer this level you have to score 5 points against the unknown and defeat Oculum Solis."
         ], 5, InnerGameModes[2], true, { 'keys': 20, 'ores': 1000, 'minerals': 400 },
         60
     ],
     5: [false, 35, "bloodbath", 55, 25, "fa-solid fa-skull", ["hor", "vert", "dia"],
         ["Are you winning servant?", "Congrats on winning the previous boss fight.", "Are you struggling? You have survived half of the journey. You can see the blood of the previous players who tried this level. ",
-            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
-        ], 7, InnerGameModes[1], false, { 'keys': 35, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
+            "To conquer this level you have to score 7 points against the unknown."
+        ], 6, InnerGameModes[1], false, { 'keys': 35, 'ores': 1200, 'minerals': 400, 'diamonds': 4 },
         55
     ],
     6: [false, 30, "wide forest", 65, 25, "fa-solid fa-skull", ["L1", "L2"],
         ["What is wider?", "The forest or the field of skeletons of the previous player you're going to play on now?",
             "Most of the players here have already given up or lost their way. Do you really want to continue or give up?", "btw. are you a discord mod?", "Anyway...",
-            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+            "To conquer this level you have to score 7 points against the unknown."
         ], 7, InnerGameModes[1], false, { 'keys': 30, 'ores': 2400, 'asteroids': 1, 'diamonds': 40 },
         50
     ],
     7: [false, 40, "silent cave", 75, 30, "fa-solid fa-skull", ["branch4", "star"],
         ["I hear steps behind me!", "Or just my fart", "...", "The playing field has become larger. More room for your frustration to spread.",
-            "To conquer this level you have to score 9 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point."
+            "To conquer this level you have to score 9 points against the unknown."
         ], 9, InnerGameModes[1], false, { 'keys': 40, 'ores': 3500, 'asteroids': 1, 'minerals': 4000 },
         70
     ],
     8: [false, 45, "unknown dungeon", 85, 30, "fa-solid fa-skull", ["branch2", "hor"],
         ["Arrg", "Only the top players reached this level. Congratulations! But don't be too optimistic..",
-            "To conquer this level you have to score 7 points against the unknown. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and will not get the point."
+            "To conquer this level you have to score 7 points against the unknown."
         ], 7, InnerGameModes[2], false, { 'keys': 45, 'ores': 4000, 'asteroids': 2, 'encrypted writings': 4 },
         75
     ],
     9: [false, 50, "Last step before death", 90, 30, "fa-solid fa-skull", ["W2", "star"],
         ["hihihi... ", "This is the last step before you are never seen again. No one knows if you can do that.",
-            "To conquer this level you have to score 21 points against the unknown and defeat Solara Zephyra. The unknown can beat you in less moves. In rare cases your win combination will be not accepted and you don't get the point!"
+            "To conquer this level you have to score 21 points against the unknown and defeat Solara Zephyra."
         ], 21, InnerGameModes[1], true, { 'keys': 50, 'asteroids': 3, 'encrypted writings': 5 },
         110
     ],
@@ -71,8 +71,8 @@ let mapLevels = {
             `hihihi...`,
             `You may have believed this to be the pinnacle of your journey, but the truth is a shadow pointing towards unfathomable abysses...`,
 
-            `In the depths of my realm lies a labyrinth that harbors the unexplored terrors of darkness.Your courage may have brought you this far, but the question is: Are you ready to face the shadows that lurk beyond the visible darkness ? `,
-            "To conquer this level you have to score 15 points and defeat Oculus Irae. The unknown can beat you in less moves."
+            `In the depths of my realm lies a labyrinth that harbors the unexplored terrors of darkness.Your courage may have brought you this far, but the question is: Are you ready to face the shadows that lurk beyond the visible darkness? `,
+            "To conquer this level you have to score 15 points and defeat Oculus Irae."
         ], 15, InnerGameModes[3], true, { 'keys': 55, 'asteroids': 5, 'encrypted writings': 6, 'ores': 7000, 'abandoned eye': 1 },
         100
     ],

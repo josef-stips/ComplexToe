@@ -1820,6 +1820,7 @@ const secondGameAnimation = (text, OnGameEnd) => {
         // create Text 
         let Text = document.createElement("h1");
         Text.style.fontSize = "10vh";
+        Text.style.zIndex = "19999"
         Text.textContent = text;
 
         if (OnGameEnd) {
@@ -2125,8 +2126,8 @@ const NewWinCombisDuringGame = () => {
 
 // KI places two times in a row
 const KI_PlacesTwoTimesInARow = () => {
-    Ki_canSetTwoTimesInARow = true;
-    GameAnimation("The unknown can set two times in a row!").then(() => {
+    ki.canSetTwoTimes = true;
+    GameAnimation("The unknown can set two times!").then(() => {
         win_found = false;
         changePlayer();
         ki.init();
