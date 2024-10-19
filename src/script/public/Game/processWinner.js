@@ -503,6 +503,19 @@ function processResult_continueGame(fromRestart, fromClick, won) {
                 };
             }, 200);
 
+        } else if (curr_mode == GameMode[1].opponent && won) {
+            setTimeout(() => {
+                // Check who can set next the bot or the player
+                if (currentPlayer == PlayerData[1].PlayerForm) {
+                    changePlayer(false);
+                    ki.init();
+
+                } else {
+                    changePlayer(false);
+                    running = true;
+                };
+            }, 200);
+
         } else if (curr_mode != GameMode[1].opponent) { // It is not KI Mode
 
             // add access to set
@@ -1124,7 +1137,7 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
                     bgcolor2, // second bg color
                     GameSeconds, // game duration
                     JSON.stringify(all_game_moves), // moves
-                    GameData.PlayerClock, // player clock
+                    GameData.PlayerClock != '' ? GameData.PlayerClock : 0, // player clock
                     points_to_win, // points to win
                     JSON.stringify(allGameData[3]), // allowed patterns
                     JSON.stringify({}),
@@ -1457,7 +1470,7 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
                 bgcolor2, // second bg color
                 gameSeconds, // game duration
                 JSON.stringify(all_game_moves), // moves
-                allGameData[2][7], // player clock
+                allGameData[2][7] || 0, // player clock
                 allGameData[5], // points to win
                 JSON.stringify(allGameData[3]), // allowed patterns
                 player_levels_handler.online_level_overview_handler && player_levels_handler.online_level_overview_handler.level["costum_patterns"], // costum patterns when exist

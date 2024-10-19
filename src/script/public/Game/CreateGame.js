@@ -1152,7 +1152,7 @@ const NewCreativeLevel_DisplayCostumPatternsInGamePopUp = () => {
     };
 
     Object.keys(patterns).forEach((name, i) => {
-        if (Object.keys(GamePatternsList).includes(name)) return;
+        if (Object.keys(GamePatternsList).includes(name) || curr_mode == 'KI') return;
 
         let structure = PatternStructureAsOrigin(boundaries, all_patterns_in_game[name].structure, 5, 5);
         let value = all_patterns_in_game[name].value;
@@ -1706,6 +1706,14 @@ const InitCreateLevelScene = () => {
                 break;
 
             case 'false':
+                // level has costum field or a field smaller than 20x20 which is forbidden for ki/bot mode
+                if (Object.keys(NewCreativeLevel.selectedLevel[16] || {}).length > 0 || NewCreativeLevel.Settings.cellgrid[NewCreativeLevel.selectedLevel[7]] <= 15) {
+                    AlertText.textContent = "The level has a custom field or a field smaller than 20x20, which is not allowed in AI/bot mode.";
+                    OpenedPopUp_WhereAlertPopUpNeeded = true;
+                    DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                    return;
+                };
+
                 e.target.setAttribute('active_toggle', 'true');
                 e.target.className = 'fa-regular fa-check-square BotMode_toggle_btn';
                 BotMode_mainWrapper.classList.remove('blur');

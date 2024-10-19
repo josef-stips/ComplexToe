@@ -3064,7 +3064,7 @@ class reviewModeHandler {
     };
 
     init_game_field_icon(entry) {
-        if (Object.keys(entry.tournament_data).length > 0) {
+        if (Object.keys(entry.tournament_data || {}).length > 0) {
             SetGameFieldIconForCurrentField(entry.field_size[0], entry.field_index, false, true);
             return;
         };

@@ -562,6 +562,10 @@ class bot {
     };
 
     set(index, inner_field_index) { // place on given index and innerfield index
+        if (cells[index] == undefined) {
+            index = this.find_best_spot(options, true);
+        };
+
         index = Number(index);
         inner_field_index = Number(inner_field_index);
 
@@ -571,6 +575,8 @@ class bot {
         cells[index].classList.add("draw");
         cells[index].style.color = "gold";
         options[index] = PlayerData[2].PlayerForm;
+
+        all_game_moves.push(index);
 
         this.ki_board |= 1 << inner_field_index;
         this.inner_field.inner_field_data_options[inner_field_index] = PlayerData[2].PlayerForm;
