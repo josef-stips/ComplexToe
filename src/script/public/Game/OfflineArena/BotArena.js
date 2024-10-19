@@ -10,17 +10,29 @@ class TrainingArena {
         this.selected_patterns_count = 0;
     };
 
-    init() {
+    init_patterns(mode) {
+        switch (mode) {
+            case 'normal':
+                return Object.keys(GamePatternsList).map(p => { if (GamePatternsList[p].length == 5) return [p, GamePatternsList[p]] });
 
+            case 'medium':
+                return Object.keys(GamePatternsList).map(p => [p, GamePatternsList[p]]);
+
+            case 'hard':
+                return Object.keys(GamePatternsList).map(p => { if (GamePatternsList[p].length <= 4) return [p, GamePatternsList[p]] });
+        };
     };
 
     generate_patterns() {
+        let AllowedPatterns = this.init_patterns(this.mode);
         DisplayPopUp_PopAnimation(TrainingArena_Patterns_popUp, 'flex', true);
 
         this.patterns_wrapper.textContent = null;
-        Object.keys(GamePatternsList).forEach(n => {
-            let s = GamePatternsList[n];
-            createPattern_preview(n, s, this.patterns_wrapper, "toggle", undefined, 5, undefined, undefined, 5);
+        AllowedPatterns.forEach(n => {
+            if (!n) return;
+
+            let s = GamePatternsList[n[0]];
+            createPattern_preview(n[0], s, this.patterns_wrapper, "toggle", undefined, 5, undefined, undefined, 5);
         });
 
         let patterns = [...this.patterns_wrapper.children];

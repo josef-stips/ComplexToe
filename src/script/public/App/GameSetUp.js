@@ -201,6 +201,14 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
             }
         }
     };
+
+    if (training_arena.mode == 'hard' && arena_mode) {
+        curr_innerGameMode = InnerGameModes[1];
+        SetPlayerNamesModeInput.style.display = 'none';
+
+    } else {
+        SetPlayerNamesModeInput.style.display = 'flex';
+    };
 };
 
 const UserClicksNxNDefaultSettings = (readonly, is_tournament) => {
@@ -840,7 +848,8 @@ function SetPlayerData_ConfirmEvent() {
 };
 
 function SetGameData_BotMode(Check) {
-    if (Player1_NameInput.value != "" && Player1_IconInput.value != "" && Player1_IconInput.value != "Y" && Check[1] == true) {
+    if ((Player1_NameInput.value != "" && Player1_IconInput.value != "" && Player1_IconInput.value != "Y" && Check[1] == true) ||
+        (Player1_NameInput.value != "" && Player1_IconInput.value != "" && Player1_IconInput.value != "Y" && Check[1] == false && arena_mode == true && training_arena.mode == 'hard')) {
 
         let fieldIndex = curr_field_ele.getAttribute('index');
         curr_mode = GameMode[1].opponent;
@@ -849,6 +858,10 @@ function SetGameData_BotMode(Check) {
         curr_form1 = Player1_NameInput.value.toUpperCase();
         curr_form2 = 'Y'; // Bot        
         curr_innerGameMode = Check[3];
+
+        if (arena_mode == true && training_arena.mode == 'hard') {
+            curr_innerGameMode = InnerGameModes[1];
+        };
 
         if (arena_mode) {
             curr_name2 = 'Bob the Bot'; // Bot
