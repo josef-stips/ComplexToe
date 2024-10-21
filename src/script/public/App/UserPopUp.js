@@ -255,7 +255,7 @@ UserGivesData_IconInput.addEventListener('keydown', e => {
             // general stuff
             UserGivesData_PopUp_icon.style.display = "none";
             CreateOnlineProfileBtn.style.display = 'none';
-            userInfoPopUp.style.display = 'flex';
+            userInfoPopUp.style.display = 'none';
             UserInfoCont.style.display = "flex";
 
             clickEnter_text.style.display = 'none';
@@ -273,7 +273,6 @@ UserGivesData_IconInput.addEventListener('keydown', e => {
             FriendsList_Btn.addEventListener('click', OpenFriendsListPopUp);
             SearchUser_Btn.addEventListener('click', OpenSearchUserPopUp);
 
-            OpenOwnUserProfile();
             load_cardsClick();
         };
     };
@@ -302,25 +301,34 @@ UserGivesData_closeBtn_ICON.addEventListener('click', () => {
 
 // user submits his simple offline data
 function submittedOfflineData() {
-    localStorage.setItem('UserName', userName);
-    localStorage.setItem('UserIcon', userIcon);
-
     try {
-        // send name to server, server sends it to database, store in database
-        socket.emit("sendNameToDatabase", localStorage.getItem('PlayerID'), localStorage.getItem('UserName'), localStorage.getItem("UserIcon"),
-            localStorage.getItem('userInfoClass'), localStorage.getItem("userInfoColor"));
+        // send name to server, server sends it to database, store in database, check wether name is already in use. If not, proceed
+        socket.emit("sendNameToDatabase", localStorage.getItem('PlayerID'), userName, localStorage.getItem("UserIcon"),
+            localStorage.getItem('userInfoClass'), localStorage.getItem("userInfoColor"), cb => {
+
+                if (cb.status == "duplicate") {
+                    AlertText.textContent = 'This name is already in use. Try a different one.';
+                    DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
+                    return;
+                };
+
+                localStorage.setItem('UserName', userName);
+                localStorage.setItem('UserIcon', userIcon);
+
+                userInfoName.textContent = localStorage.getItem('UserName');
+                UserID_display.textContent = "User ID: " + localStorage.getItem("PlayerID");
+                OpenOwnUserProfile();
+
+                // user uses just a skin color
+                if (localStorage.getItem(`userInfoClass`) == "empty") {
+
+                    userInfoIcon.textContent = localStorage.getItem('UserIcon');
+                } else { // user uses an advanced skin => do nothing
+                    return
+                };
+            });
+
     } catch (error) {
         console.error(error);
-    };
-
-    userInfoName.textContent = localStorage.getItem('UserName');
-    UserID_display.textContent = "User ID: " + localStorage.getItem("PlayerID");
-
-    // user uses just a skin color
-    if (localStorage.getItem(`userInfoClass`) == "empty") {
-
-        userInfoIcon.textContent = localStorage.getItem('UserIcon');
-    } else { // user uses an advanced skin => do nothing
-        return
     };
 };
