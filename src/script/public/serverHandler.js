@@ -94,8 +94,7 @@ const InitStyleForUserEntersLobby = (message) => {
     Lobby_InnerGameMode.textContent = `${message[4]}`;
     Lobby_PlayerClock.textContent = `${message[3]} seconds`;
     Lobby_FieldSize.textContent = !JSON.parse(message[6])[0] ? `${message[2]}x${message[2]}` : `${JSON.parse(message[6])[0]}x${JSON.parse(message[6])[1]}`;
-
-    console.log(message[6]);
+    // console.log(message[6]);
 
     // Just for style and better user experience
     EnterGameCode_Input.value = null;
@@ -244,7 +243,7 @@ function try_to_join_lobby(room_id) {
             personal_GameData.currGameID = message[1]; // the game id
 
             // if he joined as blocker, his role is blocker, otherwise his role is user
-            console.log(message[5]);
+            // console.log(message[5]);
 
             if (message[5] == "thirdplayer") {
                 // set role
@@ -1353,7 +1352,7 @@ socket.on('Admin_Created_And_Joined', message => {
 
 // When the second player wants to join the game, all other players in the room needs to see this
 socket.on('SecondPlayer_Joined', message => {
-    console.log("Second Player joined: ", message);
+    // console.log("Second Player joined: ", message);
 
     if (personal_GameData.role == 'admin') {
         kick_second_player_btn.setAttribute("active_dis", "true");
@@ -1407,7 +1406,7 @@ socket.on('SecondPlayer_Joined', message => {
 
 // third player joins
 socket.on('ThirdPlayer_Joined', message => {
-    console.log("Third player joined: ", message);
+    // console.log("Third player joined: ", message);
 
     if (personal_GameData.role == 'admin') {
         kick_third_player_btn.setAttribute("active_dis", "true");
@@ -1706,6 +1705,8 @@ socket.on('INFORM_admin_left_room', () => {
     };
 });
 
+let global_playerTimer;
+
 // message to all clients that the game just started
 socket.on('StartGame', (RoomData) => { // RoomData
     // console.log(RoomData);
@@ -1734,6 +1735,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
     let options = JSON.parse(RoomData[0].fieldoptions);
     let currInnerGameMode = RoomData[0].InnerGameMode;
     let PlayerTimer = RoomData[0].PlayerTimer;
+    global_playerTimer = PlayerTimer;
     // player data
     let player1 = RoomData[0].player1_name;
     let player2 = RoomData[0].player2_name;
@@ -1772,8 +1774,7 @@ socket.on('StartGame', (RoomData) => { // RoomData
 
     costumLevelIcon = costumIcon;
 
-    console.log(costumPatterns, costumX, costumY, costumIcon, costumLevelIcon, killdrawnCells);
-
+    // console.log(costumPatterns, costumX, costumY, costumIcon, costumLevelIcon, killdrawnCells);
     (killdrawnCells == 0) ? killAllDrawnCells = false: killAllDrawnCells = true;
 
     // play theme music 
@@ -1826,8 +1827,7 @@ socket.on('recieveGlobalOptions', message => {
 
     // update old array with modified version
     options = message;
-
-    console.log(options, message, Grid);
+    // console.log(options, message, Grid);
 
     // Anzahl der Elemente, die schwarz gefärbt werden sollen
     for (let i = 0; i < options.length; i++) {
@@ -2126,13 +2126,19 @@ kick_third_player_btn.addEventListener('click', () => {
     });
 });
 
-// client (user, blocker) gets kick message
+// client (user, blocker = user_type) gets kick message
 socket.on('lobby_kick', (user_type) => {
     if (personal_GameData.role == user_type) {
         Lobby_closeBtn.click();
+        close_all_scenes();
+        gameModeCards_Div.style.display = "flex";
+        sceneMode.default();
 
         AlertText.textContent = 'You got kicked out of the lobby';
         DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+
+        PauseMusic();
+        CreateMusicBars(audio);
         return;
     };
 

@@ -32,7 +32,7 @@ async function killPlayerClocks(clearEyeInterval, command, playerN_timer_event, 
         } else if (command == "Reset&&Continue") {
 
             // send new request to display the current player times
-            await socket.emit("Request_Players_timer", parseInt(personal_GameData.currGameID), playerN_timer_event, playerN_timer, playerInNumber, currentPlayer);
+            await socket.emit("Request_Players_timer", parseInt(personal_GameData.currGameID), playerN_timer_event, playerN_timer, playerInNumber, currentPlayer, global_playerTimer);
         };
     };
 
@@ -219,7 +219,7 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer, watching_
 
     ChangePlayerOnNumber(currentPlayer);
 
-    if (watch_mode) return;
+    if (watch_mode) return; // client is in watch mode. do not collide with player timer functionality
 
     if (running) {
 
@@ -255,6 +255,7 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer, watching_
     } else if (player3_can_set) {
 
         if (personal_GameData.role == "blocker") {
+            statusText.textContent = "You can block now!";
             running = true;
             addAccesOnlineMode(true, true);
 
@@ -283,12 +284,10 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer, watching_
     };
 
     if (player1_timer <= 0 || player2_timer <= 0) {
-
         removeAccessToAnything();
     };
 
     if (player1_timer <= 1 || player2_timer <= 1) {
-
         if (player3_can_set && personal_GameData.role == "blocker") {
             running = true;
 
@@ -301,7 +300,7 @@ socket.on('playerTimer', (player1_timer, player2_timer, currentPlayer, watching_
     };
 });
 
-socket.on("EndOfPlayerTimer", () => {
+socket.on("EndOfPlayerTimer", (currentPlayer) => {
     // console.log("lol");
     // removeAccessToAnything();
 
@@ -318,10 +317,20 @@ socket.on("EndOfPlayerTimer", () => {
 
     // addAccesOnlineMode("TimerEnded", true);
 
-    // now it's player two turn
-    if (curr_mode == GameMode[2].opponent)(player1_can_set == true) ? player1_can_set = false : player1_can_set = true;
+    // now it's player x turn in online mode
+    if (curr_mode == GameMode[2].opponent) {
 
-    checkWinner();
+        ChangePlayerOnNumber(currentPlayer);
+
+        if (currentPlayer == 1) {
+            player1_can_set = true;
+
+        } else if (currentPlayer == 2) {
+            player1_can_set = false;
+        };
+    };
+
+    // checkWinner();
     addAccesOnlineMode(true, true);
 
     running = true;
@@ -351,3 +360,7 @@ function EndOfPlayerTimer() {
         checkWinner();
     }, 1000);
 };
+
+socket.on('update_watching_count', (watch_count) => {
+    watching_count_el.textContent = `watching: ${watch_count}`;
+});

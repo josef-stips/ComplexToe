@@ -472,11 +472,9 @@ const FindPatternName = (els_list, x, y) => {
 // player made a point with a win combination
 // Purpose of function: add name of win pattern to local storage
 const recentUsedPattern_add = (els_list, x, y) => {
-    console.log(boundaries, x, y, els_list);
-
+    // console.log(boundaries, x, y, els_list);
     let pattern_name = FindPatternName(els_list, x, y);
-
-    console.log(boundaries, x, y, els_list);
+    // console.log(boundaries, x, y, els_list);
 
     let indexes = all_patterns_in_game[pattern_name].indexes;
 

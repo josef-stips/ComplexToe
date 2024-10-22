@@ -231,7 +231,7 @@ function checkWinner(fromRestart, fromClick) { // the first two parameter are ju
             extra_points = all_patterns_in_game[pattern_name].value || 1;
 
             patterns_used.push({ 'pattern': pattern_name, 'by': Player1_won ? PlayerData[1].PlayerName : PlayerData[2].PlayerName, 'indexes': [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))), 'on_nth_move': [...all_game_moves.entries()][all_game_moves.length - 1][0], 'value': all_patterns_in_game[pattern_name].value });
-            console.log(WinCombination, pattern_name, extra_points, winner[0], PlayerData[1].PlayerForm, all_game_moves);
+            // console.log(WinCombination, pattern_name, extra_points, winner[0], PlayerData[1].PlayerForm, all_game_moves);
 
         } catch (error) {
             console.log(error);
@@ -640,7 +640,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
                 try {
                     if (personal_GameData.role == 'admin') {
-                        console.log(WinCombination);
+                        // console.log(WinCombination);
                         socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb, [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))));
                     };
 
@@ -709,7 +709,7 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
 
                 try {
                     if (personal_GameData.role == 'admin') {
-                        console.log(WinCombination);
+                        // console.log(WinCombination);
                         socket.emit('update_game_points', personal_GameData.currGameID, score_Player1_numb, score_Player2_numb, [...WinCombination].map(el => parseInt(el.getAttribute("cell-index"))));
                     };
 
@@ -749,6 +749,12 @@ function chooseSubWinner(Player1_won, Player2_won, WinCombination, extra_points)
                 resolve();
             };
 
+            setTimeout(() => {
+                if(personal_GameData.role == 'blocker') {
+                    statusText.textContent = "You can block now!";
+                };
+            }, 1100);
+
         }, 1000);
     });
 };
@@ -765,7 +771,7 @@ function Call_UltimateWin(WinCombination, UserGivesUp, KI_won_points) {
 
     if (WinCombination == undefined) {
         setTimeout(() => {
-            console.log(score_Player1_numb, score_Player2_numb);
+            // console.log(score_Player1_numb, score_Player2_numb);
 
             running = false;
             if (score_Player1_numb > score_Player2_numb) { // Player 1 has won
@@ -1099,8 +1105,6 @@ function UltimateGameWin(player1_won, player2_won, WinCombination, UserGivesUp) 
 
             let game_mode = inAdvantureMode && curr_mode == GameMode[1].opponent ? 'advanture_mode' : !inAdvantureMode && curr_mode == GameMode[1].opponent ? 'training_arena' : 'fun_offline_game';
 
-            console.log(Number(fieldIndex), "lool", score_Player1_numb, score_Player2_numb);
-
             let score1 = score_Player1_numb;
             let score2 = score_Player2_numb;
 
@@ -1258,8 +1262,7 @@ function update_personal_level_data(playerX_won, game_sec, score) {
         return;
     };
 
-    console.log(inPlayerLevelsScene);
-
+    // console.log(inPlayerLevelsScene);
     if (inPlayerLevelsScene || PlayingInCreatedLevel_AsGuest) {
         socket.emit("update_online_level_data", playerX_won, game_sec,
             score, Number(localStorage.getItem("PlayerID")),
@@ -1361,7 +1364,7 @@ const tournament_win = async(player1_won, player2_won) => {
         await socket.emit('tournament_player_to_next_round', tour_data.current_state, `Player ${winner_id}`, winner_id, next_round, MatchIndex, tour_data.id, JSON.parse(localStorage.getItem('clan_member_data')).clan_id,
             cb => {
                 // cb = updated tournament data
-                console.log("Ergebnis: ", cb);
+                // console.log("Ergebnis: ", cb);
             });
     } else {
         console.error('No winner determined for this round.');
@@ -1392,8 +1395,7 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
                 player2_score = Infinity;
             };
         };
-
-        console.log(player1_score, player2_score);
+        // console.log(player1_score, player2_score);
 
         // this code block is just for tournament win case
         let tournament_data;
@@ -1403,7 +1405,7 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
 
         // to prevent bugs
         if (current_level_boss) {
-            console.log(current_level_boss)
+            // console.log(current_level_boss)
             current_level_boss.died = true
             current_level_boss.stop_attack_interval();
         };
@@ -1443,9 +1445,8 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
                 level_icon = player_levels_handler.online_level_overview_handler.level.icon;
             };
 
-            console.log(player_levels_handler.online_level_overview_handler);
-
-            console.log(patterns_used);
+            // console.log(player_levels_handler.online_level_overview_handler);
+            // console.log(patterns_used);
 
             let all_game_data_for_log = [
                 level_id, // level_id
@@ -1485,12 +1486,10 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
                 tournament_data || {}
             ];
 
-            console.log(all_game_data_for_log);
-
             socket.emit("update_gameLog", all_game_data_for_log, cb => {
                 if (!cb) new Error("Something went wrong while inserting into the gamelogs table");
 
-                console.log(cb, all_game_data_for_log)
+                // console.log(cb, all_game_data_for_log)
                 game_log_handler.have_to_update = true;
             });
         };
@@ -1513,7 +1512,7 @@ socket.on('global_UltimateWin', async(player1_won, player2_won, WinCombination, 
 // Update skill points for player after a successful game
 // This function is only availible in the online mode and KI mode because it makes only sense there
 function setNew_SkillPoints(plus) {
-    console.log("plus", plus);
+    // console.log("plus", plus);
 
     if (plus > 100) plus = 100;
 
@@ -1628,12 +1627,14 @@ function setNew_SkillPoints(plus) {
 // Other player who loses gets -5 skill points
 // This function is only availible in the online mode and KI mode because it makes only sense there
 function minus_SkillPoints(minus) {
-    console.log("minus", minus);
+    // console.log("minus", minus);
+
+    if (minus > 100) minus = 100;
 
     let old_Elo = parseInt(localStorage.getItem('ELO'));
     let ELO_point = 0;
 
-    console.log(old_Elo, minus);
+    // console.log(old_Elo, minus);
     if (old_Elo < minus) return;
 
     // extra animation addition

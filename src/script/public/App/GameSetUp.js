@@ -202,7 +202,7 @@ const InitGameDataForPopUp = (DisplayIniPopUp) => {
         }
     };
 
-    if (training_arena.mode == 'hard' && arena_mode) {
+    if (training_arena?.mode == 'hard' && arena_mode) {
         curr_innerGameMode = InnerGameModes[1];
         SetPlayerNamesModeInput.style.display = 'none';
 
@@ -426,7 +426,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
         let costumPatterns;
         let costumIcon;
 
-        console.log(PointsToWinGame);
+        // console.log(PointsToWinGame);
 
         // set data: either extern data or intern data
         if (Data1) Check[2] = Data1;
@@ -493,8 +493,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
             xCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
             yCell_Amount = parseInt(Fields[fieldIndex].xyCellAmount);
         };
-
-        console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon, curr_music_name);
+        // console.log(UserSetPointsToWinGameInput.value, PointsToWinGame, costumX, costumY, costumIcon, curr_music_name);
 
         // hash
         // player1 + player2 + clan_id + tournament_name + current round
@@ -527,8 +526,7 @@ async function UserCreateRoom(readOnlyLevel, Data1, Data2, UserName, thirdplayer
             tournament_online_lobby_title.textContent = null;
             Lobby_GameCode_display.style.display = 'flex';
         };
-
-        console.log(tournament_hash);
+        // console.log(tournament_hash);
 
         // Check[2] = , Check[3] = 
         // GameData: Sends PlayerClock, InnerGameMode and xyCellAmount ; PlayerData: sends player name and icon => requests room id 
@@ -896,7 +894,7 @@ function SetGameData_BotMode(Check) {
 
                 if (NewCreativeLevel.selectedLevel[17]) {
                     allowedPatternsFromUser = Object.keys(NewCreativeLevel.selectedLevel[18]).filter((n, i) => {
-                        console.log(n, i, Object.keys(GamePatternsList)[i])
+                        // console.log(n, i, Object.keys(GamePatternsList)[i])
                         if (Object.keys(GamePatternsList).includes(n)) {
                             return n;
                         } else {
@@ -933,8 +931,7 @@ function SetGameData_BotMode(Check) {
         } else {
             curr_music_name = Fields[fieldIndex].theme_name;
         };
-
-        console.log(allowedPatternsFromUser);
+        // console.log(allowedPatternsFromUser);
 
         if (training_arena) {
             allowedPatternsFromUser = [...Object.keys(training_arena.selected_patterns)];

@@ -82,7 +82,7 @@ ipcMain.on("DeactivateFullscreen", () => {
 });
 
 ipcMain.handle('new_ach', (e, index) => {
-    console.log(index);
+    console.log('new_ach:', index);
 
     switch (index) {
         case 0:

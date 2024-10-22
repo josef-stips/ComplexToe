@@ -726,7 +726,7 @@ const randomItemsOnScreen = () => {
                     break;
             };
 
-            console.log(window.getComputedStyle(gameModeCards_Div).getPropertyValue("display"));
+            // console.log(window.getComputedStyle(gameModeCards_Div).getPropertyValue("display"));
             if (window.getComputedStyle(gameModeCards_Div).getPropertyValue("display") === "flex") {
                 document.body.appendChild(item);
             };
@@ -1573,7 +1573,7 @@ EnterGame_btn.addEventListener('click', () => {
 
     if (random_player_mode) {
         socket.emit('random_player_join_entry', Number(localStorage.getItem("PlayerID")), Number(localStorage.getItem('ELO')), (cb, room_id) => {
-            console.log(cb, room_id);
+            // console.log(cb, room_id);
 
             if (cb.length <= 0) {
                 AlertText.textContent = 'There are no rooms on your XP level to join sadly. May create your own or play another mode?';

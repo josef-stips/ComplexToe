@@ -320,7 +320,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
         CreateOptions();
     };
 
-    console.log(xCell_Amount, yCell_Amount);
+    // console.log(xCell_Amount, yCell_Amount);
 
     //Creates TicTacToe field etc.
     let [pattern_structures, pattern_names, pattern_values] = initAllPatterns(Allowed_Patterns, CreativeLevel_from_onlineMode_costumPatterns_globalVar, xCell_Amount, yCell_Amount, creativeLevel_costumBotPatterns || {});
@@ -347,7 +347,7 @@ function initializeGame(field, onlineGame, OnlineGameDataArray, Allowed_Patterns
 
     // user costum patterns are only availible in user costum levels
     if (NewCreativeLevel || CreativeLevel_from_onlineMode_costumPatterns || PlayingInCreatedLevel) {
-        if (personal_GameData.role == "user") {
+        if (personal_GameData.role == "user" || personal_GameData.role == "blocker") {
             PlayingInCreatedLevel_AsGuest = true;
         };
     };
@@ -1611,7 +1611,7 @@ function check_draw(options, cells) {
         };
     };
 
-    console.log("es kann nicht mehr gesetzt werden");
+    // console.log("es kann nicht mehr gesetzt werden");
     return true;
 };
 
@@ -1620,7 +1620,7 @@ function restartGame() {
     // Event
     if (curr_mode == GameMode[2].opponent) { // if in online mode
         // Send trigger emit to server so the server sends the "Reload_GlobalGame" emit to all clients
-        socket.emit('Reload_OnlineGame', personal_GameData.currGameID, xCell_Amount);
+        socket.emit('Reload_OnlineGame', personal_GameData.currGameID, xCell_Amount, yCell_Amount);
 
     } else { // if other mode
         killPlayerClocks(true);
@@ -1628,7 +1628,7 @@ function restartGame() {
         cellGrid.classList.remove('cellGrid_opacity');
         changePlayer(true);
         setTimeout(() => {
-            console.log(allGameData);
+            // console.log(allGameData);
 
             player1_score_bar_wrapper.style.background = `linear-gradient(105deg, #3f51b5 ${0}%, transparent ${5}%)`;
             player2_score_bar_wrapper.style.background = `linear-gradient(-105deg, darkred ${0}%, transparent ${5}%)`;
@@ -2142,7 +2142,6 @@ socket.on('changePlayerTurnDisplay', (currPlayer) => {
 });
 
 const ChangePlayer = (currPlayer) => {
-
     currentPlayer = currPlayer;
 
     if (currPlayer == PlayerData[1].PlayerForm && personal_GameData.role == 'admin') { // INFO: admin is always player one
@@ -2174,32 +2173,38 @@ const ChangePlayerOnNumber = (currPlayer) => { // 1,2,3 instead of PlayerForms
 
         currentPlayer = PlayerData[1].PlayerForm;
         statusText.textContent = `It is your turn ${PlayerData[1].PlayerName}`;
+        player1_can_set = true;
 
     } else if (currPlayer == 1 && personal_GameData.role == 'user') {
 
         currentPlayer = PlayerData[1].PlayerForm;
         statusText.textContent = `${PlayerData[1].PlayerName}'s turn`;
+        player1_can_set = true;
 
     } else if (currPlayer == 1 && personal_GameData.role == 'blocker') {
 
         currentPlayer = PlayerData[1].PlayerForm;
         statusText.textContent = `${PlayerData[1].PlayerName}'s turn`;
+        player1_can_set = true;
     };
 
     if (currPlayer == 2 && personal_GameData.role == 'user') { // INFO: user is always player two
 
         currentPlayer = PlayerData[2].PlayerForm;
         statusText.textContent = `It is your turn ${PlayerData[2].PlayerName}`;
+        player1_can_set = false;
 
     } else if (currPlayer == 2 && personal_GameData.role == 'admin') {
 
         currentPlayer = PlayerData[2].PlayerForm;
         statusText.textContent = `${PlayerData[2].PlayerName}'s turn`;
+        player1_can_set = false;
 
     } else if (currPlayer == 2 && personal_GameData.role == 'blocker') {
 
         currentPlayer = PlayerData[2].PlayerForm;
         statusText.textContent = `${PlayerData[2].PlayerName}'s turn`;
+        player1_can_set = false;
     };
 
     if (watch_mode) {
@@ -2574,13 +2579,13 @@ class WheelOfFortuneHandler {
             });
         };
 
-        console.log(array);
+        // console.log(array);
         return array[0];
     };
 
     reward_animation(reward_item) {
         return new Promise(resolve => {
-            console.log(reward_item);
+            // console.log(reward_item);
 
             reward_item.style.animation = `reward_found 1s linear`;
             reward_item.parentElement.style.animation = `reward_found_parent_ani 1s linear`;
@@ -2839,7 +2844,7 @@ class reviewModeHandler {
     };
 
     init() {
-        console.log(this.entry);
+        // console.log(this.entry);
 
         this.init_patterns_list(this.entry);
 
@@ -2900,7 +2905,7 @@ class reviewModeHandler {
     };
 
     blacken_cells(pattern, on_nth_move) {
-        console.log(pattern);
+        // console.log(pattern);
 
         if (!this.entry.kill_cells_after_point) { // only blacken cells of pattern
 

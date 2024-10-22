@@ -307,6 +307,7 @@ function submittedOfflineData() {
             localStorage.getItem('userInfoClass'), localStorage.getItem("userInfoColor"), cb => {
 
                 if (cb.status == "duplicate") {
+                    OpenedPopUp_WhereAlertPopUpNeeded = false;
                     AlertText.textContent = 'This name is already in use. Try a different one.';
                     DisplayPopUp_PopAnimation(alertPopUp, 'flex', true);
                     return;

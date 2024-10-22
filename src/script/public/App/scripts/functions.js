@@ -788,8 +788,6 @@ async function generateTournamentLobbyHash() {
 function Tournament_setWinnerById(roundData, playerId, player1Won) {
     const playerString = `Player ${playerId}`;
 
-    console.log(roundData, playerId, player1Won);
-
     for (const match of roundData.matches) {
         const players = match.players;
 
