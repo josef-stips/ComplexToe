@@ -5256,8 +5256,9 @@ h1.stars_pop_up_title {
 }
 
 #MapLevel_IconInput {
-    height: 25px;
-    width: 200px;
+    height: 2vh;
+    width: 10vw;
+    font-size: 3vh;
 }
 
 .MapLevelPreview_LevelDataList li {

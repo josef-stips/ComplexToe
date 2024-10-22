@@ -2003,7 +2003,7 @@ socket.on("AdminChanged_PointsToWin", value => {
 
 // check if the player already was in the game once
 socket.on('CheckIfPlayerAlreadyExists', () => {
-    if (localStorage.getItem('PlayerOpenedThisGameAtleastOnceInHisLife')) {
+    if (localStorage.getItem('PlayerOpenedThisGameAtleastOnceInHisLife') && localStorage.getItem('Opened1.1') && localStorage.getItem('PlayerID')) {
         socket.emit("PlayerAlreadyExists", localStorage.getItem("PlayerID"), localStorage.getItem('treasureIsAvailible'), cb => {
 
             if (cb) {
@@ -2013,9 +2013,18 @@ socket.on('CheckIfPlayerAlreadyExists', () => {
             };
         });
 
-    } else {
+    } 
+    
+    else if(localStorage.getItem('PlayerOpenedThisGameAtleastOnceInHisLife') && !localStorage.getItem('Opened1.1') && localStorage.getItem('PlayerID')) {
+        localStorage.clear();
+        localStorage.setItem('Opened1.1', true);
+        location.reload();
+    }
+
+    else {
         socket.emit("PlayerNotExisted");
         localStorage.setItem('PlayerOpenedThisGameAtleastOnceInHisLife', true);
+        localStorage.setItem('Opened1.1', true);
     };
 });
 
