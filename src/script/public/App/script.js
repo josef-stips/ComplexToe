@@ -994,20 +994,19 @@ function load_cardsClick() {
             });
 
         } else { // event listener for all other cards
-
-            if (localStorage.getItem("UserName")) {
                 btn.addEventListener('click', (card) => {
+                    if (localStorage.getItem("UserName")) {
                     // audio
                     playBtn_Audio();
 
                     // create level or play offline on same computer
                     (btn.classList.contains("create")) ? social_scene.init(): DarkLayerAnimation(gameModeFields_Div, gameModeCards_Div);
-                });
 
-            } else {
-                AlertText.textContent = "Create an account to get access to the online stuff";
-                DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
-            };
+                    } else {
+                        AlertText.textContent = "Create an account to get access to the online stuff";
+                        DisplayPopUp_PopAnimation(alertPopUp, "flex", true);
+                    };
+                });
         };
     });
 };

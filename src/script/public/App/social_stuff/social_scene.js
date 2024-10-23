@@ -481,7 +481,7 @@ class recentPlayersHandler {
         let date = formatDate(player_data["last_connection"]).split(",");
 
         lastTimeOnlineEl.textContent = `last time online: ${date[0] + date[1]}`;
-        isInClanEl.textContent = !player_data["clan_data"].is_in_clan ? "loner" : "clan member";
+        isInClanEl.textContent = !player_data["clan_data"]?.is_in_clan ? "loner" : "clan member";
 
         // wrapper
         div.classList.add("recent_player_item");

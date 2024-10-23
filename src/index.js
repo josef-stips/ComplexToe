@@ -48,7 +48,7 @@ const createWindow = () => {
     // mainWindow.webContents.openDevTools()
 };
 
-// Menu.setApplicationMenu(null);
+Menu.setApplicationMenu(null);
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

@@ -3544,10 +3544,9 @@ ul.default_sb_list.best_players_list div:first-child {
     padding: 1vh 1vh;
 }
 
-
-/* .recent_player_item:last-child {
-    border-bottom: none !important;
-} */
+.recent_player_item:last-child {
+    margin: 0 0 2vh 0;
+}
 
 .recent_players_sb_main {
     height: 100%;

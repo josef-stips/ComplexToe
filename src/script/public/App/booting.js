@@ -56,14 +56,14 @@ const loadingScreenFunc = () => { // starting value of progress is 10 because he
 
     // try to connect to server 
     try {
-        // socket = io("http://139.144.180.23", {
-        //     // path: "http://139.144.180.23",
-        //     // transports: ['websocket'],
-        // });
-        socket = io("http://localhost:3000", {
-            // path: "http://localhost:3000",
+        socket = io("http://139.144.180.23", {
+            // path: "http://139.144.180.23",
             // transports: ['websocket'],
         });
+        // socket = io("http://localhost:3000", {
+        //     // path: "http://localhost:3000",
+        //     // transports: ['websocket'],
+        // });
         window.socket = socket;
 
         socket.on('connect', () => {

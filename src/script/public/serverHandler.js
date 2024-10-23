@@ -337,7 +337,27 @@ Lobby_closeBtn.addEventListener('click', () => {
         random_player_mode = false;
     });
 
+    // personal_GameData.role = 'user';
+    // personal_GameData.currGameID = null;
+    // personal_GameData.EnterOnlineGame = false;
+
     random_player_mode = false;
+
+    close_all_scenes();
+    if(!tournament_mode && !NewCreativeLevel) {
+        sceneMode.default();
+        gameModeCards_Div.style.display = 'flex';
+    };
+    
+    if(tournament_mode) {
+        sceneMode.full();
+        tournaments_scene.style.display = 'flex';
+    };
+
+    if(NewCreativeLevel) {
+        close_all_scenes();
+        CreateLevelScene.style.display = 'flex';
+    };
 
     // remove "inGame" status from player
     socket.emit("removePlayerInRoomStatus", localStorage.getItem("PlayerID"));
